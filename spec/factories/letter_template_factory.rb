@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :letter_template do
+    scenario 'TahiStandardTasks::RegisterDecisionScenario'
     to 'author@example.com'
     subject 'Your [JOURNAL_NAME] submission'
 
@@ -39,6 +40,14 @@ FactoryGirl.define do
       body <<-LETTER.strip_heredoc
           ***EDIT THIS LETTER BEFORE SENDING****\n\nDear Dr. [Last Name],\n\n Minor Revision!\n\nSincerely,\n\n[EDITOR NAME]\n[EDITOR TITLE]\nPLOS Biology  \n
        LETTER
+    end
+
+    trait(:thank_reviewer) do
+      name 'Reviewer Appreciation'
+      subject 'Thank you for reviewing {{ journal.name }}'
+      body <<-LETTER.strip_heredoc
+        <p>Dear {{ reviewer.first_name }} {{ reviewer.last_name }}.</p><p>Kind regards,<br /> {{ journal.name }}</p>
+      LETTER
     end
   end
 end

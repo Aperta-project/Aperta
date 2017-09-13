@@ -76,7 +76,7 @@ module CustomCard
                     </content>
                   </content>
                 </content>
-                <content ident="data_availability--data_location" content-type="paragraph-input" value-type="html">
+                <content ident="data_availability--data_location" content-type="paragraph-input" value-type="html" editor-style="inline">
                 </content>
               </content>
               <content content-type="text">

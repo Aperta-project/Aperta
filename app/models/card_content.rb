@@ -4,6 +4,7 @@
 # text, or widgets (developer-created chunks of functionality with
 # user-configured behavior)
 class CardContent < ActiveRecord::Base
+  include Attributable
   include XmlSerializable
 
   # Scope matches deleted_at IS NULL, that is, non-deleted records
@@ -76,32 +77,22 @@ class CardContent < ActiveRecord::Base
   def content_value_type_combination
     return if content_type.blank?
     unless VALUE_TYPES_FOR_CONTENT.fetch(content_type, []).member?(value_type)
-      errors.add(
-        :content_type,
-        "'#{content_type}' not valid with value_type '#{value_type}'"
-      )
+      errors.add(:content_type, "'#{content_type}' not valid with value_type '#{value_type}'")
     end
   end
 
   def value_type_for_default_answer_value
     if value_type.blank? && default_answer_value.present?
-      errors.add(
-        :default_answer_value,
-        "value type must be present in order to set a default answer value"
-      )
+      errors.add(:base, "value type must be present in order to set a default answer value")
     end
   end
 
   def default_answer_present_in_possible_values
     return if default_answer_value.blank? || possible_values.blank?
+    values = possible_values.map { |v| v['value'] }
+    return if values.include? default_answer_value
 
-    vals = possible_values.map { |v| v["value"] }
-    unless vals.include? default_answer_value
-      errors.add(
-        :default_answer_value,
-        "must be one of the following values: #{vals}"
-      )
-    end
+    errors.add(:base, "default answer must be one of the following values: #{values}")
   end
 
   def render_tag(xml, attr_name, attr)
@@ -110,18 +101,17 @@ class CardContent < ActiveRecord::Base
 
   # content_attrs rendered into the <card-content> tag itself
   def content_attrs
-    attrs =
-      {
-        'ident' => ident,
-        'content-type' => content_type,
-        'value-type' => value_type,
-        'child-tag' => child_tag,
-        'custom-class' => custom_class,
-        'custom-child-class' => custom_child_class,
-        'wrapper-tag' => wrapper_tag,
-        'visible-with-parent-answer' => visible_with_parent_answer,
-        'default-answer-value' => default_answer_value
-      }.merge(additional_content_attrs).compact
+    {
+      'ident' => ident,
+      'content-type' => content_type,
+      'value-type' => value_type,
+      'child-tag' => child_tag,
+      'custom-class' => custom_class,
+      'custom-child-class' => custom_child_class,
+      'wrapper-tag' => wrapper_tag,
+      'visible-with-parent-answer' => visible_with_parent_answer,
+      'default-answer-value' => default_answer_value
+    }.merge(additional_content_attrs).compact
   end
 
   # rubocop:disable Metrics/MethodLength
@@ -139,9 +129,14 @@ class CardContent < ActiveRecord::Base
       {
         'condition' => condition
       }
-    when 'short-input', 'paragraph-input'
+    when 'paragraph-input'
       {
         'editor-style' => editor_style,
+        'allow-annotations' => allow_annotations,
+        'required-field' => required_field
+      }
+    when 'short-input'
+      {
         'allow-annotations' => allow_annotations,
         'required-field' => required_field
       }
@@ -167,6 +162,9 @@ class CardContent < ActiveRecord::Base
       render_tag(xml, 'text', text)
       render_tag(xml, 'label', label)
       card_content_validations.each do |ccv|
+        # Do not serialize the required-field validation, it is handled via the
+        # "required-field" attribute.
+        next if ccv.validation_type == 'required-field'
         create_card_config_validation(ccv, xml)
       end
       if possible_values.present?
@@ -191,7 +189,7 @@ private
 
 def create_card_config_validation(ccv, xml)
   validation_attrs = { 'validation-type': ccv.validation_type }
-                       .delete_if { |_k, v| v.nil? }
+                         .delete_if { |_k, v| v.nil? }
   xml.tag!('validation', validation_attrs) do
     xml.tag!('error-message', ccv.error_message)
     xml.tag!('validator', ccv.validator)

@@ -77,7 +77,8 @@
     "liquid-fire": "0.25.0",
     "loader.js": "^4.0.1",
     "npm-install-retry": "^1.0.2",
-    "yuidocjs": "^0.10.2"
+    "yuidocjs": "^0.10.2",
+    "ember-cli-sri": "^2.1.0"
   },
   "ember-addon": {
     "paths": [

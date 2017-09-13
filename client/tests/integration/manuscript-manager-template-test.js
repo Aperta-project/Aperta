@@ -14,21 +14,13 @@ module('Integration: Manuscript Manager Templates', {
       return function() {
         app = startApp();
         $.mockjax({
-          url: "/api/admin/journals/authorization",
+          url: '/api/admin/journals/authorization',
           status: 204
         });
+
         $.mockjax({
           type: 'GET',
-          url: '/api/feature_flags.json',
-          status: 200,
-          responseText: {
-            CARD_CONFIGURATION: false,
-            PREPRINT: true
-          }
-        });
-        $.mockjax({
-          type: 'GET',
-          url: "/api/journals",
+          url: '/api/journals',
           status: 200,
           responseText: {
             journals: []
@@ -162,6 +154,8 @@ test('User cannot edit a non Ad-Hoc card', function(assert) {
 
 test('User can enable a workflow as preprint eligible', function(assert){
   var adminJournal, journalTaskType, mmt;
+
+  FactoryGuy.make('feature-flag', {id: 1, name: 'PREPRINT', active: true});
   journalTaskType = FactoryGuy.make('journal-task-type', {
     id: 1,
     kind: 'AdHocTask',
@@ -228,9 +222,6 @@ test('Preprint eligible is hidden if feature flag is not set', function(assert){
     url: '/api/manuscript_manager_templates/1',
     status: 200
   });
-
-  // flip PREPRINT feature flag off
-  $.mockjax.unfiredHandlers()[2].responseText.PREPRINT = false;
 
   visit('/admin/mmt/journals/1/manuscript_manager_templates/1/edit');
   andThen(() => {

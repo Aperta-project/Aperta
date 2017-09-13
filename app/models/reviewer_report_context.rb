@@ -1,20 +1,31 @@
 # Provides a template context for ReviewerReports
 class ReviewerReportContext < TemplateContext
-  whitelist :state, :revision, :computed_status, :computed_datetime,
-            :invitation_accepted?
+  def self.complex_merge_fields
+    [{ name: :reviewer, context: UserContext },
+     { name: :answers, context: AnswerContext, many: true }]
+  end
 
-  alias status computed_status
-  alias datetime computed_datetime
+  whitelist :state, :revision, :status, :datetime, :invitation_accepted?, :due_at
 
   def reviewer
     UserContext.new(@object.user)
   end
 
   def reviewer_number
-    @object.task.reviewer_number
+    reviewer_report.task.reviewer_number
   end
 
   def answers
-    @object.answers.map { |a| AnswerContext.new(a) }
+    reviewer_report.answers.map { |a| AnswerContext.new(a) }
+  end
+
+  def due_at
+    reviewer_report.due_at.to_s(:due_with_hours)
+  end
+
+  private
+
+  def reviewer_report
+    @object
   end
 end

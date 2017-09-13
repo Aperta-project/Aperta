@@ -180,6 +180,16 @@ describe TasksController, redis: true do
         expect(response.body).not_to include "This paper cannot be edited at this time."
       end
 
+      context 'when the request is marking the task complete' do
+        context 'and the task is ready?' do
+          it 'marks the task complete' do
+            allow(controller).to receive(:task).and_return(task)
+            expect(task).to receive(:ready?).and_return(true)
+            expect { do_request }.to change { task.reload.completed }.from(false).to(true)
+          end
+        end
+      end
+
       context "and the task is marked as complete" do
         before do
           task.update_column :completed, true

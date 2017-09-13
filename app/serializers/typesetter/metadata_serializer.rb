@@ -9,8 +9,6 @@ module Typesetter
     attribute :accepted_at, key: :accepted_date
     attribute :abstract, key: :paper_abstract
 
-    attribute :aarx_doi
-
     has_one :competing_interests,
             serializer: Typesetter::CompetingInterestsSerializer
     has_one :financial_disclosure,
@@ -30,6 +28,10 @@ module Typesetter
 
     def include_aarx_doi?
       options[:destination] == 'preprint'
+    end
+
+    def include_custom_card_fields?
+      options[:destination] != 'apex'
     end
 
     def journal_title

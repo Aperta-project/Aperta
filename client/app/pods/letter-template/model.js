@@ -6,5 +6,6 @@ export default DS.Model.extend({
   to: DS.attr('string'),
   subject: DS.attr('string'),
   body: DS.attr('string'),
-  journalId: DS.attr('number')
+  journalId: DS.attr('number'),
+  mergeFields: DS.attr()
 });

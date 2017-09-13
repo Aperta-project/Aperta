@@ -1,14 +1,8 @@
-{{#if isText}}
 <p class="content-text">{{{content.text}}}
   {{#if content.isRequired}}
-    {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
+    <span class="required-field">*</span>
   {{/if}}
 </p>
-{{else}}
-  {{#if content.isRequired}}
-    {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
-  {{/if}}
-{{/if}}
 <div>
   {{#if isText}}
     {{#each content.possibleValues as |opt index|}}
@@ -46,7 +40,7 @@
     </label>
   {{/if}}
 </div>
-
+<div>{{card-content/validation-errors errors=answer.readyIssuesArray}}</div>
 {{card-content/display-children
   content=content
   owner=owner

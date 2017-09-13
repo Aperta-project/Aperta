@@ -47,6 +47,19 @@ namespace :db do
     end
   end
 
+  desc "Create seed data from the database"
+  task dump_seed_data: :environment do
+    Rake::Task['db:migrate'].invoke
+    Rake::Task['cards:load'].invoke
+    Rake::Task['roles-and-permissions:seed'].invoke
+    Rake::Task['settings:seed_setting_templates'].invoke
+    Rake::Task['data:update_journal_task_types'].invoke
+    Rake::Task['institutional_accounts:add_seed_accounts'].invoke
+    Rake::Task['create_feature_flags'].invoke
+    Rake::Task['seed:letter_templates:populate'].invoke
+    Rake::Task['db:data:dump'].invoke
+  end
+
   desc "Dumps the database to ~/aperta-TIMESTAMP.dump"
   task dump: :environment do
     location = "~/aperta-#{Time.now.utc.strftime('%FT%H:%M:%SZ')}.dump"

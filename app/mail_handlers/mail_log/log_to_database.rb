@@ -43,6 +43,7 @@ module MailLog
               file.write(attachment.body.raw_source.force_encoding('UTF-8'))
               attachment = email_log.attachments.create!(file: file)
               attachment.create_resource_token!(attachment.file)
+              attachment.update(status: 'done')
             ensure
               file.close
             end

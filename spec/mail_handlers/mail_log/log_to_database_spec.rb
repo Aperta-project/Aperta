@@ -42,6 +42,7 @@ module MailLog::LogToDatabase
         expect(correspondence_double).to receive_message_chain('attachments.create!') { attachment_double }
         expect(attachment_double).to receive(:file).and_return(true)
         expect(attachment_double).to receive(:create_resource_token!).and_return(true)
+        expect(attachment_double).to receive(:update).with(status: 'done')
         mail.attachments['test'] = StringIO.new('testing')
         mail.html_part = 'This is a test email\'s body'
         interceptor.delivering_email(mail)

@@ -7,9 +7,9 @@ export default Ember.Mixin.create({
   actions: {
     cleanDirtyModel: function() {
       let model = this.get(this.get('dirtyEditorConfig.model'));
-      let dirtyProps = this.get('dirtyEditorConfig.properties');
-      if (dirtyProps.length) {
-        dirtyProps.forEach( function(prop) { model.rollbackAttributes(prop); });
+      let props = this.get('dirtyEditorConfig.properties');
+      if (props.length) {
+        props.forEach(function(prop) { model.rollbackAttributes(prop); });
       } else {
         model.rollbackAttributes();
       }

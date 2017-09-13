@@ -8,10 +8,11 @@ export default Ember.Mixin.create({
   actions: {
     willTransition(transition) {
       let model = this.currentModel;
-      let dirtyProps = this.get('dirtyEditorConfig.properties');
-      let hasDirty = !!(model.get('hasDirtyAttributes') && dirtyProps.any((item) => model.changedAttributes()[item]));
+      let props = this.get('dirtyEditorConfig.properties');
+      let dirtyAndRelevant = props.any((item) => model.changedAttributes()[item]);
+      let hasDirty = !!(model.get('hasDirtyAttributes') && dirtyAndRelevant);
 
-      if(!hasDirty) {
+      if (!hasDirty) {
         return true;
       }
 

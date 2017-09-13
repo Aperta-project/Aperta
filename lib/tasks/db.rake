@@ -30,14 +30,16 @@ namespace :db do
       ENV['PGPASSWORD'] = password.to_s
 
       args = "-U #{user} -h #{host}"
-      drop_cmd = system("dropdb #{args} #{db} && createdb #{args} #{db}")
-      raise "\e[31m Error dropping and creating blank database. Is #{db} in use?\e[0m" unless drop_cmd
+      system_or_abort(
+        "dropdb #{args} #{db} && createdb #{args} #{db}",
+        "Error dropping and creating blank database. Is #{db} in use?"
+      )
 
       path = Rails.root.join("tmp", "#{env}_dump.tar.gz")
       # Download if newer than cached version
-      raise "Error downloading #{env} dump " unless system("curl -sH 'Accept-encoding: gzip' -o #{path} -z #{path} #{location}")
+      system_or_abort("curl -sH 'Accept-encoding: gzip' -o #{path} -z #{path} #{location}")
       # Restore database
-      raise "Error restoring from #{path}" unless system("gunzip -dc #{path} | pg_restore --format=tar --clean --if-exists --no-acl --no-owner #{args} -d #{db}")
+      system_or_abort("gunzip -dc #{path} | pg_restore --format=tar --clean --if-exists --no-acl --no-owner #{args} -d #{db}")
 
       puts("Successfully restored #{env} database\n")
       # run any post import tasks
@@ -66,7 +68,7 @@ namespace :db do
       raise('Backup file already exists') if File.exist?(File.expand_path(location))
       cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > #{location}"
     end
-    system(cmd) || STDERR.puts("Dump failed for \n #{cmd}") && exit(1)
+    system_or_abort(cmd, "Dump failed for \n #{cmd}")
   end
 
   desc "Cleans up the database dump files in ~, leaving the 2 newest"
@@ -86,8 +88,7 @@ namespace :db do
         ENV['PGPASSWORD'] = password.to_s
         cmd = "pg_restore --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} #{location}"
       end
-      puts cmd
-      system(cmd) || STDERR.puts("Restore failed for \n #{cmd}") && exit(1)
+      system_or_abort(cmd)
     else
       STDERR.puts('Location argument is required.')
     end
@@ -107,7 +108,7 @@ namespace :db do
       MSG
     end
     Rake::Task['db:drop'].invoke
-    system("heroku pg:pull DATABASE_URL tahi_development --app #{source_db}")
+    system_or_abort("heroku pg:pull DATABASE_URL tahi_development --app #{source_db}")
     Rake::Task['db:reset_passwords'].invoke
     Rake::Task['db:setup_role_accounts'].invoke
   end
@@ -183,4 +184,8 @@ namespace :db do
       ActiveRecord::Base.connection_config[:password]
   end
 
+  def system_or_abort(cmd, abort_message = nil)
+    abort_message ||= "Error running #{cmd}"
+    system(cmd) || abort("\e[31m#{abort_message}\e[0m")
+  end
 end

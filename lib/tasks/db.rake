@@ -39,8 +39,7 @@ namespace :db do
       # Download if newer than cached version
       system_or_abort("curl -sH 'Accept-encoding: gzip' -o #{path} -z #{path} #{location}")
       # Restore database
-      system_or_abort("gunzip -dc #{path} | pg_restore --format=tar --clean --if-exists --no-acl --no-owner #{args} -d #{db}")
-
+      Rake::Task['db:restore'].invoke(path)
       puts("Successfully restored #{env} database\n")
       # run any post import tasks
       ActiveRecord::Base.establish_connection
@@ -82,15 +81,20 @@ namespace :db do
   desc "Restores the database dump at LOCATION"
   task :restore, [:location] => :environment do |_t, args|
     location = args[:location]
-    if location
-      cmd = nil
+    if location.blank?
+      STDERR.puts('Location argument is required.')
+      exit(1)
+    else
       with_config do |_app, host, db, user, password|
         ENV['PGPASSWORD'] = password.to_s
-        cmd = "pg_restore --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} #{location}"
+        cat_bit = if location.to_s.ends_with?(".gz")
+                    "gunzip -dc #{location}"
+                  else
+                    "cat #{location}"
+                  end
+        cmd = "#{cat_bit} | pg_restore --clean --if-exists --no-acl --no-owner --username #{user} --host #{host} --dbname #{db}"
+        system_or_abort(cmd)
       end
-      system_or_abort(cmd)
-    else
-      STDERR.puts('Location argument is required.')
     end
   end
 

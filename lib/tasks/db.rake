@@ -3,7 +3,6 @@ Rake::Task["db:dump"].clear
 Rake::Task["db:load"].clear
 
 namespace :db do
-
   DEFAULT_USER_PASSWORD = "password".freeze
 
   desc <<-DESC
@@ -82,8 +81,7 @@ namespace :db do
   task :restore, [:location] => :environment do |_t, args|
     location = args[:location]
     if location.blank?
-      STDERR.puts('Location argument is required.')
-      exit(1)
+      abort('Location argument is required.')
     else
       with_config do |_app, host, db, user, password|
         ENV['PGPASSWORD'] = password.to_s
@@ -92,8 +90,9 @@ namespace :db do
                   else
                     "cat #{location}"
                   end
-        cmd = "#{cat_bit} | pg_restore --clean --if-exists --no-acl --no-owner --username #{user} --host #{host} --dbname #{db}"
-        system_or_abort(cmd)
+        system_or_abort(
+          "#{cat_bit} | pg_restore --clean --if-exists --no-acl --no-owner --username #{user} --host #{host} --dbname #{db}"
+        )
       end
     end
   end

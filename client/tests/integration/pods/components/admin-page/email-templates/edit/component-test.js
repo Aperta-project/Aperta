@@ -28,11 +28,10 @@ test('it populates input fields with model data', function(assert) {
   assert.equal(this.$('#body').val(), template.get('body'));
 });
 
-test('it prevents the model from saving if a field is blank and displays validation errors', function(assert){
-  assert.expect(2);
+test('it displays validation errors if a field is empty', function(assert){
+  assert.expect(1);
   
   let template = FactoryGuy.make('letter-template', {subject: '', body: 'bar'});
-  sinon.spy(template, 'save');
   this.set('template', template);
 
   this.render(hbs`
@@ -41,26 +40,35 @@ test('it prevents the model from saving if a field is blank and displays validat
 
   Ember.run(() => {
     this.$('#subject').blur();
-    this.$('.edit-email-button').click();
   });
   
-  assert.elementFound('.error');
-  assert.equal(template.save.called, false);
+  assert.ok(this.$('span').text().trim(), 'This field is required.');
 });
 
 test('it displays a success message if save succeeds and disables save button', function(assert) {
   assert.expect(2);
 
-  let template = FactoryGuy.make('letter-template', {subject: 'foo', body: 'bar'});
-  this.set('saved', true);
-  this.set('message', 'Your changes have been saved.');
-  this.set('messageType', 'success');
+  let template = FactoryGuy.make('letter-template', { subject: 'foo', body: 'bar'});
 
+  let saveStub = sinon.stub(template, 'save');
+  saveStub.returns(Ember.RSVP.Promise.resolve());
   this.set('template', template);
 
   this.render(hbs`
-    {{admin-page/email-templates/edit template=template saved=saved message=message messageType=messageType}}
+    {{admin-page/email-templates/edit template=template}}
   `);
+
+  // This is necessary because the save button doesn't enable until there is a keypress event on any of the fields
+  Ember.run(() => {
+    const e = Ember.$.Event('keydown');
+    e.which = 20;
+    e.keyCode = 20;
+    this.$('#subject').trigger(e);
+  });
+
+  Ember.run(() => {
+    this.$('.button-primary').click();
+  });
 
   assert.elementFound('.button-primary[disabled]');
   assert.equal(this.$('span.text-success').text(), 'Your changes have been saved.');
@@ -69,16 +77,27 @@ test('it displays a success message if save succeeds and disables save button', 
 test('it displays an error message if save fails', function(assert) {
   assert.expect(2);
 
-  let template = FactoryGuy.make('letter-template', { subject: 'foo', body: 'bar'});
-  this.set('saved', false);
-  this.set('message', 'Please correct errors where indicated.');
-  this.set('messageType', 'danger');
+  let template = FactoryGuy.make('letter-template', { subject: '', body: 'bar'});
 
-  this.set('templalte', template);
+  let saveStub = sinon.stub(template, 'save');
+  saveStub.returns(Ember.RSVP.Promise.reject());
+
+  this.set('template', template);
 
   this.render(hbs`
-    {{admin-page/email-templates/edit template=template saved=saved message=message messageType=messageType}}
+    {{admin-page/email-templates/edit template=template}}
   `);
+
+  Ember.run(() => {
+    const e = Ember.$.Event('keydown');
+    e.which = 32;
+    e.keyCode = 32;
+    this.$('#subject').trigger(e);
+  });
+  
+  Ember.run(() => {
+    this.$('.button-primary').click();
+  });
 
   assert.elementNotFound('.button-primary[disabled]');
   assert.equal(this.$('span.text-danger').text(), 'Please correct errors where indicated.');
@@ -86,9 +105,15 @@ test('it displays an error message if save fails', function(assert) {
 
 
 test('it warns user if input field has invalid content', function(assert) {
-  assert.expect(2);
+  assert.expect(1);
 
   let template = FactoryGuy.make('letter-template', {subject: 'foo', body: 'bar'});
+
+  let saveStub = sinon.stub(template, 'save');
+  saveStub.returns(Ember.RSVP.Promise.reject(
+    { errors: [ { source: { pointer: '/subject'}, detail: 'Syntax Error'}]})
+  );
+  
   this.set('template', template);
 
   this.render(hbs`
@@ -96,15 +121,19 @@ test('it warns user if input field has invalid content', function(assert) {
   `);
   
   Ember.run(() => {
-    this.$('#subject').val('').blur();
+    const e = Ember.$.Event('keydown');
+    e.which = 32;
+    e.keyCode = 32;
+    this.$('#subject').trigger(e);
   });
-
-  assert.elementFound('.error');
 
   Ember.run(() => {
-    this.$('#subject').val('foo').blur();
-    this.$('#body').val('').blur();
+    this.$('#subject').val('{{ name }').blur();
   });
 
-  assert.elementFound('.error');
+  Ember.run(() => {
+    this.$('.button-primary').click();
+  });
+
+  assert.equal(this.$('.error>ul>li').text().trim(), 'Syntax Error');
 });

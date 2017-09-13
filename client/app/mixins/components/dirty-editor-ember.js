@@ -1,6 +1,6 @@
 import Ember from 'ember';
 // Facilitates display of a warning overlay when navigating away from a dirty editor.
-// Used in conjuction with client/app/mixins/controllers/dirty-editor-ember.js
+// Used in conjuction with client/app/mixins/routes/dirty-editor-ember.js
 export default Ember.Mixin.create({
   showDirtyOverlay: false,
   allowStoppedTransition: 'allowStoppedTransition',

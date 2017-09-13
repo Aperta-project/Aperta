@@ -20,6 +20,12 @@ FactoryGirl.define do
       end
     end
 
+    trait(:with_default_mmt) do
+      after(:create) do |journal|
+        JournalFactory.setup_default_mmt(journal)
+      end
+    end
+
     trait(:with_roles_and_permissions) do
       after(:create) do |journal|
         JournalFactory.ensure_default_roles_and_permissions_exist(journal)

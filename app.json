@@ -145,6 +145,9 @@
     "JIRA_CREATE_ISSUE_URL": {
       "required": true
     },
+    "JIRA_PROJECT": {
+      "required": true
+    },
     "MAILSAFE_REPLACEMENT_ADDRESS": {
       "required": true
     },

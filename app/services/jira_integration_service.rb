@@ -16,9 +16,9 @@ class JIRAIntegrationService
       }
     }.freeze
 
-    def create_issue(user_full_name, options)
+    def create_issue(user_full_name, remarks)
       session_token = authenticate!
-      payload = build_payload(user_full_name, options['remarks'])
+      payload = build_payload(user_full_name, remarks)
       faraday_connection.post do |req|
         req.url TahiEnv.jira_create_issue_url
         req.body = payload.to_json

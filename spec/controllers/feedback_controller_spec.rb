@@ -2,7 +2,11 @@ require 'rails_helper'
 
 describe FeedbackController do
   let(:user) { FactoryGirl.create(:user) }
-  before { sign_in user }
+
+  before do
+    FactoryGirl.create :feature_flag, name: 'JIRA_INTEGRATION'
+    sign_in user
+  end
 
   describe '#create' do
 

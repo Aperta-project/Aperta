@@ -44,12 +44,14 @@ export default Ember.Component.extend({
     let conditionName = this.get('conditionName');
     let scenario = this.get('computedScenario');
     let value = Ember.get(scenario, conditionName);
+    this.set('previousConditionValue', this.get('conditionValue'));
     this.set('conditionValue', value);
   },
 
   previewState: true,
   conditionName: Ember.computed.reads('content.condition'),
   conditionValue: null,
+  previousConditionValue: null,
 
   condition: Ember.computed(
     'content.condition',
@@ -63,5 +65,38 @@ export default Ember.Component.extend({
         return this.get('conditionValue');
       }
     }
-  )
+  ),
+
+  pruneOldAnswers: Ember.observer('conditionValue', function() {
+    if(this.get('preview')) { return; }
+
+    Ember.run(this, function() {
+      let presentValue = this.get('conditionValue');
+      let previousValue = this.get('previousConditionValue');
+      if(presentValue === previousValue) {
+        // Ember Observers will be called any time `conditionValue` is _set_, not
+        // just when the value actually changes.  This means we need to track the
+        // previous value ourselves to know when the value is toggled and we
+        // actually need to destroy the old answers.
+        return;
+      }
+
+      let owner = this.get('owner');
+      let content = this.get('content');
+
+      let branchToPrune;
+      if(previousValue === null) {
+        return;
+      } else if(previousValue) {
+        branchToPrune = content.get('children.firstObject');
+      } else if (this.get('hasElse')) {
+        branchToPrune = content.get('children.lastObject');
+      } else {
+        return; // the else branch doesn't exist, so there's no answers to delete.
+      }
+
+      branchToPrune.visitDescendants(child => child.get('answers').filterBy('owner', owner).invoke('destroyRecord'));
+    });
+  }),
+
 });

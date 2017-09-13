@@ -154,6 +154,19 @@ class Task < ActiveRecord::Base
     card_version.try(:create_default_answers, self)
   end
 
+  # called in the Task factory
+  def create_answers
+    required_fields = card_version.card_contents
+                                  .joins(:content_attributes)
+                                  .where('content_attributes.name' => 'required_field',
+                                         'content_attributes.value_type' => 'boolean',
+                                         'content_attributes.boolean_value' => true)
+    required_fields.each do |content|
+      answer = find_or_build_answer_for(card_content: content)
+      answer.save
+    end
+  end
+
   def journal_task_type
     journal.journal_task_types.find_by(kind: self.class.name)
   end
@@ -276,6 +289,10 @@ class Task < ActiveRecord::Base
   def display_status
     return :active_check if completed
     :check
+  end
+
+  def ready?
+    answers.includes(:card_content).all?(&:ready?)
   end
 
   private

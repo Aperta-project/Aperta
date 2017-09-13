@@ -6,6 +6,7 @@ class TaskFactory
   def self.create(task_klass, options = {})
     task = new(task_klass, options).save
     task.task_added_to_paper(task.paper)
+    task.create_answers
     task
   end
 

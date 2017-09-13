@@ -4,8 +4,8 @@
       <thead>
         <tr>
           <th class="correspondence-date-column">Date</th>
-          <th class="correspondence-subject-column">Correspondence</th> 
-          <th class="correspondence-recipient-column">Recipient</th>                   
+          <th class="correspondence-subject-column">Correspondence</th>
+          <th class="correspondence-recipient-column">Recipient</th>
           <th class="correspondence-manuscript-column">Manuscript Version / Status</th>
           <th class="correspondence-sender-column">Initiator</th>
         </tr>
@@ -16,9 +16,12 @@
             <td>{{format-date message.sentAt}}</td>
             <td>
               <div class="correspondence{{message.id}}">
-              {{#link-to 'paper.correspondence.viewcorrespondence' paper message }}
-                {{if message.external message.description message.subject}}
-              {{/link-to}}
+                {{#link-to 'paper.correspondence.viewcorrespondence' paper message.id }}
+                  {{if message.external message.description message.subject}} &nbsp;
+                {{/link-to}}
+                {{#if message.hasAnyAttachment}}
+                  <span class="fa fa-paperclip"></span>
+                {{/if}}
               </div>
             </td>
             <td>{{message.recipient}}</td>

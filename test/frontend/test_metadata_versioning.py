@@ -83,8 +83,8 @@ class MetadataVersioningTest(CommonTest):
     manuscript_page.complete_task('Additional Information', click_override=False,
                                data=first_prq)
     manuscript_page.complete_task('Early Article Posting')
-    manuscript_page.complete_task('Title And Abstract')
     manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Title And Abstract')
     time.sleep(3)
     # make submission
     manuscript_page.click_submit_btn()

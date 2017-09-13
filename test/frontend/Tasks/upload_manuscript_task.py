@@ -26,11 +26,11 @@ class UploadManuscriptTask(BaseTask):
     # Locators - Instance members
     self._intro_text = (By.CLASS_NAME, 'task-main-content')
     self._upload_manuscript_btn = (By.CLASS_NAME, 'button-primary')
-    self._upload_manuscript_replace_btn = (By.CSS_SELECTOR, 'span.fileinput-button')
+    self._upload_manuscript_replace_btn = (By.CLASS_NAME, 'replace-attachment')
     self._upload_manuscript_input = (By.ID, 'upload-files')
     self._upload_source_warning = (By.CSS_SELECTOR, 'div.error-message i.fa-exclamation-triangle')
     self._uploaded_pdf = (By.CSS_SELECTOR, '.task-main-content > div > a')
-    self._upload_source_file_button = (By.ID, 'upload-sourcefile')
+    self._upload_source_file_button = (By.CLASS_NAME, 'upload-sourcefile')
     self._upload_source_file_box = (By.CLASS_NAME, 'paper-source-upload')
 
   # POM Actions

@@ -56,7 +56,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._accordion_pane = (By.CSS_SELECTOR, 'div.split-pane-element + div.split-pane-element')
 
     # Paper Viewer (manuscript) pane
-    self._failed_conversion_heading = (By.CSS_SELECTOR, 'div#preview-pane > div > h3')
+    self._failed_conversion_heading = (By.CSS_SELECTOR, 'div.paper-preview-error-message>h3')
     # Sidebar Items
     self._task_headings = (By.CLASS_NAME, 'task-disclosure-heading')
     self._task_heading_status_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon')
@@ -1053,7 +1053,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       download_links = table_item.find_elements_by_class_name(
         'paper-downloads-link')
 
-      expected_link_title = {'download-docx': 'Word', 'download-pdf': 'PDF'}
+      expected_link_title = {'download-source': 'Word', 'download-docx': 'Word', 'download-pdf': 'PDF'}
 
       # Validate table item links
       for download_link in download_links:

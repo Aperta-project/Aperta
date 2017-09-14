@@ -11,6 +11,7 @@ class ScheduledEvent < ActiveRecord::Base
   scope :active, -> { where(state: 'active') }
   scope :inactive, -> { where(state: 'inactive') }
   scope :complete, -> { where(state: 'complete') }
+  scope :passive, -> { where(state: 'passive') }
   scope :due_to_trigger, -> { active.where('dispatch_at < ?', DateTime.now.in_time_zone) }
 
   before_save :deactivate, if: :should_deactivate?
@@ -34,6 +35,7 @@ class ScheduledEvent < ActiveRecord::Base
     state :completed
     state :processing
     state :errored
+    state :passive
 
     event(:reactivate) do
       transitions from: [:completed, :inactive], to: :active

@@ -3,4 +3,5 @@
 class CorrespondenceAttachment < Attachment
   # Correspondence attachments are get publicly accessible URLs
   self.public_resource = true
+  self.notifications_enabled = false
 end

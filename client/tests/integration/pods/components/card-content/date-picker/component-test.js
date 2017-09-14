@@ -12,7 +12,7 @@ moduleForComponent(
       registerCustomAssertions();
       this.set('actionStub', function() {});
       this.set('content', Ember.Object.create({ ident: 'test' }));
-      this.set('answer', Ember.Object.create({ value: '' }));
+      this.set('answer', Ember.Object.create({ value: null }));
     }
   }
 );
@@ -47,18 +47,12 @@ test('includes the ident in the name and id if present', function(assert) {
 test('it displays an asterisks if content.isRequred set to true', function(assert) {
   this.set('content', Ember.Object.create({ ident: 'test' , text: 'Test data-picker', isRequired: true}));
   this.render(template);
-  assert.equal(this.$('p span.required-field').text(), '*');
+  assert.equal(this.$('p span.required-field').text().trim(), '*');
 });
 
 test('it does not display an asterisks if content.isRequred set to false', function(assert) {
   this.set('content', Ember.Object.create({ ident: 'test' , text: 'Test data-picker', isRequired: false}));
   this.render(template);
-  assert.equal(this.$('p span.required-field').text(), '');
+  assert.equal(this.$('p span.required-field').text().trim(), '');
 });
 
-test('it does not display an asterisks if content.isRequred set to true and the answer.value is set', function(assert) {
-  this.set('content', Ember.Object.create({ ident: 'test' , text: 'Test data-picker', isRequired: true}));
-  this.set('answer', Ember.Object.create({ wasAnswered: true }));
-  this.render(template);
-  assert.equal(this.$('p span.required-field').text(), '');
-});

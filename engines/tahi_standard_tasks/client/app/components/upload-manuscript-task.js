@@ -36,10 +36,10 @@ export default TaskComponent.extend({
   pdfAllowed: Ember.computed.reads('task.paper.journal.pdfAllowed'),
   needsSourcefile: Ember.computed(
     'pdfAllowed',
-    'task.paper.file.fileType',
+    'task.paper.file.computedFileType',
     function() {
       return (
-        this.get('pdfAllowed') && this.get('task.paper.file.fileType') === 'pdf'
+        this.get('pdfAllowed') && this.get('task.paper.file.computedFileType') === 'pdf'
       );
     }
   )

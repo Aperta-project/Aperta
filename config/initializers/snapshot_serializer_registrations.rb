@@ -31,7 +31,6 @@ ActionDispatch::Reloader.to_prepare do
       serialize TahiStandardTasks::SupportingInformationTask, with: Snapshot::SupportingInformationTaskSerializer
       serialize TahiStandardTasks::TaxonTask, with: Snapshot::TaxonTaskSerializer
       serialize TahiStandardTasks::UploadManuscriptTask, with: Snapshot::UploadManuscriptTaskSerializer
-      serialize TahiStandardTasks::CoverLetterTask, with: Snapshot::CoverLetterTaskSerializer
       serialize CustomCardTask, with: Snapshot::CustomCardTaskSerializer
     end
   end

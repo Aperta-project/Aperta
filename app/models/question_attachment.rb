@@ -8,4 +8,8 @@ class QuestionAttachment < Attachment
   def card_content
     owner.card_content
   end
+
+  def answer_blank?
+    filename.nil?
+  end
 end

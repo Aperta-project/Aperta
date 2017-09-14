@@ -2,9 +2,9 @@
   <p class="description">
     {{#if (or preview (not disabled))}}
       {{{description}}}
-    {{/if}}
-    {{#if content.isRequired}}
-      {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
+      {{#if content.isRequired}}
+        <span class="required-field">*</span>
+      {{/if}}
     {{/if}}
   </p>
 {{/if}}
@@ -58,3 +58,4 @@
     </div>
   </div>
 {{/if}}
+<div>{{card-content/validation-errors errors=answer.readyIssuesArray}}</div>

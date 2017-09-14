@@ -1,13 +1,4 @@
 GIT
-  remote: https://github.com/ActsAsParanoid/acts_as_paranoid
-  revision: c2db19554ddaedcac0a2b8d6a0563dea83c972c5
-  ref: c2db19554ddaedcac0a2b8d6a0563dea83c972c5
-  specs:
-    acts_as_paranoid (0.5.0.rc1)
-      activerecord (>= 4.0, < 5.1)
-      activesupport (>= 4.0, < 5.1)
-
-GIT
   remote: https://github.com/rails/activemodel-globalid
   revision: 189c69988b0208d6d4760ae823043b94a84f0814
   specs:
@@ -731,7 +722,6 @@ DEPENDENCIES
   activerecord-import
   activerecord-sqlserver-adapter
   acts_as_list (~> 0.9.0)
-  acts_as_paranoid!
   american_date
   awesome_nested_set
   awesome_print

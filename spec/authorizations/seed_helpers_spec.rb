@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'SeedHelpers' do
-  let(:journal) { FactoryGirl.create(:journal) }
+  let!(:journal) { FactoryGirl.create(:journal) }
 
   before do
     # This is intended to remove the baseline seeds that were created
@@ -77,7 +77,7 @@ describe 'SeedHelpers' do
       end
 
       context 'with custom card permissions' do
-        let!(:card) { FactoryGirl.create(:card) }
+        let!(:card) { FactoryGirl.create(:card, journal: journal) }
 
         it 'does not remove custom card permissions' do
           # add one Task role and one Card role, and ensure both are there
@@ -96,6 +96,7 @@ describe 'SeedHelpers' do
           Role.ensure_exists('role', journal: journal) do |role|
             role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
           end
+
           # and ensure that permissions for the Card are NOT destroyed
           aggregate_failures do
             applied_permissions = Permission.joins(:roles).where(roles: { name: 'role' })

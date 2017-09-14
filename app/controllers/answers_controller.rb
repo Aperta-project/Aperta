@@ -3,16 +3,27 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
 
-  # return all answers for a given `owner` (i.e., `CoverLetterTask`)
+  # return all answers for a given `owner` (e.g., `AdHocTask`)
+  # when answers are loaded as a group dont include the ready and ready issues
+  # look at task#update in the task_controller and the TaskAnswerSerializer
+  # to see when ready and ready issues are side loaded with a task and answers
+
   def index
     requires_user_can(:view, owner)
-    respond_with owner.answers
+    respond_with owner.answers, except: [:ready, :ready_issues]
   end
 
   def create
     requires_user_can(:edit, owner)
     answer = Answer.create(answer_params.merge(paper: owner.paper))
     respond_with answer
+  end
+
+  def show
+    answer = Answer.find(params[:id])
+    requires_user_can(:view, answer.owner)
+
+    render json: answer, serializer: LightAnswerSerializer, root: 'answer'
   end
 
   def update

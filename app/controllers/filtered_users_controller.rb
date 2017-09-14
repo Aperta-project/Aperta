@@ -15,7 +15,7 @@ class FilteredUsersController < ApplicationController
   def assignable_users
     users = User.fuzzy_search params[:query]
     task = Task.find(params[:task_id])
-    users = users.select { |u| u.can?(:be_assigned, task) }
+    users = User.who_can('assign_others', task) & users
     respond_with users, each_serializer: FilteredUserSerializer,
                         root: :users
   end

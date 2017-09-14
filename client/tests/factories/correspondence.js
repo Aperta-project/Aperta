@@ -8,7 +8,8 @@ FactoryGuy.define('correspondence', {
     recipient: 'john.doe@example.com',
     sender: 'joe@example.com',
     manuscriptVersion: 'v0.0',    
-    manuscriptStatus: 'rejected'
+    manuscriptStatus: 'rejected',
+    attachments: FactoryGuy.hasMany('correspondence-attachment', 2)    
   },
 
   traits: {

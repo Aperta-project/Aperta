@@ -141,7 +141,7 @@ class Task < ActiveRecord::Base
     end
 
     def safe_constantize(str)
-      raise StandardError, 'Attempted to constantize disallowed value' \
+      raise StandardError, "Attempted to constantize '#{str}' which is a disallowed value" \
         unless Task.descendants.map(&:to_s).member?(str)
       str.constantize
     end
@@ -152,6 +152,19 @@ class Task < ActiveRecord::Base
   # subclassing
   def task_added_to_paper(_paper)
     card_version.try(:create_default_answers, self)
+  end
+
+  # called in the Task factory
+  def create_answers
+    required_fields = card_version.card_contents
+                                  .joins(:content_attributes)
+                                  .where('content_attributes.name' => 'required_field',
+                                         'content_attributes.value_type' => 'boolean',
+                                         'content_attributes.boolean_value' => true)
+    required_fields.each do |content|
+      answer = find_or_build_answer_for(card_content: content)
+      answer.save
+    end
   end
 
   def journal_task_type
@@ -276,6 +289,10 @@ class Task < ActiveRecord::Base
   def display_status
     return :active_check if completed
     :check
+  end
+
+  def ready?
+    answers.includes(:card_content).all?(&:ready?)
   end
 
   private

@@ -4,6 +4,8 @@ class CorrespondenceSerializer < ActiveModel::Serializer
              :recipients, :sent_at, :external, :description,
              :cc, :bcc, :manuscript_version, :manuscript_status
 
+  has_many :attachments, embed: :ids, include: true, root: :correspondence_attachments
+
   def date
     object.updated_at
   end
@@ -13,6 +15,6 @@ class CorrespondenceSerializer < ActiveModel::Serializer
   end
 
   def body
-    LinkSanitizer.sanitize(object.body)
+    LinkSanitizer.sanitize(object.body.presence || object.raw_source)
   end
 end

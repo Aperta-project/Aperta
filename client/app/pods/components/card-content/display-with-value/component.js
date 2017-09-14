@@ -24,5 +24,15 @@ export default Ember.Component.extend({
       return (parentValue).toString() ===
         this.get('content.visibleWithParentAnswer');
     }
-  )
+  ),
+
+  pruneOldAnswers: Ember.observer('showChildren', function() {
+    if(this.get('preview')) { return; }
+    if(this.get('showChildren')) { return; }
+
+    let owner = this.get('owner');
+    let content = this.get('content');
+
+    content.visitDescendants(child => child.get('answers').filterBy('owner', owner).invoke('destroyRecord'));
+  }),
 });

@@ -30,7 +30,7 @@ class XmlCardLoader
   def latest_card_version(replace:)
     if replace
       # remove and decrement latest card_version
-      card.latest_card_version.try(&:destroy_fully!)
+      card.latest_card_version.try(:destroy!)
       card.latest_version = card.latest_version.pred
     end
 
@@ -51,6 +51,22 @@ class XmlCardLoader
     end
   end
 
+  def build_card_content_validations(content)
+    content.child_elements('validation').map do |validation|
+      attributes = card_content_validation_attributes(validation)
+      CardContentValidation.new(attributes)
+    end
+  end
+
+  def maybe_build_required_field_validation(card_content)
+    return [] unless card_content.required_field
+    CardContentValidation.new(
+      validation_type: "required-field",
+      error_message: "This field is required.",
+      validator: true
+    )
+  end
+
   def build_card_content(content, card_version)
     attributes = card_content_attributes(content, card_version)
 
@@ -61,7 +77,7 @@ class XmlCardLoader
     CardContent.new(attributes).tap do |root|
       # assign any validations
       root.card_content_validations << build_card_content_validations(content)
-
+      root.card_content_validations << maybe_build_required_field_validation(root)
       # recursively create any nested child content
       content.child_elements('content').each do |child|
         root.children << build_card_content(child, card_version)

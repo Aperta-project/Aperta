@@ -56,9 +56,12 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
   qualifiedType: DS.attr('string'),
   title: DS.attr('string'),
   type: DS.attr('string'),
+  notReady: DS.attr('boolean'),
   displayStatus: DS.attr('string'),
   assignedToMe: DS.attr(),
   debouncePeriod: 200, // ms
+
+  taskNotReady: Ember.computed.equal('notReady', true),
 
   componentName: Ember.computed('type', function() {
     return Ember.String.dasherize(this.get('type'));

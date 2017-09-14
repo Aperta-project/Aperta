@@ -13,7 +13,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   classNames: ['admin-new-card-overlay'],
   cardName: '',
   cardType: '',
-  cardTypes: [{label: 'Custom Card', value: 'customCard'}],
+  cardTypes: [{label: 'Custom Card', value: 'customCard'}, {label: 'PaperReviewerTask', value: 'TahiStandardTasks::PaperReviewerTask'}],
   saving: Ember.computed.reads('createCard.isRunning'),
   errors: null,
 

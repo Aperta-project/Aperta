@@ -4,6 +4,15 @@ import PaperBase from 'tahi/mixins/controllers/paper-base';
 export default Ember.Component.extend(PaperBase, {
   elementId: 'versioning-bar',
   classNames: ['versions', 'active'],
+  versionedTexts: Ember.computed('paper.versionedTexts.[]]', function() {
+    return this.get('paper.versionedTexts').forEach(versionedText => {
+      versionedText.set(
+        'dropdownString',
+        `v${versionedText.get('majorVersion')}.${versionedText.get('minorVersion')} ` +
+        `${versionedText.get('versionString').replace(/^R\d.\d\s/, '')}`
+      );
+    });
+  }),
 
   actions: {
     setViewingVersion(version) {

@@ -77,8 +77,10 @@ export default Ember.Component.extend({
 
   actions: {
     viewCard() {
-      let action = this.get('action');
-      if (action) { action(); }
+      if (!this.get('notViewable')) {
+        let action = this.get('action');
+        if (action) { action(); }
+      }
     },
 
     promptDelete() {

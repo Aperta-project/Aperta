@@ -173,7 +173,7 @@ FactoryGirl.define do
 
     trait(:with_tasks) do
       after(:create) do |paper|
-        unless Card.exists?
+        unless Card.where(journal: nil).exists?
           start = Time.now
           CardLoader.load_standard
           end_time = Time.now

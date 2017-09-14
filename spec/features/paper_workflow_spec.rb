@@ -24,7 +24,7 @@ feature "Paper workflow", js: true, selenium: true do
       click_link paper.title
       click_link "Workflow"
 
-      expect(current_path).to eq "/papers/#{paper.short_doi}/workflow"
+      expect(page).to have_current_path("/papers/#{paper.short_doi}/workflow")
     end
   end
 

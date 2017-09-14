@@ -13,10 +13,9 @@ export default Ember.Component.extend({
   }),
   generalCase: Ember.computed.not('specialCase'),
   specialCase: Ember.computed.or(
-    'authorsTask', 'funder', 'coverLetterTask'),
+    'authorsTask', 'funder'),
 
   authorsTask: Ember.computed.equal('primarySnapshot.name', 'authors-task'),
-  coverLetterTask: Ember.computed.equal('primarySnapshot.name', 'cover-letter-task'),
   boolean: Ember.computed.equal('primarySnapshot.type', 'boolean'),
   booleanQuestion: Ember.computed.equal(
     'primarySnapshot.value.answer_type',

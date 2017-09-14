@@ -39,7 +39,7 @@ module MailLog
       end
 
       def self.get_message(message)
-        message.has_attachments? ? message.html_part.body : message.body
+        message.html_part ? message.html_part.body : message.body
       end
 
       def self.get_recipients(message)

@@ -14,7 +14,7 @@
             {{#if version.isDraft}}
               Draft
             {{else}}
-              v{{version.majorVersion}}.{{version.minorVersion}}
+              v{{version.majorVersion}}.{{version.minorVersion}} - {{version.modifiedVersionString}}
             {{/if}}
           </td>
           {{#if (or (eq version.fileType "docx") (eq version.fileType "doc"))}}

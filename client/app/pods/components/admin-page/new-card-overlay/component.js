@@ -23,7 +23,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     this.set('errors', null);
     const card = this.get('store').createRecord('card', {
       name: this.get('cardName'),
-      type: this.get('cardType'),
+      cardType: this.get('cardType.value'),
       journal: this.get('journal')
     });
 

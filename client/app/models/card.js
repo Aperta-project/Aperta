@@ -30,6 +30,7 @@ export default DS.Model.extend({
   state: DS.attr('string'),
   addable: DS.attr('boolean'),
   xml: DS.attr('string'),
+  cardType: DS.attr('string'),
 
   // used by the publish() function, set in the card editor's publish modal
   historyEntry: '',

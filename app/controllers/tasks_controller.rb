@@ -135,7 +135,12 @@ class TasksController < ApplicationController
   end
 
   def task_type
-    Task.safe_constantize(params[:task][:type])
+    task_type = Task.safe_constantize(params[:task][:type])
+    if task_type == CustomCardTask
+      card = paper.journal.cards.find(params[:task][:card_id])
+      task_type = Task.safe_constantize(card.card_type)
+    end
+    task_type
   end
 
   def new_task_params
@@ -143,7 +148,7 @@ class TasksController < ApplicationController
       new_params[:paper] = paper
       new_params[:creator] = paper.creator
 
-      if task_type.to_s == 'CustomCardTask'
+      if task_type == CustomCardTask || task_type == TahiStandardTasks::PaperReviewerTask
         # assign a specific card version
         card = paper.journal.cards.find(params[:task][:card_id])
         new_params[:card_version] = card.latest_published_card_version

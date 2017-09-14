@@ -30,6 +30,8 @@ class Card < ActiveRecord::Base
 
   scope :archived, -> { where.not(archived_at: nil) }
 
+  validates :card_type, inclusion: Task.descendants.map(&:to_s)
+
   # A given card can have several states, but be mindful that the 'state' of a
   # given card also implies something about that card's card_versions.
   # * 'draft': the latest version is a draft and there are no published

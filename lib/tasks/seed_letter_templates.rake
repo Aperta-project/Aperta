@@ -39,11 +39,10 @@ namespace :seed do
                 ----------<br/>
                 <p>Reviewer {{ review.reviewer_number | default '' }}</p>
                 {%- for answer in review.answers -%}
-                  {%- if answer.ident == 'reviewer_report--comments_for_author' -%}
-                  <p>
-                    {{ answer.value }}
-                  </p>
-                  {%- endif -%}
+                <p>
+                  {{ answer.ident }}
+                  {{ answer.value }}
+                </p>
                 {%- endfor -%}
               {% endif %}
             {% endfor %}
@@ -332,7 +331,7 @@ namespace :seed do
           <p>Dear {{ reviewer.first_name }} {{ reviewer.last_name }},</p>
           <p>Thank you for taking the time to review the manuscript “{{ manuscript.title }}”, for {{ journal.name }}.
           We greatly appreciate your assistance with the review process, especially given the many competing demands on your time.</p>
-          <p>Thank you for your continued support of {{ journal.name }}, we look forward to working with you again in the future. 
+          <p>Thank you for your continued support of {{ journal.name }}, we look forward to working with you again in the future.
           If you have any questions or feedback, please do not hesitate to contact us at {{ journal.staff_email }}.</p>
           TEXT
 

@@ -11,6 +11,7 @@ namespace :data do
       journal = Journal.find_by(name: "PLOS Biology")
       if journal
         journal.setting("coauthor_confirmation_enabled").update(value: true)
+        puts "`coauthor_confirmation_enabled setting` set to true for `PLOS Biology`"
       else
         puts "No Journal was found with the name 'PLOS Biology'. No coauthor confirmation setting created"
       end

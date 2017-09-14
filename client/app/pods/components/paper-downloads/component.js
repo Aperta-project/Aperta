@@ -23,17 +23,16 @@ export default Ember.Component.extend({
   }),
 
   versions: [],
-  
-  modifyVersionString() {
-    this.get('versions').forEach(version => {
-      version.set('modifiedVersionString', version.get('versionString').replace(/^R\d.\d.+-\s/, ''));
-    });
-  },
 
   fetchVersions: task(function * () {
     const versions = yield this.get('paper.versionedTexts');
+    versions.forEach(version => {
+      version.set(
+        'modifiedVersionString',
+        version.get('versionString').replace(/^R\d.\d.+-\s/, '')
+      );
+    });
     this.set('versions', versions);
-    this.modifyVersionString();
   }),
 
   actions: {

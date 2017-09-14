@@ -73,6 +73,7 @@ export default Ember.Component.extend({
   }),
 
   showDeleteButton: Ember.computed.and('canRemoveCard', 'notReviewerReportTask'),
+
   notViewable: Ember.computed.not('task.viewable'),
 
   actions: {

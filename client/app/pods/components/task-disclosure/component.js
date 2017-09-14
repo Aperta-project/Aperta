@@ -4,7 +4,7 @@ export default Ember.Component.extend({
   classNameBindings: [
     ':task-disclosure',
     '_taskVisible:task-disclosure--open',
-    'typeIdentifier'
+    'typeIdentifier',
   ],
 
   /**
@@ -47,6 +47,8 @@ export default Ember.Component.extend({
   **/
   completed: false,
 
+  notViewable: Ember.computed.not('task.viewable'),
+
   typeIdentifier: Ember.computed('type', function() {
     const dasherizedType = Ember.String.dasherize(this.get('type'));
     return `task-type-${dasherizedType}`;
@@ -54,7 +56,9 @@ export default Ember.Component.extend({
 
   actions: {
     toggleVisibility() {
-      this.toggleProperty('_taskVisible');
+      if (!this.get('notViewable')) {
+        this.toggleProperty('_taskVisible');
+      }
     }
   }
 });

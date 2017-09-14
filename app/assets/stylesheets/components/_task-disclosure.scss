@@ -33,13 +33,7 @@ $task-disclosure-font-size: 1.8rem;
     width: 100%;
     color: #222;
     text-decoration: none;
-
-    &.disabled {
-      background:#f9f9f9;
-      color:#999;
-    }
   }
-
 }
 
 .task-disclosure--open .task-disclosure-heading {

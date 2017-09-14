@@ -1,9 +1,9 @@
-{{#if content.text}}
+{{#unless textOnly}}
   <p class="content-text">{{{content.text}}}
     {{#if content.isRequired}}
       {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
     {{/if}}</p>
-{{/if}}
+{{/unless}}
 {{card-content/validation-errors errors=answer.readyIssuesArray}}
 <label for={{name}}>{{check-box
   name=name
@@ -12,7 +12,7 @@
   disabled=disabled
   content=content
   answer=answer
-  action="valueChanged"}}{{{content.label}}}
+  action="valueChanged"}}{{{if textOnly content.text content.label}}}
 </label>
 {{card-content/display-children
   content=content

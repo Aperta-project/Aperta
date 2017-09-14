@@ -24,15 +24,22 @@ disabled=disabled
 valueChanged=(action actionStub)
 }}`;
 
-test(`it displays content.text as unescaped html in a <p>`, function(assert) {
-  this.set('content', Ember.Object.create({ text: '<b class="foo">Foo</b>' }));
+test(`it displays content.text as unescaped html in a <p> if a label is also present`, function(assert) {
+  this.set('content', Ember.Object.create({ text: '<b class="foo">Foo</b>', label: 'some label'}));
 
   this.render(template);
   assert.elementFound('.content-text b.foo');
 });
 
+test(`it uses the content.text as the label if a label is not present`, function(assert) {
+  this.set('content', Ember.Object.create({ text: '<b class="foo">Foo</b>'}));
+
+  this.render(template);
+  assert.elementFound('label b.foo');
+});
+
 test(`it displays content.label as unescaped html`, function(assert) {
-  this.set('content', Ember.Object.create({ label: '<b class="foo">Foo</b>' }));
+  this.set('content', Ember.Object.create({ label: '<b class="foo">Foo</b>', text: 'some text' }));
   this.render(template);
   assert.elementFound('label b.foo');
 });
@@ -74,13 +81,13 @@ test(`it sends 'valueChanged' on change`, function(assert) {
 });
 
 test(`it displays an asterisks if 'content.isRequred set to true`, function(assert) {
-  this.set('content', Ember.Object.create({ ident: 'test' , text: 'Test check-box', isRequired: true}));
+  this.set('content', Ember.Object.create({ ident: 'test' , text: 'Test check-box', isRequired: true, label: 'some label'}));
   this.render(template);
   assert.equal(this.$('p span.required-field').text(), '*');
 });
 
 test(`it does not display an asterisks if 'content.isRequred set to false`, function(assert) {
-  this.set('content', Ember.Object.create({ ident: 'test' , text: 'Test check-box', isRequired: false}));
+  this.set('content', Ember.Object.create({ ident: 'test' , text: 'Test check-box', isRequired: false, label: 'some label'}));
   this.render(template);
   assert.equal(this.$('p span.required-field').text(), '');
 });

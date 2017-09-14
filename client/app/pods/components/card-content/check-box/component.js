@@ -10,6 +10,10 @@ export default Ember.Component.extend({
     answer: PropTypes.EmberObject.isRequired
   },
 
+  textOnly: Ember.computed('content.text', 'content.label', function() {
+    return this.get('content.text') && Ember.isEmpty(this.get('content.label'));
+  }),
+
   name: Ember.computed('content.ident', function() {
     let ident = this.get('content.ident') || Ember.guidFor(this);
     return `check-box-${ident}`;

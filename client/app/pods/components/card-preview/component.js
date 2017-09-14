@@ -14,7 +14,6 @@ export default Ember.Component.extend({
     Ember.assert('You must pass a task property to the CardPreviewComponent', this.hasOwnProperty('task'));
   }),
 
-
   task: null,
   taskTemplate: false,
   canRemoveCard: false,

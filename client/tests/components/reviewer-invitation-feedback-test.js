@@ -44,6 +44,26 @@ test('displays an appropriate heading for Reviewers', function(assert) {
   assert.textPresent('.feedback-reviewer-invitation', 'Reviewer Invitation Declined');
 });
 
+test('displays an appropriate alternative suggestion label for AEs', function(assert) {
+  this.get('invitation').set('academicEditor', true);
+  this.render(template);
+  assert.textPresent(
+    '.feedback-alternative-suggestions',
+    'We would value your suggestions of alternative Academic Editors for this manuscript. ' +
+    'Please provide editors’ names, institutions, and email addresses if known.'
+  );
+});
+
+test('displays an appropriate alternative suggestion label for reviewers', function(assert) {
+  this.get('invitation').set('reviewer', true);
+  this.render(template);
+  assert.textPresent(
+    '.feedback-alternative-suggestions',
+    'We would value your suggestions of alternative reviewers for this manuscript. ' +
+    'Please provide reviewers\' names, institutions, and email addresses if known.'
+  );
+});
+
 test('can set decline reason', function(assert) {
   let text = 'Too busy!';
   this.render(template);

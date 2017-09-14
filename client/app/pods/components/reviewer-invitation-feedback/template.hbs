@@ -1,10 +1,12 @@
+<h2 class="feedback-reviewer-invitation">
 {{#if academicEditor}}
-  <h2 class="feedback-reviewer-invitation">Academic Editor Invitation Declined</h2>
+  Academic Editor Invitation Declined
 {{else if reviewer}}
-  <h2 class="feedback-reviewer-invitation">Reviewer Invitation Declined</h2>
+  Reviewer Invitation Declined
 {{else}}
-  <h2 class="feedback-reviewer-invitation">Invitation Declined</h2>
+  Invitation Declined
 {{/if}}
+</h2>
 
 {{partial "svg/manuscript-icon"}}
 <h3 class="feedback-invitation-title">{{{invitation.title}}}</h3>
@@ -28,9 +30,12 @@
   }}
 </label>
 
-<label class="feedback-request">
-    We would value your suggestions of alternative reviewers for this manuscript.
-    Please provide reviewers' names, institutions, and email addresses if known.
+<label class="feedback-request feedback-alternative-suggestions">
+  {{#if academicEditor}}
+    We would value your suggestions of alternative Academic Editors for this manuscript. Please provide editors’ names, institutions, and email addresses if known.
+  {{else if reviewer}}
+    We would value your suggestions of alternative reviewers for this manuscript. Please provide reviewers' names, institutions, and email addresses if known.
+  {{/if}}
 
   {{rich-text-editor
     editorStyle='basic'

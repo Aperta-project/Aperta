@@ -18,6 +18,7 @@ moduleForComponent('paper-downloads', 'Integration | Component | Paper Downloads
         isDraft: false,
         majorVersion: 1,
         minorVersion: 1,
+        versionString: 'R1.0 (DOCX) - Jan 30, 2017',
         fileType: 'docx',
       }]
     });
@@ -29,6 +30,7 @@ moduleForComponent('paper-downloads', 'Integration | Component | Paper Downloads
         isDraft: false,
         majorVersion: 1,
         minorVersion: 1,
+        versionString: 'R1.0 (DOCX) - Jan 30, 2017',
         fileType: 'pdf',
       }]
     });
@@ -40,6 +42,7 @@ moduleForComponent('paper-downloads', 'Integration | Component | Paper Downloads
         isDraft: false,
         majorVersion: 1,
         minorVersion: 1,
+        versionString: 'R1.0 (DOCX) - Jan 30, 2017',
         fileType: 'pdf',
         sourceType: 'docx'
       }]
@@ -66,5 +69,13 @@ test('docx versions display download links', function(assert) {
 
   assert.equal(this.$('.download-docx').length, 1);
   assert.equal(this.$('.download-pdf').length, 1);
+});
+
+test('it displays version number and date completed', function(assert) {
+  this.render(hbs`
+    {{paper-downloads paper=docxPaper}}
+  `);
+
+  assert.ok(this.$('td.paper-downloads-version').text(), 'v1.1 - Jan 30, 2017');
 });
 

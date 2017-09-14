@@ -4,7 +4,6 @@ import Participants from 'tahi/mixins/components/task-participants';
 export default Ember.Component.extend(Participants, {
   store: Ember.inject.service(),
   to: 'overlay-drop-zone',
-
   searchingParticipant: false,
   searchingAssignable: false,
   /**
@@ -26,6 +25,10 @@ export default Ember.Component.extend(Participants, {
    *  @required
   **/
   visible: false,
+
+  assignable_users_url: Ember.computed('task', function() {
+    return `/api/filtered_users/assignable_users/${this.get('task.id')}`;
+  }),
 
   init() {
     this._super(...arguments);

@@ -113,6 +113,7 @@ Tahi::Application.routes.draw do
       collection do
         get 'users/:paper_id', constraints: { paper_id: /(#{Journal::SHORT_DOI_FORMAT})|\d+/ },
                                to: 'filtered_users#users'
+        get 'assignable_users/:task_id', to: 'filtered_users#assignable_users'
       end
     end
     resources :formats, only: [:index]

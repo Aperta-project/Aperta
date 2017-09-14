@@ -11,6 +11,7 @@
           <div class="overlay-body">
             {{participant-selector currentParticipants=participants
                paperId=task.paper.id
+               url=assignable_users_url
                label="Assign:"
                canManage=(can "manage_participant" task)
                canEditDiscussion=(can "edit_discussion_footer" task)

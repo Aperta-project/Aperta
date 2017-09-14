@@ -11,4 +11,12 @@ class FilteredUsersController < ApplicationController
                         paper_id: params[:paper_id],
                         root: :users
   end
+
+  def assignable_users
+    users = User.fuzzy_search params[:query]
+    task = Task.find(params[:task_id])
+    users = users.select { |u| u.can?(:be_assigned, task) }
+    respond_with users, each_serializer: FilteredUserSerializer,
+                        root: :users
+  end
 end

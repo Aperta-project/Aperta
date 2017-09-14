@@ -8,11 +8,9 @@ class TasksController < ApplicationController
   ## /paper/tasks/
   def index
     requires_user_can :view, paper
-    tasks = current_user.filter_authorized(
-      :view,
-      paper.tasks.includes(:paper),
-      participations_only: false
-    ).objects
+
+    # failing tests here
+    tasks = paper.tasks.includes(:paper)
 
     # serialize using the base task serializer which acts as a lightweight
     # summary of each task rather than each custom task serializer that may

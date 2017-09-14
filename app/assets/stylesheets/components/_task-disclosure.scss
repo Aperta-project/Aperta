@@ -20,6 +20,11 @@ $task-disclosure-font-size: 1.8rem;
   z-index: 1;
   @include user-select(none);
 
+  &.disabled {
+    background:#f9f9f9;
+    color:#999;
+  }
+
   a {
     display: flex;
     align-items: center;
@@ -28,7 +33,13 @@ $task-disclosure-font-size: 1.8rem;
     width: 100%;
     color: #222;
     text-decoration: none;
+
+    &.disabled {
+      background:#f9f9f9;
+      color:#999;
+    }
   }
+
 }
 
 .task-disclosure--open .task-disclosure-heading {

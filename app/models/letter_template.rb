@@ -48,13 +48,13 @@ class LetterTemplate < ActiveRecord::Base
   end
 
   def body_ok?
-    Liquid::Template.parse(body, error_mode: :warn)
+    Liquid::Template.parse(body)
   rescue Liquid::SyntaxError => e
     errors.add(:body, e.message.gsub(/^Liquid syntax error:/, '').strip)
   end
 
   def subject_ok?
-    Liquid::Template.parse(subject, error_mode: :warn)
+    Liquid::Template.parse(subject)
   rescue Liquid::SyntaxError => e
     errors.add(:subject, e.message.gsub(/^Liquid syntax error:/, '').strip)
   end

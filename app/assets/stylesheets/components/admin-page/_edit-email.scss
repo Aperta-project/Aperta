@@ -16,7 +16,7 @@
   padding: 24px;
   border-radius: 6px;
 }
-.edit-email-well #body {
+.edit-email-well .template-body {
   height: 574px;
 }
 
@@ -58,7 +58,7 @@
 }
 
 
-.form-group > label.text-bold::after {
+.required-field-label:after{
   content: '*';
   color: $aperta-red;
 }

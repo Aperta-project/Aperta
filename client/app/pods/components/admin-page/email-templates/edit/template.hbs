@@ -31,9 +31,9 @@
           <div class="row">
             <div class="col-xs-9">
               <div class="form-group">
-                <label for="subject" class="text-bold">Subject </label>
+                <label for="subject" class="text-bold required-field-label">Subject </label>
                 <div class="{{if (or subjectErrorPresent  subjectEmpty) 'error'}}">
-                  {{input class="form-control" id="subject" value=template.subject key-down="handleInputChange" focus-out="checkSubject"}}
+                  {{input class="form-control template-subject" value=template.subject key-down="handleInputChange" focus-out="checkSubject"}}
                   {{#if subjectEmpty}}
                     <span>{{fa-icon 'warning'}} This field is required.</span>
                   {{/if}}
@@ -51,9 +51,9 @@
               </div>
 
               <div class="form-group">
-                <label for="body" class="text-bold">Body </label>
+                <label for="body" class="text-bold required-field-label">Body </label>
                 <div class="{{if (or bodyErrorPresent bodyEmpty) 'error'}}">
-                  {{textarea id="body" class="form-control" value=template.body key-down="handleInputChange" focus-out="checkBody"}}
+                  {{textarea class="form-control template-body" value=template.body key-down="handleInputChange" focus-out="checkBody"}}
                   {{#if bodyEmpty}}
                     <span>{{fa-icon 'warning'}} This field is required.</span>
                   {{/if}}

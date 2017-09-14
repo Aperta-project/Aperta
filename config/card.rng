@@ -443,25 +443,6 @@
       </interleave>
     </element>
   </define>
-  <define name="list-content">
-    <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <attribute name="content-type">
-        <choice>
-          <value>bulleted-list</value>
-          <value>numbered-list</value>
-          <value>plain-list</value>
-          <value>question-list</value>
-          <value>question-help-list</value>
-        </choice>
-      </attribute>
-      <zeroOrMore>
-        <ref name="content"/>
-      </zeroOrMore>
-    </element>
-  </define>
   <!-- Contents -->
   <define name="text-content">
     <element name="content">
@@ -565,6 +546,13 @@
       </optional>
     </element>
   </define>
+  <define name="yield">
+    <element name="content">
+      <attribute name="content-type">
+        <value>yield</value>
+      </attribute>
+    </element>
+  </define>
   <define name="content">
     <choice>
       <ref name="radio-input"/>
@@ -579,9 +567,9 @@
       <ref name="dropdown-input"/>
       <ref name="date-picker"/>
       <ref name="tech-check"/>
-      <ref name="list-content"/>
       <ref name="sendback-reason"/>
       <ref name="if"/>
+      <ref name="yield"/>
     </choice>
   </define>
   <start>

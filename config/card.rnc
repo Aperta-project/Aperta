@@ -169,6 +169,10 @@ if = element content {
                 content?
 }
 
+yield = element content {
+            attribute content-type { "yield" }
+          }
+
 content = (
            radio-input |
            text-input |
@@ -183,7 +187,8 @@ content = (
            date-picker |
            tech-check |
            sendback-reason |
-           if
+           if |
+           yield
 )
 
 start = element card {

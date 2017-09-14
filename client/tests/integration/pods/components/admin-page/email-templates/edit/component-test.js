@@ -10,6 +10,7 @@ moduleForComponent('admin-page/email-templates/edit',
     integration: true,
     beforeEach() {
       manualSetup(this.container);
+      this.set('dirtyEditorConfig', {model: 'template', properties: ['subject', 'body']});
     }
   }
 );
@@ -22,7 +23,7 @@ test('it populates input fields with model data', function(assert) {
   this.set('template', template);
 
   this.render(hbs`
-    {{admin-page/email-templates/edit template=template}}
+    {{admin-page/email-templates/edit template=template dirtyEditorConfig=dirtyEditorConfig}}
   `);
   assert.equal(this.$('#subject').val(), template.get('subject'));
   assert.equal(this.$('#body').val(), template.get('body'));
@@ -36,7 +37,7 @@ test('it prevents the model from saving if a field is blank and displays validat
   this.set('template', template);
 
   this.render(hbs`
-    {{admin-page/email-templates/edit template=template}}
+    {{admin-page/email-templates/edit template=template dirtyEditorConfig=dirtyEditorConfig}}
   `);
 
   Ember.run(() => {
@@ -58,7 +59,7 @@ test('model receives save call when valid', function(assert){
   this.set('template', template);
 
   this.render(hbs`
-    {{admin-page/email-templates/edit template=template}}
+    {{admin-page/email-templates/edit template=template dirtyEditorConfig=dirtyEditorConfig}}
   `);
 
   Ember.run(() => {
@@ -75,7 +76,7 @@ test('after attempted save it dynamically warns user if input field has invalid 
   this.set('template', template);
 
   this.render(hbs`
-    {{admin-page/email-templates/edit template=template}}
+    {{admin-page/email-templates/edit template=template dirtyEditorConfig=dirtyEditorConfig}}
   `);
 
   Ember.run(() => {

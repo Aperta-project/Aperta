@@ -198,12 +198,6 @@ describe NestedQuestionAnswersController do
         end.to change(Answer, :count).by(-1)
       end
 
-      it "sets deleted_at" do
-        do_request
-        answer.reload
-        expect(answer.deleted_at).to_not be_nil
-      end
-
       it "responds with 204" do
         do_request
         expect(response.status).to eq(204)

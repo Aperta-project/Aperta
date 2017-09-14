@@ -1,7 +1,7 @@
 {{#unless hideCompletedSection}}
   {{partial "task-completed-section"}}
 {{/unless}}
-<div class="custom-card-task {{if renderAsDualColumn 'dual-column' 'single-column'}}">
+<div class="task-main-content custom-card-task {{if renderAsDualColumn 'dual-column' 'single-column'}}">
   {{card-content
     content=contentRoot
     owner=task

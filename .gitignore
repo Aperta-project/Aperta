@@ -1,5 +1,6 @@
 # Basic Rails stuff
 log
+*.log
 tmp
 
 # Other ephemeral development files

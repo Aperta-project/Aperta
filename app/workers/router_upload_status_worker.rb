@@ -30,7 +30,7 @@ class RouterUploadStatusWorker
     when "SUCCESS"
       export_delivery.delivery_succeeded!
     else
-      export_delivery.delivery_failed!(result['job_status_description'])
+      export_delivery.delivery_failed!(result[:job_status_description])
     end
   end
 end

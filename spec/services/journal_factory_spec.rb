@@ -163,15 +163,14 @@ describe JournalFactory do
       end
 
       after(:all) do
-        Permission.all.delete_all
-        Role.all.delete_all
-        Journal.all.delete_all
-        CardContent.all.delete_all
-        CardContent.all.with_deleted.delete_all! # Really delete
-        CardVersion.all.delete_all
-        CardVersion.all.with_deleted.delete_all! # Really delete
-        Card.all.delete_all
-        Card.all.with_deleted.delete_all! # Really delete
+        Permission.delete_all
+        Role.delete_all
+        Journal.delete_all
+        CardContentValidation.delete_all
+        ContentAttribute.delete_all
+        CardContent.delete_all
+        CardVersion.delete_all
+        Card.delete_all
       end
 
       let!(:journal) { @journal }
@@ -1213,7 +1212,6 @@ describe JournalFactory do
           let(:inaccessible_task_klasses) do
             [
               PlosBilling::BillingTask,
-              TahiStandardTasks::CoverLetterTask,
               TahiStandardTasks::ReviewerRecommendationsTask,
               CustomCardTask
             ]
@@ -1266,13 +1264,6 @@ describe JournalFactory do
               applies_to: 'PlosBilling::BillingTask'
             ).all
             expect(permissions).not_to include(*billing_permissions)
-          end
-
-          it 'can do nothing on the TahiStandardTasks::CoverLetterTask' do
-            cover_letter_permissions = Permission.where(
-              applies_to: 'TahiStandardTasks::CoverLetterTask'
-            ).all
-            expect(permissions).not_to include(*cover_letter_permissions)
           end
 
           it 'can do nothing on the TahiStandardTasks::RegisterDecisionTask' do

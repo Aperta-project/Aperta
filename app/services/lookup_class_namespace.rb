@@ -15,7 +15,7 @@ class LookupClassNamespace
     "RevisionTechCheckTask"          =>     "PlosBioTechCheck::RevisionTechCheckTask",
     "AssignTeamTask"                 =>     "Tahi::AssignTeam::AssignTeamTask",
     "AuthorsTask"                    =>     "TahiStandardTasks::AuthorsTask",
-    "CoverLetterTask"                =>     "TahiStandardTasks::CoverLetterTask",
+    "DataAvailabilityTask"           =>     "TahiStandardTasks::DataAvailabilityTask",
     "EarlyPostingTask"               =>     "TahiStandardTasks::EarlyPostingTask",
     "EthicsTask"                     =>     "TahiStandardTasks::EthicsTask",
     "FigureTask"                     =>     "TahiStandardTasks::FigureTask",

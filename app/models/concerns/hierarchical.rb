@@ -57,20 +57,25 @@ module Hierarchical
     Attributable::CONTENT_TYPES.each { |type| row.delete("#{type}_value") }
   end
 
+  def node_map(contents)
+    contents.each_with_object({}) {|(id, row), hash| hash[id] = ContentNode.new(row)}
+  end
+
   def construct_hierarchy(contents)
     root = nil
-    contents.keys.each do |id|
-      row = contents[id]
+    nodes = node_map(contents)
+    contents.each do |id, row|
       parent_id = row.delete('parent_id')
       if parent_id.nil?
-        root = id
-        next
+        root = ContentHierarchy.new(nodes[id])
+      else
+        parent = nodes[parent_id]
+        next unless parent
+        parent.children << nodes[id]
       end
-      parent = contents[parent_id]
-      next unless parent
-      (parent['children'] ||= []) << row
     end
-    contents[root]
+
+    root
   end
 
   # This recursive query linearizes the card_content hierarchy based on the parent_id.

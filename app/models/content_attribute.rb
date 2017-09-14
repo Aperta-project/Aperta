@@ -1,6 +1,4 @@
 class ContentAttribute < ActiveRecord::Base
-  include XmlSerializable
-
   belongs_to :card_content, inverse_of: :content_attributes
   validates :name, presence: true, uniqueness: { scope: :card_content }
 

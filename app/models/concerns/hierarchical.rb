@@ -2,22 +2,21 @@ module Hierarchical
   extend ActiveSupport::Concern
 
   def load
-    contents = recursive_load(id)
-    contents = contents.group_by { |row| row['id'] }
-    attrs = contents.each_with_object({}) { |(id, rows), hash| hash[id] = extract_attributes(rows) }
-    validations = contents.each_with_object({}) { |(id, rows), hash| hash[id] = extract_validations(rows) }
-
+    contents = load_hierarchy(id)
+    attrs = extract_attributes(contents)
+    validations = extract_validations(contents)
     contents = merge_attributes(contents, attrs, validations)
     construct_hierarchy(contents)
   end
 
   private
 
-  def recursive_load(id)
+  def load_hierarchy(id)
     result = self.class.connection.select_all(combined_sql(id))
-    result.map do |row|
+    rows = result.map do |row|
       row.each { |key, value| row[key] = result.column_types[key].type_cast_from_database(value) }
     end
+    rows.group_by { |row| row['id'] }
   end
 
   def construct_hierarchy(contents)
@@ -46,22 +45,25 @@ module Hierarchical
     end
   end
 
-  def extract_attributes(rows)
-    rows.each_with_object({}) do |row, hash|
-      key = "#{row['value_type']}_value"
-      hash[row['attribute']] = row[key]
+  def extract_attributes(contents)
+    contents.each_with_object({}) do |(id, rows), attrs|
+      attrs[id] = rows.each_with_object({}) do |row, hash|
+        key = "#{row['value_type']}_value"
+        hash[row['attribute']] = row[key]
+      end
     end
   end
 
   VALIDATION_KEYS = %w[validation_type validator error_message].freeze
-  def extract_validations(rows)
-    unique = rows.each_with_object({}) do |row, hash|
-      values = VALIDATION_KEYS.map { |key| row[key] }.compact
-      next if values.empty?
-      hash[row['val_id']] = VALIDATION_KEYS.each_with_object({}) { |key, validation| validation[key] = row[key] }
+  def extract_validations(contents)
+    contents.each_with_object({}) do |(id, rows), validations|
+      unique = rows.each_with_object({}) do |row, hash|
+        values = VALIDATION_KEYS.map { |key| row[key] }.compact
+        next if values.empty?
+        hash[row['val_id']] = VALIDATION_KEYS.each_with_object({}) { |key, validation| validation[key] = row[key] }
+      end
+      validations[id] = unique.values
     end
-
-    unique.values
   end
 
   METADATA_KEYS = %w[val_id attribute path value_type].freeze
@@ -73,7 +75,7 @@ module Hierarchical
 
   def combined_sql(id)
     <<-SQL
-    with recursive all_contents as (
+    with recursive hierarchy as (
       select
         base.id, base.parent_id, array[base.id] AS path,
         base.content_type, base.ident,
@@ -99,14 +101,14 @@ module Hierarchical
         vals.validation_type, vals.validator, vals.error_message
       from
         card_contents cc
-        inner join all_contents base on base.id = cc.parent_id
+        inner join hierarchy base on base.id = cc.parent_id
         left outer join content_attributes attr on attr.card_content_id = cc.id
         left outer join card_content_validations vals on vals.card_content_id = cc.id
       where
         card_version_id = #{id}
     )
 
-    select * from all_contents order by path;
+    select * from hierarchy order by path;
     SQL
   end
 end

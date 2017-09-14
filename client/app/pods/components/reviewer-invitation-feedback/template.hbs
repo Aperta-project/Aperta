@@ -1,4 +1,11 @@
-<h2 class="feedback-reviewer-invitation">Reviewer Invitation Declined</h2>
+{{#if academicEditor}}
+  <h2 class="feedback-reviewer-invitation">Academic Editor Invitation Declined</h2>
+{{else if reviewer}}
+  <h2 class="feedback-reviewer-invitation">Reviewer Invitation Declined</h2>
+{{else}}
+  <h2 class="feedback-reviewer-invitation">Invitation Declined</h2>
+{{/if}}
+
 {{partial "svg/manuscript-icon"}}
 <h3 class="feedback-invitation-title">{{{invitation.title}}}</h3>
 

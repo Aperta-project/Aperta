@@ -65,6 +65,9 @@ export default DS.Model.extend({
 
   needsUserUpdate: Ember.computed.or('invited', 'pendingFeedback'),
 
+  academicEditor: Ember.computed.equal('inviteeRole', 'Academic Editor'),
+  reviewer: Ember.computed.equal('inviteeRole', 'Reviewer'),
+
   setDeclined() {
     this.set('state', 'declined');
   },

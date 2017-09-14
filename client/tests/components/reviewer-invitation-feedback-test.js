@@ -32,6 +32,18 @@ test('displays paper title', function(assert){
   assert.textPresent('.feedback-invitation-title', 'Awesome Paper!');
 });
 
+test('displays an appropriate heading for AEs', function(assert) {
+  this.get('invitation').set('academicEditor', true);
+  this.render(template);
+  assert.textPresent('.feedback-reviewer-invitation', 'Academic Editor Invitation Declined');
+});
+
+test('displays an appropriate heading for Reviewers', function(assert) {
+  this.get('invitation').set('reviewer', true);
+  this.render(template);
+  assert.textPresent('.feedback-reviewer-invitation', 'Reviewer Invitation Declined');
+});
+
 test('can set decline reason', function(assert) {
   let text = 'Too busy!';
   this.render(template);

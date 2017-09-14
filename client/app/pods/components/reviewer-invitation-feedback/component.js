@@ -9,6 +9,9 @@ export default Ember.Component.extend({
   //init with (actions):
   decline: null,
 
+  academicEditor: Ember.computed.readOnly('invitation.academicEditor'),
+  reviewer: Ember.computed.readOnly('invitation.reviewer'),
+
   actions: {
     updateDeclineReason(contents) {
       this.set('invitation.declineReason', contents);

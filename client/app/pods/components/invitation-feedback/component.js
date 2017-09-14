@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNames: ['reviewer-invitation-feedback'],
+  classNames: ['invitation-feedback'],
 
   //init with (data):
   invitation: null,

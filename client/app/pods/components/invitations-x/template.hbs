@@ -4,7 +4,7 @@
   <ul class='dashboard-open-invitations'>
     {{#each invitations as |invitation|}}
       {{#if invitation.pendingFeedback}}
-        {{reviewer-invitation-feedback
+        {{invitation-feedback
             invitation=invitation
             decline=(action 'decline' invitation)
         }}

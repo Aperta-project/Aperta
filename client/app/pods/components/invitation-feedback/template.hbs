@@ -1,4 +1,4 @@
-<h2 class="feedback-reviewer-invitation">
+<h2 class="feedback-header">
 {{#if academicEditor}}
   Academic Editor Invitation Declined
 {{else if reviewer}}
@@ -47,7 +47,7 @@
   }}
 </label>
 
-<div class="reviewer-feedback-buttons">
-  <a href="#" role="button" class="reviewer-decline-feedback button-link button--green" {{action 'declineFeedback' invitation}}>No Thank You</a>
-  <button type="button" class="reviewer-send-feedback button-secondary button--green" {{action decline invitation}}>Send Feedback</button>
+<div class="feedback-buttons">
+  <a href="#" role="button" class="decline-feedback button-link button--green" {{action 'declineFeedback' invitation}}>No Thank You</a>
+  <button type="button" class="send-feedback button-secondary button--green" {{action decline invitation}}>Send Feedback</button>
 </div>

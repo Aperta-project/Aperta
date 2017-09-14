@@ -62,6 +62,12 @@ class TasksController < ApplicationController
     render task.update_responder.new(task, view_context).response
   end
 
+  def update_position
+    requires_user_can :manage_workflow, paper
+    task.update!(position: params[:position])
+    head 204
+  end
+
   def destroy
     requires_user_can :manage_workflow, paper
     task.destroy

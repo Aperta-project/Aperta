@@ -73,6 +73,35 @@ module Hierarchical
     Attributable::CONTENT_TYPES.each { |type| row.delete("#{type}_value") }
   end
 
+  # This recursive query linearizes the card_content hierarchy based on the parent_id.
+
+  # The WITH portion of the query is called a Common Table Expression (CTE),
+  # which acts as a temporary table accumulating the records selected during the query.
+  # Note that "hierarchy" is not a reserved work; it's just a particularly good name for the CTE.
+
+  # Recursive queries use the UNION SELECT syntax to specify a base case and an induction case.
+  # The first SELECT (base) pulls the root record (parent_id is null);
+  # the second SELECT (cc) joins each child card_content record to its parent.
+
+  # The actual recursion occurs in the "inner join hierarchy" line of the induction SELECT,
+  # where the card content record is joined to the records being accumulated in the CTE.
+
+  # Postgres executes the base SELECT once, and the induction SELECT repeatedly,
+  # joining child records to their parents, and adding them to the CTE,
+  # until the induction SELECT returns zero rows, which terminates the recursive query.
+
+  # The query computes the path to the root for each card_content record.
+  # It does this by, in the base SELECT, creating a PATH array containing the root id;
+  # and in the induction SELECT, appending the child id (cc.id) to the PATH array.
+
+  # The final SELECT at the bottom pulls the rows from the CTE temporary table,
+  # sorting them by the path array from the root to the leaves.
+
+  # This particular query joins the card_contents table with the content_attributes
+  # and card_content_validations, so the entirety of a card is loaded in one query.
+  # Attributes are unique by name, but validations cannot be distinguised by their content,
+  # so the query output disambiguates them by their validation ids.
+
   def combined_sql(id)
     <<-SQL
     with recursive hierarchy as (

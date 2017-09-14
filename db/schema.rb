@@ -906,6 +906,7 @@ ActiveRecord::Schema.define(version: 20170922200616) do
     t.datetime "completed_at"
     t.integer  "card_version_id",                   null: false
     t.integer  "task_template_id"
+    t.integer  "assigned_user_id"
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree

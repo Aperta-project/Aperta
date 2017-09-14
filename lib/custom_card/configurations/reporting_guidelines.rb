@@ -44,10 +44,10 @@ module CustomCard
               </content>
               <content content-type="display-children" custom-class="left-indent">
                 <content ident="reporting_guidelines--clinical_trial" content-type="check-box" value-type="boolean" allow-annotations="false" required-field="false">
-                  <label>Clinical Trial</label>
+                  <text>Clinical Trial</text>
                 </content>
                 <content ident="reporting_guidelines--systematic_reviews" content-type="check-box" value-type="boolean" allow-annotations="false" required-field="false">
-                  <label>Systematic Reviews</label>
+                  <text>Systematic Reviews</text>
                   <content content-type="display-with-value" visible-with-parent-answer="true">
                     <content content-type="display-children" custom-class="card-content-field-set large-description-text-container">
                       <content ident="reporting_guidelines--systematic_reviews--checklist" content-type="file-uploader" value-type="attachment" allow-multiple-uploads="false" allow-file-captions="false" allow-annotations="false" required-field="false">
@@ -60,7 +60,7 @@ module CustomCard
                   </content>
                 </content>
                 <content ident="reporting_guidelines--meta_analyses" content-type="check-box" value-type="boolean" allow-annotations="false" required-field="false">
-                  <label>Meta Analyses</label>
+                  <text>Meta Analyses</text>
                   <content content-type="display-with-value" visible-with-parent-answer="true">
                     <content content-type="display-children" custom-class="card-content-field-set large-description-text-container">
                       <content ident="reporting_guidelines--meta_analyses--checklist" content-type="file-uploader" value-type="attachment" allow-multiple-uploads="false" allow-file-captions="false" allow-annotations="false" required-field="false">
@@ -73,13 +73,13 @@ module CustomCard
                   </content>
                 </content>
                 <content ident="reporting_guidelines--diagnostic_studies" content-type="check-box" value-type="boolean" allow-annotations="false" required-field="false">
-                  <label>Diagnostic studies</label>
+                  <text>Diagnostic studies</text>
                 </content>
                 <content ident="reporting_guidelines--epidemiological_studies" content-type="check-box" value-type="boolean" allow-annotations="false" required-field="false">
-                  <label>Epidemiological studies</label>
+                  <text>Epidemiological studies</text>
                 </content>
                 <content ident="reporting_guidelines--microarray_studies" content-type="check-box" value-type="boolean" allow-annotations="false" required-field="false">
-                  <label>Microarray studies</label>
+                  <text>Microarray studies</text>
                 </content>
               </content>
             </content>

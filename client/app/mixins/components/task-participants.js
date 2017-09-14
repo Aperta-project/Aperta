@@ -3,10 +3,11 @@ import Ember from 'ember';
 export default Ember.Mixin.create({
   store: Ember.inject.service(),
   participations: Ember.computed.alias('task.participations'),
+
   participants: Ember.computed('participations.@each.user', function() {
     return this.get('participations').mapBy('user');
   }),
-  users: [], // TO DO
+  assignedUsers: [], // TO DO
 
   findParticipation(participantId) {
     return this.get('participations').findBy('user.id', '' + participantId);
@@ -24,6 +25,12 @@ export default Ember.Mixin.create({
       const user = this.get('store').findOrPush('user', newParticipant);
       if (this.get('participants').includes(user)) { return; }
       this.createNewParticipation(user, this.get('task')).save();
+    },
+
+    savedAssignedUser(newUser) {
+      const user = this.get('store').findOrPush('user', newUser);
+      this.set('task.assigned_user_id', user.get('id'));
+      this.get('task').save();
     },
 
     removeParticipant(participantId) {

@@ -113,7 +113,7 @@ class Task < ActiveRecord::Base
     #
     # Returns an Array of attributes.
     def permitted_attributes
-      [:completed, :title, :phase_id, :position]
+      [:completed, :title, :phase_id, :position, :assigned_user_id]
     end
 
     def assigned_to(*users)

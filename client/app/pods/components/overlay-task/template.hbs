@@ -9,13 +9,13 @@
         <div class="overlay-container">
           {{overlay-task-header task=task animateOut=animateOut}}
           <div class="overlay-body">
-            {{participant-selector currentParticipants=participants
+            {{participant-selector currentParticipants=assignedUsers
                paperId=task.paper.id
                url=assignable_users_url
                label="Assign:"
                canManage=(can "manage_participant" task)
                canEditDiscussion=(can "edit_discussion_footer" task)
-               onSelect=(action "saveNewParticipant")
+               onSelect=(action "savedAssignedUser")
                onRemove=(action "removeParticipant")
                searchStarted=(action "searchStartedAssignable")
                searchFinished=(action "searchFinishedAssignable")

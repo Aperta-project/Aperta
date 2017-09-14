@@ -19,37 +19,11 @@ module Hierarchical
     rows.group_by { |row| row['id'] }
   end
 
-  def construct_hierarchy(contents)
-    root = nil
-    contents.keys.each do |id|
-      row = contents[id]
-      parent_id = row.delete('parent_id')
-      if parent_id.nil?
-        root = id
-        next
-      end
-      parent = contents[parent_id]
-      next unless parent
-      (parent['children'] ||= []) << row
-    end
-    contents[root]
-  end
-
-  def merge_attributes(contents, attrs, validations)
-    contents.each_with_object({}) do |(id, rows), hash|
-      rows.first.try do |row|
-        clean_attributes(row)
-        id = row['id']
-        hash[id] = row.merge('attributes' => attrs[id], 'validations' => validations[id])
-      end
-    end
-  end
-
   def extract_attributes(contents)
     contents.each_with_object({}) do |(id, rows), attrs|
       attrs[id] = rows.each_with_object({}) do |row, hash|
-        key = "#{row['value_type']}_value"
-        hash[row['attribute']] = row[key]
+        type = row['value_type']
+        hash[row['attribute']] = row["#{type}_value"]
       end
     end
   end
@@ -66,11 +40,37 @@ module Hierarchical
     end
   end
 
+  def merge_attributes(contents, attrs, validations)
+    contents.each_with_object({}) do |(id, rows), hash|
+      rows.first.try do |row|
+        clean_attributes(row)
+        id = row['id']
+        hash[id] = row.merge('attributes' => attrs[id], 'validations' => validations[id])
+      end
+    end
+  end
+
   METADATA_KEYS = %w[val_id attribute path value_type].freeze
   def clean_attributes(row)
     METADATA_KEYS.each { |key| row.delete(key) }
     VALIDATION_KEYS.each { |key| row.delete(key) }
     Attributable::CONTENT_TYPES.each { |type| row.delete("#{type}_value") }
+  end
+
+  def construct_hierarchy(contents)
+    root = nil
+    contents.keys.each do |id|
+      row = contents[id]
+      parent_id = row.delete('parent_id')
+      if parent_id.nil?
+        root = id
+        next
+      end
+      parent = contents[parent_id]
+      next unless parent
+      (parent['children'] ||= []) << row
+    end
+    contents[root]
   end
 
   # This recursive query linearizes the card_content hierarchy based on the parent_id.

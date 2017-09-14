@@ -30,12 +30,13 @@
       cancel
     </button>
 
-    {{save-button
-        text="Create new card"
+    {{#save-button
         click=(action 'complete')
         class="button-primary button--blue admin-new-card-overlay-save"
-        disabled=(if saving true null)
+        disabled=saving
         spinnerSize="mini"
         displaySpinner=saving}}
+      Create new card
+    {{/save-button}}
   </div>
 </div>

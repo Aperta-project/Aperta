@@ -16,13 +16,14 @@
         {{#unless displayMessage}}
           <span class="text-{{messageType}}">{{message}}</span>&nbsp;&nbsp;&nbsp;
         {{/unless}}
-        {{save-button
-          text="SAVE"
+        {{#save-button
           spinnerSize="mini"
           click=(action 'save')
           class="button-primary button--blue edit-email-button"
           disabled=(or saved template.isSaving)
           displaySpinner=template.isSaving}}
+          SAVE
+        {{/save-button}}
       </div>
 
       <div class="edit-email-well">

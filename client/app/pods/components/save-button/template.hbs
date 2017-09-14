@@ -1,2 +1,4 @@
 {{progress-spinner visible=displaySpinner color=color size=spinnerSize align=align}}
-{{unless displaySpinner text}}
+{{#unless displaySpinner}}
+  {{yield}}
+{{/unless}}

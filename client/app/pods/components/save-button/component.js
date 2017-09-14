@@ -1,13 +1,25 @@
 import Ember from 'ember';
+import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   tagName: 'button',
-  text: '',
-  displaySpinner: false,
-  size: 'small',
-  color: 'blue',
   attributeBindings: ['disabled'],
-  disabled: true,
-  spinnerSize: 'small',
-  align: 'center'
+
+  propTypes: {
+    displaySpinner: PropTypes.bool.isRequired,
+    spinnerSize: PropTypes.string,
+    color: PropTypes.string,
+    disabled: PropTypes.bool.isRequired,
+    align: PropTypes.string
+  },
+  
+  getDefaultProps() {
+    return {
+      displaySpinner: false,
+      color: 'blue',
+      disabled: true,
+      spinnerSize: 'small',
+      align: 'center'
+    };
+  }
 });

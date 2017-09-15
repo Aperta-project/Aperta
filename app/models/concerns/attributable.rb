@@ -12,9 +12,11 @@ module Attributable
                 visible_with_parent_answer wrapper_tag]
   }.freeze
 
-  CONTENT_TYPES   = CONTENT_ATTRIBUTES.keys.freeze
-  ATTRIBUTE_TYPES = CONTENT_ATTRIBUTES.each_with_object({}) { |(type, name), hash| hash[name] = type.to_s }.freeze
   ATTRIBUTE_NAMES = Set.new(BASE_ATTRIBUTES + CONTENT_ATTRIBUTES.values.flatten).freeze
+  CONTENT_TYPES   = CONTENT_ATTRIBUTES.keys.freeze
+  ATTRIBUTE_TYPES = CONTENT_ATTRIBUTES.each_with_object({}) do |(type, names), hash|
+    names.each { |name| hash[name] = type }
+  end.freeze
 
   # Convert between formats
   XML_ATTRIBUTES  = Hash[ATTRIBUTE_NAMES.map { |name| [name.tr('-', '_'), name] }].freeze
@@ -22,11 +24,12 @@ module Attributable
 
   COMMON_ATTRIBUTES = %w[allow_annotations instruction_text label required_field].freeze
   CUSTOM_ATTRIBUTES = [
-    [%w[file-uploader],      %w[allow_file_captions allow_multiple_uploads]],
-    [%w[if],                 %w[condition]],
-    [%w[paragraph-input],    %w[editor_style]],
-    [%w[date-picker],        %w[required_field]],
-    [%w[check-box drop-down radio short-input tech-check], %w[]]
+    [%w[file-uploader],    %w[allow_file_captions allow_multiple_uploads possible_values]],
+    [%w[if],               %w[condition]],
+    [%w[paragraph-input],  %w[editor_style]],
+    [%w[date-picker],      %w[required_field]],
+    [%w[drop-down radio],  %w[possible_values]],
+    [%w[check-box short-input tech-check], %w[]]
   ].each_with_object(Hash.new(Set.new)) do |(types, attributes), hash|
     types.each { |type| hash[type] += attributes + COMMON_ATTRIBUTES }
   end.freeze

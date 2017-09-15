@@ -98,55 +98,17 @@ class CardContent < ActiveRecord::Base
   def content_attrs
     {
       'ident' => ident,
-      'content-type' => content_type,
-      'value-type' => value_type,
-      'child-tag' => child_tag,
-      'custom-class' => custom_class,
-      'custom-child-class' => custom_child_class,
-      'wrapper-tag' => wrapper_tag,
-      'visible-with-parent-answer' => visible_with_parent_answer,
-      'default-answer-value' => default_answer_value
+      'content-type' => content_type
     }.merge(additional_content_attrs).compact
   end
 
   # rubocop:disable Metrics/MethodLength
   def additional_content_attrs
-    case content_type
-    when 'file-uploader'
-      {
-        'allow-multiple-uploads' => allow_multiple_uploads,
-        'allow-file-captions' => allow_file_captions,
-        'allow-annotations' => allow_annotations,
-        'error-message' => error_message,
-        'required-field' => required_field
-      }
-    when 'if'
-      {
-        'condition' => condition
-      }
-    when 'paragraph-input'
-      {
-        'editor-style' => editor_style,
-        'allow-annotations' => allow_annotations,
-        'required-field' => required_field
-      }
-    when 'short-input'
-      {
-        'allow-annotations' => allow_annotations,
-        'required-field' => required_field
-      }
-    when 'radio', 'check-box', 'dropdown', 'tech-check'
-      {
-        'allow-annotations' => allow_annotations,
-        'required-field' => required_field
-      }
-    when 'date-picker'
-      {
-        'required-field' => required_field
-      }
-    else
-      {}
-    end
+    hash = {}
+    content_attributes.select { |c| c.value.present? }
+      .reject { |c| ['instruction_text', 'text', 'label', 'possible_values'].include?(c.name) }
+      .each { |c| hash[c.name.dasherize] = c.value }
+    hash
   end
   # rubocop:enable Metrics/MethodLength
 

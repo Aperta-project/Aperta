@@ -1,7 +1,7 @@
 {{#if loading}}
   {{progress-spinner visible=true color="green" size="large" align="middle"}}
 {{else}}
-  <ul class='dashboard-open-invitations'>
+  <div class='dashboard-open-invitations'>
     {{#each invitations as |invitation|}}
       {{#if invitation.pendingFeedback}}
         {{invitation-feedback
@@ -10,23 +10,19 @@
         }}
       {{else}}
         <div class="pending-invitation">
-          <h2 class='invitation-metadata'>{{invitation.inviteeRole}} Invitation | <span class="date">{{format-date invitation.createdAt format='MMMM D, YYYY'}}</span></h2>
-          <p class="invitation-paper-type">{{invitation.paperType}}</p>
-          <li class="dashboard-paper-title">
-            <h3>{{partial "svg/manuscript-icon"}} {{{invitation.title}}}</h3>
-            {{#if invitation.information}}
-              <h4>Authors</h4>
-              <p class="preserve-line-breaks">{{{invitation.information}}}</p>
-            {{/if}}
-            {{#if invitation.abstract}}
-              <h4>Abstract</h4>
-              <p>{{{invitation.abstract}}}</p>
-            {{/if}}
-            <button class='button-primary button--green invitation-accept' {{action 'accept' invitation}}> Accept {{invitation.inviteeRole}} Invitation </button>
-            <button class='button-secondary button--green invitation-decline' {{action 'acquireFeedback' invitation}}> Decline </button>
-          </li>
+          {{invitation-header invitation=invitation}}
+          {{#if invitation.information}}
+            <h4>Authors</h4>
+            <p class="preserve-line-breaks">{{{invitation.information}}}</p>
+          {{/if}}
+          {{#if invitation.abstract}}
+            <h4>Abstract</h4>
+            <p>{{{invitation.abstract}}}</p>
+          {{/if}}
+          <button class='button-primary button--green invitation-accept' {{action 'accept' invitation}}> Accept {{invitation.inviteeRole}} Invitation </button>
+          <button class='button-secondary button--green invitation-decline' {{action 'acquireFeedback' invitation}}> Decline </button>
         </div>
       {{/if}}
     {{/each}}
-  </ul>
+  </div>
 {{/if}}

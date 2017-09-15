@@ -295,6 +295,10 @@ class Task < ActiveRecord::Base
     answers.includes(:card_content).all?(&:ready?)
   end
 
+  def assigned_user
+    User.find_by(id: assigned_user_id)
+  end
+
   private
 
   def update_completed_at

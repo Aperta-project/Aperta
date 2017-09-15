@@ -13,11 +13,8 @@ export default AuthorizedRoute.extend({
   },
 
   afterModel(task) {
-    let assignedUserId = task.get('assignedUserId');
-    if (!assignedUserId) return;
-    this.store.findRecord('user', assignedUserId).then(function(user) {
-      task.set('assignedUser', user);
-    });
+    let assignedUser = task.get('assignedUser');
+    if (assignedUser) this.store.pushPayload({'user': assignedUser});
   },
   actions: {
     willTransition(transition) {

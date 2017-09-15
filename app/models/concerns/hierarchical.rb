@@ -121,7 +121,7 @@ module Hierarchical
         base.id, base.parent_id, array[base.id] AS path,
         base.content_type, base.ident,
         attr.name as attribute,
-        attr.value_type, attr.string_value, attr.integer_value, attr.boolean_value, attr.json_value,
+        attr.value_type, attr.boolean_value, attr.integer_value, attr.string_value, attr.json_value,
         vals.id as val_id,
         vals.validation_type, vals.validator, vals.error_message
       from
@@ -137,7 +137,7 @@ module Hierarchical
         cc.id, cc.parent_id, (base.path || cc.id) as path,
         cc.content_type, cc.ident,
         attr.name as attribute,
-        attr.value_type, attr.string_value, attr.integer_value, attr.boolean_value, attr.json_value,
+        attr.value_type, attr.boolean_value, attr.integer_value, attr.string_value, attr.json_value,
         vals.id as val_id,
         vals.validation_type, vals.validator, vals.error_message
       from

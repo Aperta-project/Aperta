@@ -18,6 +18,7 @@ moduleForComponent(
         'pusher:main',
         Ember.Object.extend({ socketId: 'foo' })
       );
+      this.set('dirtyEditorConfig', {model: 'card', properties: ['xml']});
     },
 
     afterEach() {
@@ -49,7 +50,7 @@ test('publishing requires confirmation and a history entry', function(assert) {
     hbs`
 <div id='overlay-drop-zone'></div>
 <div id='card-editor-action-buttons'></div>
-{{card-editor/editor card=card}}`
+{{card-editor/editor card=card dirtyEditorConfig=dirtyEditorConfig}}`
   );
 
   assert.elementFound('.editor-publish');
@@ -116,7 +117,7 @@ test('archiving requires confirmation', function(assert) {
     hbs`
 <div id='overlay-drop-zone'></div>
 <div id='card-editor-action-buttons'></div>
-{{card-editor/editor card=card routing=fakeRouting}}`
+{{card-editor/editor card=card dirtyEditorConfig=dirtyEditorConfig routing=fakeRouting}}`
   );
 
   assert.elementFound('.editor-archive[disabled]', 'archive is disabled for drafts');
@@ -141,7 +142,7 @@ test('saving is enabled when the card xml is dirty', function(assert) {
   this.render(
     hbs`
 <div id='card-editor-action-buttons'></div>
-{{card-editor/editor card=card}}`
+{{card-editor/editor card=card dirtyEditorConfig=dirtyEditorConfig}}`
   );
   assert.elementFound(
     '.editor-save[disabled]',
@@ -161,7 +162,7 @@ test('deleting is disabled when the card xml is dirty', function(assert) {
   this.render(
     hbs`
 <div id='card-editor-action-buttons'></div>
-{{card-editor/editor card=card}}`
+{{card-editor/editor card=card dirtyEditorConfig=dirtyEditorConfig}}`
   );
   assert.elementNotFound(
     '.editor-delete[disabled]',
@@ -181,7 +182,7 @@ test('deletion button is only present when the card is a draft', function(assert
   this.render(
     hbs`
 <div id='card-editor-action-buttons'></div>
-{{card-editor/editor card=card}}`
+{{card-editor/editor card=card dirtyEditorConfig=dirtyEditorConfig}}`
   );
   assert.elementNotFound('.editor-delete',
                          'the delete button is not present when not a draft');
@@ -229,7 +230,7 @@ test('deleting requires confirmation', function(assert) {
     hbs`
       <div id='overlay-drop-zone'></div>
       <div id='card-editor-action-buttons'></div>
-      {{card-editor/editor card=card routing=fakeRouting}}`
+      {{card-editor/editor card=card dirtyEditorConfig=dirtyEditorConfig routing=fakeRouting}}`
   );
 
   this.$('.editor-delete').click();
@@ -255,7 +256,7 @@ test('reversion button is only present when the card is published with changes a
     hbs`
       <div id='overlay-drop-zone'></div>
       <div id='card-editor-action-buttons'></div>
-      {{card-editor/editor card=card}}`
+      {{card-editor/editor card=card dirtyEditorConfig=dirtyEditorConfig}}`
   );
 
   assert.elementNotFound('.editor-revert',
@@ -305,7 +306,7 @@ test('xml validation errors appear if errors are present', function(assert) {
   this.render(
     hbs`
       <div id='card-editor-action-buttons'></div>
-      {{card-editor/editor card=card routing=fakeRouting errors=errors}}`
+      {{card-editor/editor card=card dirtyEditorConfig=dirtyEditorConfig routing=fakeRouting errors=errors}}`
   );
 
   let displayedErrorsPre = $('[data-test-selector="xml-error"]');
@@ -327,7 +328,7 @@ test('xml validation errors appear if errors are present', function(assert) {
   this.render(
     hbs`
       <div id='card-editor-action-buttons'></div>
-      {{card-editor/editor card=card routing=fakeRouting errors=errors}}`
+      {{card-editor/editor card=card dirtyEditorConfig=dirtyEditorConfig routing=fakeRouting errors=errors}}`
   );
 
   let displayedErrorsPost = $('[data-test-selector="xml-error"]');
@@ -346,7 +347,7 @@ test('xml validation errors appear if errors are present', function(assert) {
   this.render(
     hbs`
       <div id='card-editor-action-buttons'></div>
-      {{card-editor/editor card=card routing=fakeRouting errors=errors}}`
+      {{card-editor/editor card=card dirtyEditorConfig=dirtyEditorConfig routing=fakeRouting errors=errors}}`
   );
 
   displayedErrorsPost = $('[data-test-selector="xml-error"]');

@@ -1,10 +1,12 @@
 import Ember from 'ember';
+import BrowserDirtyEditor from 'tahi/mixins/components/dirty-editor-browser';
+import EmberDirtyEditor from 'tahi/mixins/components/dirty-editor-ember';
 
 // This validation works for our pre-populated letter templates
 // but we might want to change this up when users are allowed to create
 // new templates.
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
   store: Ember.inject.service(),
   routing: Ember.inject.service('-routing'),
   saved: true,

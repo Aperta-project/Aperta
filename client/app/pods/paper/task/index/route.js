@@ -12,6 +12,13 @@ export default AuthorizedRoute.extend({
       });
   },
 
+  afterModel(task) {
+    let assignedUserId = task.get('assignedUserId');
+    if (!assignedUserId) return;
+    this.store.findRecord('user', assignedUserId).then(function(user) {
+      task.set('assignedUser', user);
+    });
+  },
   actions: {
     willTransition(transition) {
       this.controllerFor('paper.task').send('routeWillTransition', transition);

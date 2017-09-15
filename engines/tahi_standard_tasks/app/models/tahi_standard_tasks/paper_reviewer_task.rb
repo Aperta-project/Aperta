@@ -82,7 +82,8 @@ TEXT
       # happens, the rendering part below simplifies to a call on the
       # LetterTemplate object.
       context = PaperReviewerScenario.new(self)
-      Liquid::Template.parse(template).render(context)
+      lt = LetterTemplate.new(body: template)
+      lt.render(context).body
     end
   end
 end

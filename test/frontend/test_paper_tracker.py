@@ -16,7 +16,7 @@ import random
 from Base.Decorators import MultiBrowserFixture
 from frontend.common_test import CommonTest
 from .Pages.paper_tracker import PaperTrackerPage
-from Base.Resources import editorial_users, staff_admin_login
+from Base.Resources import editorial_users, staff_admin_login, super_admin_login
 
 __author__ = 'jgray@plos.org'
 
@@ -58,7 +58,10 @@ class ApertaPaperTrackerTest(CommonTest):
     logging.info('Test Paper Tracker::table_content')
     current_path = os.getcwd()
     logging.info(current_path)
-    user_type = random.choice(users)
+    # excluding super_admin_login from test
+    users_no_super_admin = users.copy()
+    users_no_super_admin.remove(super_admin_login)
+    user_type = random.choice(users_no_super_admin)
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_paper_tracker_link()
     pt_page = PaperTrackerPage(self.getDriver())

@@ -228,8 +228,9 @@ class CoverLetterTaskTest(CommonTest):
     cover_letter_task = CoverLetterTask(self.getDriver())
     cover_letter_task.task_ready()
     cover_letter_task.fill_and_complete_letter_textarea()
+    time.sleep(1)
     # Close the cover letter task - previously the logout wasn't always being executed
-    manuscript_page.click_task('Cover Letter')
+    manuscript_page.complete_task('Cover Letter')
     manuscript_page.logout()
 
     # Test card

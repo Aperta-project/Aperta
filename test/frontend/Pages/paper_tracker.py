@@ -48,15 +48,17 @@ class PaperTrackerPage(AuthenticatedPage):
 
     # Paper Tracker Table elements
     self._paper_tracker_table = (By.CLASS_NAME, 'paper-tracker-table')
-    self._paper_tracker_table_title_th = (By.XPATH, '//th[2]')
-    self._paper_tracker_table_paper_id_th = (By.XPATH, '//th[3]')
-    self._paper_tracker_table_version_date_th = (By.XPATH, '//th[4]')
-    self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[5]')
-    self._paper_tracker_table_paper_type_th = (By.XPATH, '//th[6]')
-    self._paper_tracker_table_status_th = (By.XPATH, '//th[7]')
-    self._paper_tracker_table_members_th = (By.XPATH, '//th[8]')
-    self._paper_tracker_table_he_th = (By.XPATH, '//th[9]')
-    self._paper_tracker_table_ce_th = (By.XPATH, '//th[10]')
+    self._paper_tracker_table_title_th = (By.CSS_SELECTOR, 'th.paper-tracker-title-column')
+    self._paper_tracker_table_paper_id_th = (By.CSS_SELECTOR, 'th.paper-tracker-paper-id-column')
+    self._paper_tracker_table_preprint_id_th = (By.CSS_SELECTOR, 'th.paper-tracker-paper-preprint-id-column') # preprint DOI
+    self._paper_tracker_table_version_date_th = (By.CSS_SELECTOR, 'th.paper-tracker-date-column')
+    self._paper_tracker_table_submit_date_th = (By.CSS_SELECTOR, 'th.paper-tracker-date-column+th.paper-tracker-date-column')
+    self._paper_tracker_table_paper_type_th = (By.CSS_SELECTOR, 'th.paper-tracker-type-column')
+    self._paper_tracker_table_status_th = (By.CSS_SELECTOR, 'th.paper-tracker-status-column')
+    self._paper_tracker_table_members_th = (By.CSS_SELECTOR, 'th.paper-tracker-members-column')
+    self._paper_tracker_table_he_th = (By.CSS_SELECTOR, 'th.paper-tracker-handling-editor-column')
+    self._paper_tracker_table_ce_th = (By.CSS_SELECTOR, 'th.paper-tracker-cover-editor-column')
+    # self._paper_tracker_table = (By.CLASS_NAME, 'paper-tracker-table')
     self._paper_tracker_table_header_sort_up = (By.CLASS_NAME, 'fa-caret-up')
     self._paper_tracker_table_header_sort_down = (By.CLASS_NAME, 'fa-caret-down')
     self._paper_tracker_table_tbody_row = (By.CSS_SELECTOR, 'tbody tr')
@@ -124,12 +126,13 @@ class PaperTrackerPage(AuthenticatedPage):
       paper[1] = paper[1].strip()
 
     # Before sorting, remove leading non printable characters
-    for paper in papers:
-      for char in paper[1]:
-        if char not in string.printable:
-          paper[1] = paper[1][1:]
-        else:
-          break
+    if not sort_by  == 'title':
+      for paper in papers:
+        for char in paper[1]:
+          if char not in string.printable:
+            paper[1] = paper[1][1:]
+          else:
+            break
     try:
       if sort_by == 'publishing_state':
         state_order = {'accepted': 0,
@@ -319,6 +322,7 @@ class PaperTrackerPage(AuthenticatedPage):
     # next the papers with no submitted_at populated (I think this is limited to withdrawn papers
     # with NULL s_a date) APERTA-3023 - this ordering is non-deterministic at present so this case
     # will fail until this defect is resolved and the test case updated as needed.
+    we_have_null_date_submitted = False
     withdrawn_papers = []
     if total_count > 0:
       for journal in journal_ids:
@@ -366,6 +370,7 @@ class PaperTrackerPage(AuthenticatedPage):
         if not db_papers[count][3]:
           logging.warning('Paper without Date Submitted: id {0}'.format(db_papers[count][0]))
           logging.warning('Aborting validation of paper content ordering.')
+          we_have_null_date_submitted = True
           break
         if not title:
           raise ValueError('Error: No title in db! Illogical, Illogical, '
@@ -469,102 +474,115 @@ class PaperTrackerPage(AuthenticatedPage):
         count += 1
 
 
-      self._wait_for_element(self._get(self._paper_tracker_table_tbody_he), multiplier=2)
-      handedits = self._get(self._paper_tracker_table_tbody_he)
-      page_hes_by_role = handedits.text.split('\n')
-      for handeditor in page_hes_by_role:
-        db_hes = PgSQL().query('SELECT users.first_name, users.last_name '
-                               'FROM users '
-                               'INNER JOIN assignments ON users.id = assignments.user_id '
-                               'INNER JOIN roles ON assignments.role_id = roles.id '
-                               'WHERE assignments.assigned_to_type = \'Paper\' '
-                               'AND assignments.assigned_to_id= %s AND roles.name = %s;',
-                               (db_paper_id, 'Handling Editor'))
-      # Cover the case where none are assigned
-      if handeditor != '':
-        name = []
-        for he in db_hes:
-          name.append(he[0] + ' ' + he[1])
-        db_hes = name
-        page_hes_by_role.sort()
-        db_hes.sort()
-        assert page_hes_by_role == db_hes, (page_hes_by_role, db_hes)
+        self._wait_for_element(self._get(self._paper_tracker_table_tbody_he), multiplier=2)
+        handedits = self._get(self._paper_tracker_table_tbody_he)
+        page_hes_by_role = handedits.text.split('\n')
+        for handeditor in page_hes_by_role:
+          db_hes = PgSQL().query('SELECT users.first_name, users.last_name '
+                                 'FROM users '
+                                 'INNER JOIN assignments ON users.id = assignments.user_id '
+                                 'INNER JOIN roles ON assignments.role_id = roles.id '
+                                 'WHERE assignments.assigned_to_type = \'Paper\' '
+                                 'AND assignments.assigned_to_id= %s AND roles.name = %s;',
+                                 (db_paper_id, 'Handling Editor'))
+        # Cover the case where none are assigned
+        if handeditor != '':
+          name = []
+          for he in db_hes:
+            name.append(he[0] + ' ' + he[1])
+          db_hes = name
+          page_hes_by_role.sort()
+          db_hes.sort()
+          assert page_hes_by_role == db_hes, (page_hes_by_role, db_hes)
 
-      covredits = self._get(self._paper_tracker_table_tbody_ce)
-      page_ces_by_role = covredits.text.split('\n')
-      for covreditor in page_ces_by_role:
-        db_ces = PgSQL().query('SELECT users.first_name, users.last_name '
-                               'FROM users '
-                               'INNER JOIN assignments ON users.id = assignments.user_id '
-                               'INNER JOIN roles ON assignments.role_id = roles.id '
-                               'WHERE assignments.assigned_to_type = \'Paper\' '
-                               'AND assignments.assigned_to_id= %s AND roles.name = %s;',
-                               (db_paper_id, 'Cover Editor'))
-      # Cover the case where none are assigned
-      if covreditor != '':
-        name = []
-        for ce in db_ces:
-          name.append(ce[0] + ' ' + ce[1])
-        db_ces = name
-        page_ces_by_role.sort()
-        db_ces.sort()
-        assert page_ces_by_role == db_ces, (page_ces_by_role, db_ces)
+        covredits = self._get(self._paper_tracker_table_tbody_ce)
+        page_ces_by_role = covredits.text.split('\n')
+        for covreditor in page_ces_by_role:
+          db_ces = PgSQL().query('SELECT users.first_name, users.last_name '
+                                 'FROM users '
+                                 'INNER JOIN assignments ON users.id = assignments.user_id '
+                                 'INNER JOIN roles ON assignments.role_id = roles.id '
+                                 'WHERE assignments.assigned_to_type = \'Paper\' '
+                                 'AND assignments.assigned_to_id= %s AND roles.name = %s;',
+                                 (db_paper_id, 'Cover Editor'))
+        # Cover the case where none are assigned
+        if covreditor != '':
+          name = []
+          for ce in db_ces:
+            name.append(ce[0] + ' ' + ce[1])
+          db_ces = name
+          page_ces_by_role.sort()
+          db_ces.sort()
+          assert page_ces_by_role == db_ces, (page_ces_by_role, db_ces)
 
       # Validating Sorting functions
       # Note that because cover editor and handling editor are not in the papers array, we can
       #   only do some cursory sort validations
       logging.info('Sorting by Cover Editor ASC')
       ce_th = self._get(self._paper_tracker_table_ce_th).find_element_by_tag_name('a')
+      self._scroll_into_view(ce_th)
       ce_th.click()
       time.sleep(1)
       self._paper_tracker_table_tbody_ce = (
           By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-cover-editor-column"]')
+      self._scroll_into_view(self._get(self._paper_tracker_table_tbody_ce))
       original_ce = self._get(self._paper_tracker_table_tbody_ce).text
 
       logging.info('Sorting by Cover Editor DESC')
       ce_th = self._get(self._paper_tracker_table_ce_th).find_element_by_tag_name('a')
+      self._scroll_into_view(ce_th)
       ce_th.click()
       time.sleep(1)
       self._paper_tracker_table_tbody_ce = (
           By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-cover-editor-column"]')
+      self._scroll_into_view(self._get(self._paper_tracker_table_tbody_ce))
       sorted_ce = self._get(self._paper_tracker_table_tbody_ce).text
       assert original_ce != sorted_ce or original_ce == sorted_ce
 
       ce_th = self._get(self._paper_tracker_table_ce_th).find_element_by_tag_name('a')
+      self._scroll_into_view(ce_th)
       ce_th.click()
       time.sleep(1)
       self._paper_tracker_table_tbody_ce = (
           By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-cover-editor-column"]')
+      self._scroll_into_view(self._get(self._paper_tracker_table_tbody_ce))
       final_ce = self._get(self._paper_tracker_table_tbody_ce).text
       assert final_ce == original_ce, '{0} is not equal to {1}'.format(final_ce, original_ce)
 
       logging.info('Sorting by Handling Editor ASC')
       he_th = self._get(self._paper_tracker_table_he_th).find_element_by_tag_name('a')
+      self._scroll_into_view(he_th)
       he_th.click()
       time.sleep(2)
       self._paper_tracker_table_tbody_he = (
         By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-handling-editor-column"]')
+      self._scroll_into_view(self._get(self._paper_tracker_table_tbody_he))
       original_he = self._get(self._paper_tracker_table_tbody_he).text
 
       logging.info('Sorting by Handling Editor DESC')
       he_th = self._get(self._paper_tracker_table_he_th).find_element_by_tag_name('a')
+      self._scroll_into_view(he_th)
       he_th.click()
       time.sleep(2)
       self._paper_tracker_table_tbody_he = (
         By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-handling-editor-column"]')
+      self._scroll_into_view(self._get(self._paper_tracker_table_tbody_he))
       sorted_he = self._get(self._paper_tracker_table_tbody_he).text
       assert original_he != sorted_he or original_he == sorted_he
 
       he_th = self._get(self._paper_tracker_table_he_th).find_element_by_tag_name('a')
+      self._scroll_into_view(he_th)
       he_th.click()
       time.sleep(2)
       self._paper_tracker_table_tbody_he = (
         By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-handling-editor-column"]')
+      self._scroll_into_view(self._get(self._paper_tracker_table_tbody_he))
       final_he = self._get(self._paper_tracker_table_tbody_he).text
       assert final_he == original_he, '{0} is not equal to {1}'.format(final_he, original_he)
 
       logging.info('Sorting by Status ASC')
       status_th = self._get(self._paper_tracker_table_status_th).find_element_by_tag_name('a')
+      self._scroll_into_view(status_th)
       status_th.click()
       time.sleep(1)
       self._paper_tracker_table_tbody_status = (
@@ -611,45 +629,42 @@ class PaperTrackerPage(AuthenticatedPage):
       assert article_type == papers[0][5], \
           'Article Type in page: {0} != Article Type in DB: {1}'.format(article_type, papers[0])
 
-      logging.info('Sorting by Submission Date ASC')
-      self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[5]')
-      date_th = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
-      date_th.click()
-      time.sleep(2)
-      # check order
-      self._validate_current_sort(journal_ids, sort_by='first_submitted_at')
-      logging.info('Sorting by Submission Date DESC')
-      self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[5]')
-      date_th = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
-      date_th.click()
-      time.sleep(2)
-      # check order
-      self._validate_current_sort(journal_ids, sort_by='first_submitted_at', reverse=True)
+      if we_have_null_date_submitted:
+        logging.warning('Skipping validation of Submission/Version Date ordering as we have Papers without Date Submitted')
+      else:
+        logging.info('Sorting by Submission Date ASC')
+        date_th = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
+        date_th.click()
+        time.sleep(2)
+        # check order
+        self._validate_current_sort(journal_ids, sort_by='first_submitted_at')
+        logging.info('Sorting by Submission Date DESC')
+        date_th = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
+        date_th.click()
+        time.sleep(2)
+        # check order
+        self._validate_current_sort(journal_ids, sort_by='first_submitted_at', reverse=True)
 
-      logging.info('Sorting by Version Date ASC')
-      self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
-      date_th = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
-      date_th.click()
-      time.sleep(2)
-      # check order
-      self._validate_current_sort(journal_ids, sort_by='submitted_at')
-      logging.info('Sorting by Version Date DESC')
-      self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
-      date_th = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
-      date_th.click()
-      time.sleep(2)
-      # check order
-      self._validate_current_sort(journal_ids, sort_by='submitted_at', reverse=True)
+        logging.info('Sorting by Version Date ASC')
+        date_th = self._get(self._paper_tracker_table_version_date_th).find_element_by_tag_name('a')
+        date_th.click()
+        time.sleep(2)
+        # check order
+        self._validate_current_sort(journal_ids, sort_by='submitted_at')
+        logging.info('Sorting by Version Date DESC')
+        date_th = self._get(self._paper_tracker_table_version_date_th).find_element_by_tag_name('a')
+        date_th.click()
+        time.sleep(2)
+        # check order
+        self._validate_current_sort(journal_ids, sort_by='submitted_at', reverse=True)
 
       logging.info('Sorting by Manuscript ID ASC')
-      self._paper_tracker_table_paper_id_th = (By.XPATH, '//th[3]')
       msid_th = self._get(self._paper_tracker_table_paper_id_th).find_element_by_tag_name('a')
       msid_th.click()
       time.sleep(1)
       self._validate_current_sort(journal_ids, sort_by='doi')
 
       logging.info('Sorting by Manuscript ID DESC')
-      self._paper_tracker_table_paper_id_th = (By.XPATH, '//th[3]')
       msid_th = self._get(self._paper_tracker_table_paper_id_th).find_element_by_tag_name('a')
       msid_th.click()
       time.sleep(1)

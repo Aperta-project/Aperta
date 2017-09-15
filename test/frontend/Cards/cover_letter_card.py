@@ -24,10 +24,10 @@ class CoverLetterCard(BaseCard):
   def __init__(self, driver):
     super(CoverLetterCard, self).__init__(driver)
     self._title = (By.CLASS_NAME, 'overlay-body-title')
-    self._instructions_text_first_p = (By.CSS_SELECTOR, '.edit-cover-letter > p:first-of-type')
-    self._instructions_text_last_p = (By.CSS_SELECTOR, '.edit-cover-letter > p:last-of-type')
-    self._instructions_text_questions_ul = (By.CSS_SELECTOR, '.edit-cover-letter > ul')
-    self._cover_letter_textarea_noneditable = (By.CSS_SELECTOR, 'div.answer-text')
+    self._instructions_text_first_p = (By.CSS_SELECTOR, 'div.task-main-content p:first-of-type')
+    self._instructions_text_last_p = (By.CSS_SELECTOR, 'label.content-text')
+    self._instructions_text_questions_ul = (By.CSS_SELECTOR, 'div.task-main-content ul')
+    self._cover_letter_textarea_noneditable = (By.CSS_SELECTOR, 'div.rich-text-editor')
     self._uploaded_attachment_item_link = (By.CSS_SELECTOR, 'a.file-link')
 
   def validate_styles(self):
@@ -97,7 +97,7 @@ class CoverLetterCard(BaseCard):
     card_state = self.completed_state()
     if not card_state:
       tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
-          self.get_rich_text_editor_instance('cover_letter--text')
+        self.get_rich_text_editor_instance()
       logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
       assert tinymce_editor_instance_id and tinymce_editor_instance_iframe, 'Cover letter text ' \
                                                                             'input is not present '\
@@ -112,7 +112,7 @@ class CoverLetterCard(BaseCard):
     """
     if not completed:
       tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
-          self.get_rich_text_editor_instance('cover_letter--text')
+        self.get_rich_text_editor_instance()
       logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
       cover_ltr_text = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
       logging.info('Cover Letter text is: {0}'.format(cover_ltr_text))
@@ -132,7 +132,7 @@ class CoverLetterCard(BaseCard):
       self.click_completion_button()
 
     tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
-        self.get_rich_text_editor_instance('cover_letter--text')
+      self.get_rich_text_editor_instance()
     logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
     textarea_edited_text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ' \
                            'iaculis, nisl volutpat dignissim tempus, urna risus semper lectus, ' \
@@ -141,7 +141,9 @@ class CoverLetterCard(BaseCard):
                            'Aenean ac'
     self.tmce_clear_rich_text(tinymce_editor_instance_iframe)
     self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=textarea_edited_text)
-    time.sleep(1) # added sleep to give tinymce time to process
+    self._cover_text_label = (By.CSS_SELECTOR, '.content-text')
+    self._get(self._cover_text_label).click()
+    time.sleep(2) # added sleep to give tinymce time to process
     self.click_completion_button()
     new_page_text = self._get(self._cover_letter_textarea_noneditable).text
     assert new_page_text == textarea_edited_text, \

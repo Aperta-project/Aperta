@@ -43,6 +43,15 @@ class BaseTask(AuthenticatedPage):
       time.sleep(1)
       self.click_covered_element(self._get(self._completion_button))
 
+  def move2completion_button(self, task):
+    """
+    To scroll element to the top of manuscript and then down to the task to locate completion button
+    :param task: webelement (task) to scroll to
+    :return: void function
+    """
+    self._scroll_into_view(self._get(self._paper_sidebar_manuscript_id))
+    self._scroll_into_view(task)
+
   def completed_state(self):
     """Returns the selected state of the task completed button as a boolean"""
     self._wait_for_element(self._get(self._completion_button))

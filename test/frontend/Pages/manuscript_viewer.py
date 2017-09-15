@@ -56,7 +56,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._accordion_pane = (By.CSS_SELECTOR, 'div.split-pane-element + div.split-pane-element')
 
     # Paper Viewer (manuscript) pane
-    self._failed_conversion_heading = (By.CSS_SELECTOR, 'div#preview-pane > div > h3')
+    self._failed_conversion_heading = (By.CSS_SELECTOR, 'div.paper-preview-error-message>h3')
     # Sidebar Items
     self._task_headings = (By.CLASS_NAME, 'task-disclosure-heading')
     self._task_heading_status_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon')
@@ -561,6 +561,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :return: True or False, if taskname is unknown.
     """
     tasks = self._gets(self._task_headings)
+    self._scroll_into_view(self._get(self._task_headings))
     for task in tasks:
       if task_name.lower() in task.text.lower():
         self._actions.move_to_element(task).perform()
@@ -684,6 +685,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         task.click()
       # Check completed_check status
       if not base_task.completed_state():
+        base_task.move2completion_button(task)
         base_task.click_completion_button()
       self.click_covered_element(task)
       time.sleep(2) #This sleep was added to fix a case where a following complete_task() call failed because this one wasn't done.
@@ -703,6 +705,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
           task.click()
           # Check completed_check status
         if not base_task.completed_state():
+          base_task.move2completion_button(task)
           base_task.click_completion_button()
           self.click_covered_element(task)
           time.sleep(1)
@@ -1053,7 +1056,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       download_links = table_item.find_elements_by_class_name(
         'paper-downloads-link')
 
-      expected_link_title = {'download-docx': 'Word', 'download-pdf': 'PDF'}
+      expected_link_title = {'download-source': 'Word', 'download-docx': 'Word', 'download-pdf': 'PDF'}
 
       # Validate table item links
       for download_link in download_links:

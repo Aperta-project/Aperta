@@ -910,7 +910,7 @@ class AuthenticatedPage(StyledPage):
     # time to allow the modal to animate away
     time.sleep(1)
 
-  def get_rich_text_editor_instance(self, name):
+  def get_rich_text_editor_instance(self, name=None):
     """"
     A function to return the dynamic rich text editor id of one of the damned TinyMCE editor iframe
       instances.
@@ -920,8 +920,11 @@ class AuthenticatedPage(StyledPage):
     :return iframe: the webelement for the iframe - that is necessary to traverse into the frame
      for setting or getting actions
     """
-    self._rich_text_editor = (By.CSS_SELECTOR,
-                              '.rich-text-editor[data-editor="{0}"]'.format(name))
+    if name:
+      self._rich_text_editor = (By.CSS_SELECTOR,
+                                '.rich-text-editor[data-editor="{0}"]'.format(name))
+    else: # no 'data-editor' attribute for migrated 'custom' cards like Cover Letter, Competing Interests, etc.
+      self._rich_text_editor = (By.CSS_SELECTOR, '.rich-text-editor')
     self._rte_frame = (By.TAG_NAME, 'iframe')
     rte = self._get(self._rich_text_editor)
     iframe = rte.find_element(*self._rte_frame)

@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ModuleLength
 module Hierarchical
   extend ActiveSupport::Concern
 

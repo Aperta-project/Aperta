@@ -39,10 +39,11 @@ namespace :seed do
                 ----------<br/>
                 <p>Reviewer {{ review.reviewer_number | default '' }}</p>
                 {%- for answer in review.answers -%}
+                {%- if ['reviewer_report--comments_for_author', 'front_matter_reviewer_report--suitable--comment'].include?(answer.ident) -%}
                 <p>
-                  {{ answer.ident }}
                   {{ answer.value }}
                 </p>
+                {%- endif -%}
                 {%- endfor -%}
               {% endif %}
             {% endfor %}

@@ -57,7 +57,6 @@ describe TahiStandardTasks::RegisterDecisionScenario do
     end
 
     it "renders the reviews sorted by reviewer number" do
-      binding.pry
       paper.draft_decision.reviewer_reports = [reviewer_report1, reviewer_report3, reviewer_report2]
       template = "{%- for review in reviews -%} Review by {{review.reviewer.first_name}} Number: {{review.reviewer_number}}--{%- endfor -%}"
       expect(Liquid::Template.parse(template).render(context))

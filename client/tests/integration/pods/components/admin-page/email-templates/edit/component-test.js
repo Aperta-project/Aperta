@@ -30,7 +30,7 @@ test('it populates input fields with model data', function(assert) {
 
 test('it displays validation errors if a field is empty', function(assert){
   assert.expect(1);
-  
+
   let template = FactoryGuy.make('letter-template', {subject: '', body: 'bar'});
   this.set('template', template);
 
@@ -41,7 +41,7 @@ test('it displays validation errors if a field is empty', function(assert){
   Ember.run(() => {
     this.$('.template-subject').blur();
   });
-  
+
   assert.ok(this.$('span').text().trim(), 'This field is required.');
 });
 
@@ -97,13 +97,13 @@ test('it warns user if input field has invalid content', function(assert) {
   saveStub.returns(Ember.RSVP.Promise.reject(
     { errors: [ { source: { pointer: '/subject'}, detail: 'Syntax Error'}]})
   );
-  
+
   this.set('template', template);
 
   this.render(hbs`
     {{admin-page/email-templates/edit template=template}}
   `);
-  
+
   Ember.run(() => generateKeyEvent.call(this, 32));
   Ember.run(() => this.$('.template-subject').val('{{ name }').blur());
   Ember.run(() => this.$('.button-primary').click());

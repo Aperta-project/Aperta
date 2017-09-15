@@ -10,7 +10,7 @@ class TaskSerializer < ActiveModel::Serializer
   self.root = :task
 
   def viewable
-    current_user.can?('view', object)
+    scope.can?(:view, object)
   end
 
   def is_metadata_task

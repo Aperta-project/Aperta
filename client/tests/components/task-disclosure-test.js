@@ -1,19 +1,20 @@
-import {
-  moduleForComponent,
-  test
-} from 'ember-qunit';
-
+import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import FactoryGuy from 'ember-data-factory-guy';
+import { manualSetup } from 'ember-data-factory-guy';
 
 moduleForComponent('task-disclosure', 'Integration | Component | task disclosure', {
   integration: true,
 
   beforeEach() {
-    this.set('task', {
-      completed: false,
+    manualSetup(this.container);
+
+    let task  = FactoryGuy.make('task', {
       title: 'Cat',
-      type: 'TabbyCat'
+      type: 'TabbyCat',
     });
+
+    this.set('task', task);
   }
 });
 
@@ -21,9 +22,7 @@ test('it renders', function(assert) {
   assert.expect(2);
 
   this.render(hbs`
-    {{#task-disclosure completed=task.completed
-                       title=task.title
-                       type=task.type }}
+    {{#task-disclosure task=task}}
       Meow
     {{/task-disclosure}}
   `);
@@ -41,9 +40,7 @@ test('it toggles body display', function(assert) {
   assert.expect(2);
 
   this.render(hbs`
-    {{#task-disclosure completed=task.completed
-                       title=task.title
-                       type=task.type }}
+    {{#task-disclosure task=task }}
       Meow
     {{/task-disclosure}}
   `);

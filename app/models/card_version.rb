@@ -49,8 +49,11 @@ class CardVersion < ActiveRecord::Base
       'required-for-submission' => required_for_submission,
       'workflow-display-only' => workflow_display_only
     }
-    hierarchy = load
     hierarchy.to_xml(attrs)
+  end
+
+  def to_json
+    hierarchy.root.to_json
   end
 
   private

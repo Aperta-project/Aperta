@@ -2,7 +2,7 @@
 module Hierarchical
   extend ActiveSupport::Concern
 
-  def load
+  def hierarchy
     contents = load_hierarchy(id)
     attrs = extract_attributes(contents)
     validations = extract_validations(contents)

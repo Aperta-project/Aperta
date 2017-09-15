@@ -40,10 +40,6 @@ class ContentNode
     content['validations'] || []
   end
 
-  def to_json
-    content.to_json
-  end
-
   def traverse(visitor)
     visitor.visit(self)
     children.each {|child| child.traverse(visitor)}

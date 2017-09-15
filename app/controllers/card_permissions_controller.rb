@@ -3,7 +3,7 @@ class CardPermissionsController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
 
-  CARD_ACTIONS = ['view', 'edit', 'view_discussion_footer', 'edit_discussion_footer'].freeze
+  CARD_ACTIONS = ['view', 'edit', 'view_discussion_footer', 'edit_discussion_footer', 'be_assigned', 'assign_others'].freeze
 
   def create
     card = Card.find(safe_params[:filter_by_card_id])

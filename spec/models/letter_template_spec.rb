@@ -21,6 +21,24 @@ describe LetterTemplate do
         expect(letter_template.errors[:scenario]).to include('must name a subclass of TemplateScenario')
       end
     end
+
+    it 'has valid liquid syntax in subject' do
+      letter_template =
+        FactoryGirl.build(:letter_template,
+                           subject: "{{ subject }")
+      expect(letter_template).to_not be_valid
+      expect(letter_template.errors[:subject])
+        .to include("Variable '{{ subject }' was not properly terminated with regexp: /\\}\\}/")
+    end
+
+    it 'has valid liquid syntax in body' do
+      letter_template =
+        FactoryGirl.build(:letter_template,
+                           body: "Interesting text about {{ subject }} from {{ email }")
+      expect(letter_template).to_not be_valid
+      expect(letter_template.errors[:body])
+        .to include("Variable '{{ email }' was not properly terminated with regexp: /\\}\\}/")
+    end
   end
 
   describe "#render" do

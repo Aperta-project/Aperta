@@ -84,11 +84,13 @@ test(`it sends 'onContentsChanged' after keyed input`, function(assert) {
 
 
 test('checking the focusOut action triggers after editor is disabled', function(assert) {
+  var focusOutCount = 0;
   this.set('focusOutStub', function() {
-    this.set('value', 'new value');
+    focusOutCount = focusOutCount + 1;
   });
   this.set('saveContents', function() {});
 
+  this.set('disabled', false);
   let template = hbs`{{rich-text-editor
                   value=value
                   ident='test-editor'
@@ -97,16 +99,15 @@ test('checking the focusOut action triggers after editor is disabled', function(
                   focusOut=(action focusOutStub)}}`;
   this.render(template);
 
-  // The focusOut passed action to the component is not attached to the editor
-  // until the postRender method is called. This call only happens when the editor
-  // is enabled, in other words when the disabled attribute is set to false.
+  // When 'disabled' is toggled to true, the tinymce component is swapped out for a plain
+  // text field. The focusOut action has to be reattached when 'disabled' is toggled back to false
   editorFireEvent('test-editor', 'blur');
-  assert.equal(this.get('value'), undefined, 'Value is not set on focusOut action call');
+  assert.equal(focusOutCount, 1, 'focusOut was called when the editor was initialized in an enabled state');
 
   this.set('disabled', true);
   this.set('disabled', false);
   // The focusOut passed in handler function is now attached to the rich text editor blur event.
   editorFireEvent('test-editor', 'blur');
 
-  assert.equal(this.get('value'), 'new value', 'Value was set on blur');
+  assert.equal(focusOutCount, 2, 'focusOut was called again after reenabling the editor');
 });

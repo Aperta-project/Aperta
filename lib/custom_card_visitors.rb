@@ -77,4 +77,57 @@ module CustomCardVisitors
       dupes.map { |ident, count| "Idents must be unique within a card; '#{ident}' occurs #{count} times" }
     end
   end
+
+  require 'builder'
+  class CardXmlGenerator < CustomCardVisitor
+    def initialize(options = {})
+      @indent = options[:indent] || 2
+      @builder = options[:builder] || ::Builder::XmlMarkup.new(indent: @indent)
+      @builder.instruct! unless options[:skip_instruct]
+    end
+
+    def visit(card_content)
+      to_xml(card_content)
+    end
+
+    # If a text element contains & or < , wrap the content in a CDATA section.
+    def render_text_tag(xml, tag, text)
+      return nil if text.blank?
+      if text =~ /(<|&)/
+        xml.tag!(tag) { xml.cdata! text }
+      else
+        xml.tag!(tag, text)
+      end
+    end
+
+    # rubocop:disable Metrics/AbcSize
+    def to_xml(content)
+      attrs = content.attributes.except(*%w[id instruction_text label text])
+      validations = attrs.delete('validations') || []
+      possible_values = attrs.delete('possible_values') || []
+
+      @builder.tag!('content', attrs) do |xml|
+        render_text_tag(xml, 'instruction-text', content.instruction_text)
+        render_text_tag(xml, 'text', content.text)
+        render_text_tag(xml, 'label', content.label)
+
+        validations.each do |ccv|
+          # Do not serialize the required-field validation, it is handled via the "required-field" attribute.
+          next if ccv['validation_type'] == 'required-field'
+
+          validation_attrs = { 'validation-type': ccv['validation_type'] }
+          xml.tag!('validation', validation_attrs) do
+            xml.tag!('error-message', ccv['error_message'])
+            xml.tag!('validator', ccv['validator'])
+          end
+        end
+
+        possible_values.each do |item|
+          xml.tag!('possible-value', label: item['label'], value: item['value'])
+        end
+
+        content.children.each { |child| child.traverse(self) }
+      end
+    end
+  end
 end

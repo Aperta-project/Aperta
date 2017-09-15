@@ -1,6 +1,9 @@
 module Attributable
   extend ActiveSupport::Concern
 
+  # Ruby attribute format: snake_case, column and method names
+  BASE_ATTRIBUTES = %w[ident content_type validations].freeze
+
   CONTENT_ATTRIBUTES = {
     boolean: %w[allow_annotations allow_file_captions allow_multiple_uploads required_field],
     integer: %w[],
@@ -10,7 +13,25 @@ module Attributable
                 visible_with_parent_answer wrapper_tag]
   }.freeze
 
-  CONTENT_TYPES = CONTENT_ATTRIBUTES.keys.freeze
+  CONTENT_TYPES   = CONTENT_ATTRIBUTES.keys.freeze
+  ATTRIBUTE_TYPES = CONTENT_ATTRIBUTES.each_with_object({}) { |(type, name), hash| hash[name] = type.to_s }.freeze
+  ATTRIBUTE_NAMES = Set.new(BASE_ATTRIBUTES + CONTENT_ATTRIBUTES.values.flatten).freeze
+
+  # Convert between formats
+  XML_ATTRIBUTES  = Hash[ATTRIBUTE_NAMES.map { |name| [name.tr('-', '_'), name] }].freeze
+  RUBY_ATTRIBUTES = Hash[ATTRIBUTE_NAMES.map { |name| [name, name.tr('-', '_')] }].freeze
+
+  # XML attribute format: kabob-case, element and attribute names
+  COMMON_ATTRIBUTES = %w[allow-annotations instruction-text label required-field].freeze
+  CUSTOM_ATTRIBUTES = [
+    [%w[file-uploader],   %w[allow-file-captions allow-multiple-uploads]],
+    [%w[if],              %w[condition]],
+    [%w[paragraph-input], %w[editor-style]],
+    [%w[date-picker],     %w[required-field]],
+    [%w[check-box drop-down radio short-input tech-check], %w[]]
+  ].each_with_object(Hash.new([])) do |(types, attributes), hash|
+    types.each { |type| hash[type] += attributes + COMMON_ATTRIBUTES }
+  end.freeze
 
   included do
     has_many :content_attributes, dependent: :destroy, inverse_of: :card_content

@@ -45,7 +45,9 @@ module Hierarchical
       rows.first.try do |row|
         clean_attributes(row)
         id = row['id']
-        hash[id] = row.merge('attributes' => attrs[id], 'validations' => validations[id])
+        result = row.merge(attrs[id].compact)
+        result.merge!('validations' => validations[id]) if validations[id].any?
+        hash[id] = result
       end
     end
   end
@@ -55,6 +57,7 @@ module Hierarchical
     METADATA_KEYS.each { |key| row.delete(key) }
     VALIDATION_KEYS.each { |key| row.delete(key) }
     Attributable::CONTENT_TYPES.each { |type| row.delete("#{type}_value") }
+    row.compact!
   end
 
   def node_map(contents)

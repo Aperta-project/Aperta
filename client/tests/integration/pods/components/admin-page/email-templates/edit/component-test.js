@@ -102,7 +102,7 @@ test('it warns user if input field has invalid content', function(assert) {
   this.set('template', template);
 
   this.render(hbs`
-    {{admin-page/email-templates/edit template=template}}
+    {{admin-page/email-templates/edit template=template dirtyEditorConfig=dirtyEditorConfig}}
   `);
   
   Ember.run(() => generateKeyEvent.call(this, 32));

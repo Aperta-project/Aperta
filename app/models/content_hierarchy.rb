@@ -69,11 +69,12 @@ class ContentHierarchy
     true
   end
 
-  def to_xml
-    traverse(CustomCardVisitors::CardXmlGenerator.new)
+  def to_xml(attrs)
+    visitor = CustomCardVisitors::CardXmlGenerator.new(attrs)
+    traverse(visitor)
   end
 
   def traverse(visitor)
-    visitor.visit(root)
+    visitor.visit(self)
   end
 end

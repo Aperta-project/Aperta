@@ -6,7 +6,8 @@ module Hierarchical
     attrs = extract_attributes(contents)
     validations = extract_validations(contents)
     contents = merge_attributes(contents, attrs, validations)
-    construct_hierarchy(contents)
+    root = construct_hierarchy(contents)
+    ContentHierarchy.new(root)
   end
 
   private
@@ -70,7 +71,7 @@ module Hierarchical
     contents.each do |id, row|
       parent_id = row.delete('parent_id')
       if parent_id.nil?
-        root = ContentHierarchy.new(nodes[id])
+        root = nodes[id]
       else
         parent = nodes[parent_id]
         next unless parent

@@ -44,6 +44,15 @@ class CardVersion < ActiveRecord::Base
     end
   end
 
+  def to_xml
+    attrs = {
+      'required-for-submission' => required_for_submission,
+      'workflow-display-only' => workflow_display_only
+    }
+    hierarchy = load
+    hierarchy.to_xml(attrs)
+  end
+
   private
 
   def submittable_state

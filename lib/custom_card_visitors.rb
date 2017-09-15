@@ -80,14 +80,17 @@ module CustomCardVisitors
 
   require 'builder'
   class CardXmlGenerator < CustomCardVisitor
-    def initialize(options = {})
+    def initialize(attributes, options = {})
+      @attributes = attributes
       @indent = options[:indent] || 2
       @builder = options[:builder] || ::Builder::XmlMarkup.new(indent: @indent)
       @builder.instruct! unless options[:skip_instruct]
     end
 
-    def visit(card_content)
-      to_xml(card_content)
+    def visit(hierarchy)
+      @builder.tag!('card', @attributes) do |xml|
+        to_xml(xml, hierarchy.root)
+      end
     end
 
     # If a text element contains & or < , wrap the content in a CDATA section.
@@ -101,12 +104,12 @@ module CustomCardVisitors
     end
 
     # rubocop:disable Metrics/AbcSize
-    def to_xml(content)
+    def to_xml(xml, content)
       attrs = content.attributes.except(*%w[id instruction_text label text])
       validations = attrs.delete('validations') || []
       possible_values = attrs.delete('possible_values') || []
 
-      @builder.tag!('content', attrs) do |xml|
+      @builder.tag!('content', attrs) do
         render_text_tag(xml, 'instruction-text', content.instruction_text)
         render_text_tag(xml, 'text', content.text)
         render_text_tag(xml, 'label', content.label)
@@ -126,7 +129,7 @@ module CustomCardVisitors
           xml.tag!('possible-value', label: item['label'], value: item['value'])
         end
 
-        content.children.each { |child| child.traverse(self) }
+        content.children.each { |child| to_xml(xml, child) }
       end
     end
   end

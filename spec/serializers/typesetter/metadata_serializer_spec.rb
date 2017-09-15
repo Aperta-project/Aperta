@@ -40,7 +40,6 @@ describe Typesetter::MetadataSerializer do
   let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
 
   before do
-    FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
     CardLoader.load('TahiStandardTasks::EarlyPostingTask')
     paper.phases.first.tasks.push(*metadata_tasks)
   end
@@ -292,12 +291,24 @@ describe Typesetter::MetadataSerializer do
     context 'when the destination is "em"' do
       let(:options) { { destination: 'em' } }
       it_behaves_like :includes_custom_metadata
+
+      it "ensure exported metadata includes if an author is creator" do
+        author = FactoryGirl.create(:author, paper: paper)
+        paper.authors << author
+        expect(subject['metadata']['authors'][0]['author']).to have_key('creator')
+      end
     end
 
     context 'when the destination is "apex"' do
-      let(:options) { { destination: 'apex' } }
+      let!(:options) { { destination: 'apex' } }
       it "ensure exported metadata does not include custom card fields" do
         expect(subject['metadata']).not_to have_key('custom_card_fields')
+      end
+
+      it "ensure exported metadata does not include if an author is creator" do
+        author = FactoryGirl.create(:author, paper: paper)
+        paper.authors << author
+        expect(subject['metadata']['authors'][0]['author']).not_to have_key('creator')
       end
     end
   end

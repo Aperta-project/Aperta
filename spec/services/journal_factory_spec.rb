@@ -111,6 +111,15 @@ describe JournalFactory do
       end.to change(Journal, :count).by(1)
     end
 
+    it 'sets up default task types and default manuscript manager templates' do
+      expect(JournalServices::CreateDefaultManuscriptManagerTemplates).to receive(:call)
+      expect(JournalServices::CreateDefaultTaskTypes).to receive(:call)
+      JournalFactory.create(name: 'Journal of the Stars',
+                            doi_journal_prefix: 'journal.SHORTJPREFIX1',
+                            doi_publisher_prefix: 'SHORTJPREFIX1',
+                            last_doi_issued: '1000001')
+    end
+
     context 'default system cards' do
       let(:factory_params) do
         { name: 'Journal of the Stars',

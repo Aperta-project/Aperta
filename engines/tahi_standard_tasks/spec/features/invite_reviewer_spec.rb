@@ -17,6 +17,8 @@ feature "Invite Reviewer", js: true do
   before do
     assign_journal_role journal, editor, :editor
     login_as(editor, scope: :user)
+    allow(MailLog::LogToDatabase::DeliveringEmailInterceptor).to receive(:delivering_email).and_return(true)
+    allow(MailLog::LogToDatabase::DeliveredEmailObserver).to receive(:delivered_email).and_return(true)
     visit "/"
   end
 

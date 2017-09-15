@@ -338,6 +338,48 @@ namespace :seed do
 
           lt.save!
         end
+
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        LetterTemplate.where(name: 'Preprint Accept', journal: journal).first_or_initialize.tap do |lt|
+          lt.scenario = 'TahiStandardTasks::PreprintDecisionScenario'
+          lt.subject = 'Manuscript Accepted for ApertarXiv'
+          lt.to = '{creator email}'
+          lt.body = <<-TEXT.strip_heredoc
+          <p>Dear Dr. {manuscript creator last name},</p>
+          <br/>
+          <p>Your {submitted journal} manuscript, '{ARTICLE TITLE}', has been approved for pre-print publication. Because you have opted in to this opportunity, your manuscript has been forwarded to ApertarXiv for posting. You will receive another message with publication details when the article has posted.</p>
+          <br/>
+          <p>Please note this decision is not related to the decision to publish your manuscript in {submitted journal}. As your manuscript is evaluated for publication you will receive additional communications.</p>
+          <br/>
+          <p>Kind regards,</p>
+          <br/>
+          <p>Publication Team</p>
+          <p>ApertarXiv</p>
+          TEXT
+
+          lt.save!
+        end
+
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        LetterTemplate.where(name: 'Preprint Reject', journal: journal).first_or_initialize.tap do |lt|
+          lt.scenario = 'TahiStandardTasks::PreprintDecisionScenario'
+          lt.subject = 'Manuscript Declined for ApertarXiv'
+          lt.to = '{creator email}'
+          lt.body = <<-TEXT.strip_heredoc
+          <p>Dear Dr. {manuscript creator last name},</p>
+          <br/>
+          <p>Your {submitted journal} manuscript, '{ARTICLE TITLE}', has been declined for pre-print publication.</p>
+          <br/>
+          <p>Please note this decision is not related to the decision to publish your manuscript in {submitted journal}. As your manuscript is evaluated for publication you will receive additional communications.</p>
+          <br/>
+          <p>Kind regards,</p>
+          <br/>
+          <p>Publication Team</p>
+          <p>ApertarXiv</p>
+          TEXT
+
+          lt.save!
+        end
       end
     end
   end

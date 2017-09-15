@@ -33,25 +33,19 @@ module MailLog::LogToDatabase
         expect(email_log.task).to be nil
       end
 
-      it 'logs the email with attachments to the database without storing attachments' do
-        allow(File).to receive(:read).with('doc.docx').and_return(StringIO.new('testing'))
-        mail.attachments['test'] = File.read('doc.docx')
+      let(:correspondence_double) { double('Correspondence') }
+      let(:attachment_double) { double('CorrespondenceAttachment') }
+      let(:file_name) { 'test' }
+      it 'logs the email with attachments to the database whilst storing attachments' do
+        allow(Correspondence).to receive(:create!).and_return(correspondence_double)
+        expect(File).to receive(:new).with(/#{file_name}$/, 'w+').and_return(File.new(file_name, 'w+'))
+        expect(correspondence_double).to receive_message_chain('attachments.create!') { attachment_double }
+        expect(attachment_double).to receive(:file).and_return(true)
+        expect(attachment_double).to receive(:create_resource_token!).and_return(true)
+        expect(attachment_double).to receive(:update).with(status: 'done')
+        mail.attachments['test'] = StringIO.new('testing')
         mail.html_part = 'This is a test email\'s body'
-        expect do
-          interceptor.delivering_email(mail)
-        end.to change { Correspondence.count }.by(+1)
-        email_log = Correspondence.last
-        expect(email_log.sender).to eq 'apertian@plos.org'
-        expect(email_log.recipients).to eq 'curtis@example.com, zach@example.com'
-        expect(email_log.message_id).to eq 'abc123'
-        expect(email_log.body).to eq 'This is a test email\'s body'
-        expect(email_log.raw_source).to eq mail.without_attachments!.to_s
-        expect(email_log.status).to eq 'pending'
-        expect(email_log.sent_at).to be nil
-        expect(email_log.errored_at).to be nil
-        expect(email_log.journal).to be nil
-        expect(email_log.paper).to be nil
-        expect(email_log.task).to be nil
+        interceptor.delivering_email(mail)
       end
 
       context 'and additional context is provided for the email' do

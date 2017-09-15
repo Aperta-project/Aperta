@@ -27,17 +27,19 @@ class CoverLetterTask(BaseTask):
     # Locators - Instance members
 
     # The base CSS locator to the task body
-    self._task_body_base_locator = 'div.edit-cover-letter '
+    self._task_body_base_locator = 'div.task-main-content.custom-card-task '  #'div.edit-cover-letter '
     self._instructions_text_first_p = (
-        By.CSS_SELECTOR, self._task_body_base_locator + '> p:first-of-type')
+        By.CSS_SELECTOR, self._task_body_base_locator + 'p:first-of-type')
     self._instructions_text_last_p = (
-        By.CSS_SELECTOR, self._task_body_base_locator + '> p:last-of-type')
+        By.CSS_SELECTOR, 'label.content-text')
     self._instructions_text_questions_ul = (
-        By.CSS_SELECTOR, self._task_body_base_locator + '> ul')
-    self._cover_letter_textarea = (By.CLASS_NAME, 'cover-letter-field')
+        By.CSS_SELECTOR, self._task_body_base_locator + 'ul')
+    self._cover_letter_textarea =  (By.CSS_SELECTOR, '.ember-view.rich-text-editor')
+    #(By.CLASS_NAME, 'cover-letter-field')
     self._upload_cover_letter_button = (By.CSS_SELECTOR, 'div.fileinput-button')
     self._upload_cover_letter_filename_input = (
         By. CSS_SELECTOR, 'div.fileinput-button > div > input.add-new-attachment')
+    #attachment-caption
     self._uploaded_attachment_item = (By.CSS_SELECTOR, 'div.attachment-item')
     self._uploaded_attachment_item_link = (By.CSS_SELECTOR, 'div.attachment-item > a.file-link')
     self._uploaded_attachment_item_replace_file_input = (By.CSS_SELECTOR, 'input.s3-file-uploader')
@@ -51,6 +53,8 @@ class CoverLetterTask(BaseTask):
                                  'dapibus, turpis ipsum tristique elit, et bibendum urna magna ' \
                                  'in elit. Aliquam in lacus diam. Aenean tellus lectus, commodo ' \
                                  'eget leo et, interdum hendrerit lectus.'
+    self._description = (By.CSS_SELECTOR, 'div.ember-view.card-content-view-text')
+    self._paper_sidebar_state_information = (By.ID, 'submission-state-information')
 
   def validate_cover_letter_task_styles(self):
     """
@@ -109,7 +113,7 @@ class CoverLetterTask(BaseTask):
 
     # Assert form styling
     tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
-        self.get_rich_text_editor_instance('cover_letter--text')
+      self.get_rich_text_editor_instance()  # self.get_rich_text_editor_instance('cover_letter--text')
     logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
     assert tinymce_editor_instance_id and tinymce_editor_instance_iframe, 'Cover letter text area '\
                                                                           'is not present in the ' \
@@ -148,17 +152,23 @@ class CoverLetterTask(BaseTask):
     """
     sample_text = self.get_textarea_sample_text()
     tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
-        self.get_rich_text_editor_instance('cover_letter--text')
+      self.get_rich_text_editor_instance()  # self.get_rich_text_editor_instance('cover_letter--text')
     assert tinymce_editor_instance_id and tinymce_editor_instance_iframe, 'No Cover Letter editor '\
                                                                           'text entry area present.'
     logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
     self._driver.execute_script("javascript:arguments[0].scrollIntoView()", tinymce_editor_instance_iframe)
     self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=sample_text)
+    time.sleep(2)
+    self._cover_text_label = (By.CSS_SELECTOR, '.content-text')
+    self._get(self._cover_text_label).click()
     # Gratuitous verification
     cvr_ltr_txt = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
     logging.info('Temporary Paper Title is: {0}'.format(cvr_ltr_txt))
     time.sleep(1) #sleep added to give tinymce more time
-    self.click_completion_button()
+    #manuscript_id = self._get(self._paper_sidebar_state_information)
+    #self.scroll_element_into_view_below_toolbar(manuscript_id)
+    self.click_covered_element(self._get(self._completion_button))
+    #self.click_completion_button()
 
   def upload_letter(self, letter='random'):
     """

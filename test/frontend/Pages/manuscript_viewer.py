@@ -561,6 +561,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :return: True or False, if taskname is unknown.
     """
     tasks = self._gets(self._task_headings)
+    self._scroll_into_view(self._get(self._task_headings))
     for task in tasks:
       if task_name.lower() in task.text.lower():
         self._actions.move_to_element(task).perform()
@@ -684,6 +685,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         task.click()
       # Check completed_check status
       if not base_task.completed_state():
+        base_task.move2completion_button(task)
         base_task.click_completion_button()
       self.click_covered_element(task)
       time.sleep(2) #This sleep was added to fix a case where a following complete_task() call failed because this one wasn't done.
@@ -703,6 +705,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
           task.click()
           # Check completed_check status
         if not base_task.completed_state():
+          base_task.move2completion_button(task)
           base_task.click_completion_button()
           self.click_covered_element(task)
           time.sleep(1)

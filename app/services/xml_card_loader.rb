@@ -67,12 +67,19 @@ class XmlCardLoader
     )
   end
 
+  def omissible?(name, value)
+    case name
+    when 'possible_values' then value.blank?
+    else value.nil?
+    end
+  end
+
   def build_card_content(content, card_version)
     attributes = card_content_attributes(content, card_version)
-
-    # TODO; Once APERTA-11091 is done, this can be removed
-    allowed_attributes = CardContent.attribute_names.map(&:to_sym) + [:card_version]
-    attributes = attributes.delete_if { |key, value| value.nil? && !allowed_attributes.member?(key) }
+    content_type = content.attr_value('content-type')
+    allowed_attributes = Attributable::CUSTOM_ATTRIBUTES[content_type]
+    allowed_attributes += CardContent.attribute_names.map(&:to_sym) + [:card_version]
+    attributes = attributes.delete_if { |key, value| omissible?(key, value) && !allowed_attributes.member?(key) }
 
     CardContent.new(attributes).tap do |root|
       # assign any validations
@@ -86,32 +93,19 @@ class XmlCardLoader
     end
   end
 
-  def build_card_content_validations(content)
-    content.child_elements('validation').map do |validation|
-      attributes = card_content_validation_attributes(validation)
-      CardContentValidation.new(attributes)
-    end
-  end
-
   def card_version_attributes
     {
-      version:
-        card.latest_version.to_i.next,
-      required_for_submission:
-        xml.card.attr_value('required-for-submission') == 'true',
-      workflow_display_only:
-        xml.card.attr_value('workflow-display-only') == 'true'
+      version: card.latest_version.to_i.next,
+      required_for_submission: xml.card.attr_value('required-for-submission') == 'true',
+      workflow_display_only: xml.card.attr_value('workflow-display-only') == 'true'
     }
   end
 
   def card_content_validation_attributes(content)
     {
-      validator:
-        content.tag_text('validator'),
-      validation_type:
-        content.attr_value('validation-type'),
-      error_message:
-        content.tag_text('error-message')
+      validator: content.tag_text('validator'),
+      validation_type: content.attr_value('validation-type'),
+      error_message: content.tag_text('error-message')
     }
   end
 

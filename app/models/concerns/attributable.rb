@@ -27,7 +27,7 @@ module Attributable
     [%w[paragraph-input],    %w[editor_style]],
     [%w[date-picker],        %w[required_field]],
     [%w[check-box drop-down radio short-input tech-check], %w[]]
-  ].each_with_object(Hash.new([])) do |(types, attributes), hash|
+  ].each_with_object(Hash.new(Set.new)) do |(types, attributes), hash|
     types.each { |type| hash[type] += attributes + COMMON_ATTRIBUTES }
   end.freeze
 

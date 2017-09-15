@@ -7,10 +7,6 @@ class ContentNode
     @children = []
   end
 
-  def root?
-    false
-  end
-
   Attributable::ATTRIBUTE_NAMES.each do |name|
     if Attributable::ATTRIBUTE_TYPES[name] == 'boolean'
       define_method(name) do
@@ -58,10 +54,6 @@ class ContentHierarchy
 
   def initialize(root)
     @root = root
-  end
-
-  def root?
-    true
   end
 
   def to_xml(attrs)

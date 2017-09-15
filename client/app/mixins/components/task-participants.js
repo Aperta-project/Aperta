@@ -43,6 +43,12 @@ export default Ember.Mixin.create({
 
       participant.deleteRecord();
       participant.save();
+    },
+
+    removeAssignedUser() {
+      this.set('task.assignedUserId', null);
+      this.get('task').save();
+      this.set('task.assignedUser', null);
     }
   }
 });

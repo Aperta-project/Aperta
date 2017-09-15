@@ -29,7 +29,6 @@ class ContentNode
         content[name] = value
       end
     end
-
   end
 
   def attributes
@@ -42,7 +41,7 @@ class ContentNode
 
   def traverse(visitor)
     visitor.visit(self)
-    children.each {|child| child.traverse(visitor)}
+    children.each { |child| child.traverse(visitor) }
   end
 
   def to_ruby(name)

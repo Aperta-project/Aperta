@@ -27,12 +27,8 @@ class CardContentSerializer < ActiveModel::Serializer
              :content_type,
              :ident,
              :order,
+             :parent_id
 
-  has_many :children,
-           embed: :ids,
-           include: true,
-           root: :card_contents,
-           key: :unsorted_child_ids
   content_attributes [
     :allow_annotations,
     :allow_file_captions,

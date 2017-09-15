@@ -6,6 +6,12 @@ class CardSerializer < ActiveModel::Serializer
   has_one :content, embed: :id, include: true, root: :card_contents
   has_many :card_versions, embed: :ids
 
+  has_many :latest_contents, embed: :ids, include: true, root: :card_contents
+
+  def latest_contents
+    object.latest_card_version.card_contents
+  end
+
   def content
     object.content_root_for_version(:latest)
   end

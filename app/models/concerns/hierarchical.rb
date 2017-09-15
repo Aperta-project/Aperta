@@ -30,6 +30,7 @@ module Hierarchical
   end
 
   VALIDATION_KEYS = %w[validation_type validator error_message].freeze
+
   def extract_validations(contents)
     contents.each_with_object({}) do |(id, rows), validations|
       unique = rows.each_with_object({}) do |row, hash|
@@ -47,13 +48,14 @@ module Hierarchical
         clean_attributes(row)
         id = row['id']
         result = row.merge(attrs[id].compact)
-        result.merge!('validations' => validations[id]) if validations[id].any?
+        result['validations'] = validations[id] if validations[id].any?
         hash[id] = result
       end
     end
   end
 
   METADATA_KEYS = %w[val_id attribute path value_type].freeze
+
   def clean_attributes(row)
     METADATA_KEYS.each { |key| row.delete(key) }
     VALIDATION_KEYS.each { |key| row.delete(key) }
@@ -62,7 +64,7 @@ module Hierarchical
   end
 
   def node_map(contents)
-    contents.each_with_object({}) {|(id, row), hash| hash[id] = ContentNode.new(row)}
+    contents.each_with_object({}) { |(id, row), hash| hash[id] = ContentNode.new(row) }
   end
 
   def construct_hierarchy(contents)

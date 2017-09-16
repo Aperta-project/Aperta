@@ -8,8 +8,8 @@ export default Ember.Mixin.create({
     return this.get('participations').mapBy('user');
   }),
   assignedUser: Ember.computed('task.assignedUser', function() {
-    let user = this.get('store').peekRecord('user', this.get('task.assignedUserId'));
-    return user ? [user] : [];
+    let user = this.get('task.assignedUser');
+    return user.get('id') ? [user] : [];
   }),
 
   findParticipation(participantId) {

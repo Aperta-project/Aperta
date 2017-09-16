@@ -12,10 +12,6 @@ export default AuthorizedRoute.extend({
       });
   },
 
-  afterModel(task) {
-    let assignedUser = task.get('assignedUser');
-    if (assignedUser) this.store.pushPayload({'user': assignedUser});
-  },
   actions: {
     willTransition(transition) {
       this.controllerFor('paper.task').send('routeWillTransition', transition);

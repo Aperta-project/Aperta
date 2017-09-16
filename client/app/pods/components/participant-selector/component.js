@@ -15,6 +15,7 @@ const {
 export default Component.extend({
   propTypes: {
     canManage: PropTypes.bool,
+    canRemoveSingleUser: PropTypes.bool,
     currentParticipants: PropTypes.arrayOf(PropTypes.EmberObject).isRequired,
     displayEmails: PropTypes.bool,
     label: PropTypes.string,
@@ -58,7 +59,11 @@ export default Component.extend({
   }),
 
   canRemove: computed('canManage', 'currentParticipants.[]', function() {
-    return this.get('canManage') && this.get('currentParticipants').length > 1;
+    if (this.get('canRemoveSingleUser')) {
+      return this.get('canManage') && this.get('currentParticipants').length === 1;
+    } else {
+      return this.get('canManage') && this.get('currentParticipants').length > 1;
+    }
   }),
 
   searchUsersTask: task(function* (term) {

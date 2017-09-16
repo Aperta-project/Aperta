@@ -16,6 +16,7 @@
                  label="Assign:"
                  canManage=(can "assign_others" task)
                  canEditDiscussion=(can "edit_discussion_footer" task)
+                 canRemoveSingleUser=true
                  onSelect=(action "savedAssignedUser")
                  onRemove=(action "removeAssignedUser")
                  searchStarted=(action "searchStartedAssignable")

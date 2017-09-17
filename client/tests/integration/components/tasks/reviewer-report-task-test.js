@@ -175,5 +175,5 @@ test('Canceled events appear with minus icon and "NA" text', function (assert) {
   });
   this.render(hbs`{{reviewer-report-task task=task}}`);
   assert.elementFound('.scheduled-events i.fa-minus');
-  assert.textPresent('.scheduled-events .event-canceled span', 'NA');
+  assert.textPresent('.scheduled-events .event-canceled', 'NA');
 });

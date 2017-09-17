@@ -7,9 +7,9 @@
       {{due-date-offset event.dispatchAt dueDate}}
     </p>
     <p>
-      {{#if event.completed}}<span>{{fa-icon 'fa-check'}}&nbsp;Sent</span>{{/if}}
-      {{#if (or event.inactive event.canceled)}}<span>{{fa-icon 'fa-minus'}}&nbsp;NA</span>{{/if}}
-      {{#if event.errored}}<span>{{fa-icon 'fa-exclamation-triangle'}}&nbsp;Reminder not sent due to a system error</span>{{/if}}
+      {{#if event.completed}}{{fa-icon 'fa-check'}}&nbsp;Sent{{/if}}
+      {{#if (or event.inactive event.canceled)}}{{fa-icon 'fa-minus'}}&nbsp;NA{{/if}}
+      {{#if event.errored}}{{fa-icon 'fa-exclamation-triangle'}}&nbsp;Reminder not sent due to a system error{{/if}}
     </p>
   </div>
 {{/each}}

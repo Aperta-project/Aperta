@@ -107,7 +107,10 @@ class PaperPage < Page
   end
 
   def select_viewing_version(version)
-    power_select('.paper-viewing-version', version.version_string)
+    # This manipulation is necessary because we made some changes to the way text is displayed in the front end
+    target_string = "v#{version.major_version || 'null'}.#{version.minor_version || 'null'} " +
+      version.version_string.gsub(/^R\d.\d\s/, '')
+    power_select('.paper-viewing-version', target_string)
   end
 
   def select_comparison_version(version)

@@ -12,15 +12,38 @@ export default Ember.Route.extend({
     });
   },
 
-  afterModel(model) {
-    // For users with one journal, transition to that journal rather than 'all journals'.
-    if (!model.journal && model.journals.get('length') === 1) {
-      const firstJournal = model.journals.get('firstObject');
+  afterModel(model, transition) {
+    if (transition && this._nonAdminRoute(transition)) { return; }
+    const journal = this._determineSubject(model);
 
-      return this.get('can').can('administer', firstJournal).then( (value)=> {
+    if (journal) {
+      return this.get('can').can('administer', journal).then( (value)=> {
+        // allow any transition if permissions exits
+        if (value) { return; }
+
         const route = 'admin.journals.' + (value ? 'workflows' : 'users');
-        return this.transitionTo(route, firstJournal.id);
+        if (!transition || !(transition.targetName === route)){
+          return this.transitionTo(route, journal.id);
+        }
       });
     }
-  }
+  },
+
+  _nonAdminRoute(transition) {
+    return this.get('_manage_users_routes').some((name) => {
+      return transition.targetName.match(name);
+    });
+  },
+
+  _determineSubject(model) {
+    // For users with one journal, transition to that journal rather than 'all journals'.
+    if (model.journal) {
+      return model.journal;
+    }
+    else if (model.journals.get('length') === 1) {
+      return model.journals.get('firstObject');
+    }
+  },
+
+  _manage_users_routes: [/users$/,  /mailtemplates$/]
 });

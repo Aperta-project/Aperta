@@ -6,8 +6,14 @@ export default Ember.Component.extend({
     if (this.get('event.active')) {
       return { value: true };
     }
-    else {
+    else if (this.get('event.passive')){
       return { value: false };
     }
   }),
+  actions: {
+    changeEventState(newVal) {
+      // console.log(newVal);
+      return newVal;
+    }
+  }
 });

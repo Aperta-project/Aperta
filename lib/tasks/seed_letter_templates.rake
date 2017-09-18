@@ -37,13 +37,13 @@ namespace :seed do
             {% for review in reviews %}
               {%- if review.status == 'completed' -%}
                 ----------<br/>
-                <p>Reviewer {{ review.reviewer_number | default '' }}</p>
+                <p>Reviewer Report {{ review.reviewer_number | default '' }} {{review.reviewer_name | default ''}}</p>
                 {%- for answer in review.answers -%}
-                {%- if answer.ident == 'reviewer_report--comments_for_author' or answer.ident == 'front_matter_reviewer_report--suitable--comment' -%}
-                <p>
-                  {{ answer.value }}
-                </p>
-                {%- endif -%}
+                  {%- if review.rendered_answer_idents contains answer.ident -%}
+                  <p>
+                    {{ answer.value }}
+                  </p>
+                  {%- endif -%}
                 {%- endfor -%}
               {% endif %}
             {% endfor %}

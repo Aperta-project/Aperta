@@ -36,8 +36,6 @@ Tahi::Application.configure do
   # compress logging output
   # config.lograge.enabled = true
 
-  config.logger = ActiveSupport::Logger.new(STDOUT)
-
   config.log_level = :info
 
   config.carrierwave_storage = :fog

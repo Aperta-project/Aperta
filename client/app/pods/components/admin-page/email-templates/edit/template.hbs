@@ -84,3 +84,7 @@
     </div>
   </div>
 </div>
+
+{{dirty-overlay visible=showDirtyOverlay
+   outAnimationComplete=(toggle "showDirtyOverlay" this)
+   cleanDirtyModel=(action 'cleanDirtyModel')}}

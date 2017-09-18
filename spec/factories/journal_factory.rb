@@ -20,6 +20,18 @@ FactoryGirl.define do
       end
     end
 
+    trait(:with_default_mmt) do
+      after(:create) do |journal|
+        JournalFactory.setup_default_mmt(journal)
+      end
+    end
+
+    trait(:with_default_task_types) do
+      after(:create) do |journal|
+        JournalFactory.setup_default_mmt(journal)
+      end
+    end
+
     trait(:with_roles_and_permissions) do
       after(:create) do |journal|
         JournalFactory.ensure_default_roles_and_permissions_exist(journal)
@@ -53,6 +65,8 @@ FactoryGirl.define do
       end
     end
 
+    factory :journal_for_integration_tests, traits: [:with_default_mmt, :with_roles_and_permissions]
     factory :journal_with_roles_and_permissions, traits: [:with_roles_and_permissions]
+    factory :journal_with_default_mmt, traits: [:with_default_mmt]
   end
 end

@@ -15,13 +15,13 @@ describe TaskTemplatesController do
   let(:setting) {
     FactoryGirl.create(:setting, name: 'ithenticate_automation')
   }
+  let(:journal_task_type) { FactoryGirl.create(:journal_task_type, journal: journal) }
   let(:task_template) {
     FactoryGirl.create(:task_template,
     phase_template: phase_template,
-    journal_task_type: journal.journal_task_types.first,
+    journal_task_type: journal_task_type,
     settings: [setting])
   }
-  let(:journal_task_type) { journal.journal_task_types.first }
 
   it "creates a record" do
     post :create, format: :json, task_template: { phase_template_id: phase_template.id,

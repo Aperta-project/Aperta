@@ -10,6 +10,7 @@ moduleForComponent('admin-page/email-templates/edit',
     integration: true,
     beforeEach() {
       manualSetup(this.container);
+      this.set('dirtyEditorConfig', {model: 'template', properties: ['subject', 'body']});
     }
   }
 );
@@ -22,7 +23,7 @@ test('it populates input fields with model data', function(assert) {
   this.set('template', template);
 
   this.render(hbs`
-    {{admin-page/email-templates/edit template=template}}
+    {{admin-page/email-templates/edit template=template dirtyEditorConfig=dirtyEditorConfig}}
   `);
   assert.equal(this.$('.template-subject').val(), template.get('subject'));
   assert.equal(this.$('.template-body').val(), template.get('body'));
@@ -35,7 +36,7 @@ test('it displays validation errors if a field is empty', function(assert){
   this.set('template', template);
 
   this.render(hbs`
-    {{admin-page/email-templates/edit template=template}}
+    {{admin-page/email-templates/edit template=template dirtyEditorConfig=dirtyEditorConfig}}
   `);
 
   Ember.run(() => {
@@ -55,7 +56,7 @@ test('it displays a success message if save succeeds and disables save button', 
   this.set('template', template);
 
   this.render(hbs`
-    {{admin-page/email-templates/edit template=template}}
+    {{admin-page/email-templates/edit template=template dirtyEditorConfig=dirtyEditorConfig}}
   `);
 
   // This is necessary because the save button doesn't enable until there is a keypress event on any of the fields
@@ -77,7 +78,7 @@ test('it displays an error message if save fails', function(assert) {
   this.set('template', template);
 
   this.render(hbs`
-    {{admin-page/email-templates/edit template=template}}
+    {{admin-page/email-templates/edit template=template dirtyEditorConfig=dirtyEditorConfig}}
   `);
 
   Ember.run(() => generateKeyEvent.call(this, 32));
@@ -101,7 +102,7 @@ test('it warns user if input field has invalid content', function(assert) {
   this.set('template', template);
 
   this.render(hbs`
-    {{admin-page/email-templates/edit template=template}}
+    {{admin-page/email-templates/edit template=template dirtyEditorConfig=dirtyEditorConfig}}
   `);
   
   Ember.run(() => generateKeyEvent.call(this, 32));

@@ -9,7 +9,7 @@ feature "Discussions", js: true, selenium: true do
       assign_journal_role(journal, u, :editor)
     end
   end
-  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
+  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions, :with_default_mmt }
   let!(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, creator: creator, journal: journal }
   let(:discussion_page) { DiscussionsPage.new }
   let!(:other_person) { create :user, username: 'pickachu' }

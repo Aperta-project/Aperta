@@ -82,7 +82,8 @@ TEXT
       # happens, the rendering part below simplifies to a call on the
       # LetterTemplate object.
       context = PaperReviewerScenario.new(self)
-      lt = LetterTemplate.new(body: template)
+      # Use LetterTemplate, not TahiStandardTasks::LetterTemplate
+      lt = ::LetterTemplate.new(body: template)
       lt.render(context).body
     end
   end

@@ -9,6 +9,8 @@ export default Ember.Mixin.create({
   }),
   assignedUser: Ember.computed('task.assignedUser', function() {
     let user = this.get('task.assignedUser');
+    // It has to return an array because the participant-selector expects
+    // currentParticipants to be kind of array.
     return user.get('id') ? [user] : [];
   }),
 
@@ -24,17 +26,23 @@ export default Ember.Mixin.create({
   },
 
   actions: {
+    saveAssignedUser(newUser) {
+      const user = this.get('store').findOrPush('user', newUser);
+      this.set('task.assignedUserId', user.get('id'));
+      this.get('task').save();
+      this.set('task.assignedUser', user);
+    },
+
     saveNewParticipant(newParticipant) {
       const user = this.get('store').findOrPush('user', newParticipant);
       if (this.get('participants').includes(user)) { return; }
       this.createNewParticipation(user, this.get('task')).save();
     },
 
-    savedAssignedUser(newUser) {
-      const user = this.get('store').findOrPush('user', newUser);
-      this.set('task.assignedUserId', user.get('id'));
+    removeAssignedUser() {
+      this.set('task.assignedUserId', null);
       this.get('task').save();
-      this.set('task.assignedUser', user);
+      this.set('task.assignedUser', null);
     },
 
     removeParticipant(participantId) {
@@ -43,12 +51,6 @@ export default Ember.Mixin.create({
 
       participant.deleteRecord();
       participant.save();
-    },
-
-    removeAssignedUser() {
-      this.set('task.assignedUserId', null);
-      this.get('task').save();
-      this.set('task.assignedUser', null);
     }
   }
 });

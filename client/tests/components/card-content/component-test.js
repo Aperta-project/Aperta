@@ -11,7 +11,7 @@ moduleForComponent('custom-card-task', 'Integration | Components | Card Content'
   integration: true,
 
   beforeEach() {
-    this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+    this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
     manualSetup(this.container);
     this.registry.register('service:can', FakeCanService);
 

@@ -13,7 +13,7 @@ moduleForComponent('nested-question-textarea', 'Integration | Component | nested
   beforeEach() {
     registerCustomAssertions();
     manualSetup(this.container);
-    this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+    this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
     this.registry.register('service:can', FakeCanService);
 
     this.getAnswers = function() {

@@ -9,16 +9,16 @@ import {getRichText} from 'tahi/tests/helpers/rich-text-editor-helpers';
 moduleForComponent(
   'revise-task',
   'Integration | Components | Tasks | Revise', {
-    integration: true,
-    beforeEach() {
-      manualSetup(this.container);
-      this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
-      Factory.createPermission('reviseTask', 1, ['edit', 'view']);
-    },
-    afterEach() {
-      $.mockjax.clear();
-    }
-  });
+  integration: true,
+  beforeEach() {
+    manualSetup(this.container);
+    this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
+    Factory.createPermission('reviseTask', 1, ['edit', 'view']);
+  },
+  afterEach() {
+    $.mockjax.clear();
+  }
+});
 
 let createTaskWithDecision = function(decisionAttrs) {
   const decision = make('decision', decisionAttrs);

@@ -35,7 +35,7 @@ moduleForComponent('upload-manuscript-task', 'Integration | Component | manuscri
       completed: false,
       paper: paper
     }));
-    this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+    this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
   },
 
   afterEach() {

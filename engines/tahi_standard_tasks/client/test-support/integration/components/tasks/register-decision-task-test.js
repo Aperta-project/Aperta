@@ -55,7 +55,7 @@ moduleForComponent(
       });
 
       // Mock out pusher
-      this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+      this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
 
       Factory.createPermission('registerDecisionTask', 1, ['edit', 'view']);
 

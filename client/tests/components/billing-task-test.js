@@ -13,7 +13,7 @@ moduleForComponent('billing-task', 'Integration | Component | billing task', {
     registerCustomAssertions();
     manualSetup(this.container);
 
-    this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+    this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
     $.mockjax({url: '/api/countries', status: 200, responseText: {
       countries: [],
     }});

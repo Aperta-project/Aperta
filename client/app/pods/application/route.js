@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import ENV from 'tahi/config/environment';
+import EmberPusher from 'ember-pusher';
 
 const { getOwner } = Ember;
 
@@ -16,9 +17,10 @@ const debug = function(description, obj) {
 };
 
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(EmberPusher.Bindings, {
   restless: Ember.inject.service(),
   notifications: Ember.inject.service(),
+  pusher: Ember.inject.service(),
   fullStory: Ember.inject.service(),
 
   beforeModel() {
@@ -35,8 +37,8 @@ export default Ember.Route.extend({
     if (this.currentUser) {
       // subscribe to user and system channels
       const userChannelName = `private-user@${ this.currentUser.get('id') }`;
-      const pusher = this.get('pusher');
-
+      let pusher = this.get('pusher');
+      pusher.setup(window.eventStreamConfig.key, ENV.APP.PUSHER_OPTS.connection);
       pusher.wire(this, 'system', ['destroyed']);
       pusher.wire(
         this,

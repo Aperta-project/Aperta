@@ -2,6 +2,7 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import Factory from '../../../helpers/factory';
+import Ember from 'ember';
 import wait from 'ember-test-helpers/wait';
 
 moduleForComponent(
@@ -10,7 +11,7 @@ moduleForComponent(
   integration: true,
   beforeEach() {
     manualSetup(this.container);
-    this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+    this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
     Factory.createPermission('authorsTask', 1, ['edit', 'view']);
 
     // For any answers that will be sent to the server

@@ -17,7 +17,7 @@ import Ember from 'ember';
 moduleForComponent('nested-question', 'Integration | Component | nested question', {
   integration: true,
   beforeEach() { registerCustomAssertions();
-    this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+    this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
     manualSetup(this.container);
   },
   afterEach() {

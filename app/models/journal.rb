@@ -40,7 +40,6 @@ class Journal < ActiveRecord::Base
                   message: 'This DOI Journal Prefix has already been assigned to this publisher.  Please choose a unique DOI Journal Prefix' }
   validates :last_doi_issued, presence: { message: 'Please include a Last DOI Issued' }
 
-  after_create :setup_defaults
   before_destroy :confirm_no_papers, prepend: true
 
   mount_uploader :logo, LogoUploader
@@ -145,12 +144,6 @@ class Journal < ActiveRecord::Base
   end
 
   private
-
-  def setup_defaults
-    # TODO: remove these from being a callback (when we aren't using rails_admin)
-    JournalServices::CreateDefaultTaskTypes.call(self)
-    JournalServices::CreateDefaultManuscriptManagerTemplates.call(self)
-  end
 
   def confirm_no_papers
     if papers.any?

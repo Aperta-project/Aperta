@@ -5,7 +5,8 @@ describe Typesetter::AuthorSerializer do
     CardLoader.load('Author')
   end
 
-  subject(:serializer) { described_class.new(author) }
+  subject(:serializer) { described_class.new(author, options) }
+  let!(:options) { { destination: "em", unique_values: {} } }
 
   let(:first_name) { 'first name' }
   let(:last_name) { 'last name' }
@@ -84,10 +85,6 @@ describe Typesetter::AuthorSerializer do
 
   before do
     allow(author).to receive(:answer_for).and_call_original
-  end
-
-  let!(:creator_flag) do
-    FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
   end
 
   let!(:apex_html_flag) do
@@ -244,14 +241,11 @@ describe Typesetter::AuthorSerializer do
       end
     end
 
-    context 'with creator feature flag turned off' do
-      before do
-        FeatureFlag.find(creator_flag.id).update(active: false)
-      end
-
+    context 'exporting to apex' do
+      let!(:options) { { destination: "apex", unique_values: {} } }
       it 'is not serialized' do
         author.user = FactoryGirl.create(:user)
-        expect(output[:creator]).to_not be_present
+        expect(output[:creator]).not_to be_present
       end
     end
   end

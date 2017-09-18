@@ -40,7 +40,6 @@ describe Typesetter::MetadataSerializer do
   let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
 
   before do
-    FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
     CardLoader.load('TahiStandardTasks::EarlyPostingTask')
     paper.phases.first.tasks.push(*metadata_tasks)
   end
@@ -247,11 +246,11 @@ describe Typesetter::MetadataSerializer do
     end
   end
 
-  describe "add custom card and export the fields" do
+  describe "add router-specific metadata and export the fields" do
     let(:journal) do
       FactoryGirl.create(:journal, :with_creator_role, pdf_css: 'body { background-color: red; }')
     end
-    let(:paper) { FactoryGirl.create(:paper, :with_phases, :version_with_file_type, :with_creator, journal: journal) }
+    let(:paper) { FactoryGirl.create(:paper, :with_phases, :version_with_file_type, :with_author, journal: journal) }
     let(:card_version) { FactoryGirl.create(:card_version) }
     let(:another_card_version) { FactoryGirl.create(:card_version) }
     let(:my_custom_task) { FactoryGirl.create(:custom_card_task, card_version: card_version, paper: paper) }
@@ -284,18 +283,31 @@ describe Typesetter::MetadataSerializer do
       end
     end
 
+    shared_examples_for :includes_creator_attribute do
+      it "ensure exported metadata includes creator attribute" do
+        expect(subject['metadata']['authors'][0]['author']).to have_key('creator')
+      end
+    end
+
     context 'when the destination is "preprint"' do
       let(:options) { { destination: 'preprint' } }
       it_behaves_like :includes_custom_metadata
+      it_behaves_like :includes_creator_attribute
     end
 
     context 'when the destination is "em"' do
       let(:options) { { destination: 'em' } }
       it_behaves_like :includes_custom_metadata
+      it_behaves_like :includes_creator_attribute
     end
 
     context 'when the destination is "apex"' do
-      let(:options) { { destination: 'apex' } }
+      let!(:options) { { destination: 'apex' } }
+
+      it "ensure exported metadata does not include creator attribute" do
+        expect(subject['metadata']['authors'][0]['author']).not_to have_key('creator')
+      end
+
       it "ensure exported metadata does not include custom card fields" do
         expect(subject['metadata']).not_to have_key('custom_card_fields')
       end

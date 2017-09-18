@@ -9,32 +9,32 @@ describe ReviewerReportScenario do
     it 'renders the due date' do
       due_at = 2.weeks.from_now.to_s(:due_with_hours)
       reviewer_report.due_datetime = DueDatetime.new(due_at: due_at)
-      template_source = '{{ review.due_at }}'
-      expect(Liquid::Template.parse(template_source).render(context)).to eq(due_at)
+      source = '{{ review.due_at }}'
+      expect(LetterTemplate.new(body: source).render(context).body).to eq(due_at)
     end
 
     it 'renders the journal name' do
       journal = reviewer_report.paper.journal
-      template_source = '{{ journal.name }}'
-      expect(Liquid::Template.parse(template_source).render(context)).to eq(journal.name)
+      source = '{{ journal.name }}'
+      expect(LetterTemplate.new(body: source).render(context).body).to eq(journal.name)
     end
 
     it 'renders the reviewer last name' do
       reviewer = reviewer_report.user
-      template_source = '{{ reviewer.last_name }}'
-      expect(Liquid::Template.parse(template_source).render(context)).to eq(reviewer.last_name)
+      source = '{{ reviewer.last_name }}'
+      expect(LetterTemplate.new(body: source).render(context).body).to eq(reviewer.last_name)
     end
 
     it 'renders the reviewer email' do
       reviewer = reviewer_report.user
-      template_source = '{{ reviewer.email }}'
-      expect(Liquid::Template.parse(template_source).render(context)).to eq(reviewer.email)
+      source = '{{ reviewer.email }}'
+      expect(LetterTemplate.new(body: source).render(context).body).to eq(reviewer.email)
     end
 
     it 'renders the paper title' do
       paper = reviewer_report.paper
-      template_source = '{{ manuscript.title }}'
-      expect(Liquid::Template.parse(template_source).render(context)).to eq(paper.title)
+      source = '{{ manuscript.title }}'
+      expect(LetterTemplate.new(body: source).render(context).body).to eq(paper.title)
     end
   end
 end

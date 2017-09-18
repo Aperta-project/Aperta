@@ -40,26 +40,26 @@ describe TahiStandardTasks::RegisterDecisionScenario do
   describe "rendering a RegisterDecisionScenario" do
     it "renders the journal" do
       template = "{{ journal.name }}"
-      expect(Liquid::Template.parse(template).render(context))
+      expect(LetterTemplate.new(body: template).render(context).body)
         .to eq(paper.journal.name)
     end
 
     it "renders the manuscript type" do
       template = "{{ manuscript.paper_type }}"
-      expect(Liquid::Template.parse(template).render(context))
+      expect(LetterTemplate.new(body: template).render(context).body)
         .to eq(paper.paper_type)
     end
 
     it "renders the manuscript title" do
       template = "{{ manuscript.title }}"
-      expect(Liquid::Template.parse(template).render(context))
+      expect(LetterTemplate.new(body: template).render(context).body)
         .to eq(paper.title)
     end
 
     it "renders the reviews sorted by reviewer number" do
       paper.draft_decision.reviewer_reports = [reviewer_report1, reviewer_report3, reviewer_report2]
       template = "{%- for review in reviews -%} Review by {{review.reviewer.first_name}} Number: {{review.reviewer_number}}--{%- endfor -%}"
-      expect(Liquid::Template.parse(template).render(context))
+      expect(LetterTemplate.new(body: template).render(context).body)
         .to eq("Review by #{reviewer1.first_name} Number: 1--Review by #{reviewer2.first_name} Number: 2--Review by #{reviewer3.first_name} Number: 3--")
     end
   end

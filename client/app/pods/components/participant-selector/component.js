@@ -58,7 +58,7 @@ export default Component.extend({
       filteredUsersPath(this.get('paperId'));
   }),
 
-  canRemove: computed('canManage', 'currentParticipants.[]', function() {
+  canRemove: computed('canManage', 'canRemoveSingleUser', 'currentParticipants.[]', function() {
     if (this.get('canRemoveSingleUser')) {
       return this.get('canManage') && this.get('currentParticipants').length === 1;
     } else {

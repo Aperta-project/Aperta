@@ -21,6 +21,17 @@ describe ScheduledEvent do
       expect(subject.active?).to be true
     end
 
+    it 'can move from active to passive' do
+      subject.switch_off
+      expect(subject.passive?).to be true
+    end
+
+    it 'can move from passive to active' do
+      subject.switch_off
+      subject.switch_on
+      expect(subject.active?).to be true
+    end
+
     it 'can move from active to processing' do
       subject.trigger
       expect(subject.processing?).to be true

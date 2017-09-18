@@ -45,6 +45,14 @@ class ScheduledEvent < ActiveRecord::Base
       transitions from: :active, to: :inactive
     end
 
+    event(:switch_off) do
+      transitions from: :active, to: :passive
+    end
+
+    event(:switch_on) do
+      transitions from: :passive, to: :active
+    end
+
     event(:trigger, after_commit: [:send_email]) do
       transitions from: :active, to: :processing
     end

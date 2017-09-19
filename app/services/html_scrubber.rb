@@ -4,7 +4,7 @@ class HtmlScrubber < Rails::Html::PermitScrubber
   BASIC_TAGS    = 'p,br,strong,b,em,i,u,sub,sup,pre'.freeze
   EXTRA_TAGS    = ',a,div,span,code,ol,ul,li,h1,h2,h3,h4,table,thead,tbody,tfoot,tr,th,td'.freeze
   STANDARD_TAGS = Set.new((BASIC_TAGS + EXTRA_TAGS).split(',')).freeze
-  TAG_ATTRS     = Set.new(%w(href rel reversed start target title type)).freeze
+  TAG_ATTRS     = Set.new(%w[href rel reversed start target title type style]).freeze
 
   def initialize(attrs = [])
     super()

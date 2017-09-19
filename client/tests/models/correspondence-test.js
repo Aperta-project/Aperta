@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { moduleForModel, test } from 'ember-qunit';
 import FactoryGuy from 'ember-data-factory-guy';
 import startApp from '../helpers/start-app';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 
 var app;
 
@@ -43,7 +43,7 @@ test('manuscriptVersionStatus with  valid values', function(assert) {
 test('manuscriptVersionStatus for external correspondence and old papers', function(assert) {
   var correspondence = FactoryGuy.make('correspondence', {
   });
-  
+
   var scenarios = [
     {
       data: {
@@ -58,4 +58,4 @@ test('manuscriptVersionStatus for external correspondence and old papers', funct
     }),
     assert.equal(correspondence.get('manuscriptVersionStatus'), 'v2.0 submitted');
   });
-}); 
+});

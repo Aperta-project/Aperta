@@ -1,10 +1,11 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
+import moduleForAcceptance from '../helpers/module-for-acceptance';
 import startApp from '../helpers/start-app';
 import { paperWithTask, addUserAsParticipant, addNestedQuestionToTask } from '../helpers/setups';
 import setupMockServer from '../helpers/mock-server';
 import Factory from '../helpers/factory';
-import * as TestHelper from 'ember-data-factory-guy';
+//import * as TestHelper from 'ember-data-factory-guy';
 
 var app, currentPaper, fakeUser, financialDisclosureTask,
     financialDisclosureTaskId, paperPayload, server;
@@ -17,13 +18,15 @@ financialDisclosureTaskId = 94139;
 financialDisclosureTask = null;
 paperPayload = null;
 
-module('Integration: FinancialDisclosure', {
+moduleForAcceptance('Integration: FinancialDisclosure', {
   teardown: function() {
     server.restore();
+    Ember.$.mockjax.clear();
     return Ember.run(app, app.destroy);
   },
 
-  setup: function() {
+  beforeEach: function() {
+    Ember.$.mockjaxSettings.logging = 4;
     var collaborators, journal, mirrorCreateResponse, paperResponse,
         phase, records, taskPayload;
     app = startApp();
@@ -52,7 +55,7 @@ module('Integration: FinancialDisclosure', {
       [addUserAsParticipant(financialDisclosureTask, fakeUser)];
 
     taskPayload = Factory.createPayload('task');
-
+    
     var nestedQuestion;
     nestedQuestion = Factory.createRecord(
       'NestedQuestion',
@@ -119,10 +122,11 @@ module('Integration: FinancialDisclosure', {
       ] }
     ) ]);
 
+    // TODO: APERTA-11218 Note on PR about the mixup in behavior here.
     server.respondWith('POST', `/api/nested_questions/${nestedQuestion.id}/answers`, [
-      204, {
+      200, {
         "Content-Type": "application/json"
-      }, JSON.stringify([])
+      }, JSON.stringify({"nested_question_answer":{"id":203,"value_type":"boolean","value":true,"owner":{"id":225,"type":"Task"},"nested_question_id":123,"attachment_ids":[]}})
     ]);
 
     server.respondWith('DELETE', /\/api\/funders\/\d+/, [

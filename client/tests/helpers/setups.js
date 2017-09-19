@@ -50,7 +50,6 @@ export function paperWithTask(taskType, taskAttrs) {
     current_user_roles: ['Creator']
   }, Factory.getNewId('paper'));
   paper.shortDoi = 'test.000' + paper.id;
-
   let phase = Factory.createPhase(paper);
   let task  = Factory.createTask(taskType, paper, phase, taskAttrs);
 

@@ -15,7 +15,7 @@ moduleForComponent(
       manualSetup(this.container);
       registerCustomAssertions();
       this.registry.register(
-        'pusher:main',
+        'service:pusher',
         Ember.Object.extend({ socketId: 'foo' })
       );
     }

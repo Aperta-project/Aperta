@@ -14,7 +14,7 @@ moduleForComponent('review-status', 'Integration | Component | Admin Page | User
 
   beforeEach() {
     manualSetup(this.container);
-    this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+    this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
     this.set('journal', make('admin-journal'));
   }
 });

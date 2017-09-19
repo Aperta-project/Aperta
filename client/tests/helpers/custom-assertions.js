@@ -56,7 +56,7 @@ export default function() {
       actualDescription = _.map(mockjaxCalls, actualDescriptionMapper);
     }
 
-    return this.push(
+    return this.pushResult(
       requestFound,
       actualDescription,
       expectedDescription,
@@ -83,7 +83,7 @@ export default function() {
       });
     }
 
-    return this.push(
+    return this.pushResult(
       !requestFound,
       actualDescription,
       expectedDescription,
@@ -105,7 +105,7 @@ export default function() {
       result = false;
     }
 
-    return this.push(
+    return this.pushResult(
       result,
       actualArray.invoke('toString'),
       expectedArray.invoke('toString'),
@@ -124,7 +124,7 @@ export default function() {
       finalMessage = message;
     }
 
-    return this.push(result, elementText, text, finalMessage);
+    return this.pushResult(result, elementText, text, finalMessage);
   };
 
   QUnit.assert.textNotPresent = function(selector, text, message) {
@@ -138,36 +138,35 @@ export default function() {
       finalMessage = message;
     }
 
-    return this.push(result, elementText, text, finalMessage);
+    return this.pushResult(result, elementText, text, finalMessage);
   };
 
   QUnit.assert.elementFound = function(selector, message) {
     const matches = $(selector).length;
-
-    return this.push(
-      matches === 1,
-      `found ${matches} '${selector}'s`,
-      `found 1 '${selector}'s'`,
-      message || `should find single element at ${selector}`);
+    return this.pushResult({
+      result: matches === 1,
+      actual: matches,
+      expected: 1 ,
+      message: message || `should find single element at ${selector}`});
   };
 
   QUnit.assert.nElementsFound = function(selector, n, message) {
     const matches = $(selector).length;
 
-    return this.push(
-      matches === n,
-      `found ${matches} '${selector}'s`,
-      `found ${n} '${selector}'s`,
-      message || `should find ${n} elements at ${selector}`);
+    return this.pushResult({
+      result: matches === n,
+      actual: `found ${matches} '${selector}'s`,
+      expected: `found ${n} '${selector}'s`,
+      message: message || `should find ${n} elements at ${selector}`});
   };
 
   QUnit.assert.elementNotFound = function(selector, message) {
     const matches = Ember.$('#ember-testing ' + selector).length;
-    return this.push(
-      matches === 0,
-      `'${selector}' found`,
-      `'${selector}' not found`,
-      message || `should find no element at ${selector}`);
+    return this.pushResult({
+      result: matches === 0,
+      actual: `'${selector}' found`,
+      expected: `'${selector}' not found`,
+      message: message || `should find no element at ${selector}`});
   };
 
   QUnit.assert.inputContains = function(selector, expectedValue) {
@@ -178,7 +177,7 @@ export default function() {
     let value  = input.val();
     let result = value.indexOf(expectedValue) !== -1;
 
-    return this.push(
+    return this.pushResult(
       result,
       value,
       expectedValue,
@@ -192,7 +191,7 @@ export default function() {
 
     this.elementFound(selector, message);
 
-    return this.push(
+    return this.pushResult(
       input.val() === value,
       input.val(),
       value,
@@ -207,7 +206,7 @@ export default function() {
 
     this.elementFound(selector, message);
 
-    return this.push(
+    return this.pushResult(
       input.is(':checked') === value,
       input.is(':checked'),
       value,
@@ -218,7 +217,7 @@ export default function() {
   QUnit.assert.elementsFound = function(selector, count, message) {
     const matches = Ember.$(selector).length;
 
-    return this.push(matches === count, matches, count, message || `should find ${count} elements for ${selector}`);
+    return this.pushResult(matches === count, matches, count, message || `should find ${count} elements for ${selector}`);
   };
 
   QUnit.assert.spyCalledWith = function(spy, args, message) {
@@ -226,7 +225,7 @@ export default function() {
       return QUnit.assert.spyCalled(spy, message);
     }
 
-    return this.push(
+    return this.pushResult(
       spy.calledWith(...args),
       spy.lastCall.args,
       args,
@@ -234,7 +233,7 @@ export default function() {
   };
 
   QUnit.assert.spyCalled = function(spy, message) {
-    return this.push(
+    return this.pushResult(
       spy.called,
       'never called',
       'called',
@@ -242,7 +241,7 @@ export default function() {
   };
 
   QUnit.assert.spyNotCalled = function(spy, message) {
-    return this.push(
+    return this.pushResult(
       spy.notCalled,
       'called',
       'not called',
@@ -258,7 +257,7 @@ export default function() {
 
     // Optional feature, possibly pull out into it's own assertion.
     if (!_.isUndefined(expectedFoundElementsCount)){
-      this.push(
+      this.pushResult(
         elements.length === expectedFoundElementsCount,
         elements.length,
         expectedFoundElementsCount,
@@ -276,7 +275,7 @@ export default function() {
       'No elements found' :
       `${rejectedElementsFound} elements missing ( ${values} ).`;
 
-    return this.push(
+    return this.pushResult(
       rejectedElementsFound > 0,
       expectedMessage,
       `all elements to have ( ${values} ).`,

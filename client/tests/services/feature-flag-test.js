@@ -1,7 +1,5 @@
 import { moduleFor, test } from 'ember-qunit';
 import { make, manualSetup }  from 'ember-data-factory-guy';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
-import startApp from '../helpers/start-app';
 
 moduleFor('service:feature-flag', 'Unit | Service | Feature flag', {
   needs: ['model:feature-flag', 'service:store'],

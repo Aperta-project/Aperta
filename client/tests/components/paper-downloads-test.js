@@ -18,7 +18,7 @@ moduleForComponent('paper-downloads', 'Integration | Component | Paper Downloads
         isDraft: false,
         majorVersion: 1,
         minorVersion: 1,
-        versionString: 'R1.0 (DOCX) - Jan 30, 2017',
+        updatedAt: '2017-01-30T22:51:16.000Z',
         fileType: 'docx',
       }]
     });
@@ -30,7 +30,7 @@ moduleForComponent('paper-downloads', 'Integration | Component | Paper Downloads
         isDraft: false,
         majorVersion: 1,
         minorVersion: 1,
-        versionString: 'R1.0 (DOCX) - Jan 30, 2017',
+        updatedAt: '2017-01-30T22:51:16.000Z',
         fileType: 'pdf',
       }]
     });
@@ -42,7 +42,7 @@ moduleForComponent('paper-downloads', 'Integration | Component | Paper Downloads
         isDraft: false,
         majorVersion: 1,
         minorVersion: 1,
-        versionString: 'R1.0 (DOCX) - Jan 30, 2017',
+        updatedAt: '2017-01-30T22:51:16.000Z',
         fileType: 'pdf',
         sourceType: 'docx'
       }]

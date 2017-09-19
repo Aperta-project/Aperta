@@ -9,21 +9,6 @@ describe VersionedText do
 
   it_behaves_like 'a thing with major and minor versions', :versioned_text
 
-  describe '#version_string' do
-    it 'contains file_type' do
-      expect(versioned_text.version_string.match('DOCX').to_a.any?).to be(true)
-    end
-
-    it 'contains draft text' do
-      expect(versioned_text.version_string.match('draft').to_a.any?).to be(true)
-    end
-
-    it 'contains major and minor' do
-      paper.draft.be_minor_version!
-      expect(versioned_text.version_string.match('0.0').to_a.any?).to be(true)
-    end
-  end
-
   describe '#version' do
     let(:new_versioned_text) { FactoryGirl.create :versioned_text }
     it 'returns semantic version if it is not a draft' do

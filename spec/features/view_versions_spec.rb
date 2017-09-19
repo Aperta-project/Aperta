@@ -61,7 +61,6 @@ feature 'Viewing Versions:', js: true, flaky: true do
       page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|
         overlay.expect_version('R0.0')
       end
-
       page.select_viewing_version(version_1)
 
       page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|

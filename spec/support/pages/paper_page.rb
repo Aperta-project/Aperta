@@ -107,14 +107,11 @@ class PaperPage < Page
   end
 
   def select_viewing_version(version)
-    # This manipulation is necessary because we made some changes to the way text is displayed in the front end
-    target_string = "v#{version.major_version || 'null'}.#{version.minor_version || 'null'} " +
-      version.version_string.gsub(/^R\d.\d\s/, '')
-    power_select('.paper-viewing-version', target_string)
+    power_select('.paper-viewing-version', target_string(version))
   end
 
   def select_comparison_version(version)
-    power_select('.paper-comparison-version', version.version_string)
+    power_select('.paper-comparison-version', target_string(version))
   end
 
   def has_body_text?(text)
@@ -190,5 +187,16 @@ HERE
 
   def abstract_node
     find(:css, '#paper-abstract')
+  end
+
+  def target_string(version)
+    file_type_string = version.file_type ? "(#{version.file_type.upcase})" : ''
+    date = version.updated_at.strftime('%b %d, %Y')
+    file_type_and_date = "#{file_type_string} - #{date}".strip
+    if version.major_version.blank?
+      "(draft) #{file_type_and_date}"
+    else
+      "v#{version.major_version}.#{version.minor_version} #{file_type_and_date}"
+    end
   end
 end

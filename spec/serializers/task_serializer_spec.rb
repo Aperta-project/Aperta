@@ -128,8 +128,8 @@ describe TaskSerializer, serializer_test: true do
   describe '#assigned_user' do
     it 'returns user when assigned to task' do
       user = create(:user)
-      task.update(assigned_user_id: user.id)
-      expect(deserialized_content[:task][:assigned_user]).to be == UserSerializer.new(user).serializable_hash
+      task.update(assigned_user: user)
+      expect(deserialized_content[:task][:assigned_user_id]).to be == user.id
     end
 
     it 'returns nil when user is not assigned to task' do

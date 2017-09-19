@@ -8,11 +8,8 @@ class LetterTemplateBlankValidator
     private
 
     def blank_liquid_variable?(name, lookups, context)
-      if context.is_a? Hash
-        blank_liquid_variable_in_hash?(name, lookups, context)
-      elsif context.is_a? TemplateScenario
-        blank_liquid_variable_in_scenario?(name, lookups, context)
-      end
+      context = context.deep_symbolize_keys if context.is_a? Hash
+      context[name.to_sym].blank? || lookups.any? { |lookup| context[name.to_sym][lookup.to_sym].blank? }
     end
 
     def get_liquid_variables(liquid_nodelist)
@@ -23,16 +20,7 @@ class LetterTemplateBlankValidator
       end
       vars
     end
-
-    def blank_liquid_variable_in_hash?(name, lookups, context)
-      context = context.with_indifferent_access
-      context[name].blank? || (!lookups.empty? && lookups.any? { |lookup| context[name][lookup].blank? })
-    end
-
-    def blank_liquid_variable_in_scenario?(name, lookups, context)
-      context.send(name).blank? || (!lookups.empty? && lookups.any? { |lookup| context.send(name).send(lookup).blank? })
-    end
   end
 end
 
-class BlankRenderFieldsError; end
+class BlankRenderFieldsError < StandardError; end

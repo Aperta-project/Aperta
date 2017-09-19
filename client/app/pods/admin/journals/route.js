@@ -13,37 +13,49 @@ export default Ember.Route.extend({
   },
 
   afterModel(model, transition) {
-    if (transition && this._nonAdminRoute(transition)) { return; }
-    const journal = this._determineSubject(model);
+    if (this._transitionRoutable(model, transition)) { return; }
 
-    if (journal) {
+    if (this._needsRedirection(model)) {
+      const journal = this._determineSubject(model, transition);
+
       return this.get('can').can('administer', journal).then( (value)=> {
-        // allow any transition if permissions exits
-        if (value) { return; }
+        if (model.journal && value) { return; }
 
         const route = 'admin.journals.' + (value ? 'workflows' : 'users');
-        if (!transition || !(transition.targetName === route)){
+        if (!transition || !(transition.targetName === route) || this._invalidAllTransition(model, transition)) {
           return this.transitionTo(route, journal.id);
         }
       });
     }
   },
 
-  _nonAdminRoute(transition) {
-    return this.get('_manage_users_routes').some((name) => {
+  _transitionRoutable(model, transition) {
+    if (!transition || this._invalidAllTransition(model, transition)) { return false; }
+
+    return this.get('_manageUsersRoutes').some((name) => {
       return transition.targetName.match(name);
     });
   },
 
   _determineSubject(model) {
-    // For users with one journal, transition to that journal rather than 'all journals'.
     if (model.journal) {
       return model.journal;
     }
-    else if (model.journals.get('length') === 1) {
+    else {
       return model.journals.get('firstObject');
     }
   },
 
-  _manage_users_routes: [/users$/,  /mailtemplates$/]
+  _needsRedirection(model) {
+    return (!model.journal && model.journals.get('length') === 1) ||
+      model.journal;
+  },
+
+  _invalidAllTransition(model, transition) {
+    // avoids going to `journals/all` routes with only one journal
+    return transition.params['admin.journals'].journal_id === 'all' &&
+      model.journals.get('length') === 1;
+  },
+
+  _manageUsersRoutes: [/users$/,  /mailtemplates$/]
 });

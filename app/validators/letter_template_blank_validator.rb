@@ -16,7 +16,7 @@ class LetterTemplateBlankValidator
       vars = []
       liquid_nodelist.each do |node|
         vars << node if node.is_a? Liquid::Variable
-        vars << get_liquid_variables(node.nodelist) if node.is_a?(Liquid::Block) || node.is_a?(Liquid::BlockBody)
+        vars << get_liquid_variables(node.nodelist) if node.respond_to? :nodelist
       end
       vars
     end

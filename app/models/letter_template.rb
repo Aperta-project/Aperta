@@ -10,14 +10,14 @@ class LetterTemplate < ActiveRecord::Base
   validate :body_ok?
   validate :subject_ok?
 
-  def render(context)
+  def render(context, check_blanks: false)
     tap do |my|
       # This is just an in-memory edit (render) of the letter template
       # fields that then get passed to the serializer. DO NOT save the
       # rendered versions.
-      my.subject = render_attr(subject, context, sanitize: true)
-      my.to = render_attr(to, context, sanitize: true)
-      my.body = render_attr(body, context)
+      my.subject = render_attr(subject, context, sanitize: true, check_blanks: check_blanks)
+      my.to = render_attr(to, context, sanitize: true, check_blanks: check_blanks)
+      my.body = render_attr(body, context, check_blanks: check_blanks)
     end
   end
 
@@ -27,9 +27,9 @@ class LetterTemplate < ActiveRecord::Base
 
   private
 
-  def render_attr(template, context, sanitize: false)
+  def render_attr(template, context, sanitize: false, check_blanks: false)
     raw = Liquid::Template.parse(template)
-    raise BlankRenderFieldsError if LetterTemplateBlankValidator.blank_fields?(raw, context)
+    raise BlankRenderFieldsError if check_blanks && LetterTemplateBlankValidator.blank_fields?(raw, context)
     raw = raw.render(context)
     if sanitize
       ActionView::Base.full_sanitizer.sanitize(raw)

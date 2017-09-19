@@ -97,7 +97,7 @@ module TahiStandardTasks
       @journal = @paper.journal
       @letter_template = @journal.letter_templates.find_by(name: 'Reviewer Appreciation')
       begin
-        @letter_template.render(ReviewerReportScenario.new(reviewer_report))
+        @letter_template.render(ReviewerReportScenario.new(reviewer_report), check_blanks: true)
       rescue BlankRenderFieldsError => e
         Bugsnag.notify(e)
       end
@@ -115,7 +115,7 @@ module TahiStandardTasks
       @journal = @paper.journal
       @letter_template = @journal.letter_templates.find_by(name: template_name)
       begin
-        @letter_template.render(ReviewerReportScenario.new(@reviewer_report))
+        @letter_template.render(ReviewerReportScenario.new(@reviewer_report), check_blanks: true)
       rescue BlankRenderFieldsError => e
         Bugsnag.notify(e)
       end

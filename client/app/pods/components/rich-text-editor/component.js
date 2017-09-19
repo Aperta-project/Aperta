@@ -9,7 +9,7 @@ const basicPlugins     = 'code codesample paste autoresize';
 const basicToolbar     = 'bold italic underline | subscript superscript | undo redo ';
 
 const anchorElement    = ',a[href|rel|target|title]';
-const listElement      = ',ol[reversed|start|type]';
+const listElement      = ',ol[reversed|start|type|style]';
 
 const expandedElements = ',div,span,code,ul,li,h1,h2,h3,h4,table,thead,tbody,tfoot,tr,th,td';
 const expandedPlugins  = ' link table advlist lists ';

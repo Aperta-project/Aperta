@@ -4,10 +4,6 @@
   .mce-statusbar .mce-container-body {
     height: 1.5rem;
   }
-
-  .mce-path {
-    display: none;
-  }
 </style>
 
 <%= render layout: 'container' do %>
@@ -20,7 +16,6 @@
     <%= form_for @invitation, url: post_feedback_path(@invitation.token), method: 'post'  do |f| %>
       <%= f.label :decline_reason do %>
         <div style='margin-bottom: 0.5em;'>
-          ++++++++++
           Please give your reasons for declining this invitation.
         </div>
       <% end %>
@@ -50,6 +45,7 @@
       selector: 'textarea.tinymce',
       branding: false,
       menubar: false,
+      elementpath: false,
       plugins: 'paste advlist lists',
       toolbar: 'bold italic underline | subscript superscript | undo redo | indent outdent | bullist numlist',
       valid_elements: 'p,br,strong/b,em/i,u,sub,sup,pre'

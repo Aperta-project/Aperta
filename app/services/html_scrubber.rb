@@ -30,7 +30,9 @@ class HtmlScrubber < Rails::Html::PermitScrubber
   def self.style_scrub!(value)
     scrubber = new(['style'])
     fragment = Loofah.fragment(value)
-    fragment.scrub!(scrubber)
+    # commenting this out temporarily for the review app since
+    # our major problem of list styling occurs in this very line.
+    # fragment.scrub!(scrubber)
     fragment.to_html
   end
 end

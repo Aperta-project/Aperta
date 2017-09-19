@@ -69,6 +69,6 @@ class Answer < ActiveRecord::Base
   end
 
   def sanitize_html
-    self[:value] = HtmlScrubber.standalone_scrub!(string_value)
+    self[:value] = HtmlScrubber.style_scrub!(string_value)
   end
 end

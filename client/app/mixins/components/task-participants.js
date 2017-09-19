@@ -28,9 +28,8 @@ export default Ember.Mixin.create({
   actions: {
     saveAssignedUser(newUser) {
       const user = this.get('store').findOrPush('user', newUser);
-      this.set('task.assignedUserId', user.get('id'));
-      this.get('task').save();
       this.set('task.assignedUser', user);
+      this.get('task').save();
     },
 
     saveNewParticipant(newParticipant) {
@@ -40,9 +39,8 @@ export default Ember.Mixin.create({
     },
 
     removeAssignedUser() {
-      this.set('task.assignedUserId', null);
-      this.get('task').save();
       this.set('task.assignedUser', null);
+      this.get('task').save();
     },
 
     removeParticipant(participantId) {

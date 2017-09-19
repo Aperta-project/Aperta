@@ -25,38 +25,14 @@ class LetterTemplate < ActiveRecord::Base
     scenario.constantize.merge_fields
   end
 
-  def blank_render_fields?(liquid_template, context)
-    liquid_variables = get_liquid_variables(liquid_template.root.nodelist).flatten
-    liquid_variables.any? { |node| blank_liquid_variable?(node.name.name, node.name.lookups, context) }
-  end
-
   private
 
-  def blank_liquid_variable?(name, lookups, context)
-    if context.keys.all? { |key| key.is_a? Symbol }
-      context[name.to_sym].blank? || (!lookups.empty? && lookups.any? { |lookup| context[name.to_sym][lookup.to_sym].blank? })
-    else
-      context[name].blank? || (!lookups.empty? && lookups.any? { |lookup| context[name][lookup].blank? })
-    end
-  end
-
-  def get_liquid_variables(liquid_nodelist)
-    vars = []
-    liquid_nodelist.each do |node|
-      vars << node if node.is_a? Liquid::Variable
-      vars << get_liquid_variables(node.nodelist) if node.is_a?(Liquid::Block) || node.is_a?(Liquid::BlockBody)
-    end
-    vars
-  end
-
   def render_attr(template, context, sanitize: false)
-    raw = Liquid::Template.parse(template)
-    raise BlankRenderFieldsError if blank_render_fields?(raw, context)
-    raw_render = raw.render(context)
+    raw = Liquid::Template.parse(template).render(context)
     if sanitize
-      ActionView::Base.full_sanitizer.sanitize(raw_render)
+      ActionView::Base.full_sanitizer.sanitize(raw)
     else
-      raw_render
+      raw
     end
   end
 
@@ -83,5 +59,3 @@ class LetterTemplate < ActiveRecord::Base
     errors.add(:subject, e.message.gsub(/^Liquid syntax error:/, '').strip)
   end
 end
-
-class BlankRenderFieldsError; end

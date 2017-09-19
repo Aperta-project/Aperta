@@ -909,6 +909,7 @@ ActiveRecord::Schema.define(version: 20170922200616) do
     t.integer  "assigned_user_id"
   end
 
+  add_index "tasks", ["assigned_user_id"], name: "index_tasks_on_assigned_user_id", using: :btree
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["paper_id"], name: "index_tasks_on_paper_id", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree

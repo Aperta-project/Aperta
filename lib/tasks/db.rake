@@ -57,12 +57,11 @@ namespace :db do
   task dump: :environment do
     location = "~/aperta-#{Time.now.utc.strftime('%FT%H:%M:%SZ')}.dump"
 
-    cmd = nil
     rake_with_db_config do |host, db, user|
       raise('Backup file already exists') if File.exist?(File.expand_path(location))
       cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > #{location}"
+      rake_system_or_abort(cmd, "Dump failed for \n #{cmd}")
     end
-    rake_system_or_abort(cmd, "Dump failed for \n #{cmd}")
   end
 
   desc "Cleans up the database dump files in ~, leaving the 2 newest"

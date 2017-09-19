@@ -56,7 +56,7 @@ export default Ember.Component.extend({
     basic: {
       plugins: basicPlugins,
       toolbar: basicToolbar,
-      valid_elements: basicElements,
+      valid_elements: basicElements
     },
 
     expanded: {

@@ -86,5 +86,14 @@
         disabled=readOnly
       }}
     </li>
+
+    <li class="question">
+        {{nested-question-uploader-manager ident='front_matter_reviewer_report--attachments'
+                         buttonText="upload file"
+                         hasCaption=false
+                         multiple=true
+                         owner=model
+                         disabled=readOnly}}
+    </li>
   </ol>
 {{/if}}

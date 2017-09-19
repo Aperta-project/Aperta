@@ -1,0 +1,32 @@
+<h1>Create new email template</h1>
+
+<div class="labeled-input-form">
+  <div class="admin-overlay-form">
+    {{forms/labeled-input-with-errors type="text" label="Template name" name="name" value=name enter=(action "complete") errors=errors required=true autofocus=true}}
+
+    {{#forms/labeled-input-with-errors type="yield" label="Scenario" name="scenario" value=scenario errors=errors required=true}}
+      {{#power-select
+        placeholder="Select the scenario in which this template will be used"
+        options=journal.letterTemplateScenarios
+        selected=scenario
+        onchange=(action "valueChanged")
+        searchEnabled=false
+        disabled=false
+        ariaLabelledBy="scenario"
+        triggerClass=scenarioError
+        as |val|}}
+        {{val.name}}
+      {{/power-select}}
+    {{/forms/labeled-input-with-errors}}
+
+    <div class="overlay-action-buttons">
+      <button class="button-link button--blue admin-overlay-cancel" {{action "close"}}>
+        cancel
+      </button>
+
+      <button class="button-primary button--blue admin-overlay-save" disabled={{if saving true null}} {{action "complete"}}>
+        Continue
+        </button>
+    </div>
+  </div>
+</div>

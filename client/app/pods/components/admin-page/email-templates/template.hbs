@@ -1,6 +1,26 @@
+{{#overlay-fullscreen
+   visible=newEmailTemplateOverlayVisible
+   outAnimationComplete=(action "hideNewEmailTemplateOverlay")
+   overlayClass="overlay--blue"
+   as |overlay|}}
+  {{admin-page/email-templates/new-email-template-overlay
+    journal=journal
+    templates=templates
+    success=(action "editTemplate")
+    close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
+
 <h2>Email Templates</h2>
 {{#if journal}}
+
+  {{#if (can 'create_email_template' journal)}}
+  <button class="button-primary button--blue" {{action "showNewEmailTemplateOverlay"}}>
+    Create New Template
+  </button>
+  {{/if}}
   <table class="table table-hover">
+
     <thead>
       <tr>
         <th>Name</th>

@@ -23,6 +23,7 @@ export default DS.Model.extend({
   lastDoiIssued: DS.attr('string'),
   doiJournalPrefix: DS.attr('string'),
   doiPublisherPrefix: DS.attr('string'),
+  letterTemplateScenarios: DS.attr(),
 
   // Card config:
 

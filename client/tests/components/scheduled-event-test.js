@@ -51,7 +51,7 @@ test('completed events should be shown as "Sent"', function (assert) {
   ];
   this.set('events', scheduledEvents);
   this.render(hbs`{{scheduled-events events=events dueDate=dueDate}}`);
-  assert.textPresent('.scheduled-event p span', 'Sent');
+  assert.textPresent('.scheduled-event p', 'Sent');
 });
 
 test('errored events should be shown as warnings', function (assert) {
@@ -64,7 +64,7 @@ test('errored events should be shown as warnings', function (assert) {
   ];
   this.set('events', scheduledEvents);
   this.render(hbs`{{scheduled-events events=events dueDate=dueDate}}`);
-  assert.textPresent('.scheduled-event p span', 'Reminder not sent due to a system error');
+  assert.textPresent('.scheduled-event p', 'Reminder not sent due to a system error');
 });
 
 test('inactive events should be shown as not applicable', function (assert) {
@@ -77,5 +77,5 @@ test('inactive events should be shown as not applicable', function (assert) {
   ];
   this.set('events', scheduledEvents);
   this.render(hbs`{{scheduled-events events=events dueDate=dueDate}}`);
-  assert.textPresent('.scheduled-event p span', 'NA');
+  assert.textPresent('.scheduled-event p', 'NA');
 });

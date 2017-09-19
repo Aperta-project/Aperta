@@ -30,6 +30,7 @@ class ScheduledEvent < ActiveRecord::Base
     state :completed
     state :processing
     state :errored
+    state :canceled # Canceled automatically after a qualifying event, e.g., a review is submitted
 
     event(:reactivate) do
       transitions from: [:completed, :inactive], to: :active
@@ -49,6 +50,10 @@ class ScheduledEvent < ActiveRecord::Base
 
     event(:error) do
       transitions from: :processing, to: :errored
+    end
+
+    event(:cancel) do
+      transitions from: :active, to: :canceled
     end
   end
 

@@ -5,7 +5,7 @@ import { manualSetup } from 'ember-data-factory-guy';
 import Ember from 'ember';
 
 moduleForComponent(
-  'card-content/field-set',
+  'card-content/display-children',
   'Integration | Component | card content | display children',
   {
     integration: true,

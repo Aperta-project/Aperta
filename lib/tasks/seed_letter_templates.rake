@@ -37,9 +37,9 @@ namespace :seed do
             {% for review in reviews %}
               {%- if review.status == 'completed' -%}
                 ----------<br/>
-                <p>Reviewer Report {{ review.reviewer_number | default '' }}</p>
+                <p>Reviewer {{ review.reviewer_number }} {{ review.reviewer_name }}</p>
                 {%- for answer in review.answers -%}
-                  {%- if answer.ident == 'reviewer_report--comments_for_author' -%}
+                  {%- if review.rendered_answer_idents contains answer.ident -%}
                   <p>
                     {{ answer.value }}
                   </p>
@@ -332,8 +332,50 @@ namespace :seed do
           <p>Dear {{ reviewer.first_name }} {{ reviewer.last_name }},</p>
           <p>Thank you for taking the time to review the manuscript “{{ manuscript.title }}”, for {{ journal.name }}.
           We greatly appreciate your assistance with the review process, especially given the many competing demands on your time.</p>
-          <p>Thank you for your continued support of {{ journal.name }}, we look forward to working with you again in the future. 
+          <p>Thank you for your continued support of {{ journal.name }}, we look forward to working with you again in the future.
           If you have any questions or feedback, please do not hesitate to contact us at {{ journal.staff_email }}.</p>
+          TEXT
+
+          lt.save!
+        end
+
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        LetterTemplate.where(name: 'Preprint Accept', journal: journal).first_or_initialize.tap do |lt|
+          lt.scenario = 'TahiStandardTasks::PreprintDecisionScenario'
+          lt.subject = 'Manuscript Accepted for ApertarXiv'
+          lt.to = '{creator email}'
+          lt.body = <<-TEXT.strip_heredoc
+          <p>Dear Dr. {manuscript creator last name},</p>
+          <br/>
+          <p>Your {submitted journal} manuscript, '{ARTICLE TITLE}', has been approved for pre-print publication. Because you have opted in to this opportunity, your manuscript has been forwarded to ApertarXiv for posting. You will receive another message with publication details when the article has posted.</p>
+          <br/>
+          <p>Please note this decision is not related to the decision to publish your manuscript in {submitted journal}. As your manuscript is evaluated for publication you will receive additional communications.</p>
+          <br/>
+          <p>Kind regards,</p>
+          <br/>
+          <p>Publication Team</p>
+          <p>ApertarXiv</p>
+          TEXT
+
+          lt.save!
+        end
+
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        LetterTemplate.where(name: 'Preprint Reject', journal: journal).first_or_initialize.tap do |lt|
+          lt.scenario = 'TahiStandardTasks::PreprintDecisionScenario'
+          lt.subject = 'Manuscript Declined for ApertarXiv'
+          lt.to = '{creator email}'
+          lt.body = <<-TEXT.strip_heredoc
+          <p>Dear Dr. {manuscript creator last name},</p>
+          <br/>
+          <p>Your {submitted journal} manuscript, '{ARTICLE TITLE}', has been declined for pre-print publication.</p>
+          <br/>
+          <p>Please note this decision is not related to the decision to publish your manuscript in {submitted journal}. As your manuscript is evaluated for publication you will receive additional communications.</p>
+          <br/>
+          <p>Kind regards,</p>
+          <br/>
+          <p>Publication Team</p>
+          <p>ApertarXiv</p>
           TEXT
 
           lt.save!

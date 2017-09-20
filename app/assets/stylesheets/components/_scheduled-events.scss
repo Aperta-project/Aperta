@@ -4,10 +4,13 @@
     color: #878787;
 
     > p:first-child {
-      width: 50%;
+      width: 42rem;
+      margin-right: 20px;
     }
 
-    p span {
+    > p:nth-child(2) {
+      width: 9rem;
+      white-space: nowrap;
       font-weight: bold;
     }
   }

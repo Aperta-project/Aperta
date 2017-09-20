@@ -19,6 +19,8 @@ feature "Invite Academic Editor", js: true do
   before do
     assign_journal_role journal, staff_admin, :admin
     login_as(staff_admin, scope: :user)
+    allow(MailLog::LogToDatabase::DeliveringEmailInterceptor).to receive(:delivering_email).and_return(true)
+    allow(MailLog::LogToDatabase::DeliveredEmailObserver).to receive(:delivered_email).and_return(true)
     visit "/"
   end
 

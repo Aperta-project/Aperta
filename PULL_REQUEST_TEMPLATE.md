@@ -19,7 +19,7 @@ If PO needs specific guidance on how to evaluate this feature please add that in
 
 Are there any surprises? Anything that was particularly difficult, or clever, or
 made you nervous, and should get particular attention during review? Call it
-out. 
+out.
 
 
 #### Major UI changes
@@ -44,7 +44,7 @@ If I modified any environment variables:
 If I need to migrate existing data:
 - [ ] If a data-migration rake task is needed, the task is found in `lib/tasks/data-migrations` within the `data:migrate` namespace. Example task name: `aperta_9999_migration_description`
 - [ ] If there are steps to take outside of `rake db:migrate` for Heroku or other environments, I added copy-pastable instructions to [the confluence release page](https://developer.plos.org/confluence/display/TAHI/Deployment+information+for+Release)
-- [ ] I verified the data-migration's results on a copy of production data (complicated migrations should also have real specs)
+- [ ] I verified the data-migration's results with `rake db:test_migrations` (complicated migrations should also have real specs)
 - [ ] I've talked through the ramifications of the data-migration with Product Owners in regards to deployment timing
 - [ ] If I created a data migration, I added pre- and post-migration assertions.
 
@@ -53,4 +53,3 @@ If I need to migrate existing data:
 - [ ] I ran the code (in the review environment or locally). I agree the running code fulfills the Acceptance Criteria as stated on the JIRA ticket
 - [ ] I read the code; it looks good
 - [ ] I have found the tests to be sufficient for both positive and negative test cases
-

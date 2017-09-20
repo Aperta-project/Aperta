@@ -160,3 +160,20 @@ test('disallow wrong permissions from viewing scheduled events', function (asser
   this.render(hbs`{{reviewer-report-task task=task}}`);
   assert.textNotPresent('.scheduled-events p', 'Reminders');
 });
+
+test('Canceled events appear with minus icon and "NA" text', function (assert) {
+  this.can.allowPermission('manage_scheduled_events', this.task);
+  const scheduledEvents = [
+    make('scheduled-event', {state: 'canceled'})
+  ];
+  const reviewerReport = make('reviewer-report', 'with_questions',
+    { status: 'completed', task: this.task });
+  Ember.run(() => {
+    this.task.set('reviewerReports', [reviewerReport]);
+    this.task.set('reviewerReports.firstObject.dueAt', new Date('2017-08-19'));
+    this.task.set('reviewerReports.firstObject.scheduledEvents', scheduledEvents);
+  });
+  this.render(hbs`{{reviewer-report-task task=task}}`);
+  assert.elementFound('.scheduled-events i.fa-minus');
+  assert.textPresent('.scheduled-events .event-canceled', 'NA');
+});

@@ -27,3 +27,15 @@
       checked=(readonly edit_discussion_footerAllowed)
       action=(action "toggleEditDiscussionFooterPermission")}}
 </td>
+<td class="centered">
+  {{check-box
+      name=(concat role.name "-be_assigned")
+      checked=(readonly be_assignedAllowed)
+      action=(action "toggleBeAssignedPermission")}}
+</td>
+<td class="centered">
+  {{check-box
+      name=(concat role.name "-assign_others")
+      checked=(readonly assign_othersAllowed)
+      action=(action "toggleAssignOthersAllowed")}}
+</td>

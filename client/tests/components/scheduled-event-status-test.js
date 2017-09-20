@@ -33,7 +33,8 @@ test('renders inactive toggle when event is passive', function(assert) {
 test('renders active toggle when event is active', function(assert) {
   let scheduledEvent = FactoryGuy.make('scheduled-event', {
     name: 'Pre Event',
-    dispatchAt: moment(this.get('dueDate')).add(2, 'days')
+    dispatchAt: moment(this.get('dueDate')).add(2, 'days'),
+    state: 'active'
   });
   this.set('event', scheduledEvent);
   this.render(hbs `{{scheduled-event-status event=event}}`);

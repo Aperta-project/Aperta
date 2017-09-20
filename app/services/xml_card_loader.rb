@@ -68,7 +68,6 @@ class XmlCardLoader
   end
 
   def omissible?(name, value)
-    # if name == :possible_values then binding.pry end
     case Attributable::ATTRIBUTE_TYPES[name.to_s]
     when :json then value.blank?
     else value.nil?

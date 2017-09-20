@@ -200,6 +200,7 @@ class Card < ActiveRecord::Base
   end
 
   def to_xml(options = {})
+    return latest_card_version.to_xml
     attrs = {
       'required-for-submission' =>
         latest_card_version.required_for_submission,

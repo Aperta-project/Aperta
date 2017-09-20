@@ -13,7 +13,8 @@ export default Ember.Component.extend({
   actions: {
     changeEventState(newVal) {
       // console.log(newVal);
-      return newVal;
+
+      // this is the part where we make a call to the endpoint to set the event to true or false
     }
   }
 });

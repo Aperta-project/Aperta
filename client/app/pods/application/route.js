@@ -107,7 +107,7 @@ export default Ember.Route.extend({
         return;
       }
 
-      this.store.findRecord(payload.type, payload.id, { reload: true });
+      Ember.tryInvoke(this.store.peekRecord(payload.type, payload.id), 'reload');
     },
 
     updated(payload) {

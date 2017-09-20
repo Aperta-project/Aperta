@@ -199,20 +199,12 @@ class Card < ActiveRecord::Base
       raise(ActiveRecord::RecordNotFound, "Could not find Card with name '#{klass_name}'")
   end
 
-  def to_xml(options = {})
-    return latest_card_version.to_xml
-    attrs = {
-      'required-for-submission' =>
-        latest_card_version.required_for_submission,
-      'workflow-display-only' =>
-        latest_card_version.workflow_display_only
-    }
-    setup_builder(options).card(attrs) do |xml|
-      content_root_for_version(:latest).to_xml(
-        builder: xml,
-        skip_instruct: true
-      )
-    end
+  def to_xml
+    latest_card_version.to_xml
+  end
+
+  def to_json
+    latest_card_version.to_json
   end
 
   def xml=(xml_string)

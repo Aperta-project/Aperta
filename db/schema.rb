@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170914064956) do
+ActiveRecord::Schema.define(version: 20170914195415) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -847,15 +847,6 @@ ActiveRecord::Schema.define(version: 20170914064956) do
     t.string   "destination",   null: false
     t.string   "service_id"
   end
-
-  create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|
-    t.integer "author_id"
-    t.integer "funder_id"
-  end
-
-  add_index "tahi_standard_tasks_funded_authors", ["author_id", "funder_id"], name: "funded_authors_unique_index", unique: true, using: :btree
-  add_index "tahi_standard_tasks_funded_authors", ["author_id"], name: "index_tahi_standard_tasks_funded_authors_on_author_id", using: :btree
-  add_index "tahi_standard_tasks_funded_authors", ["funder_id"], name: "index_tahi_standard_tasks_funded_authors_on_funder_id", using: :btree
 
   create_table "tahi_standard_tasks_funders", force: :cascade do |t|
     t.string   "name"

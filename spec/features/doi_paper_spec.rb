@@ -12,7 +12,7 @@ feature "Paper DOI Generation", selenium: true, js: true do
 
     context "on a journal with a doi prefix set" do
       let(:journal) {
-        FactoryGirl.create :journal, :with_roles_and_permissions,
+        FactoryGirl.create :journal, :with_roles_and_permissions, :with_default_mmt,
         doi_publisher_prefix: 'vicious',
         doi_journal_prefix: 'journal.robots',
         last_doi_issued: '8887'

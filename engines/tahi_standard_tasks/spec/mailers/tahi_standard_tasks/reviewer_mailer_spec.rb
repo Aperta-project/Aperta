@@ -258,6 +258,16 @@ describe TahiStandardTasks::ReviewerMailer do
     end
   end
 
+  shared_examples_for 'a Liquid email checked for blanks' do
+    it 'raises a Bugsnag error if there are blank fields' do
+      # rubocop:disable Rails/SkipsModelValidations
+      report.paper.journal.tap { |j| j.update_attribute(:name, nil) }
+      # rubocop:enable Rails/SkipsModelValidations
+      expect(Bugsnag).to receive(:notify)
+      email.deliver_now
+    end
+  end
+
   describe 'reminder emails' do
     before do
       report.paper.journal.letter_templates.create!(
@@ -294,6 +304,8 @@ describe TahiStandardTasks::ReviewerMailer do
       it 'renders the signature' do
         expect(email.body).to match('Kind regards,')
       end
+
+      it_behaves_like 'a Liquid email checked for blanks'
     end
 
     describe '.first_late_notice' do
@@ -319,6 +331,8 @@ describe TahiStandardTasks::ReviewerMailer do
       it 'renders the signature' do
         expect(email.body).to match('Kind regards,')
       end
+
+      it_behaves_like 'a Liquid email checked for blanks'
     end
 
     describe '.second_late_notice' do
@@ -344,6 +358,8 @@ describe TahiStandardTasks::ReviewerMailer do
       it 'renders the signature' do
         expect(email.body).to match('Kind regards,')
       end
+
+      it_behaves_like 'a Liquid email checked for blanks'
     end
   end
 
@@ -369,5 +385,7 @@ describe TahiStandardTasks::ReviewerMailer do
       expect(email.body).to match('Kind regards')
       expect(email.body).to match(report.paper.journal.name)
     end
+
+    it_behaves_like 'a Liquid email checked for blanks'
   end
 end

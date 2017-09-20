@@ -27,10 +27,10 @@ module TahiStandardTasks
 
     def reviewer_accepted(invitation_id:)
       @invitation = Invitation.find_by(id: invitation_id)
-      return unless @invitation.present?
+      return if @invitation.blank?
 
       @assigner = @invitation.inviter
-      return unless @assigner.present?
+      return if @assigner.blank?
 
       @invite_reviewer_task = @invitation.task
       @paper = @invite_reviewer_task.paper
@@ -47,10 +47,10 @@ module TahiStandardTasks
 
     def reviewer_declined(invitation_id:)
       @invitation = Invitation.find_by(id: invitation_id)
-      return unless @invitation.present?
+      return if @invitation.blank?
 
       @assigner = @invitation.inviter
-      return unless @assigner.present?
+      return if @assigner.blank?
 
       @invite_reviewer_task = @invitation.task
       @paper = @invite_reviewer_task.paper
@@ -95,12 +95,16 @@ module TahiStandardTasks
     def thank_reviewer(reviewer_report:)
       @paper = reviewer_report.paper
       @journal = @paper.journal
-      @user = reviewer_report.user
       @letter_template = @journal.letter_templates.find_by(name: 'Reviewer Appreciation')
-      @scenario = ReviewerReportScenario.new(reviewer_report)
-      @subject = Liquid::Template.parse(@letter_template.subject).render(@scenario)
-      @body = Liquid::Template.parse(@letter_template.body).render(@scenario)
-      mail(to: @user.email, subject: @subject)
+      begin
+        @letter_template.render(ReviewerReportScenario.new(reviewer_report), check_blanks: true)
+      rescue BlankRenderFieldsError => e
+        Bugsnag.notify(e)
+      end
+      @subject = @letter_template.subject
+      @body = @letter_template.body
+      @to = reviewer_report.user.email
+      mail(to: @to, subject: @subject)
     end
 
     private
@@ -110,11 +114,14 @@ module TahiStandardTasks
       @paper = @reviewer_report.paper
       @journal = @paper.journal
       @letter_template = @journal.letter_templates.find_by(name: template_name)
-      @scenario = ReviewerReportScenario.new(@reviewer_report)
+      begin
+        @letter_template.render(ReviewerReportScenario.new(@reviewer_report), check_blanks: true)
+      rescue BlankRenderFieldsError => e
+        Bugsnag.notify(e)
+      end
+      @subject = @letter_template.subject
+      @body = @letter_template.body
       @to = @reviewer_report.user.email
-      @subject = Liquid::Template.parse(@letter_template.subject).render(@scenario)
-      @body = Liquid::Template.parse(@letter_template.body).render(@scenario)
-
       mail(to: @to, subject: @subject, template_name: 'review_due_reminder')
     end
   end

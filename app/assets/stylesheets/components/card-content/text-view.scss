@@ -1,5 +1,22 @@
-.card-content-view-text p {
-  white-space: pre-wrap;
+.card-content-view-text {
+  & p {
+   white-space: pre-wrap;
+  }
+}
+
+// This a workaround to make sure users don't have to add an additional
+// element/class via the text node value in a custom card for questions.  The 'legacy'
+// styling related to question css is in _question.scss.
+// Once we migrate the legacy cards, moving the existing stylings
+// here might be more appropriate
+li.question {
+  .card-content-view-text {
+    p {
+      margin-bottom: 10px;
+      font-size: 1.4em;
+      line-height: 1.2em;
+    }
+  }
 }
 
 .card-content-view-text p ul {

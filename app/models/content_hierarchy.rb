@@ -1,8 +1,7 @@
 class ContentNode
-  attr_accessor :id, :content, :children
+  attr_accessor :content, :children
 
   def initialize(content)
-    @id = id
     @content = content
     @children = []
   end
@@ -27,8 +26,14 @@ class ContentNode
     end
   end
 
+  def to_hash
+    @children.blank? ? attributes : attributes.merge(children: children.map { |child| child.to_hash })
+  end
+
   def attributes
     content
+    .reject  { |key, value| value.blank? }
+    .collect { |key, value| [key.dasherize, value] }.to_h
   end
 
   def validations
@@ -54,6 +59,10 @@ class ContentHierarchy
 
   def initialize(root)
     @root = root
+  end
+
+  def to_json
+    root.to_hash.to_json
   end
 
   def to_xml(attrs)

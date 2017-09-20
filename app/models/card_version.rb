@@ -53,7 +53,7 @@ class CardVersion < ActiveRecord::Base
   end
 
   def to_json
-    hierarchy.root.to_json
+    hierarchy.to_json
   end
 
   private

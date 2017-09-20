@@ -181,7 +181,7 @@ class Task < ActiveRecord::Base
 
   # Used in the TaskSerializer to determine whether to serialize the CardVersion for a
   # given task
-  def custom
+  def custom?
     false
   end
 

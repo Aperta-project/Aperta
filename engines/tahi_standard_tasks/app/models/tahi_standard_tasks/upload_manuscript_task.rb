@@ -37,7 +37,7 @@ module TahiStandardTasks
 
     # UploadManuscriptTask renders card content.
     # This method is used in the TaskSerializer.
-    def custom
+    def custom?
       true
     end
 

@@ -32,7 +32,7 @@ class TaskSerializer < ActiveModel::Serializer
   end
 
   def include_card_version?
-    @options[:include_card_version] && object.custom
+    @options[:include_card_version] && object.custom?
   end
 
   def is_metadata_task

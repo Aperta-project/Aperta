@@ -14,11 +14,7 @@ export default ApplicationAdapter.extend(DS.BuildURLMixin, {
   urlForUpdateRecord: attachmentURL,
 
   findRecord(store, type, id, snapshot) {
-    if (snapshot.belongsTo('invitation')) {
-      return this._super(...arguments);
-    } else {
-      // this is for the case where a pusher message is received by window without the right data
-      return Ember.RSVP.resolve({'invitation-attachment': {id: id, title: 'Empty promise'}});
-    }
+    // this is for the case where a pusher message is received by window without the right data
+    return snapshot.belongsTo('invitation') ? this._super(...arguments) : Ember.RSVP.reject();
   }
 });

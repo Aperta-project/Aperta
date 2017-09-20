@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature "Paper workflow", js: true, selenium: true do
   let(:admin) { FactoryGirl.create :user }
-  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
+  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions, :with_default_mmt }
   let!(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, journal: journal }
   let!(:card) { FactoryGirl.create(:card, :versioned, journal: journal) }
 
@@ -24,7 +24,7 @@ feature "Paper workflow", js: true, selenium: true do
       click_link paper.title
       click_link "Workflow"
 
-      expect(current_path).to eq "/papers/#{paper.short_doi}/workflow"
+      expect(page).to have_current_path("/papers/#{paper.short_doi}/workflow")
     end
   end
 

@@ -14,7 +14,7 @@ describe ReviewerReportContext do
 
   context 'rendering a reviewer report' do
     def check_render(template, expected)
-      expect(Liquid::Template.parse(template).render(context))
+      expect(LetterTemplate.new(body: template).render(context).body)
         .to eq(expected)
     end
 
@@ -34,6 +34,20 @@ describe ReviewerReportContext do
       answers = [answer_1, answer_2]
       reviewer_report.answers = answers
       check_render("{{ answers | size }}", answers.count.to_s)
+    end
+
+    context 'reviewer name' do
+      before(:each) { reviewer_report.answers = [answer_1, answer_2] }
+      let(:raw_value) { 'wat' }
+      it 'renders without tags when ident card present' do
+        allow(answer_1).to receive_message_chain('card_content.ident').and_return('--identity')
+        allow(answer_1).to receive(:value).and_return("<p>#{raw_value}</p>")
+        check_render("{{ reviewer_name }}", raw_value)
+      end
+
+      it 'renders nothing without ident card' do
+        check_render("{{ reviewer_name }}", '')
+      end
     end
   end
 end

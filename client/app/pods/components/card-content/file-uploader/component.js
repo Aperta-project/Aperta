@@ -50,7 +50,10 @@ export default Ember.Component.extend({
           src: s3Url,
           filename: file.name
         });
-        attachment.save();
+        attachment.save().then(() => {
+          const answer = this.get('answer');
+          answer.reload();
+        });
       });
     },
 

@@ -35,11 +35,24 @@ module MailLog
           manuscript_status: paper.publishing_state,
           versioned_text_id: paper.versioned_texts.last.id
         ) if paper
-        Correspondence.create!(correspondence_hash)
+        email_log = Correspondence.create!(correspondence_hash)
+        message.attachments.each do |attachment|
+          Dir.mktmpdir do |dir|
+            file = File.new("#{dir}/#{attachment.filename}", 'w+')
+            begin
+              file.write(attachment.body.raw_source.force_encoding('UTF-8'))
+              attachment = email_log.attachments.create!(file: file)
+              attachment.create_resource_token!(attachment.file)
+              attachment.update(status: 'done')
+            ensure
+              file.close
+            end
+          end
+        end
       end
 
       def self.get_message(message)
-        message.has_attachments? ? message.html_part.body : message.body
+        message.html_part ? message.html_part.body : message.body
       end
 
       def self.get_recipients(message)

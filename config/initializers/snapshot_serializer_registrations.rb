@@ -26,14 +26,11 @@ ActionDispatch::Reloader.to_prepare do
       serialize TahiStandardTasks::FinancialDisclosureTask, with: Snapshot::FinancialDisclosureTaskSerializer
       serialize TahiStandardTasks::Funder, with: Snapshot::FunderSerializer
       serialize TahiStandardTasks::PublishingRelatedQuestionsTask, with: Snapshot::PublishingRelatedQuestionsTaskSerializer
-      serialize TahiStandardTasks::ReportingGuidelinesTask, with: Snapshot::ReportingGuidelinesTaskSerializer
-      serialize TahiStandardTasks::ReviewerRecommendation, with: Snapshot::ReviewerRecommendationSerializer
       serialize TahiStandardTasks::ReviewerRecommendationsTask, with: Snapshot::ReviewerRecommendationsTaskSerializer
       serialize TahiStandardTasks::ReviseTask, with: Snapshot::ReviseTaskSerializer
       serialize TahiStandardTasks::SupportingInformationTask, with: Snapshot::SupportingInformationTaskSerializer
       serialize TahiStandardTasks::TaxonTask, with: Snapshot::TaxonTaskSerializer
       serialize TahiStandardTasks::UploadManuscriptTask, with: Snapshot::UploadManuscriptTaskSerializer
-      serialize TahiStandardTasks::CoverLetterTask, with: Snapshot::CoverLetterTaskSerializer
       serialize CustomCardTask, with: Snapshot::CustomCardTaskSerializer
     end
   end

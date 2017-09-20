@@ -72,7 +72,7 @@ export default Ember.Component.extend({
     if (!this.get('disabled')) {
       Ember.run.scheduleOnce('afterRender', this, this.postRender);
     }
-  }),
+  }).on('init'),
 
   pastePostprocess(editor, fragment) {
     function deleteEmptyParagraph(elem) {

@@ -216,7 +216,7 @@ describe Task do
   describe 'Task.safe_constantize' do
     it 'fails with Task' do
       expect { Task.safe_constantize('Task') }
-        .to raise_error(/constantize disallowed/)
+        .to raise_error(/disallowed value/)
     end
 
     it 'works with Task descendants' do
@@ -226,7 +226,7 @@ describe Task do
 
     it 'fails with non-tasks' do
       expect { Task.safe_constantize('User') }
-        .to raise_error(/constantize disallowed/)
+        .to raise_error(/disallowed value/)
     end
   end
 

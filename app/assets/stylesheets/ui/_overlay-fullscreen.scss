@@ -53,6 +53,10 @@ $ov--fullscreen-breakpoint: 780px;
     font-weight: normal;
   }
 
+  .overlay-message-footer button {
+    margin-right: 12px;
+  }
+
   // -- Grey Theme --------------
   &.overlay--grey {
     color: $aperta-grey;

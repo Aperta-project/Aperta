@@ -15,21 +15,25 @@ export default Ember.Service.extend({
    * @return {Ember.Array.<CardPermission>} All permissions that were modified
    */
 
-  editPermissions: ['edit', 'edit_discussion_footer'],
+  editPermissions: ['edit', 'edit_discussion_footer', 'assign_others', 'be_assigned'],
 
   correspondingActions: {
-    'edit': 'view',
-    'edit_discussion_footer': 'view_discussion_footer'
+    'edit': ['view'],
+    'be_assigned': ['view', 'edit'],
+    'assign_others': ['view', 'edit'],
+    'edit_discussion_footer': ['view_discussion_footer']
   },
 
   addRoleToPermissionSensible(role, filterByCardId, permissionAction) {
     let retval = [];
     if (this.get('editPermissions').includes(permissionAction)) {
-      const correspondingAction = this.get('correspondingActions')[permissionAction];
-      const viewPermission = this.findPermissionOrCreate(filterByCardId, correspondingAction);
-      if (viewPermission && (!viewPermission.get('roles').includes(role))) {
-        retval.push(this.addRoleToPermission(role, filterByCardId, correspondingAction));
-      }
+      const correspondingActions = this.get('correspondingActions')[permissionAction];
+      correspondingActions.forEach(function(correspondingAction) {
+        const viewPermission = this.findPermissionOrCreate(filterByCardId, correspondingAction);
+        if (viewPermission && (!viewPermission.get('roles').includes(role))) {
+          retval.push(this.addRoleToPermission(role, filterByCardId, correspondingAction));
+        }
+      }, this);
     }
     retval.push(this.addRoleToPermission(role, filterByCardId, permissionAction));
     return retval;

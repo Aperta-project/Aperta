@@ -16,7 +16,7 @@ class AvailableCardsController < ApplicationController
 
   def index
     requires_user_can(:manage_workflow, paper)
-    respond_with paper.journal.cards, root: "cards"
+    respond_with paper.journal.cards, root: "cards", include_content: false
   end
 
   private

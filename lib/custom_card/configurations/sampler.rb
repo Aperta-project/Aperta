@@ -66,7 +66,7 @@ module CustomCard
                 <possible-value label="Choice 1" value="1"/>
                 <possible-value label="Choice 2" value="2"/>
                 <content content-type="display-with-value" visible-with-parent-answer="1">
-                  <content content-type="field-set">
+                  <content content-type="display-children" custom-class="card-content-field-set">
                     <content content-type="short-input" value-type="text">
                       <text>You have answered 1 to the radio question</text>
                     </content>
@@ -76,7 +76,7 @@ module CustomCard
                   </content>
                 </content>
                 <content content-type="display-with-value" visible-with-parent-answer="2">
-                  <content content-type="field-set">
+                  <content content-type="display-children" custom-class="card-content-field-set">
                     <content content-type="text">
                       <text>This is a message that comes up when you pick Choice 2 up above</text>
                     </content>

@@ -14,7 +14,7 @@ module Typesetter
     end
 
     def include_creator?
-      FeatureFlag['CORRESPONDING_AUTHOR']
+      options[:destination].present? && options[:destination] != 'apex'
     end
 
     def include_orcid_profile_url?

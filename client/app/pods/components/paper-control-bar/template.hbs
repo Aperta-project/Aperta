@@ -85,7 +85,7 @@
   {{/if}}
 
   {{#if (can "view_recent_activity" paper)}}
-    <div class="control-bar-button" {{action "showActivity" tab}} id="nav-recent-activity">
+    <div class="control-bar-button" {{action showActivity}} id="nav-recent-activity">
       {{partial "svg/heartbeat"}}
       Recent Activity
     </div>

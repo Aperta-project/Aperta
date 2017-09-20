@@ -3,8 +3,6 @@
 # CardContent.
 #
 class Answer < ActiveRecord::Base
-  acts_as_paranoid
-
   include Readyable
 
   belongs_to :card_content
@@ -58,6 +56,21 @@ class Answer < ActiveRecord::Base
         #task. This is currently unsupported on #{self.class.name} and if you
         meant it to work you may need to update the implementation.
       ERROR
+    end
+  end
+
+  def answer_blank?
+    if card_content.value_type == 'attachment'
+      attachments.empty?
+    elsif card_content.content_type == 'check-box'
+      value != true
+    elsif value.nil?
+      true
+    elsif value.kind_of?(String)
+      value.blank?
+    else
+      # It's not nil, so I guess it's not blank.
+      false
     end
   end
 

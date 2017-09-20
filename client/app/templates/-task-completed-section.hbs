@@ -11,7 +11,9 @@
         I am done with this task
       </button>
     {{/if}}
-
+    {{#if task.taskNotReady}}
+      <span class="error-message">{{completedErrorText}}</span>
+    {{/if}}
     {{#if validationErrors.completed}}
       {{error-message message=validationErrors.completed}}
     {{/if}}

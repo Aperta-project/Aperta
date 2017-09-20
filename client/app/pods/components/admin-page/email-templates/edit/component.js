@@ -1,25 +1,71 @@
 import Ember from 'ember';
+import BrowserDirtyEditor from 'tahi/mixins/components/dirty-editor-browser';
+import EmberDirtyEditor from 'tahi/mixins/components/dirty-editor-ember';
 
 // This validation works for our pre-populated letter templates
 // but we might want to change this up when users are allowed to create
 // new templates.
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
   store: Ember.inject.service(),
   routing: Ember.inject.service('-routing'),
-  disabled: Ember.computed('template.subject', 'template.body', function() {
-    return !this.get('template.subject') || !this.get('template.body');
-  }),
-  unsaved: true,
+  saved: true,
+  subjectEmpty: false,
+  bodyEmpty: false,
+  subjectErrors: [],
+  bodyErrors: [],
+  subjectErrorPresent: Ember.computed.notEmpty('subjectErrors'),
+  bodyErrorPresent: Ember.computed.notEmpty('bodyErrors'),
+
   actions: {
-    save: function() {
-      if (this.get('disabled') || this.get('template.isSaving')) {
-        this.set('unsaved', false);
+    handleInputChange() {
+      this.set('saved', false);
+      this.set('message', '');
+    },
+
+    checkSubject() {
+      if (!this.get('template.subject')) {
+        this.set('subjectEmpty', true);
       } else {
-        this.get('template').save().then(() => {
-          this.get('routing').transitionTo('admin.journals.emailtemplates', this.get('template.journal.id'));
-        });
+        this.set('subjectEmpty', false);
+      }
+    },
+
+    checkBody() {
+      if(!this.get('template.body')) {
+        this.set('bodyEmpty', true);
+      } else {
+        this.set('bodyEmpty', false);
+      }
+    },
+
+    save: function() {
+      this.set('subjectErrors', []);
+      this.set('bodyErrors', []);
+      if (this.get('template.subject') && this.get('template.body')) {
+        this.get('template').save()
+          .then(() => {
+            this.set('saved', true);
+            this.set('message', 'Your changes have been saved.');
+            this.set('messageType', 'success');
+          })
+          .catch(error => {
+            let subjectErrors = error.errors.filter((e) => e.source.pointer.includes('subject'));
+            let bodyErrors = error.errors.filter((e) => e.source.pointer.includes('body'));
+            if (subjectErrors.length) {
+              this.set('subjectErrors', subjectErrors.map(s => s.detail));
+            }
+            if (bodyErrors.length) {
+              this.set('bodyErrors', bodyErrors.map(b => b.detail));
+            }
+            this.set('message', 'Please correct errors where indicated.');
+            this.set('messageType', 'danger');
+          });
+      } else {
+        this.set('message', 'Please correct errors where indicated.');
+        this.set('messageType', 'danger');
       }
     }
   }
 });
+

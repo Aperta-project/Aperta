@@ -15,7 +15,7 @@ class LitePaperSerializer < ActiveModel::Serializer
   end
 
   def review_due_at
-    return unless scope && reviewer_report
+    return unless scope && reviewer_report && reviewer_report.state == 'review_pending'
     @review_due_at ||= reviewer_report.due_at
   end
 

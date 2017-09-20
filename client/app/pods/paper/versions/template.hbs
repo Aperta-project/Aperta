@@ -35,7 +35,7 @@
 
 {{paper-control-bar paper=model
                     tab="manuscript"
-                    showActivity="showActivityOverlay"
+                    showActivity=(action "showActivityOverlay" "manuscript")
                     addContributors="showCollaboratorsOverlay"
                     showWithdrawOverlay="showWithdrawOverlay"
                     toggleDownloads=(action "toggleDownloads")

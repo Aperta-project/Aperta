@@ -18,8 +18,18 @@ class JournalFactory
     @journal = journal
   end
 
+  def self.setup_default_mmt(journal)
+    setup_default_task_types(journal)
+    JournalServices::CreateDefaultManuscriptManagerTemplates.call(journal)
+  end
+
+  def self.setup_default_task_types(journal)
+    JournalServices::CreateDefaultTaskTypes.call(journal)
+  end
+
   def create
     @journal.save!
+    self.class.setup_default_mmt(@journal)
     ensure_default_roles_and_permissions_exist
     assign_hints
     assign_default_system_custom_cards
@@ -160,7 +170,6 @@ class JournalFactory
       task_klasses = SUBMISSION_TASKS
       task_klasses -= [
         PlosBilling::BillingTask,
-        TahiStandardTasks::CoverLetterTask,
         TahiStandardTasks::ReviewerRecommendationsTask
       ]
       task_klasses += [AdHocForReviewersTask]

@@ -6,6 +6,10 @@ class ReviewerReportContext < TemplateContext
      { name: :answers, context: AnswerContext, many: true }]
   end
 
+  def self.blacklisted_merge_fields
+    ActionView::Helpers::SanitizeHelper.public_instance_methods
+  end
+
   whitelist :state, :revision, :status, :datetime, :invitation_accepted?, :due_at
 
   def reviewer

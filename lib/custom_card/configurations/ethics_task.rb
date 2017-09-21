@@ -49,7 +49,7 @@ module CustomCard
                     <![CDATA[<div class="question-text">Does your study involve human participants and/or tissue?</div>]]>
                   </text>
                   <content content-type="display-with-value" visible-with-parent-answer="true">
-                    <content content-type="field-set">
+                    <content content-type="display-children" custom-class="card-content-field-set">
                       <content ident="ethics--human_subjects--participants" content-type="paragraph-input" value-type="text">
                         <text>Please enter the name of the IRB or Ethics Committee that approved this study in the space below. Include the approval number and/or a statement indicating approval of this research.</text>
                       </content>
@@ -66,10 +66,10 @@ module CustomCard
                     <![CDATA[<div class="question-text"> Does your study involve animal research (vertebrate animals, embryos or tissues)?</div>]]>
                   </text>
                   <content content-type="display-with-value" visible-with-parent-answer="true">
-                    <content content-type="field-set">
+                    <content content-type="display-children" custom-class="card-content-field-set">
                       <content content-type="text">
                         <text>
-                          <![CDATA[<p>All animal work must have been conducted according to relevant national and international guidelines. If your study involved non-human primates, you must provide details regarding animal welfare and steps taken to ameliorate suffering; this is in accordance with the recommendations of the Weatherall report, "<a href="http://www.acmedsci.ac.uk/more/news/the-use-of-non-human-primates-in-research/" target="_blank">The use of non-human primates in research.</a>" The relevant guidelines followed and the committee that approved the study should be identified in the ethics statement.<br>If anesthesia, euthanasia or any kind of animal sacrifice is part of the study, please include briefly in your statement which substances and/or methods were applied. Manuscripts describing studies that use death as an endpoint will be subject to additional ethical considerations, and may be rejected if they lack appropriate justification for the study or consideration of humane endpoints.<br>Please enter the name of your Institutional Animal Care and Use Committee (IACUC) or other relevant ethics board, and indicate whether they approved this research or granted a formal waiver of ethical approval. Also include an approval number if one was obtained.]]>
+                          <![CDATA[All animal work must have been conducted according to relevant national and international guidelines. If your study involved non-human primates, you must provide details regarding animal welfare and steps taken to ameliorate suffering; this is in accordance with the recommendations of the Weatherall report, "<a href="http://www.acmedsci.ac.uk/more/news/the-use-of-non-human-primates-in-research/" target="_blank">The use of non-human primates in research.</a>" The relevant guidelines followed and the committee that approved the study should be identified in the ethics statement.<br>If anesthesia, euthanasia or any kind of animal sacrifice is part of the study, please include briefly in your statement which substances and/or methods were applied. Manuscripts describing studies that use death as an endpoint will be subject to additional ethical considerations, and may be rejected if they lack appropriate justification for the study or consideration of humane endpoints.<br>Please enter the name of your Institutional Animal Care and Use Committee (IACUC) or other relevant ethics board, and indicate whether they approved this research or granted a formal waiver of ethical approval. Also include an approval number if one was obtained.]]>
                         </text>
                       </content>
                       <content ident="ethics--animal_subjects--field_permit" content-type="paragraph-input" value-type="text">
@@ -91,7 +91,7 @@ module CustomCard
                     <![CDATA[<div class="question-text"> Is this a field study, or does it involve collection of plant, animal, or other materials collected from a natural setting?</div>]]>
                   </text>
                   <content content-type="display-with-value" visible-with-parent-answer="true">
-                    <content content-type="field-set">
+                    <content content-type="display-children" custom-class="card-content-field-set">
                       <content ident="ethics--field_study--field_permit_number" content-type="paragraph-input" value-type="text">
                         <text>Please provide your field permit number and indicate the institution or relevant body that granted permission for use of the land or materials collected.</text>
                       </content>

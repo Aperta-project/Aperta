@@ -29,9 +29,10 @@ export default DS.Model.extend({
   name: DS.attr('string'),
   state: DS.attr('string'),
   addable: DS.attr('boolean'),
+  workflow_only: DS.attr('boolean'),
   xml: DS.attr('string'),
-
-  // used by the publish() function, set in the card editor's publish modal
+  title: Ember.computed.alias('name'),
+ // used by the publish() function, set in the card editor's publish modal
   historyEntry: '',
 
   stateIcon: Ember.computed('state', function() {

@@ -25,13 +25,19 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   sortedCards: computed.sort('cards', 'cardSort'),
 
   addableCards: computed.filterBy('sortedCards', 'addable', true),
+  addableWorkFlowCards: computed.filterBy('sortedCards', 'workflow_only', true),
+  addableNonWorkFlowCards: computed.setDiff('sortedCards', 'addableWorkFlowCards'),
 
   // pre-card-config
   taskTypeSort: ['title:asc'],
-  sortedTaskTypes: computed.sort('journalTaskTypes', 'taskTypeSort'),
-  authorTasks: computed.filterBy('sortedTaskTypes', 'roleHint', 'author'),
-  staffTasksUnsorted: computed.setDiff('sortedTaskTypes', 'authorTasks'),
-  staffTasks: computed.sort('staffTasksUnsorted', 'taskTypeSort'),
+  authorTasks: computed.filterBy('journalTaskTypes', 'roleHint', 'author'),
+  staffTasks: computed.setDiff('journalTaskTypes', 'authorTasks'),
+
+
+  unsortedAuthorColumn: computed.union('authorTasks', 'addableWorkFlowCards'),
+  authorColumn: computed.sort('unsortedAuthorColumn', 'taskTypeSort'),
+  unsortedStaffColumn: computed.union('staffTasks', 'addableNonWorkFlowCards'),
+  staffColumn: computed.sort('unsortedStaffColumn', 'taskTypeSort'),
 
   save() {
     this.get('onSave')(

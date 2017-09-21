@@ -19,6 +19,14 @@ module CustomCard
         ["Collaborator", "Cover Editor", "Creator", "Handling Editor", "Internal Editor", "Production Staff", "Publishing Services", "Staff Admin"]
       end
 
+      def self.view_discussion_footer_role_names
+        ["Cover Editor", "Handling Editor", "Internal Editor", "Production Staff", "Publishing Services", "Staff Admin"]
+      end
+
+      def self.edit_discussion_footer_role_names
+        ["Internal Editor", "Production Staff", "Publishing Services", "Staff Admin"]
+      end
+
       def self.publish
         true
       end

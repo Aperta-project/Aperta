@@ -27,7 +27,7 @@
             {{/if}}
             <h1 class="overlay-body-title">{{{task.title}}}</h1>
             {{#task-load task=task}}
-              {{component task.componentName task=task}}
+              {{component task.componentName task=task isOverlay=true}}
               {{#if (can 'view_discussion_footer' task)}}
                 <div class="overlay-discussion-board">
                   <h2>Discussion</h2>

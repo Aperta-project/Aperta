@@ -1,11 +1,12 @@
-{{partial "task-completed-section"}}
-
-<div class="custom-card-task task-main-content {{if renderAsDualColumn 'dual-column' 'single-column'}}">
-  {{card-content
-    content=contentRoot
-    owner=task
-    disabled=isNotEditable
-    scenario=this
-    preview=false
-  }}
-</div>
+{{custom-card-task-wrapper
+  contentRoot=contentRoot
+  disabled=isNotEditable
+  hideCompletedSection=hideCompletedSection
+  owner=task
+  preview=false
+  scenario=this
+  task=task
+  taskStateToggleable=taskStateToggleable
+  toggleTaskCompletion=(action 'toggleTaskCompletion')
+  validationErrors=validationErrors
+}}

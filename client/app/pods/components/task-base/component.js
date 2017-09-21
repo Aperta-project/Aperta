@@ -22,6 +22,12 @@ export default Component.extend(ValidationErrorsMixin, {
 
   completedErrorText: 'Please fix all errors',
 
+  /**
+   * isOverlay is currently only used directly by the preprint opt out card
+   * (which is a custom card).  It's picked up as a condition by an 'if' card content
+   */
+  isOverlay: false,
+
   init() {
     this._super(...arguments);
     this.set('editAbility', this.get('can').build('edit', this.get('task')));
@@ -41,7 +47,6 @@ export default Component.extend(ValidationErrorsMixin, {
   taskStateToggleable: alias('isEditableDueToPermissions'),
   pdfAllowed: Ember.computed.reads('task.paper.journal.pdfAllowed'),
   contentRoot: Ember.computed.reads('task.cardVersion.contentRoot'),
-  renderAsDualColumn: Ember.computed.alias('task.cardVersion.contentRoot.renderAsDualColumn'),
 
   saveTask: concurrencyTask(function * () {
     try {

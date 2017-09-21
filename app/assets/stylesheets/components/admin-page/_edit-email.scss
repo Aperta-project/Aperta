@@ -58,8 +58,9 @@
   }
 }
 
-
 .required-field-label:after{
   content: '*';
   color: $aperta-red;
 }
+
+.top-marg-10 { margin-top: 10px; }

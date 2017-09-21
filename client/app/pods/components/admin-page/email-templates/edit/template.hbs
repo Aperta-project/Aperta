@@ -1,10 +1,16 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-xs-12">
-      {{#link-to "admin.journals.emailtemplates" template.journalId class="email-editor-header-back"}}&lt; Email Templates{{/link-to}}
-      <h1>
-        {{template.name}}
-      </h1>
+      <p class="top-marg-10">
+        {{#link-to "admin.journals.emailtemplates" template.journalId class="email-editor-header-back"}}&lt; Email Templates{{/link-to}}
+      </p>
+      {{#if isEditingTitle}}
+        {{input value=template.name class="form-control" focus-out="editTitle"}}
+      {{else}}
+        <h2>
+          {{template.name}}  <small {{action 'editTitle'}}>{{fa-icon 'pencil' size=-8}}</small>
+        </h2>
+      {{/if}}
       {{#tab-bar}}
         <a class="active">Edit Email</a>
       {{/tab-bar}}

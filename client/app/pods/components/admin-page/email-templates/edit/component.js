@@ -13,11 +13,16 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
   subjectEmpty: false,
   bodyEmpty: false,
   subjectErrors: [],
+  isEditingTitle: false,
   bodyErrors: [],
   subjectErrorPresent: Ember.computed.notEmpty('subjectErrors'),
   bodyErrorPresent: Ember.computed.notEmpty('bodyErrors'),
 
   actions: {
+    editTitle() {
+      this.toggleProperty('isEditingTitle');
+    },
+
     handleInputChange() {
       this.set('saved', false);
       this.set('message', '');

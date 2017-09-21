@@ -142,11 +142,6 @@ RSpec.configure do |config|
     # rubocop:enable Style/GlobalVars
   end
 
-  config.before(:each, js: true) do
-    # Get a consistent window size.
-    Capybara.page.driver.browser.manage.window.resize_to(1500, 1000)
-  end
-
   config.before(:each) do
     ActionMailer::Base.deliveries.clear
     DatabaseCleaner.start

@@ -191,6 +191,7 @@ Tahi::Application.routes.draw do
     resources :tasks, only: [:update, :create, :show, :destroy] do
       get :nested_questions
       get :nested_question_answers
+      put :update_position
       resources :attachments, only: [:index, :create, :update, :destroy], controller: 'adhoc_attachments' do
         put :update_attachment, on: :member
       end

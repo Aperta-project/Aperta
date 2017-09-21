@@ -259,12 +259,19 @@ describe TahiStandardTasks::ReviewerMailer do
   end
 
   shared_examples_for 'a Liquid email checked for blanks' do
-    it 'raises a Bugsnag error if there are blank fields' do
+    before do
       # rubocop:disable Rails/SkipsModelValidations
       report.paper.journal.tap { |j| j.update_attribute(:name, nil) }
       # rubocop:enable Rails/SkipsModelValidations
+    end
+
+    it 'raises a Bugsnag error if there are blank fields' do
       expect(Bugsnag).to receive(:notify)
       email.deliver_now
+    end
+
+    it 'does not send emails' do
+      expect { email.deliver_now }.not_to change(ActionMailer::Base.deliveries, :count)
     end
   end
 

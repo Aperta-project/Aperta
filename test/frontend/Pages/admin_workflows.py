@@ -60,6 +60,7 @@ class AdminWorkflowsPage(BaseAdminPage):
                                     'a#control-bar-journal-back-button')
     self._mmt_template_resrev_checkbox = (By.CSS_SELECTOR,
                                           'div.uses-research-article-reviewer-report input')
+    self._mmt_template_preprint_checkbox = (By.CSS_SELECTOR, 'div.preprint-eligible input')
     self._mmt_template_resrev_label = (By.CSS_SELECTOR,
                                        'label.uses-research-article-reviewer-report')
     self._mmt_template_add_phase_icons = (By.CSS_SELECTOR, 'i.fa-plus-square-o')
@@ -225,7 +226,8 @@ class AdminWorkflowsPage(BaseAdminPage):
                                         'revision_tech_check', 'send_to_apex',
                                         'title_and_abstract'),
                            custom_cards=(),
-                           uses_resrev_report=True):
+                           uses_resrev_report=True,
+                           preprint_eligible=False):
     """
     A function to add a new mmt (paper type) template to a journal
     :param commit: boolean, whether to commit the named mmt to the journal, defaults to False.
@@ -236,6 +238,7 @@ class AdminWorkflowsPage(BaseAdminPage):
     :param custom_cards: list of custom cards to add to the mmt
     :param uses_resrev_report: boolean, default true, specifies mmt type as research for
       the purposes of reviewer report selection
+    :param preprint_eligible: bool, Whether the mmt supports preprint functions, including export
     :return: void function
     """
     if not commit:
@@ -274,17 +277,20 @@ class AdminWorkflowsPage(BaseAdminPage):
       time.sleep(1)
     else:
       logging.info('Adding {0} MMT with user tasks: {1}, staff tasks {2}, and custom tasks {3}'
-                   ' and that uses the '
-                   'research reviewer report: {4}'.format(mmt_name,
-                                                          user_tasks,
-                                                          staff_tasks,
-                                                          custom_cards,
-                                                          uses_resrev_report))
+                   ' and that uses the research reviewer report: {4}, with a preprint eligible '
+                   'setting: {5}'.format(mmt_name,
+                                         user_tasks,
+                                         staff_tasks,
+                                         custom_cards,
+                                         uses_resrev_report,
+                                         preprint_eligible))
       add_mmt_btn = self._get(self._admin_workflow_add_mmt_btn)
       add_mmt_btn.click()
       self._wait_for_element(self._get(self._mmt_template_name_field))
       if uses_resrev_report:
         self._get(self._mmt_template_resrev_checkbox).click()
+      if preprint_eligible:
+        self._get(self._mmt_template_preprint_checkbox).click()
       template_field = self._get(self._mmt_template_name_field)
       save_template_button = self._get(self._mmt_template_save_button)
       template_field.click()

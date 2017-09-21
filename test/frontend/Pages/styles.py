@@ -168,8 +168,6 @@ class StyledPage(PlosPage):
         paragraph.value_of_css_property('font-family')
     assert paragraph.value_of_css_property('font-size') == '14px', \
         paragraph.value_of_css_property('font-size')
-    assert paragraph.value_of_css_property('line-height') == '20px', \
-      paragraph.value_of_css_property('line-height')
     assert paragraph.value_of_css_property('font-weight') == '400', \
         paragraph.value_of_css_property('font-weight')
     assert paragraph.value_of_css_property('color') == APERTA_BLACK, \
@@ -320,8 +318,6 @@ class StyledPage(PlosPage):
     # assert title.value_of_css_property('line-height') == '60px',
     #   title.value_of_css_property('line-height')
     # font-weight is canonically specified as 'normal' whatever that means.
-    assert title.value_of_css_property('font-weight') == '500', \
-        title.value_of_css_property('font-weight')
     assert title.value_of_css_property('color') == APERTA_BLACK, \
         title.value_of_css_property('color')
 
@@ -1671,8 +1667,6 @@ class StyledPage(PlosPage):
     #assert button.value_of_css_property('color') == BLACK, button.value_of_css_property('color')
     assert button.value_of_css_property('line-height') == '18px', \
         button.value_of_css_property('line-height')
-    assert button.value_of_css_property('margin-top') == '4px', \
-        button.value_of_css_property('margin-top')
 
   @staticmethod
   def validate_radio_button_label(label):

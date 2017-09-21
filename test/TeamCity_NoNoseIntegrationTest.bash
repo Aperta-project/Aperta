@@ -54,9 +54,9 @@ python -m frontend.test_addl_info_task
 python -m frontend.test_admin
 python -m frontend.test_assign_team
 python -m frontend.test_authors_task
-python -m frontend.test_bdd_cns
 python -m frontend.test_bdd_create_to_submit
 python -m frontend.test_changes_for_author
+python -m frontend.test_cns
 python -m frontend.test_cover_letter
 python -m frontend.test_dashboard
 python -m frontend.test_discussion_forum

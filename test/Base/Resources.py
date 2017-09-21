@@ -23,7 +23,7 @@ APEX_FTP_DIR = getenv('APEX_FTP_DIR', 'aperta2apextest')
 # DEV/CI
 # psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-201.soma.plos.org')
 # QA/RC
-psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-301.soma.plos.org')
+psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-201.soma.plos.org')
 # Stage
 # psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-stage.soma.plos.org')
 # Global
@@ -1796,7 +1796,8 @@ only_init_dec_mmt = {'name'              : 'OnlyInitialDecisionCard',
                                             'Revision Tech Check', 'Similarity Check',
                                             'Send to Apex', 'Title And Abstract'],
                      'custom_cards'      : [],
-                     'uses_resrev_report': True
+                     'uses_resrev_report': True,
+                     'preprint_eligible' : False
                      }
 only_rev_cands_mmt = {'name'              : 'OnlyReviewerCandidates',
                       'user_tasks'        : ['Reviewer Candidates', 'Upload Manuscript'],
@@ -1807,7 +1808,8 @@ only_rev_cands_mmt = {'name'              : 'OnlyReviewerCandidates',
                                              'Revision Tech Check', 'Send to Apex',
                                               'Similarity Check', 'Title And Abstract'],
                       'custom_cards'      : [],
-                      'uses_resrev_report': True
+                      'uses_resrev_report': True,
+                      'preprint_eligible' : False
                       }
 front_matter_mmt = {'name'              : 'Front-Matter-type',
                     'user_tasks'        : ['Additional Information', 'Authors', 'Figures',
@@ -1816,7 +1818,8 @@ front_matter_mmt = {'name'              : 'Front-Matter-type',
                                            'Register Decision', 'Related Articles', 'Send to Apex',
                                            'Similarity Check', 'Title And Abstract'],
                     'custom_cards'      : [],
-                    'uses_resrev_report': False
+                    'uses_resrev_report': False,
+                    'preprint_eligible' : False
                     }
 research_mmt = {'name'              : 'Research',
                 'user_tasks'        : ['Authors', 'Billing', 'Cover Letter', 'Figures',
@@ -1826,7 +1829,8 @@ research_mmt = {'name'              : 'Research',
                                        'Invite Reviewers', 'Register Decision',
                                        'Similarity Check', 'Title And Abstract'],
                 'custom_cards'      : [],
-                'uses_resrev_report': True
+                'uses_resrev_report': True,
+                'preprint_eligible' : False
                 }
 resrch_w_init_dec = {'name'              : 'Research w/Initial Decision Card',
                      'user_tasks'        : ['Authors', 'Billing', 'Cover Letter', 'Figures',
@@ -1837,7 +1841,8 @@ resrch_w_init_dec = {'name'              : 'Research w/Initial Decision Card',
                                             'Register Decision', 'Title And Abstract',
                                             'Similarity Check'],
                      'custom_cards'      : [],
-                     'uses_resrev_report': True
+                     'uses_resrev_report': True,
+                     'preprint_eligible' : False
                      }
 imgs_init_dec_mmt = {'name'              : 'Images+InitialDecision',
                      'user_tasks'        : ['Figures', 'Initial Decision', 'Upload Manuscript'],
@@ -1848,7 +1853,8 @@ imgs_init_dec_mmt = {'name'              : 'Images+InitialDecision',
                                             'Send to Apex', 'Similarity Check',
                                             'Title And Abstract'],
                      'custom_cards'      : [],
-                     'uses_resrev_report': True
+                     'uses_resrev_report': True,
+                     'preprint_eligible' : False
                      }
 gen_cmplt_apexdata = {'name'              : 'generateCompleteApexData',
                       'user_tasks'        : ['Additional Information', 'Authors', 'Billing',
@@ -1864,7 +1870,8 @@ gen_cmplt_apexdata = {'name'              : 'generateCompleteApexData',
                                              'Send to Apex', 'Similarity Check',
                                              'Title And Abstract'],
                       'custom_cards':        ['Competing Interests', ],
-                      'uses_resrev_report': True
+                      'uses_resrev_report': True,
+                      'preprint_eligible' : False
                       }
 no_cards_mmt = {'name'              : 'NoCards',
                 'user_tasks'        : ['Upload Manuscript'],
@@ -1874,9 +1881,22 @@ no_cards_mmt = {'name'              : 'NoCards',
                                        'Related Articles', 'Revision Tech Check', 'Send to Apex',
                                        'Similarity Check', 'Title And Abstract'],
                 'custom_cards'      : [],
-                'uses_resrev_report': True
+                'uses_resrev_report': True,
+                'preprint_eligible' : False
                 }
-# The following MMT definitions are seed data for our lean environment
+pp_optin_mmt = {'name'              : 'Preprint Eligible',
+                'user_tasks'        : ['Upload Manuscript'],
+                'staff_tasks'       : ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                       'Invite Academic Editor', 'Invite Reviewers',
+                                       'Production Metadata', 'Register Decision',
+                                       'Related Articles', 'Revision Tech Check', 'Send to Apex',
+                                       'Similarity Check', 'Title And Abstract'],
+                'custom_cards'      : ['Preprint Posting'],
+                'uses_resrev_report': True,
+                'preprint_eligible' : True
+                }
+
+# The following MMT definitions are seed data for our demo environment only
 bio_essay = {'name':               'Essay',
              'user_tasks':         ['Cover Letter', 'Upload Manuscript', 'Authors',
                                     'Ethics Statement', 'Figures', 'Reviewer Candidates',
@@ -1887,7 +1907,8 @@ bio_essay = {'name':               'Essay',
                                     'Register Decision', 'Send to Apex', 'Production Metadata',
                                     'Similarity Check', 'Title And Abstract'],
              'custom_cards':        ['Competing Interests', ],
-             'uses_resrev_report': True
+             'uses_resrev_report': True,
+             'preprint_eligible' : False
              }
 bio_resart = {'name':               'Research Article',
               'user_tasks':         ['Upload Manuscript', 'Cover Letter', 'Figures',
@@ -1899,7 +1920,8 @@ bio_resart = {'name':               'Research Article',
                                      'Register Decision', 'Production Metadata',
                                      'Similarity Check', 'Send to Apex'],
               'custom_cards'      : [],
-              'uses_resrev_report': True
+              'uses_resrev_report': True,
+              'preprint_eligible' : False
               }
 bio_genres = {'name':               'Genetics Research',
               'user_tasks':         ['Additional Information', 'Authors', 'Billing',
@@ -1914,7 +1936,8 @@ bio_genres = {'name':               'Genetics Research',
                                      'Related Articles', 'Production Metadata', 'Similarity Check',
                                      'Title And Abstract'],
               'custom_cards':        ['Competing Interests', ],
-              'uses_resrev_report': True
+              'uses_resrev_report': True,
+              'preprint_eligible' : False
               }
 bio_mystery = {'name':               'Unsolved Mystery',
                'user_tasks':         ['Cover Letter', 'Upload Manuscript', 'Authors',
@@ -1927,7 +1950,8 @@ bio_mystery = {'name':               'Unsolved Mystery',
                                       'Production Metadata', 'Similarity Check',
                                       'Title And Abstract'],
                'custom_cards':        ['Competing Interests', ],
-               'uses_resrev_report': True
+               'uses_resrev_report': True,
+               'preprint_eligible' : False
                }
 bio_commpage = {'name':               'Community Page',
                 'user_tasks':         ['Cover Letter', 'Upload Manuscript', 'Authors',
@@ -1940,7 +1964,8 @@ bio_commpage = {'name':               'Community Page',
                                        'Production Metadata', 'Similarity Check',
                                        'Title And Abstract'],
                 'custom_cards':        ['Competing Interests', ],
-                'uses_resrev_report': True
+                'uses_resrev_report': True,
+                'preprint_eligible' : False
                 }
 bio_formcomm = {'name':               'Formal Comment',
                 'user_tasks':         ['Cover Letter', 'Upload Manuscript', 'Authors',
@@ -1953,7 +1978,8 @@ bio_formcomm = {'name':               'Formal Comment',
                                        'Production Metadata', 'Similarity Check',
                                        'Title And Abstract'],
                 'custom_cards':        ['Competing Interests', ],
-                'uses_resrev_report': True
+                'uses_resrev_report': True,
+                'preprint_eligible' : False
                 }
 bio_nwc = {'name':               'New Workflow Concept',
            'user_tasks':         ['Upload Manuscript', 'Supporting Info', 'Cover Letter',
@@ -1966,7 +1992,8 @@ bio_nwc = {'name':               'New Workflow Concept',
                                   'Production Metadata', 'Send to Apex', 'Related Articles',
                                   'Similarity Check'],
            'custom_cards':        ['Competing Interests', ],
-           'uses_resrev_report': True
+           'uses_resrev_report': True,
+           'preprint_eligible' : False
            }
 gen_resart = {'name':               'Research Article',
               'user_tasks':         ['Additional Information', 'Authors', 'Billing',
@@ -1981,7 +2008,8 @@ gen_resart = {'name':               'Research Article',
                                      'Related Articles', 'Production Metadata', 'Similarity Check',
                                      'Title And Abstract'],
               'custom_cards':        ['Competing Interests', ],
-              'uses_resrev_report': True
+              'uses_resrev_report': True,
+              'preprint_eligible' : False
               }
 gen_persp = {'name':               'Perspective',
              'user_tasks':         ['Cover Letter', 'Upload Manuscript', 'Authors', 'Figures',
@@ -1992,5 +2020,6 @@ gen_persp = {'name':               'Perspective',
                                     'Production Metadata', 'Send to Apex', 'Similarity Check',
                                     'Title And Abstract'],
              'custom_cards':        ['Competing Interests', ],
-             'uses_resrev_report': False
+             'uses_resrev_report': False,
+             'preprint_eligible' : False
              }

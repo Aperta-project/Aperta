@@ -19,6 +19,7 @@ from .Pages.login_page import LoginPage
 from .Pages.akita_login_page import AkitaLoginPage
 from .Pages.dashboard import DashboardPage
 from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Overlays.preprint_posting import PreprintPostingOverlay
 
 
 class CommonTest(FrontEndTest):
@@ -111,7 +112,10 @@ class CommonTest(FrontEndTest):
     choose one of available papers
     :param format_: type of doc to use to create the initial submission. Valid values: 'any', 'pdf',
       'word'
-    :return title: Return the title of the article.
+    If preprint overlay in create sequence:
+      :return title: Return the title of the article
+    Else:
+      :return title, poics_selection: Return the title of the article and the preprint opt-in selection
     """
     dashboard = DashboardPage(self.getDriver())
     # Create new submission
@@ -159,6 +163,19 @@ class CommonTest(FrontEndTest):
     self._driver.find_element_by_id('upload-files').send_keys(fn)
     # Time needed for script execution.
     time.sleep(7)
+    # poics = Preprint Overlay In Create Sequence
+    poics = self.preprint_overlay_in_create_sequence(journal, type_)
+    if poics:
+        logging.info('Preprint posting overlay in create sequence - need to fill out card and click Continue...')
+        # fill out Preprint Posting Card before return
+        preprint_overlay = PreprintPostingOverlay(self.getDriver())
+        preprint_overlay.overlay_ready()
+        preprint_overlay.validate_styles()
+        poics_selection = preprint_overlay.select_preprint_overlay_in_create_sequence_and_continue()
+        logging.info(poics_selection)
+        return title, poics_selection
+    else:
+        logging.info('No Preprint posting overlay in create sequence.')
     return title
 
   def check_article(self, title, user='sealresq+1000@gmail.com'):
@@ -403,3 +420,41 @@ class CommonTest(FrontEndTest):
       PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
                      'created_at, updated_at) VALUES (%s, %s, 1, \'System\', now(), now());',
                      (siteadmin_user_id, site_admin_role_for_env))
+
+  @staticmethod
+  def preprint_overlay_in_create_sequence(journal: str, mmt: str) -> bool:
+      """
+      A method that will determine for mmt if the pre-print posting overlay should be shown as part of the
+      create new manuscript sequence. Tests for Preprint feature flag enablement for system, preprint checkbox
+      selection for mmt, and finally presence of Preprint Posting card in mmt. If all three are found, return
+      True, else False
+      :param journal: The name of the journal containing the mmt
+      :type journal: str
+      :param mmt: The name of the mmt
+      :type mmt: str
+      :return: True if preprint overlay should be shown in create sequence, otherwise False
+      :type return: bool
+      """
+      pp_ff = PgSQL().query('SELECT active FROM feature_flags WHERE name = \'PREPRINT\';')[0][0]
+      if not pp_ff:
+          return False
+      mmt_id, pp_eligible_mmt = PgSQL().query('SELECT manuscript_manager_templates.id, is_preprint_eligible '
+                                              'FROM manuscript_manager_templates '
+                                              'JOIN journals ON journals.id = manuscript_manager_templates.journal_id '
+                                              'WHERE journals.name = %s '
+                                              'AND manuscript_manager_templates.paper_type = %s;', (journal, mmt))[0]
+      if not pp_eligible_mmt:
+          return False
+      # Get a list of tuples of phase_templates associated to mmt by id
+      mmt_phase_id_tuples = PgSQL().query('SELECT id FROM phase_templates '
+                                          'WHERE manuscript_manager_template_id = %s;', (mmt_id,))
+      # Convert list of tuples to a simple list
+      mmt_phase_ids = []
+      for mmt_phase_id_tuple in mmt_phase_id_tuples:
+          mmt_phase_ids.append(mmt_phase_id_tuple[0])
+      try:
+        PgSQL().query('SELECT title FROM task_templates WHERE title = \'Preprint Posting\' '
+                      'AND phase_template_id = ANY(%s) ;', (mmt_phase_ids,))[0][0]
+      except IndexError:
+          return False
+      return True

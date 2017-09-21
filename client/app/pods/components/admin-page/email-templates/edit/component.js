@@ -12,20 +12,35 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
   saved: true,
   subjectEmpty: false,
   bodyEmpty: false,
+  nameEmpty: Ember.computed.empty('template.name'),
+  isEditingName: false,
   subjectErrors: [],
-  isEditingTitle: false,
   bodyErrors: [],
+  nameError: '',
   subjectErrorPresent: Ember.computed.notEmpty('subjectErrors'),
   bodyErrorPresent: Ember.computed.notEmpty('bodyErrors'),
+  nameErrorPresent: Ember.computed.notEmpty('nameError'),
 
   actions: {
     editTitle() {
-      this.toggleProperty('isEditingTitle');
+      this.set('isEditingName', true);
+      if (this.get('template.hasDirtyAttributes')) {
+        this.set('saved', false);
+      } else {
+        this.set('saved', true);
+      }
     },
 
     handleInputChange() {
       this.set('saved', false);
-      this.set('message', '');
+      if(!this.get('nameEmpty')) {
+        this.set('message', '');
+      } else {
+        this.setProperties({
+          message: 'Please correct errors where indicated.',
+          messageType: 'danger'
+        });
+      }
     },
 
     checkSubject() {
@@ -45,30 +60,43 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
     },
 
     save: function() {
-      this.set('subjectErrors', []);
-      this.set('bodyErrors', []);
-      if (this.get('template.subject') && this.get('template.body')) {
+      this.setProperties({
+        subjectErrors: [],
+        bodyErrors: []
+      });
+      if (this.get('template.subject') && this.get('template.body') && this.get('template.name')) {
         this.get('template').save()
           .then(() => {
-            this.set('saved', true);
-            this.set('message', 'Your changes have been saved.');
-            this.set('messageType', 'success');
+            this.setProperties({
+              saved: true,
+              isEditingName: false,
+              message: 'Your changes have been saved.',
+              messageType: 'success'
+            });
           })
           .catch(error => {
-            let subjectErrors = error.errors.filter((e) => e.source.pointer.includes('subject'));
-            let bodyErrors = error.errors.filter((e) => e.source.pointer.includes('body'));
+            const subjectErrors = error.errors.filter((e) => e.source.pointer.includes('subject'));
+            const bodyErrors = error.errors.filter((e) => e.source.pointer.includes('body'));
+            const nameError = error.errors.filter(e => e.source.pointer.includes('name'));
             if (subjectErrors.length) {
               this.set('subjectErrors', subjectErrors.map(s => s.detail));
             }
             if (bodyErrors.length) {
               this.set('bodyErrors', bodyErrors.map(b => b.detail));
             }
-            this.set('message', 'Please correct errors where indicated.');
-            this.set('messageType', 'danger');
+            if (nameError.length) {
+              this.set('nameError', nameError.map(n => n.detail));
+            }
+            this.setProperties({
+              message: 'Please correct errors where indicated.',
+              messageType: 'danger'
+            });
           });
       } else {
-        this.set('message', 'Please correct errors where indicated.');
-        this.set('messageType', 'danger');
+        this.setProperties({
+          message: 'Please correct errors where indicated.',
+          messageType: 'danger'
+        });
       }
     }
   }

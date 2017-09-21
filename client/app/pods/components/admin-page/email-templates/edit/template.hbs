@@ -4,13 +4,26 @@
       <p class="top-marg-10">
         {{#link-to "admin.journals.emailtemplates" template.journalId class="email-editor-header-back"}}&lt; Email Templates{{/link-to}}
       </p>
-      {{#if isEditingTitle}}
-        {{input value=template.name class="form-control" focus-out="editTitle"}}
+
+      {{#if isEditingName}}
+        <div class="name-input-size {{unless template.name 'error'}}">
+          {{input value=template.name key-down="handleInputChange" class="form-control template-name"}}
+        </div>
+        {{#if nameEmpty}}
+          <span class="error">{{fa-icon 'warning'}} This field is required.</span>
+        {{/if}}
+        {{#if nameErrorPresent}}
+          <span class="error">
+            {{fa-icon 'warning'}} The email template name of "{{unbound template.name}}" is already taken for this journal. 
+            Please give your template a new name.
+          </span>
+        {{/if}}
       {{else}}
         <h2>
-          {{template.name}}  <small {{action 'editTitle'}}>{{fa-icon 'pencil' size=-8}}</small>
+          {{template.name}}  <small {{action 'editTitle'}} class="pointer-mouse">{{fa-icon 'pencil'}}</small>
         </h2>
       {{/if}}
+
       {{#tab-bar}}
         <a class="active">Edit Email</a>
       {{/tab-bar}}
@@ -19,9 +32,7 @@
   <div class="row">
     <div class="col-xs-12 edit-email-backsplash">
       <div class="text-right">
-        {{#unless displayMessage}}
-          <span class="text-{{messageType}}">{{message}}</span>&nbsp;&nbsp;&nbsp;
-        {{/unless}}
+        <span class="text-{{messageType}}">{{message}}</span>&nbsp;&nbsp;&nbsp;
         {{#save-button
           spinnerSize="mini"
           click=(action 'save')

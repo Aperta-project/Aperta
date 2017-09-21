@@ -496,7 +496,7 @@ ActiveRecord::Schema.define(version: 20170922200616) do
   add_index "journals", ["doi_publisher_prefix", "doi_journal_prefix"], name: "unique_doi", unique: true, using: :btree
 
   create_table "letter_templates", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",       null: false
     t.string   "category"
     t.string   "to"
     t.string   "subject"
@@ -506,6 +506,8 @@ ActiveRecord::Schema.define(version: 20170922200616) do
     t.datetime "updated_at"
     t.string   "scenario"
   end
+
+  add_index "letter_templates", ["name", "journal_id"], name: "index_letter_templates_on_name_and_journal_id", unique: true, using: :btree
 
   create_table "manuscript_manager_templates", force: :cascade do |t|
     t.string   "paper_type"

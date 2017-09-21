@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Admin::JournalUsersController, redis: true do
-  let(:journal) { create(:journal, :with_staff_admin_role) }
+  let(:journal) { create(:journal, :with_admin_roles) }
   let(:user) do
     ja = create(:user, first_name: 'Steve')
     assign_journal_role(journal, ja, :admin)
@@ -27,7 +27,7 @@ describe Admin::JournalUsersController, redis: true do
       context 'the user can administer any journal' do
         before do
           allow(user).to receive(:can?)
-            .with(:administer, Journal)
+            .with(:manage_users, Journal)
             .and_return true
         end
 
@@ -90,7 +90,7 @@ describe Admin::JournalUsersController, redis: true do
         context "when the user can administer any Journal" do
           before do
             allow(user).to receive(:can?)
-              .with(:administer, Journal)
+              .with(:manage_users, Journal)
               .and_return true
           end
 
@@ -132,7 +132,7 @@ describe Admin::JournalUsersController, redis: true do
         context "when the user can administer the specific journal" do
           before do
             allow(user).to receive(:can?)
-              .with(:administer, journal)
+              .with(:manage_users, journal)
               .and_return true
           end
 

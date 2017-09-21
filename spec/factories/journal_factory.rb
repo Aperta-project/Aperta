@@ -42,7 +42,7 @@ FactoryGirl.define do
     %w(
       academic_editor creator collaborator cover_editor discussion_participant
       handling_editor internal_editor production_staff publishing_services
-      staff_admin task_participant reviewer reviewer_report_owner
+      staff_admin task_participant reviewer reviewer_report_owner journal_setup
     ).each do |role|
       role_method = "#{role}_role"
       trait("with_#{role_method}".to_sym) do
@@ -65,7 +65,13 @@ FactoryGirl.define do
       end
     end
 
+    trait(:with_admin_roles) do
+      with_staff_admin_role
+      with_journal_setup_role
+    end
+
     factory :journal_for_integration_tests, traits: [:with_default_mmt, :with_roles_and_permissions]
+
     factory :journal_with_roles_and_permissions, traits: [:with_roles_and_permissions]
     factory :journal_with_default_mmt, traits: [:with_default_mmt]
   end

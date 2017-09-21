@@ -6,13 +6,13 @@
 class CardContent < ActiveRecord::Base
   include Attributable
   include XmlSerializable
+  attr_writer :quick_children
 
   acts_as_nested_set
 
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
   has_many :card_content_validations, dependent: :destroy
-
   validates :card_version, presence: true
 
   validates :parent_id,
@@ -156,6 +156,7 @@ class CardContent < ActiveRecord::Base
       render_tag(xml, 'instruction-text', instruction_text)
       render_tag(xml, 'text', text)
       render_tag(xml, 'label', label)
+      quick_load_descendants if @quick_children.nil?
       card_content_validations.each do |ccv|
         # Do not serialize the required-field validation, it is handled via the
         # "required-field" attribute.
@@ -167,7 +168,7 @@ class CardContent < ActiveRecord::Base
           xml.tag!('possible-value', label: item['label'], value: item['value'])
         end
       end
-      children.each { |child| child.to_xml(builder: xml, skip_instruct: true) }
+      quick_children.each { |child| child.to_xml(builder: xml, skip_instruct: true) }
     end
   end
 
@@ -178,15 +179,41 @@ class CardContent < ActiveRecord::Base
     visitor.visit(self)
     children.each { |card_content| card_content.traverse(visitor) }
   end
-end
 
-private
+  def quick_unsorted_child_ids
+    return [] if leaf?
+    return @quick_children.map(&:id) unless @quick_children.nil?
+    children.pluck(:id).uniq
+  end
 
-def create_card_config_validation(ccv, xml)
-  validation_attrs = { 'validation-type': ccv.validation_type }
+  def quick_load_descendants
+    return self unless root?
+    whatsleft = descendants.includes(:content_attributes, :card_content_validations).to_a
+    self.quick_children = whatsleft.select { |c| c.parent_id == id }
+    orig = whatsleft.dup
+    orig.each do |d|
+      children = []
+      unless d.leaf?
+        children, whatsleft = whatsleft.partition { |c| c.parent_id == d.id }
+      end
+      d.quick_children = children
+    end
+    orig
+  end
+
+  def quick_children
+    return @quick_children unless @quick_children.nil?
+    children
+  end
+
+  private
+
+  def create_card_config_validation(ccv, xml)
+    validation_attrs = { 'validation-type': ccv.validation_type }
                          .delete_if { |_k, v| v.nil? }
-  xml.tag!('validation', validation_attrs) do
-    xml.tag!('error-message', ccv.error_message)
-    xml.tag!('validator', ccv.validator)
+    xml.tag!('validation', validation_attrs) do
+      xml.tag!('error-message', ccv.error_message)
+      xml.tag!('validator', ccv.validator)
+    end
   end
 end

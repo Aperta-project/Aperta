@@ -20,7 +20,11 @@ module Attributable
         has_one getter, -> { where(name: name) }, class_name: 'ContentAttribute'
 
         define_method(name) do
-          send(getter).try(:value)
+          if content_attributes.loaded?
+            content_attributes.find { |a| a.name == name }.try(:value)
+          else
+            send(getter).try(:value)
+          end
         end
 
         define_method("#{name}=") do |new_value|

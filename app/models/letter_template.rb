@@ -6,6 +6,7 @@ class LetterTemplate < ActiveRecord::Base
 
   validates :name, presence: { message: "This field is required" }, uniqueness: {
     scope: [:journal_id],
+    case_sensitive: false,
     message: "That template name is taken for this journal. Please give your template a new name."
   }
 

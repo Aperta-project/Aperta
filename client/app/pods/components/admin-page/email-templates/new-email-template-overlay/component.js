@@ -46,7 +46,9 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
       let name = this.get('name');
       if (Ember.isBlank(name)) errors.add('name', 'This field is required');
-      if (this.get('templateNames').includes(name)) errors.add('name', 'That template name is taken for this journal. Please give your template a new name.');
+      if (this.get('templateNames').map(n => n.toLowerCase()).includes(name.toLowerCase())) {
+        errors.add('name', 'That template name is taken for this journal. Please give your template a new name.');
+      }
 
       if (template.get('errors.isEmpty')) {
         this.get('success')(template);

@@ -33,7 +33,6 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   authorTasks: computed.filterBy('journalTaskTypes', 'roleHint', 'author'),
   staffTasks: computed.setDiff('journalTaskTypes', 'authorTasks'),
 
-
   unsortedAuthorColumn: computed.union('authorTasks', 'addableWorkFlowCards'),
   authorColumn: computed.sort('unsortedAuthorColumn', 'taskTypeSort'),
   unsortedStaffColumn: computed.union('staffTasks', 'addableNonWorkFlowCards'),

@@ -98,13 +98,13 @@ module TahiStandardTasks
       @letter_template = @journal.letter_templates.find_by(name: 'Reviewer Appreciation')
       begin
         @letter_template.render(ReviewerReportScenario.new(reviewer_report), check_blanks: true)
+        @subject = @letter_template.subject
+        @body = @letter_template.body
+        @to = reviewer_report.user.email
+        mail(to: @to, subject: @subject)
       rescue BlankRenderFieldsError => e
         Bugsnag.notify(e)
       end
-      @subject = @letter_template.subject
-      @body = @letter_template.body
-      @to = reviewer_report.user.email
-      mail(to: @to, subject: @subject)
     end
 
     private
@@ -116,13 +116,13 @@ module TahiStandardTasks
       @letter_template = @journal.letter_templates.find_by(name: template_name)
       begin
         @letter_template.render(ReviewerReportScenario.new(@reviewer_report), check_blanks: true)
+        @subject = @letter_template.subject
+        @body = @letter_template.body
+        @to = @reviewer_report.user.email
+        mail(to: @to, subject: @subject, template_name: 'review_due_reminder')
       rescue BlankRenderFieldsError => e
         Bugsnag.notify(e)
       end
-      @subject = @letter_template.subject
-      @body = @letter_template.body
-      @to = @reviewer_report.user.email
-      mail(to: @to, subject: @subject, template_name: 'review_due_reminder')
     end
   end
 end

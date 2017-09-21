@@ -1,13 +1,10 @@
 require 'rails_helper'
 
 describe PaperFactory do
-  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
+  let(:journal) { FactoryGirl.create(:journal, :with_creator_role, :with_default_task_types) }
   let(:card) { FactoryGirl.create(:card, :versioned) }
   let(:mmt) do
     FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|
-      phase = mmt.phase_templates.create!(name: "First Phase")
-      mmt.phase_templates.create!(name: "Phase With No Tasks")
-
       # create mmt template from specified task classes
       task_klasses = [TahiStandardTasks::PaperReviewerTask]
 
@@ -16,7 +13,14 @@ describe PaperFactory do
       required_task_klasses.each { |klass| CardLoader.load(klass.to_s) }
 
       # create mmt template
-      JournalServices::CreateDefaultManuscriptManagerTemplates.make_tasks(phase, journal.journal_task_types, *task_klasses)
+      JournalServices::CreateDefaultManuscriptManagerTemplates.create_phase_template(
+        name: "First Phase",
+        journal: journal,
+        mmt: mmt,
+        phase_content: task_klasses
+      )
+
+      mmt.phase_templates.create!(name: "Phase With No Tasks")
 
       # add TaskTemplate using a custom Card
       mmt.phase_templates.first.task_templates.create(card: card, title: card.name)
@@ -26,7 +30,6 @@ describe PaperFactory do
     end
   end
 
-  let!(:role) { journal.creator_role }
   let(:user) { FactoryGirl.create :user }
 
   describe ".create" do

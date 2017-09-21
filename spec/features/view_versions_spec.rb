@@ -87,39 +87,6 @@ feature 'Viewing Versions:', js: true, flaky: true do
         overlay.expect_versions('R0.0', '(draft)')
       end
     end
-
-    context 'The user has limited access' do
-      let(:user) do
-        FactoryGirl.create(:user, first_name: 'reviewer').tap do |u|
-          assign_reviewer_role(paper, u)
-        end
-      end
-
-      let!(:task) do
-        FactoryGirl.create :cover_letter_task,
-                           paper: paper,
-                           phase: paper.phases.first
-      end
-
-      scenario 'The user cannot see the cover letter task' do
-        ensure_user_does_not_have_access_to_task(
-          user: user,
-          task: task
-        )
-      end
-
-      scenario 'The user cannot see cover letter task versions' do
-        SnapshotService.new(paper).snapshot!(task)
-        FactoryGirl.create(:snapshot,
-                           major_version: 0,
-                           minor_version: 0,
-                           source: task)
-        page = PaperPage.new
-        page.view_versions
-
-        expect(page).to_not have_content('Cover Letter')
-      end
-    end
   end
 end
 

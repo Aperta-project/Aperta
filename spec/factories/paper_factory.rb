@@ -14,7 +14,7 @@ FactoryGirl.define do
     end
 
     trait :with_integration_journal do
-      association :journal, factory: :journal_with_roles_and_permissions
+      association :journal, factory: :journal_for_integration_tests
     end
 
     trait :with_creator do
@@ -172,8 +172,9 @@ FactoryGirl.define do
     end
 
     trait(:with_tasks) do
+      association :journal, factory: [:journal, :with_default_mmt]
       after(:create) do |paper|
-        unless Card.exists?
+        unless Card.where(journal: nil).exists?
           start = Time.now
           CardLoader.load_standard
           end_time = Time.now

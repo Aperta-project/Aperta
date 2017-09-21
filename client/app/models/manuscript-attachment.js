@@ -10,5 +10,10 @@ export default Attachment.extend({
     return paperDownloadPath({ paperId: this.get('paper.id') });
   }),
   s3Url: DS.attr('string'), // set by file uploader
-  src: Ember.computed.or('s3Url', 'fileDownloadUrl')
+
+  src: Ember.computed.or('s3Url', 'fileDownloadUrl'),
+
+  computedFileType: Ember.computed('src', 'fileType', function() {
+    return this.get('fileType') || this.get('src').split('.').get('lastObject');
+  })
 });

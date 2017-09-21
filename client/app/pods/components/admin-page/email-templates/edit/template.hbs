@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-xs-12">
-      {{#link-to "admin.journals.emailtemplates" template.journalId class="email-editor-header-back"}}&lt; Emails{{/link-to}}
+      {{#link-to "admin.journals.emailtemplates" template.journalId class="email-editor-header-back"}}&lt; Email Templates{{/link-to}}
       <h1>
         {{template.name}}
       </h1>
@@ -13,29 +13,61 @@
   <div class="row">
     <div class="col-xs-12 edit-email-backsplash">
       <div class="text-right">
-        <button class="button-primary button--blue edit-email-button" {{action "save"}}>
-          Save
-        </button>
+        {{#unless displayMessage}}
+          <span class="text-{{messageType}}">{{message}}</span>&nbsp;&nbsp;&nbsp;
+        {{/unless}}
+        {{#save-button
+          spinnerSize="mini"
+          click=(action 'save')
+          class="button-primary button--blue edit-email-button"
+          disabled=(or saved template.isSaving)
+          displaySpinner=template.isSaving}}
+          SAVE
+        {{/save-button}}
       </div>
 
       <div class="edit-email-well">
         <div class="container-fluid">
           <div class="row">
             <div class="col-xs-9">
-              <div class="form-group {{unless (or unsaved template.subject) 'error'}}">
-                <label for="subject" class="text-bold">Subject:</label>
-                {{input class="form-control" id="subject" value=template.subject}}
-                {{#unless (or unsaved template.subject)}}
-                  <span>{{fa-icon 'warning'}} Please enter a subject line</span>
-                {{/unless}}
+              <div class="form-group">
+                <label for="subject" class="text-bold required-field-label">Subject </label>
+                <div class="{{if (or subjectErrorPresent  subjectEmpty) 'error'}}">
+                  {{input class="form-control template-subject" value=template.subject key-down="handleInputChange" focus-out="checkSubject"}}
+                  {{#if subjectEmpty}}
+                    <span>{{fa-icon 'warning'}} This field is required.</span>
+                  {{/if}}
+                  {{#if subjectErrorPresent}}
+                    <div class="error">
+                      <span>{{fa-icon 'warning'}} Please correct the following syntax errors.</span>
+                      <ul>
+                        {{#each subjectErrors as |error|}}
+                          <li>{{error}}</li>
+                        {{/each}}
+                      </ul>
+                    </div>
+                  {{/if}}
+                </div>
               </div>
-              
-              <div class="form-group {{unless (or unsaved template.body) 'error'}}">
-                <label for="body" class="text-bold">Body:</label>
-                {{textarea id="body" class="form-control" value=template.body}}
-                {{#unless (or unsaved template.body)}}
-                  <span>{{fa-icon 'warning'}} Please enter body text</span>
-                {{/unless}}
+
+              <div class="form-group">
+                <label for="body" class="text-bold required-field-label">Body </label>
+                <div class="{{if (or bodyErrorPresent bodyEmpty) 'error'}}">
+                  {{textarea class="form-control template-body" value=template.body key-down="handleInputChange" focus-out="checkBody"}}
+                  {{#if bodyEmpty}}
+                    <span>{{fa-icon 'warning'}} This field is required.</span>
+                  {{/if}}
+                  {{#if bodyErrorPresent}}
+                    <div class="error">
+                      <span>{{fa-icon 'warning'}} Please correct the following syntax errors.</span>
+                      <ul>
+                        {{#each bodyErrors as |error|}}
+                          <li>{{error}}</li>
+                        {{/each}}
+                      </ul>
+                    </div>
+                  {{/if}}
+                </div>
               </div>
             </div>
             <div class="col-xs-3 available-merge-fields-col">
@@ -52,3 +84,7 @@
     </div>
   </div>
 </div>
+
+{{dirty-overlay visible=showDirtyOverlay
+   outAnimationComplete=(toggle "showDirtyOverlay" this)
+   cleanDirtyModel=(action 'cleanDirtyModel')}}

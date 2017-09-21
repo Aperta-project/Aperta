@@ -1,31 +1,18 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
 import { task } from 'ember-concurrency';
+import BrowserDirtyEditor from 'tahi/mixins/components/dirty-editor-browser';
+import EmberDirtyEditor from 'tahi/mixins/components/dirty-editor-ember';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
   routing: Ember.inject.service('-routing'),
   propTypes: {
     card: PropTypes.EmberObject
   },
-
-  didInsertElement() {
-    $(window).on('beforeunload.dirtyXml', () => { if (this.get('xmlDirty')) { return true }; });
-  },
-
-  willDestroyElement() {
-    $(window).off('beforeunload.dirtyXml');
-  },
-
-  xmlDirty: Ember.computed('card.xml', 'card.hasDirtyAttributes', function() {
-    let card = this.get('card');
-    return !!(card.get('hasDirtyAttributes') && card.changedAttributes()['xml']);
-  }),
-
   errors: null,
   showPublishOverlay: false,
   showArchiveOverlay: false,
   showDeleteOverlay: false,
-  showDirtyOverlay: false,
 
   historyEntryBlank: Ember.computed.empty('card.historyEntry'),
 
@@ -91,14 +78,7 @@ export default Ember.Component.extend({
     }
   }),
 
-  allowStoppedTransition: 'allowStoppedTransition',
-
   actions: {
-    cleanCard() {
-      this.get('card').rollbackAttributes('xml');
-      this.sendAction('allowStoppedTransition');
-    },
-
     updateXML(code) {
       this.set('card.xml', code);
     },

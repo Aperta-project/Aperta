@@ -191,7 +191,7 @@ describe User do
   end
 
   describe '.assigned_to_journal' do
-    let(:journal) { create(:journal, :with_staff_admin_role) }
+    let(:journal) { create(:journal, :with_admin_roles) }
     it 'finds users who are assigned to the journal, ordered by name' do
       [['A', 'B'], ['B', 'A'], ['A', 'A']].map do |(first_name, last_name)|
         create(:user, first_name: first_name, last_name: last_name).tap do |user|
@@ -208,7 +208,7 @@ describe User do
     it "doesn't return users who aren't assigned to that journal" do
       create(:user, first_name: "not", last_name: "assigned")
 
-      other_journal = create(:journal, :with_staff_admin_role)
+      other_journal = create(:journal, :with_admin_roles)
       create(:user, first_name: "John", last_name: "Doe").tap do |user|
         assign_journal_role(other_journal, user, :admin)
       end
@@ -250,7 +250,7 @@ describe User do
 
   describe "#journal_admin?" do
     let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-    let(:journal) { FactoryGirl.create(:journal, :with_staff_admin_role) }
+    let(:journal) { FactoryGirl.create(:journal, :with_admin_roles) }
     let(:user) { FactoryGirl.create(:user) }
     let!(:administer_journal_permission) do
       FactoryGirl.create(

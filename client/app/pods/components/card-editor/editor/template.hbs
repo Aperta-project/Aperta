@@ -1,7 +1,7 @@
 {{#ember-wormhole to="card-editor-action-buttons"}}
   {{#if (eq card.state "draft")}}
     <button class="button button-secondary button--blue editor-delete"
-            disabled={{or xmlDirty deleteCard.isRunning}}
+            disabled={{or editorIsDirty deleteCard.isRunning}}
             {{action "confirmDelete"}}>Delete</button>
   {{/if}}
 
@@ -29,7 +29,7 @@
                          saveCard.isRunning
                          publishCard.isRunning
                          revertCard.isRunning
-                         xmlDirty}}>
+                         editorIsDirty}}>
         Revert
       </button>
     {{/if}}
@@ -40,7 +40,7 @@
                        saveCard.isRunning
                        publishCard.isRunning
                        revertCard.isRunning
-                       (not xmlDirty)}}>
+                       (not editorIsDirty)}}>
       Save
     </button>
 
@@ -49,7 +49,7 @@
             disabled={{or
                        saveCard.isRunning
                        publishCard.isRunning
-                       xmlDirty
+                       editorIsDirty
                        revertCard.isRunning
                        (not card.publishable)}}>
       {{#if (eq card.state "draft")}}
@@ -177,19 +177,6 @@
   </div>
 {{/overlay-fullscreen}}
 
-{{#overlay-fullscreen visible=showDirtyOverlay
+{{dirty-overlay visible=showDirtyOverlay
    outAnimationComplete=(toggle "showDirtyOverlay" this)
-   overlayClass="dirty-card-overlay dirty overlay--blue--bg"
-   as |overlay|}}
-  <h3>
-    There are unsaved changes. Are you sure you want to leave this page?
-  </h3>
-
-  <br/>
-  <div class="overlay-message-footer">
-    <div>
-      <button class="button-link" {{action overlay.animateOut}}>Cancel</button>
-      <button class="button-primary" {{action 'cleanCard'}}>EXIT WITHOUT SAVING</button>
-    </div>
-  </div>
-{{/overlay-fullscreen}}
+   cleanDirtyModel=(action 'cleanDirtyModel')}}

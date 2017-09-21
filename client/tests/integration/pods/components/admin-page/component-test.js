@@ -1,6 +1,9 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
+import FactoryGuy from 'ember-data-factory-guy';
+import { manualSetup } from 'ember-data-factory-guy';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 
 const featureFlagServiceStub = Ember.Service.extend ({
   flags: {
@@ -9,14 +12,16 @@ const featureFlagServiceStub = Ember.Service.extend ({
 
   value(flag){
     return this.get('flags')[flag];
-  } 
+  }
 });
 
 moduleForComponent('admin-page', 'Integration | Component | Admin Page', {
   integration: true,
   beforeEach: function() {
+    manualSetup(this.container);
     // this avoids a weird error with the feature flag service: Uncaught[Object object]
     this.register('service:feature-flag', featureFlagServiceStub);
+    this.register('service:can', FakeCanService);
   }
 });
 
@@ -31,15 +36,17 @@ test('it has a tab bar', function(assert) {
 });
 
 test('it has a drawer showing all persisted journals', function(assert) {
-  const journals = [
-    { name: 'My Journal', initials: 'MJ', id: 1, isNew: false },
-    { name: 'My Secondary', initials: 'MS', id: 2, isNew: false }
-  ];
+  let fake = this.container.lookup('service:can');
+  let journal = FactoryGuy.make('journal', {isNew: false });
+  let journal2 = FactoryGuy.make('journal', {isNew: false });
+  const journals = [ journal, journal2];
+  fake.allowPermission('administer', journal);
 
   this.set('journals', journals);
+  this.set('journal', journals[0]);
 
   this.render(hbs`
-    {{#admin-page journals=journals}}
+    {{#admin-page journals=journals journal=journal}}
       Some interesting text.
     {{/admin-page}}
   `);
@@ -65,15 +72,21 @@ test('it does not show unpersisted journals in the drawer', function(assert) {
 });
 
 test('it alphabetizes the list of journals', function(assert) {
-  const journals = [
-    { name: 'Zebra', initials: 'Z', id: 1, isNew: false },
-    { name: 'Apple', initials: 'A', id: 2, isNew: false }
-  ];
+
+  let journalProps1 = { name: 'Zebra', initials: 'Z', id: 1, isNew: false };
+  let journalProps2 = { name: 'Apple', initials: 'A', id: 2, isNew: false };
+
+  let fake = this.container.lookup('service:can');
+  let journal = FactoryGuy.make('journal', journalProps1);
+  let journal2 = FactoryGuy.make('journal', journalProps2);
+  const journals = [ journal, journal2];
+  fake.allowPermission('administer', journal);
 
   this.set('journals', journals);
+  this.set('journal', journals[0]);
 
   this.render(hbs`
-    {{#admin-page journals=journals}}
+    {{#admin-page journals=journals journal=journal}}
       Some interesting text.
     {{/admin-page}}
   `);
@@ -90,15 +103,20 @@ test('it alphabetizes the list of journals', function(assert) {
 });
 
 test('it has a drawer with "all journals" for multiple journals', function(assert) {
-  const journals = [
-    { name: 'My Journal', initials: 'MJ', id: 1, isNew: false },
-    { name: 'My Secondary', initials: 'MS', id: 2, isNew: false },
-  ];
+  let journalProps1 = { name: 'My Journal', initials: 'MJ', id: 1, isNew: false };
+  let journalProps2 = { name: 'My Secondary', initials: 'MS', id: 2, isNew: false };
+
+  let fake = this.container.lookup('service:can');
+  let journal = FactoryGuy.make('journal', journalProps1);
+  let journal2 = FactoryGuy.make('journal', journalProps2);
+  const journals = [ journal, journal2];
+  fake.allowPermission('administer', journal);
 
   this.set('journals', journals);
+  this.set('journal', journals[0]);
 
   this.render(hbs`
-    {{#admin-page journals=journals}}
+    {{#admin-page journals=journals journal=journal}}
       Some interesting text.
     {{/admin-page}}
   `);
@@ -107,14 +125,17 @@ test('it has a drawer with "all journals" for multiple journals', function(asser
 });
 
 test('it has a drawer without "all journals" for single journal', function(assert) {
-  const journals = [
-    { name: 'My Secondary', initials: 'MS', id: 2, isNew: false }
-  ];
+  let journalProps1 = { name: 'My Secondary', initials: 'MS', id: 2, isNew: false };
 
-  this.set('journals', journals);
+  let fake = this.container.lookup('service:can');
+  let journal = FactoryGuy.make('journal', journalProps1);
+  fake.allowPermission('administer', journal);
+
+  this.set('journals', [journal]);
+  this.set('journal', journal);
 
   this.render(hbs`
-    {{#admin-page journals=journals}}
+    {{#admin-page journals=journals journal=journal}}
       Some interesting text.
     {{/admin-page}}
   `);

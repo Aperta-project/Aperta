@@ -6,6 +6,7 @@ describe JournalServices::CreateDefaultTaskTypes do
   let(:journal) { FactoryGirl.create(:journal) }
 
   it 'Creates missing task types for an existing journal' do
+    JournalServices::CreateDefaultTaskTypes.call(journal)
     journal.journal_task_types.first.destroy
     expect do
       JournalServices::CreateDefaultTaskTypes.call(journal)
@@ -13,7 +14,7 @@ describe JournalServices::CreateDefaultTaskTypes do
   end
 
   it 'Updates title on an existing journal' do
-    jtt = journal.journal_task_types.find_by(title: 'Ad-hoc for Staff Only')
+    jtt = FactoryGirl.create(:journal_task_type, journal: journal, kind: 'AdHocTask', title: 'Ad-hoc for Staff Only')
     jtt.update(title: 'Old Title') # Simulate old values
 
     JournalServices::CreateDefaultTaskTypes.call(journal)

@@ -45,6 +45,7 @@ module TahiHelperMethods
 
   def assign_journal_role(journal, user, role_or_type)
     if role_or_type == :admin
+      user.assign_to!(assigned_to: journal, role: journal.journal_setup_role)
       user.assign_to!(assigned_to: journal, role: journal.staff_admin_role)
     elsif role_or_type == :editor
       user.assign_to!(assigned_to: journal, role: journal.internal_editor_role)

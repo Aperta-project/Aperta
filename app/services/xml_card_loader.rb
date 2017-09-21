@@ -30,7 +30,7 @@ class XmlCardLoader
   def latest_card_version(replace:)
     if replace
       # remove and decrement latest card_version
-      card.latest_card_version.try(&:destroy_fully!)
+      card.latest_card_version.try(:destroy!)
       card.latest_version = card.latest_version.pred
     end
 

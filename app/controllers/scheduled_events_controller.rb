@@ -4,12 +4,12 @@ class ScheduledEventsController < ApplicationController
 
   def active
     scheduled_event.switch_on!
-    render json: event
+    render json: scheduled_event
   end
 
   def passive
     scheduled_event.switch_off!
-    render json: event
+    render json: scheduled_event
   end
 
   private

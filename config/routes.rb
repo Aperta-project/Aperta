@@ -247,10 +247,10 @@ Tahi::Application.routes.draw do
     resources :feature_flags, only: [:index, :update]
   end
 
-  post 'scheduled_event/:id/active',
-    to: 'scheduled_event#active'
-  post 'scheduled_event/:id/passive',
-    to: 'scheduled_event#passive'
+  get 'scheduled_events/:id/active',
+    to: 'scheduled_events#active'
+  get 'scheduled_events/:id/passive',
+    to: 'scheduled_events#passive'
 
   get '/invitations/:token',
     to: 'token_invitations#show',

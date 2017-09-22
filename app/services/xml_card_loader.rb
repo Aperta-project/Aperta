@@ -78,7 +78,7 @@ class XmlCardLoader
       # recursively create any nested child content
       content.child_elements('content').each do |child|
         root.card_contents << build_card_content(child, card_version)
-        child.card_content = content
+        child.parent = content
       end
       raise XmlCardDocument::XmlValidationError, root.errors if root.invalid?
     end

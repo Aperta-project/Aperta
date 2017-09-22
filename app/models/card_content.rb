@@ -5,7 +5,6 @@
 # user-configured behavior)
 class CardContent < ActiveRecord::Base
   include Attributable
-  include XmlSerializable
 
   # acts_as_nested_set
 
@@ -97,99 +96,21 @@ class CardContent < ActiveRecord::Base
     safe_dump_text(xml, attr_name, attr) if attr.present?
   end
 
-  # content_attrs rendered into the <card-content> tag itself
   def content_attrs
-    {
+    attrs = {
       'ident' => ident,
-      'content-type' => content_type,
-      'value-type' => value_type,
-      'child-tag' => child_tag,
-      'custom-class' => custom_class,
-      'custom-child-class' => custom_child_class,
-      'wrapper-tag' => wrapper_tag,
-      'visible-with-parent-answer' => visible_with_parent_answer,
-      'default-answer-value' => default_answer_value
-    }.merge(additional_content_attrs).compact
-  end
+      'content-type' => content_type
+    }
 
-  # rubocop:disable Metrics/MethodLength
-  def additional_content_attrs
-    case content_type
-    when 'file-uploader'
-      {
-        'allow-multiple-uploads' => allow_multiple_uploads,
-        'allow-file-captions' => allow_file_captions,
-        'allow-annotations' => allow_annotations,
-        'error-message' => error_message,
-        'required-field' => required_field
-      }
-    when 'if'
-      {
-        'condition' => condition
-      }
-    when 'paragraph-input'
-      {
-        'editor-style' => editor_style,
-        'allow-annotations' => allow_annotations,
-        'required-field' => required_field
-      }
-    when 'short-input'
-      {
-        'allow-annotations' => allow_annotations,
-        'required-field' => required_field
-      }
-    when 'radio', 'check-box', 'dropdown', 'tech-check'
-      {
-        'allow-annotations' => allow_annotations,
-        'required-field' => required_field
-      }
-    when 'date-picker'
-      {
-        'required-field' => required_field
-      }
-    else
-      {}
-    end
+    content_attributes
+      .reject { |attr| omissible?(attr) }
+      .each_with_object(attrs) { |attr, hash| hash[attr.name.dasherize] = attr.value }
+      .compact
   end
-  # rubocop:enable Metrics/MethodLength
-
-  # rubocop:disable Metrics/AbcSize
-  def to_xml(options = {})
-    setup_builder(options).tag!('content', content_attrs) do |xml|
-      render_tag(xml, 'instruction-text', instruction_text)
-      render_tag(xml, 'text', text)
-      render_tag(xml, 'label', label)
-      card_content_validations.each do |ccv|
-        # Do not serialize the required-field validation, it is handled via the
-        # "required-field" attribute.
-        next if ccv.validation_type == 'required-field'
-        create_card_config_validation(ccv, xml)
-      end
-      if possible_values.present?
-        possible_values.each do |item|
-          xml.tag!('possible-value', label: item['label'], value: item['value'])
-        end
-      end
-      children.each { |child| child.to_xml(builder: xml, skip_instruct: true) }
-    end
-  end
-
-  # rubocop:enable Metrics/AbcSize
 
   # recursively traverse nested card_contents
   def traverse(visitor)
     visitor.visit(self)
     children.each { |card_content| card_content.traverse(visitor) }
-  end
-end
-
-private
-
-def create_card_config_validation(ccv, xml)
-  validation_attrs = { 'validation-type': ccv.validation_type }
-                         .delete_if { |_k, v| v.nil? }
-  xml.tag!('validation', validation_attrs) do
-    xml.tag!('error-message', ccv.error_message)
-    xml.tag!('validator', ccv.validator)
   end
 end

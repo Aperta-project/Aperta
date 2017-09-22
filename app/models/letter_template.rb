@@ -29,7 +29,9 @@ class LetterTemplate < ActiveRecord::Base
 
   def render_attr(template, context, sanitize: false, check_blanks: false)
     raw = Liquid::Template.parse(template)
-    raise BlankRenderFieldsError if check_blanks && LetterTemplateBlankValidator.blank_fields?(raw, context)
+    if check_blanks && LetterTemplateBlankValidator.blank_fields?(raw, context)
+      raise BlankRenderFieldsError, LetterTemplateBlankValidator.blank_fields(raw, context)
+    end
     raw = raw.render(context)
     if sanitize
       ActionView::Base.full_sanitizer.sanitize(raw)

@@ -38,6 +38,7 @@ class AdminWorkflowsPage(BaseAdminPage):
     super(AdminWorkflowsPage, self).__init__(driver)
 
     # Locators - Instance members
+    self._admin_workflow_progress_spinner = (By.CSS_SELECTOR, 'div.progress-spinner')
     self._admin_workflow_pane_title = (By.CSS_SELECTOR, 'div.admin-workflow-catalogue > h2')
     self._admin_workflow_add_mmt_btn = (
       By.CSS_SELECTOR, 'div.admin-workflow-catalogue > a.button-primary.button--blue')
@@ -77,6 +78,15 @@ class AdminWorkflowsPage(BaseAdminPage):
   def page_ready(self):
     """"Ensure the page is ready to test"""
     self._wait_for_element(self._get(self._admin_workflow_catalogue))
+
+  def page_ready_post_journal_selection(self):
+    """
+    We are exceedingly slow updating the page on journal selection. Need a new method to indicate the page is updated
+    post-selection or we get a StaleElementReferenceException.
+    :return: void function
+    """
+    self._wait_for_not_element(self._admin_workflow_progress_spinner, 1)
+    time.sleep(1)
 
   def validate_workflow_pane(self, selected_jrnl):
     """

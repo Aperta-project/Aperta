@@ -75,10 +75,12 @@ class XmlCardLoader
       # assign any validations
       root.card_content_validations << build_card_content_validations(content)
       root.card_content_validations << maybe_build_required_field_validation(root)
-      # recursively create any nested child content
+      root.save
+
       content.child_elements('content').each do |child|
-        root.card_contents << build_card_content(child, card_version)
-        child.parent = content
+        card_content = build_card_content(child, card_version)
+        card_content.parent_id = root.id
+        root.card_contents << card_content
       end
       raise XmlCardDocument::XmlValidationError, root.errors if root.invalid?
     end

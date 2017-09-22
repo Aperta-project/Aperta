@@ -191,6 +191,7 @@ Tahi::Application.routes.draw do
     resources :tasks, only: [:update, :create, :show, :destroy] do
       get :nested_questions
       get :nested_question_answers
+      put :update_position
       resources :attachments, only: [:index, :create, :update, :destroy], controller: 'adhoc_attachments' do
         put :update_attachment, on: :member
       end
@@ -224,7 +225,7 @@ Tahi::Application.routes.draw do
       resources :journals, only: [:index, :show, :update, :create] do
         get :authorization, on: :collection
       end
-      resources :letter_templates, only: [:index, :show, :update]
+      resources :letter_templates, only: [:index, :show, :update, :create]
     end
 
     # ihat endpoints

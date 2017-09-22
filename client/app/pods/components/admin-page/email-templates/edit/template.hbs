@@ -71,7 +71,10 @@
               </div>
             </div>
             <div class="col-xs-3 available-merge-fields-col">
-              <div class="available-merge-fields-header">Available Merge Fields</div>
+              <div class="available-merge-fields-header">
+                <strong>Available Merge Fields for</strong>
+                {{util/wrap-at-delimiter input=template.scenario}}
+              </div>
               <div class="available-merge-fields">
                 {{#each template.mergeFields as |mergeField|}}
                   {{admin-page/email-templates/edit/merge-field mergeField=mergeField}}

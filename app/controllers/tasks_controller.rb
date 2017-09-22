@@ -8,16 +8,9 @@ class TasksController < ApplicationController
   ## /paper/tasks/
   def index
     requires_user_can :view, paper
-    tasks = current_user.filter_authorized(
-      :view,
-      paper.tasks.includes(:paper),
-      participations_only: false
-    ).objects
+    tasks = paper.tasks.includes(:paper)
 
-    # serialize using the base task serializer which acts as a lightweight
-    # summary of each task rather than each custom task serializer that may
-    # side load an excessive amount of data that is unnecessary for an index
-    # response.
+    # use task serializer instead of custom task serializer becuase it is lighter weight
     respond_with tasks, each_serializer: TaskSerializer
   end
 
@@ -62,6 +55,12 @@ class TasksController < ApplicationController
     Activity.task_updated! task, user: current_user
 
     render task.update_responder.new(task, view_context).response
+  end
+
+  def update_position
+    requires_user_can :manage_workflow, paper
+    task.update!(position: params[:position])
+    head 204
   end
 
   def destroy

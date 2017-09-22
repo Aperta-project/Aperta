@@ -12,7 +12,8 @@ class AdminJournalSerializer < ActiveModel::Serializer
     :doi_journal_prefix,
     :doi_publisher_prefix,
     :last_doi_issued,
-    :links
+    :links,
+    :letter_template_scenarios
   has_many :admin_journal_roles,
            embed: :ids,
            include: true,
@@ -37,5 +38,9 @@ class AdminJournalSerializer < ActiveModel::Serializer
       manuscript_manager_templates: template_path,
       cards: journal_cards_path(object)
     }
+  end
+
+  def letter_template_scenarios
+    TemplateScenario.descendants.map { |d| { name: d.name, merge_fields: d.merge_fields } }
   end
 end

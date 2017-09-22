@@ -56,6 +56,7 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
   qualifiedType: DS.attr('string'),
   title: DS.attr('string'),
   type: DS.attr('string'),
+  viewable: DS.attr('boolean'),
   notReady: DS.attr('boolean'),
   displayStatus: DS.attr('string'),
   assignedToMe: DS.attr(),

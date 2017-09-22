@@ -11,15 +11,8 @@ class XmlCardLoader
 
   def load(xml_string, replace_latest_version: false)
     @xml = XmlCardDocument.new(xml_string)
-    card.card_versions << latest_card_version(replace: replace_latest_version)
-    card
-  end
 
-  private
-
-  def latest_card_version(replace:)
-    if replace
-      # remove and decrement latest card_version
+    if replace_latest_version
       card.latest_card_version.try(:destroy!)
       card.latest_version = card.latest_version.pred
     end
@@ -29,9 +22,13 @@ class XmlCardLoader
     end
   end
 
+  private
+
   def build_card_version
-    CardVersion.new(card_version_attributes).tap do |card_version|
-      card_version.card_contents << build_card_contents(card_version)
+    card.card_versions.create(card_version_attributes).tap do |card_version|
+      build_card_contents(card_version)
+      root = card_version.content_root
+      raise XmlCardDocument::XmlValidationError, root.errors if root.invalid?
     end
   end
 
@@ -68,21 +65,19 @@ class XmlCardLoader
     attributes = card_content_attributes(content, card_version)
     content_type = content.attr_value('content-type')
     allowed_attributes = Attributable::CUSTOM_ATTRIBUTES[content_type]
-    allowed_attributes += CardContent.attribute_names.map(&:to_sym) + [:card_version]
+    allowed_attributes += CardContent.attribute_names.map(&:to_sym) + [:card_version_id]
     attributes = attributes.delete_if { |key, value| omissible?(key, value) && !allowed_attributes.member?(key) }
 
-    CardContent.new(attributes).tap do |root|
-      # assign any validations
+    card_version.card_contents.new(attributes).tap do |root|
       root.card_content_validations << build_card_content_validations(content)
       root.card_content_validations << maybe_build_required_field_validation(root)
       root.save
 
       content.child_elements('content').each do |child|
         card_content = build_card_content(child, card_version)
-        card_content.parent_id = root.id
+        card_content.parent = root
         root.card_contents << card_content
       end
-      raise XmlCardDocument::XmlValidationError, root.errors if root.invalid?
     end
   end
 

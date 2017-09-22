@@ -15,9 +15,9 @@ class CardVersion < ActiveRecord::Base
   scope :unpublished, -> { where(published_at: nil) }
 
   validates :card, presence: true
-  validates :card_contents, presence: true
+  # validates :card_contents, presence: true
   validate :submittable_state
-  validates :version, uniqueness: { scope: :card_id, message: "Card version numbers are unique for a given card" }
+  # validates :version, uniqueness: { scope: :card_id, message: "Card version numbers are unique for a given card" }
   validates :history_entry, presence: true, if: -> { published? }
 
   def published?

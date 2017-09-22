@@ -9,11 +9,11 @@ const basicPlugins     = 'code codesample paste autoresize';
 const basicToolbar     = 'bold italic underline | subscript superscript | undo redo ';
 
 const anchorElement    = ',a[href|rel|target|title]';
-const listElement      = ',ol[reversed|start|type]';
+const listElement      = ',ol[reversed|start|type|style]';
 
 const expandedElements = ',div,span,code,ul,li,h1,h2,h3,h4,table,thead,tbody,tfoot,tr,th,td';
-const expandedPlugins  = ' link table';
-const expandedToolbar  = ' | bullist numlist | table link | formatselect';
+const expandedPlugins  = ' link table advlist lists ';
+const expandedToolbar  = ' indent outdent | bullist numlist | table link | formatselect';
 
 const blockFormats     = 'Header 1=h1;Header 2=h2;Header 3=h3;Header 4=h4';
 

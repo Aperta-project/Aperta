@@ -1,5 +1,11 @@
 <%= tinymce_assets %>
 
+<style type="text/css">
+  .mce-statusbar .mce-container-body {
+    height: 1.5rem;
+  }
+</style>
+
 <%= render layout: 'container' do %>
   <div class='message'>
     <span class='bold'>You've successfully declined the invitation to
@@ -39,9 +45,10 @@
       selector: 'textarea.tinymce',
       branding: false,
       menubar: false,
-      plugins: 'paste',
-      toolbar: 'bold italic underline | subscript superscript | undo redo',
-      valid_elements: 'p,br,strong/b,em/i,u,sub,sup,pre',
+      elementpath: false,
+      plugins: 'paste advlist lists',
+      toolbar: 'bold italic underline | subscript superscript | undo redo | indent outdent | bullist numlist',
+      valid_elements: 'p,br,strong/b,em/i,u,sub,sup,pre'
     };
 
     if (typeof window.tinyMCE !== 'undefined') {

@@ -27,7 +27,7 @@ test('renders inactive toggle when event is passive', function(assert) {
   });
   this.set('event', scheduledEvent);
   this.render(hbs `{{scheduled-event-status event=event}}`);
-  assert.textPresent('.scheduled-event p', '2 days after due date');
+  assert.equal($('.scheduled-event-status input[type=checkbox]').is(':checked'), false);
 });
 
 test('renders active toggle when event is active', function(assert) {
@@ -38,5 +38,5 @@ test('renders active toggle when event is active', function(assert) {
   });
   this.set('event', scheduledEvent);
   this.render(hbs `{{scheduled-event-status event=event}}`);
-  assert.textPresent('.scheduled-event p', '2 days after due date');
+  assert.equal($('.scheduled-event-status input[type=checkbox]').is(':checked'), true);
 });

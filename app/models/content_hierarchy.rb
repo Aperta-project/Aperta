@@ -27,7 +27,8 @@ class ContentNode
   end
 
   def to_hash
-    @children.blank? ? attributes : attributes.merge(children: children.map { |child| child.to_hash })
+    return attributes if children.blank?
+    attributes.merge(children: children.map { |child| child.to_hash })
   end
 
   def attributes
@@ -43,14 +44,6 @@ class ContentNode
   def traverse(visitor)
     visitor.visit(self)
     children.each { |child| child.traverse(visitor) }
-  end
-
-  def to_ruby(name)
-    Attributable::RUBY_ATTRIBUTES[name]
-  end
-
-  def to_xml(name)
-    Attributable::XML_ATTRIBUTES[name]
   end
 end
 

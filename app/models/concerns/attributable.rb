@@ -1,8 +1,6 @@
 module Attributable
   extend ActiveSupport::Concern
 
-  BASE_ATTRIBUTES = %w[ident content_type].freeze
-
   CONTENT_ATTRIBUTES = {
     boolean: %w[allow_annotations allow_file_captions allow_multiple_uploads required_field],
     integer: %w[],
@@ -12,15 +10,12 @@ module Attributable
                 visible_with_parent_answer wrapper_tag]
   }.freeze
 
+  BASE_ATTRIBUTES = %w[ident content_type].freeze
   ATTRIBUTE_NAMES = Set.new(BASE_ATTRIBUTES + CONTENT_ATTRIBUTES.values.flatten).freeze
   CONTENT_TYPES   = CONTENT_ATTRIBUTES.keys.freeze
   ATTRIBUTE_TYPES = CONTENT_ATTRIBUTES.each_with_object({}) do |(type, names), hash|
     names.each { |name| hash[name] = type }
   end.freeze
-
-  # Convert between formats
-  XML_ATTRIBUTES  = Hash[ATTRIBUTE_NAMES.map { |name| [name.tr('-', '_'), name] }].freeze
-  RUBY_ATTRIBUTES = Hash[ATTRIBUTE_NAMES.map { |name| [name, name.tr('-', '_')] }].freeze
 
   COMMON_ATTRIBUTES = %w[allow_annotations instruction_text label required_field].freeze
   CUSTOM_ATTRIBUTES = [

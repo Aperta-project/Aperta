@@ -19,7 +19,8 @@ FactoryGuy.define('reviewer-report', {
           'reviewer_report--decision_term',
           'reviewer_report--identity',
           'reviewer_report--suitable_for_another_journal',
-          'reviewer_report--suitable_for_another_journal--journal'
+          'reviewer_report--suitable_for_another_journal--journal',
+          'reviewer_report--attachments'
         ].map(function(ident) {
           return FactoryGuy.make('nested-question', {owner: report, ident });
         });
@@ -35,7 +36,8 @@ FactoryGuy.define('reviewer-report', {
           'front_matter_reviewer_report--includes_unpublished_data',
           'front_matter_reviewer_report--includes_unpublished_data--explanation',
           'front_matter_reviewer_report--suitable',
-          'front_matter_reviewer_report--suitable--comment'
+          'front_matter_reviewer_report--suitable--comment',
+          'front_matter_reviewer_report--attachments'
         ].map(function(ident) {
           return FactoryGuy.make('nested-question', {owner: report, ident });
         });

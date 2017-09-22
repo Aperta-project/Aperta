@@ -13,8 +13,12 @@ export default Ember.Component.extend({
   actions: {
     changeEventState(newVal) {
       // console.log(newVal);
-
-      // this is the part where we make a call to the endpoint to set the event to true or false
+      if (newVal === true){
+        // update event state to active
+      }
+      else if (newVal === false) {
+        // update event state to passive
+      }
     }
   }
 });

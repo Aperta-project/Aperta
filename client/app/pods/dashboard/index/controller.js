@@ -57,11 +57,6 @@ export default Ember.Controller.extend({
 
   showNewManuscriptOverlay: false,
 
-  isAcademicEditor(invitation) {
-    return invitation.get('inviteeRole') === 'Academic Editor';
-    // console.log('fcgvh b');
-  },
-
   hideInvitationsOverlay() {
     this.set('showInvitationsOverlay', false);
   },
@@ -95,15 +90,14 @@ export default Ember.Controller.extend({
       return this.get('restless').putUpdate(invitation, '/accept').then(()=> {
         this.hideInvitationsOverlay();
         this.transitionToRoute('paper.index', invitation.get('paperShortDoi')).then(() => {
-          if (invitation.get('inviteeRole') === 'Academic Editor') {
-            // console.log('academic editor');
-            let role = invitation.get('inviteeRole');
-            let msg = `Thank you for agreeing to be an ${role} on this ${invitation.get('journalName')} manuscript.`;
+          let role = invitation.get('inviteeRole');
+          let journalName = invitation.get('journalName');
+          if (role === 'Academic Editor') {
+            let msg = `Thank you for agreeing to be an ${role} on this ${journalName} manuscript.`;
             this.flash.displayRouteLevelMessage('success', msg);
-          }
-          else {
-            let verb = invitation.get('inviteeRole') === 'Reviewer' ? 'review' : 'edit';
-            let msg = `Thank you for agreeing to ${verb} for ${invitation.get('journalName')}.`;
+          } else {
+            let verb = role === 'Reviewer' ? 'review' : 'edit';
+            let msg = `Thank you for agreeing to ${verb} for ${journalName}.`;
             this.flash.displayRouteLevelMessage('success', msg);
           }
         });

@@ -544,8 +544,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
     tasks = self._gets(self._task_headings)
     for task in tasks:
       if task.text == task_name:
-        task_div = task.find_element_by_xpath('..')
-        return 'task-disclosure--open' in task.get_attribute('class')
+        div_list = task.find_elements_by_xpath("../div")
+        # if task is open it should be 2 div under task: task-disclosure-heading and task-disclosure-body
+        # if task is closed, only 1: task-disclosure-heading
+        return len(div_list)==2
+
     raise ElementDoesNotExistAssertionError('This task is not present')
 
   def click_task(self, task_name):
@@ -679,7 +682,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
     elif task_name == 'Upload Manuscript':
       # before checking that the complete is selected, in the accordion we need to
       # check if it is open
-      if 'task-disclosure--open' not in task_div.get_attribute('class'):
+      # if task is open it should be 2 div under task: task-disclosure-heading and task-disclosure-body
+      # if task is closed, only 1: task-disclosure-heading
+      div_list = task.find_elements_by_xpath("../div")
+      if len(div_list) == 1:
         # accordion is close it, open it:
         logging.info('Accordion was closed, opening: {0}'.format(task.text))
         task.click()
@@ -699,7 +705,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
         base_task.click_completion_button()
         self.click_covered_element(task)
       else:
-        if 'task-disclosure--open' not in task_div.get_attribute('class'):
+        # if task is open it should be 2 div under task: task-disclosure-heading and task-disclosure-body
+        # if task is closed, only 1: task-disclosure-heading
+        div_list = task.find_elements_by_xpath("../div")
+        if len(div_list) == 1:
           # accordion is close it, open it:
           logging.info('Accordion was closed, opening: {0}'.format(task.text))
           task.click()

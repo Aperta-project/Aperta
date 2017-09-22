@@ -1,13 +1,7 @@
 class CardContentSerializer < ActiveModel::Serializer
   attributes :id,
-             :content_type
-
-  has_many :children,
-           embed: :ids,
-           include: true,
-           root: :card_contents,
-           key: :unsorted_child_ids
-
+             :content_type,
+             :unsorted_child_ids
   def order
     object.lft
   end
@@ -19,5 +13,9 @@ class CardContentSerializer < ActiveModel::Serializer
       hash[attr.name] = attr.value
     end
     hash
+  end
+
+  def unsorted_child_ids
+    @unsorted_child_ids ||= object.quick_unsorted_child_ids
   end
 end

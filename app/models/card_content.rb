@@ -188,7 +188,7 @@ class CardContent < ActiveRecord::Base
 
   def quick_load_descendants
     return self unless root?
-    whatsleft = descendants.includes(:content_attributes, :card_content_validations).to_a
+    whatsleft = self_and_descendants.includes(:content_attributes, :card_content_validations).to_a
     self.quick_children = whatsleft.select { |c| c.parent_id == id }
     orig = whatsleft.dup
     orig.each do |d|

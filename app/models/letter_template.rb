@@ -4,6 +4,13 @@
 class LetterTemplate < ActiveRecord::Base
   belongs_to :journal
 
+  validates :name, presence: { message: "This field is required" }, uniqueness: {
+    scope: [:journal_id],
+    case_sensitive: false,
+    message: "That template name is taken for this journal. Please give your template a new name."
+  }
+
+  validates :scenario, presence: { message: "This field is required" }
   validates :body, presence: true
   validates :subject, presence: true
   validate :template_scenario?
@@ -39,13 +46,17 @@ class LetterTemplate < ActiveRecord::Base
   end
 
   def template_scenario?
+    # scenario has two checks, a generic presence check, and then one to make
+    # sure the scenario is a subclass of TemplateScenario. If the presence
+    # check fails, we can skip the subclass error
+    return if errors.include? :scenario
+
     scenario_class = begin
       scenario.constantize
     rescue NameError
       false
     end
     return if scenario_class && scenario_class < TemplateScenario
-
     errors.add(:scenario, 'must name a subclass of TemplateScenario')
   end
 

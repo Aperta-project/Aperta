@@ -207,6 +207,7 @@ class JournalFactory
       role.ensure_permission_exists(:manage_users, applies_to: Journal)
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
       role.ensure_permission_exists(:remove_orcid, applies_to: Journal)
+      role.ensure_permission_exists(:create_email_template, applies_to: Journal)
 
       # Paper
       role.ensure_permission_exists(:assign_roles, applies_to: Paper)

@@ -3,7 +3,7 @@
 <div class="labeled-input-form">
   {{journal-logo-uploader logoUrl=logoUrl}}
 
-  <div class="admin-new-card-overlay-form">
+  <div class="admin-overlay-form">
     {{forms/labeled-input-with-errors type="text" label="Journal Title" name='name' value=name required=true errors=errors autofocus=true enter=(action 'complete')}}
     {{forms/labeled-input-with-errors type="textarea" label="Journal Description" name='description' value=description errors=errors enter=(action 'complete')}}
     {{forms/labeled-input-with-errors type="text" label="DOI Journal Prefix" name='doiJournalPrefix' required=true value=doiJournalPrefix errors=errors helpText='Must begin with "journal".' enter=(action 'complete')}}

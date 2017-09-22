@@ -134,6 +134,9 @@ export default Component.extend(ValidationErrorsMixin, {
       this.save().finally( () => {
         // make sure we put skipValidations back its previous state
         this.set('skipValidations', currentSkipValidations);
+        // Update markedAsComplete to the value returned from the server
+        // or inline validation
+        this.set('task.markedAsCompleted', this.get('task.completed'));
       });
     }
   }

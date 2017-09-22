@@ -33,9 +33,8 @@ test('it shows two columns containing correct cards', function(assert) {
                       close=(action 'close')}}`);
 
   assert.textPresent('.author-task-cards label', 'author jtt');
-  assert.textPresent('.author-task-cards label', 'workflow customized card');
   assert.textPresent('.staff-task-cards label', 'staff jtt');
-
+  assert.textPresent('.staff-task-cards label', 'workflow customized card');
 });
 
 test('it makes call to save all selected cards', function(assert) {
@@ -62,5 +61,5 @@ test('it makes call to save all selected cards', function(assert) {
 
   // click add
   this.$('button.button-primary').click();
-  assert.ok(save.calledWith(phase, [authorJournalTaskType, card, staffJournalTaskType]), 'Should call save action');
+  assert.ok(save.calledWith(phase, [authorJournalTaskType, staffJournalTaskType, card]), 'Should call save action');
 });

@@ -7,6 +7,7 @@ need to be run in demo, so it is appropriate to leave them in place and disabled
 """
 
 import logging
+import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import super_admin_login, no_cards_mmt, gen_cmplt_apexdata, imgs_init_dec_mmt, \
@@ -219,6 +220,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
     adm_wf_page = AdminWorkflowsPage(self.getDriver())
     adm_wf_page.page_ready()
     wombat_exists = adm_wf_page.select_named_journal('PLOS Wombat')
+    adm_wf_page.page_ready_post_journal_selection()
     logging.info(wombat_exists)
     if not wombat_exists:
       adm_wf_page.launch_add_journal_overlay()

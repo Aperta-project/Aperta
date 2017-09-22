@@ -180,12 +180,18 @@ class CardContent < ActiveRecord::Base
     children.each { |card_content| card_content.traverse(visitor) }
   end
 
+  # Return the ids of the children. If quick_children has been set, use that,
+  # otherwise use the children method of awesome nested set.
   def quick_unsorted_child_ids
     return [] if leaf?
     return @quick_children.map(&:id) unless @quick_children.nil?
     children.pluck(:id).uniq
   end
 
+  # From this node, return a set of this node and its descendants, with the
+  # `quick_children` attribute set to the children of each node. This can load
+  # an entire traversable tree in one database query.
+  # Returns an array of CardContent objects.
   def quick_load_descendants
     all = [self] + descendants.includes(:content_attributes, :card_content_validations).to_a
     children = all.group_by(&:parent_id)
@@ -199,6 +205,7 @@ class CardContent < ActiveRecord::Base
     all
   end
 
+  # Return the quick_children if set, otherwise return the children.
   def quick_children
     return @quick_children unless @quick_children.nil?
     children

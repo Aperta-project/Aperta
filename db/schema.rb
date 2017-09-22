@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 20171018200454) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.string   "annotation"
+    t.integer  "repetition_id"
   end
 
   add_index "answers", ["card_content_id"], name: "index_answers_on_card_content_id", using: :btree
@@ -697,6 +698,20 @@ ActiveRecord::Schema.define(version: 20171018200454) do
   end
 
   add_index "related_articles", ["paper_id"], name: "index_related_articles_on_paper_id", using: :btree
+
+  create_table "repetitions", force: :cascade do |t|
+    t.integer  "card_content_id", null: false
+    t.integer  "task_id",         null: false
+    t.integer  "parent_id"
+    t.integer  "lft"
+    t.integer  "rgt"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "repetitions", ["lft"], name: "index_repetitions_on_lft", using: :btree
+  add_index "repetitions", ["parent_id"], name: "index_repetitions_on_parent_id", using: :btree
+  add_index "repetitions", ["rgt"], name: "index_repetitions_on_rgt", using: :btree
 
   create_table "resource_tokens", force: :cascade do |t|
     t.datetime "created_at"

@@ -13,6 +13,8 @@ class CardContent < ActiveRecord::Base
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
   has_many :card_content_validations, dependent: :destroy
+  has_many :repetitions, inverse_of: :card_content
+
   validates :card_version, presence: true
 
   validates :parent_id,

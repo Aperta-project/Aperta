@@ -5,9 +5,11 @@ class AnswerSerializer < ActiveModel::Serializer
     :annotation,
     :additional_data,
     :paper_id,
-    :owner
+    :owner,
+    :repetition_id
 
   has_one :card_content, embed: :id
+  has_one :repetition, embed: :id, include: true
   has_many :attachments, embed: :ids, include: true, root: :question_attachments
 
   def owner

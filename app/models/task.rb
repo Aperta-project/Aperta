@@ -51,6 +51,7 @@ class Task < ActiveRecord::Base
            as: :owner,
            class_name: 'AdhocAttachment',
            dependent: :destroy
+  has_many :repetitions, inverse_of: :task
 
   belongs_to :phase, inverse_of: :tasks
   belongs_to :task_template

@@ -9,6 +9,7 @@ export default DS.Model.extend(Readyable, {
 
   attachments: DS.hasMany('question-attachment', { async: false }),
   cardContent: DS.belongsTo('card-content', { async: false }),
+  repetition: DS.belongsTo('repetition', { async: false }),
   owner: DS.belongsTo('answerable', { async: false, polymorphic: true }),
   paper: DS.belongsTo('paper'), //TODO APERTA-8972 consider removing from client
 

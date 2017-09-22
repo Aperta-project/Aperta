@@ -43,3 +43,13 @@ test('saves on change events', function(assert) {
     assert.mockjaxRequestMade(url, 'POST', 'it saves the new answer on change');
   });
 });
+
+test('shows help text in disabled state', function(assert) {
+  let task =  make('ad-hoc-task');
+  createQuestion(task, 'foo');
+  this.set('task', task);
+
+  this.render(hbs`{{nested-question-textarea ident="foo" owner=task helpText="Something helpful" disabled=true}}`);
+
+  assert.textPresent('.question-help', 'Something helpful');
+});

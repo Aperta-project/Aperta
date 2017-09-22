@@ -7,10 +7,13 @@ class CardContent < ActiveRecord::Base
   include Attributable
   include XmlSerializable
 
-  acts_as_nested_set
+  # acts_as_nested_set
 
   belongs_to :card_version, inverse_of: :card_contents
+  belongs_to :parent, foreign_key: :parent_id, class_name: 'CardContent'
+
   has_one :card, through: :card_version
+  has_many :card_contents, dependent: :destroy
   has_many :card_content_validations, dependent: :destroy
 
   validates :card_version, presence: true
@@ -20,7 +23,7 @@ class CardContent < ActiveRecord::Base
               scope: :card_version,
               message: "Card versions can only have one root node."
             },
-            if: -> { root? }
+            if: -> { parent_id.nil? }
 
   has_many :answers
 

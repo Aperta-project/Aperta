@@ -8,17 +8,15 @@ class CardVersion < ActiveRecord::Base
   belongs_to :card, inverse_of: :card_versions
   belongs_to :published_by, class_name: 'User'
   has_many :card_contents, -> { includes(:content_attributes, :card_content_validations) }, inverse_of: :card_version, dependent: :destroy
+  has_one :content_root, -> { where(parent_id: nil) }, class_name: 'CardContent'
 
-  validates :card, presence: true
-  validates :card_contents, presence: true
-  validate :submittable_state
-
-  # the `roots` scope comes from `awesome_nested_set`
-  has_one :content_root, -> { roots }, class_name: 'CardContent'
   scope :required_for_submission, -> { where(required_for_submission: true) }
   scope :published, -> { where.not(published_at: nil) }
   scope :unpublished, -> { where(published_at: nil) }
 
+  validates :card, presence: true
+  validates :card_contents, presence: true
+  validate :submittable_state
   validates :version, uniqueness: { scope: :card_id, message: "Card version numbers are unique for a given card" }
   validates :history_entry, presence: true, if: -> { published? }
 

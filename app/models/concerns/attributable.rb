@@ -5,13 +5,15 @@ module Attributable
     boolean: %w[allow_annotations allow_file_captions allow_multiple_uploads required_field],
     integer: %w[],
     json:    %w[possible_values],
-    string:  %w[child_tag condition custom_class custom_child_class default_answer_value
+    string:  %w[child_tag condition custom_child_class custom_class default_answer_value
                 editor_style error_message instruction_text label text value_type
                 visible_with_parent_answer wrapper_tag]
   }.freeze
 
   BASE_ATTRIBUTES = %w[ident content_type].freeze
   ATTRIBUTE_NAMES = Set.new(BASE_ATTRIBUTES + CONTENT_ATTRIBUTES.values.flatten).freeze
+  SERIAL_NAMES    = (ATTRIBUTE_NAMES + BASE_ATTRIBUTES).freeze
+  DASHED_NAMES    = ATTRIBUTE_NAMES.each_with_object({}) { |name, hash| hash[name] = name.dasherize}.freeze
   CONTENT_TYPES   = CONTENT_ATTRIBUTES.keys.freeze
   ATTRIBUTE_TYPES = CONTENT_ATTRIBUTES.each_with_object({}) do |(type, names), hash|
     names.each { |name| hash[name] = type }

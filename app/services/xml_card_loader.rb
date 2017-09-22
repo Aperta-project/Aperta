@@ -3,16 +3,6 @@
 # admin interface to create and update existing Cards.  Eventually,
 # we expect this functionality to be replaced by gui admin screens.
 class XmlCardLoader
-  # called from card.update_from_xml when the card is published
-  def self.new_version_from_xml_string(xml, card)
-    new(card).load(xml, replace_latest_version: false)
-  end
-
-  # called from card.update_from_xml when the latest version is a draft
-  def self.replace_draft_from_xml_string(xml, card)
-    new(card).load(xml, replace_latest_version: true)
-  end
-
   attr_accessor :xml, :card
 
   def initialize(card)
@@ -87,7 +77,8 @@ class XmlCardLoader
       root.card_content_validations << maybe_build_required_field_validation(root)
       # recursively create any nested child content
       content.child_elements('content').each do |child|
-        root.children << build_card_content(child, card_version)
+        root.card_contents << build_card_content(child, card_version)
+        child.card_content = content
       end
       raise XmlCardDocument::XmlValidationError, root.errors if root.invalid?
     end
@@ -109,31 +100,14 @@ class XmlCardLoader
     }
   end
 
-  # rubocop:disable MethodLength
   def card_content_attributes(content, card_version)
-    {
-      card_version: card_version,
-      allow_file_captions: content.attr_value('allow-file-captions'),
-      allow_multiple_uploads: content.attr_value('allow-multiple-uploads'),
-      allow_annotations: content.attr_value('allow-annotations'),
-      child_tag: content.attr_value('child-tag'),
-      custom_class: content.attr_value('custom-class'),
-      custom_child_class: content.attr_value('custom-child-class'),
-      wrapper_tag: content.attr_value('wrapper-tag'),
-      content_type: content.attr_value('content-type'),
-      default_answer_value: content.attr_value('default-answer-value'),
-      error_message: content.attr_value('error-message'),
-      ident: content.attr_value('ident'),
-      required_field: content.attr_value('required-field'),
-      label: content.tag_text('label'),
-      instruction_text: content.tag_text('instruction-text'),
-      possible_values: content.fetch_values('possible-value', [:label, :value]),
-      text: content.tag_text('text'),
-      editor_style: content.attr_value('editor-style'),
-      condition: content.attr_value('condition'),
-      value_type: content.attr_value('value-type'),
-      visible_with_parent_answer: content.attr_value('visible-with-parent-answer')
-    }
+    names  = Attributable::ATTRIBUTE_NAMES
+    dashed = Attributable::DASHED_NAMES
+
+    attrs  = {card_version: card_version}
+    names.each_with_object(attrs) do |name, hash|
+      value = content.attr_value(dashed[name])
+      hash[name] = value unless value.blank?
+    end
   end
-  # rubocop:enable MethodLength
 end

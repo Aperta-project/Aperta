@@ -207,15 +207,13 @@ class Card < ActiveRecord::Base
   end
 
   def xml=(xml_string)
-    update_from_xml(xml_string) if xml_string.present?
-  end
-
-  def update_from_xml(xml)
+    return if xml_string.blank?
+    loader = XmlCardLoader.new(self)
     if published?
-      XmlCardLoader.new_version_from_xml_string(xml, self)
+      loader.load(xml_string, replace_latest_version: false)
       save_draft!
     elsif replaceable?
-      XmlCardLoader.replace_draft_from_xml_string(xml, self)
+      loader.load(xml_string, replace_latest_version: true)
     end
   end
 

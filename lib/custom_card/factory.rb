@@ -41,7 +41,7 @@ module CustomCard
     def create_from_configuration_klass(configuration)
       Card.create_initial_draft!(name: configuration.name, journal: journal).tap do |card|
         # build card content using xml
-        card.update_from_xml(configuration.xml_content)
+        card.xml = configuration.xml_content
 
         # set published flag
         if configuration.publish

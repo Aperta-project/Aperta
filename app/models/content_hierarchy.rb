@@ -34,7 +34,8 @@ class ContentNode
   def attributes
     content
     .reject  { |key, value| value.blank? }
-    .collect { |key, value| [key.dasherize, value] }.to_h
+    .collect { |key, value| [key.dasherize, value] }
+    .to_h
   end
 
   def validations

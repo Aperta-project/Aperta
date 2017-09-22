@@ -215,7 +215,7 @@ describe Card do
       it "has the XmlCardLoader make a new draft version" do
         allow(XmlCardLoader).to receive(:new_version_from_xml_string)
         expect(XmlCardLoader).to receive(:new_version_from_xml_string).with("foo", card)
-        card.update_from_xml("foo")
+        card.xml = "foo"
       end
     end
 
@@ -225,7 +225,7 @@ describe Card do
         card.latest_card_version.update(published_at: nil)
         allow(XmlCardLoader).to receive(:replace_draft_from_xml_string)
         expect(XmlCardLoader).to receive(:replace_draft_from_xml_string).with("foo", card)
-        card.update_from_xml("foo")
+        card.xml = "foo"
       end
     end
 
@@ -235,7 +235,7 @@ describe Card do
         card.latest_card_version.update(published_at: nil)
         allow(XmlCardLoader).to receive(:replace_draft_from_xml_string)
         expect(XmlCardLoader).to receive(:replace_draft_from_xml_string).with("foo", card)
-        card.update_from_xml("foo")
+        card.xml = "foo"
       end
     end
   end

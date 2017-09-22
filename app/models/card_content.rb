@@ -187,18 +187,16 @@ class CardContent < ActiveRecord::Base
   end
 
   def quick_load_descendants
-    return self unless root?
-    whatsleft = self_and_descendants.includes(:content_attributes, :card_content_validations).to_a
-    self.quick_children = whatsleft.select { |c| c.parent_id == id }
-    orig = whatsleft.dup
-    orig.each do |d|
-      children = []
-      unless d.leaf?
-        children, whatsleft = whatsleft.partition { |c| c.parent_id == d.id }
-      end
-      d.quick_children = children
+    all = [self] + descendants.includes(:content_attributes, :card_content_validations).to_a
+    children = all.group_by(&:parent_id)
+    all.each do |d|
+      d.quick_children = if d.leaf?
+                           []
+                         else
+                           children.fetch(d.id, [])
+                         end
     end
-    orig
+    all
   end
 
   def quick_children

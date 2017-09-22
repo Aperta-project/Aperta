@@ -35,22 +35,22 @@ class TasksController < ApplicationController
 
     if task.completed?
       # If the task is already completed, all the user can do is uncomplete it.
-      attrs = params.require(:task).permit(:completed)
-      task.update!(completed: attrs[:completed]) if attrs.key?(:completed)
+      toggle_task_completion
     else
       # At this point, the user could be doing one of two things.
       # 1. They are toggling the completed flag.
       # 2. They are updating the body or something else.
       task.assign_attributes(task_params(task.class))
+      toggle_task_completion
       if task.completed_changed? && !task.ready?
         # They are marking the task completed, but the fields are not ready.
         # Roll back the change.
         render json: task.reload, serializer: TaskAnswerSerializer
         return
       end
-      task.save!
     end
 
+    task.save!
     task.after_update
     Activity.task_updated! task, user: current_user
 
@@ -167,5 +167,10 @@ class TasksController < ApplicationController
       whitelisted[:body] ||= "Nothing to see here."
       whitelisted[:recipients] ||= []
     end
+  end
+
+  def toggle_task_completion
+    return unless params[:task].key?(:marked_as_completed)
+    task.completed = params[:task][:marked_as_completed]
   end
 end

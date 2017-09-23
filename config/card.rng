@@ -56,12 +56,12 @@
       <interleave>
         <optional>
           <element name="instruction-text">
-            <text/>
+            <ref name="any-content"/>
           </element>
         </optional>
         <optional>
           <element name="text">
-            <text/>
+            <ref name="any-content"/>
           </element>
         </optional>
       </interleave>
@@ -111,7 +111,7 @@
       <interleave>
         <optional>
           <element name="instruction-text">
-            <text/>
+            <ref name="any-content"/>
           </element>
         </optional>
         <interleave>
@@ -122,7 +122,7 @@
           </optional>
           <optional>
             <element name="text">
-              <text/>
+              <ref name="any-content"/>
             </element>
           </optional>
         </interleave>
@@ -181,7 +181,7 @@
       <interleave>
         <optional>
           <element name="instruction-text">
-            <text/>
+            <ref name="any-content"/>
           </element>
         </optional>
         <interleave>
@@ -205,7 +205,7 @@
           </optional>
           <optional>
             <element name="text">
-              <text/>
+              <ref name="any-content"/>
             </element>
           </optional>
         </interleave>
@@ -235,7 +235,7 @@
         </attribute>
       </optional>
       <element name="text">
-        <text/>
+        <ref name="any-content"/>
       </element>
     </element>
   </define>
@@ -276,11 +276,11 @@
       <interleave>
         <optional>
           <element name="instruction-text">
-            <text/>
+            <ref name="any-content"/>
           </element>
         </optional>
         <element name="text">
-          <text/>
+          <ref name="any-content"/>
         </element>
       </interleave>
       <oneOrMore>
@@ -330,11 +330,11 @@
         <interleave>
           <optional>
             <element name="instruction-text">
-              <text/>
+              <ref name="any-content"/>
             </element>
           </optional>
           <element name="text">
-            <text/>
+            <ref name="any-content"/>
           </element>
         </interleave>
       </optional>
@@ -362,7 +362,7 @@
         </optional>
         <optional>
           <element name="text">
-            <text/>
+            <ref name="any-content"/>
           </element>
         </optional>
       </interleave>
@@ -413,13 +413,13 @@
       <interleave>
         <optional>
           <element name="instruction-text">
-            <text/>
+            <ref name="any-content"/>
           </element>
         </optional>
         <interleave>
           <optional>
             <element name="text">
-              <text/>
+              <ref name="any-content"/>
             </element>
           </optional>
           <zeroOrMore>
@@ -453,7 +453,7 @@
         <value>text</value>
       </attribute>
       <element name="text">
-        <text/>
+        <ref name="any-content"/>
       </element>
       <zeroOrMore>
         <ref name="content"/>
@@ -515,7 +515,7 @@
         </element>
         <optional>
           <element name="text">
-            <text/>
+            <ref name="any-content"/>
           </element>
         </optional>
       </interleave>
@@ -532,6 +532,28 @@
         <ref name="content"/>
       </optional>
     </element>
+  </define>
+  <define name="any-content">
+    <interleave>
+      <zeroOrMore>
+        <ref name="any-element"/>
+      </zeroOrMore>
+      <text/>
+    </interleave>
+  </define>
+  <define name="any-element">
+    <element>
+      <anyName/>
+      <zeroOrMore>
+        <ref name="any-attribute"/>
+      </zeroOrMore>
+      <ref name="any-content"/>
+    </element>
+  </define>
+  <define name="any-attribute">
+    <attribute>
+      <anyName/>
+    </attribute>
   </define>
   <define name="content">
     <choice>

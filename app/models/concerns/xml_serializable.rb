@@ -21,5 +21,11 @@ module XmlSerializable
         builder.tag!(tag, text)
       end
     end
+
+    def raw_dump_text(builder, tag, text)
+      builder << "<#{tag}>"
+      builder << text
+      builder << "</#{tag}>\n"
+    end
   end
 end

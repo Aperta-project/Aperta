@@ -94,6 +94,10 @@ class CardContent < ActiveRecord::Base
     safe_dump_text(xml, attr_name, attr) if attr.present?
   end
 
+  def render_raw(xml, attr_name, attr)
+    raw_dump_text(xml, attr_name, attr) if attr.present?
+  end
+
   # content_attrs rendered into the <card-content> tag itself
   def content_attrs
     {
@@ -154,7 +158,7 @@ class CardContent < ActiveRecord::Base
   def to_xml(options = {})
     setup_builder(options).tag!('content', content_attrs) do |xml|
       render_tag(xml, 'instruction-text', instruction_text)
-      render_tag(xml, 'text', text)
+      render_raw(xml, 'text', text)
       render_tag(xml, 'label', label)
       card_content_validations.each do |ccv|
         # Do not serialize the required-field validation, it is handled via the

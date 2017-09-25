@@ -245,12 +245,7 @@ Tahi::Application.routes.draw do
     end
 
     resources :feature_flags, only: [:index, :update]
-
-    # scheduled events endpoints
-    get 'scheduled_events/:id/active',
-      to: 'scheduled_events#active'
-    get 'scheduled_events/:id/passive',
-      to: 'scheduled_events#passive'
+    resources :scheduled_events, only: [:update]
   end
 
   get '/invitations/:token',

@@ -2,19 +2,15 @@ class ScheduledEventsController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
 
-  def active
-    scheduled_event.switch_on!
-    render json: scheduled_event
-  end
-
-  def passive
-    scheduled_event.switch_off!
+  def update
+    scheduled_event = ScheduledEvent.find(params[:id])
+    scheduled_event.update(scheduled_event_params)
     render json: scheduled_event
   end
 
   private
 
-  def scheduled_event
-    ScheduledEvent.find(params[:id])
+  def scheduled_event_params
+    params.permit(:state)
   end
 end

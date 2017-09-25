@@ -15,8 +15,8 @@ export default DS.Model.extend({
   restless: Ember.inject.service(),
 
   updateState: function(newState) {
-    const url = `/api/scheduled_events/${this.get('id')}/${newState}`;
-    return this.get('restless').get(url).then(() => {
+    const url = `/api/scheduled_events/${this.get('id')}`;
+    return this.get('restless').put(url, {state: newState}).then(() => {
       this.set('state', newState);
     });
   }

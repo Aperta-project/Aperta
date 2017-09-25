@@ -10,7 +10,6 @@ class ContentAttribute < ActiveRecord::Base
     when 'boolean' then boolean_value?
     when 'integer' then integer_value
     when 'json'    then json_value
-    when 'html'    then string_value
     end
   end
 
@@ -20,7 +19,6 @@ class ContentAttribute < ActiveRecord::Base
     when 'boolean' then self.boolean_value = content
     when 'integer' then self.integer_value = content
     when 'json'    then self.json_value    = content
-    when 'html'    then self.string_value = content
     end
   end
 end

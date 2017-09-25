@@ -14,7 +14,7 @@ export default DS.Model.extend({
   updateState: function(newState) {
     const url = `/api/scheduled_events/${this.get('id')}/${newState}`;
     return this.get('restless').get(url).then(() => {
-      // set the class to reflect the new state
+      this.set('state', newState);
     });
   }
 });

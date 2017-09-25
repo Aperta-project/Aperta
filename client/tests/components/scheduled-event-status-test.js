@@ -40,3 +40,39 @@ test('renders active toggle when event is active', function(assert) {
   this.render(hbs `{{scheduled-event-status event=event}}`);
   assert.equal($('.scheduled-event-status input[type=checkbox]').is(':checked'), true);
 });
+
+test('completed event should be shown as "Sent"', function(assert) {
+  let scheduledEvent = FactoryGuy.make('scheduled-event', {
+    name: 'Pre Event',
+    state: 'completed',
+    finished: true,
+    dispatchAt: moment(this.get('dueDate')).subtract(2, 'days')
+  });
+  this.set('event', scheduledEvent);
+  this.render(hbs `{{scheduled-event-status event=event}}`);
+  assert.textPresent('.scheduled-event-status span', 'Sent');
+});
+
+test('errored events should be shown as warnings', function(assert) {
+  let scheduledEvent = FactoryGuy.make('scheduled-event', {
+    name: 'Pre Event',
+    state: 'errored',
+    finished: true,
+    dispatchAt: moment(this.get('dueDate')).subtract(2, 'days')
+  });
+  this.set('event', scheduledEvent);
+  this.render(hbs `{{scheduled-event-status event=event}}`);
+  assert.textPresent('.scheduled-event-status span', 'Reminder not sent due to a system error');
+});
+
+test('inactive events should be shown as not applicable', function(assert) {
+  let scheduledEvent = FactoryGuy.make('scheduled-event', {
+    name: 'Pre Event',
+    state: 'inactive',
+    finished: true,
+    dispatchAt: moment(this.get('dueDate')).add(2, 'days')
+  });
+  this.set('event', scheduledEvent);
+  this.render(hbs `{{scheduled-event-status event=event}}`);
+  assert.textPresent('.scheduled-event-status span', 'NA');
+});

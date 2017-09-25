@@ -34,7 +34,29 @@ class XmlCardLoader
 
   def build_card_contents(card_version)
     xml.contents.map do |content|
-      build_card_content(content, card_version)
+      build_card_content(card_version, content, parent: nil)
+    end
+  end
+
+  def build_card_content(card_version, content, parent: nil)
+    attributes = card_content_attributes(content)
+    content_type = content.attr_value('content-type')
+    puts "Content type: #{content_type}"
+    allowed_attributes = Attributable::CUSTOM_ATTRIBUTES[content_type]
+    allowed_attributes += CardContent.attribute_names.map(&:to_sym)
+    attributes = attributes.delete_if { |key, value| omissible?(key, value) && !allowed_attributes.member?(key) }
+
+    card_version.card_contents.new(attributes).tap do |root|
+      root.parent = parent
+      root.card_content_validations << build_card_content_validations(content)
+      root.card_content_validations << maybe_build_required_field_validation(root)
+      root.save!
+
+      content.child_elements('content').each do |child|
+        card_content = build_card_content(card_version, child, parent: root)
+        card_content.save!
+        root.card_contents << card_content
+      end
     end
   end
 
@@ -54,33 +76,6 @@ class XmlCardLoader
     )
   end
 
-  def omissible?(name, value)
-    case Attributable::ATTRIBUTE_TYPES[name.to_s]
-    when :json then value.blank?
-    else value.nil?
-    end
-  end
-
-  def build_card_content(content, card_version)
-    attributes = card_content_attributes(content, card_version)
-    content_type = content.attr_value('content-type')
-    allowed_attributes = Attributable::CUSTOM_ATTRIBUTES[content_type]
-    allowed_attributes += CardContent.attribute_names.map(&:to_sym) + [:card_version_id]
-    attributes = attributes.delete_if { |key, value| omissible?(key, value) && !allowed_attributes.member?(key) }
-
-    card_version.card_contents.new(attributes).tap do |root|
-      root.card_content_validations << build_card_content_validations(content)
-      root.card_content_validations << maybe_build_required_field_validation(root)
-      root.save
-
-      content.child_elements('content').each do |child|
-        card_content = build_card_content(child, card_version)
-        card_content.parent = root
-        root.card_contents << card_content
-      end
-    end
-  end
-
   def card_version_attributes
     {
       version: card.latest_version.to_i.next,
@@ -97,14 +92,19 @@ class XmlCardLoader
     }
   end
 
-  def card_content_attributes(content, card_version)
+  def omissible?(name, value)
+    case Attributable::ATTRIBUTE_TYPES[name.to_s]
+    when :json then value.blank?
+    else value.nil?
+    end
+  end
+
+  def card_content_attributes(content)
     names  = Attributable::ATTRIBUTE_NAMES
     dashed = Attributable::DASHED_NAMES
-
-    attrs  = {card_version: card_version}
-    names.each_with_object(attrs) do |name, hash|
+    names.each_with_object({}) do |name, hash|
       value = content.attr_value(dashed[name])
-      hash[name] = value unless value.blank?
+      hash[name] = value unless omissible?(name, value)
     end
   end
 end

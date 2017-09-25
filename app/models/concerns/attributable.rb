@@ -19,7 +19,7 @@ module Attributable
     names.each { |name| hash[name] = type }
   end.freeze
 
-  COMMON_ATTRIBUTES = %w[allow_annotations instruction_text label required_field].freeze
+  COMMON_ATTRIBUTES = %w[allow_annotations label required_field].freeze
   CUSTOM_ATTRIBUTES = [
     [%w[file-uploader],    %w[allow_file_captions allow_multiple_uploads possible_values]],
     [%w[if],               %w[condition]],

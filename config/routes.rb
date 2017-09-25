@@ -245,7 +245,9 @@ Tahi::Application.routes.draw do
     end
 
     resources :feature_flags, only: [:index, :update]
-    resources :scheduled_events, only: [:update]
+    
+    put 'scheduled_events/:id/update_state',
+      to: 'scheduled_events#update_state'
   end
 
   get '/invitations/:token',

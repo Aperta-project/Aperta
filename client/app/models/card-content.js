@@ -19,6 +19,7 @@ export default DS.Model.extend({
   ident: DS.attr('string'),
   possibleValues: DS.attr(),
   defaultAnswerValue: DS.attr(),
+  defaultTextLong: DS.attr(),
   order: DS.attr('number'),
   text: DS.attr('string'),
   instructionText: DS.attr('string'),

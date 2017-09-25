@@ -416,6 +416,11 @@
             <text/>
           </element>
         </optional>
+        <optional>
+          <element name="default-text-long">
+            <text/>
+          </element>
+        </optional>
         <interleave>
           <optional>
             <element name="text">

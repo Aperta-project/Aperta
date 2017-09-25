@@ -4,7 +4,8 @@ class ScheduledEventsController < ApplicationController
 
   def update
     scheduled_event = ScheduledEvent.find(params[:id])
-    scheduled_event.update(scheduled_event_params)
+    scheduled_event.switch_on! if params[:state] == 'active'
+    scheduled_event.switch_off! if params[:state] == 'passive'
     render json: scheduled_event
   end
 

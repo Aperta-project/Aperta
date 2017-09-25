@@ -11,6 +11,7 @@ export default DS.Model.extend({
   errored: Ember.computed.equal('state', 'errored'),
   inactive: Ember.computed.equal('state', 'inactive'),
   active: Ember.computed.equal('state', 'active'),
+  canceled: Ember.computed.equal('state', 'canceled'),
 
   restless: Ember.inject.service(),
 
@@ -20,4 +21,5 @@ export default DS.Model.extend({
       this.set('state', newState);
     });
   }
+
 });

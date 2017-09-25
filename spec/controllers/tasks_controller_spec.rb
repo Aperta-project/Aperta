@@ -23,7 +23,7 @@ describe TasksController, redis: true do
       get :index, format: 'json',
                   paper_id: paper.to_param
     end
-    let(:tasks) { [FactoryGirl.build_stubbed(:ad_hoc_task)] }
+    let(:tasks) { [FactoryGirl.create(:ad_hoc_task, paper: paper)] }
 
     it_behaves_like "an unauthenticated json request"
 
@@ -35,21 +35,12 @@ describe TasksController, redis: true do
           .with(:view, paper)
           .and_return true
 
-        allow(user).to receive(:filter_authorized).and_return instance_double(
-          'Authorizations::Query::Result',
-          objects: tasks
-        )
+        allow(user).to receive(:can?)
+          .with(:view, tasks[0])
+          .and_return true
       end
 
       it "returns only the paper's tasks the user has access to" do
-        expect(user).to receive(:filter_authorized).with(
-          :view,
-          paper.tasks.includes(:paper),
-          participations_only: false
-        ).and_return instance_double(
-          'Authorizations::Query::Result',
-          objects: tasks
-        )
         do_request
         expect(res_body['tasks'].count).to eq(1)
       end
@@ -89,6 +80,10 @@ describe TasksController, redis: true do
         stub_sign_in user
         allow(user).to receive(:can?)
           .with(:manage_workflow, paper)
+          .and_return true
+
+        allow(user).to receive(:can?)
+          .with(:view, Task)
           .and_return true
       end
 
@@ -163,6 +158,10 @@ describe TasksController, redis: true do
         allow(user).to receive(:can?)
           .with(:edit, task)
           .and_return true
+
+        allow(user).to receive(:can?)
+          .with(:view, task)
+          .and_return true
       end
 
       it "updates the task" do
@@ -178,6 +177,16 @@ describe TasksController, redis: true do
       it "does not raises an error" do
         do_request
         expect(response.body).not_to include "This paper cannot be edited at this time."
+      end
+
+      context 'when the request is marking the task complete' do
+        context 'and the task is ready?' do
+          it 'marks the task complete' do
+            allow(controller).to receive(:task).and_return(task)
+            expect(task).to receive(:ready?).and_return(true)
+            expect { do_request }.to change { task.reload.completed }.from(false).to(true)
+          end
+        end
       end
 
       context "and the task is marked as complete" do
@@ -369,7 +378,7 @@ describe TasksController, redis: true do
   end
 
   describe "GET #nested_questions" do
-    let(:task) { FactoryGirl.create(:cover_letter_task, :with_loaded_card) }
+    let(:task) { FactoryGirl.create(:early_posting_task, :with_loaded_card) }
     let!(:card_content) do
       root = task.card.content_root_for_version(:latest)
       root.children.first
@@ -419,7 +428,7 @@ describe TasksController, redis: true do
   end
 
   describe "GET #nested_question_answers" do
-    let(:task) { FactoryGirl.create(:cover_letter_task, :with_card) }
+    let(:task) { FactoryGirl.create(:early_posting_task, :with_card) }
     let(:card_content) do
       root = Card.find_by(name: task.class.name).content_root_for_version(:latest)
       FactoryGirl.create(:card_content, parent: root)

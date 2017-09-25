@@ -145,6 +145,9 @@ describe ScheduledEvent do
       subject.state = 'inactive'
       expect(subject.finished?).to eq(true)
 
+      subject.state = 'canceled'
+      expect(subject.finished?).to eq(true)
+
       subject.state = 'errored'
       expect(subject.finished?).to eq(true)
     end

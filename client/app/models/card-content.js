@@ -58,6 +58,11 @@ export default DS.Model.extend({
   childrenSort: ['order:asc'],
   children: Ember.computed.sort('unsortedChildren', 'childrenSort'),
 
+  visitDescendants: function(f) {
+    f(this);
+    this.get('children').forEach((child) => child.visitDescendants(f));
+  },
+
   isRequired: Ember.computed.equal('requiredField', true),
 
   isRequiredString: Ember.computed('isRequired', function() {

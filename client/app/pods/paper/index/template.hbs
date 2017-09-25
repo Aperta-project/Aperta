@@ -37,7 +37,7 @@
 {{/overlay-fullscreen}}
 
 {{paper-control-bar paper=model
-  showActivity="showActivityOverlay"
+  showActivity=(action "showActivityOverlay" "manuscript")
   addContributors="showCollaboratorsOverlay"
   showWithdrawOverlay="showWithdrawOverlay"
   tab="manuscript"
@@ -85,6 +85,7 @@
   {{#split-pane-element class="paper-sidebar--manuscript main-content-section"}}
     {{paper-sidebar paper=model
                     user=currentUser
+                    defaultPreprintTaskOpen=defaultPreprintTaskOpen
                     showPaperSubmitOverlay=(action "showPaperSubmitOverlay")
                     toggleSubmissionProcess=(action "toggleSubmissionProcess")}}
   {{/split-pane-element}}

@@ -9,7 +9,7 @@ describe ManuscriptManagerTemplatesController do
     end
   end
 
-  let(:journal) { FactoryGirl.create(:journal) }
+  let(:journal) { FactoryGirl.create(:journal, :with_default_mmt) }
   let(:journal_task_type) { FactoryGirl.create(:journal_task_type, journal_id: journal.id) }
   let(:user) { FactoryGirl.build(:user) }
   let(:setting_template) { FactoryGirl.create(:setting_template) }

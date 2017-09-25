@@ -55,13 +55,13 @@
                   class="paper-new-select"
                   triggerClass="paper-new-select-trigger"
                   dropdownClass="paper-new-select-dropdown"
-                  options=paper.journal.paperTypes
-                  selected=paper.paperType
+                  options=paper.journal.manuscriptManagerTemplates
+                  selected=template
                   onchange=(action "selectPaperType")
                   searchEnabled=false
                   disabled=journalEmpty
-                  as |paperType|}}
-    {{paperType}}
+                  as |template|}}
+    {{template.paper_type}}
   {{/power-select}}
 
   {{#if paper.paperType}}

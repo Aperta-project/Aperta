@@ -258,6 +258,23 @@ describe TahiStandardTasks::ReviewerMailer do
     end
   end
 
+  shared_examples_for 'a Liquid email checked for blanks' do
+    before do
+      # rubocop:disable Rails/SkipsModelValidations
+      report.paper.journal.tap { |j| j.update_attribute(:name, nil) }
+      # rubocop:enable Rails/SkipsModelValidations
+    end
+
+    it 'raises a Bugsnag error if there are blank fields' do
+      expect(Bugsnag).to receive(:notify)
+      email.deliver_now
+    end
+
+    it 'does not send emails' do
+      expect { email.deliver_now }.not_to change(ActionMailer::Base.deliveries, :count)
+    end
+  end
+
   describe 'reminder emails' do
     before do
       report.paper.journal.letter_templates.create!(
@@ -294,6 +311,8 @@ describe TahiStandardTasks::ReviewerMailer do
       it 'renders the signature' do
         expect(email.body).to match('Kind regards,')
       end
+
+      it_behaves_like 'a Liquid email checked for blanks'
     end
 
     describe '.first_late_notice' do
@@ -319,6 +338,8 @@ describe TahiStandardTasks::ReviewerMailer do
       it 'renders the signature' do
         expect(email.body).to match('Kind regards,')
       end
+
+      it_behaves_like 'a Liquid email checked for blanks'
     end
 
     describe '.second_late_notice' do
@@ -344,6 +365,34 @@ describe TahiStandardTasks::ReviewerMailer do
       it 'renders the signature' do
         expect(email.body).to match('Kind regards,')
       end
+
+      it_behaves_like 'a Liquid email checked for blanks'
     end
+  end
+
+  describe '.thank_reviewer' do
+    subject(:email) { described_class.thank_reviewer(reviewer_report: report) }
+    let(:appreciation_email) { FactoryGirl.create(:letter_template, :thank_reviewer) }
+
+    before { report.paper.journal.letter_templates << appreciation_email }
+
+    it 'is addressed to the reviewer' do
+      expect(email.to).to eq([report.user.email])
+    end
+
+    it 'renders the subject' do
+      expect(email.subject).to eq("Thank you for reviewing #{report.paper.journal.name}")
+    end
+
+    it 'renders the email template' do
+      expect(email.body).to match("Dear #{report.user.first_name} #{report.user.last_name}")
+    end
+
+    it 'renders the signature' do
+      expect(email.body).to match('Kind regards')
+      expect(email.body).to match(report.paper.journal.name)
+    end
+
+    it_behaves_like 'a Liquid email checked for blanks'
   end
 end

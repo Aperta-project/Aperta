@@ -7,9 +7,7 @@ class CardContent < ActiveRecord::Base
   include Attributable
   include XmlSerializable
 
-  # Scope matches deleted_at IS NULL, that is, non-deleted records
-  acts_as_nested_set scope: [:deleted_at]
-  acts_as_paranoid
+  acts_as_nested_set
 
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
@@ -17,12 +15,9 @@ class CardContent < ActiveRecord::Base
 
   validates :card_version, presence: true
 
-  # since we use acts_as_paranoid we need to take into account whether a given
-  # piece of card content has been deleted for uniqueness checks on parent_id
-  # and ident
   validates :parent_id,
             uniqueness: {
-              scope: %i[card_version deleted_at],
+              scope: :card_version,
               message: "Card versions can only have one root node."
             },
             if: -> { root? }
@@ -162,6 +157,9 @@ class CardContent < ActiveRecord::Base
       render_tag(xml, 'text', text)
       render_tag(xml, 'label', label)
       card_content_validations.each do |ccv|
+        # Do not serialize the required-field validation, it is handled via the
+        # "required-field" attribute.
+        next if ccv.validation_type == 'required-field'
         create_card_config_validation(ccv, xml)
       end
       if possible_values.present?
@@ -186,7 +184,7 @@ private
 
 def create_card_config_validation(ccv, xml)
   validation_attrs = { 'validation-type': ccv.validation_type }
-                       .delete_if { |_k, v| v.nil? }
+                         .delete_if { |_k, v| v.nil? }
   xml.tag!('validation', validation_attrs) do
     xml.tag!('error-message', ccv.error_message)
     xml.tag!('validator', ccv.validator)

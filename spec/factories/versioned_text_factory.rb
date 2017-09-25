@@ -7,5 +7,6 @@ FactoryGirl.define do
     manuscript_s3_path 'example/path'
     manuscript_filename 'example_filename.docx'
     file_type 'docx'
+    updated_at Time.zone.now
   end
 end

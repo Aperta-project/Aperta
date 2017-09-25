@@ -72,7 +72,7 @@ Tahi::Application.routes.draw do
     resources :authors, only: [:show, :create, :update, :destroy]
 
     get "/answers/:owner_type/:owner_id", to: "answers#index", as: "answers_for_owner"
-    resources :answers, only: [:create, :destroy, :update]
+    resources :answers, only: [:show, :create, :destroy, :update]
     resources :cards do
       put :publish, on: :member
       put :archive, on: :member
@@ -152,8 +152,8 @@ Tahi::Application.routes.draw do
       end
       resources :task_types, only: :index, controller: 'paper_task_types'
       resources :available_cards, only: :index
-      resources :correspondence, only: [:index, :create] do
-        resources :attachment, only: :create, controller: :correspondence_attachments
+      resources :correspondence, only: [:index, :create, :show] do
+        resources :attachments, only: [:create], controller: :correspondence_attachments
       end
       resources :similarity_checks, only: :index
 
@@ -191,6 +191,7 @@ Tahi::Application.routes.draw do
     resources :tasks, only: [:update, :create, :show, :destroy] do
       get :nested_questions
       get :nested_question_answers
+      put :update_position
       resources :attachments, only: [:index, :create, :update, :destroy], controller: 'adhoc_attachments' do
         put :update_attachment, on: :member
       end
@@ -224,7 +225,7 @@ Tahi::Application.routes.draw do
       resources :journals, only: [:index, :show, :update, :create] do
         get :authorization, on: :collection
       end
-      resources :letter_templates, only: [:index, :show, :update]
+      resources :letter_templates, only: [:index, :show, :update, :create]
     end
 
     # ihat endpoints

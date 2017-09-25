@@ -127,7 +127,8 @@ class User < ActiveRecord::Base
     if site_admin?
       journal_query
     else
-      filter_authorized(:administer, journal_query).objects
+      roles = [:manage_users, :administer]
+      filter_authorized_set(roles, journal_query)
     end
   end
 

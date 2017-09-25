@@ -42,9 +42,12 @@ moduleForAcceptance('Integration: Correspondence', {
 
     Factory.createPermission('Paper', paper.id, ['submit', 'manage_workflow']);
     $.mockjax({
-      url: `/api/papers/${paper.get('shortDoi')}`,
-      type: 'put',
-      status: 204
+      url: `/api/papers/${paper.get('id')}/correspondence/${correspondence.get('id')}`,
+      type: 'GET',
+      status: 200,
+      responseText: {
+        correspondence: correspondence.toJSON({includeId: true})
+      }
     });
   }
 });
@@ -57,6 +60,8 @@ test('User can view a correspondence record', function(assert) {
     assert.equal(find('.correspondence-sender').text().trim(), correspondence.get('sender'));
     assert.equal(find('.correspondence-recipient').text().trim(), correspondence.get('recipient'));
     assert.equal(find('.correspondence-subject').text().trim(), correspondence.get('subject'));
+    assert.equal(find('#correspondence-attachment-paperclip').length, 1);
+    assert.equal(find('.correspondence-attachment-link .file-link').length, 2);
   });
 });
 

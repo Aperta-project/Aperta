@@ -5,14 +5,14 @@ describe DownloadManuscriptWorker, redis: true do
   let(:user) { FactoryGirl.build_stubbed(:user) }
   let(:url) { 'http://tahi.example.com/paper.docx' }
 
-  describe '.download_manuscript' do
+  describe '.download' do
     before do
       allow(paper).to receive(:update_attribute)
     end
 
     it 'queues up a job to download the manuscript' do
       expect(DownloadManuscriptWorker).to receive(:perform_async).with(paper.id, url, user.id)
-      described_class.download_manuscript(paper, url, user)
+      described_class.download(paper, url, user)
     end
 
     it "does not retry" do
@@ -23,14 +23,14 @@ describe DownloadManuscriptWorker, redis: true do
     context 'when the URL is blank' do
       it 'raises an exception' do
         expect do
-          described_class.download_manuscript(paper, nil, user)
+          described_class.download(paper, nil, user)
         end.to raise_error(ArgumentError, "Url must be provided (received a blank value)")
       end
     end
 
     it 'marks the paper as processing' do
       expect(paper).to receive(:update_attribute).with(:processing, true)
-      described_class.download_manuscript(paper, url, user)
+      described_class.download(paper, url, user)
     end
   end
 
@@ -75,13 +75,13 @@ describe DownloadManuscriptWorker, redis: true do
         down: 'user',
         on: 'flashMessage'
       )
-      DownloadManuscriptWorker.download_manuscript(paper, url, user)
+      DownloadManuscriptWorker.download(paper, url, user)
       expect(paper.reload.processing).to eq false
     end
 
     it 'doesn\'t displays a message if a new file is uploaded' do
       expect(pusher_channel).to_not receive_push(payload: hash_including(:messageType, :message), down: 'user', on: 'flashMessage')
-      DownloadManuscriptWorker.download_manuscript(paper, url, user)
+      DownloadManuscriptWorker.download(paper, url, user)
       expect(paper.reload.processing).to eq true
     end
   end

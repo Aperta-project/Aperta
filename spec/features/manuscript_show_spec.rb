@@ -28,8 +28,7 @@ feature 'Viewing manuscript control bar', js: true do
     scenario 'visit the paper by id instead of short_doi' do
       page = Page.new
       page.visit("/papers/#{paper.id}")
-      wait_for_ajax
-      expect(page.current_path).to eq("/papers/#{paper.short_doi}")
+      expect(page).to have_current_path("/papers/#{paper.short_doi}")
     end
   end
 end

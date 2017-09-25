@@ -1,9 +1,15 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 
 moduleForComponent('admin-page/email-templates',
   'Integration | Component | Admin Page | Email Templates', {
-    integration: true
+    integration: true,
+
+    beforeEach() {
+      this.can = FakeCanService.create();
+      this.register('service:can', this.can.asService());
+    }
   }
 );
 

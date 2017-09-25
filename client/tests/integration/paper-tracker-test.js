@@ -14,6 +14,7 @@ let payload = {
     'id': 4,
     'short_title': 'Testing ABC',
     'title': 'Testing ABC',
+    'short_doi': 'journal.test.123',
     'paper_type': 'Research',
     'submitted_at': '2015-07-06T19:49:17.991Z',
     'related_users': [{
@@ -62,6 +63,8 @@ test('viewing papers', function(assert) {
 
   visit('/paper_tracker');
   andThen(function() {
+    assert.elementFound('.paper-tracker-title-column a[href="/papers/journal.test.123"]');
+    assert.elementFound('.paper-tracker-paper-id-column a[href="/papers/journal.test.123/workflow"]');
     assert.equal(
       find('td.paper-tracker-title-column a').text().trim(),
       record.short_title,

@@ -46,11 +46,9 @@ module CustomCard
 
     def migrate_answers(old_card_version, new_card_version, journal_id)
       # Update card content IDs of legacy answers
-      Answer.unscoped do # include soft deleted answers
-        idents = new_card_version.card_contents.pluck(:ident).compact
-        idents.each do |ident|
-          update_content_id(ident, old_card_version, new_card_version, journal_id)
-        end
+      idents = new_card_version.card_contents.pluck(:ident).compact
+      idents.each do |ident|
+        update_content_id(ident, old_card_version, new_card_version, journal_id)
       end
     end
 
@@ -75,8 +73,7 @@ module CustomCard
       old_content = old_card_version.card_contents.find_by(ident: ident)
       new_content = new_card_version.card_contents.find_by(ident: ident)
       Rails.logger.info "Updating #{old_content.answers.count} answers for ident '#{ident}'"
-      answers = old_content.answers.joins(:paper)
-        .where(papers: { journal_id: journal_id })
+      answers = old_content.answers.joins(:paper).where(papers: { journal_id: journal_id })
       answers.update_all(card_content_id: new_content.id)
       # assert that all answers have been moved to new new card content
       return unless answers.any? && old_content.reload.answers.any?
@@ -85,23 +82,10 @@ module CustomCard
     end
 
     def destroy_legacy_card
-      # -- destroy the old card, since everything has moved to the new one
-      # -- be sure to work around:
-      # --    acts_as_paranoid,
-      # --    active_record callback validations,
-      # --    acts_as_state_machine limitations,
-      # --    event stream notifications
+      # -- forcibly destroy the old card, since everything has moved to the new one
       old_card = Card.find_by!(name: legacy_class_name)
-      old_card.recover if old_card.destroyed?
-      old_card.state = "draft"
-      old_card.notifications_enabled = false
       Rails.logger.info "Destroying legacy #{card_name} card"
-      old_card.destroy_fully!
-
-      return unless Card.where(name: legacy_class_name).exists?
-      message = "Unable to destroy legacy #{card_name} card"
-      Rails.error.info(message)
-      raise message
+      old_card.forcibly_destroy!
     end
   end
 end

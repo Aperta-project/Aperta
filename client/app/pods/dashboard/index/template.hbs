@@ -1,6 +1,6 @@
 {{#overlay-fullscreen visible=showNewManuscriptOverlay
                       wormhole=false
-                      outAnimationComplete=(action "hideNewManuscriptOverlay")
+                      outAnimationComplete=(action "hideOverlay" "NewManuscript")
                       title="Create a New Submission"
                       as |overlay|}}
     {{manuscript-new paper=newPaper
@@ -8,6 +8,18 @@
                      journalsLoading=journalsLoading
                      complete=(action "newManuscriptCreated")
                      class="paper-new-overlay"
+                     close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
+{{#overlay-fullscreen visible=showPreprintOverlay
+                      wormhole=false
+                      enableClose=false
+                      outAnimationComplete=(action "hideOverlay" "Preprint")
+                      title="Post this paper as a preprint?"
+                      class="preprint-overlay"
+                      as |overlay|}}
+    {{offer-preprint paper=newPaper
+                     nextStep=(action "offerPreprintComplete")
                      close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}
 

@@ -14,15 +14,5 @@ bundle exec rake db:setup
 
 # Go back to the feature branch
 git checkout -
-# run migrations
-bundle exec rake db:migrate
-# seed sample data
-bundle exec rake cards:load
-bundle exec rake roles-and-permissions:seed
-bundle exec rake settings:seed_setting_templates
-bundle exec rake data:update_journal_task_types
-bundle exec rake institutional_accounts:add_seed_accounts
-bundle exec rake create_feature_flags
-bundle exec rake seed:letter_templates:populate
-# update schema.rb and data.yml to reflect your DB
-bundle exec rake db:data:dump
+# migrate and dump seed data
+bundle exec rake db:dump_seed_data

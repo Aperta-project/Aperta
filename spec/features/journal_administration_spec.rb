@@ -2,8 +2,8 @@ require 'rails_helper'
 
 feature "Journal Administration", js: true do
   let(:user) { create :user, :site_admin }
-  let!(:journal) { create :journal, :with_roles_and_permissions }
-  let!(:another_journal) { create :journal, :with_roles_and_permissions }
+  let!(:journal) { create :journal, :with_roles_and_permissions, :with_default_mmt }
+  let!(:another_journal) { create :journal, :with_roles_and_permissions, :with_default_mmt }
 
   before do
     login_as(user, scope: :user)

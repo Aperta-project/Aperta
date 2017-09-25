@@ -1,4 +1,4 @@
-.admin-new-card-overlay {
+.admin-overlay {
   width: 100%;
 
   h1 {
@@ -13,17 +13,17 @@
     margin-bottom: .5rem;
   }
 
-  .admin-new-card-overlay-form {
+  .admin-overlay-form {
     margin-bottom: 25px;
   }
 
-  .admin-new-card-overlay-note {
+  .admin-overlay-note {
     margin-top: .5rem;
     color: $aperta-grey;
     font-style: italic;
   }
 
-  .admin-new-card-overlay-save {
+  .admin-overlay-save {
     position: relative;
     width: 150px;
     height: 40px;

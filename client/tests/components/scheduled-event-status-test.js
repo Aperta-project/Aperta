@@ -50,7 +50,7 @@ test('completed event should be shown as "Sent"', function(assert) {
   });
   this.set('event', scheduledEvent);
   this.render(hbs `{{scheduled-event-status event=event}}`);
-  assert.textPresent('.scheduled-event-status span', 'Sent');
+  assert.textPresent('.scheduled-event-status', 'Sent');
 });
 
 test('errored events should be shown as warnings', function(assert) {
@@ -62,7 +62,7 @@ test('errored events should be shown as warnings', function(assert) {
   });
   this.set('event', scheduledEvent);
   this.render(hbs `{{scheduled-event-status event=event}}`);
-  assert.textPresent('.scheduled-event-status span', 'Reminder not sent due to a system error');
+  assert.textPresent('.scheduled-event-status', 'Reminder not sent due to a system error');
 });
 
 test('inactive events should be shown as not applicable', function(assert) {
@@ -74,5 +74,17 @@ test('inactive events should be shown as not applicable', function(assert) {
   });
   this.set('event', scheduledEvent);
   this.render(hbs `{{scheduled-event-status event=event}}`);
-  assert.textPresent('.scheduled-event-status span', 'NA');
+  assert.textPresent('.scheduled-event-status', 'NA');
+});
+
+test('canceled events should be shown as not applicable', function(assert) {
+  let scheduledEvent = FactoryGuy.make('scheduled-event', {
+    name: 'Pre Event',
+    state: 'canceled',
+    finished: true,
+    dispatchAt: moment(this.get('dueDate')).add(2, 'days')
+  });
+  this.set('event', scheduledEvent);
+  this.render(hbs `{{scheduled-event-status event=event}}`);
+  assert.textPresent('.scheduled-event-status', 'NA');
 });

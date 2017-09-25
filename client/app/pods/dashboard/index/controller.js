@@ -92,7 +92,7 @@ export default Ember.Controller.extend({
         this.transitionToRoute('paper.index', invitation.get('paperShortDoi')).then(() => {
           let role = invitation.get('inviteeRole');
           let journalName = invitation.get('journalName');
-          if (role === 'Academic Editor') {
+          if (role !== 'Reviewer') {
             let msg = `Thank you for agreeing to be an ${role} on this ${journalName} manuscript.`;
             this.flash.displayRouteLevelMessage('success', msg);
           } else {

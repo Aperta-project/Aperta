@@ -7,6 +7,10 @@ import Snapshottable from 'tahi/mixins/snapshottable';
 import { timeout, task as concurrencyTask } from 'ember-concurrency';
 
 export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Snapshottable, {
+  init() {
+    this._super(...arguments);
+    this.set('completedProxy', this.get('completed'));
+  },
   exportDeliveries: DS.hasMany('export-delivery', {
     inverse: 'task'
   }),
@@ -42,6 +46,7 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
 
   body: DS.attr(),
   completed: DS.attr('boolean'),
+  completedProxy: DS.attr('boolean'),
   decisions: Ember.computed.alias('paper.decisions'),
   isMetadataTask: DS.attr('boolean'),
   isSnapshotTask: DS.attr('boolean'),

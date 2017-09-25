@@ -131,6 +131,7 @@ export default Component.extend(ValidationErrorsMixin, {
       this.save().finally( () => {
         // make sure we put skipValidations back its previous state
         this.set('skipValidations', currentSkipValidations);
+        this.set('task.completedProxy', this.get('task.completed'));
       });
     }
   }

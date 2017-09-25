@@ -28,7 +28,12 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
   // pre-card-config
   taskTypeSort: ['title:asc'],
-  sortedTaskTypes: computed.sort('journalTaskTypes', 'taskTypeSort'),
+  // TODO: get rid of task type filtering after last legacy card ruby class is deleted
+  filteredTaskTypes: computed.filter('journalTaskTypes', function(taskType) {
+    let title = taskType.get ? taskType.get('title') : '';
+    return title !== 'SUBCLASSME' && title !== 'Custom Card';
+  }),
+  sortedTaskTypes: computed.sort('filteredTaskTypes', 'taskTypeSort'),
   authorTasks: computed.filterBy('sortedTaskTypes', 'roleHint', 'author'),
   staffTasksUnsorted: computed.setDiff('sortedTaskTypes', 'authorTasks'),
   staffTasks: computed.sort('staffTasksUnsorted', 'taskTypeSort'),

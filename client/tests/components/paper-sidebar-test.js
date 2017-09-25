@@ -70,7 +70,7 @@ test('rendering a list of tasks', function(assert) {
 
   assert.equal(this.$('.task-disclosure').length, 2, 'tasks that are not viewable are filtered out');
   assert.ok(this.$('.task-disclosure').eq(0).hasClass(`task-type-charmander`), 'charmander comes first in the sort order');
-  assert.ok(!this.$('.task-disclosure-heading').eq(0).hasClass(`disabled`));
+  assert.notOk(this.$('.task-disclosure-heading').eq(0).hasClass(`disabled`));
 
   assert.elementNotFound('.task-disclosure.task-type-bulbasaur');
 });

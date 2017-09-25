@@ -61,6 +61,16 @@ export default Ember.Controller.extend({
     this.set('showInvitationsOverlay', false);
   },
 
+  messagePerRole(role, journalName) {
+    let msg;
+    if (role === 'Reviewer') {
+      msg = `Thank you for agreeing to review for ${journalName}.`;
+    } else {
+      msg = `Thank you for agreeing to be an ${role} on this ${journalName} manuscript.`;
+    }
+    this.flash.displayRouteLevelMessage('success', msg);
+  },
+
   actions: {
     toggleActiveContainer() {
       this.toggleProperty('activePapersVisible');
@@ -92,13 +102,7 @@ export default Ember.Controller.extend({
         this.transitionToRoute('paper.index', invitation.get('paperShortDoi')).then(() => {
           let role = invitation.get('inviteeRole');
           let journalName = invitation.get('journalName');
-          let msg = ``;
-          if (role === 'Reviewer') {
-            msg = `Thank you for agreeing to review for ${journalName}.`;
-          } else {
-            msg = `Thank you for agreeing to be an ${role} on this ${journalName} manuscript.`;
-          }
-          this.flash.displayRouteLevelMessage('success', msg);
+          this.messagePerRole(role, journalName);
         });
       }).finally(() => { this.set('invitationsLoading', false); });
     },

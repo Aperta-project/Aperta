@@ -26,7 +26,10 @@ export default Component.extend(ValidationErrorsMixin, {
     this._super(...arguments);
     this.set('editAbility', this.get('can').build('edit', this.get('task')));
   },
-
+  // Keep value of completedProxy updated on render and re-render.
+  didRender() {
+    this.set('task.completedProxy', this.get('task.completed'));
+  },
   isMetadataTask: alias('task.isMetadataTask'),
   isSubmissionTask: alias('task.isSubmissionTask'),
   isOnlyEditableIfPaperEditable: alias('task.isOnlyEditableIfPaperEditable'),

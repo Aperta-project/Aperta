@@ -5,12 +5,15 @@ export default DS.Model.extend({
   name: DS.attr('string'),
   state: DS.attr('string'),
   dispatchAt: DS.attr('date'),
+  finished: DS.attr('boolean'),
+
   completed: Ember.computed.equal('state', 'completed'),
   errored: Ember.computed.equal('state', 'errored'),
   inactive: Ember.computed.equal('state', 'inactive'),
   active: Ember.computed.equal('state', 'active'),
-  finished: DS.attr('boolean'),
+
   restless: Ember.inject.service(),
+
   updateState: function(newState) {
     const url = `/api/scheduled_events/${this.get('id')}/${newState}`;
     return this.get('restless').get(url).then(() => {

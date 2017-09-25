@@ -12,12 +12,8 @@ export default Ember.Component.extend({
   }),
   actions: {
     changeEventState(newVal) {
-      if (newVal === true){
-        this.get('event').updateState('active');
-      }
-      else if (newVal === false) {
-        this.get('event').updateState('passive');
-      }
+      const state = newVal ? 'active' : 'passive';
+      this.get('event').updateState(state);
     }
   }
 });

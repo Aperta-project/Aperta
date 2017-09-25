@@ -175,6 +175,14 @@ error-message = element content {
                     attribute key { text },
                     element text { text }?
                 }
+repeat = element content {
+                attribute content-type { "repeat" },
+                attribute min { text },
+                attribute max { text }?,
+                attribute add-button-label { text }?,
+                attribute delete-button-label { text }?,
+                content+
+}
 
 html = any-element* & text
 any-element = element * { any-attribute*, html }
@@ -194,7 +202,8 @@ content = (
            tech-check |
            sendback-reason |
            if |
-           error-message
+           error-message |
+           repeat
 )
 
 start = element card {

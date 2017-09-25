@@ -563,6 +563,26 @@
       </optional>
     </element>
   </define>
+  <define name="repeat">
+    <element name="content">
+      <attribute name="content-type">
+        <value>repeat</value>
+      </attribute>
+      <attribute name="min"/>
+      <optional>
+        <attribute name="max"/>
+      </optional>
+      <optional>
+        <attribute name="add-button-label"/>
+      </optional>
+      <optional>
+        <attribute name="delete-button-label"/>
+      </optional>
+      <oneOrMore>
+        <ref name="content"/>
+      </oneOrMore>
+    </element>
+  </define>
   <define name="html">
     <interleave>
       <zeroOrMore>
@@ -601,6 +621,7 @@
       <ref name="sendback-reason"/>
       <ref name="if"/>
       <ref name="error-message"/>
+      <ref name="repeat"/>
     </choice>
   </define>
   <start>

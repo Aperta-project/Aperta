@@ -55,7 +55,14 @@ class CardContent < ActiveRecord::Base
       'radio': ['boolean', 'text'],
       'tech-check': ['boolean'],
       'date-picker': ['text'],
-      'sendback-reason': ['boolean'] }.freeze.with_indifferent_access
+      'sendback-reason': ['boolean'],
+      'numbered-list': [nil],
+      'bulleted-list': [nil],
+      'if': [nil],
+      'plain-list': [nil],
+      'repeat': [nil]
+    }.freeze.with_indifferent_access
+
   # Although we want to validate the various combinations of content types
   # and value types, many of the CardContent records that have been created
   # via the CardLoader don't have a content_type set at all, so we'll skip
@@ -147,10 +154,16 @@ class CardContent < ActiveRecord::Base
       {
         'required-field' => required_field
       }
-
     when 'error-message'
       {
         'key' => key
+      }
+    when 'repeat'
+      {
+        'min' => min,
+        'max' => max,
+        'add_button_label' => add_button_label,
+        'delete_button_label' => delete_button_label
       }
     else
       {}

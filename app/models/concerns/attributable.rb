@@ -6,7 +6,8 @@ module Attributable
     json:    %w[possible_values],
     string:  %w[child_tag condition custom_class custom_child_class default_answer_value
                 editor_style error_message instruction_text key label text value_type
-                visible_with_parent_answer wrapper_tag]
+                visible_with_parent_answer wrapper_tag min max delete_button_label
+                add_button_label]
   }.freeze
 
   included do

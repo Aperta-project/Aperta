@@ -58,17 +58,10 @@ class XmlCardLoader
     end
   end
 
-  def maybe_build_required_field_validation(card_content)
-    return [] unless card_content.required_field
-    CardContentValidation.new(
-      validation_type: "required-field",
-      error_message: "This field is required.",
-      validator: true
-    )
-  end
-
   def build_card_content(content, card_version)
     attributes = card_content_attributes(content, card_version)
+
+    binding.pry if attributes[:content_type] == "repeat"
 
     # TODO; Once APERTA-11091 is done, this can be removed
     allowed_attributes = CardContent.attribute_names.map(&:to_sym) + [:card_version]
@@ -84,6 +77,15 @@ class XmlCardLoader
       end
       raise XmlCardDocument::XmlValidationError, root.errors if root.invalid?
     end
+  end
+
+  def maybe_build_required_field_validation(card_content)
+    return [] unless card_content.required_field
+    CardContentValidation.new(
+      validation_type: "required-field",
+      error_message: "This field is required.",
+      validator: true
+    )
   end
 
   def card_version_attributes
@@ -132,7 +134,11 @@ class XmlCardLoader
       condition: content.attr_value('condition'),
       value_type: content.attr_value('value-type'),
       visible_with_parent_answer: content.attr_value('visible-with-parent-answer'),
-      key: content.attr_value('key')
+      key: content.attr_value('key'),
+      min: content.attr_value('min'),
+      max: content.attr_value('max'),
+      add_button_label: content.attr_value('add-button-label'),
+      delete_button_label: content.attr_value('delete-button-label')
     }
   end
   # rubocop:enable MethodLength, AbcSize

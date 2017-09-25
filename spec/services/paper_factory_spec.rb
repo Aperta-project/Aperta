@@ -42,7 +42,7 @@ describe PaperFactory do
       it "sets the paper to use the research reviewer report" do
         mmt.update_column :uses_research_article_reviewer_report, true
         paper = PaperFactory.create(paper_attrs, user)
-        expect(paper.uses_research_article_reviewer_report).to eq(true)
+        expect(paper.front_matter?).to eq(false)
       end
     end
 
@@ -50,7 +50,7 @@ describe PaperFactory do
       it "sets the paper to not to use the research reviewer report" do
         mmt.update_column :uses_research_article_reviewer_report, false
         paper = PaperFactory.create(paper_attrs, user)
-        expect(paper.uses_research_article_reviewer_report).to eq(false)
+        expect(paper.front_matter?).to eq(true)
       end
     end
 

@@ -22,7 +22,8 @@ export default Ember.Component.extend({
     owner: PropTypes.EmberObject.isRequired,
     preview: PropTypes.bool.isRequired,
     hasAnswerContainer: PropTypes.bool,
-    answerChanged: PropTypes.any
+    answerChanged: PropTypes.any,
+    repetition: PropTypes.EmberObject
   },
 
   keepAnswerContainer: Ember.computed('content', function(){
@@ -59,7 +60,7 @@ export default Ember.Component.extend({
   },
 
   answer: Ember.computed('content', 'owner', function() {
-    let answer = this.get('content').answerForOwner(this.get('owner'));
+    let answer = this.get('content').answerForOwner(this.get('owner'), this.get('repetition'));
     // if in preview mode set default values on components
     // that are answerable
     if(this.get('preview') && answer) {

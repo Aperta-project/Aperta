@@ -61,8 +61,6 @@ class XmlCardLoader
   def build_card_content(content, card_version)
     attributes = card_content_attributes(content, card_version)
 
-    binding.pry if attributes[:content_type] == "repeat"
-
     # TODO; Once APERTA-11091 is done, this can be removed
     allowed_attributes = CardContent.attribute_names.map(&:to_sym) + [:card_version]
     attributes = attributes.delete_if { |key, value| value.nil? && !allowed_attributes.member?(key) }

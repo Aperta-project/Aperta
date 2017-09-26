@@ -162,8 +162,8 @@ class CardContent < ActiveRecord::Base
       {
         'min' => min,
         'max' => max,
-        'add_button_label' => add_button_label,
-        'delete_button_label' => delete_button_label
+        'add-button-label' => add_button_label,
+        'delete-button-label' => delete_button_label
       }
     else
       {}

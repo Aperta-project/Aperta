@@ -1,11 +1,15 @@
-<h1>Let's Repeat Ourselves</h1>
-{{#each content.children as |child|}}
-  {{card-content
-  content=child
-  disabled=disabled
-  owner=owner
-  answerChanged=answerChanged
-  preview=preview}}
-  <!-- TODO: add delete button here -->
+{{#each repetitions as |rep|}}
+  <div class="well">
+    {{#each content.children as |child|}}
+      {{card-content
+        content=child
+        disabled=disabled
+        owner=owner
+        answerChanged=answerChanged
+        repetition=rep
+        preview=preview}}
+    {{/each}}
+    <a class="button-secondary button--red remove" {{action "deleteRepetition" rep}}>{{deleteLabelText}}</a>
+  </div>
 {{/each}}
-<a class="button-secondary button--blue add" {{action ""}}>{{addLabelText}}</a>
+<a class="button-secondary button--blue add" {{action "addRepetition"}}>{{addLabelText}}</a>

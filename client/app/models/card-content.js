@@ -11,6 +11,7 @@ export default DS.Model.extend({
     inverse: 'unsortedChildren'
   }),
   answers: DS.hasMany('answer', { async: false }),
+  repetitions: DS.hasMany('repetitions', { async: false }),
 
   allowMultipleUploads: DS.attr('boolean'),
   allowFileCaptions: DS.attr('boolean'),
@@ -75,21 +76,30 @@ export default DS.Model.extend({
   }),
 
   createAnswerForOwner(owner){
-    // only create answers for things that are actually
-    // answerable (i.e., textboxes, radio buttons) and
-    // not things like static text or paragraphs
-    if(this.get('answerable')) {
-      return this.get('store').createRecord('answer', {
-        owner: owner,
-        cardContent: this
-      });
-    } else {
-      return null;
-    }
+    return this.get('store').createRecord('answer', {
+      owner: owner,
+      cardContent: this
+    });
   },
 
-  answerForOwner(owner) {
-    return this.get('answers').findBy('owner', owner) ||
-           this.createAnswerForOwner(owner);
+  answerForOwner(owner, repetition) {
+    if(!this.get('answerable')) {
+      // only return answers for things that are actually
+      // answerable (i.e., textboxes, radio buttons) and
+      // not things like static text or paragraphs
+      return;
+    }
+
+    if(repetition) {
+      let answer = this.get('answers').filterBy('owner', owner).findBy('repetition', repetition);
+      if(!answer) {
+        answer = this.createAnswerForOwner(owner);
+        answer.set('repetition', repetition);
+      }
+      return answer;
+    } else {
+      return this.get('answers').findBy('owner', owner) ||
+             this.createAnswerForOwner(owner);
+    }
   }
 });

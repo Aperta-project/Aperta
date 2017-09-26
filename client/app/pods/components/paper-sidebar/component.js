@@ -1,11 +1,14 @@
 import Ember from 'ember';
 
-const { computed: { filterBy, sort } } = Ember;
+const { computed: { filter, sort } } = Ember;
 
 export default Ember.Component.extend({
   //paper: passed to component
 
-  sidebarTasks: filterBy('paper.tasks', 'isSidebarTask', true),
+  sidebarTasks: filter('paper.tasks', function(task) {
+    return task.get('isSidebarTask') && task.get('viewable');
+  }),
+
   taskSorting: ['isSubmissionTask', 'assignedToMe:desc', 'phase.position', 'position'],
   sortedTasks: sort('sidebarTasks', 'taskSorting'),
 

@@ -417,9 +417,6 @@
         </attribute>
       </optional>
       <optional>
-        <attribute name="default-answer-value"/>
-      </optional>
-      <optional>
         <attribute name="allow-annotations">
           <choice>
             <value>true</value>
@@ -431,6 +428,11 @@
         <optional>
           <element name="instruction-text">
             <ref name="html"/>
+          </element>
+        </optional>
+        <optional>
+          <element name="default-answer-value">
+            <text/>
           </element>
         </optional>
         <interleave>

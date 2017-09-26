@@ -103,7 +103,7 @@ class CardContent < ActiveRecord::Base
     }.merge(additional_content_attrs)
 
     if content_type != 'paragraph-input' && content_type != 'short-input'
-      attrs.merge('default-answer-value' => default_answer_value)
+      attrs = attrs.merge('default-answer-value' => default_answer_value)
     end
 
     attrs.compact

@@ -120,9 +120,9 @@ text-input = element content {
                  attribute editor-style { text }?,
                  attribute content-type { "short-input" | "paragraph-input" },
                  attribute required-field { "true" | "false" }?,
-                 attribute default-answer-value { text }?,
                  attribute allow-annotations { "true" | "false" }?,
-                 (element instruction-text { html }? &
+                 (element instruction-text { text }? &
+                  element default-answer-value { text }? &
                  (element text { html }? &
                  element validation {
                   attribute validation-type { "string-match" | "string-length-minimum" | "string-length-maximum" },

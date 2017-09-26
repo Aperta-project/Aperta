@@ -104,6 +104,19 @@ describe CardContent do
       # 1 root + 5 children + (5 * 5) children each = 31
       expect(do_nothing(content)).to eq(31)
     end
+
+    context '#unsorted_child_ids' do
+      it 'does not make db queries when recursing' do
+        content.preload_descendants
+
+        expect { content.unsorted_child_ids }.to_not make_database_queries
+        expect(content.unsorted_child_ids).to contain_exactly(*content.children.map(&:id))
+      end
+
+      it 'works when #preload_descendants not called' do
+        expect(content.unsorted_child_ids).to contain_exactly(*content.children.map(&:id))
+      end
+    end
   end
 
   context '#children' do

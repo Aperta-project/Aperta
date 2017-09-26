@@ -279,9 +279,9 @@ describe XmlCardLoader do
         end
 
         context 'and there is trailing whitespace' do
-          let(:content1) { "<content ident='foo' content-type='text'><text> #{text}  \n</text></content>" }
+          let(:content1) { "<content ident='foo' content-type='text'><text>#{text2}</text></content>" }
 
-          it 'is removed' do
+          it 'is not removed' do
             card = xml_card_loader.load(xml)
             card.save
             expect(root_content.text).to eq(text2)

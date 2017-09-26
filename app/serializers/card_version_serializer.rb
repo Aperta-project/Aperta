@@ -9,6 +9,6 @@ class CardVersionSerializer < ActiveModel::Serializer
   end
 
   def contents
-    @contents ||= object.content_root.quick_load_descendants
+    @contents ||= object.content_root.preload_descendants
   end
 end

@@ -17,9 +17,4 @@ class CardContentSerializer < ActiveModel::Serializer
     end
     hash
   end
-
-  def unsorted_child_ids
-    # Memoize this because it is called multiple times.
-    @unsorted_child_ids ||= object.quick_unsorted_child_ids
-  end
 end

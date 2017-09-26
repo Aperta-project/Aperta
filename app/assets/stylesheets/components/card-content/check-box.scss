@@ -8,5 +8,10 @@
   }
   label {
     padding-left: 20px;
+    display: flex;
+    .required-field {
+        position: inherit;
+        margin-left: 5px;
+    }
   }
 }

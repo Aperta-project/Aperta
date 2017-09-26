@@ -19,11 +19,13 @@ FactoryGirl.define do
 
     trait :with_children do
       after(:create) do |root_content|
+        child_count = 0
         5.times do
           child = FactoryGirl.create(:card_content).move_to_child_of(root_content)
-          5.times do
+          child_count.times do
             FactoryGirl.create(:card_content).move_to_child_of(child)
           end
+          child_count += 1
         end
         root_content.reload
       end

@@ -101,8 +101,8 @@ describe CardContent do
       content.preload_descendants
 
       expect { do_nothing(content) }.to_not make_database_queries
-      # 1 root + 5 children + (5 * 5) children each = 31
-      expect(do_nothing(content)).to eq(31)
+      # 1 root + 5 children + (0..4) children each = 16
+      expect(do_nothing(content)).to eq(16)
     end
 
     context '#unsorted_child_ids' do
@@ -115,6 +115,14 @@ describe CardContent do
 
       it 'works when #preload_descendants not called' do
         expect(content.unsorted_child_ids).to contain_exactly(*content.children.map(&:id))
+      end
+
+      context 'with a leaf node' do
+        let(:content) { FactoryGirl.create(:card_content, :root) }
+
+        it 'returns an empty array' do
+          expect(content.unsorted_child_ids).to be_empty
+        end
       end
     end
   end

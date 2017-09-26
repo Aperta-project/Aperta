@@ -7,6 +7,9 @@ import Snapshottable from 'tahi/mixins/snapshottable';
 import { timeout, task as concurrencyTask } from 'ember-concurrency';
 
 export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Snapshottable, {
+  didLoad() {
+    this.set('completedProxy', this.get('completed'));
+  },
   exportDeliveries: DS.hasMany('export-delivery', {
     inverse: 'task'
   }),

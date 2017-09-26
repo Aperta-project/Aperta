@@ -81,3 +81,26 @@ test('it makes call to save all selected cards', function(assert) {
 
   assert.ok(save.calledWith(phase, [authorJournalTaskType, staffJournalTaskType, card]), 'Should call save action');
 });
+
+test('Cards with titles SUBCLASSME and "Custom Card" are not displayed', function(assert) {
+  this.set('phase', phase);
+  this.set('cards', [card]);
+  this.on('save', save);
+  this.on('close', close);
+
+  const authorJournalTaskType = Ember.Object.create({ title: 'Custom Card', roleHint: 'author' });
+  const staffJournalTaskType = Ember.Object.create({ title: 'SUBCLASSME', roleHint: 'staff' });
+  const journalTaskTypes = [authorJournalTaskType, staffJournalTaskType];
+  this.set('journalTaskTypes', journalTaskTypes);
+
+  this.render(hbs`
+    {{choose-new-card phase=phase
+                      journalTaskTypes=journalTaskTypes
+                      cards=cards
+                      isLoading=false
+                      onSave=(action 'save')
+                      close=(action 'close')}}`);
+
+  assert.textNotPresent('.author-task-cards label', 'Custom Card');
+  assert.textNotPresent('.staff-task-cards label', 'SUBCLASSME');
+});

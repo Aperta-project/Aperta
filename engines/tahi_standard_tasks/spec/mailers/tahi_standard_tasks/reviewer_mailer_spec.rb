@@ -371,7 +371,7 @@ describe TahiStandardTasks::ReviewerMailer do
   end
 
   describe '.thank_reviewer' do
-    subject(:email) { described_class.thank_reviewer(reviewer_report: report) }
+    subject(:email) { described_class.thank_reviewer(reviewer_report_id: report.id) }
     let(:appreciation_email) { FactoryGirl.create(:letter_template, :thank_reviewer) }
 
     before { report.paper.journal.letter_templates << appreciation_email }

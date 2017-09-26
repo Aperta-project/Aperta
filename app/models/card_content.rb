@@ -6,13 +6,13 @@
 class CardContent < ActiveRecord::Base
   include Attributable
   include XmlSerializable
+  attr_writer :quick_children
 
   acts_as_nested_set
 
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
   has_many :card_content_validations, dependent: :destroy
-
   validates :card_version, presence: true
 
   validates :parent_id,
@@ -156,6 +156,7 @@ class CardContent < ActiveRecord::Base
       render_tag(xml, 'instruction-text', instruction_text)
       render_tag(xml, 'text', text)
       render_tag(xml, 'label', label)
+      preload_descendants if @quick_children.nil?
       card_content_validations.each do |ccv|
         # Do not serialize the required-field validation, it is handled via the
         # "required-field" attribute.
@@ -178,15 +179,48 @@ class CardContent < ActiveRecord::Base
     visitor.visit(self)
     children.each { |card_content| card_content.traverse(visitor) }
   end
-end
 
-private
+  # Return the ids of the children. If quick_children has been set, use that,
+  # otherwise use the children method of awesome nested set.
+  def unsorted_child_ids
+    @unsorted_child_ids ||= begin
+                              if leaf?
+                                []
+                              elsif !@quick_children.nil?
+                                @quick_children.map(&:id)
+                              else
+                                children.pluck(:id).uniq
+                              end
+                            end
+  end
 
-def create_card_config_validation(ccv, xml)
-  validation_attrs = { 'validation-type': ccv.validation_type }
+  # From this node, return a set of this node and its descendants, with the
+  # `quick_children` attribute set to the children of each node. This can load
+  # an entire traversable tree in one database query.
+  # Returns an array of CardContent objects.
+  def preload_descendants
+    all = [self] + descendants.includes(:content_attributes, :card_content_validations).to_a
+    children = all.group_by(&:parent_id)
+    all.each do |d|
+      d.quick_children = children.fetch(d.id, [])
+    end
+    all
+  end
+
+  # Return the @quick_children if set, otherwise return the children.
+  def children
+    return @quick_children unless @quick_children.nil?
+    super
+  end
+
+  private
+
+  def create_card_config_validation(ccv, xml)
+    validation_attrs = { 'validation-type': ccv.validation_type }
                          .delete_if { |_k, v| v.nil? }
-  xml.tag!('validation', validation_attrs) do
-    xml.tag!('error-message', ccv.error_message)
-    xml.tag!('validator', ccv.validator)
+    xml.tag!('validation', validation_attrs) do
+      xml.tag!('error-message', ccv.error_message)
+      xml.tag!('validator', ccv.validator)
+    end
   end
 end

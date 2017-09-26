@@ -128,6 +128,7 @@ group :test do
   gem 'climate_control'
   gem 'codeclimate-test-reporter', require: nil
   gem 'database_cleaner'
+  gem 'db-query-matchers'
   gem 'email_spec'
   gem 'equivalent-xml'
   gem 'factory_girl_rails'

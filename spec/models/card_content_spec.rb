@@ -76,6 +76,55 @@ describe CardContent do
     end
   end
 
+  context "#preload_descendants" do
+    let(:content) { FactoryGirl.create(:card_content, :root, :with_children) }
+
+    def do_nothing(card_content, acc = 0)
+      acc += 1
+      card_content.nil?
+      card_content.children.each do |child|
+        acc += do_nothing(child)
+      end
+      acc
+    end
+
+    before do
+      # Inserting the data and loading
+      content.card_content_validations
+    end
+
+    it 'uses three db queries' do
+      expect { content.preload_descendants }.to make_database_queries(count: 3)
+    end
+
+    it 'does not make db queries when recursing' do
+      content.preload_descendants
+
+      expect { do_nothing(content) }.to_not make_database_queries
+      # 1 root + 5 children + (5 * 5) children each = 31
+      expect(do_nothing(content)).to eq(31)
+    end
+  end
+
+  context '#children' do
+    let(:content) { FactoryGirl.create(:card_content, :root, :with_child) }
+
+    it 'works when preload_descendants is not called' do
+      expect(content.children.count).to eq(1)
+    end
+
+    it 'works when preload_descendants is called' do
+      content.preload_descendants
+      expect(content.children.count).to eq(1)
+    end
+
+    it 'returns the same content' do
+      without = content.children
+      content.preload_descendants
+      expect(content.children).to eq(without)
+    end
+  end
+
   context "root scope" do
     let!(:root_content) { FactoryGirl.create(:card_content, :root) }
 

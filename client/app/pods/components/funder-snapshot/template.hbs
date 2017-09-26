@@ -1,11 +1,9 @@
 <div class="snapshot-funder">
   <div>
-    <span class="snapshot-question-label">Funder: </span>{{name}}   {{#if website}}({{website}}){{/if}}
+    <span class="snapshot-question-label">Funder: </span>{{text-diff viewingText=viewingFunderLine comparisonText=comparisonFunderLine}}
   </div>
   <div>
-    <span class="snapshot-question-label">Grant #: </span>{{grantNumber}}
+    <span class="snapshot-question-label">Grant #: </span>{{text-diff viewingText=viewingGrantNumber comparisonText=comparisonGrantNumber}}
   </div>
-  {{#if influence.value.answer}}
-    {{nested-snapshot snapshot=influence}}
-  {{/if}}
+  {{nested-snapshot snapshot1=viewingInfluence snapshot2=comparisonInfluence}}
 </div>

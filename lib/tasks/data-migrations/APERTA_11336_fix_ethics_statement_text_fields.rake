@@ -15,7 +15,7 @@ namespace :data do
             p "No matching cards were found for ident: " + ident
           end
           card_contents.each do |content|
-            p "Updating: ID: " + content.id.to_s + " IDENT:" + content.ident + " VALUE_TYPE: " + content.value_type
+            p "Updating: ID: #{content.id.to_s} IDENT: #{content.ident} VALUE_TYPE: #{content.value_type}"
             result = content.update("value_type": "html")
             unless result
               raise Exception "Failed to update Card Content #{content.id}."

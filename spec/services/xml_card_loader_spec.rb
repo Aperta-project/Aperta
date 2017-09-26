@@ -269,6 +269,7 @@ describe XmlCardLoader do
 
       context 'text' do
         let(:text) { 'Foo' }
+        let(:text2) { " #{text}  \n" }
         let(:content1) { "<content ident='foo' content-type='text'><text>#{text}</text></content>" }
 
         it 'sets the text to the value of the element text' do
@@ -283,7 +284,7 @@ describe XmlCardLoader do
           it 'is removed' do
             card = xml_card_loader.load(xml)
             card.save
-            expect(root_content.text).to eq(text)
+            expect(root_content.text).to eq(text2)
           end
         end
 
@@ -293,7 +294,7 @@ describe XmlCardLoader do
           it 'includes the embedded HTML' do
             card = xml_card_loader.load(xml)
             card.save
-            expect(root_content.text).to eq('<a>link</a>')
+            expect(root_content.text).to eq('<![CDATA[<a>link</a>]]>')
           end
         end
       end

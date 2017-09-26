@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
-  classNames: ['card-content-check-box', 'checkbox'],
+  classNames: ['card-content', 'card-content-check-box', 'checkbox'],
 
   propTypes: {
     content: PropTypes.EmberObject.isRequired,

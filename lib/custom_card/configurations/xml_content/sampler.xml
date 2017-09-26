@@ -4,23 +4,26 @@
     <content content-type="text">
       <text>This is a block of instructional text. It is not a question, and requires no answer.</text>
     </content>
-    <content content-type="short-input" value-type="text">
+    <content content-type="short-input" value-type="text" allow-annotations="false" required-field="true">
       <text>This is the text of a custom question.  Agree?</text>
     </content>
-    <content content-type="short-input" value-type="text">
+    <content content-type="short-input" value-type="text" allow-annotations="false" required-field="false">
       <text>This is a second question</text>
     </content>
-    <content content-type="date-picker" value-type="text">
+    <content content-type="date-picker" value-type="text" required-field="false">
       <text>A Title</text>
     </content>
-    <content content-type="check-box" value-type="boolean">
-      <text>This is a check box</text>
-      <label>Check this box if you agree</label>
+    <content content-type="check-box" value-type="boolean" allow-annotations="false" required-field="true">
+      <text>This is a check box (this is the text)</text>
+      <label>Check this box if you agree (this is the label)</label>
     </content>
-    <content content-type="check-box" value-type="boolean">
-      <label>Check this box if you disagree instead</label>
+    <content content-type="check-box" value-type="boolean" allow-annotations="false" required-field="true">
+      <label>This checkbox only has its 'label' set</label>
     </content>
-    <content content-type="radio" value-type="text">
+    <content content-type="check-box" value-type="boolean" allow-annotations="false" required-field="true">
+      <text>This checkbox only has its 'text' set</text>
+    </content>
+    <content content-type="radio" value-type="text" allow-annotations="false" required-field="true">
       <text>
         <![CDATA[This is a radio button question.  <b>Please</b> pick a choice]]>
       </text>
@@ -28,10 +31,10 @@
       <possible-value label="Choice 2" value="2"/>
       <content content-type="display-with-value" visible-with-parent-answer="1">
         <content content-type="display-children" custom-class="card-content-field-set">
-          <content content-type="short-input" value-type="text">
+          <content content-type="short-input" value-type="text" allow-annotations="false" required-field="false">
             <text>You have answered 1 to the radio question</text>
           </content>
-          <content content-type="short-input" value-type="text">
+          <content content-type="short-input" value-type="text" allow-annotations="false" required-field="false">
             <text>What'd you think of that first question, huh?</text>
           </content>
         </content>
@@ -41,23 +44,23 @@
           <content content-type="text">
             <text>This is a message that comes up when you pick Choice 2 up above</text>
           </content>
-          <content content-type="short-input" value-type="text">
+          <content content-type="short-input" value-type="text" allow-annotations="false" required-field="false">
             <text>Now that you've picked that second choice, what will you do next?</text>
           </content>
         </content>
       </content>
     </content>
-    <content content-type="paragraph-input" value-type="text">
+    <content content-type="paragraph-input" value-type="text" allow-annotations="false" required-field="false">
       <text>Type a paragraph</text>
     </content>
-    <content content-type="dropdown" value-type="text">
+    <content content-type="dropdown" value-type="text" allow-annotations="false" required-field="false">
       <text>
         <![CDATA[This is a dropdown question.  <b>Please</b> pick a choice]]>
       </text>
       <possible-value label="Choice 1" value="1"/>
       <possible-value label="Choice 2" value="2"/>
     </content>
-    <content content-type="file-uploader" value-type="attachment">
+    <content content-type="file-uploader" value-type="attachment" allow-multiple-uploads="false" allow-file-captions="false" allow-annotations="false" required-field="true">
       <text>Eat a hot dog; take a picture; upload it here</text>
       <label>Ima Button</label>
       <possible-value label="tif" value=".tif"/>
@@ -67,10 +70,10 @@
       <text>Please upload your source file</text>
     </content>
     <content content-type="if" condition="isEditable">
-      <content content-type="paragraph-input" value-type="html">
+      <content content-type="paragraph-input" value-type="html" allow-annotations="false" required-field="false">
         <text>This is the THEN branch of an IF condition.</text>
       </content>
-      <content content-type="short-input" value-type="text">
+      <content content-type="short-input" value-type="text" allow-annotations="false" required-field="false">
         <text>This is the ELSE branch of an IF condition.</text>
       </content>
     </content>

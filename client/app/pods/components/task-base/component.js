@@ -25,6 +25,9 @@ export default Component.extend(ValidationErrorsMixin, {
   init() {
     this._super(...arguments);
     this.set('editAbility', this.get('can').build('edit', this.get('task')));
+    // Workaround to avoid task.completed updating the view before
+    // doing the request to the server
+    this.set('task.markedAsCompleted', this.get('task.completed'));
   },
 
   isMetadataTask: alias('task.isMetadataTask'),
@@ -121,7 +124,7 @@ export default Component.extend(ValidationErrorsMixin, {
 
     toggleTaskCompletion() {
       const currentSkipValidations = this.get('skipValidations');
-      const isCompleted = this.toggleProperty('task.completed');
+      const isCompleted = this.toggleProperty('task.markedAsCompleted');
 
       // if task is now incomplete skip validations
       this.set('skipValidations', !isCompleted);
@@ -131,6 +134,9 @@ export default Component.extend(ValidationErrorsMixin, {
       this.save().finally( () => {
         // make sure we put skipValidations back its previous state
         this.set('skipValidations', currentSkipValidations);
+        // Update markedAsComplete to the value returned from the server
+        // or inline validation
+        this.set('task.markedAsCompleted', this.get('task.completed'));
       });
     }
   }

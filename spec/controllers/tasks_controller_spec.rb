@@ -196,7 +196,7 @@ describe TasksController, redis: true do
 
         it "allows the task to be marked as incomplete" do
           expect do
-            task_params.merge!(completed: '0', title: 'vernors')
+            task_params.merge!(marked_as_completed: '0', title: 'vernors')
             do_request
           end.to change { task.reload.completed }.from(true).to(false)
         end

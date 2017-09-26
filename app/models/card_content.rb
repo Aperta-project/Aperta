@@ -156,6 +156,8 @@ class CardContent < ActiveRecord::Base
       render_tag(xml, 'instruction-text', instruction_text)
       render_tag(xml, 'text', text)
       render_tag(xml, 'label', label)
+      render_tag(xml, 'default-text-long', default_text_long)
+
       card_content_validations.each do |ccv|
         # Do not serialize the required-field validation, it is handled via the
         # "required-field" attribute.

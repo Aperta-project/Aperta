@@ -116,6 +116,7 @@ text-input = element content {
                  attribute default-answer-value { text }?,
                  attribute allow-annotations { "true" | "false" }?,
                  (element instruction-text { text }? &
+                  element default-text-long { text }? &
                  (element text { text }? &
                  element validation {
                   attribute validation-type { "string-match" | "string-length-minimum" | "string-length-maximum" },

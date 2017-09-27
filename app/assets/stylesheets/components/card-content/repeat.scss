@@ -1,0 +1,22 @@
+.card-content-repeat {
+  margin-bottom: 10px;
+
+  h4 {
+    text-transform: uppercase;
+  }
+
+}
+
+.repeated-block {
+  background-color: hsla(0, 0, 0, 0.05);
+  padding: 10px 20px;
+  margin-bottom: 10px;
+
+  &:last-child {
+    padding-bottom: 5px;
+  }
+}
+
+.remove-repetition {
+  cursor: pointer;
+}

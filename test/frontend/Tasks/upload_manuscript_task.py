@@ -28,10 +28,11 @@ class UploadManuscriptTask(BaseTask):
     self._upload_manuscript_btn = (By.CLASS_NAME, 'button-primary')
     self._upload_manuscript_replace_btn = (By.CLASS_NAME, 'replace-attachment')
     self._upload_manuscript_input = (By.ID, 'upload-files')
-    self._upload_source_warning = (By.CSS_SELECTOR, 'div.error-message i.fa-exclamation-triangle')
+    self._upload_source_warning = (By.CSS_SELECTOR,
+                                   'div.upload-sourcefile  > div.error-message i.fa-exclamation-triangle')
     self._uploaded_pdf = (By.CSS_SELECTOR, '.task-main-content > div > a')
-    self._upload_source_file_button = (By.CLASS_NAME, 'upload-sourcefile')
-    self._upload_source_file_box = (By.CLASS_NAME, 'paper-source-upload')
+    self._upload_source_file_button = (By.ID, 'upload-files')
+    self._upload_source_file_box = (By.CLASS_NAME, 'flex-form')
 
   # POM Actions
   def validate_styles(self, type_='doc', source_uploaded=False):
@@ -53,7 +54,7 @@ class UploadManuscriptTask(BaseTask):
            'submission.' in intro_text.text, 'Upload ms message: {0} is not the ' \
                                              'expected copy'.format(intro_text.text)
     link = intro_text.find_element_by_tag_name('a')
-    self.validate_default_link_style(link)
+    self.validate_filename_link_style(link)
     replace = intro_text.find_element_by_tag_name('span')
     assert 'Replace' == replace.text, replace.text
     replace_icon = replace.find_element_by_tag_name('i')
@@ -65,10 +66,12 @@ class UploadManuscriptTask(BaseTask):
              'your source file (e.g. .tex, .docx) before marking this task as done.' \
              in source_file_box.text, source_file_box.text
       if source_uploaded:
+        # It is inadvisable to use find by method, the correct way to do this is do an _get()
         link = source_file_box.find_element_by_tag_name('a')
-        self.validate_default_link_style(link)
-        replace = source_file_box.find_element_by_tag_name('span')
+        self.validate_filename_link_style(link)
+        replace = source_file_box.find_element(*self._upload_manuscript_replace_btn)
         assert 'Replace' == replace.text, replace.text
+        # It is inadvisable to use find by method, the correct way to do this is do an _get()
         replace_icon = replace.find_element_by_tag_name('i')
         assert 'fa-refresh' in replace_icon.get_attribute('class'), \
             replace_icon.get_attribute('class')
@@ -159,14 +162,16 @@ class UploadManuscriptTask(BaseTask):
         hash_file = hashlib.sha256(fh.read()).hexdigest()
       logging.info('Sending document: {0}'.format(fn))
       time.sleep(1)
-      self._driver.find_element_by_id('upload-source-file').send_keys(fn)
+      # We need to fix these calls - we should not be calling into driver here - just do a _get()
+      self._driver.find_element_by_id('upload-files').send_keys(fn)
       file_ext = 'doc'
     except IOError:
       with open(fn_docx, 'rb') as fh:
         hash_file = hashlib.sha256(fh.read()).hexdigest()
       logging.info('Sending document: {0}'.format(fn_docx))
       time.sleep(1)
-      self._driver.find_element_by_id('upload-source-file').send_keys(fn_docx)
+      # We need to fix these calls - we should not be calling into driver here - just do a _get()
+      self._driver.find_element_by_id('upload-files').send_keys(fn_docx)
       file_ext = 'docx'
     # Time needed for script execution (file upload).
     time.sleep(7)

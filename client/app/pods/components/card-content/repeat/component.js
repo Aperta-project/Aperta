@@ -52,21 +52,37 @@ export default Ember.Component.extend({
     return label ? label : 'Delete';
   }),
 
+  minRepetitionsReached: Ember.computed('repetitions', function() {
+    if(this.get('min')) {
+      return this.get('repetitions.length') <= this.get('min');
+    }
+  }),
+
+  maxRepetitionsReached: Ember.computed('repetitions', function() {
+    if(this.get('max')){
+      return this.get('repetitions.length') >= this.get('max');
+    }
+  }),
+
   buildRepetition() {
-    return this.get('store').createRecord('repetition', { cardContent: this.get('content'), parent: this.get('repetition') });
+    let repetition = this.get('store').createRecord('repetition', { cardContent: this.get('content'), parent: this.get('repetition') });
+    if(!this.get('preview')) {
+      repetition.save();
+    }
+    return repetition;
   },
 
   actions: {
     addRepetition() {
-      let repetition = this.buildRepetition();
-
-      if(!this.get('preview')) {
-        repetition.save();
+      if(!this.get('maxRepetitionsReached')) {
+        this.buildRepetition();
       }
     },
 
     deleteRepetition(repetition) {
-      repetition.cascadingDestroy();
+      if(!this.get('minRepetitionsReached')) {
+        repetition.cascadingDestroy();
+      }
     },
   }
 });

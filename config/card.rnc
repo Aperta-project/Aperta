@@ -177,7 +177,7 @@ error-message = element content {
                 }
 repeat = element content {
                 attribute content-type { "repeat" },
-                attribute min { text },
+                attribute min { text }?,
                 attribute max { text }?,
                 attribute add-button-label { text }?,
                 attribute delete-button-label { text }?,

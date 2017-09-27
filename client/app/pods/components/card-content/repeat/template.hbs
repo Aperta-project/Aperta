@@ -9,7 +9,7 @@
         repetition=rep
         preview=preview}}
     {{/each}}
-    <a class="button-secondary button--red remove" {{action "deleteRepetition" rep}}>{{deleteLabelText}}</a>
+    <a class="button-secondary button--red remove {{if minRepetitionsReached "button--disabled"}}" {{action "deleteRepetition" rep}}>{{deleteLabelText}}</a>
   </div>
 {{/each}}
-<a class="button-secondary button--blue add" {{action "addRepetition"}}>{{addLabelText}}</a>
+<a class="button-secondary button--blue add {{if maxRepetitionsReached "button--disabled"}}" {{action "addRepetition"}}>{{addLabelText}}</a>

@@ -568,7 +568,9 @@
       <attribute name="content-type">
         <value>repeat</value>
       </attribute>
-      <attribute name="min"/>
+      <optional>
+        <attribute name="min"/>
+      </optional>
       <optional>
         <attribute name="max"/>
       </optional>

@@ -2,33 +2,37 @@
 # Override node.default["git_pairs_authors"] and node.default["git_pairs_domain"] in attributes/git_pairs.rb to modify.
 
 pairs:
-  sn: Stuart Nelson; stuart
-  mm: Mike Mazur; mike
-  rr: Rizwan Reza; riz
-  sm: Sam McAfee; sam
-  km: Kyle Murphy; kyle
-  ap: Andi Plantenberg; andi
-  aw: Andy Waite; andy
+  ac: Abraham Choe
+  bm: Benjamin Miller
   cw: Chris Westra; chris.westra
-  rs: Ryan Stocker; ryan.stocker
-  am: Artur Moczulski; artur.moczulski
-  fw: Feifan Wang
-  jn: Jerry Nummi
-  rw: Ryan Wold; ryan.wold
-  cc: Chris Camacho
-  dt: David Trejo; david.trejo
-  asb: Aaron Baker; aaron.baker
-  ajp: Anna Petry; anna.petry
-  tp: Tad Park; tadp
-  jd: John Davison; john.davison
-  ww: Willa Wang; willa.wang
-  kc: Kristin Chan; kristin.chan
   eh: Erik Hetzner
+  ek: Edem Kumodzi
+  gt: Galina Timonina
+  jf: John Fesenko
+  jg: Jeffery Gray
+  jh: Jim Haungs
   jl: Jack LaBarba
+  mo: Michael Ogala
+  mw: Michael Walsh
+  oo: Owajigbanam Ogbuluijah
+  sg: Shawn Gatchell
+  ys: Yetunde Sanni
 
 email_addresses:
+  ac: achoe@plos.org
+  bm: bmiller@plos.org
   eh: ehetzner@plos.org
+  ek: ekumozdi@plos.org
+  gt: gtimonina@plos.org
+  jf: jfesenko@plos.org
+  jg: jgray@plos.org
+  jh: jhaungs@plos.org
   jl: jlabarba@plos.org
+  mo: mogala@plos.org
+  mw: mwalsh@plos.org
+  oo: oogbuluijah@plos.org
+  sg: sgatchell@plos.org
+  ys: osanni@plos.org
 
 email:
   prefix: pair

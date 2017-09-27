@@ -13,7 +13,8 @@ export default Ember.Component.extend({
       classNames.push(customClass);
       this.set('classNames', classNames);
     }
-    this.set('tagName', this.getWithDefault('wrapperTag', ''));
+    let defaultTag = customClass ? 'div' : '';
+    this.set('tagName', this.getWithDefault('wrapperTag', defaultTag));
   },
 
   customChildClass: Ember.computed.readOnly('content.customChildClass'),

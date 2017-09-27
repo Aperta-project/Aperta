@@ -360,6 +360,19 @@
       </zeroOrMore>
     </element>
   </define>
+  <define name="tech-check-email">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <value>tech-check-email</value>
+      </attribute>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
   <define name="sendback-reason">
     <element name="content">
       <optional>
@@ -600,6 +613,7 @@
       <ref name="dropdown-input"/>
       <ref name="date-picker"/>
       <ref name="tech-check"/>
+      <ref name="tech-check-email"/>
       <ref name="sendback-reason"/>
       <ref name="if"/>
       <ref name="error-message"/>

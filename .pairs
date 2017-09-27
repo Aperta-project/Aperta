@@ -18,6 +18,9 @@ pairs:
   sg: Shawn Gatchell
   ys: Yetunde Sanni
 
+email:
+  domain: plos.org
+
 email_addresses:
   ac: achoe@plos.org
   bm: bmiller@plos.org
@@ -30,10 +33,6 @@ email_addresses:
   jl: jlabarba@plos.org
   mo: mogala@plos.org
   mw: mwalsh@plos.org
-  oo: oogbuluijah@plos.org
+  oo: owajigbanam.ogbuluijah@andela.com
   sg: sgatchell@plos.org
   ys: osanni@plos.org
-
-email:
-  prefix: pair
-  domain: plos.org

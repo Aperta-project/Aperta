@@ -255,17 +255,13 @@ class WorkflowPage(AuthenticatedPage):
     assert author_cards[0].text == u'Additional Information', author_cards[0].text
     assert author_cards[1].text == u'Authors', author_cards[1].text
     assert author_cards[2].text == u'Billing', author_cards[2].text
-    assert author_cards[3].text == u'Cover Letter', author_cards[3].text
-    assert author_cards[4].text == u'Data Availability', author_cards[4].text
-    assert author_cards[5].text == u'Early Article Posting', author_cards[5].text
-    assert author_cards[6].text == u'Ethics Statement', author_cards[6].text
-    assert author_cards[7].text == u'Figures', author_cards[7].text
-    assert author_cards[8].text == u'Financial Disclosure', author_cards[8].text
-    assert author_cards[9].text == u'New Taxon', author_cards[9].text
-    assert author_cards[10].text == u'Reporting Guidelines', author_cards[10].text
-    assert author_cards[11].text == u'Reviewer Candidates', author_cards[11].text
-    assert author_cards[12].text == u'Supporting Info', author_cards[12].text
-    assert author_cards[13].text == u'Upload Manuscript', author_cards[13].text
+    assert author_cards[3].text == u'Early Article Posting', author_cards[3].text
+    assert author_cards[4].text == u'Figures', author_cards[4].text
+    assert author_cards[5].text == u'Financial Disclosure', author_cards[5].text
+    assert author_cards[6].text == u'New Taxon', author_cards[6].text
+    assert author_cards[7].text == u'Reviewer Candidates', author_cards[7].text
+    assert author_cards[8].text == u'Supporting Info', author_cards[8].text
+    assert author_cards[9].text == u'Upload Manuscript', author_cards[9].text
     staff_cards = staff_col.find_elements_by_tag_name('label')
     assert staff_cards[0].text == u'Ad-hoc for Authors', staff_cards[0].text
     assert staff_cards[1].text == u'Ad-hoc for Editors', staff_cards[1].text
@@ -287,15 +283,19 @@ class WorkflowPage(AuthenticatedPage):
     assert staff_cards[17].text == u'Title And Abstract', staff_cards[17].text
     custom_cards = custom_col.find_elements_by_tag_name('label')
     assert custom_cards[0].text == u'Competing Interests', custom_cards[0].text
-    assert custom_cards[1].text == u'Preprint Posting', custom_cards[1].text
+    assert custom_cards[1].text == u'Cover Letter', custom_cards[1].text
+    assert custom_cards[2].text == u'Data Availability', custom_cards[2].text
+    assert custom_cards[3].text == u'Ethics Statement', custom_cards[3].text
+    assert custom_cards[4].text == u'Preprint Posting', custom_cards[4].text
+    assert custom_cards[5].text == u'Reporting Guidelines', custom_cards[5].text
     author_cards_text = [x.text for x in author_cards]
     assert u'Changes For Author' not in author_cards_text, author_cards_text
     assert u'Response to Reviewers' not in author_cards_text, author_cards_text
     assert u'Reviewer Report' not in author_cards_text, author_cards_text
 
     # APERTA-5513 AC 3
-    author_cards[10].click()
-    author_cards[11].click()
+    custom_cards[5].click() # Reporting Guidelines
+    author_cards[7].click() # Reviewer Candidates
     self._get(self._add_button_overlay).click()
     time.sleep(2)
     # Check if there

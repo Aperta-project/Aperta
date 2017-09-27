@@ -65,10 +65,17 @@ export default Ember.Component.extend({
   }),
 
   buildRepetition() {
-    let repetition = this.get('store').createRecord('repetition', { cardContent: this.get('content'), parent: this.get('repetition') });
+    let repetition = this.get('store').createRecord('repetition', {
+      cardContent: this.get('content'),
+      parent: this.get('repetition')
+    });
+
     if(!this.get('preview')) {
+      // a task relationship is only applicable in non-previews
+      repetition.set('task', this.get('owner'));
       repetition.save();
     }
+
     return repetition;
   },
 

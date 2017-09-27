@@ -68,6 +68,7 @@ class AnswersController < ApplicationController
                                    :owner_id,
                                    :value,
                                    :annotation,
-                                   :card_content_id)
+                                   :card_content_id,
+                                   :repetition_id)
   end
 end

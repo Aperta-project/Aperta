@@ -9,7 +9,6 @@ class RepetitionsController < ApplicationController
 
   def create
     requires_user_can(:edit, task)
-    # TODO: should this also create answers?
     respond_with Repetition.create(repetition_params)
   end
 

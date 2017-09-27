@@ -38,8 +38,7 @@ export default DS.Model.extend({
   key: DS.attr('string'),
   min: DS.attr('number'),
   max: DS.attr('number'),
-  addButtonLabel: DS.attr('string'),
-  deleteButtonLabel: DS.attr('string'),
+  itemName: DS.attr('string'),
 
 
   // The unusual nature of the sendback component (being reliant on other card-content within the context

@@ -574,12 +574,7 @@
       <optional>
         <attribute name="max"/>
       </optional>
-      <optional>
-        <attribute name="add-button-label"/>
-      </optional>
-      <optional>
-        <attribute name="delete-button-label"/>
-      </optional>
+      <attribute name="item-name"/>
       <oneOrMore>
         <ref name="content"/>
       </oneOrMore>

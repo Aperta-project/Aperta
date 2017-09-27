@@ -135,8 +135,7 @@ class XmlCardLoader
       key: content.attr_value('key'),
       min: content.attr_value('min'),
       max: content.attr_value('max'),
-      add_button_label: content.attr_value('add-button-label'),
-      delete_button_label: content.attr_value('delete-button-label')
+      item_name: content.attr_value('item-name')
     }
   end
   # rubocop:enable MethodLength, AbcSize

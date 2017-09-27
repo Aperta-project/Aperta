@@ -3,12 +3,10 @@ import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   classNames: ['card-content-repeat'],
-  tagName: '',
   store: Ember.inject.service(),
   min: Ember.computed.readOnly('content.min'),
   max: Ember.computed.readOnly('content.max'),
-  addButtonLabel: Ember.computed.readOnly('content.addButtonLabel'),
-  deleteButtonLabel: Ember.computed.readOnly('content.deleteButtonLabel'),
+  itemName: Ember.computed.readOnly('content.itemName'),
 
   propTypes: {
     content: PropTypes.EmberObject.isRequired,
@@ -42,14 +40,12 @@ export default Ember.Component.extend({
     });
   }),
 
-  addLabelText: Ember.computed('content', function() {
-    let label = this.get('addButtonLabel');
-    return label ? label : 'Add';
+  addLabelText: Ember.computed('itemName', function() {
+    return `Add ${this.get('itemName')}`;
   }),
 
-  deleteLabelText: Ember.computed('content', function() {
-    let label = this.get('deleteButtonLabel');
-    return label ? label : 'Delete';
+  deleteLabelText: Ember.computed('itemName', function() {
+    return `Delete ${this.get('itemName')}`;
   }),
 
   minRepetitionsReached: Ember.computed('repetitions', function() {

@@ -1,5 +1,11 @@
 {{#each repetitions as |rep|}}
-  <div class="well">
+  <div class="repeated-block">
+    <h4>
+      {{#unless minRepetitionsReached}}
+        <span class="fa fa-trash remove-repetition pull-right" {{action "deleteRepetition" rep}}></span>
+      {{/unless}}
+      {{ itemName }}
+    </h4>
     {{#each content.children as |child|}}
       {{card-content
         content=child
@@ -9,7 +15,6 @@
         repetition=rep
         preview=preview}}
     {{/each}}
-    <a class="button-secondary button--red remove {{if minRepetitionsReached "button--disabled"}}" {{action "deleteRepetition" rep}}>{{deleteLabelText}}</a>
   </div>
 {{/each}}
 <a class="button-secondary button--blue add {{if maxRepetitionsReached "button--disabled"}}" {{action "addRepetition"}}>{{addLabelText}}</a>

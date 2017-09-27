@@ -16,16 +16,15 @@ module Attributable
       max
     ],
     string: %w[
-      add_button_label
       child_tag
       condition
       custom_child_class
       custom_class
       default_answer_value
-      delete_button_label
       editor_style
       error_message
       instruction_text
+      item_name
       key
       label
       max

@@ -185,15 +185,11 @@ class CardContent < ActiveRecord::Base
   end
 
   def unsorted_child_ids
-    @unsorted_child_ids ||= children.map(&:id).uniq
+    @unsorted_child_ids ||= children.map(&:id)
   end
 
   def children
     @quick_children ||= card_contents
-  end
-
-  def self.roots
-    where(parent_id: nil)
   end
 
   private

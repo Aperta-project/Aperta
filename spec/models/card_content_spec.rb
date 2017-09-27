@@ -147,12 +147,4 @@ describe CardContent do
       expect(content.children).to eq(without)
     end
   end
-
-  context "root scope" do
-    let!(:root_content) { FactoryGirl.create(:card_content, :root) }
-
-    it 'returns all roots' do
-      expect(CardContent.roots).to include(root_content)
-    end
-  end
 end

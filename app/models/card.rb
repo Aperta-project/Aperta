@@ -2,7 +2,6 @@
 class Card < ActiveRecord::Base
   include EventStream::Notifiable
   include CustomCardVisitors
-  include XmlSerializable
   include AASM
 
   belongs_to :journal, inverse_of: :cards
@@ -152,7 +151,7 @@ class Card < ActiveRecord::Base
 
   # can take a version number or the symbol `:latest`
   def content_for_version(version_no)
-    content_root_for_version(version_no).self_and_descendants
+    content_root_for_version(version_no)
   end
 
   # can take a version number or the symbol `:latest`
@@ -200,18 +199,7 @@ class Card < ActiveRecord::Base
   end
 
   def to_xml(options = {})
-    attrs = {
-      'required-for-submission' =>
-        latest_card_version.required_for_submission,
-      'workflow-display-only' =>
-        latest_card_version.workflow_display_only
-    }
-    setup_builder(options).card(attrs) do |xml|
-      content_root_for_version(:latest).to_xml(
-        builder: xml,
-        skip_instruct: true
-      )
-    end
+    latest_card_version.to_xml(options)
   end
 
   def xml=(xml_string)

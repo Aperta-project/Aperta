@@ -3,6 +3,8 @@
 # as a container for information we need to version that isn't
 # card content
 class CardVersion < ActiveRecord::Base
+  include XmlSerializable
+
   belongs_to :card, inverse_of: :card_versions
   belongs_to :published_by, class_name: 'User'
   has_many :card_contents, -> {includes(:content_attributes, :card_content_validations)}, inverse_of: :card_version, dependent: :destroy
@@ -11,8 +13,6 @@ class CardVersion < ActiveRecord::Base
   validates :card_contents, presence: true
   validate :submittable_state
 
-  # the `roots` scope comes from `awesome_nested_set`
-  has_one :content_root, -> { roots }, class_name: 'CardContent'
   scope :required_for_submission, -> { where(required_for_submission: true) }
   scope :published, -> { where.not(published_at: nil) }
   scope :unpublished, -> { where(published_at: nil) }
@@ -28,8 +28,18 @@ class CardVersion < ActiveRecord::Base
     update!(published_at: Time.current)
   end
 
+  def content_root
+    return @content_root if @content_root
+    contents = card_contents.includes(:content_attributes, :card_content_validations).to_a
+    children = contents.group_by(&:parent_id)
+    contents.each do |content|
+      content.quick_children = children.fetch(content.id, [])
+    end
+    @content_root = children[nil].try(:first)
+  end
+
   def traverse(visitor)
-    card_contents.each { |card_content| card_content.traverse(visitor) }
+    content_root.traverse(visitor)
   end
 
   def create_default_answers(task)
@@ -39,6 +49,17 @@ class CardVersion < ActiveRecord::Base
         paper: task.paper,
         value: content.default_answer_value
       )
+    end
+  end
+
+  def to_xml(options = {})
+    attrs = {
+      'required-for-submission' => required_for_submission,
+      'workflow-display-only' => workflow_display_only
+    }
+
+    setup_builder(options).card(attrs) do |xml|
+      content_root.to_xml(builder: xml, skip_instruct: true)
     end
   end
 

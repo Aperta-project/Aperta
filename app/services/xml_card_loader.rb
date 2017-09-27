@@ -21,7 +21,9 @@ class XmlCardLoader
 
   def load(xml_string, replace_latest_version: false)
     @xml = XmlCardDocument.new(xml_string)
-    card.card_versions << latest_card_version(replace: replace_latest_version)
+    Card.transaction do
+      card.card_versions << latest_card_version(replace: replace_latest_version)
+    end
     card
   end
 
@@ -31,23 +33,44 @@ class XmlCardLoader
     if replace
       # remove and decrement latest card_version
       card.latest_card_version.try(:destroy!)
+      card.reload
       card.latest_version = card.latest_version.pred
     end
 
     build_card_version.tap do |card_version|
       card.latest_version = card_version.version
+      card.save!
     end
   end
 
   def build_card_version
-    CardVersion.new(card_version_attributes).tap do |card_version|
-      card_version.card_contents << build_card_contents(card_version)
+    card.card_versions.create(card_version_attributes).tap do |card_version|
+      build_card_contents(card_version)
+      root = card_version.content_root
+      raise XmlCardDocument::XmlValidationError, root.errors if root.invalid?
     end
   end
 
   def build_card_contents(card_version)
     xml.contents.map do |content|
-      build_card_content(content, card_version)
+      build_card_content(card_version, content, parent: nil)
+    end
+  end
+
+  def build_card_content(card_version, content, parent: nil)
+    attributes = card_content_attributes(content, card_version)
+
+    card_version.card_contents.new(attributes).tap do |root|
+      root.parent = parent
+      root.save!
+      root.card_content_validations << build_card_content_validations(content)
+      root.card_content_validations << maybe_build_required_field_validation(root)
+
+      content.child_elements('content').each do |child|
+        card_content = build_card_content(card_version, child, parent: root)
+        card_content.save!
+        root.card_contents << card_content
+      end
     end
   end
 
@@ -67,51 +90,19 @@ class XmlCardLoader
     )
   end
 
-  def build_card_content(content, card_version)
-    attributes = card_content_attributes(content, card_version)
-
-    # TODO; Once APERTA-11091 is done, this can be removed
-    allowed_attributes = CardContent.attribute_names.map(&:to_sym) + [:card_version]
-    attributes = attributes.delete_if { |key, value| value.nil? && !allowed_attributes.member?(key) }
-
-    CardContent.new(attributes).tap do |root|
-      # assign any validations
-      root.card_content_validations << build_card_content_validations(content)
-      root.card_content_validations << maybe_build_required_field_validation(root)
-      # recursively create any nested child content
-      content.child_elements('content').each do |child|
-        root.children << build_card_content(child, card_version)
-      end
-      raise XmlCardDocument::XmlValidationError, root.errors if root.invalid?
-    end
-  end
-
-  def build_card_content_validations(content)
-    content.child_elements('validation').map do |validation|
-      attributes = card_content_validation_attributes(validation)
-      CardContentValidation.new(attributes)
-    end
-  end
-
   def card_version_attributes
     {
-      version:
-        card.latest_version.to_i.next,
-      required_for_submission:
-        xml.card.attr_value('required-for-submission') == 'true',
-      workflow_display_only:
-        xml.card.attr_value('workflow-display-only') == 'true'
+      version: card.latest_version.to_i.next,
+      required_for_submission: xml.card.attr_value('required-for-submission') == 'true',
+      workflow_display_only: xml.card.attr_value('workflow-display-only') == 'true'
     }
   end
 
   def card_content_validation_attributes(content)
     {
-      validator:
-        content.tag_text('validator'),
-      validation_type:
-        content.attr_value('validation-type'),
-      error_message:
-        content.tag_text('error-message')
+      validator: content.tag_text('validator'),
+      validation_type: content.attr_value('validation-type'),
+      error_message: content.tag_text('error-message')
     }
   end
 
@@ -139,7 +130,7 @@ class XmlCardLoader
       condition: content.attr_value('condition'),
       value_type: content.attr_value('value-type'),
       visible_with_parent_answer: content.attr_value('visible-with-parent-answer')
-    }
+    }.compact
   end
   # rubocop:enable MethodLength
 end

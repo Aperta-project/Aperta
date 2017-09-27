@@ -39,6 +39,6 @@ class CardSerializer < ActiveModel::Serializer
   end
 
   def latest_contents
-    @latest_contents ||= object.content_root_for_version(:latest).preload_descendants
+    @latest_contents ||= object.content_root_for_version(:latest)
   end
 end

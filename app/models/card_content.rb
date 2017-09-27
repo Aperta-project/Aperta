@@ -8,10 +8,11 @@ class CardContent < ActiveRecord::Base
   include XmlSerializable
   attr_writer :quick_children
 
-  acts_as_nested_set
-
   belongs_to :card_version, inverse_of: :card_contents
+  belongs_to :parent, foreign_key: :parent_id, class_name: 'CardContent'
+
   has_one :card, through: :card_version
+  has_many :card_contents, foreign_key: :parent_id, dependent: :destroy
   has_many :card_content_validations, dependent: :destroy
   validates :card_version, presence: true
 
@@ -20,7 +21,7 @@ class CardContent < ActiveRecord::Base
               scope: :card_version,
               message: "Card versions can only have one root node."
             },
-            if: -> { root? }
+            if: -> { parent_id.nil? }
 
   has_many :answers
 
@@ -94,6 +95,10 @@ class CardContent < ActiveRecord::Base
     safe_dump_text(xml, attr_name, attr) if attr.present?
   end
 
+  def content_root
+    @content_root ||= card_version.content_root
+  end
+
   # content_attrs rendered into the <card-content> tag itself
   def content_attrs
     {
@@ -156,7 +161,6 @@ class CardContent < ActiveRecord::Base
       render_tag(xml, 'instruction-text', instruction_text)
       render_tag(xml, 'text', text)
       render_tag(xml, 'label', label)
-      preload_descendants if @quick_children.nil?
       card_content_validations.each do |ccv|
         # Do not serialize the required-field validation, it is handled via the
         # "required-field" attribute.
@@ -180,37 +184,16 @@ class CardContent < ActiveRecord::Base
     children.each { |card_content| card_content.traverse(visitor) }
   end
 
-  # Return the ids of the children. If quick_children has been set, use that,
-  # otherwise use the children method of awesome nested set.
   def unsorted_child_ids
-    @unsorted_child_ids ||= begin
-                              if leaf?
-                                []
-                              elsif !@quick_children.nil?
-                                @quick_children.map(&:id)
-                              else
-                                children.pluck(:id).uniq
-                              end
-                            end
+    @unsorted_child_ids ||= children.map(&:id).uniq
   end
 
-  # From this node, return a set of this node and its descendants, with the
-  # `quick_children` attribute set to the children of each node. This can load
-  # an entire traversable tree in one database query.
-  # Returns an array of CardContent objects.
-  def preload_descendants
-    all = [self] + descendants.includes(:content_attributes, :card_content_validations).to_a
-    children = all.group_by(&:parent_id)
-    all.each do |d|
-      d.quick_children = children.fetch(d.id, [])
-    end
-    all
-  end
-
-  # Return the @quick_children if set, otherwise return the children.
   def children
-    return @quick_children unless @quick_children.nil?
-    super
+    @quick_children ||= card_contents
+  end
+
+  def self.roots
+    where(parent_id: nil)
   end
 
   private

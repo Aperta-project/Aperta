@@ -94,23 +94,25 @@ describe CardContent do
     end
 
     it 'uses three db queries' do
-      expect { content.preload_descendants }.to make_database_queries(count: 3)
+      version = content.card_version
+      expect { version.content_root }.to make_database_queries(count: 3)
     end
 
     it 'does not make db queries when recursing' do
-      content.preload_descendants
+      version = content.card_version
+      version.content_root
 
-      expect { do_nothing(content) }.to_not make_database_queries
+      expect { do_nothing(version.content_root) }.to_not make_database_queries
       # 1 root + 5 children + (0..4) children each = 16
       expect(do_nothing(content)).to eq(16)
     end
 
     context '#unsorted_child_ids' do
       it 'does not make db queries when recursing' do
-        content.preload_descendants
-
-        expect { content.unsorted_child_ids }.to_not make_database_queries
-        expect(content.unsorted_child_ids).to contain_exactly(*content.children.map(&:id))
+        version = content.card_version
+        version.content_root
+        expect { version.content_root.unsorted_child_ids }.to_not make_database_queries
+        expect(version.content_root.unsorted_child_ids).to contain_exactly(*version.content_root.children.map(&:id))
       end
 
       it 'works when #preload_descendants not called' do
@@ -135,13 +137,13 @@ describe CardContent do
     end
 
     it 'works when preload_descendants is called' do
-      content.preload_descendants
+      content.content_root
       expect(content.children.count).to eq(1)
     end
 
     it 'returns the same content' do
       without = content.children
-      content.preload_descendants
+      content.content_root
       expect(content.children).to eq(without)
     end
   end

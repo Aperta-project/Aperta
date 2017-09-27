@@ -10,7 +10,7 @@ module Attributable
   }.freeze
 
   included do
-    has_many :content_attributes, dependent: :destroy, inverse_of: :card_content
+    has_many :content_attributes, dependent: :delete_all, inverse_of: :card_content
 
     CONTENT_ATTRIBUTES.each do |type, names|
       names.each do |name|

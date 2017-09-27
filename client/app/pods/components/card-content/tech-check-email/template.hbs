@@ -1,0 +1,34 @@
+<div class="task-main-content">
+
+  {{card-content/display-children
+    content=content
+    owner=owner
+    disabled=disabled
+    hasAnswerContainer=false
+    preview=preview
+  }}
+
+  <button {{action "showPreview"}} class="button-primary button--green">Show Email Preview</button>
+
+  {{#if showEmailPreview}}
+    <div class="email-preview">
+      <h2>Previewing sendback to author email</h2>
+
+      <div class="preview-content">
+        <div class="intro">{{{emailIntroText}}}</div>
+
+        <div class="reasons">
+          <ol>
+            {{#each sendbackReasons as |reason|}}
+              <li>{{{reason}}}</li>
+            {{/each}}
+          </ol>
+        </div>
+
+        <div class="footer">{{{emailFooterText}}}</div>
+      </div>
+
+      <button class="button-primary button--green" {{action "sendChangeRequestEmail"}}>Send Changes For Author</button>
+    </div>
+  {{/if}}
+</div>

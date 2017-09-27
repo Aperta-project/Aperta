@@ -52,6 +52,7 @@ class CardContent < ActiveRecord::Base
       'paragraph-input': ['text', 'html'],
       'radio': ['boolean', 'text'],
       'tech-check': ['boolean'],
+      'tech-check-email': [nil],
       'date-picker': ['text'],
       'sendback-reason': ['boolean'] }.freeze.with_indifferent_access
   # Although we want to validate the various combinations of content types

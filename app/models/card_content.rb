@@ -6,7 +6,7 @@
 class CardContent < ActiveRecord::Base
   include Attributable
   include XmlSerializable
-  attr_writer :quick_children
+  attr_writer :children
 
   belongs_to :card_version, inverse_of: :card_contents
   belongs_to :parent, foreign_key: :parent_id, class_name: 'CardContent'
@@ -189,7 +189,7 @@ class CardContent < ActiveRecord::Base
   end
 
   def children
-    @quick_children ||= card_contents
+    @children ||= card_contents
   end
 
   private

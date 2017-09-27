@@ -33,7 +33,7 @@ class CardVersion < ActiveRecord::Base
     contents = card_contents.includes(:content_attributes, :card_content_validations).to_a
     children = contents.group_by(&:parent_id)
     contents.each do |content|
-      content.quick_children = children.fetch(content.id, [])
+      content.children = children.fetch(content.id, [])
     end
     @content_root = children[nil].try(:first)
   end

@@ -13,6 +13,7 @@ export default Ember.Component.extend({
     answer: PropTypes.EmberObject.isRequired,
     content: PropTypes.EmberObject.isRequired,
     owner: PropTypes.EmberObject.isRequired,
+    repetition: PropTypes.EmberObject.isRequired,
     answerChanged: PropTypes.any.isRequired
   },
 
@@ -28,16 +29,16 @@ export default Ember.Component.extend({
     }
   },
 
-  checkboxAnswer: Ember.computed('checkbox', 'owner', function(){
-    return this.get('checkbox').answerForOwner(this.get('owner'));
+  checkboxAnswer: Ember.computed('checkbox', 'owner', 'repetition', function(){
+    return this.get('checkbox').answerForOwner(this.get('owner'), this.get('repetition'));
   }),
 
-  pencilAnswer: Ember.computed('pencil', 'owner', function(){
-    return this.get('pencil').answerForOwner(this.get('owner'));
+  pencilAnswer: Ember.computed('pencil', 'owner', 'repetition', function(){
+    return this.get('pencil').answerForOwner(this.get('owner'), this.get('repetition'));
   }),
 
-  textareaAnswer: Ember.computed('textarea', 'owner', function(){
-    return this.get('textarea').answerForOwner(this.get('owner'));
+  textareaAnswer: Ember.computed('textarea', 'owner', 'repetition', function(){
+    return this.get('textarea').answerForOwner(this.get('owner'), this.get('repetition'));
   }),
 
   checkbox: childAt('content.children', 0),

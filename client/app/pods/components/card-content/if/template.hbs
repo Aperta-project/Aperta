@@ -14,6 +14,7 @@
     size="small"
     content=(hash)
     answer=(hash value=previewState)
+    repetition=repetition
     valueChanged=(toggle "previewState" this)
   }}
 {{/if}}
@@ -23,6 +24,7 @@
     content=content.children.firstObject
     owner=owner
     preview=preview
+    repetition=repetition
     disabled=disabled
   }}
 {{else if hasElse}}
@@ -30,6 +32,7 @@
     content=content.children.lastObject
     owner=owner
     preview=preview
+    repetition=repetition
     disabled=disabled
   }}
 {{/if}}

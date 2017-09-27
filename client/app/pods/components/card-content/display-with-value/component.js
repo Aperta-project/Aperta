@@ -8,11 +8,12 @@ export default Ember.Component.extend({
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool,
     owner: PropTypes.EmberObject.isRequired,
+    repetition: PropTypes.EmberObject.isRequired,
     preview: PropTypes.bool
   },
 
-  parentAnswer: Ember.computed('content.parent', 'owner', function() {
-    return this.get('content.parent').answerForOwner(this.get('owner'));
+  parentAnswer: Ember.computed('content.parent', 'owner', 'repetition', function() {
+    return this.get('content.parent').answerForOwner(this.get('owner'), this.get('repetition'));
   }),
 
   showChildren: Ember.computed(

@@ -7,13 +7,14 @@ export default Ember.Component.extend({
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool,
     answer: PropTypes.EmberObject.isRequired,
+    repetition: PropTypes.EmberObject.isRequired,
     preview: PropTypes.bool
   },
 
   clearSendbacks() {
     let sendbackAnswers = this.get('content.children').map(sendbackContent => {
       let checkbox = sendbackContent.get('children.firstObject');
-      return checkbox.answerForOwner(this.get('owner'));
+      return checkbox.answerForOwner(this.get('owner'), this.get('repetition'));
     });
 
     sendbackAnswers.setEach('value', false);

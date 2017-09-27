@@ -7,6 +7,7 @@ export default Ember.Component.extend({
   hasListParent: Ember.computed.equal('content.parent.childTag', 'li'),
 
   propTypes: {
-    content: PropTypes.EmberObject.isRequired
+    content: PropTypes.EmberObject.isRequired,
+    repetition: PropTypes.EmberObject.isRequired
   }
 });

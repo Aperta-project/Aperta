@@ -65,6 +65,7 @@ export default DS.Store.extend({
   // These are helper methods to get an answer from the already fetched, stored,
   // answers based on the ident and owner. Useful because many answer
   // relationships are async, this does not return a promise.
+  // TODO: DO WE NEED TO UPDATE THIS FOR REPETITIONS?
   peekAnswer(ident, owner) {
     let content = this.peekCardContent(ident);
     return this.peekAll('answer').find((a) => {

@@ -2,6 +2,7 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 // Answerable is intended to be mixed into DS.Model instances
+// TODO: ask Chris if we still need this file. it doesn't look like anything calls these methods, but it could just be more dynamic than we hope: see client/app/serializers/answer.js
 export default Ember.Mixin.create({
   card: DS.belongsTo('card'),
   answers: DS.hasMany('answers'),

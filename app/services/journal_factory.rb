@@ -204,7 +204,6 @@ class JournalFactory
 
     Role.ensure_exists(Role::STAFF_ADMIN_ROLE, journal: @journal) do |role|
       # Journal
-      role.ensure_permission_exists(:manage_users, applies_to: Journal)
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
       role.ensure_permission_exists(:remove_orcid, applies_to: Journal)
       role.ensure_permission_exists(:create_email_template, applies_to: Journal)
@@ -432,7 +431,6 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
 
       # Users
-      role.ensure_permission_exists(:manage_users, applies_to: Journal)
       role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
@@ -487,7 +485,6 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
 
       # Users
-      role.ensure_permission_exists(:manage_users, applies_to: Journal)
       role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 

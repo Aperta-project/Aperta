@@ -344,10 +344,10 @@ class PaperTrackerPage(AuthenticatedPage):
         logging.info('Validating Row: {0}'.format(count + 1))
         # Once again, while less than ideal, these must be defined on the fly
         self._paper_tracker_table_tbody_title = (
-            By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-title-column"]/a'.format(count + 1))
+            By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-title-column"]/div/a'.format(count + 1))
         self._paper_tracker_table_tbody_manid = (
             By.XPATH,
-            '//tbody/tr[{0}]/td[@class="paper-tracker-paper-id-column"]/a'.format(count + 1))
+            '//tbody/tr[{0}]/td[@class="paper-tracker-paper-id-column"]/div/a'.format(count + 1))
         self._paper_tracker_table_tbody_verdate = (
             By.XPATH, '//tbody/tr[{0}]/td[@class="paper-tracker-date-column '
                       'paper-submission-date"]'.format(count + 1))
@@ -675,7 +675,7 @@ class PaperTrackerPage(AuthenticatedPage):
       title_th.click()
       time.sleep(1)
       self._paper_tracker_table_tbody_title = (
-          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-title-column"]/a')
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-title-column"]/div/a')
       paper_tracker_title = self._get(self._paper_tracker_table_tbody_title).text
       logging.info('Found {0} on page, searching for result in db.'.format(paper_tracker_title))
       papers = self._get_paper_list(journal_ids, sort_by='title')
@@ -694,7 +694,7 @@ class PaperTrackerPage(AuthenticatedPage):
       title_th.click()
       time.sleep(1)
       self._paper_tracker_table_tbody_title = (
-          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-title-column"]/a')
+          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-title-column"]/div/a')
       paper_tracker_title = self._get(self._paper_tracker_table_tbody_title).text
       # papers = self._get_paper_list(journal_ids, sort_by='title', reverse=True)
       paper_tracker_title = paper_tracker_title.strip()
@@ -733,9 +733,9 @@ class PaperTrackerPage(AuthenticatedPage):
     :return: void function
     """
     self._paper_tracker_table_tbody_manid = (
-      By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
+      By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/div/a')
     paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid)
-    pt_short_doi = paper_tracker_ms_id.get_attribute('href').split('/')[-1]
+    pt_short_doi = paper_tracker_ms_id.get_attribute('href').split('/')[-2]
     papers = self._get_paper_list(journal_ids, sort_by=sort_by, reverse=reverse)
     db_id = papers[0][0]
     logging.info(db_id)

@@ -1,15 +1,15 @@
 require 'rails_helper'
 
-describe ManuscriptAttachmentsController do
+describe SourcefileAttachmentsController do
   let(:attachment) do
-    FactoryGirl.build_stubbed(:manuscript_attachment, paper: paper)
+    FactoryGirl.build_stubbed(:sourcefile_attachment, paper: paper)
   end
   let(:paper) { FactoryGirl.build_stubbed(:paper) }
   let(:user) { FactoryGirl.build_stubbed :user }
 
   describe 'PUT #cancel' do
     let(:attachment) do
-      FactoryGirl.create(:manuscript_attachment, paper: paper)
+      FactoryGirl.create(:sourcefile_attachment, paper: paper)
     end
     let(:paper) { FactoryGirl.create(:paper) }
     let(:phase) { FactoryGirl.create(:phase) }
@@ -21,7 +21,7 @@ describe ManuscriptAttachmentsController do
     end
 
     before do
-      allow(ManuscriptAttachment).to receive(:find).and_return(attachment)
+      allow(SourcefileAttachment).to receive(:find).and_return(attachment)
       allow(attachment).to receive(:cancel_download)
     end
 
@@ -40,7 +40,7 @@ describe ManuscriptAttachmentsController do
         end
 
         it 'cancels the upload' do
-          expect(attachment).to receive(:cancel_download)
+          expect(attachment).to receive(:cancel_download )
           do_request
         end
 
@@ -66,14 +66,14 @@ describe ManuscriptAttachmentsController do
   end
 
   describe 'GET #show' do
-    let(:attachment) { FactoryGirl.build_stubbed(:manuscript_attachment) }
+    let(:attachment) { FactoryGirl.build_stubbed(:sourcefile_attachment) }
 
     subject(:do_request) do
       get :show, format: 'json', id: attachment.to_param
     end
 
     before do
-      allow(ManuscriptAttachment).to receive(:find)
+      allow(SourcefileAttachment).to receive(:find)
         .with(attachment.to_param)
         .and_return(attachment)
     end

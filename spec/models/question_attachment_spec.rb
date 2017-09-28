@@ -51,4 +51,15 @@ describe QuestionAttachment do
       )
     end
   end
+
+  describe '#cover_letter?' do
+    it 'returns true if card_content.ident is cover_letter--attachment' do
+      allow(subject.owner.card_content).to receive(:ident) { 'cover_letter--attachment' }
+      expect(subject.cover_letter?).to be_truthy
+    end
+
+    it 'returns false if card_content.ident is not cover_letter--attachment' do
+      expect(subject.cover_letter?).to be_falsey
+    end
+  end
 end

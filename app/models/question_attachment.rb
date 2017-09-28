@@ -12,4 +12,8 @@ class QuestionAttachment < Attachment
   def answer_blank?
     filename.nil?
   end
+
+  def cover_letter?
+    owner.card_content.ident == "cover_letter--attachment"
+  end
 end

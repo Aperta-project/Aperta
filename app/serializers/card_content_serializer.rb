@@ -5,6 +5,10 @@ class CardContentSerializer < ActiveModel::Serializer
              :ident,
              :order
 
+  # TODO: this probably adds an n+1 query
+  # TODO: maybe look into always resolving the repetitions promise when opening a task instead of `include: true`
+  has_many :repetitions, embed: :ids, include: true
+
   def order
     object.lft
   end

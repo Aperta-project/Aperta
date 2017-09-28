@@ -63,9 +63,26 @@ export default DS.Model.extend({
   childrenSort: ['order:asc'],
   children: Ember.computed.sort('unsortedChildren', 'childrenSort'),
 
-  visitDescendants: function(f) {
-    f(this);
-    this.get('children').forEach((child) => child.visitDescendants(f));
+  visitDescendants: function(task, parentRepetition, f) {
+    let repetitions = this.get('repetitions').filterBy('parent', parentRepetition).filterBy('task.id', task.get('id'));
+    if(repetitions.length) {
+      // we're a repeater, so now start using our repetitions.
+    } else {
+      // we're not a repeater, so we inherit a repetition from somewhere higher in the card content heirarchy.
+      repetitions = [parentRepetition];
+    }
+
+    if(repetitions.length) {
+      // traverse the card content for each repetition
+      repetitions.forEach((repetition) => {
+        this.get('children').forEach((child) => child.visitDescendants(task, repetition, f));
+        f(this, repetition);
+      });
+    } else {
+        // we're not inside a repetition, so just traverse the tree like normal
+        this.get('children').forEach((child) => child.visitDescendants(task, null, f));
+        f(this, null);
+    }
   },
 
   isRequired: Ember.computed.equal('requiredField', true),

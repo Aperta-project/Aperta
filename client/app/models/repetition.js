@@ -13,7 +13,6 @@ export default DS.Model.extend({
   cascadingDestroy() {
     this.get('children').invoke('cascadingDestroy');
     this.get('answers').invoke('destroyRecord');
-    console.log("destroying repetition", this.toString());
     this.destroyRecord();
   },
 });

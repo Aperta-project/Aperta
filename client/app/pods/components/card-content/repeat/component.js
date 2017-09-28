@@ -67,7 +67,7 @@ export default Ember.Component.extend({
     });
 
     if(!this.get('preview')) {
-      // a task relationship is only applicable in non-previews
+      // a task relationship is only applicable in non-previews (card-editor/previews aren't tasks)
       repetition.set('task', this.get('owner'));
       repetition.save();
     }

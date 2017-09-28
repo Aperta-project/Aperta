@@ -513,6 +513,8 @@ ActiveRecord::Schema.define(version: 20171012165452) do
     t.datetime "updated_at"
     t.string   "scenario"
     t.string   "ident"
+    t.string   "cc"
+    t.string   "bcc"
   end
 
   add_index "letter_templates", ["ident", "journal_id"], name: "index_letter_templates_on_ident_and_journal_id", unique: true, using: :btree

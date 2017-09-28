@@ -16,10 +16,14 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
   isEditingName: false,
   subjectErrors: [],
   bodyErrors: [],
+  ccErrors: [],
+  bccErrors: [],
   nameError: '',
   subjectErrorPresent: Ember.computed.notEmpty('subjectErrors'),
   bodyErrorPresent: Ember.computed.notEmpty('bodyErrors'),
   nameErrorPresent: Ember.computed.notEmpty('nameError'),
+  ccErrorPresent: Ember.computed.notEmpty('ccErrors'),
+  bccErrorPresent: Ember.computed.notEmpty('bccErrors'),
 
   actions: {
     editTitle() {
@@ -62,7 +66,9 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
     save: function() {
       this.setProperties({
         subjectErrors: [],
-        bodyErrors: []
+        bodyErrors: [],
+        ccErrors: [],
+        bccErrors: []
       });
       if (this.get('template.subject') && this.get('template.body') && this.get('template.name')) {
         this.get('template').save()
@@ -78,6 +84,8 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
             const subjectErrors = error.errors.filter((e) => e.source.pointer.includes('subject'));
             const bodyErrors = error.errors.filter((e) => e.source.pointer.includes('body'));
             const nameError = error.errors.filter(e => e.source.pointer.includes('name'));
+            const ccErrors = error.errors.filter(e => e.source.pointer.endsWith('/cc'));
+            const bccErrors = error.errors.filter(e => e.source.pointer.endsWith('/bcc'));
             if (subjectErrors.length) {
               this.set('subjectErrors', subjectErrors.map(s => s.detail));
             }
@@ -86,6 +94,12 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
             }
             if (nameError.length) {
               this.set('nameError', nameError.map(n => n.detail));
+            }
+            if (ccErrors.length) {
+              this.set('ccErrors', ccErrors.map(err => err.detail));
+            }
+            if (bccErrors.length) {
+              this.set('bccErrors', bccErrors.map(err => err.detail));
             }
             this.setProperties({
               message: 'Please correct errors where indicated.',

@@ -1,6 +1,6 @@
 require 'rails_helper'
-
-feature 'Viewing Versions:', js: true, flaky: true do
+# rubocop:disable Metrics/BlockLength
+feature 'Viewing Versions:', js: true do
   let(:creator) { FactoryGirl.create :user }
 
   context 'When viewing a paper with more than one version,' do

@@ -106,7 +106,7 @@ feature "Paper workflow", js: true, selenium: true do
   end
 
   # Preventing a regression
-  scenario 'Opening an Invite Reviewers task', flaky: true do
+  scenario 'Opening an Invite Reviewers task' do
     task_manager_page = TaskManagerPage.new
 
     within 'body' do

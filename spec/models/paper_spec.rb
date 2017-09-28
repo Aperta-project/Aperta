@@ -1761,4 +1761,14 @@ describe Paper do
       expect(paper).to_not be_valid
     end
   end
+
+  describe '#cover_letter_files' do
+    it 'returns a collection of question attachments' do
+      attachment_one = double(QuestionAttachment, 'cover_letter?': false)
+      attachment_two = double(QuestionAttachment, 'cover_letter?': true)
+      allow(paper).to receive(:question_attachments) { [attachment_one, attachment_two] }
+
+      expect(paper.cover_letter_files).to be == [attachment_two]
+    end
+  end
 end

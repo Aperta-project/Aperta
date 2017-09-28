@@ -639,6 +639,10 @@ class Paper < ActiveRecord::Base
     !uses_research_article_reviewer_report?
   end
 
+  def cover_letter_files
+    question_attachments.select(&:cover_letter?)
+  end
+
   private
 
   def new_major_version!

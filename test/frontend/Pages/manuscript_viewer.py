@@ -1049,11 +1049,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
     for key, table_item in enumerate(table_items):
       version_data = ms_versions[key]
       expected_version_name = version_data['version']
-
+      # adding submission date: APERTA-9335
+      expected_version_date = version_data['date'].strftime("%b %d, %Y")
 
       # Fix for adding the 'V' before the version number
       if expected_version_name != 'draft':
-        expected_version_name = 'V{0}'.format(expected_version_name)
+        expected_version_name = 'V{0} - {1}'.format(expected_version_name, expected_version_date)
 
       # Validate version name styles
       version_name = table_item.find_element_by_class_name('paper-downloads-version')

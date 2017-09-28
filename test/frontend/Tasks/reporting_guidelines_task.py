@@ -22,9 +22,9 @@ class ReportingGuidelinesTask(BaseTask):
     super(ReportingGuidelinesTask, self).__init__(driver)
 
     # Locators - Instance members
-    self._question_text = (By.CLASS_NAME, 'question-text')
-    self._select_instruction = (By.CLASS_NAME, 'help')
-    self._selection_list = (By.CLASS_NAME, 'list-unstyled')
+    self._question_text = (By.CSS_SELECTOR, 'li.question')
+    self._select_instruction = (By.CSS_SELECTOR, 'div.question-list div.card-content-view-text p')
+    self._selection_list = (By.CSS_SELECTOR, 'div.question-list div.left-indent')
     self._prisma_upload_button = (By.CLASS_NAME, 'fileinput-button')
     self._prisma_uploaded_file_link = (By.CLASS_NAME, 'file-link')
     self._file_replace = (By.CLASS_NAME, 'replace-attachment')
@@ -60,7 +60,7 @@ class ReportingGuidelinesTask(BaseTask):
     :return: selected_checkboxes - a list of indices that correspond with the checkboxes that were selected
     """
     selection_list = self._get(self._selection_list)
-    selection_list_items = selection_list.find_elements_by_css_selector('li.item')
+    selection_list_items = selection_list.find_elements_by_css_selector('div.card-content-check-box')
     selected_checkboxes = []
     # Select checkboxes for either "Systematic Reviews" or "Meta-analyses" - for testing PRISMA checklist uploads
     if prisma:

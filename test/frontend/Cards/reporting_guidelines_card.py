@@ -20,9 +20,9 @@ class ReportingGuidelinesCard(BaseCard):
     super(ReportingGuidelinesCard, self).__init__(driver)
 
     # Locators - instance members
-    self._question_text = (By.CLASS_NAME, 'question-text')
-    self._select_instruction = (By.CLASS_NAME, 'help')
-    self._selection_list = (By.CLASS_NAME, 'list-unstyled')
+    self._question_text = (By.CSS_SELECTOR, 'li.question')
+    self._select_instruction = (By.CSS_SELECTOR, 'div.question-list div.card-content-view-text p')
+    self._selection_list = (By.CSS_SELECTOR, 'div.question-list div.left-indent')
     self._prisma_uploaded_file_link = (By.CLASS_NAME, 'file-link')
 
   # POM Actions
@@ -47,7 +47,7 @@ class ReportingGuidelinesCard(BaseCard):
     self.validate_application_body_text(select_instruction)
     selection_list = self._get(self._selection_list)
     self.validate_application_body_text(selection_list)
-    selection_list_items = selection_list.find_elements_by_css_selector('li.item')
+    selection_list_items = selection_list.find_elements_by_css_selector('div.card-content-check-box')
     # All checkboxes should be unchecked by default:
     for item in selection_list_items:
       list_item = item.find_element_by_tag_name('input')
@@ -62,7 +62,7 @@ class ReportingGuidelinesCard(BaseCard):
     :return: None
     """
     selection_list = self._get(self._selection_list)
-    list_items = selection_list.find_elements_by_css_selector('li.item')
+    list_items = selection_list.find_elements_by_css_selector('div.card-content-check-box')
     for choice in choices:
       logging.info('Checking these selections: {0}'.format(list_items[choice].text))
       selected = list_items[choice].find_element_by_tag_name('input').is_selected()
@@ -74,6 +74,3 @@ class ReportingGuidelinesCard(BaseCard):
       assert os.path.basename(filename) == uploaded_prisma_file.text, 'Uploaded file {0} is ' \
                                                                    'not displayed in the Reporting Guidelines ' \
                                                                    'card'.format(os.path.basename(filename))
-
-
-

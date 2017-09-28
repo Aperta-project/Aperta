@@ -20,7 +20,7 @@ class Paper::DataExtracted::NotifyUser < FlashMessageSubscriber
       ' and should now be uploaded directly' \
       ' by clicking \'Figures\'.'
     elsif @event_data[:record].errored?
-      "There was an error loading your #{pdf_type? ? 'PDF' : 'Word'} file."
+      "There was an error loading your Word file."
     end
   end
 

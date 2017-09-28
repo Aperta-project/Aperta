@@ -12,7 +12,7 @@ feature 'Viewing Versions:', js: true, flaky: true do
         creator: creator
     end
     let!(:task) do
-      FactoryGirl.create :ethics_task,
+      FactoryGirl.create :custom_card_task,
         paper: paper,
         phase: paper.phases.first
     end

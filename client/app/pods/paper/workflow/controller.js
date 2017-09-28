@@ -180,11 +180,23 @@ export default Controller.extend(Discussions, {
     *  @param {Number} newIndex
     *  @param {Array}  itemList Array of DS.Model Task
     **/
-    taskMovedWithinList(item, oldIndex, newIndex, itemList) {
-      itemList.removeAt(oldIndex);
-      itemList.insertAt(newIndex, item);
-      this.updateTaskPositions(itemList);
-      item.save();
+    taskMovedWithinList(task, oldIndex, newIndex, taskList) {
+      taskList.removeAt(oldIndex);
+      taskList.insertAt(newIndex, task);
+      this.updateTaskPositions(taskList);
+
+      const url = `/api/tasks/${task.id}/update_position`;
+      const data = {
+        id: task.id,
+        position: task.get('position')
+      };
+
+      this.get('restless').put(url, data).catch((error)=> {
+        this.get('flash').displayRouteLevelMessage('error', error.resposeText);
+        taskList.removeAt(newIndex);
+        taskList.insertAt(oldIndex, task);
+        this.updateTaskPositions(taskList);
+      });
     },
 
    /**

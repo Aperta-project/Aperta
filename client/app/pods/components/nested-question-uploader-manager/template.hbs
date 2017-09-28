@@ -1,3 +1,9 @@
+{{#if shouldDisplayQuestionText}}
+<div class="{{textClassNames}} {{concat ident "-question-text"}}">
+  {{{questionText}}}
+</div>
+{{/if}}
+
 {{attachment-manager filePath="tasks/attachment"
                      attachments=attachments
                      buttonText=buttonText

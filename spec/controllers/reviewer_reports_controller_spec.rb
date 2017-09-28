@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe ReviewerReportsController do
-  let(:user) { FactoryGirl.build(:user) }
+  let(:user) { FactoryGirl.build_stubbed(:user) }
 
   describe 'GET #show' do
     let(:reviewer_report) { FactoryGirl.create(:reviewer_report) }
@@ -18,6 +18,10 @@ describe ReviewerReportsController do
         stub_sign_in user
         allow(user).to receive(:can?)
           .with(:edit, reviewer_report.task)
+          .and_return true
+
+        allow(user).to receive(:can?)
+          .with(:view, reviewer_report.task)
           .and_return true
       end
 
@@ -56,6 +60,10 @@ describe ReviewerReportsController do
         stub_sign_in user
         allow(user).to receive(:can?)
           .with(:edit, reviewer_report.task)
+          .and_return true
+
+        allow(user).to receive(:can?)
+          .with(:view, reviewer_report.task)
           .and_return true
       end
 

@@ -1,7 +1,7 @@
 module TahiStandardTasks
   class ReportingGuidelinesTask < ::Task
-    include MetadataTask
-    DEFAULT_TITLE = 'Reporting Guidelines'.freeze
-    DEFAULT_ROLE_HINT = 'author'.freeze
+    def active_model_serializer
+      TaskSerializer
+    end
   end
 end

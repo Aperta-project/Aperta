@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170914064956) do
+ActiveRecord::Schema.define(version: 20170922200616) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -230,6 +230,7 @@ ActiveRecord::Schema.define(version: 20170914064956) do
     t.string   "content_type"
   end
 
+  add_index "card_contents", ["card_version_id"], name: "index_card_contents_on_card_version_id", using: :btree
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
   add_index "card_contents", ["lft"], name: "index_card_contents_on_lft", using: :btree
   add_index "card_contents", ["parent_id"], name: "index_card_contents_on_parent_id", using: :btree
@@ -297,6 +298,7 @@ ActiveRecord::Schema.define(version: 20170914064956) do
     t.datetime "updated_at",      null: false
   end
 
+  add_index "content_attributes", ["card_content_id"], name: "index_content_attributes_on_card_content_id", using: :btree
   add_index "content_attributes", ["name"], name: "index_content_attributes_on_name", using: :btree
   add_index "content_attributes", ["value_type"], name: "index_content_attributes_on_value_type", using: :btree
 
@@ -847,15 +849,6 @@ ActiveRecord::Schema.define(version: 20170914064956) do
     t.string   "destination",   null: false
     t.string   "service_id"
   end
-
-  create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|
-    t.integer "author_id"
-    t.integer "funder_id"
-  end
-
-  add_index "tahi_standard_tasks_funded_authors", ["author_id", "funder_id"], name: "funded_authors_unique_index", unique: true, using: :btree
-  add_index "tahi_standard_tasks_funded_authors", ["author_id"], name: "index_tahi_standard_tasks_funded_authors_on_author_id", using: :btree
-  add_index "tahi_standard_tasks_funded_authors", ["funder_id"], name: "index_tahi_standard_tasks_funded_authors_on_funder_id", using: :btree
 
   create_table "tahi_standard_tasks_funders", force: :cascade do |t|
     t.string   "name"

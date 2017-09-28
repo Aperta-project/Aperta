@@ -10,7 +10,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     close: PropTypes.func // action, called to close the overlay
   },
 
-  classNames: ['admin-new-card-overlay'],
+  classNames: ['admin-overlay'],
   cardName: '',
   cardType: '',
   cardTypes: [{label: 'Custom Card', value: 'customCard'}],

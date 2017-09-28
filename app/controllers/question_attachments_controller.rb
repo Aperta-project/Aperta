@@ -68,7 +68,9 @@ class QuestionAttachmentsController < ApplicationController
     @task ||= begin
       owner = question_attachment
       until owner.is_a? Task
-        if owner.respond_to?(:owner) && !owner.owner.nil?
+        if owner.respond_to?(:task) && !owner.task.nil?
+          owner = owner.task
+        elsif owner.respond_to?(:owner) && !owner.owner.nil?
           owner = owner.owner
         elsif owner.respond_to?(:card_content) && !owner.card_content.nil?
           owner = owner.card_content

@@ -198,13 +198,16 @@ class JournalFactory
       role.ensure_permission_exists(:create_card, applies_to: Journal)
       role.ensure_permission_exists(:edit, applies_to: Card)
       role.ensure_permission_exists(:view, applies_to: CardVersion)
+      role.ensure_permission_exists(:administer, applies_to: Journal)
+      role.ensure_permission_exists(:manage_users, applies_to: Journal)
     end
 
     Role.ensure_exists(Role::STAFF_ADMIN_ROLE, journal: @journal) do |role|
       # Journal
-      role.ensure_permission_exists(:administer, applies_to: Journal)
+      role.ensure_permission_exists(:manage_users, applies_to: Journal)
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
       role.ensure_permission_exists(:remove_orcid, applies_to: Journal)
+      role.ensure_permission_exists(:create_email_template, applies_to: Journal)
 
       # Paper
       role.ensure_permission_exists(:assign_roles, applies_to: Paper)

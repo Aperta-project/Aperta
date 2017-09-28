@@ -14,7 +14,7 @@ describe ReviewerReportContext do
 
   context 'rendering a reviewer report' do
     def check_render(template, expected)
-      expect(Liquid::Template.parse(template).render(context))
+      expect(LetterTemplate.new(body: template).render(context).body)
         .to eq(expected)
     end
 

@@ -36,7 +36,7 @@ test('it creates a record when the save button is pushed', function(assert) {
     success=(action "success")
     close=(action "close")}}`);
 
-  this.$('.admin-new-card-overlay-save').click();
+  this.$('.admin-overlay-save').click();
   assert.spyCalled(mockRecord.save, 'should save a new record');
   assert.spyCalled(success, 'Should call success callback');
   assert.spyCalled(close, 'Should call close');
@@ -63,7 +63,7 @@ test('it does not create a record when the cancel button is pushed', function(as
     success=(action "success")
     close=(action "close")}}`);
 
-  this.$('.admin-new-card-overlay-cancel').click();
+  this.$('.admin-overlay-cancel').click();
 
   assert.spyNotCalled(mockRecord.save, 'should not create a new record');
   assert.spyNotCalled(success, 'Should not call success callback');

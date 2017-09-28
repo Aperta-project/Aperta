@@ -6,7 +6,7 @@ module Typesetter
 
     def author
       serializer = "Typesetter::#{object.author_type}Serializer".constantize
-      serializer.new(object.author)
+      serializer.new(object.author, options)
     end
   end
 end

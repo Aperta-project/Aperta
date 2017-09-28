@@ -1,9 +1,9 @@
 <h1>Add new card to {{journal.name}}</h1>
 
 <div class="labeled-input-form">
-  <div class="admin-new-card-overlay-form">
+  <div class="admin-overlay-form">
     {{forms/labeled-input-with-errors type="text" label="Name your new card:" name="name" value=cardName enter=(action "complete") errors=errors required=true autofocus=true}}
-    <p class="admin-new-card-overlay-note">Note: this name will not appear to external audiences. It can be edited at any time.</p>
+    <p class="admin-overlay-note">Note: this name will not appear to external audiences. It can be edited at any time.</p>
 
     <div class='input-header'>
       <div class='description'>
@@ -26,13 +26,13 @@
   </div>
 
   <div class="overlay-action-buttons">
-    <button class="button-link button--blue admin-new-card-overlay-cancel" {{action "close"}}>
+    <button class="button-link button--blue admin-overlay-cancel" {{action "close"}}>
       cancel
     </button>
 
     {{#save-button
         click=(action 'complete')
-        class="button-primary button--blue admin-new-card-overlay-save"
+        class="button-primary button--blue admin-overlay-save"
         disabled=saving
         spinnerSize="mini"
         displaySpinner=saving}}

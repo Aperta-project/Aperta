@@ -74,7 +74,7 @@ class WorkflowPage(AuthenticatedPage):
     self._production_metadata_card = (By.CSS_SELECTOR, 'div.production-metadata-task > a')
     self._register_decision_card = (By.CSS_SELECTOR, 'div.register-decision-task > a')
     self._related_articles_card = (By.CSS_SELECTOR, 'div.related-articles-task > a')
-    self._report_guide_card = (By.CSS_SELECTOR, 'div.reporting-guidelines-task > a')
+    self._report_guide_card = (By.XPATH, "//a[.//span[contains(text(),'Reporting Guidelines')]]")
     self._review_cands_card = (By.CSS_SELECTOR, 'div.reviewer-recommendations-task > a')
     self._reviewer_report_card = (By.CSS_SELECTOR, 'div.reviewer-report-task > a')
     self._fm_reviewer_report_card = (By.CSS_SELECTOR, 'div.front-matter-reviewer-report-task > a')

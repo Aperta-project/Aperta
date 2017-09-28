@@ -218,13 +218,14 @@ describe TasksController, redis: true do
 
         it "does not incomplete the task when the completed param is not a part of the request" do
           expect do
-            task_params.merge!(title: 'vernors')
+            task_params = { title: 'vernors' }
             do_request
-          end.to_not change { task.reload.title }
+          end.to_not change { task.reload.completed }
         end
 
         it "does not update anything else on the task" do
           expect do
+            task_params[:title] = 'vernors'
             do_request
           end.to_not change { task.reload.title }
         end

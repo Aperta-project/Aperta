@@ -429,16 +429,6 @@ describe TokenInvitationsController do
             new_user_do_request
             expect(flash[:notice]).to include("Your PLOS account was successfully created.")
           end
-
-          context 'Inviting an academic editor' do
-            let(:invitation_double) do
-              double('Invitation', invitee_role: 'Academic Editor', invited?: true, declined?: false, rescinded?: false, email: user.email, accept!: true, paper: task.paper, invitee_id: 123)
-            end
-            it 'flashes appropriate language' do
-              do_request
-              expect(flash[:notice]).to include("Thank you for agreeing to edit")
-            end
-          end
         end
 
         context 'when invitation and current user emails are not the same' do

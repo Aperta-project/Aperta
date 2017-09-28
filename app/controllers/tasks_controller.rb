@@ -33,12 +33,17 @@ class TasksController < ApplicationController
   def update
     requires_user_can :edit, task
 
-    task.assign_attributes(task_params(task.class))
-    # Run this if task was not completed
-    unless task.completed_was
+    if task.completed?
+      # If the task is already completed, all the user can do is uncomplete it
+      # or assign an user.
+      attrs = params.require(:task).permit(:completed, :assigned_user_id)
+      task.completed = attrs[:completed]
+      task.assigned_user_id = attrs[:assigned_user_id]
+    else
       # At this point, the user could be doing one of two things.
       # 1. They are toggling the completed flag.
       # 2. They are updating the body or something else.
+      task.assign_attributes(task_params(task.class))
       if task.completed_changed? && !task.ready?
         # They are marking the task completed, but the fields are not ready.
         # Roll back the change.

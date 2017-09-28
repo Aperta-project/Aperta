@@ -201,11 +201,26 @@ describe TasksController, redis: true do
           end.to change { task.reload.completed }.from(true).to(false)
         end
 
+        it "allows assigning an user to the task" do
+          expect do
+            task_params[:assigned_user_id] = 1
+            do_request
+          end.to change { task.reload.assigned_user_id }.from(nil).to(1)
+        end
+
+        it "allows revoking an user from the task" do
+          task.update(assigned_user_id: 11)
+          expect do
+            task_params[:assigned_user_id] = nil
+            do_request
+          end.to change { task.reload.assigned_user_id }.from(11).to(nil)
+        end
+
         it "does not incomplete the task when the completed param is not a part of the request" do
           expect do
             task_params.merge!(title: 'vernors')
             do_request
-          end.to_not change { task.reload.completed }
+          end.to_not change { task.reload.title }
         end
 
         it "does not update anything else on the task" do

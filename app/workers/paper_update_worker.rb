@@ -39,28 +39,14 @@ class PaperUpdateWorker
       Bugsnag.notify(e)
     end
     if job_response.completed?
-      if job_response.pdf?
-        # Updating paper.body has the side effect of also updating the latest_version
-        # file_type field required for proper rendering. For non-pdf manuscripts this
-        # is taken care of via the PaperAttributesExtractor.sync! method (see below)
-        paper.update!(body: '')
-        paper.update!(processing: false)
-      else
-        @epub_stream = Faraday.get(
-          job_response.format_url(:epub)
-        ).body
-        sync!
-      end
+      @epub_stream = Faraday.get(
+        job_response.format_url(:epub)
+      ).body
+      body = TahiEpub::Zip.extract(stream: epub_stream, filename: 'body').force_encoding("UTF-8")
+      @paper.update!(body: body, processing: false)
+      Notifier.notify(event: "paper:data_extracted", data: { record: job_response })
+      Notifier.notify(event: 'paper:updated', data: @paper.event_payload(action: 'updated'))
     end
-    Notifier.notify(event: "paper:data_extracted",
-                    data: { record: job_response })
   end
 
-  def sync!
-    # use transaction to wait until all work is done before firing commit events
-    paper.transaction do
-      PaperAttributesExtractor.new(epub_stream).sync!(paper)
-      paper.update!(processing: false)
-    end
-  end
 end

@@ -40,6 +40,10 @@ export default Controller.extend(PaperBase, Discussions, {
     }
   ),
 
+  defaultPreprintTaskOpen: computed('firstView', function () {
+    return this.get('firstView') === 'true';
+  }),
+
   showPdfManuscript: computed('paper.journal.pdfAllowed', 'paper.fileType', 'paper.file.status',
     function(){
       return (this.get('paper.journal.pdfAllowed') &&

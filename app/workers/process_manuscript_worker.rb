@@ -35,7 +35,7 @@ class ProcessManuscriptWorker
 
   def set_file_type(manuscript_attachment)
     path = URI.parse(manuscript_attachment.pending_url).path
-    extension = Pathname.new(path).extname.delete('.')
+    extension = Pathname.new(path).extname.delete('.').downcase
     manuscript_attachment.update_column(:file_type, extension)
   end
 

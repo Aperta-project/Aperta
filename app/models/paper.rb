@@ -635,6 +635,10 @@ class Paper < ActiveRecord::Base
     "aarx." + preprint_doi_article_number
   end
 
+  def front_matter?
+    !uses_research_article_reviewer_report?
+  end
+
   private
 
   def new_major_version!

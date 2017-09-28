@@ -92,15 +92,16 @@ module TahiStandardTasks
       reminder_notice(template_name: 'Review Reminder - Second Late', reviewer_report_id: reviewer_report_id)
     end
 
-    def thank_reviewer(reviewer_report:)
-      @paper = reviewer_report.paper
+    def thank_reviewer(reviewer_report_id:)
+      @reviewer_report = ReviewerReport.find(reviewer_report_id)
+      @paper = @reviewer_report.paper
       @journal = @paper.journal
       @letter_template = @journal.letter_templates.find_by(name: 'Reviewer Appreciation')
       begin
-        @letter_template.render(ReviewerReportScenario.new(reviewer_report), check_blanks: true)
+        @letter_template.render(ReviewerReportScenario.new(@reviewer_report), check_blanks: true)
         @subject = @letter_template.subject
         @body = @letter_template.body
-        @to = reviewer_report.user.email
+        @to = @reviewer_report.user.email
         mail(to: @to, subject: @subject)
       rescue BlankRenderFieldsError => e
         Bugsnag.notify(e)

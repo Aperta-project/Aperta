@@ -1,10 +1,12 @@
+# rubocop:disable Metrics/BlockLength
 require 'rails_helper'
 
 describe LetterTemplate do
-  describe 'validations' do
+  describe 'update validations' do
     [:body, :subject].each do |attr_key|
       it "requires a #{attr_key}" do
-        letter_template = LetterTemplate.new(attr_key => '')
+        letter_template = LetterTemplate.new(id: 1)
+        letter_template.valid?
         expect(letter_template).to_not be_valid
         expect(letter_template.errors[attr_key]).to include("can't be blank")
       end
@@ -15,8 +17,9 @@ describe LetterTemplate do
       letter_template.valid?
       expect(letter_template.errors[:scenario]).to be_empty
 
-      [nil, 'Blah', 'TemplateScenario'].each do |value|
-        letter_template = LetterTemplate.new(scenario: value)
+      ['Blah', 'TemplateScenario'].each do |value|
+        letter_template.scenario = value
+        letter_template.valid?
         expect(letter_template).to_not be_valid
         expect(letter_template.errors[:scenario]).to include('must name a subclass of TemplateScenario')
       end
@@ -38,6 +41,20 @@ describe LetterTemplate do
       expect(letter_template).to_not be_valid
       expect(letter_template.errors[:body])
         .to include("Variable '{{ email }' was not properly terminated with regexp: /\\}\\}/")
+    end
+  end
+
+  describe 'new template validations' do
+    it 'requires a name and a valid scenario subclass on first create' do
+      letter_template = LetterTemplate.new(name: 'Test', scenario: 'ReviewerReportScenario')
+      letter_template.valid?
+      expect(letter_template).to_not be_valid
+
+      [:name, :scenario].each do |attr_key|
+        letter_template[attr_key] = nil
+        letter_template.valid?
+        expect(letter_template.errors[attr_key]).to include('This field is required')
+      end
     end
   end
 
@@ -87,3 +104,4 @@ describe LetterTemplate do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

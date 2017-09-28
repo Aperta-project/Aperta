@@ -170,7 +170,7 @@ class ReviewerReport < ActiveRecord::Base
   end
 
   def thank_reviewer
-    TahiStandardTasks::ReviewerMailer.thank_reviewer(reviewer_report: self).deliver_later
+    TahiStandardTasks::ReviewerMailer.thank_reviewer(reviewer_report_id: id).deliver_later
   end
 
   def cancel_reminders

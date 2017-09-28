@@ -8,12 +8,12 @@ moduleForComponent('choose-new-card', 'Integration | Component | choose new card
 });
 
 const phase = Ember.Object.create({ name: 'my phase' });
-const card = Ember.Object.create({ name: 'customized card', addable: true });
-const draftCard = Ember.Object.create({ name: 'customized draft card', addable: false });
+const card = Ember.Object.create({ title: 'workflow customized card', addable: true, workflow_only: true });
+const draftCard = Ember.Object.create({ title: 'customized draft card', addable: false });
 const save = sinon.spy();
 const close = sinon.spy();
 
-test('it shows three columns containing correct cards', function(assert) {
+test('it shows two columns containing correct cards', function(assert) {
   this.set('phase', phase);
   this.set('cards', [card, draftCard]);
   this.on('save', save);
@@ -34,24 +34,7 @@ test('it shows three columns containing correct cards', function(assert) {
 
   assert.textPresent('.author-task-cards label', 'author jtt');
   assert.textPresent('.staff-task-cards label', 'staff jtt');
-  assert.textPresent('.custom-cards label', 'customized card', 'the addable card is shown');
-  assert.textNotPresent('.custom-cards label', 'customized draft card', 'the non-addable card is not shown');
-});
-
-test('it shows message in custom cards column when there are no custom cards', function(assert) {
-  this.set('phase', phase);
-  this.on('save', save);
-  this.on('close', close);
-
-  this.render(hbs`
-    {{choose-new-card phase=phase
-                      journalTaskTypes=[]
-                      cards=[]
-                      isLoading=false
-                      onSave=(action 'save')
-                      close=(action 'close')}}`);
-
-  assert.textPresent('.custom-cards', 'No cards are available');
+  assert.textPresent('.staff-task-cards label', 'workflow customized card');
 });
 
 test('it makes call to save all selected cards', function(assert) {
@@ -78,7 +61,6 @@ test('it makes call to save all selected cards', function(assert) {
 
   // click add
   this.$('button.button-primary').click();
-
   assert.ok(save.calledWith(phase, [authorJournalTaskType, staffJournalTaskType, card]), 'Should call save action');
 });
 

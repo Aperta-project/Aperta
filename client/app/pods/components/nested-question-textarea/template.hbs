@@ -1,32 +1,25 @@
 {{#if displayContent}}
-  {{#if disabled}}
-    {{#if shouldDisplayQuestionText}}
-      <div class="{{textClassNames}} {{concat ident "-question-text"}}">
-        {{{questionText}}}
-      </div>
-    {{/if}}
+  {{#if shouldDisplayQuestionText}}
+    <div class="{{textClassNames}} {{concat ident "-question-text"}}">
+      {{{questionText}}}
+    </div>
+  {{/if}}
 
+  {{#if helpText}}
+    <ul class="question-help {{concat ident "-help-text"}}">{{{helpText}}}</ul>
+  {{/if}}
+
+  {{#if unwrappedHelpText}}
+    {{{unwrappedHelpText}}}
+  {{/if}}
+
+  {{#if disabled}}
     {{#if answer.value}}
       <div class="answer-text">{{{answer.value}}}</div>
     {{else}}
       <div class="answer-text no-answer">{{noResponseText}}</div>
     {{/if}}
-
   {{else}}
-    {{#if shouldDisplayQuestionText}}
-      <div class="{{textClassNames}} {{concat ident "-question-text"}}">
-        {{{questionText}}}
-      </div>
-    {{/if}}
-
-    {{#if helpText}}
-      <ul class="question-help {{concat ident "-help-text"}}">{{{helpText}}}</ul>
-    {{/if}}
-
-    {{#if unwrappedHelpText}}
-      {{{unwrappedHelpText}}}
-    {{/if}}
-
     {{rich-text-editor
       editorStyle=editorStyle
       data-editor=data-editor

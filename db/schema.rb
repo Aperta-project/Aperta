@@ -230,6 +230,7 @@ ActiveRecord::Schema.define(version: 20170926204952) do
     t.string   "content_type"
   end
 
+  add_index "card_contents", ["card_version_id"], name: "index_card_contents_on_card_version_id", using: :btree
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
   add_index "card_contents", ["lft"], name: "index_card_contents_on_lft", using: :btree
   add_index "card_contents", ["parent_id"], name: "index_card_contents_on_parent_id", using: :btree
@@ -297,6 +298,7 @@ ActiveRecord::Schema.define(version: 20170926204952) do
     t.datetime "updated_at",      null: false
   end
 
+  add_index "content_attributes", ["card_content_id"], name: "index_content_attributes_on_card_content_id", using: :btree
   add_index "content_attributes", ["name"], name: "index_content_attributes_on_name", using: :btree
   add_index "content_attributes", ["value_type"], name: "index_content_attributes_on_value_type", using: :btree
 
@@ -494,7 +496,7 @@ ActiveRecord::Schema.define(version: 20170926204952) do
   add_index "journals", ["doi_publisher_prefix", "doi_journal_prefix"], name: "unique_doi", unique: true, using: :btree
 
   create_table "letter_templates", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",       null: false
     t.string   "category"
     t.string   "to"
     t.string   "subject"
@@ -504,6 +506,8 @@ ActiveRecord::Schema.define(version: 20170926204952) do
     t.datetime "updated_at"
     t.string   "scenario"
   end
+
+  add_index "letter_templates", ["name", "journal_id"], name: "index_letter_templates_on_name_and_journal_id", unique: true, using: :btree
 
   create_table "manuscript_manager_templates", force: :cascade do |t|
     t.string   "paper_type"

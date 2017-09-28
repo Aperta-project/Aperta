@@ -162,4 +162,21 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     report.rescind_invitation!
     expect(report.scheduled_events.pluck(:state).uniq).to eq ['canceled']
   end
+
+  scenario 'Reviewer can upload attachments' do
+    create_reviewer_invitation(paper)
+    create_reviewer_report_task
+
+    Page.view_paper paper
+    paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
+
+    expect(page).to have_css('.attachment-manager')
+    expect(page).to have_content('UPLOAD FILE')
+
+    expect(DownloadAttachmentWorker).to receive(:perform_async)
+    file_path = Rails.root.join('spec', 'fixtures', 'about_turtles.docx')
+    attach_file 'file', file_path, visible: false
+
+    expect(page).to have_css('.attachment-item')
+  end
 end

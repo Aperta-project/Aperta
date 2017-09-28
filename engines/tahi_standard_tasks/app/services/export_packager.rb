@@ -21,7 +21,7 @@ class ExportPackager
     @zip_file ||= Tempfile.new('zip').tap do |f|
       Zip::OutputStream.open(f) do |package|
         add_figures(package)
-        add_cover_letters(package) if include_pdf?
+        add_cover_letters(package) if article_router_package?
         add_supporting_information(package)
         add_metadata(package)
         add_manuscript(package)

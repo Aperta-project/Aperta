@@ -75,6 +75,10 @@ module TahiStandardTasks
       "#{paper.manuscript_id}.zip"
     end
 
+    def router_package_filename
+      "aperta-cover-letter.zip"
+    end
+
     def manifest_filename
       fail_unless_manuscript_id
       "#{paper.manuscript_id}.man.json"
@@ -99,7 +103,7 @@ module TahiStandardTasks
         destination: destination,
         email_on_failure: staff_emails,
         file_io: packager.zip_file,
-        final_filename: package_filename,
+        final_filename: router_package_filename,
         filenames: packager.manifest.file_list,
         paper: paper,
         url: router_url,

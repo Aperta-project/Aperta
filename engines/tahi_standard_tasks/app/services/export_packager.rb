@@ -21,6 +21,7 @@ class ExportPackager
     @zip_file ||= Tempfile.new('zip').tap do |f|
       Zip::OutputStream.open(f) do |package|
         add_figures(package)
+        add_cover_letters(package)
         add_supporting_information(package)
         add_metadata(package)
         add_manuscript(package)
@@ -92,6 +93,14 @@ class ExportPackager
       add_file_to_package package,
                           figure.filename,
                           figure.file.read
+    end
+  end
+
+  def add_cover_letters(package)
+    @paper.cover_letter_files.each do |cover_letter|
+      add_file_to_package package,
+                          cover_letter.filename,
+                          cover_letter.file.read
     end
   end
 

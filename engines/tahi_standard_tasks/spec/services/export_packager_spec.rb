@@ -207,6 +207,25 @@ describe ExportPackager do
     end
   end
 
+  describe 'add_cover_letters' do
+    let(:attachment) do
+      double('attachment_model', filename: 'cover-letter.docx',
+                                 read: 'some bytes')
+    end
+    let(:question_attachment) { double(QuestionAttachment, filename: 'cover-letter.docx', file: attachment) }
+    before do
+      allow(paper).to receive(:cover_letter_files) { [question_attachment] }
+    end
+
+    it 'adds cover letter files to a zip' do
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
+
+      expect(zip_filenames(zip_io)).to include('cover-letter.docx')
+      contents = read_zip_entry(zip_io, 'cover-letter.docx')
+      expect(contents).to eq('some bytes')
+    end
+  end
+
   context 'a paper with supporting information' do
     let!(:figure_task) do
       paper.tasks.find_by_type('TahiStandardTasks::FigureTask')

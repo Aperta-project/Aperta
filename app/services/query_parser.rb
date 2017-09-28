@@ -141,6 +141,24 @@ class QueryParser < QueryLanguageParser
     end
   end
 
+  add_two_part_expression('TASK', 'IS UNASSIGNED') do |task, _|
+    table = join Task
+
+    table.grouping(table[:title].matches(task).and(table[:assigned_user_id].eq(nil))).or(
+        paper_table[:id].not_in(
+          Arel::Nodes::SqlLiteral.new(
+            Task.arel_table.project(:paper_id).where(Task.arel_table[:title].matches(task)).to_sql
+          )
+        )
+      )
+  end
+
+  add_two_part_expression('TASK', 'IS ASSIGNED TO') do |task, user_query|
+    table = join Task
+    user_ids = get_user_ids(user_query)
+    table[:title].matches(task).and(table[:assigned_user_id].in(user_ids))
+  end
+
   add_simple_expression('HAS TASK') do |task|
     table = join Task
     table[:title].matches(task)
@@ -219,7 +237,7 @@ class QueryParser < QueryLanguageParser
   end
 
   def get_user_ids(user_query)
-    if user_query == "me"
+    if user_query.downcase == "me"
       [@current_user.id]
     else
       User.fuzzy_search(user_query).pluck(:id)

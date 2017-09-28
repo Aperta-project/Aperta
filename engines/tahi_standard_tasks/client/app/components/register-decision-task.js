@@ -17,7 +17,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
 
   publishable: computed.and('submitted', 'uncompleted'),
   nonPublishable: computed.not('publishable'),
-  nonPublishableOrUnselected: computed('draftDecision.verdict', 'task.completed', function() {
+  nonPublishableOrUnselected: computed('draftDecision.verdict', 'task.completedProxy', function() {
     return this.get('nonPublishable') || !this.get('draftDecision.verdict');
   }),
 

@@ -437,7 +437,7 @@ class CommonTest(FrontEndTest):
       """
       current_env = os.getenv('WEBDRIVER_TARGET_URL', '')
       logging.info(current_env)
-      if current_env in ('https://www.aperta.tech', 'https://ieee.aperta.tech'):
+      if current_env in ('https://www.aperta.tech', 'https://aperta:ieeetest@ieee.aperta.tech'):
         return False
       pp_ff = PgSQL().query('SELECT active FROM feature_flags WHERE name = \'PREPRINT\';')[0][0]
       if not pp_ff:

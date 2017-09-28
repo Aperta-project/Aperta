@@ -31,7 +31,7 @@ export default Component.extend(ValidationErrorsMixin, {
   isOnlyEditableIfPaperEditable: alias('task.isOnlyEditableIfPaperEditable'),
 
   isEditableDueToPermissions: alias('editAbility.can'),
-  isEditableDueToTaskState: not('task.completed'),
+  isEditableDueToTaskState: not('task.completedProxy'),
 
   isEditable: and(
     'isEditableDueToPermissions',

@@ -23,10 +23,6 @@ class IhatJobResponse
     retval && retval[:url]
   end
 
-  def pdf?
-    outputs.present? && outputs.first[:file_type] == 'pdf'
-  end
-
   def job_state
     "Ihat job state for paper #{paper_id}: #{state}"
   end

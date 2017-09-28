@@ -218,7 +218,7 @@ describe ExportPackager do
     end
 
     it 'adds cover letter files to a zip' do
-      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
+      zip_io = ExportPackager.create_zip(paper, destination: 'not-apex')
 
       expect(zip_filenames(zip_io)).to include('cover-letter.docx')
       contents = read_zip_entry(zip_io, 'cover-letter.docx')

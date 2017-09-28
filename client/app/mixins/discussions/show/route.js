@@ -54,7 +54,16 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   setupController(controller, model) {
     let discussionRouteName = this.get('topicsBasePath');
     const discussionModel = this.modelFor(discussionRouteName);
-    controller.set('atMentionableStaffUsers', discussionModel.atMentionableStaffUsers);
+    const mentionableStaffUsers = discussionModel.atMentionableStaffUsers;
+    if(typeof mentionableStaffUsers === typeof function(){}) {
+      discussionModel.atMentionableStaffUsers()
+        .then(promise => promise)
+        .then(promises => Ember.RSVP.all(promises).then(res => controller.set('atMentionableStaffUsers', res)));
+    } else {
+      controller.set('atMentionableStaffUsers', mentionableStaffUsers);
+    }
+    
+    // console.log('atMentionableStaffUsers', discussionModel.atMentionableStaffUsers);
     controller.set('validationErrors', {});
     this._super(controller, model);
     this._setupInProgressComment(controller, model);

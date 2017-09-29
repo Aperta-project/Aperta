@@ -12,8 +12,8 @@ machine:
   environment:
     RAILS_ENV: test
     DATABASE_URL: postgres://ubuntu:@127.0.0.1:5432/circle_test
-    FIREFOX_URL: https://ayera.dl.sourceforge.net/project/ubuntuzilla/mozilla/apt/pool/main/f/firefox-mozilla-build/firefox-mozilla-build_54.0.1-0ubuntu1_amd64.deb
-    FF_FILE: ff/firefox-mozilla-build_54.0.1-0ubuntu1_amd64.deb
+    FIREFOX_URL: https://launchpad.net/~ubuntu-mozilla-security/+archive/ubuntu/ppa/+build/12730505/+files/firefox_54.0+build3-0ubuntu0.14.04.1_amd64.deb
+    FF_FILE: ff/firefox_54.0+build3-0ubuntu0.14.04.1_amd64.deb
 
 ## Customize dependencies
 dependencies:
@@ -28,7 +28,7 @@ dependencies:
     - gem install bundler -v '1.15.3'
     - bundle config --global jobs 7
     - bundle config --global without staging:production
-    - "[ -f $FF_FILE ] || wget $FIREFOX_URL -P ff"
+    - "[ -f $FF_FILE ] || wget $FIREFOX_URL -qP ff"
     - sudo dpkg -i $FF_FILE
 
   override:

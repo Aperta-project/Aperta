@@ -25,17 +25,16 @@ class CardsController < ApplicationController
   def sendback_email
     body = ""
     body.concat params[:intro]
-    body.concat "<br><ul>"
+    body.concat "<br><ol>"
     params[:sendbacks].each { |sendback| body.concat "<li>#{sendback}</li>" }
-    body.concat "</ul><br>"
+    body.concat "</ol><br>"
     body.concat params[:footer]
 
-    from = "blah blah"
     subject = "Send back blah blah"
     to = "blah blah"
 
-    SendbackMailer.send_email(from: from, subject: subject, body: body, to: to).deliver_later
-    render json: {}, status: 404
+    SendbackMailer.send_email(subject: subject, body: body, to: to).deliver_later
+    render json: {}, status: 204
   end
 
   def show

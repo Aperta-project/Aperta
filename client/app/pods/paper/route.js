@@ -81,7 +81,7 @@ export default AuthorizedRoute.extend(PopoutParentRouteMixin,{
       let path = currentRoute.replace(/index$/, 'discussions.' + options.route);
       if (!options.discussionId) {
         this.transitionTo(path);
-      }else{
+      } else {
         this.transitionTo(path, options.discussionId);
       }
     },

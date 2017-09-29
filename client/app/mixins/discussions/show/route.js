@@ -54,16 +54,24 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   setupController(controller, model) {
     let discussionRouteName = this.get('topicsBasePath');
     const discussionModel = this.modelFor(discussionRouteName);
+    /*
+    *  discussionModel here is actually a paper. The 'atMentionableStaffUsers' function in th paper model returns a promise when called.
+    * This mixin is used for both the discussion pane on the manuscript view and the one in the pop out.
+    * For the manuscript view, there is an intermediary route (client/app/mixins/discussions/route.js) 
+    * that resolves the promise returned when you call paper.atMentionableStaffUsers()
+    * and passes the resolved promise to this mixin. This doesn't happen for the pop out view.
+    * So when  discussionModel.atMentionableStaffUsers is called here it just returns the function declared in the paper model.
+    * This is why the code below has to account for both occurences.
+    */
     const mentionableStaffUsers = discussionModel.atMentionableStaffUsers;
-    if(typeof mentionableStaffUsers === typeof function(){}) {
+    if(typeof mentionableStaffUsers === 'function') {
       discussionModel.atMentionableStaffUsers()
-        .then(promise => promise)
-        .then(promises => Ember.RSVP.all(promises).then(res => controller.set('atMentionableStaffUsers', res)));
+        .then(promise => Ember.RSVP.all(promise))
+        .then(staffUsers => controller.set('atMentionableStaffUsers', staffUsers));
     } else {
       controller.set('atMentionableStaffUsers', mentionableStaffUsers);
     }
     
-    // console.log('atMentionableStaffUsers', discussionModel.atMentionableStaffUsers);
     controller.set('validationErrors', {});
     this._super(controller, model);
     this._setupInProgressComment(controller, model);

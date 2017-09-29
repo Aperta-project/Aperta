@@ -53,7 +53,7 @@ class ReviewerReport < ActiveRecord::Base
     state :submitted
 
     event(:accept_invitation,
-          after_commit: [:set_due_datetime],
+          after_commit: [:set_due_datetime, :thank_reviewer],
           guards: [:invitation_accepted?]) do
       transitions from: :invitation_not_accepted, to: :review_pending
     end
@@ -170,7 +170,13 @@ class ReviewerReport < ActiveRecord::Base
   end
 
   def thank_reviewer
-    TahiStandardTasks::ReviewerMailer.thank_reviewer(reviewer_report_id: id).deliver_later
+    mailer = TahiStandardTasks::ReviewerMailer
+    case state
+    when 'submitted'
+      mailer.thank_reviewer(reviewer_report_id: id).deliver_later
+    when 'review_pending'
+      mailer.delay.welcome_reviewer(assignee_id: user.id, paper_id: paper.id)
+    end
   end
 
   def cancel_reminders

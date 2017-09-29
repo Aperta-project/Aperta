@@ -3,7 +3,7 @@ class SendbackMailer < ApplicationMailer
   default from: Rails.configuration.from_email
   layout "mailer"
 
-  def send_email(from:, subject:, body:, to:)
+  def send_email(subject:, body:, to:)
     @email_body = body.gsub("\n", '<br>')
     @plain_text_body = Nokogiri::HTML(body.gsub('<br>', "\n\n")).text
     mail(to: to, subject: subject)

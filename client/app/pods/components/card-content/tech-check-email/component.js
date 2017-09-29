@@ -46,18 +46,22 @@ export default Ember.Component.extend({
 
 
   sendbacksWithReasons: Ember.computed(function() {
-    return this.get('sendbacks').filter(function(sendback) {
+    return this.get('sendbacks').filter((sendback) => {
       const sendbackCheckbox = sendback.get('children')[0];
       const sendbackReason = sendback.get('children')[2];
+      const owner = this.get('owner');
 
-      return sendbackCheckbox.get('answers.lastObject.value') &&
-        sendbackReason.get('answers.lastObject.value');
+
+      return sendbackCheckbox.answerForOwner(owner).get('value') &&
+        sendbackReason.answerForOwner(owner).get('value');
     });
   }),
 
   sendbackReasons: Ember.computed('sendbacksWithReasons', function () {
-    return this.get('sendbacksWithReasons').map(function(sendback) {
-      return sendback.get('children')[2].get('answers.lastObject.value');
+    return this.get('sendbacksWithReasons').map((sendback) => {
+      const owner = this.get('owner');
+      const reason = sendback.get('children')[2];
+      return reason.answerForOwner(owner).get('value');
     });
   }),
 

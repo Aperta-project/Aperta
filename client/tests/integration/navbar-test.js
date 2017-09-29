@@ -116,7 +116,7 @@ test('(200 response) with permission can see Paper Tracker link', function(asser
     Factory.createPermission('Journal', 1, ['view_paper_tracker']);
   });
   visit('/');
-  waitForElement('#nav-paper-tracker');
+  // waitForElement('#nav-paper-tracker');
   andThen(function() {
     assert.elementFound('#nav-paper-tracker');
   });

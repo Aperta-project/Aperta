@@ -55,7 +55,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
     let discussionRouteName = this.get('topicsBasePath');
     const discussionModel = this.modelFor(discussionRouteName);
     /*
-    *  discussionModel here is actually a paper. The 'atMentionableStaffUsers' function in th paper model returns a promise when called.
+    *  discussionModel here is actually a paper. The 'atMentionableStaffUsers' function in the paper model returns a promise when called.
     * This mixin is used for both the discussion pane on the manuscript view and the one in the pop out.
     * For the manuscript view, there is an intermediary route (client/app/mixins/discussions/route.js) 
     * that resolves the promise returned when you call paper.atMentionableStaffUsers()

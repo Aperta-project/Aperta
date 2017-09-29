@@ -1,13 +1,16 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNames: ['reviewer-invitation-feedback'],
+  classNames: ['invitation-feedback'],
 
   //init with (data):
   invitation: null,
 
   //init with (actions):
   decline: null,
+
+  academicEditor: Ember.computed.readOnly('invitation.academicEditor'),
+  reviewer: Ember.computed.readOnly('invitation.reviewer'),
 
   actions: {
     updateDeclineReason(contents) {

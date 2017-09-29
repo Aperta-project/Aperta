@@ -53,7 +53,7 @@ class InvitationOverlay < Page
   end
 
   def all_declined_waiting_feedback_invitations
-    all('.reviewer-invitation-feedback')
+    all('.invitation-feedback')
   end
 
   def close_overlay

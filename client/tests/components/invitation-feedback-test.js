@@ -4,8 +4,8 @@ import hbs from 'htmlbars-inline-precompile';
 import {setRichText} from 'tahi/tests/helpers/rich-text-editor-helpers';
 
 moduleForComponent(
-  'reviewer-invitation-feedback',
-  'Integration | Component | reviewer invitation feedback',
+  'invitation-feedback',
+  'Integration | Component | invitation feedback',
   {integration: true,
     beforeEach: function() {
       this.set('decline', () => {return;});
@@ -16,7 +16,7 @@ moduleForComponent(
       }));
     }});
 
-let template = hbs`{{reviewer-invitation-feedback
+let template = hbs`{{invitation-feedback
                       invitation=invitation
                       decline=(action decline invitation)
                       }}`;
@@ -26,10 +26,36 @@ let setThenTest = function (field, text, assertion) {
   Ember.run.next(assertion);
 };
 
-test('displays paper title', function(assert){
-  assert.expect(1);
+test('displays an appropriate heading for AEs', function(assert) {
+  this.get('invitation').set('academicEditor', true);
   this.render(template);
-  assert.textPresent('.feedback-invitation-title', 'Awesome Paper!');
+  assert.textPresent('.feedback-header', 'Academic Editor Invitation Declined');
+});
+
+test('displays an appropriate heading for Reviewers', function(assert) {
+  this.get('invitation').set('reviewer', true);
+  this.render(template);
+  assert.textPresent('.feedback-header', 'Reviewer Invitation Declined');
+});
+
+test('displays an appropriate alternative suggestion label for AEs', function(assert) {
+  this.get('invitation').set('academicEditor', true);
+  this.render(template);
+  assert.textPresent(
+    '.feedback-alternative-suggestions',
+    'We would value your suggestions of alternative Academic Editors for this manuscript. ' +
+    'Please provide editors’ names, institutions, and email addresses if known.'
+  );
+});
+
+test('displays an appropriate alternative suggestion label for reviewers', function(assert) {
+  this.get('invitation').set('reviewer', true);
+  this.render(template);
+  assert.textPresent(
+    '.feedback-alternative-suggestions',
+    'We would value your suggestions of alternative reviewers for this manuscript. ' +
+    'Please provide reviewers\' names, institutions, and email addresses if known.'
+  );
 });
 
 test('can set decline reason', function(assert) {
@@ -54,11 +80,11 @@ test('The form is constructed with the expected markup', function(assert){
   this.render(template);
 
   assert.selectorHasClasses(
-    '.reviewer-feedback-buttons > .reviewer-decline-feedback',
+    '.feedback-buttons > .decline-feedback',
     ['button-link', 'button--green']
   );
   assert.selectorHasClasses(
-    '.reviewer-feedback-buttons > .reviewer-send-feedback',
+    '.feedback-buttons > .send-feedback',
     ['button-secondary', 'button--green']
   );
 });
@@ -75,7 +101,7 @@ test('can respond "no thank you" to giving feedback', function(assert){
   });
 
   this.render(template);
-  this.$('.reviewer-feedback-buttons > .reviewer-decline-feedback').click();
+  this.$('.feedback-buttons > .decline-feedback').click();
 });
 
 test('can Send Feedback', function(assert){
@@ -86,13 +112,15 @@ test('can Send Feedback', function(assert){
 
     // assert the values are set on the invitation
     Ember.run.next(() => {
-      assert.equal(invitation.get('declineReason'),
-                  '<p>some value</p>',
-                  'Expected decline reason to be our value'
+      assert.equal(
+        invitation.get('declineReason'),
+        '<p>some value</p>',
+        'Expected decline reason to be our value'
       );
-      assert.equal(invitation.get('reviewerSuggestions'),
-                  '<p>some other value</p>',
-                  'Expected decline reason to be our other value'
+      assert.equal(
+        invitation.get('reviewerSuggestions'),
+        '<p>some other value</p>',
+        'Expected decline reason to be our other value'
       );
     });
   });
@@ -102,5 +130,5 @@ test('can Send Feedback', function(assert){
   setRichText('declineReason', 'some value');
   setRichText('reviewerSuggestions', 'some other value');
 
-  this.$('.reviewer-feedback-buttons > .reviewer-send-feedback').click();
+  this.$('.feedback-buttons > .send-feedback').click();
 });

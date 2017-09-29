@@ -1,0 +1,86 @@
+<main id="main-content" class="main-content" role="main">
+  <div class="main-content-section">
+    <div class="base-screen">
+      <div class="task-main-content">
+        <h1 class="overlay-body-title">Review Your Submission</h1>
+        <p>Please verify that the metadata you entered is correct before completing your submission.</p>
+        <table class="table table-hover">
+          <tfoot>
+          <tr>
+            <td>
+              {{#link-to 'paper.index'}}
+                <button name="task_completed" class="task-completed task-not-completed button-secondary button--green">
+                  Make changes
+                </button>
+              {{/link-to}}
+            </td>
+            <td>{{flash-messages}}</td>
+            <td>
+              <button name="task_completed" class="task-completed task-not-completed button-primary button--green pull-right" {{action "submit"}}>
+                Submit
+              </button>
+            </td>
+          </tr>
+          </tfoot>
+          <tbody>
+          <tr>
+            <th>Preprint</th>
+            <td>
+              <dl>
+                <dt>Would you like to post this paper as a preprint?</dt>
+                <dd><mark><b>Yes</b> -- I want to post this paper to the preprint server.</mark></dd>
+              </dl>
+            </td>
+          </tr>
+          <tr>
+            <th>Title</th>
+            <td>
+              <p>Septins restrict inflammation and protect zebrafish larvae from&nbsp;<em>Shigella</em>&nbsp;infection</p>
+            </td>
+          </tr>
+          <tr>
+            <th>Authors</th>
+            <td>
+              <p>Maria J. Mazon-Moya, Alexandra R. Willis, Vincenzo Torraca, Laurent Boucontet, Avinash R. Shenoy, Emma Colucci-Guyon, Serge Mostow</p>
+            </td>
+          </tr>
+          <tr>
+            <th>Abstract</th>
+            <td>
+              <p><em>Shigella flexneri</em>, a Gram-negative enteroinvasive pathogen, causes inflammatory destruction of the human colonic epithelium. Infection by&nbsp;<em>S</em>.&nbsp;<em>flexneri</em>&nbsp;has been well-studied&nbsp;<em>in vitro</em>&nbsp;and is a paradigm for bacterial interactions with the host immune system. Recent work has revealed that components of the cytoskeleton have important functions in innate immunity and inflammation control. Septins, highly conserved cytoskeletal proteins, have emerged as key players in innate immunity to bacterial infection, yet septin function&nbsp;<em>in vivo</em>&nbsp;is poorly understood. Here, we use&nbsp;<em>S</em>.&nbsp;<em>flexneri</em>&nbsp;infection of zebrafish (<em>Danio rerio</em>) larvae to study&nbsp;<em>in vivo</em>&nbsp;the role of septins in inflammation and infection control. We found that depletion of Sept15 or Sept7b, zebrafish orthologs of human SEPT7, significantly increased host susceptibility to bacterial infection. Live-cell imaging of Sept15-depleted larvae revealed increasing bacterial burdens and a failure of neutrophils to control infection. Strikingly, Sept15-depleted larvae present significantly increased activity of Caspase-1 and more cell death upon&nbsp;<em>S</em>.&nbsp;<em>flexneri</em>&nbsp;infection. Dampening of the inflammatory response with anakinra, an antagonist of interleukin-1 receptor (IL-1R), counteracts Sept15 deficiency&nbsp;<em>in vivo</em>&nbsp;by protecting zebrafish from hyper-inflammation and&nbsp;<em>S</em>.&nbsp;<em>flexneri</em>&nbsp;infection. These findings highlight a new role for septins in host defence against bacterial infection, and suggest that septin dysfunction may be an underlying factor in cases of hyper-inflammation.</p>
+            </td>
+          </tr>
+          <tr>
+            <th>Manuscript</th>
+            <td>
+              <p><a class="" data-ember-action="4149"><i class="fa fa-file-pdf-o"></i> Download PDF</a> </p>
+              <p class="muted">Note: Figures and Supplemental Files are included in the PDF.</p>
+            </td>
+          </tr>
+          <tr>
+            <th>
+              Competing interests
+            </th>
+            <td>
+              <dl>
+                <dt>Do any authors of this manuscript have competing interests (as described in the PLOS Policy on Declaration and Evaluation of Competing Interests)?</dt>
+                <dd>- No</dd>
+              </dl>
+            </td>
+          </tr>
+          <tr>
+            <th>Financial disclosure</th>
+            <td>
+              <dl>
+                <dt>Did any of the authors receive specific funding for this work? </dt>
+                <dd>- No</dd>
+              </dl>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+{{outlet}}

@@ -30,7 +30,7 @@
 
 {{#overlay-fullscreen visible=showPaperSubmitOverlay
    outAnimationComplete=(action "hidePaperSubmitOverlay")
-   overlayClass="overlay--blue paper-submit-overlay"
+   overlayClass="paper-submit-overlay"
    as |overlay|}}
   {{paper-submit model=model
     close=(action overlay.animateOut)}}

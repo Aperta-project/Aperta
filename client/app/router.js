@@ -42,6 +42,7 @@ Router.map(function() {
       this.route('index', { path: '/:task_id' });
       this.route('version', { path: '/:task_id/version' });
     });
+    this.route('submit');
   });
 
   this.route('discussions', function() {

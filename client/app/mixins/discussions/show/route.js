@@ -66,7 +66,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
     const mentionableStaffUsers = discussionModel.atMentionableStaffUsers;
     if(typeof mentionableStaffUsers === 'function') {
       discussionModel.atMentionableStaffUsers()
-        .then(promise => Ember.RSVP.all(promise))
+        .then(userPromises => Ember.RSVP.all(userPromises))
         .then(staffUsers => controller.set('atMentionableStaffUsers', staffUsers));
     } else {
       controller.set('atMentionableStaffUsers', mentionableStaffUsers);

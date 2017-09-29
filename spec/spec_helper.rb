@@ -14,7 +14,7 @@ RSpec.configure do |config|
   config.display_try_failure_messages = true
 
   config.around :each, type: :feature do |ex|
-    ex.run_with_retry retry: 3
+    ex.run_with_retry retry: 2
   end
 
   config.color = true

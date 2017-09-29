@@ -50,12 +50,13 @@ const createTask = function (opts={}) {
 };
 
 test('rendering a list of tasks', function(assert) {
-  assert.expect(5);
+  assert.expect(4);
 
   const paper =  Ember.Object.create({
     tasks: [
-      createTask({ type: 'bulbasaur', isSubmissionTask: true, viewable: false }),
-      createTask({ type: 'charmander', assignedToMe: true, viewable: true }),
+      createTask({ type: 'bulbasaur',  viewable: false }),
+      createTask({ type: 'mankey', isSubmissionTask: true, assignedToMe: false, viewable: true }),
+      createTask({ type: 'charmander', isSubmissionTask: true, assignedToMe: true, viewable: true }),
     ]
   });
   this.set('paper', paper);
@@ -66,9 +67,10 @@ test('rendering a list of tasks', function(assert) {
 
   this.render(hbs`{{paper-sidebar paper=paper}}`);
 
-  assert.equal(this.$('.task-disclosure').length, 2);
-  assert.ok(this.$('.task-disclosure').eq(0).hasClass(`task-type-charmander`));
-  assert.ok(!this.$('.task-disclosure-heading').eq(0).hasClass(`disabled`));
-  assert.ok(this.$('.task-disclosure').eq(1).hasClass(`task-type-bulbasaur`));
-  assert.ok(this.$('.task-disclosure-heading').eq(1).hasClass(`disabled`));
+
+  assert.equal(this.$('.task-disclosure').length, 2, 'tasks that are not viewable are filtered out');
+  assert.ok(this.$('.task-disclosure').eq(0).hasClass(`task-type-charmander`), 'charmander comes first in the sort order');
+  assert.notOk(this.$('.task-disclosure-heading').eq(0).hasClass(`disabled`));
+
+  assert.elementNotFound('.task-disclosure.task-type-bulbasaur');
 });

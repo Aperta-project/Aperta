@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import EscapeListenerMixin from 'tahi/mixins/escape-listener';
 import { PropTypes } from 'ember-prop-types';
-import { task } from 'ember-concurrency';
 
 export default Ember.Component.extend(EscapeListenerMixin, {
   propTypes: {

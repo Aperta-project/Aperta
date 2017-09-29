@@ -22,6 +22,22 @@ class CardsController < ApplicationController
     respond_with Card.where(journal_id: journal_ids)
   end
 
+  def sendback_email
+    body = ""
+    body.concat params[:intro]
+    body.concat "<br><ul>"
+    params[:sendbacks].each { |sendback| body.concat "<li>#{sendback}</li>" }
+    body.concat "</ul><br>"
+    body.concat params[:footer]
+
+    from = "blah blah"
+    subject = "Send back blah blah"
+    to = "blah blah"
+
+    SendbackMailer.send_email(from: from, subject: subject, body: body, to: to).deliver_later
+    render json: {}, status: 404
+  end
+
   def show
     requires_user_can(:view, card)
     respond_with card

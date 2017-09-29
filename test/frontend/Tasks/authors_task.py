@@ -23,13 +23,13 @@ class AuthorsTask(BaseTask):
 
     # Locators - Instance members
     self._authors_text = (By.CSS_SELECTOR,
-                          'div.authors-task div.task-disclosure-body div.task-main-content p')
+                          'div.task-main-content p')
     self._authors_text_link = (
-        By.CSS_SELECTOR, 'div.authors-task div.task-disclosure-body div.task-main-content p > a')
+        By.CSS_SELECTOR, 'div.task-main-content p > a')
     self._authors_note = (By.CSS_SELECTOR,
-                          'div.authors-task div.task-disclosure-body div.task-main-content p + p')
+                          'div.task-main-content p + p')
     self._add_new_author_btn = (
-        By.CSS_SELECTOR, 'div.authors-task div.task-disclosure-body div.task-main-content button')
+        By.ID, 'add-new-author-button')
     self._add_individual_author_link = (By.ID, 'add-new-individual-author-link')
     self._add_group_author_link = (By.ID, 'add-new-group-author-link')
 

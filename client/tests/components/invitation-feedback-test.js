@@ -26,12 +26,6 @@ let setThenTest = function (field, text, assertion) {
   Ember.run.next(assertion);
 };
 
-test('displays paper title', function(assert){
-  assert.expect(1);
-  this.render(template);
-  assert.textPresent('.feedback-invitation-title', 'Awesome Paper!');
-});
-
 test('displays an appropriate heading for AEs', function(assert) {
   this.get('invitation').set('academicEditor', true);
   this.render(template);

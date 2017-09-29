@@ -76,7 +76,8 @@ module TahiStandardTasks
     end
 
     def router_package_filename
-      "aperta-cover-letter.zip"
+      fail_unless_manuscript_id
+      "aperta-cover-letter-#{paper.manuscript_id}.zip"
     end
 
     def manifest_filename

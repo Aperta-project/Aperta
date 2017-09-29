@@ -23,6 +23,7 @@ export default Ember.Component.extend({
   classNames: ['card-content-file-uploader'],
 
   store: Ember.inject.service(),
+  cardEvent: Ember.inject.service(),
 
   task: null,
   paper: computed.reads('task.paper'),
@@ -81,7 +82,9 @@ export default Ember.Component.extend({
           s3Url: s3Url,
           paper: this.get('task.paper')
         })
-        .save();
+        .save().then(() => {
+          this.get('cardEvent').trigger('onPaperFileUploaded', this.get('attachmentType'));
+        });
     },
 
     updateFile(s3Url, file) {

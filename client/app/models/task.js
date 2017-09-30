@@ -42,6 +42,7 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
 
   body: DS.attr(),
   completed: DS.attr('boolean'),
+  completedProxy: DS.attr('boolean'),
   decisions: Ember.computed.alias('paper.decisions'),
   isMetadataTask: DS.attr('boolean'),
   isSnapshotTask: DS.attr('boolean'),

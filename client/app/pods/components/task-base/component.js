@@ -26,13 +26,12 @@ export default Component.extend(ValidationErrorsMixin, {
     this._super(...arguments);
     this.set('editAbility', this.get('can').build('edit', this.get('task')));
   },
-
   isMetadataTask: alias('task.isMetadataTask'),
   isSubmissionTask: alias('task.isSubmissionTask'),
   isOnlyEditableIfPaperEditable: alias('task.isOnlyEditableIfPaperEditable'),
 
   isEditableDueToPermissions: alias('editAbility.can'),
-  isEditableDueToTaskState: not('task.completed'),
+  isEditableDueToTaskState: not('task.completedProxy'),
 
   isEditable: and(
     'isEditableDueToPermissions',

@@ -196,12 +196,14 @@ describe XmlCardLoader do
                 <content content-type="display-children">
                   <content ident="first-tech-check-box" value-type="boolean" content-type="check-box" default-answer-value="false">
                     <text>Because REASONS!</text>
-                    <content ident='potato' value-type='text' content-type="paragraph-input" default-answer-value="I told you, Mr. Balrog!  You shall not PASS!">
+                    <content ident='potato' value-type='text' content-type="paragraph-input">
+                      <default-answer-value>I told you, Mr. Balrog!  You shall not PASS!</default-answer-value>
                     </content>
                   </content>
                   <content ident='second-tech-check-box' value-type='boolean' content-type="check-box" default-answer-value="false">
                     <text>Because more REASONS!</text>
-                    <content ident='potatoe' value-type='text' content-type="paragraph-input" default-answer-value="I really mean it!  You shall not PASS!">
+                    <content ident='potatoe' value-type='text' content-type="paragraph-input">
+                      <default-answer-value>I really mean it!  You shall not PASS!</default-answer-value>
                     </content>
                   </content>
                 </content>
@@ -308,7 +310,8 @@ describe XmlCardLoader do
         let(:text) { Faker::Lorem.sentence }
         let(:content1) do
           <<-XML
-            <content content-type='short-input' value-type='text' default-answer-value="foo" required-field="false">
+            <content content-type='short-input' value-type='text' required-field="false">
+              <default-answer-value>foo</default-answer-value>
               <text>#{text}</text>
             </content>
           XML

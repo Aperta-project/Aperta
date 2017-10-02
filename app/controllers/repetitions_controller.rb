@@ -28,7 +28,7 @@ class RepetitionsController < ApplicationController
   private
 
   def task
-    @task ||= Task.find(repetition_params[:task_id])
+    @task ||= Task.find(params[:task_id] || repetition_params[:task_id])
   end
 
   def card_content

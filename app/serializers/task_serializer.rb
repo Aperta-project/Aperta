@@ -70,6 +70,7 @@ class TaskSerializer < ActiveModel::Serializer
       comments: task_comments_path(object),
       participations: task_participations_path(object),
       nested_questions: task_nested_questions_path(object),
+      repetitions: task_repetitions_path(object),
       answers: answers_for_owner_path(owner_id: object.id, owner_type: object.class.name.underscore),
       nested_question_answers: task_nested_question_answers_path(object),
       snapshots: task_snapshots_path(object)

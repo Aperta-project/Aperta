@@ -44,13 +44,11 @@ export default Ember.Component.extend({
     return ret;
   }),
 
-
   sendbacksWithReasons: Ember.computed(function() {
     return this.get('sendbacks').filter((sendback) => {
       const sendbackCheckbox = sendback.get('children')[0];
       const sendbackReason = sendback.get('children')[2];
       const owner = this.get('owner');
-
 
       return sendbackCheckbox.answerForOwner(owner).get('value') &&
         sendbackReason.answerForOwner(owner).get('value');
@@ -65,17 +63,27 @@ export default Ember.Component.extend({
     });
   }),
 
-  emailIntroText: Ember.computed(function () {
-    const introEditor = this.get('content.children')[0];
-    return introEditor.get('answers.lastObject.value');
+  intro: Ember.computed(function () {
+    const editors = this.get('content.children');
+    const intro = editors.filterBy('ident', 'tech-check-email--email-intro')[0];
+    return intro.answerForOwner(this.get('owner'));
   }),
 
-  emailFooterText: Ember.computed(function () {
-    const footerEditor = this.get('content.children')[1];
-    return footerEditor.get('answers.lastObject.value');
+  footer: Ember.computed(function () {
+    const editors = this.get('content.children');
+    const footer = editors.filterBy('ident', 'tech-check-email--email-footer')[0];
+    return footer.answerForOwner(this.get('owner'));
   }),
 
-  textObserver: Ember.observer('intro.answers.lastObject.value', 'footer.answers.lastObject.value', function() {
+  emailIntroText: Ember.computed('intro.value', function () {
+    return this.get('intro.value');
+  }),
+
+  emailFooterText: Ember.computed('footer.value', function () {
+    return this.get('footer.value');
+  }),
+
+  textObserver: Ember.observer('emailFooterText', 'emailIntroText', function() {
     this.set('showEmailPreview', false);
   }),
 
@@ -94,6 +102,5 @@ export default Ember.Component.extend({
       const url = `/api/cards/${this.get('owner.id')}/sendback_email`;
       this.get('restless').post(url, data);
     },
-  },
-
+  }
 });

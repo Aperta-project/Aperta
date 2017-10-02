@@ -6,6 +6,8 @@ export default Ember.Component.extend({
   restless: Ember.inject.service('restless'),
   flash: Ember.inject.service('flash'),
 
+  preview: null,
+
   didInsertElement() {
     $(document).on('focus', '.card-content-sendback-reason textarea', () => {
       this.set('showEmailPreview', false);
@@ -88,8 +90,19 @@ export default Ember.Component.extend({
   }),
 
   actions: {
-    showPreview() {
-      this.set('showEmailPreview', true);
+    generatePreview() {
+      const url = `/api/tasks/${this.get('owner.id')}/sendback_preview`;
+
+      let data = {
+        intro: this.get('emailIntroText'),
+        sendbacks: this.get('sendbackReasons'),
+        footer: this.get('emailFooterText')
+      };
+
+      this.get('restless').post(url, data).then((data)=> {
+        this.set('preview', data.x);
+        this.set('showEmailPreview', true);
+      });
     },
 
     sendChangeRequestEmail() {

@@ -63,7 +63,7 @@ export default DS.Model.extend({
   childrenSort: ['order:asc'],
   children: Ember.computed.sort('unsortedChildren', 'childrenSort'),
 
-  visitDescendants: function(task, parentRepetition, f) {
+  visitDescendants(task, parentRepetition, f) {
     let repetitions = this.get('repetitions').filterBy('parent', parentRepetition).filterBy('task.id', task.get('id'));
     if(repetitions.length) {
       // we're a repeater, so now start using our repetitions.
@@ -83,6 +83,20 @@ export default DS.Model.extend({
         this.get('children').forEach((child) => child.visitDescendants(task, null, f));
         f(this, null);
     }
+  },
+
+  destroyDescendants(owner, parentRepetition) {
+    this.visitDescendants(owner, parentRepetition, (childCC, repetition) => {
+      if(repetition) {
+        childCC.get('answers').filterBy('owner', owner).filterBy('repetition', repetition).invoke('destroyRecord');
+
+        if(childCC.get('repetitions').includes(repetition)) {
+          repetition.destroyRecord();
+        }
+      } else {
+        childCC.get('answers').filterBy('owner', owner).invoke('destroyRecord');
+      }
+    });
   },
 
   isRequired: Ember.computed.equal('requiredField', true),

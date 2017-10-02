@@ -33,7 +33,8 @@ export default Ember.Component.extend({
 
     let owner = this.get('owner');
     let content = this.get('content');
+    let repetition = this.get('repetition');
 
-    content.visitDescendants(child => child.get('answers').filterBy('owner', owner).invoke('destroyRecord'));
+    content.destroyDescendants(owner, repetition);
   }),
 });

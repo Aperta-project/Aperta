@@ -80,6 +80,7 @@ export default Ember.Component.extend({
 
       let owner = this.get('owner');
       let content = this.get('content');
+      let repetition = this.get('repetition');
 
       let branchToPrune;
       if(previousValue === null) {
@@ -92,17 +93,7 @@ export default Ember.Component.extend({
         return; // the else branch doesn't exist, so there's no answers to delete.
       }
 
-      branchToPrune.visitDescendants(owner, this.get('repetition'), (childCC, repetition) => {
-        if(repetition) {
-          childCC.get('answers').filterBy('owner', owner).filterBy('repetition', repetition).invoke('destroyRecord');
-
-          if(childCC.get('repetitions').includes(repetition)) {
-            repetition.destroyRecord();
-          }
-        } else {
-          childCC.get('answers').filterBy('owner', owner).invoke('destroyRecord');
-        }
-      });
+      branchToPrune.destroyDescendants(owner, repetition);
     });
   }),
 

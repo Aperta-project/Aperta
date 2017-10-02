@@ -9,6 +9,18 @@ export default Ember.Controller.extend({
     'previousPublishingState', 'invited_for_full_submission'
   ),
 
+  paper: Ember.computed.alias('model'),
+
+  pdfDownloadLink: Ember.computed('paperid', function() {
+    return '/papers/' + this.get('paper.id') + '/download.pdf';
+  }),
+
+  versions: Ember.computed('versions.[]', function() {
+    const versions = this.get('paper.versionedTexts');
+    this.set('versions', versions);
+    return versions;
+  }),
+
   recordPreviousPublishingState: function () {
     this.set('previousPublishingState', this.get('model.publishingState'));
   },

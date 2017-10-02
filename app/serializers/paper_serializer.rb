@@ -23,6 +23,11 @@ class PaperSerializer < LitePaperSerializer
   include: true,
   serializer: CorrespondenceSerializer
 
+  has_many :authors,
+           embed: :ids,
+           include: true,
+           serializer: AuthorSerializer
+
   has_one :journal, embed: :id
   has_one :file, embed: :id, include: true, serializer: AttachmentSerializer
   has_one :sourcefile, embed: :id, include: true, serializer: AttachmentSerializer

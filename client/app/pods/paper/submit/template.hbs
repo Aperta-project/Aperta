@@ -35,46 +35,28 @@
           <tr>
             <th>Title</th>
             <td>
-              <p>Septins restrict inflammation and protect zebrafish larvae from&nbsp;<em>Shigella</em>&nbsp;infection</p>
+              <p>{{{model.displayTitle}}}</p>
             </td>
           </tr>
           <tr>
             <th>Authors</th>
             <td>
-              <p>Maria J. Mazon-Moya, Alexandra R. Willis, Vincenzo Torraca, Laurent Boucontet, Avinash R. Shenoy, Emma Colucci-Guyon, Serge Mostow</p>
+              <p>{{#each model.authors as |author|}}
+                  {{author.firstName}} {{author.lastName}}
+                {{/each}}</p>
             </td>
           </tr>
           <tr>
             <th>Abstract</th>
             <td>
-              <p><em>Shigella flexneri</em>, a Gram-negative enteroinvasive pathogen, causes inflammatory destruction of the human colonic epithelium. Infection by&nbsp;<em>S</em>.&nbsp;<em>flexneri</em>&nbsp;has been well-studied&nbsp;<em>in vitro</em>&nbsp;and is a paradigm for bacterial interactions with the host immune system. Recent work has revealed that components of the cytoskeleton have important functions in innate immunity and inflammation control. Septins, highly conserved cytoskeletal proteins, have emerged as key players in innate immunity to bacterial infection, yet septin function&nbsp;<em>in vivo</em>&nbsp;is poorly understood. Here, we use&nbsp;<em>S</em>.&nbsp;<em>flexneri</em>&nbsp;infection of zebrafish (<em>Danio rerio</em>) larvae to study&nbsp;<em>in vivo</em>&nbsp;the role of septins in inflammation and infection control. We found that depletion of Sept15 or Sept7b, zebrafish orthologs of human SEPT7, significantly increased host susceptibility to bacterial infection. Live-cell imaging of Sept15-depleted larvae revealed increasing bacterial burdens and a failure of neutrophils to control infection. Strikingly, Sept15-depleted larvae present significantly increased activity of Caspase-1 and more cell death upon&nbsp;<em>S</em>.&nbsp;<em>flexneri</em>&nbsp;infection. Dampening of the inflammatory response with anakinra, an antagonist of interleukin-1 receptor (IL-1R), counteracts Sept15 deficiency&nbsp;<em>in vivo</em>&nbsp;by protecting zebrafish from hyper-inflammation and&nbsp;<em>S</em>.&nbsp;<em>flexneri</em>&nbsp;infection. These findings highlight a new role for septins in host defence against bacterial infection, and suggest that septin dysfunction may be an underlying factor in cases of hyper-inflammation.</p>
+              <p>{{{model.abstract}}}</p>
             </td>
           </tr>
           <tr>
             <th>Manuscript</th>
             <td>
-              <p><a class="" data-ember-action="4149"><i class="fa fa-file-pdf-o"></i> Download PDF</a> </p>
+              <p><a class="" href={{paper-download-link versionedText=fetchVersions format="pdf_with_attachments"}}><i class="fa fa-file-pdf-o"></i> Download PDF</a> </p>
               <p class="muted">Note: Figures and Supplemental Files are included in the PDF.</p>
-            </td>
-          </tr>
-          <tr>
-            <th>
-              Competing interests
-            </th>
-            <td>
-              <dl>
-                <dt>Do any authors of this manuscript have competing interests (as described in the PLOS Policy on Declaration and Evaluation of Competing Interests)?</dt>
-                <dd>- No</dd>
-              </dl>
-            </td>
-          </tr>
-          <tr>
-            <th>Financial disclosure</th>
-            <td>
-              <dl>
-                <dt>Did any of the authors receive specific funding for this work? </dt>
-                <dd>- No</dd>
-              </dl>
             </td>
           </tr>
           </tbody>

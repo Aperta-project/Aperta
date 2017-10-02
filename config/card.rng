@@ -343,6 +343,19 @@
       </zeroOrMore>
     </element>
   </define>
+  <define name="mailer">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <value>tech-check-email</value>
+      </attribute>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
   <define name="sendback-reason">
     <element name="content">
       <optional>
@@ -543,6 +556,7 @@
       <ref name="export-paper"/>
       <ref name="check-box-input"/>
       <ref name="file-uploader"/>
+      <ref name="mailer"/>
       <ref name="dropdown-input"/>
       <ref name="date-picker"/>
       <ref name="tech-check"/>

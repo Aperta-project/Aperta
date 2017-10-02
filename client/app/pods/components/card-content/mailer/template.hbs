@@ -1,0 +1,24 @@
+<div class="task-main-content">
+
+  {{card-content/display-children
+    content=content
+    owner=owner
+    disabled=disabled
+    hasAnswerContainer=false
+    preview=preview
+  }}
+
+  <button {{action "showPreview"}} class="button-primary button--green">Show Email Preview</button>
+
+  {{#if showEmailPreview}}
+    <div class="email-preview">
+      <h2>Previewing email</h2>
+
+      <div class="preview-content">
+        <div class="body">{{{emailBody}}}</div>
+      </div>
+
+      <button class="button-primary button--green" {{action "sendChangeRequestEmail"}}>Send Mailer</button>
+    </div>
+  {{/if}}
+</div>

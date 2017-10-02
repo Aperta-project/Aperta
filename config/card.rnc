@@ -29,7 +29,6 @@ radio-input = element content {
                   content*
               }
 
-
 check-box-input = element content {
                 attribute ident { text }?,
                 attribute content-type { "check-box" },
@@ -97,6 +96,12 @@ tech-check = element content {
                 content*
             }
 
+mailer = element content {
+                attribute ident { text }?,
+                attribute content-type { "tech-check-email" },
+                content*
+            }
+
 sendback-reason = element content {
                 attribute ident { text }?,
                 attribute content-type { "sendback-reason" },
@@ -105,7 +110,6 @@ sendback-reason = element content {
                 element text { text }?),
                 content*
             }
-
 
 text-input = element content {
                  attribute ident { text }?,
@@ -172,6 +176,7 @@ content = (
            export-paper |
            check-box-input |
            file-uploader |
+           mailer |
            dropdown-input |
            date-picker |
            tech-check |

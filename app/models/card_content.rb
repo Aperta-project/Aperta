@@ -61,6 +61,7 @@ class CardContent < ActiveRecord::Base
       'date-picker': ['text'],
       'sendback-reason': ['boolean'],
       'numbered-list': [nil],
+      'mailer': [nil],
       'bulleted-list': [nil],
       'if': [nil],
       'plain-list': [nil] }.freeze.with_indifferent_access

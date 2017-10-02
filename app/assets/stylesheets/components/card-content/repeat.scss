@@ -5,6 +5,14 @@
     text-transform: uppercase;
   }
 
+  a.disabled {
+    color: #999;
+    cursor: default;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }
 
 .repeated-block {

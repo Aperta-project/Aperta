@@ -62,7 +62,7 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
   displayStatus: DS.attr('string'),
   assignedToMe: DS.attr(),
   debouncePeriod: 200, // ms
-
+  assignedUser: DS.belongsTo('user'),
   taskNotReady: Ember.computed.equal('notReady', true),
 
   componentName: Ember.computed('type', function() {

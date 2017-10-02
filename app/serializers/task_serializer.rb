@@ -4,8 +4,10 @@ class TaskSerializer < ActiveModel::Serializer
   attributes :id, :title, :type, :completed, :body, :position,
              :is_metadata_task, :is_submission_task, :is_snapshot_task,
              :links, :phase_id, :assigned_to_me, :owner_type_for_answer,
-               :card_version_id, :paper_id, :is_workflow_only_task,
+             :card_version_id, :paper_id, :is_workflow_only_task,
              :display_status, :viewable, :completed_proxy
+
+  has_one :assigned_user, embed: :id
 
   self.root = :task
 

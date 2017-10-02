@@ -56,7 +56,7 @@ class Task < ActiveRecord::Base
   belongs_to :task_template
 
   belongs_to :card_version
-
+  belongs_to :assigned_user, class_name: 'User', foreign_key: 'assigned_user_id'
   acts_as_list scope: :phase
 
   validates :paper_id, presence: true
@@ -113,7 +113,7 @@ class Task < ActiveRecord::Base
     #
     # Returns an Array of attributes.
     def permitted_attributes
-      [:completed, :title, :phase_id, :position]
+      [:completed, :title, :phase_id, :position, :assigned_user_id]
     end
 
     def assigned_to(*users)

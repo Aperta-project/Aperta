@@ -86,13 +86,11 @@ class TasksController < ApplicationController
   end
 
   def sendback_preview
-    GenericMailer.delay.send_email(
-      subject: task_email_params[:subject],
-      body: task_email_params[:body],
-      to: user.email,
-      task: task
-    )
-    # head :no_content
+    @task = Task.find(params[:id])
+    @paper = @task.paper
+    @journal = @paper.journal
+    @letter_template = @journal.letter_templates.find_by(name: 'Sendback Reasons')
+    @letter_template.render(SendbacksScenario.new(@task), check_blanks: true)
   end
 
   def nested_questions

@@ -6,7 +6,7 @@
   }
 
   a.disabled {
-    color: #999;
+    color: $aperta-grey;
     cursor: default;
 
     &:hover {
@@ -27,4 +27,9 @@
 
 .remove-repetition {
   cursor: pointer;
+  color: $aperta-grey;
+
+  &:hover {
+    text-decoration: none;
+  }
 }

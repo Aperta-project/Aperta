@@ -8,24 +8,14 @@
     preview=preview
   }}
 
-  <button {{action "showPreview"}} class="button-primary button--green">Show Email Preview</button>
+  <button {{action "generatePreview"}} class="button-primary button--green">Show Email Preview</button>
 
   {{#if showEmailPreview}}
     <div class="email-preview">
       <h2>Previewing sendback to author email</h2>
 
       <div class="preview-content">
-        <div class="intro">{{{emailIntroText}}}</div>
-
-        <div class="reasons">
-          <ol>
-            {{#each sendbackReasons as |reason|}}
-              <li>{{{reason}}}</li>
-            {{/each}}
-          </ol>
-        </div>
-
-        <div class="footer">{{{emailFooterText}}}</div>
+        {{preview}}
       </div>
 
       <button class="button-primary button--green" {{action "sendChangeRequestEmail"}}>Send Changes For Author</button>

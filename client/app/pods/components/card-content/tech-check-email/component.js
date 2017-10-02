@@ -99,7 +99,7 @@ export default Ember.Component.extend({
         footer: this.get('emailFooterText')
       };
 
-      this.get('restless').post(url, data).then((data)=> {
+      this.get('restless').put(url, data).then((data)=> {
         this.set('preview', data.x);
         this.set('showEmailPreview', true);
       });

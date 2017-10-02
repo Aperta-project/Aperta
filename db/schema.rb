@@ -505,9 +505,11 @@ ActiveRecord::Schema.define(version: 20170926204952) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "scenario"
+    t.string   "ident"
   end
 
   add_index "letter_templates", ["name", "journal_id"], name: "index_letter_templates_on_name_and_journal_id", unique: true, using: :btree
+  add_index "letter_templates", ["ident", "journal_id"], name: "index_letter_templates_on_ident_and_journal_id", unique: true, using: :btree
 
   create_table "manuscript_manager_templates", force: :cascade do |t|
     t.string   "paper_type"

@@ -85,6 +85,16 @@ class TasksController < ApplicationController
     head :no_content
   end
 
+  def sendback_preview
+    GenericMailer.delay.send_email(
+      subject: task_email_params[:subject],
+      body: task_email_params[:body],
+      to: user.email,
+      task: task
+    )
+    # head :no_content
+  end
+
   def nested_questions
     requires_user_can :view, task
     # Exclude the root node

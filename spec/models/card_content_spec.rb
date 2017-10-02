@@ -1,5 +1,5 @@
 require 'rails_helper'
-
+# rubocop:disable Metrics/BlockLength
 describe CardContent do
   subject(:card_content) { FactoryGirl.build(:card_content) }
 

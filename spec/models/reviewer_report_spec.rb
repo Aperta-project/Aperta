@@ -24,7 +24,9 @@ describe ReviewerReport do
 
     it "can move from :invitation_not_accepted to :review_pending" do
       add_invitation(:accepted)
-      subject.accept_invitation
+      subject.stub(:set_due_datetime)
+      expect(TahiStandardTasks::ReviewerMailer).to receive_message_chain(:delay, :welcome_reviewer)
+      subject.accept_invitation! # bang forces the after_commit callbacks
       expect(subject.review_pending?).to be true
     end
 

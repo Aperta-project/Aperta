@@ -5,7 +5,7 @@ class TaskSerializer < ActiveModel::Serializer
              :is_metadata_task, :is_submission_task, :is_snapshot_task,
              :links, :phase_id, :assigned_to_me, :owner_type_for_answer,
              :card_version_id, :paper_id, :is_workflow_only_task,
-             :display_status, :viewable
+             :display_status, :viewable, :completed_proxy
 
   has_one :assigned_user, embed: :id
 
@@ -25,6 +25,10 @@ class TaskSerializer < ActiveModel::Serializer
 
   def is_snapshot_task
     object.snapshottable?
+  end
+
+  def completed_proxy
+    object.completed
   end
 
   def is_workflow_only_task

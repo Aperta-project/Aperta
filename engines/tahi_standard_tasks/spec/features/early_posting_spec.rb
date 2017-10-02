@@ -26,7 +26,7 @@ feature 'Early Posting Task', js: true do
     login_as(author, scope: :user)
   end
 
-  scenario 'It shows 1 question', flaky: true do
+  scenario 'It shows 1 question' do
     view_early_posting_card_on_the_manuscript_page
     expect(page).to have_selector('.question-checkbox', count: 1)
 

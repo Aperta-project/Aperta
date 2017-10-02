@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170922200616) do
+ActiveRecord::Schema.define(version: 20170926204952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -496,7 +496,7 @@ ActiveRecord::Schema.define(version: 20170922200616) do
   add_index "journals", ["doi_publisher_prefix", "doi_journal_prefix"], name: "unique_doi", unique: true, using: :btree
 
   create_table "letter_templates", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",       null: false
     t.string   "category"
     t.string   "to"
     t.string   "subject"
@@ -505,7 +505,11 @@ ActiveRecord::Schema.define(version: 20170922200616) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "scenario"
+    t.string   "ident"
   end
+
+  add_index "letter_templates", ["name", "journal_id"], name: "index_letter_templates_on_name_and_journal_id", unique: true, using: :btree
+  add_index "letter_templates", ["ident", "journal_id"], name: "index_letter_templates_on_ident_and_journal_id", unique: true, using: :btree
 
   create_table "manuscript_manager_templates", force: :cascade do |t|
     t.string   "paper_type"

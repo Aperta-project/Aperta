@@ -43,6 +43,7 @@ FactoryGirl.define do
     end
 
     trait(:thank_reviewer) do
+      ident 'reviewer-appreciation'
       name 'Reviewer Appreciation'
       subject 'Thank you for reviewing {{ journal.name }}'
       body <<-LETTER.strip_heredoc

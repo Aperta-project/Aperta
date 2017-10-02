@@ -10,10 +10,17 @@
 #
 # card.rng: If this file is card.rng, please edit card.rnc instead. You will be happier.
 
+file-type = xsd:string { pattern = "\.\w*" }
+
 possible-value = element possible-value {
                      attribute label { text },
                      attribute value { text }
                  }
+
+accepted-file-type = element possible-value {
+                         attribute label { text },
+                         attribute value { file-type }
+                     }
 
 # Inputs
 radio-input = element content {
@@ -60,7 +67,7 @@ file-uploader = element content {
                     }* &
                     element label { text }? &
                     element text { text }?)),
-                    possible-value*
+                    accepted-file-type*
                 }
 
 date-picker = element content {

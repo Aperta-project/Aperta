@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
   <!--
     card.rnc: If this file is card.rnc: Do not forget to update card.rng if you
     change this file! This is not actually used by Aperta, but it is far easier to
@@ -13,10 +13,23 @@
     
     card.rng: If this file is card.rng, please edit card.rnc instead. You will be happier.
   -->
+  <define name="file-type">
+    <data type="string">
+      <param name="pattern">\.\w*</param>
+    </data>
+  </define>
   <define name="possible-value">
     <element name="possible-value">
       <attribute name="label"/>
       <attribute name="value"/>
+    </element>
+  </define>
+  <define name="accepted-file-type">
+    <element name="possible-value">
+      <attribute name="label"/>
+      <attribute name="value">
+        <ref name="file-type"/>
+      </attribute>
     </element>
   </define>
   <!-- Inputs -->
@@ -215,7 +228,7 @@
         </interleave>
       </interleave>
       <zeroOrMore>
-        <ref name="possible-value"/>
+        <ref name="accepted-file-type"/>
       </zeroOrMore>
     </element>
   </define>

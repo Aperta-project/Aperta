@@ -33,6 +33,9 @@
         {{/each}}
       </tbody>
     </table>
-    <p>Correspondence sent before February 1, 2017 is not available for display.</p>
+
+    {{#if isRecordLost}}
+      <p>Correspondence sent before February 1, 2017 is not available for display.</p>
+    {{/if}}
   </div>
 {{/if}}

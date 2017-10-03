@@ -2,7 +2,6 @@ class TasksController < ApplicationController
   before_action :authenticate_user!
 
   before_action :unmunge_empty_arrays, only: [:update]
-
   respond_to :json
 
   ## /paper/tasks/
@@ -96,6 +95,21 @@ class TasksController < ApplicationController
       subject: @letter_template.subject,
       body: @letter_template.body
     }
+  end
+
+  def sendback_email
+    @task = Task.find(params[:id])
+    @paper = @task.paper
+    @journal = @paper.journal
+    @letter_template = @journal.letter_templates.find_by(name: 'Sendback Reasons')
+    @letter_template.render(SendbacksScenario.new(@task), check_blanks: false)
+    GenericMailer.delay.send_email(
+      subject: @letter_template.subject,
+      body: @letter_template.body,
+      to: @letter_template.to,
+      task: @task
+    )
+    head :no_content
   end
 
   def nested_questions

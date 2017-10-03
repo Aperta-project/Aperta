@@ -13,7 +13,7 @@ export default Ember.Component.extend({
     answer: PropTypes.EmberObject.isRequired,
     content: PropTypes.EmberObject.isRequired,
     owner: PropTypes.EmberObject.isRequired,
-    repetition: PropTypes.EmberObject.isRequired,
+    repetition: PropTypes.oneOfType([PropTypes.null, PropTypes.EmberObject]).isRequired,
     answerChanged: PropTypes.any.isRequired
   },
 

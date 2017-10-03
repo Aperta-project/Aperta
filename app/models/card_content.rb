@@ -8,12 +8,17 @@ class CardContent < ActiveRecord::Base
   include XmlSerializable
   attr_writer :children
 
+  delegate :map, to: :card_contents
+
   belongs_to :card_version, inverse_of: :card_contents
   belongs_to :parent, foreign_key: :parent_id, class_name: 'CardContent'
 
   has_one :card, through: :card_version
   has_many :card_contents, foreign_key: :parent_id, dependent: :destroy
   has_many :card_content_validations, dependent: :destroy
+
+  acts_as_list scope: :parent
+
   validates :card_version, presence: true
 
   validates :parent_id,

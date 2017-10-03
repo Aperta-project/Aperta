@@ -20,7 +20,7 @@ class ManuscriptManagerTemplatesController < ApplicationController
     .includes(:journal,
       phase_templates: { task_templates: [
         :journal_task_type,
-        card: { card_versions: { card_contents: [:card_content_validations, :children] } }
+        card: { card_versions: { card_contents: [:card_content_validations] } }
       ] })
   end
 

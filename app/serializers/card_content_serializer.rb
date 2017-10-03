@@ -6,7 +6,7 @@ class CardContentSerializer < ActiveModel::Serializer
              :order
 
   def order
-    object.lft
+    object.position
   end
 
   # Doing it this way is much faster than hitting each attribute

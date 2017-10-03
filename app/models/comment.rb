@@ -10,8 +10,7 @@ class Comment < ActiveRecord::Base
   has_many :comment_looks, inverse_of: :comment, dependent: :destroy
   has_many :participants, through: :task
 
-  validates :task, :body, presence: true
-  validates_presence_of :commenter
+  validates :task, :body, :commenter, presence: true
 
   def created_by?(user)
     commenter_id == user.id

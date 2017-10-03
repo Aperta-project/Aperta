@@ -16,7 +16,7 @@ class CommentLookManager
   end
 
   def self.create_comment_look(user, comment)
-    return unless user.present?
+    return if user.blank?
     return if comment.created_by?(user)
 
     participation = user.participations.find_by(assigned_to: comment.task)

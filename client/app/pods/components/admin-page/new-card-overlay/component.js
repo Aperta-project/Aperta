@@ -11,19 +11,26 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   },
 
   classNames: ['admin-overlay'],
+  store: Ember.inject.service(),
   cardName: '',
-  cardType: '',
-  cardTypes: [{label: 'Custom Card', value: 'customCard'}],
+  cardTaskType: null,
+  cardTaskTypes: Ember.computed.reads('journal.cardTaskTypes'),
   saving: Ember.computed.reads('createCard.isRunning'),
   errors: null,
 
-  store: Ember.inject.service(),
+  init() {
+    this._super(...arguments);
+    this.get('cardTaskTypes').then((ctts) => {
+      this.set('cardTaskType', ctts.findBy('taskClass', 'CustomCardTask'));
+    });
+  },
+
 
   createCard: task(function * () {
     this.set('errors', null);
     const card = this.get('store').createRecord('card', {
       name: this.get('cardName'),
-      type: this.get('cardType'),
+      cardTaskType: this.get('cardTaskType'),
       journal: this.get('journal')
     });
 
@@ -38,7 +45,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
   didReceiveAttrs(){
     //Defaults the dropdown as the first element in the card list
-    this.set('cardType', this.get('cardTypes')[0]);
+    this.set('cardTaskType', this.get('cardTaskTypes')[0]);
   },
 
   actions: {
@@ -51,7 +58,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     },
 
     valueChanged(newVal) {
-      this.set('cardType', newVal);
+      this.set('cardTaskType', newVal);
     }
   }
 });

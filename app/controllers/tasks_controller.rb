@@ -16,7 +16,7 @@ class TasksController < ApplicationController
 
   def show
     requires_user_can :view, task
-    respond_with(task, location: task_url(task))
+    respond_with(task, location: task_url(task), include_card_version: true)
   end
 
   def create
@@ -144,7 +144,7 @@ class TasksController < ApplicationController
       new_params[:paper] = paper
       new_params[:creator] = paper.creator
 
-      if task_type.to_s == 'CustomCardTask'
+      if params[:task][:card_id]
         # assign a specific card version
         card = paper.journal.cards.find(params[:task][:card_id])
         new_params[:card_version] = card.latest_published_card_version

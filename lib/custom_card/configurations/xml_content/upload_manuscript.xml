@@ -1,0 +1,75 @@
+<card required-for-submission="true" workflow-display-only="false">
+  <content content-type="display-children">
+    <content content-type="if" condition="taskStateToggleable">
+      <!-- Only show if the user has permission to edit the task -->
+      <content content-type="display-children">
+        <content content-type="if" condition="pdfAllowed">
+          <content content-type="text">
+            <text>
+              <![CDATA[
+                <p>
+                  You may upload a manuscript in either Microsoft Word (.docx or .doc) or PDF format.
+                  You can upload a replacement manuscript file at any time before you submit.
+                </p>
+                <p>
+                  <b>Microsoft Word format:</b> Manuscripts uploaded in this format can take advantage of automatic
+                  inline figure placement and visual version comparison features.
+                </p>
+                <p>
+                  <b>PDF format:</b> For authors uploading a PDF manuscript file, figures and any SI information
+                  can be included in the manuscript and are not required separately for initial assessment.
+                  If a revision is invited, separate figure and SI file upload will be required.
+                  If preferred, you may upload those files separately before completing your submission.
+                </p>
+              ]]>
+            </text>
+          </content>
+          <content content-type="text">
+            <text>
+              <![CDATA[
+                <span>
+                  You can upload a replacement manuscript file at any time before you
+                  submit.
+                </span>
+              ]]>
+            </text>
+          </content>
+        </content>
+        <content content-type="file-uploader"
+                value-type="manuscript"
+                error-message="Please upload a Microsoft Word File (.docx or .doc) or PDF, if applicable">
+          <label>Upload Manuscript</label>
+          <possible-value label="doc" value=".doc" />
+          <possible-value label="docx" value=".docx" />
+          <possible-value label="pdf" value=".pdf" />
+        </content>
+      </content>
+      <content content-type="text">
+        <text> You are unable to upload a new manuscript while your submission is under review</text>
+      </content>
+    </content>
+    <content content-type="if" condition="needsSourcefile">
+      <content content-type="display-children">
+        <content content-type="text">
+            <text>
+              <![CDATA[
+                <h4>Please Upload Your Source File</h4>
+                <span>Because you uploaded a PDF, you must also provide your source file (e.g. .tex, .docx) before marking this task as done.</span>
+              ]]>
+            </text>
+        </content>
+        
+        <content content-type="file-uploader" value-type="sourcefile" >
+          <possible-value label="doc" value=".doc" />
+          <possible-value label="docx" value=".docx" />
+          <possible-value label="tex" value=".tex" />
+          <possible-value label="zip" value=".zip" />
+        </content>
+
+        <content content-type="error-message" key="validationErrors.sourcefile">
+          <text>Please upload your source file</text>
+        </content>
+      </content>
+    </content>
+  </content>
+</card>

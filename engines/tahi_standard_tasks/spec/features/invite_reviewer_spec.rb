@@ -44,6 +44,10 @@ feature "Invite Reviewer", js: true do
   end
 
   scenario "displays invitations from the latest round of revisions" do
+    # seed the Upload Manuscript card so that it can be created after a decision has been registered
+    ctt = CardTaskType.find_by(task_class: "TahiStandardTasks::UploadManuscriptTask")
+    FactoryGirl.create(:card, :versioned, card_task_type: ctt)
+
     overlay = Page.view_task_overlay(paper, task)
     overlay.invited_users = [reviewer1]
     expect(overlay.active_invitations_count(1)).to be true

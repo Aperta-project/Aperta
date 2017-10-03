@@ -61,8 +61,12 @@ Tahi::Application.routes.draw do
     resources :attachments, only: [:show, :destroy, :update], controller: 'adhoc_attachments' do
       put :cancel, on: :member
     end
-    resources :manuscript_attachments, only: [:show]
-    resources :sourcefile_attachments, only: [:show]
+    resources :manuscript_attachments, only: [:show] do
+      put :cancel, on: :member
+    end
+    resources :sourcefile_attachments, only: [:show] do
+      put :cancel, on: :member
+    end
     resources :similarity_checks, only: [:create, :show, :update] do
       member do
         get 'report_view_only'

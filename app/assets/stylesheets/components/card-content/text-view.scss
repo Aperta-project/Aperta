@@ -1,9 +1,3 @@
-.card-content-view-text {
-  & p {
-   white-space: pre-wrap;
-  }
-}
-
 // This a workaround to make sure users don't have to add an additional
 // element/class via the text node value in a custom card for questions.  The 'legacy'
 // styling related to question css is in _question.scss.

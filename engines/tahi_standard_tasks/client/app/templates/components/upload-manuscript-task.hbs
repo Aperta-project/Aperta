@@ -1,56 +1,12 @@
-{{partial "task-completed-section"}}
-
-<div class="task-main-content">
-  {{#if taskStateToggleable}}
-    {{#if pdfAllowed}}
-      <p>
-        You may upload a manuscript in either Microsoft Word (.docx or .doc) or PDF format. You can upload a replacement manuscript file at any time before you submit.
-      </p>
-      <p>
-        <b>Microsoft Word format:</b> Manuscripts uploaded in this format can take advantage of automatic
-        inline figure placement and visual version comparison features.
-      </p>
-      <p>
-        <b>PDF format:</b> For authors uploading a PDF manuscript file, figures and any SI information
-        can be included in the manuscript and are not required separately for initial assessment.
-        If a revision is invited, separate figure and SI file upload will be required.
-        If preferred, you may upload those files separately before completing your submission.
-      </p>
-    {{else}}
-      <span>
-        You can upload a replacement manuscript file at any time before you
-        submit.
-      </span>
-    {{/if}}
-    {{paper-attachment-manager
-      task=task
-      attachmentType="manuscript"
-      buttonText="Upload Manuscript"
-      disabled=(not isEditable)
-      errorMessage=(if pdfAllowed
-                      "Please upload a Microsoft Word file (.docx or .doc) or PDF."
-                      "Please upload a Microsoft Word file (.docx or .doc).")
-      accept=(if pdfAllowed ".docx,.doc,.pdf" ".docx,.doc")}}
-  {{else}}
-    <p>You are unable to upload a new manuscript while your submission is under review.</p>
-  {{/if}}
-
-  {{#if needsSourcefile}}
-    <div class="flex-form">
-      <h4>Please Upload Your Source File</h4>
-      <span>Because you uploaded a PDF, you must also provide your source file (e.g. .tex, .docx) before marking this task as done.</span>
-      <div class="flex-group flex-group--center upload-sourcefile">
-        {{paper-attachment-manager
-          task=task
-          attachmentType="sourcefile"
-          disabled=(not isEditable)
-          buttonText="Upload Source File"
-          errorMessage=(if pdfAllowed
-                          "Please upload a Microsoft Word file (.docx or .doc) or PDF."
-                          "Please upload a Microsoft Word file (.docx or .doc).")
-          accept=(if pdfAllowed ".docx,.doc,.pdf" ".docx,.doc")}}
-        {{error-message message=validationErrors.hasSourceIfNeeded displayIcon=true}}
-      </div>
-    </div>
-  {{/if}}
-</div>
+{{custom-card-task-wrapper
+  contentRoot=contentRoot
+  disabled=isNotEditable
+  hideCompletedSection=hideCompletedSection
+  owner=task
+  preview=false
+  scenario=this
+  task=task
+  taskStateToggleable=taskStateToggleable
+  toggleTaskCompletion=(action 'toggleTaskCompletion')
+  validationErrors=validationErrors
+}}

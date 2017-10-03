@@ -4,7 +4,7 @@ class CustomCardCompetingInterests < ActiveRecord::Migration
     CustomCard::Loader.all
 
     # migrate legacy task to custom card
-    migrator = CustomCard::Migrator.new(legacy_task_klass_name: "TahiStandardTasks::CompetingInterestsTask", card_name: "Competing Interests")
+    migrator = CustomCard::Migrator.new(legacy_task_klass_name: "TahiStandardTasks::CompetingInterestsTask", configuration_class: CustomCard::Configurations::CompetingInterest)
     migrator.migrate
   end
 end

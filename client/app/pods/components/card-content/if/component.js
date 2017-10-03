@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
-import findNearestProperty from 'tahi/lib/find-nearest-property';
 
 export default Ember.Component.extend({
   classNames: ['card-content-if'],
@@ -14,9 +13,6 @@ export default Ember.Component.extend({
 
   scenario: null,
   hasElse: Ember.computed.equal('content.children.length', 2),
-  computedScenario: Ember.computed(function() {
-    return findNearestProperty(this, 'scenario');
-  }),
 
   /**
    * The 'if' component will look up a given key on the 'scenario' that is passed to it.
@@ -30,7 +26,7 @@ export default Ember.Component.extend({
     let preview = this.get('preview');
     if (!preview) {
       let conditionName = this.get('conditionName');
-      let conditionKey = `computedScenario.${conditionName}`;
+      let conditionKey = `scenario.${conditionName}`;
       this.getConditionValue();
       this.addObserver(conditionKey, function() {
         Ember.run(() => {
@@ -42,7 +38,7 @@ export default Ember.Component.extend({
 
   getConditionValue() {
     let conditionName = this.get('conditionName');
-    let scenario = this.get('computedScenario');
+    let scenario = this.get('scenario');
     let value = Ember.get(scenario, conditionName);
     this.set('previousConditionValue', this.get('conditionValue'));
     this.set('conditionValue', value);

@@ -90,10 +90,14 @@ describe CardsController do
   end
 
   describe "#create" do
+    let(:card_task_type) do
+      FactoryGirl.create(:card_task_type)
+    end
     subject(:do_request) do
       post(:create, format: 'json', card: {
              name: name,
-             journal_id: my_journal.id
+             journal_id: my_journal.id,
+             card_task_type_id: card_task_type.id
            })
     end
     let(:name) { "Steve" }
@@ -127,6 +131,7 @@ describe CardsController do
           do_request
           expect(res_body['card']['name']).to eq name
           expect(res_body['card']['state']).to eq 'draft'
+          expect(res_body['card']['card_task_type_id']).to eq card_task_type.id
         end
       end
     end

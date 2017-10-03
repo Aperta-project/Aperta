@@ -6,7 +6,7 @@ export default Ember.Component.extend({
   restless: Ember.inject.service('restless'),
   flash: Ember.inject.service('flash'),
 
-  preview: null,
+  emailPreview: null,
 
   didInsertElement() {
     $(document).on('focus', '.card-content-sendback-reason textarea', () => {
@@ -100,7 +100,8 @@ export default Ember.Component.extend({
       };
 
       this.get('restless').put(url, data).then((data)=> {
-        this.set('preview', data.x);
+
+        this.set('emailPreview', data.body);
         this.set('showEmailPreview', true);
       });
     },

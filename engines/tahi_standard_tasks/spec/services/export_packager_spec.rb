@@ -207,14 +207,14 @@ describe ExportPackager do
     end
   end
 
-  describe 'add_cover_letters' do
-    let(:attachment) do
+  describe 'add_cover_letter' do
+    let(:attachment_file) do
       double('attachment_model', filename: 'cover-letter.docx',
                                  read: 'some bytes')
     end
-    let(:question_attachment) { double(QuestionAttachment, filename: 'cover-letter.docx', file: attachment) }
+    let(:question_attachment) { double(QuestionAttachment, filename: 'cover-letter.docx', file: attachment_file) }
     before do
-      allow(paper).to receive(:cover_letter_files) { [question_attachment] }
+      allow(paper).to receive_message_chain(:question_attachments, :cover_letter) { [question_attachment] }
     end
 
     it 'adds cover letter files to a zip' do

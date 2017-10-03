@@ -47,7 +47,7 @@ class Paper < ActiveRecord::Base
   has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
   has_many :snapshots, dependent: :destroy
   has_many :notifications, inverse_of: :paper
-  has_many :answers
+  has_many :answers, inverse_of: :paper
   has_many :assignments, as: :assigned_to
   has_many :roles, through: :assignments
   has_many :related_articles, dependent: :destroy
@@ -637,10 +637,6 @@ class Paper < ActiveRecord::Base
 
   def front_matter?
     !uses_research_article_reviewer_report?
-  end
-
-  def cover_letter_files
-    question_attachments.select(&:cover_letter?)
   end
 
   private

@@ -49,7 +49,9 @@ database:
 test:
   override:
     - npm run-script test -- --split=$CIRCLE_NODE_TOTAL --partition=`expr $CIRCLE_NODE_INDEX + 1`:
-       parallel: true
+        parallel: true
+        files:
+          - "client/tests/**/*.js"
     - bundle exec rspec -p 30 -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml:
         timeout: 1800
         parallel: true

@@ -8,7 +8,6 @@ class CommentLookManager
   def self.sync_comment(comment)
     comment.transaction do
       comment.save!
-      comment.notify_mentioned_people
 
       comment.task.participants.where.not(id: comment.commenter).each do |user|
         create_comment_look(user, comment)

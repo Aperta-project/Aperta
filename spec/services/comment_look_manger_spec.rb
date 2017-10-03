@@ -51,4 +51,14 @@ describe CommentLookManager do
     look = CommentLookManager.create_comment_look(commenter, comment)
     expect(look).to be_nil
   end
+
+  it "doesn't send emails to @mentioned participators when a new participator is added" do
+    at_mentioned_user = FactoryGirl.create(:user)
+    commenter = FactoryGirl.create(:user)
+
+    task = FactoryGirl.create(:ad_hoc_task, paper: paper)
+    comment = FactoryGirl.create(:comment, commenter: commenter, task: task, body: "@#{at_mentioned_user.username} Hello!")
+
+    expect { CommentLookManager.sync_comment(comment) }.not_to change(ActionMailer::Base.deliveries, :count)
+  end
 end

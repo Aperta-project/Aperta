@@ -16,11 +16,4 @@ class Comment < ActiveRecord::Base
   def created_by?(user)
     commenter_id == user.id
   end
-
-  def notify_mentioned_people
-    people_mentioned = UserMentions.new(body, commenter).all_users_mentioned
-    people_mentioned.each do |mentionee|
-      UserMailer.mention_collaborator(self.id, mentionee.id).deliver_later
-    end
-  end
 end

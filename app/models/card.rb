@@ -5,9 +5,14 @@ class Card < ActiveRecord::Base
   include XmlSerializable
   include AASM
 
+  belongs_to :card_task_type
+
   belongs_to :journal, inverse_of: :cards
   has_many :card_versions, inverse_of: :card, dependent: :destroy
+  has_many :task_templates, inverse_of: :card, dependent: :destroy
   has_one :latest_card_version, ->(card) { where(version: card.latest_version) }, class_name: 'CardVersion'
+
+  validates :card_task_type, presence: true
 
   validates :name,
     presence: { message: "Please give your card a name." },
@@ -193,7 +198,6 @@ class Card < ActiveRecord::Base
     find_by(journal: nil, name: card_name)
   end
 
-  # rubocop:disable Style/AndOr, Metrics/LineLength
   def self.find_by_class_name!(klass_name)
     find_by_class_name(klass_name) ||
       raise(ActiveRecord::RecordNotFound, "Could not find Card with name '#{klass_name}'")

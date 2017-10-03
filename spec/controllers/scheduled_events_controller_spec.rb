@@ -1,5 +1,5 @@
 require 'rails_helper'
-
+# rubocop:disable Metrics/BlockLength
 describe ScheduledEventsController do
   let(:user) { FactoryGirl.create(:user) }
 
@@ -38,5 +38,4 @@ describe ScheduledEventsController do
       end
     end
   end
-
 end

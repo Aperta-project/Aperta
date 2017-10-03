@@ -25,6 +25,7 @@ export default DS.Model.extend({
   journal: DS.belongsTo('admin-journal'),
   content: DS.belongsTo('card-content', { async: false }),
   cardVersions: DS.hasMany('card-version'),
+  cardTaskType: DS.belongsTo('card-task-type'),
 
   name: DS.attr('string'),
   state: DS.attr('string'),

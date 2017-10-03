@@ -1,6 +1,3 @@
 import Task from 'tahi/models/task';
-import DS from 'ember-data';
 
-export default Task.extend({
-  cardVersion: DS.belongsTo('card-version')
-});
+export default Task.extend();

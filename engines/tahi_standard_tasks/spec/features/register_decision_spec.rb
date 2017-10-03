@@ -128,6 +128,7 @@ feature "Register Decision", js: true, sidekiq: :inline! do
     scenario "user rescinds a decision" do
       overlay = Page.view_task_overlay(paper, task)
       overlay.mark_as_incomplete
+      wait_for_ajax
       expect(overlay.rescind_button).to_not be_disabled
       overlay.rescind_button.click
       overlay.rescind_confirm_button.click

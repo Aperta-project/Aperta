@@ -15,5 +15,8 @@ export default Attachment.extend({
 
   computedFileType: Ember.computed('src', 'fileType', function() {
     return this.get('fileType') || this.get('src').split('.').get('lastObject');
-  })
+  }),
+  cancelUploadPath() {
+    return `/api/manuscript_attachments/${this.get('id')}/cancel`;
+  }
 });

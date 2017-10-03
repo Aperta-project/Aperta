@@ -8,5 +8,4 @@ class ScheduledEventsController < ApplicationController
     scheduled_event.switch_off! if params[:state] == 'passive'
     render json: scheduled_event
   end
-
 end

@@ -103,5 +103,35 @@ describe LetterTemplate do
       end
     end
   end
+
+  describe "letter template seed" do
+    before :all do
+      Rake::Task.define_task(:environment)
+    end
+
+    before :each do
+      FactoryGirl.create(:journal)
+      Rake::Task['seed:letter_templates:populate'].reenable
+      Rake.application.invoke_task 'seed:letter_templates:populate'
+      Rake::Task['seed:letter_templates:populate'].reenable
+    end
+
+    it "doesn't reset a changed name" do
+      letter_template = LetterTemplate.first
+      letter_template.update(name: 'spec')
+      Rake.application.invoke_task 'seed:letter_templates:populate'
+      letter_template.reload
+      expect(letter_template.name).to eq('spec')
+    end
+
+    it "sets idents if they were nil and template name is known" do
+      letter_template = LetterTemplate.first
+      orig_ident = letter_template.ident
+      letter_template.update(ident: nil)
+      Rake.application.invoke_task 'seed:letter_templates:populate'
+      letter_template.reload
+      expect(letter_template.ident).to eq(orig_ident)
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength

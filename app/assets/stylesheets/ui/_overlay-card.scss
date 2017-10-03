@@ -80,6 +80,16 @@ $ov--card-breakpoint: 900px;
   }
 }
 
+
+// Card assign user
+
+.overlay--card {
+  .overlay-assignable-user {
+    float: right;
+    margin-top: -3rem;
+  }
+}
+
 // Card Overlay Body -----------------------------------------------------------
 
 .overlay--card {

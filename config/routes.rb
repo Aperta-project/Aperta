@@ -61,8 +61,12 @@ Tahi::Application.routes.draw do
     resources :attachments, only: [:show, :destroy, :update], controller: 'adhoc_attachments' do
       put :cancel, on: :member
     end
-    resources :manuscript_attachments, only: [:show]
-    resources :sourcefile_attachments, only: [:show]
+    resources :manuscript_attachments, only: [:show] do
+      put :cancel, on: :member
+    end
+    resources :sourcefile_attachments, only: [:show] do
+      put :cancel, on: :member
+    end
     resources :similarity_checks, only: [:create, :show, :update] do
       member do
         get 'report_view_only'
@@ -113,6 +117,7 @@ Tahi::Application.routes.draw do
       collection do
         get 'users/:paper_id', constraints: { paper_id: /(#{Journal::SHORT_DOI_FORMAT})|\d+/ },
                                to: 'filtered_users#users'
+        get 'assignable_users/:task_id', to: 'filtered_users#assignable_users'
       end
     end
     resources :formats, only: [:index]
@@ -246,6 +251,9 @@ Tahi::Application.routes.draw do
     end
 
     resources :feature_flags, only: [:index, :update]
+
+    put 'scheduled_events/:id/update_state',
+      to: 'scheduled_events#update_state'
   end
 
   get '/invitations/:token',

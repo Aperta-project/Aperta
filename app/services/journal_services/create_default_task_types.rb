@@ -6,7 +6,8 @@ module JournalServices
     def self.call(journal)
       Rails.logger.info "Processing journal: #{journal.name}..."
       with_noisy_errors do
-        (Task.descendants - [CustomCardTask]).each do |klass|
+        Task.descendants.each do |klass|
+          next unless klass.create_journal_task_type?
           jtt = journal.journal_task_types.find_or_initialize_by(kind: klass)
           jtt.title = klass::DEFAULT_TITLE
           jtt.role_hint = klass::DEFAULT_ROLE_HINT

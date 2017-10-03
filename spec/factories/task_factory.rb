@@ -12,10 +12,6 @@ FactoryGirl.define do
   end
 
   factory :task do
-    paper
-    phase
-    card_version
-
     transient do
       # any array of participants that are passed in
       # will be used to set the participants of the task
@@ -35,6 +31,21 @@ FactoryGirl.define do
         CardLoader.load(task.class.name)
         card = Card.find_by_class_name(task.class)
         task.update(card_version: card.latest_published_card_version)
+      end
+    end
+
+    after(:build) do |task, evaluator|
+      unless evaluator.paper
+        task.paper = FactoryGirl.create(:paper)
+      end
+
+      unless evaluator.phase
+        task.phase = FactoryGirl.create(:phase, paper: task.paper)
+      end
+
+      unless evaluator.card_version
+        card = FactoryGirl.build(:card, journal: task.paper.journal)
+        task.card_version = FactoryGirl.create(:card_version, card: card)
       end
     end
 

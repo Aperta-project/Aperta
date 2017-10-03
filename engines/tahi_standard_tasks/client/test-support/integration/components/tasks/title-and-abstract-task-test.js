@@ -74,6 +74,7 @@ var newTask = function(completed, paperEditable) {
     title: 'Title and Abstract',
     type: 'TahiStandardTasks::TitleAndAbstractTask',
     completed: completed,
+    completedProxy: completed,
     isMetadataTask: false,
     isSubmissionTask: true,
     assignedToMe: false,

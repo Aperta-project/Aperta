@@ -327,6 +327,11 @@ class Paper < ActiveRecord::Base
     SUBMITTED_STATES.include? publishing_state.to_sym
   end
 
+  # this method is mostly for ease of testing
+  def sourcefile?
+    sourcefile.present?
+  end
+
   def body
     @new_body || latest_version.try(:text)
   end
@@ -633,6 +638,10 @@ class Paper < ActiveRecord::Base
   def preprint_doi_suffix
     return nil unless preprint_doi_article_number
     "aarx." + preprint_doi_article_number
+  end
+
+  def front_matter?
+    !uses_research_article_reviewer_report?
   end
 
   private

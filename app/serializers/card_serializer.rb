@@ -2,9 +2,11 @@
 # card content for the latest version of the given card is serialized down as a
 # single nested structure
 class CardSerializer < ActiveModel::Serializer
-  attributes :id, :name, :journal_id, :xml, :state, :addable
-  has_one :content, embed: :id, include: true, root: :card_contents
+  attributes :id, :name, :journal_id, :xml, :state, :addable, :workflow_only
+  has_one :content, embed: :id
   has_many :card_versions, embed: :ids
+  has_many :latest_contents, embed: :ids, include: true, root: :card_contents
+  has_one :card_task_type, embed: :id, include: true
 
   def content
     object.content_root_for_version(:latest)
@@ -29,7 +31,19 @@ class CardSerializer < ActiveModel::Serializer
     object.addable?
   end
 
+  def workflow_only
+    object.latest_card_version.workflow_display_only
+  end
+
   def xml
     object.to_xml.chomp
+  end
+
+  def content
+    object.content_root_for_version(:latest)
+  end
+
+  def latest_contents
+    @latest_contents ||= object.content_root_for_version(:latest).preload_descendants
   end
 end

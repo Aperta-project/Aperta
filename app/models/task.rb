@@ -56,7 +56,7 @@ class Task < ActiveRecord::Base
   belongs_to :task_template
 
   belongs_to :card_version
-
+  belongs_to :assigned_user, class_name: 'User', foreign_key: 'assigned_user_id'
   acts_as_list scope: :phase
 
   validates :paper_id, presence: true
@@ -113,7 +113,14 @@ class Task < ActiveRecord::Base
     #
     # Returns an Array of attributes.
     def permitted_attributes
-      [:completed, :title, :phase_id, :position]
+      [:completed, :title, :phase_id, :position, :assigned_user_id]
+    end
+
+    # Used in JournalServices::CreateDefaultTaskTypes
+    # Task classes that display card content will need to
+    # subclass this method and return false
+    def create_journal_task_type?
+      true
     end
 
     def assigned_to(*users)
@@ -146,6 +153,7 @@ class Task < ActiveRecord::Base
       str.constantize
     end
   end
+  # ******** End class methods ***********
 
   # called in the paper factory both as part of paper creation and when an
   # individual task is added to the workflow.  Remember to call super when
@@ -169,6 +177,12 @@ class Task < ActiveRecord::Base
 
   def journal_task_type
     journal.journal_task_types.find_by(kind: self.class.name)
+  end
+
+  # Used in the TaskSerializer to determine whether to serialize the CardVersion for a
+  # given task
+  def custom?
+    false
   end
 
   def metadata_task?

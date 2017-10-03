@@ -1,0 +1,52 @@
+<h2 class="feedback-header">
+{{#if academicEditor}}
+  Academic Editor Invitation Declined
+{{else if reviewer}}
+  Reviewer Invitation Declined
+{{else}}
+  Invitation Declined
+{{/if}}
+</h2>
+
+{{invitation-header invitation=invitation}}
+
+<p class="feedback-decline-notice">
+  You've successfully declined this invitation.
+  We're always trying to improve our invitation process
+  and would appreciate your feedback below.
+</p>
+
+<label class="feedback-request">
+  Please give your reasons for declining this invitation.
+
+  {{rich-text-editor
+    editorStyle='basic'
+    value=invitation.declineReason
+    name="declineReason"
+    ident="declineReason"
+    onContentsChanged=(action "updateDeclineReason")
+    classNames="feedback-textarea declineReason"
+  }}
+</label>
+
+<label class="feedback-request feedback-alternative-suggestions">
+  {{#if academicEditor}}
+    We would value your suggestions of alternative Academic Editors for this manuscript. Please provide editors’ names, institutions, and email addresses if known.
+  {{else if reviewer}}
+    We would value your suggestions of alternative reviewers for this manuscript. Please provide reviewers' names, institutions, and email addresses if known.
+  {{/if}}
+
+  {{rich-text-editor
+    editorStyle='basic'
+    value=invitation.reviewerSuggestions
+    name="reviewerSuggestions"
+    ident="reviewerSuggestions"
+    onContentsChanged=(action "updateReviewerSuggestions")
+    classNames="feedback-textarea reviewerSuggestions"
+  }}
+</label>
+
+<div class="feedback-buttons">
+  <a href="#" role="button" class="decline-feedback button-link button--green" {{action 'declineFeedback' invitation}}>No Thank You</a>
+  <button type="button" class="send-feedback button-secondary button--green" {{action decline invitation}}>Send Feedback</button>
+</div>

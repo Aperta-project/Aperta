@@ -21,7 +21,6 @@ describe Paper do
 
   before do
     CardLoader.load("TahiStandardTasks::ReviseTask")
-    CardLoader.load("TahiStandardTasks::UploadManuscriptTask")
     CardLoader.load("TahiStandardTasks::TitleAndAbstractTask")
   end
 

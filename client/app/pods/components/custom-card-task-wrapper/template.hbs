@@ -1,0 +1,12 @@
+{{#unless hideCompletedSection}}
+  {{partial "task-completed-section"}}
+{{/unless}}
+<div class="task-main-content custom-card-task {{if contentRoot.renderAsDualColumn 'dual-column' 'single-column'}}">
+  {{card-content
+    content=contentRoot
+    owner=owner
+    disabled=disabled
+    scenario=scenario
+    preview=preview
+  }}
+</div>

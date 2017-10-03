@@ -42,7 +42,7 @@ module Authorizations
       User.joins(assignments: :permissions)
         .where(assignments: { assigned_to: assigned_to })
         .where(permissions: { action: @action,
-                              applies_to: @target.class.name }).all
+                              applies_to: [@target.class.name, @target.class.base_class.name] }).all
     end
 
     # return models which authorize target_model
@@ -56,7 +56,7 @@ module Authorizations
 
     def authorizations_on_target(target)
       Authorizations.configuration.authorizations.select do |auth|
-        auth.authorizes == target.class
+        auth.authorizes == target.class.try(:base_class)
       end
     end
   end

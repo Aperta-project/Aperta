@@ -2,6 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model(params) {
-    return this.store.findRecord('token-invitation', params.token);
+    return this.store.findRecord('voucher-invitation', params.token);
   }
 });

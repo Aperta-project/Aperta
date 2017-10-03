@@ -50,6 +50,8 @@ class WorkflowPage(AuthenticatedPage):
     self._remove_cancel_button = (By.XPATH, ".//div[contains(@class, 'delete-card-action-buttons')]\
         /div[2]/button")
     self._add_card_overlay_div = (By.CSS_SELECTOR, 'div.overlay-container')
+    self._add_card_overlay_author_col = (By.CLASS_NAME, 'author-task-cards')
+    self._add_card_overlay_staff_col =  (By.CLASS_NAME, 'staff-task-cards')
     self._add_card_overlay_columns = (By.CLASS_NAME, 'col-md-4')
     # Card Locators
     self._addl_info_card = (By.CSS_SELECTOR, 'div.publishing-related-questions-task > a')
@@ -250,51 +252,42 @@ class WorkflowPage(AuthenticatedPage):
     """
     # Get card list
     # APERTA-5513 AC 1 and 2
-    author_col, staff_col, custom_col = self._gets(self._add_card_overlay_columns)
+    author_col = self._get(self._add_card_overlay_author_col)
+    staff_col = self._get(self._add_card_overlay_staff_col)
     author_cards = author_col.find_elements_by_tag_name('label')
-    assert author_cards[0].text == u'Additional Information', author_cards[0].text
-    assert author_cards[1].text == u'Authors', author_cards[1].text
-    assert author_cards[2].text == u'Billing', author_cards[2].text
-    assert author_cards[3].text == u'Early Article Posting', author_cards[3].text
-    assert author_cards[4].text == u'Figures', author_cards[4].text
-    assert author_cards[5].text == u'Financial Disclosure', author_cards[5].text
-    assert author_cards[6].text == u'New Taxon', author_cards[6].text
-    assert author_cards[7].text == u'Reviewer Candidates', author_cards[7].text
-    assert author_cards[8].text == u'Supporting Info', author_cards[8].text
-    assert author_cards[9].text == u'Upload Manuscript', author_cards[9].text
     staff_cards = staff_col.find_elements_by_tag_name('label')
-    assert staff_cards[0].text == u'Ad-hoc for Authors', staff_cards[0].text
-    assert staff_cards[1].text == u'Ad-hoc for Editors', staff_cards[1].text
-    assert staff_cards[2].text == u'Ad-hoc for Reviewers', staff_cards[2].text
-    assert staff_cards[3].text == u'Ad-hoc for Staff Only', staff_cards[3].text
-    assert staff_cards[4].text == u'Assign Team', staff_cards[4].text
-    assert staff_cards[5].text == u'Editor Discussion', staff_cards[5].text
-    assert staff_cards[6].text == u'Final Tech Check', staff_cards[6].text
-    assert staff_cards[7].text == u'Initial Decision', staff_cards[7].text
-    assert staff_cards[8].text == u'Initial Tech Check', staff_cards[8].text
-    assert staff_cards[9].text == u'Invite Academic Editor', staff_cards[9].text
-    assert staff_cards[10].text == u'Invite Reviewers', staff_cards[10].text
-    assert staff_cards[11].text == u'Production Metadata', staff_cards[11].text
-    assert staff_cards[12].text == u'Register Decision', staff_cards[12].text
-    assert staff_cards[13].text == u'Related Articles', staff_cards[13].text
-    assert staff_cards[14].text == u'Revision Tech Check', staff_cards[14].text
-    assert staff_cards[15].text == u'Send to Apex', staff_cards[15].text
-    assert staff_cards[16].text == u'Similarity Check', staff_cards[16].text
-    assert staff_cards[17].text == u'Title And Abstract', staff_cards[17].text
-    custom_cards = custom_col.find_elements_by_tag_name('label')
-    assert custom_cards[0].text == u'Competing Interests', custom_cards[0].text
-    assert custom_cards[1].text == u'Cover Letter', custom_cards[1].text
-    assert custom_cards[2].text == u'Data Availability', custom_cards[2].text
-    assert custom_cards[3].text == u'Ethics Statement', custom_cards[3].text
-    assert custom_cards[4].text == u'Preprint Posting', custom_cards[4].text
-    assert custom_cards[5].text == u'Reporting Guidelines', custom_cards[5].text
-    author_cards_text = [x.text for x in author_cards]
-    assert u'Changes For Author' not in author_cards_text, author_cards_text
-    assert u'Response to Reviewers' not in author_cards_text, author_cards_text
-    assert u'Reviewer Report' not in author_cards_text, author_cards_text
+    author_card_namelist = []
+    staff_card_namelist = []
+    for card in author_cards:
+      author_card_namelist.append(card.text)
+    for card in staff_cards:
+      staff_card_namelist.append(card.text)
+    expected_author_cards = ['Additional Information', 'Authors', 'Billing', 'Competing Interests', 'Cover Letter',
+                             'Data Availability', 'Early Article Posting', 'Ethics Statement', 'Figures',
+                             'Financial Disclosure', 'New Taxon', 'Preprint Posting', 'Reporting Guidelines',
+                             'Reviewer Candidates', 'Supporting Info', 'Upload Manuscript']
+    expected_staff_cards = ['Ad-hoc for Authors', 'Ad-hoc for Editors', 'Ad-hoc for Reviewers', 'Ad-hoc for Staff Only',
+                            'Assign Team', 'Editor Discussion', 'Final Tech Check', 'Initial Decision',
+                            'Initial Tech Check', 'Invite Academic Editor', 'Invite Reviewers', 'Production Metadata',
+                            'Register Decision', 'Related Articles', 'Revision Tech Check', 'Send to Apex',
+                            'Similarity Check', 'Title And Abstract']
+    for expected_card_name in expected_author_cards:
+      assert expected_card_name in author_card_namelist, 'Expected card: {0}, not found ' \
+                                                         'in {1}'.format(expected_card_name, author_card_namelist)
+    for expected_card_name in expected_staff_cards:
+      assert expected_card_name in staff_card_namelist, 'Expected card: {0}, not found ' \
+                                                         'in {1}'.format(expected_card_name, staff_card_namelist)
+    assert 'Changes For Author' not in author_card_namelist, '"Changes For Author" found ' \
+                                                             'in {0}.'.format(author_card_namelist)
+    assert 'Response to Reviewers' not in author_card_namelist, '"Response to Reviewers" found ' \
+                                                                'in {0}.'.format(author_card_namelist)
+    assert 'Reviewer Report' not in author_card_namelist, '"Reviewer Report" found ' \
+                                                              'in {0}.'.format(author_card_namelist)
+    assert 'SUBCLASSME' not in author_card_namelist, '"SUBCLASSME" found ' \
+                                                         'in {0}.'.format(author_card_namelist)
 
     # APERTA-5513 AC 3
-    custom_cards[5].click() # Reporting Guidelines
+    author_cards[12].click() # Reporting Guidelines
     author_cards[7].click() # Reviewer Candidates
     self._get(self._add_button_overlay).click()
     time.sleep(2)

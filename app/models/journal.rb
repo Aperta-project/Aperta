@@ -1,5 +1,6 @@
 class Journal < ActiveRecord::Base
   include EventStream::Notifiable
+  include Configurable
 
   PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
   SUFFIX_FORMAT           = %r{journal[^\/]+}
@@ -39,7 +40,6 @@ class Journal < ActiveRecord::Base
                   message: 'This DOI Journal Prefix has already been assigned to this publisher.  Please choose a unique DOI Journal Prefix' }
   validates :last_doi_issued, presence: { message: 'Please include a Last DOI Issued' }
 
-  after_create :setup_defaults
   before_destroy :confirm_no_papers, prepend: true
 
   mount_uploader :logo, LogoUploader
@@ -75,9 +75,15 @@ class Journal < ActiveRecord::Base
     class_name: 'Role'
   has_one :task_participant_role, -> { where(name: Role::TASK_PARTICIPANT_ROLE) },
     class_name: 'Role'
+  has_one :journal_setup_role, -> { where(name: Role::JOURNAL_SETUP_ROLE) },
+    class_name: 'Role'
   has_one :user_role, -> { where(name: Role::USER_ROLE, journal_id: nil) },
     class_name: 'Role'
   # rubocop:enable Metrics/LineLength
+
+  def setting_template_key
+    'Journal'
+  end
 
   def self.staff_admins_for_papers(papers)
     journals = joins(:papers)
@@ -140,12 +146,6 @@ class Journal < ActiveRecord::Base
   end
 
   private
-
-  def setup_defaults
-    # TODO: remove these from being a callback (when we aren't using rails_admin)
-    JournalServices::CreateDefaultTaskTypes.call(self)
-    JournalServices::CreateDefaultManuscriptManagerTemplates.call(self)
-  end
 
   def confirm_no_papers
     if papers.any?

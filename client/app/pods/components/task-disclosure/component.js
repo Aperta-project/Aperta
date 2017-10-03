@@ -4,57 +4,30 @@ export default Ember.Component.extend({
   classNameBindings: [
     ':task-disclosure',
     '_taskVisible:task-disclosure--open',
-    'typeIdentifier'
+    'typeIdentifier',
   ],
 
-  /**
-   *  Should task component be rendered?
-   *
-   *  @property _taskVisible
-   *  @type Boolean
-   *  @default false
-   *  @private
-  **/
-  _taskVisible: false,
-
-  /**
-   *  Text to be displayed in heading
-   *
-   *  @property title
-   *  @type String
-   *  @default ''
-   *  @required
-  **/
-  title: '',
-
-  /**
-   *  The type of the task
-   *
-   *  @property type
-   *  @type String
-   *  @default ''
-   *  @required
-   **/
-  type: '',
-
-  /**
-   *  Is the task completed?
-   *
-   *  @property completed
-   *  @type Boolean
-   *  @default false
-   *  @required
-  **/
-  completed: false,
+  class: Ember.computed.oneWay('task.componentName'),
+  type: Ember.computed.oneWay('task.type'),
+  taskOpen: Ember.computed.oneWay('initiallyOpen'),
+  notViewable: Ember.computed.not('task.viewable'),
 
   typeIdentifier: Ember.computed('type', function() {
     const dasherizedType = Ember.String.dasherize(this.get('type'));
     return `task-type-${dasherizedType}`;
   }),
 
+  initiallyOpen: Ember.computed('defaultPreprintTaskOpen', 'title', function() {
+    return this.get('defaultPreprintTaskOpen') &&
+      this.get('task.title') === 'Preprint Posting' &&
+      this.get('task.answers.firstObject.value') === '2';
+  }),
+
   actions: {
     toggleVisibility() {
-      this.toggleProperty('_taskVisible');
+      if (!this.get('notViewable')) {
+        this.toggleProperty('taskOpen');
+      }
     }
   }
 });

@@ -18,8 +18,6 @@ gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
 gem 'activerecord-import'
 gem 'activerecord-sqlserver-adapter'
 gem 'acts_as_list', '~> 0.9.0'
-gem 'acts_as_paranoid', git: 'https://github.com/ActsAsParanoid/acts_as_paranoid',
-                        ref: 'c2db19554ddaedcac0a2b8d6a0563dea83c972c5'
 gem 'american_date'
 gem 'awesome_nested_set'
 gem 'bootstrap-sass'
@@ -99,7 +97,6 @@ group :staging, :production do
 end
 
 group :development, :test do
-  gem 'auto_screenshot', require: false
   gem 'dotenv-rails', require: 'dotenv/rails-now'
   gem 'progressbar'
   gem 'pry-byebug'
@@ -109,9 +106,7 @@ group :development, :test do
   gem 'quiet_assets'
   # This needs to be in the development group to make rake tasks work
   gem 'rspec-rails'
-  gem 'test_after_commit'
   gem 'awesome_print'
-  gem 'equivalent-xml'
 end
 
 group :development do
@@ -133,7 +128,9 @@ group :test do
   gem 'climate_control'
   gem 'codeclimate-test-reporter', require: nil
   gem 'database_cleaner'
+  gem 'db-query-matchers'
   gem 'email_spec'
+  gem 'equivalent-xml'
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'fakeredis'
@@ -147,6 +144,7 @@ group :test do
   gem 'rspec_junit_formatter'
   gem 'selenium-webdriver'
   gem 'simplecov'
+  gem 'test_after_commit'
   gem 'thin'
   gem 'timecop'
   gem 'vcr'

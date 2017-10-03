@@ -7,15 +7,18 @@
 .text-diff {
   display: inline-block;
 
+  .added, .removed {
+    display: inline-block;
+    padding: 1px;
+  }
+
   .added {
     background-color: rgba($aperta-green-light, 0.5);
-    padding: 1px;
   }
 
   .removed {
     opacity: 0.8;
     background-color: rgba($aperta-red-light, 0.5);
-    padding: 1px;
     text-decoration: line-through;
   }
 }

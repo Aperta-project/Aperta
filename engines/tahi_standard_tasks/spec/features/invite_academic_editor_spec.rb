@@ -19,6 +19,8 @@ feature "Invite Academic Editor", js: true do
   before do
     assign_journal_role journal, staff_admin, :admin
     login_as(staff_admin, scope: :user)
+    allow(MailLog::LogToDatabase::DeliveringEmailInterceptor).to receive(:delivering_email).and_return(true)
+    allow(MailLog::LogToDatabase::DeliveredEmailObserver).to receive(:delivered_email).and_return(true)
     visit "/"
   end
 
@@ -66,10 +68,8 @@ feature "Invite Academic Editor", js: true do
       expect(invitations.count).to eq 1
       invitations.first.accept("Accept Academic Editor Invitation")
       expect(dashboard).to have_no_pending_invitations
-    end
-    dashboard.reload
-
-    within('.active-paper-table-row') do
+      expect(page).to have_current_path(root_path)
+      expect(page).to have_content("Thank you for agreeing to be an Academic Editor on this #{journal.name} manuscript")
       expect(page).to have_content('Academic Editor')
     end
   end

@@ -1,10 +1,8 @@
 <label class="content-text">{{{content.text}}}
   {{#if content.isRequired}}
-    {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
+  <span class="required-field">*</span>
   {{/if}}</label>
-{{#unless hideError}}
-  {{card-content/validation-errors errors=answer.readyIssuesArray}}
-{{/unless}}
+
 {{input
   value=(readonly answer.value)
   class="form-control"
@@ -15,3 +13,7 @@
   disabled=disabled
   required=content.isRequired
   content=content}}
+
+{{#unless hideError}}
+  {{card-content/validation-errors errors=answer.readyIssuesArray}}
+{{/unless}}

@@ -53,10 +53,10 @@ class ReviewerReportTaskCreator
   end
 
   def reviewer_report_task_class
-    if @paper.uses_research_article_reviewer_report
-      TahiStandardTasks::ReviewerReportTask
-    else
+    if @paper.front_matter?
       TahiStandardTasks::FrontMatterReviewerReportTask
+    else
+      TahiStandardTasks::ReviewerReportTask
     end
   end
 

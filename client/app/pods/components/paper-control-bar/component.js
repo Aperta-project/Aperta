@@ -5,21 +5,13 @@ import { PropTypes } from 'ember-prop-types';
 const { computed } = Ember;
 
 export default ControlBar.extend({
-  featureFlag: Ember.inject.service(),
-  init() {
-    this._super(...arguments);
-    this.get('featureFlag').value('CORRESPONDENCE').then(enabled => {
-      this.set('correspondenceEnabled', enabled);
-    });
-  },
-
   propTypes: {
     contributorsVisible: PropTypes.bool,
     versionsVisible: PropTypes.bool,
     versioningMode: PropTypes.bool,
     submenuVisible: PropTypes.bool,
-    // action:
-    toggleDownloads: PropTypes.func
+    toggleDownloads: PropTypes.func,
+    showActivity: PropTypes.func
   },
 
   getDefaultProps() {
@@ -64,10 +56,6 @@ export default ControlBar.extend({
 
     addContributors(activity) {
       this.sendAction('addContributors', activity);
-    },
-
-    showActivity(activity) {
-      this.sendAction('showActivity', activity);
     },
 
     toggleDownloads() {

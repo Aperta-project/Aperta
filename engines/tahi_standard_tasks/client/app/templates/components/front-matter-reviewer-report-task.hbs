@@ -2,15 +2,15 @@
 
 <div class="task-main-content reviewer-form">
   <div class="reviewer-report-wrapper">
+    {{reviewer-report-status report=currentReviewerReport canEditDueDate=(can 'edit_due_date' task)}}
+    {{#if (and (can 'manage_scheduled_events' task)
+               currentReviewerReport.scheduledEvents)}}
+      {{scheduled-events events=currentReviewerReport.scheduledEvents
+                         dueDate=currentReviewerReport.dueAt}}
+    {{/if}}
     {{#if task.isSubmitted}}
       {{front-matter-reviewer-report-questions model=currentReviewerReport readOnly=true}}
     {{else}}
-      {{reviewer-report-status report=currentReviewerReport}}
-      {{#if (and (can 'manage_scheduled_events' task)
-                 currentReviewerReport.scheduledEvents)}}
-        {{scheduled-events events=currentReviewerReport.scheduledEvents
-                           dueDate=currentReviewerReport.dueAt}}
-      {{/if}}
       {{front-matter-reviewer-report-questions model=currentReviewerReport readOnly=isNotEditable}}
 
       {{#if currentReviewerReport.needsSubmission }}

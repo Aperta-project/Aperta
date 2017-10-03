@@ -62,6 +62,12 @@ module CardConfiguration
               text: "Other Journal"
             }
           ]
+        },
+
+        {
+          ident: "reviewer_report--attachments",
+          value_type: "html",
+          text: "(Optional) If you'd like to include files to support your review, please attach them here.<p>Please do NOT attach your review comments here as a separate file.<br>Instead, paste your review into the text fields provided above. Attachments should only be for supporting documents."
         }
       ]
     end

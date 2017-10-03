@@ -18,7 +18,7 @@ module('Integration: Inviting a reviewer', {
     TestHelper.setup(App);
 
     phase = FactoryGuy.make('phase');
-    task  = FactoryGuy.make('paper-reviewer-task', { phase: phase, letter: '"A letter"' });
+    task  = FactoryGuy.make('paper-reviewer-task', { phase: phase, letter: '"A letter"', viewable: true });
     paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task] });
     inviteeEmail = window.currentUserData.user.email;
 
@@ -36,15 +36,6 @@ module('Integration: Inviting a reviewer', {
     $.mockjax({url: /\/api\/tasks\/\d+/, type: 'PUT', status: 204, responseText: ''});
     $.mockjax({url: /\/api\/journals/, type: 'GET', status: 200, responseText: { journals: [] }});
     $.mockjax({url: /\/api\/invitations\/1\/rescind/, type: 'PUT', status: 200, responseText: {}});
-
-    $.mockjax({
-      type: 'GET',
-      url: '/api/feature_flags.json',
-      status: 200,
-      responseText: {
-        CORRESPONDENCE: false
-      }
-    });
 
     $.mockjax({
       url: /api\/tasks\/\d+\/eligible_users\/reviewers/,
@@ -66,7 +57,6 @@ test('disables the Compose Invite button until a user is selected', function(ass
     click(".card-title:contains('Invite Reviewers')");
 
     andThen(function(){
-
       assert.elementFound(
         '.invitation-email-entry-button.button--disabled',
         'Expected to find Compose Invite button disabled'

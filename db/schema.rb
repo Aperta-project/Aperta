@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170829103915) do
+ActiveRecord::Schema.define(version: 20170926204952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,7 +59,6 @@ ActiveRecord::Schema.define(version: 20170829103915) do
     t.jsonb    "additional_data"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.datetime "deleted_at"
     t.string   "annotation"
   end
 
@@ -216,43 +215,22 @@ ActiveRecord::Schema.define(version: 20170829103915) do
     t.integer  "card_content_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
   end
 
   add_index "card_content_validations", ["card_content_id"], name: "index_card_content_validations_on_card_content_id", using: :btree
-  add_index "card_content_validations", ["deleted_at"], name: "index_card_content_validations_on_deleted_at", using: :btree
 
   create_table "card_contents", force: :cascade do |t|
     t.string   "ident"
     t.integer  "parent_id"
-    t.integer  "lft",                        null: false
-    t.integer  "rgt",                        null: false
-    t.string   "text"
-    t.string   "value_type"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.datetime "deleted_at"
-    t.integer  "card_version_id",            null: false
+    t.integer  "lft",             null: false
+    t.integer  "rgt",             null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.integer  "card_version_id", null: false
     t.string   "content_type"
-    t.string   "placeholder"
-    t.jsonb    "possible_values"
-    t.string   "visible_with_parent_answer"
-    t.string   "label"
-    t.string   "default_answer_value"
-    t.boolean  "allow_multiple_uploads"
-    t.boolean  "allow_file_captions"
-    t.boolean  "allow_annotations"
-    t.string   "instruction_text"
-    t.string   "editor_style"
-    t.string   "condition"
-    t.boolean  "required_field"
-    t.string   "error_message"
-    t.string   "child_tag"
-    t.string   "custom_class"
-    t.string   "custom_child_class"
-    t.string   "wrapper_tag"
   end
 
+  add_index "card_contents", ["card_version_id"], name: "index_card_contents_on_card_version_id", using: :btree
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
   add_index "card_contents", ["lft"], name: "index_card_contents_on_lft", using: :btree
   add_index "card_contents", ["parent_id"], name: "index_card_contents_on_parent_id", using: :btree
@@ -261,7 +239,6 @@ ActiveRecord::Schema.define(version: 20170829103915) do
   create_table "card_versions", force: :cascade do |t|
     t.integer  "version",                                 null: false
     t.integer  "card_id",                                 null: false
-    t.datetime "deleted_at"
     t.boolean  "required_for_submission", default: false, null: false
     t.datetime "published_at"
     t.integer  "published_by_id"
@@ -276,7 +253,6 @@ ActiveRecord::Schema.define(version: 20170829103915) do
   create_table "cards", force: :cascade do |t|
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.datetime "deleted_at"
     t.string   "name"
     t.integer  "journal_id"
     t.integer  "latest_version", default: 1, null: false
@@ -309,6 +285,22 @@ ActiveRecord::Schema.define(version: 20170829103915) do
   add_index "comments", ["commenter_id", "task_id"], name: "index_comments_on_commenter_id_and_task_id", using: :btree
   add_index "comments", ["commenter_id"], name: "index_comments_on_commenter_id", using: :btree
   add_index "comments", ["task_id"], name: "index_comments_on_task_id", using: :btree
+
+  create_table "content_attributes", force: :cascade do |t|
+    t.integer  "card_content_id"
+    t.string   "name"
+    t.string   "value_type"
+    t.boolean  "boolean_value"
+    t.integer  "integer_value"
+    t.string   "string_value"
+    t.jsonb    "json_value"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "content_attributes", ["card_content_id"], name: "index_content_attributes_on_card_content_id", using: :btree
+  add_index "content_attributes", ["name"], name: "index_content_attributes_on_name", using: :btree
+  add_index "content_attributes", ["value_type"], name: "index_content_attributes_on_value_type", using: :btree
 
   create_table "credentials", force: :cascade do |t|
     t.string  "provider"
@@ -407,10 +399,12 @@ ActiveRecord::Schema.define(version: 20170829103915) do
   add_index "email_logs", ["paper_id"], name: "index_email_logs_on_paper_id", using: :btree
   add_index "email_logs", ["task_id"], name: "index_email_logs_on_task_id", using: :btree
 
-  create_table "feature_flags", id: false, force: :cascade do |t|
+  create_table "feature_flags", force: :cascade do |t|
     t.string  "name",   null: false
     t.boolean "active", null: false
   end
+
+  add_index "feature_flags", ["name"], name: "index_feature_flags_on_name", unique: true, using: :btree
 
   create_table "group_authors", force: :cascade do |t|
     t.string   "contact_first_name"
@@ -502,7 +496,7 @@ ActiveRecord::Schema.define(version: 20170829103915) do
   add_index "journals", ["doi_publisher_prefix", "doi_journal_prefix"], name: "unique_doi", unique: true, using: :btree
 
   create_table "letter_templates", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",       null: false
     t.string   "category"
     t.string   "to"
     t.string   "subject"
@@ -512,6 +506,8 @@ ActiveRecord::Schema.define(version: 20170829103915) do
     t.datetime "updated_at"
     t.string   "scenario"
   end
+
+  add_index "letter_templates", ["name", "journal_id"], name: "index_letter_templates_on_name_and_journal_id", unique: true, using: :btree
 
   create_table "manuscript_manager_templates", force: :cascade do |t|
     t.string   "paper_type"
@@ -855,15 +851,6 @@ ActiveRecord::Schema.define(version: 20170829103915) do
     t.string   "destination",   null: false
     t.string   "service_id"
   end
-
-  create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|
-    t.integer "author_id"
-    t.integer "funder_id"
-  end
-
-  add_index "tahi_standard_tasks_funded_authors", ["author_id", "funder_id"], name: "funded_authors_unique_index", unique: true, using: :btree
-  add_index "tahi_standard_tasks_funded_authors", ["author_id"], name: "index_tahi_standard_tasks_funded_authors_on_author_id", using: :btree
-  add_index "tahi_standard_tasks_funded_authors", ["funder_id"], name: "index_tahi_standard_tasks_funded_authors_on_funder_id", using: :btree
 
   create_table "tahi_standard_tasks_funders", force: :cascade do |t|
     t.string   "name"

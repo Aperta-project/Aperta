@@ -61,6 +61,16 @@ export default Ember.Controller.extend({
     this.set('showInvitationsOverlay', false);
   },
 
+  messagePerRole(role, journalName) {
+    let msg;
+    if (role === 'Reviewer') {
+      msg = `Thank you for agreeing to review for ${journalName}.`;
+    } else {
+      msg = `Thank you for agreeing to be an ${role} on this ${journalName} manuscript.`;
+    }
+    this.flash.displayRouteLevelMessage('success', msg);
+  },
+
   actions: {
     toggleActiveContainer() {
       this.toggleProperty('activePapersVisible');
@@ -90,9 +100,9 @@ export default Ember.Controller.extend({
       return this.get('restless').putUpdate(invitation, '/accept').then(()=> {
         this.hideInvitationsOverlay();
         this.transitionToRoute('paper.index', invitation.get('paperShortDoi')).then(() => {
-          let verb = invitation.get('inviteeRole') === 'Reviewer' ? 'review' : 'edit';
-          let msg = `Thank you for agreeing to ${verb} for ${invitation.get('journalName')}.`;
-          this.flash.displayRouteLevelMessage('success', msg);
+          let role = invitation.get('inviteeRole');
+          let journalName = invitation.get('journalName');
+          this.messagePerRole(role, journalName);
         });
       }).finally(() => { this.set('invitationsLoading', false); });
     },
@@ -117,16 +127,31 @@ export default Ember.Controller.extend({
       this.set('showNewManuscriptOverlay', true);
     },
 
-    hideNewManuscriptOverlay() {
-      this.set('showNewManuscriptOverlay', false);
+    // Set the "visible=" flag linked to an overlay to false. E.g., "showNewManuscriptOverlay"
+    hideOverlay(name) {
+      let flagName = 'show' + name + 'Overlay';
+      this.set(flagName, false);
     },
 
-    newManuscriptCreated(manuscript) {
+    newManuscriptCreated(manuscript, template) {
       this.setProperties({
         showNewManuscriptOverlay: false,
         isUploading: false
       });
 
+      if (template.is_preprint_eligible && template.task_names.includes('Preprint Posting')) {
+        this.set('showPreprintOverlay', true);
+      } else {
+        this.transitionToRoute('paper.index', manuscript, {
+          queryParams: { firstView: 'true' }
+        });
+      }
+    },
+
+    offerPreprintComplete() {
+      this.send('hideOverlay', 'Preprint');
+      let manuscript = this.get('newPaper');
+      manuscript.reload();
       this.transitionToRoute('paper.index', manuscript, {
         queryParams: { firstView: 'true' }
       });

@@ -1,6 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import {findEditor, getRichText, setRichText, pasteText} from 'tahi/tests/helpers/rich-text-editor-helpers';
+import {findEditor, getRichText, setRichText, pasteText, editorFireEvent} from 'tahi/tests/helpers/rich-text-editor-helpers';
 
 moduleForComponent('rich-text-editor', 'Integration | Component | rich text editor', {
   integration: true
@@ -80,4 +80,34 @@ test(`it sends 'onContentsChanged' after keyed input`, function(assert) {
   let editor = window.tinymce.activeEditor;
   editor.setContent('New');
   editor.target.triggerSave();
+});
+
+
+test('checking the focusOut action triggers after editor is disabled', function(assert) {
+  var focusOutCount = 0;
+  this.set('focusOutStub', function() {
+    focusOutCount = focusOutCount + 1;
+  });
+  this.set('saveContents', function() {});
+
+  this.set('disabled', false);
+  let template = hbs`{{rich-text-editor
+                  value=value
+                  ident='test-editor'
+                  disabled=disabled
+                  onContentsChanged=saveContents
+                  focusOut=(action focusOutStub)}}`;
+  this.render(template);
+
+  // When 'disabled' is toggled to true, the tinymce component is swapped out for a plain
+  // text field. The focusOut action has to be reattached when 'disabled' is toggled back to false
+  editorFireEvent('test-editor', 'blur');
+  assert.equal(focusOutCount, 1, 'focusOut was called when the editor was initialized in an enabled state');
+
+  this.set('disabled', true);
+  this.set('disabled', false);
+  // The focusOut passed in handler function is now attached to the rich text editor blur event.
+  editorFireEvent('test-editor', 'blur');
+
+  assert.equal(focusOutCount, 2, 'focusOut was called again after reenabling the editor');
 });

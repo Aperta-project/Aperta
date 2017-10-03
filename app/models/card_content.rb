@@ -4,24 +4,20 @@
 # text, or widgets (developer-created chunks of functionality with
 # user-configured behavior)
 class CardContent < ActiveRecord::Base
+  include Attributable
   include XmlSerializable
+  attr_writer :quick_children
 
-  # Scope matches deleted_at IS NULL, that is, non-deleted records
-  acts_as_nested_set scope: [:deleted_at]
-  acts_as_paranoid
+  acts_as_nested_set
 
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
   has_many :card_content_validations, dependent: :destroy
-
   validates :card_version, presence: true
 
-  # since we use acts_as_paranoid we need to take into account whether a given
-  # piece of card content has been deleted for uniqueness checks on parent_id
-  # and ident
   validates :parent_id,
             uniqueness: {
-              scope: %i[card_version deleted_at],
+              scope: :card_version,
               message: "Card versions can only have one root node."
             },
             if: -> { root? }
@@ -76,32 +72,22 @@ class CardContent < ActiveRecord::Base
   def content_value_type_combination
     return if content_type.blank?
     unless VALUE_TYPES_FOR_CONTENT.fetch(content_type, []).member?(value_type)
-      errors.add(
-        :content_type,
-        "'#{content_type}' not valid with value_type '#{value_type}'"
-      )
+      errors.add(:content_type, "'#{content_type}' not valid with value_type '#{value_type}'")
     end
   end
 
   def value_type_for_default_answer_value
     if value_type.blank? && default_answer_value.present?
-      errors.add(
-        :default_answer_value,
-        "value type must be present in order to set a default answer value"
-      )
+      errors.add(:base, "value type must be present in order to set a default answer value")
     end
   end
 
   def default_answer_present_in_possible_values
     return if default_answer_value.blank? || possible_values.blank?
+    values = possible_values.map { |v| v['value'] }
+    return if values.include? default_answer_value
 
-    vals = possible_values.map { |v| v["value"] }
-    unless vals.include? default_answer_value
-      errors.add(
-        :default_answer_value,
-        "must be one of the following values: #{vals}"
-      )
-    end
+    errors.add(:base, "default answer must be one of the following values: #{values}")
   end
 
   def render_tag(xml, attr_name, attr)
@@ -110,18 +96,17 @@ class CardContent < ActiveRecord::Base
 
   # content_attrs rendered into the <card-content> tag itself
   def content_attrs
-    attrs =
-      {
-        'ident' => ident,
-        'content-type' => content_type,
-        'value-type' => value_type,
-        'child-tag' => child_tag,
-        'custom-class' => custom_class,
-        'custom-child-class' => custom_child_class,
-        'wrapper-tag' => wrapper_tag,
-        'visible-with-parent-answer' => visible_with_parent_answer,
-        'default-answer-value' => default_answer_value
-      }.merge(additional_content_attrs).compact
+    {
+      'ident' => ident,
+      'content-type' => content_type,
+      'value-type' => value_type,
+      'child-tag' => child_tag,
+      'custom-class' => custom_class,
+      'custom-child-class' => custom_child_class,
+      'wrapper-tag' => wrapper_tag,
+      'visible-with-parent-answer' => visible_with_parent_answer,
+      'default-answer-value' => default_answer_value
+    }.merge(additional_content_attrs).compact
   end
 
   # rubocop:disable Metrics/MethodLength
@@ -139,9 +124,14 @@ class CardContent < ActiveRecord::Base
       {
         'condition' => condition
       }
-    when 'short-input', 'paragraph-input'
+    when 'paragraph-input'
       {
         'editor-style' => editor_style,
+        'allow-annotations' => allow_annotations,
+        'required-field' => required_field
+      }
+    when 'short-input'
+      {
         'allow-annotations' => allow_annotations,
         'required-field' => required_field
       }
@@ -166,7 +156,11 @@ class CardContent < ActiveRecord::Base
       render_tag(xml, 'instruction-text', instruction_text)
       render_tag(xml, 'text', text)
       render_tag(xml, 'label', label)
+      preload_descendants if @quick_children.nil?
       card_content_validations.each do |ccv|
+        # Do not serialize the required-field validation, it is handled via the
+        # "required-field" attribute.
+        next if ccv.validation_type == 'required-field'
         create_card_config_validation(ccv, xml)
       end
       if possible_values.present?
@@ -185,15 +179,48 @@ class CardContent < ActiveRecord::Base
     visitor.visit(self)
     children.each { |card_content| card_content.traverse(visitor) }
   end
-end
 
-private
+  # Return the ids of the children. If quick_children has been set, use that,
+  # otherwise use the children method of awesome nested set.
+  def unsorted_child_ids
+    @unsorted_child_ids ||= begin
+                              if leaf?
+                                []
+                              elsif !@quick_children.nil?
+                                @quick_children.map(&:id)
+                              else
+                                children.pluck(:id).uniq
+                              end
+                            end
+  end
 
-def create_card_config_validation(ccv, xml)
-  validation_attrs = { 'validation-type': ccv.validation_type }
-                       .delete_if { |_k, v| v.nil? }
-  xml.tag!('validation', validation_attrs) do
-    xml.tag!('error-message', ccv.error_message)
-    xml.tag!('validator', ccv.validator)
+  # From this node, return a set of this node and its descendants, with the
+  # `quick_children` attribute set to the children of each node. This can load
+  # an entire traversable tree in one database query.
+  # Returns an array of CardContent objects.
+  def preload_descendants
+    all = [self] + descendants.includes(:content_attributes, :card_content_validations).to_a
+    children = all.group_by(&:parent_id)
+    all.each do |d|
+      d.quick_children = children.fetch(d.id, [])
+    end
+    all
+  end
+
+  # Return the @quick_children if set, otherwise return the children.
+  def children
+    return @quick_children unless @quick_children.nil?
+    super
+  end
+
+  private
+
+  def create_card_config_validation(ccv, xml)
+    validation_attrs = { 'validation-type': ccv.validation_type }
+                         .delete_if { |_k, v| v.nil? }
+    xml.tag!('validation', validation_attrs) do
+      xml.tag!('error-message', ccv.error_message)
+      xml.tag!('validator', ccv.validator)
+    end
   end
 end

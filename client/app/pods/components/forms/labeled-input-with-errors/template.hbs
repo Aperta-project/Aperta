@@ -27,6 +27,8 @@
       class=inputClasses
       classBinding='errorsPresentOnField:labeled-input-with-errors-errored'
       autofocus=(if autofocus 'autofocus') }}
+  {{else if (eq type 'yield')}}
+    {{yield}}
   {{/if}}
 
   {{#if errorsPresentOnField}}

@@ -8,6 +8,13 @@ import wait from 'ember-test-helpers/wait';
 import stubRouteAction from 'tahi/tests/helpers/stub-route-action';
 import Ember from 'ember';
 
+
+let paper, showActivity;
+const template = hbs`
+  <div id="mobile-nav"></div>
+  {{paper-control-bar paper=paper tab="manuscript" showActivity=showActivity}}
+`;
+
 moduleForComponent('paper-control-bar', 'Integration | Component | Paper Control Bar', {
   integration: true,
   beforeEach() {
@@ -24,32 +31,22 @@ moduleForComponent('paper-control-bar', 'Integration | Component | Paper Control
       status: 200,
       responseText: {}
     });
+    paper = FactoryGuy.make('paper');
+    this.set('paper', paper);
+    showActivity = function() {};
+    this.set('showActivity', showActivity);
   },
   afterEach() {
     $.mockjax.clear();
   }
 });
 
-let template = hbs`
-  <div id="mobile-nav"></div>
-  {{paper-control-bar paper=paper tab="manuscript"}}
-`;
 
 test('can manage workflow, correspondence enabled, all icons show', function(assert) {
-  let paper = FactoryGuy.make('paper');
+  FactoryGuy.make('feature-flag', {id: 1, name: 'CORRESPONDENCE', active: true});
   const can = FakeCanService.create().allowPermission('manage_workflow', paper);
   this.register('service:can', can.asService());
 
-  $.mockjax({
-    type: 'GET',
-    url: '/api/feature_flags.json',
-    status: 200,
-    responseText: {
-      CORRESPONDENCE: true
-    }
-  });
-
-  this.set('paper', paper);
   this.render(template);
   return wait().then(() => {
     assert.equal(this.$('#nav-correspondence').length, 1);
@@ -59,20 +56,9 @@ test('can manage workflow, correspondence enabled, all icons show', function(ass
 });
 
 test('can manage workflow, correspondence disabled, no correspondence icon', function(assert) {
-  let paper = FactoryGuy.make('paper');
   const can = FakeCanService.create().allowPermission('manage_workflow', paper);
   this.register('service:can', can.asService());
 
-  $.mockjax({
-    type: 'GET',
-    url: '/api/feature_flags.json',
-    status: 200,
-    responseText: {
-      CORRESPONDENCE: false
-    }
-  });
-
-  this.set('paper', paper);
   this.render(template);
   return wait().then(() => {
     assert.equal(this.$('#nav-correspondence').length, 0);
@@ -82,20 +68,9 @@ test('can manage workflow, correspondence disabled, no correspondence icon', fun
 });
 
 test('can not manage workflow, correspondence enabled, no nav icons', function(assert) {
-  let paper = FactoryGuy.make('paper');
   const can = FakeCanService.create();
   this.register('service:can', can.asService());
 
-  $.mockjax({
-    type: 'GET',
-    url: '/api/feature_flags.json',
-    status: 200,
-    responseText: {
-      CORRESPONDENCE: true
-    }
-  });
-
-  this.set('paper', paper);
   this.render(template);
   return wait().then(() => {
     assert.equal(this.$('#nav-correspondence').length, 0);
@@ -105,20 +80,9 @@ test('can not manage workflow, correspondence enabled, no nav icons', function(a
 });
 
 test('can view recent activity, sees recent activity nav icon', function(assert) {
-  let paper = FactoryGuy.make('paper');
   const can = FakeCanService.create().allowPermission('view_recent_activity', paper);
   this.register('service:can', can.asService());
 
-  $.mockjax({
-    type: 'GET',
-    url: '/api/feature_flags.json',
-    status: 200,
-    responseText: {
-      CORRESPONDENCE: true
-    }
-  });
-
-  this.set('paper', paper);
   this.render(template);
   return wait().then(() => {
     assert.equal(this.$('#nav-recent-activity').length, 1);
@@ -126,20 +90,9 @@ test('can view recent activity, sees recent activity nav icon', function(assert)
 });
 
 test('can not view recent activity, no recent activity nav icon', function(assert) {
-  let paper = FactoryGuy.make('paper');
   const can = FakeCanService.create();
   this.register('service:can', can.asService());
 
-  $.mockjax({
-    type: 'GET',
-    url: '/api/feature_flags.json',
-    status: 200,
-    responseText: {
-      CORRESPONDENCE: true
-    }
-  });
-
-  this.set('paper', paper);
   this.render(template);
   return wait().then(() => {
     assert.equal(this.$('#nav-recent-activity').length, 0);

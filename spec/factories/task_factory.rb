@@ -79,10 +79,6 @@ FactoryGirl.define do
       title "Custom Card"
     end
 
-    factory :cover_letter_task, class: 'TahiStandardTasks::CoverLetterTask' do
-      title "Cover Letter"
-    end
-
     factory :competing_interests_task, class: 'CustomCardTask' do
       title "Competing Interests"
     end
@@ -102,10 +98,6 @@ FactoryGirl.define do
 
     factory :editors_discussion_task, class: 'PlosBioInternalReview::EditorsDiscussionTask' do
       title "Editor Discussion"
-    end
-
-    factory :ethics_task, class: 'TahiStandardTasks::EthicsTask' do
-      title "Ethics"
     end
 
     factory :figure_task, class: 'TahiStandardTasks::FigureTask' do

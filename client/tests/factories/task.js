@@ -5,6 +5,7 @@ FactoryGuy.define("task", {
     title: "Adhoc Task",
     type: "Task",
     completed: false,
+    viewable: true
   },
 
   traits: {

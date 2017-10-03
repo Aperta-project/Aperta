@@ -3,12 +3,9 @@
 # as a container for information we need to version that isn't
 # card content
 class CardVersion < ActiveRecord::Base
-  acts_as_paranoid
-  validates_as_paranoid
-
   belongs_to :card, inverse_of: :card_versions
   belongs_to :published_by, class_name: 'User'
-  has_many :card_contents, inverse_of: :card_version, dependent: :destroy
+  has_many :card_contents, -> {includes(:content_attributes, :card_content_validations)}, inverse_of: :card_version, dependent: :destroy
 
   validates :card, presence: true
   validates :card_contents, presence: true
@@ -20,10 +17,7 @@ class CardVersion < ActiveRecord::Base
   scope :published, -> { where.not(published_at: nil) }
   scope :unpublished, -> { where(published_at: nil) }
 
-  validates_uniqueness_of_without_deleted :version,
-    scope: :card_id,
-    message: "Card version numbers are unique for a given card"
-
+  validates :version, uniqueness: { scope: :card_id, message: "Card version numbers are unique for a given card" }
   validates :history_entry, presence: true, if: -> { published? }
 
   def published?
@@ -39,7 +33,7 @@ class CardVersion < ActiveRecord::Base
   end
 
   def create_default_answers(task)
-    card_contents.where.not(default_answer_value: nil).find_each do |content|
+    card_contents.select { |content| content.default_answer_value.present? }.each do |content|
       task.answers.create!(
         card_content: content,
         paper: task.paper,

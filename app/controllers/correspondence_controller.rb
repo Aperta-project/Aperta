@@ -19,6 +19,11 @@ class CorrespondenceController < ApplicationController
     end
   end
 
+  def show
+    correspondence = Correspondence.find(params[:id])
+    render json: correspondence, status: :ok
+  end
+
   private
 
   def correspondence_params

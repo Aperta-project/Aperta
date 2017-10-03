@@ -1,4 +1,15 @@
-{{paper-control-bar paper=paper}}
+{{#overlay-fullscreen visible=showActivityOverlay
+                      outAnimationComplete=(action "hideActivityOverlay")
+                      title="Recent Activity"
+                      overlayClass="activity-overlay" as |overlay|}}
+  {{paper-activity isLoading=activityIsLoading
+                   model=activityFeed
+                   close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
+{{paper-control-bar paper=paper
+                    showActivity=(action "showActivityOverlay" "workflow")
+                    topicsIndexPath=topicsIndexPath}}
 <main id="main-content" class="main-content correspondence-history-screen" role="main">
   <div id="correspondence-history" class="main-content-section">
     <div class="base-layout">

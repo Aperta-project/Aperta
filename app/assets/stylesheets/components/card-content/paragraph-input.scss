@@ -3,4 +3,15 @@
     .form-control {
         min-height: 100px;
     }
+
+    textarea {
+      resize: vertical;
+    }
+
+    label {
+      margin-bottom: 15px;
+      &.content-text {
+          font-size: 20px;
+      }
+    }
 }

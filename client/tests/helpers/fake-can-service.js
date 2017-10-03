@@ -14,7 +14,13 @@ const FakeCanService = Ember.Object.extend({
 
   can(permission, resource){
     return new Ember.RSVP.Promise((resolve) => {
-      resolve(this.allowedPermissions[permission] === resource);
+      let permissionVal = this.allowedPermissions[permission];
+
+      if (permissionVal === '*') {
+        resolve(true);
+      } else {
+        resolve(this.allowedPermissions[permission] === resource);
+      }
     });
   },
 

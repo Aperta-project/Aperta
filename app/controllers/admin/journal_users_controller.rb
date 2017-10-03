@@ -3,7 +3,7 @@ class Admin::JournalUsersController < ApplicationController
   respond_to :json
 
   def index
-    requires_user_can(:administer, Journal)
+    requires_user_can(:manage_users, Journal)
     if params[:query].present?
       users = User.search_users(params[:query])
     elsif params[:journal_id].present?
@@ -18,11 +18,11 @@ class Admin::JournalUsersController < ApplicationController
 
   def update # Updates role
     if journal_user_params[:journal_id].present?
-      requires_user_can(:administer, journal)
+      requires_user_can(:manage_users, journal)
 
       assign_roles
     else
-      requires_user_can(:administer, Journal)
+      requires_user_can(:manage_users, Journal)
 
       update_user_details
     end

@@ -34,13 +34,12 @@ describe Typesetter::MetadataSerializer do
   let(:our_question) do
     # expects `our_task` to be defined within a `describe` block
     lambda do |question_ident|
-      our_task.card.content_for_version_without_root(:latest).find_by_ident(question_ident)
+      our_task.card.content_for_version_without_root(:latest).find_by(ident: question_ident)
     end
   end
   let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
 
   before do
-    FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
     CardLoader.load('TahiStandardTasks::EarlyPostingTask')
     paper.phases.first.tasks.push(*metadata_tasks)
   end
@@ -60,19 +59,22 @@ describe Typesetter::MetadataSerializer do
       position: 1,
       author_id: group_author.id,
       author_type: "GroupAuthor",
-      paper_id: paper.id)
+      paper_id: paper.id
+    )
     first_author.save!
     second_author = AuthorListItem.new(
       position: 2,
       author_id: author.id,
       author_type: "Author",
-      paper_id: paper.id)
+      paper_id: paper.id
+    )
     second_author.save!
     third_author = AuthorListItem.new(
       position: 3,
       author_id: author2.id,
       author_type: "Author",
-      paper_id: paper.id)
+      paper_id: paper.id
+    )
     third_author.save!
     output = Typesetter::MetadataSerializer.new(paper, options).serializable_hash
 
@@ -244,38 +246,71 @@ describe Typesetter::MetadataSerializer do
     end
   end
 
-  describe "add custom card and export the fields" do
+  describe "add router-specific metadata and export the fields" do
     let(:journal) do
       FactoryGirl.create(:journal, :with_creator_role, pdf_css: 'body { background-color: red; }')
     end
-    let(:paper) { FactoryGirl.create(:paper, :with_phases, :version_with_file_type, :with_creator, journal: journal) }
+    let(:paper) { FactoryGirl.create(:paper, :with_phases, :version_with_file_type, :with_author, journal: journal) }
     let(:card_version) { FactoryGirl.create(:card_version) }
     let(:another_card_version) { FactoryGirl.create(:card_version) }
     let(:my_custom_task) { FactoryGirl.create(:custom_card_task, card_version: card_version, paper: paper) }
     let(:another_my_custom_task) { FactoryGirl.create(:custom_card_task, card_version: another_card_version, paper: paper) }
+    subject(:parsed_metadata) { JSON.parse(Typesetter::MetadataSerializer.new(paper, options).to_json) }
+
     before do
       parent = card_version.content_root
       parent.children << [FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "my_custom_task--some_text", value_type: 'text', default_answer_value: 'This is my anwser'),
                           FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "my_custom_task--question_1", value_type: 'boolean', default_answer_value: 'true'),
                           FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "my_custom_task--question_2", value_type: 'boolean', default_answer_value: 'false')]
-      card_version.create_default_answers(my_custom_task)
+      card_version.reload.create_default_answers(my_custom_task)
       parent = another_card_version.content_root
       parent.children << [FactoryGirl.create(:card_content, parent: parent, card_version: another_card_version, ident: "another_custom_task--some_text", value_type: 'text', default_answer_value: 'This is my other anwser'),
                           FactoryGirl.create(:card_content, parent: parent, card_version: another_card_version, ident: "another_custom_task--question_1", value_type: 'boolean', default_answer_value: 'false'),
                           FactoryGirl.create(:card_content, parent: parent, card_version: another_card_version, ident: "another_custom_task--question_2", value_type: 'boolean', default_answer_value: 'false')]
-      another_card_version.create_default_answers(another_my_custom_task)
+      another_card_version.reload.create_default_answers(another_my_custom_task)
       paper.publishing_state = 'accepted'
     end
 
-    it "check exported custom card fields" do
-      parsed_metadata = JSON.parse(Typesetter::MetadataSerializer.new(paper, options).to_json)
-      expected_metadata = { "my_custom_task--some_text" => 'This is my anwser',
-                            "my_custom_task--question_1" => true,
-                            "my_custom_task--question_2" => false,
-                            "another_custom_task--some_text" => 'This is my other anwser',
-                            "another_custom_task--question_1" => false,
-                            "another_custom_task--question_2" => false }
-      expect(parsed_metadata['metadata']['custom_card_fields']).to eq expected_metadata
+    shared_examples_for :includes_custom_metadata do
+      it "ensure exported metadata includes custom card fields" do
+        expected_metadata = { "my_custom_task--some_text" => 'This is my anwser',
+                              "my_custom_task--question_1" => true,
+                              "my_custom_task--question_2" => false,
+                              "another_custom_task--some_text" => 'This is my other anwser',
+                              "another_custom_task--question_1" => false,
+                              "another_custom_task--question_2" => false }
+        expect(subject['metadata']['custom_card_fields']).to eq expected_metadata
+      end
+    end
+
+    shared_examples_for :includes_creator_attribute do
+      it "ensure exported metadata includes creator attribute" do
+        expect(subject['metadata']['authors'][0]['author']).to have_key('creator')
+      end
+    end
+
+    context 'when the destination is "preprint"' do
+      let(:options) { { destination: 'preprint' } }
+      it_behaves_like :includes_custom_metadata
+      it_behaves_like :includes_creator_attribute
+    end
+
+    context 'when the destination is "em"' do
+      let(:options) { { destination: 'em' } }
+      it_behaves_like :includes_custom_metadata
+      it_behaves_like :includes_creator_attribute
+    end
+
+    context 'when the destination is "apex"' do
+      let!(:options) { { destination: 'apex' } }
+
+      it "ensure exported metadata does not include creator attribute" do
+        expect(subject['metadata']['authors'][0]['author']).not_to have_key('creator')
+      end
+
+      it "ensure exported metadata does not include custom card fields" do
+        expect(subject['metadata']).not_to have_key('custom_card_fields')
+      end
     end
   end
 
@@ -291,7 +326,7 @@ describe Typesetter::MetadataSerializer do
       let(:fake_serialized_data) { 'Fake serialized data' }
       let(:fake_instance_double) do
         instance_double(
-          "#{opts[:serializer]}",
+          (opts[:serializer]).to_s,
           serializable_hash: fake_serialized_data
         )
       end
@@ -327,7 +362,7 @@ describe Typesetter::MetadataSerializer do
     let(:fake_serialized_data) { 'Fake serialized data' }
     let(:fake_instance_double) do
       instance_double(
-        "#{opts[:serializer]}",
+        (opts[:serializer]).to_s,
         serializable_hash: fake_serialized_data
       )
     end

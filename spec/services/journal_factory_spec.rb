@@ -111,6 +111,15 @@ describe JournalFactory do
       end.to change(Journal, :count).by(1)
     end
 
+    it 'sets up default task types and default manuscript manager templates' do
+      expect(JournalServices::CreateDefaultManuscriptManagerTemplates).to receive(:call)
+      expect(JournalServices::CreateDefaultTaskTypes).to receive(:call)
+      JournalFactory.create(name: 'Journal of the Stars',
+                            doi_journal_prefix: 'journal.SHORTJPREFIX1',
+                            doi_publisher_prefix: 'SHORTJPREFIX1',
+                            last_doi_issued: '1000001')
+    end
+
     context 'default system cards' do
       let(:factory_params) do
         { name: 'Journal of the Stars',
@@ -163,15 +172,14 @@ describe JournalFactory do
       end
 
       after(:all) do
-        Permission.all.delete_all
-        Role.all.delete_all
-        Journal.all.delete_all
-        CardContent.all.delete_all
-        CardContent.all.with_deleted.delete_all! # Really delete
-        CardVersion.all.delete_all
-        CardVersion.all.with_deleted.delete_all! # Really delete
-        Card.all.delete_all
-        Card.all.with_deleted.delete_all! # Really delete
+        Permission.delete_all
+        Role.delete_all
+        Journal.delete_all
+        CardContentValidation.delete_all
+        ContentAttribute.delete_all
+        CardContent.delete_all
+        CardVersion.delete_all
+        Card.delete_all
       end
 
       let!(:journal) { @journal }
@@ -1213,7 +1221,6 @@ describe JournalFactory do
           let(:inaccessible_task_klasses) do
             [
               PlosBilling::BillingTask,
-              TahiStandardTasks::CoverLetterTask,
               TahiStandardTasks::ReviewerRecommendationsTask,
               CustomCardTask
             ]
@@ -1266,13 +1273,6 @@ describe JournalFactory do
               applies_to: 'PlosBilling::BillingTask'
             ).all
             expect(permissions).not_to include(*billing_permissions)
-          end
-
-          it 'can do nothing on the TahiStandardTasks::CoverLetterTask' do
-            cover_letter_permissions = Permission.where(
-              applies_to: 'TahiStandardTasks::CoverLetterTask'
-            ).all
-            expect(permissions).not_to include(*cover_letter_permissions)
           end
 
           it 'can do nothing on the TahiStandardTasks::RegisterDecisionTask' do
@@ -1337,7 +1337,7 @@ describe JournalFactory do
         let(:permissions) { journal.staff_admin_role.permissions }
 
         context 'has Journal permission to' do
-          let(:journal_actions) { ['administer', 'view_paper_tracker', 'remove_orcid'] }
+          let(:journal_actions) { ['manage_users', 'view_paper_tracker', 'remove_orcid'] }
 
           it 'has journal permissions' do
             journal_actions.each do |action|

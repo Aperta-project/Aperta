@@ -14,25 +14,25 @@ describe TahiStandardTasks::PaperReviewerScenario do
   describe "rendering a template" do
     it "renders the journal" do
       template = "{{ journal.name }}"
-      expect(Liquid::Template.parse(template).render(context))
+      expect(LetterTemplate.new(body: template).render(context).body)
         .to eq(journal.name)
     end
 
     it "renders the manuscript type" do
       template = "{{ manuscript.paper_type }}"
-      expect(Liquid::Template.parse(template).render(context))
+      expect(LetterTemplate.new(body: template).render(context).body)
         .to eq(paper.paper_type)
     end
 
     it "renders the manuscript title" do
       template = "{{ manuscript.title }}"
-      expect(Liquid::Template.parse(template).render(context))
+      expect(LetterTemplate.new(body: template).render(context).body)
         .to eq(paper.title)
     end
 
     it "renders the invitation status" do
       template = "{{ invitation.state }}"
-      expect(Liquid::Template.parse(template).render(context))
+      expect(LetterTemplate.new(body: template).render(context).body)
         .to eq(invitation.state)
     end
   end

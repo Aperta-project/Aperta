@@ -570,11 +570,15 @@ class JournalFactory
         lt.subject = 'Manuscript Sendback Reasons'
         lt.to = 'a@b.com'
         lt.body = <<-TEXT.strip_heredoc
-        {task intro}
-        <br>
-        {task sendback_reasons}
-        <br>
-        {task footer}
+        {{intro}}
+        <br><br>
+        <ol>
+          {% for reason in sendback_reasons %}
+            <li>{{reason}}</li>
+          {% endfor %}
+        </ol>
+        <br><br>
+        {{footer}}
         TEXT
 
         lt.save!

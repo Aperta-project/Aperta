@@ -90,7 +90,12 @@ class TasksController < ApplicationController
     @paper = @task.paper
     @journal = @paper.journal
     @letter_template = @journal.letter_templates.find_by(name: 'Sendback Reasons')
-    @letter_template.render(SendbacksScenario.new(@task), check_blanks: true)
+    @letter_template.render(SendbacksScenario.new(@task), check_blanks: false)
+    render json:  {
+      to: @letter_template.to,
+      subject: @letter_template.subject,
+      body: @letter_template.body
+    }
   end
 
   def nested_questions

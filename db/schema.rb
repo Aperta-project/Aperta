@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170922200616) do
+ActiveRecord::Schema.define(version: 20170926204952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -236,6 +236,11 @@ ActiveRecord::Schema.define(version: 20170922200616) do
   add_index "card_contents", ["parent_id"], name: "index_card_contents_on_parent_id", using: :btree
   add_index "card_contents", ["rgt"], name: "index_card_contents_on_rgt", using: :btree
 
+  create_table "card_task_types", force: :cascade do |t|
+    t.string "display_name"
+    t.string "task_class"
+  end
+
   create_table "card_versions", force: :cascade do |t|
     t.integer  "version",                                 null: false
     t.integer  "card_id",                                 null: false
@@ -255,11 +260,13 @@ ActiveRecord::Schema.define(version: 20170922200616) do
     t.datetime "updated_at",                 null: false
     t.string   "name"
     t.integer  "journal_id"
-    t.integer  "latest_version", default: 1, null: false
+    t.integer  "latest_version",    default: 1, null: false
     t.datetime "archived_at"
-    t.string   "state",                      null: false
+    t.string   "state",                         null: false
+    t.integer  "card_task_type_id"
   end
 
+  add_index "cards", ["card_task_type_id"], name: "index_cards_on_card_task_type_id", using: :btree
   add_index "cards", ["journal_id"], name: "index_cards_on_journal_id", using: :btree
   add_index "cards", ["state"], name: "index_cards_on_state", using: :btree
 
@@ -496,7 +503,7 @@ ActiveRecord::Schema.define(version: 20170922200616) do
   add_index "journals", ["doi_publisher_prefix", "doi_journal_prefix"], name: "unique_doi", unique: true, using: :btree
 
   create_table "letter_templates", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",       null: false
     t.string   "category"
     t.string   "to"
     t.string   "subject"
@@ -505,7 +512,11 @@ ActiveRecord::Schema.define(version: 20170922200616) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "scenario"
+    t.string   "ident"
   end
+
+  add_index "letter_templates", ["name", "journal_id"], name: "index_letter_templates_on_name_and_journal_id", unique: true, using: :btree
+  add_index "letter_templates", ["ident", "journal_id"], name: "index_letter_templates_on_ident_and_journal_id", unique: true, using: :btree
 
   create_table "manuscript_manager_templates", force: :cascade do |t|
     t.string   "paper_type"
@@ -906,8 +917,10 @@ ActiveRecord::Schema.define(version: 20170922200616) do
     t.datetime "completed_at"
     t.integer  "card_version_id",                   null: false
     t.integer  "task_template_id"
+    t.integer  "assigned_user_id"
   end
 
+  add_index "tasks", ["assigned_user_id"], name: "index_tasks_on_assigned_user_id", using: :btree
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["paper_id"], name: "index_tasks_on_paper_id", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree

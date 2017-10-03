@@ -11,6 +11,7 @@ class ScheduledEvent < ActiveRecord::Base
   scope :active, -> { where(state: 'active') }
   scope :inactive, -> { where(state: 'inactive') }
   scope :complete, -> { where(state: 'complete') }
+  scope :passive, -> { where(state: 'passive') }
   scope :due_to_trigger, -> { active.where('dispatch_at < ?', DateTime.now.in_time_zone) }
 
   before_save :deactivate, if: :should_deactivate?
@@ -24,12 +25,17 @@ class ScheduledEvent < ActiveRecord::Base
     dispatch_at && dispatch_at > DateTime.now.in_time_zone && inactive?
   end
 
+  def finished?
+    state == 'completed' || state == 'inactive' || state == 'canceled' || state == 'errored'
+  end
+
   aasm column: :state do
     state :active, initial: true
     state :inactive
     state :completed
     state :processing
     state :errored
+    state :passive
     state :canceled # Canceled automatically after a qualifying event, e.g., a review is submitted
 
     event(:reactivate) do
@@ -38,6 +44,14 @@ class ScheduledEvent < ActiveRecord::Base
 
     event(:deactivate) do
       transitions from: :active, to: :inactive
+    end
+
+    event(:switch_off) do
+      transitions from: :active, to: :passive
+    end
+
+    event(:switch_on) do
+      transitions from: :passive, to: :active
     end
 
     event(:trigger, after_commit: [:send_email]) do

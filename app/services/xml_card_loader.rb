@@ -106,7 +106,7 @@ class XmlCardLoader
     }
   end
 
-  # rubocop:disable MethodLength
+  # rubocop:disable MethodLength, AbcSize
   def card_content_attributes(content, card_version)
     {
       card_version: card_version,
@@ -129,8 +129,9 @@ class XmlCardLoader
       editor_style: content.attr_value('editor-style'),
       condition: content.attr_value('condition'),
       value_type: content.attr_value('value-type'),
-      visible_with_parent_answer: content.attr_value('visible-with-parent-answer')
-    }.compact
+      visible_with_parent_answer: content.attr_value('visible-with-parent-answer'),
+      key: content.attr_value('key')
+    }
   end
-  # rubocop:enable MethodLength
+  # rubocop:enable MethodLength, AbcSize
 end

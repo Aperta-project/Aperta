@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import EscapeListenerMixin from 'tahi/mixins/escape-listener';
 import { PropTypes } from 'ember-prop-types';
-import { task } from 'ember-concurrency';
 
 export default Ember.Component.extend(EscapeListenerMixin, {
   propTypes: {
@@ -34,8 +33,9 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
     complete() {
       this.set('errors', null);
+      let name = this.get('name') || '';
       const template = this.get('store').createRecord('letter-template', {
-        name: this.get('name'),
+        name: name,
         journalId: this.get('journal.id'),
         scenario: this.get('scenario.name'),
         mergeFields: this.get('scenario.merge_fields')
@@ -44,7 +44,6 @@ export default Ember.Component.extend(EscapeListenerMixin, {
       let errors = template.get('errors');
       if (Ember.isBlank(this.get('scenario'))) errors.add('scenario', 'This field is required');
 
-      let name = this.get('name');
       if (Ember.isBlank(name)) errors.add('name', 'This field is required');
       if (this.get('templateNames').map(n => n.toLowerCase()).includes(name.toLowerCase())) {
         errors.add('name', 'That template name is taken for this journal. Please give your template a new name.');

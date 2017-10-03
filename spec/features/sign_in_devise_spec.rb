@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "Devise account creation", js: true, flaky: true do
+feature "Devise account creation", js: true do
   scenario "User can create an account" do
     sign_up_page = SignUpPage.visit
     dashboard_page = sign_up_page.sign_up_as(
@@ -15,7 +15,7 @@ feature "Devise account creation", js: true, flaky: true do
   end
 end
 
-feature "Devise signing in", js: true, flaky: true do
+feature "Devise signing in", js: true do
   let!(:user) { create :user }
   scenario "User can sign in to & out of the site using their email address" do
     sign_in_page = SignInPage.visit
@@ -34,7 +34,7 @@ feature "Devise signing in", js: true, flaky: true do
   end
 end
 
-feature "Devise redirect", js: true, flaky: true do
+feature "Devise redirect", js: true do
   let!(:user) { FactoryGirl.create :user }
   scenario "User is redirected after login" do
     visit '/profile'
@@ -46,7 +46,7 @@ feature "Devise redirect", js: true, flaky: true do
   end
 end
 
-feature "Devise resetting password", js: true, flaky: true do
+feature "Devise resetting password", js: true do
   let!(:user) { create :user }
   scenario "User can reset their password" do
     SignInPage.visit

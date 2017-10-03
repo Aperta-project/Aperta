@@ -13,3 +13,11 @@
       font-weight: bold;
     }
 }
+
+.article-abstract-input {
+  p {
+    // important had to be as it was still
+    // reflecting the .form-group style
+    font-size: 14px !important;
+  }
+}

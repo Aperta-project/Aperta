@@ -1,6 +1,6 @@
 require 'rails_helper'
-
-feature 'Manuscript Manager Templates', js: true, flaky: true, selenium: true do
+# rubocop:disable Metrics/BlockLength
+feature 'Manuscript Manager Templates', js: true, selenium: true do
   let(:journal_admin) { FactoryGirl.create :user }
   let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions, :with_default_mmt }
   let!(:card) { FactoryGirl.create(:card, :versioned, journal: journal) }

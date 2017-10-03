@@ -23,13 +23,17 @@ export default Ember.Component.extend({
   classNames: ['card-content-file-uploader'],
 
   store: Ember.inject.service(),
+  cardEvent: Ember.inject.service(),
 
   task: null,
   paper: computed.reads('task.paper'),
 
   propTypes: {
     attachmentType: PropTypes.oneOf(['manuscript', 'sourcefile']).isRequired,
-    errorMessage: PropTypes.string // overrides attachment manager errors
+    errorMessage: PropTypes.oneOfType([
+      PropTypes.null,
+      PropTypes.string // overrides attachment manager errors
+    ])
   },
 
   // Do not propagate to parent component as this component is in charge of
@@ -78,7 +82,9 @@ export default Ember.Component.extend({
           s3Url: s3Url,
           paper: this.get('task.paper')
         })
-        .save();
+        .save().then(() => {
+          this.get('cardEvent').trigger('onPaperFileUploaded', this.get('attachmentType'));
+        });
     },
 
     updateFile(s3Url, file) {

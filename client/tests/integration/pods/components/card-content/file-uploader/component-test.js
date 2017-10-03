@@ -17,7 +17,8 @@ moduleForComponent(
           allowFileCaptions: true,
           allowMultipleUploads: true,
           label: 'Upload',
-          text: 'Please upload a file'
+          text: 'Please upload a file',
+          valueType: 'attachment'
         }),
         answer: Ember.Object.create({ value: null, attachments: [] })
       });

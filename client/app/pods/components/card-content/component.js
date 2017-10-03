@@ -7,6 +7,7 @@ import Ember from 'ember';
 import CardContentTypes from 'tahi/lib/card-content-types';
 import { PropTypes } from 'ember-prop-types';
 import { timeout, task as concurrencyTask } from 'ember-concurrency';
+import findNearestProperty from 'tahi/lib/find-nearest-property';
 
 export default Ember.Component.extend({
   templateName: Ember.computed('content.contentType', function() {
@@ -39,6 +40,11 @@ export default Ember.Component.extend({
 
   tagName: '',
   debouncePeriod: 200, // in ms
+
+  scenario: null,
+  computedScenario: Ember.computed(function() {
+    return findNearestProperty(this, 'scenario');
+  }),
 
   init() {
     this._super(...arguments);

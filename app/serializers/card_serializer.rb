@@ -6,6 +6,11 @@ class CardSerializer < ActiveModel::Serializer
   has_one :content, embed: :id
   has_many :card_versions, embed: :ids
   has_many :latest_contents, embed: :ids, include: true, root: :card_contents
+  has_one :card_task_type, embed: :id, include: true
+
+  def content
+    object.content_root_for_version(:latest)
+  end
 
   # include_*? is a method that we can define for a given attribute that will
   # cause the serializer to omit the attribute if the method returns true. See

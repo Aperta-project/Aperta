@@ -107,14 +107,16 @@ export default Ember.Component.extend({
     },
 
     sendChangeRequestEmail() {
+      const url = `/api/tasks/${this.get('owner.id')}/sendback_email`;
+
       let data = {
         intro: this.get('emailIntroText'),
         sendbacks: this.get('sendbackReasons'),
         footer: this.get('emailFooterText')
       };
 
-      const url = `/api/cards/${this.get('owner.id')}/sendback_email`;
-      this.get('restless').post(url, data);
+      this.get('restless').put(url, data).then(()=> {
+      });
     },
   }
 });

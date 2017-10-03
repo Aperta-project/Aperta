@@ -55,7 +55,7 @@ test:
         parallel: true
         files:
           - "**/spec/**/*_spec.rb"
-    - bundle exec rspec -p 30 -t js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml:
+    - TZ='UTC' bundle exec rspec -p 30 -t js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml:
         timeout: 1800
         parallel: true
         files:

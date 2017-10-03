@@ -15,6 +15,7 @@ const {
 export default Component.extend({
   propTypes: {
     canManage: PropTypes.bool,
+    canRemoveSingleUser: PropTypes.bool,
     currentParticipants: PropTypes.arrayOf(PropTypes.EmberObject).isRequired,
     displayEmails: PropTypes.bool,
     label: PropTypes.string,
@@ -57,8 +58,12 @@ export default Component.extend({
       filteredUsersPath(this.get('paperId'));
   }),
 
-  canRemove: computed('canManage', 'currentParticipants.[]', function() {
-    return this.get('canManage') && this.get('currentParticipants').length > 1;
+  canRemove: computed('canManage', 'canRemoveSingleUser', 'currentParticipants.[]', function() {
+    if (this.get('canRemoveSingleUser')) {
+      return this.get('canManage') && this.get('currentParticipants').length === 1;
+    } else {
+      return this.get('canManage') && this.get('currentParticipants').length > 1;
+    }
   }),
 
   searchUsersTask: task(function* (term) {

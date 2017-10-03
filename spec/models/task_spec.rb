@@ -239,4 +239,20 @@ describe Task do
       expect(task.can_change?(double)).to eq(true)
     end
   end
+
+  describe '#assigned_user' do
+    let(:task) { FactoryGirl.create :ad_hoc_task, paper: paper }
+    let(:paper) { FactoryGirl.create :paper, journal: journal }
+    let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
+    let(:assignedUser) { FactoryGirl.create(:user) }
+
+    it 'returns an user when assigned_user_id is present' do
+      task.update(assigned_user_id: assignedUser.id)
+      expect(task.assigned_user).to be == assignedUser
+    end
+
+    it 'returns nil when assigned_user_id is not present' do
+      expect(task.assigned_user).to be_nil
+    end
+  end
 end

@@ -105,11 +105,11 @@ describe TasksController, redis: true do
         do_request
       end
 
-      context "custom cards" do
+      context "a card_id is included in the params" do
         let(:card) { FactoryGirl.create(:card, :versioned, journal: journal) }
         let(:task_params) do
           {
-            type: 'CustomCardTask',
+            type: 'TahiStandardTasks::UploadManuscriptTask',
             paper_id: paper.to_param,
             phase_id: paper.phases.last.id,
             title: card.name,
@@ -117,8 +117,12 @@ describe TasksController, redis: true do
           }
         end
 
-        it "creates a new task from a card template" do
-          expect { do_request }.to change(CustomCardTask, :count).by(1)
+        it "creates a new task from a card template, using the latest published version" do
+          expect(TaskFactory).to(receive(:create)
+                                   .with(TahiStandardTasks::UploadManuscriptTask, hash_including(card_version: anything))
+                                   .and_call_original)
+          expect { do_request }.to change(TahiStandardTasks::UploadManuscriptTask, :count).by(1)
+          expect(TahiStandardTasks::UploadManuscriptTask.last.card_version).to eq(card.latest_published_card_version)
         end
       end
     end
@@ -201,15 +205,31 @@ describe TasksController, redis: true do
           end.to change { task.reload.completed }.from(true).to(false)
         end
 
+        it "allows assigning an user to the task" do
+          expect do
+            task_params[:assigned_user_id] = 1
+            do_request
+          end.to change { task.reload.assigned_user_id }.from(nil).to(1)
+        end
+
+        it "allows revoking an user from the task" do
+          task.update(assigned_user_id: 11)
+          expect do
+            task_params[:assigned_user_id] = nil
+            do_request
+          end.to change { task.reload.assigned_user_id }.from(11).to(nil)
+        end
+
         it "does not incomplete the task when the completed param is not a part of the request" do
           expect do
-            task_params.merge!(title: 'vernors')
+            task_params = { title: 'vernors' }
             do_request
           end.to_not change { task.reload.completed }
         end
 
         it "does not update anything else on the task" do
           expect do
+            task_params[:title] = 'vernors'
             do_request
           end.to_not change { task.reload.title }
         end

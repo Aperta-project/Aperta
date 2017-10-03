@@ -6,6 +6,7 @@ describe JournalServices::CreateDefaultManuscriptManagerTemplates do
 
   before do
     # make sure journal task types are created - required before MMT
+    CardTaskType.seed_defaults
     JournalServices::CreateDefaultTaskTypes.call(journal)
   end
 

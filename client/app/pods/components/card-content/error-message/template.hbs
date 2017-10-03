@@ -1,0 +1,8 @@
+{{#if preview}}
+  {{error-message
+    displayIcon=true
+    indent=false
+    message=(concat "This is a preview of the error message bound to " content.key)}}
+{{else}}
+  {{error-message displayIcon=true indent=false message=(get scenario content.key)}}
+{{/if}}

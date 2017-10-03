@@ -16,7 +16,7 @@ class TasksController < ApplicationController
 
   def show
     requires_user_can :view, task
-    respond_with(task, location: task_url(task))
+    respond_with(task, location: task_url(task), include_card_version: true)
   end
 
   def create
@@ -34,9 +34,11 @@ class TasksController < ApplicationController
     requires_user_can :edit, task
 
     if task.completed?
-      # If the task is already completed, all the user can do is uncomplete it.
-      attrs = params.require(:task).permit(:completed)
-      task.update!(completed: attrs[:completed]) if attrs.key?(:completed)
+      # If the task is already completed, all the user can do is uncomplete it
+      # or assign an user.
+      attrs = params.require(:task).permit(:completed, :assigned_user_id)
+      task.completed = attrs[:completed]
+      task.assigned_user_id = attrs[:assigned_user_id]
     else
       # At this point, the user could be doing one of two things.
       # 1. They are toggling the completed flag.
@@ -48,9 +50,9 @@ class TasksController < ApplicationController
         render json: task.reload, serializer: TaskAnswerSerializer
         return
       end
-      task.save!
     end
 
+    task.save!
     task.after_update
     Activity.task_updated! task, user: current_user
 
@@ -142,7 +144,7 @@ class TasksController < ApplicationController
       new_params[:paper] = paper
       new_params[:creator] = paper.creator
 
-      if task_type.to_s == 'CustomCardTask'
+      if params[:task][:card_id]
         # assign a specific card version
         card = paper.journal.cards.find(params[:task][:card_id])
         new_params[:card_version] = card.latest_published_card_version

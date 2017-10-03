@@ -1,8 +1,16 @@
-{{#if readOnly}}
-  {{#if shouldDisplayQuestionText}}
-    <div class="question-text {{textClassNames}}">{{{questionText}}}</div>
-  {{/if}}
+{{#if shouldDisplayQuestionText}}
+  <div class="question-text {{textClassNames}}">{{{questionText}}}</div>
+{{/if}}
 
+{{#if helpText}}
+  <ul class="question-help">{{{helpText}}}</ul>
+{{/if}}
+
+{{#if unwrappedHelpText}}
+  {{{unwrappedHelpText}}}
+{{/if}}
+
+{{#if readOnly}}
   {{#if answer.value}}
     <div class="answer-text">{{humanize answer.value}}</div>
   {{else}}
@@ -10,18 +18,6 @@
   {{/if}}
 
 {{else}}
-  {{#if shouldDisplayQuestionText}}
-    <div class="question-text {{textClassNames}}">{{{questionText}}}</div>
-  {{/if}}
-
-  {{#if helpText}}
-    <ul class="question-help">{{{helpText}}}</ul>
-  {{/if}}
-
-  {{#if unwrappedHelpText}}
-    {{{unwrappedHelpText}}}
-  {{/if}}
-
   <div class="flex-group {{wrapperClass}}">
     <label class="flex-element {{concat ident "-accept-label"}}">
       {{radio-button value="accept"

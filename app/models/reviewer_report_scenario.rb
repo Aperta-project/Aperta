@@ -1,5 +1,5 @@
 # Provides a template context for ReviewerReport
-class ReviewerReportScenario < TemplateScenario
+class ReviewerReportScenario < PaperScenario
   def self.complex_merge_fields
     [{ name: :review, context: ReviewerReportContext },
      { name: :reviewer, context: UserContext },
@@ -15,17 +15,13 @@ class ReviewerReportScenario < TemplateScenario
     UserContext.new(reviewer_report.user)
   end
 
-  def journal
-    JournalContext.new(reviewer_report.paper.journal)
-  end
-
-  def manuscript
-    PaperContext.new(reviewer_report.paper)
-  end
-
   private
 
   def reviewer_report
     @object
+  end
+
+  def paper
+    reviewer_report.paper
   end
 end

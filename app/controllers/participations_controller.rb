@@ -18,7 +18,6 @@ class ParticipationsController < ApplicationController
     participant = User.find(participation_params[:user_id])
     participation = task.add_participant(participant)
 
-    CommentLookManager.sync_task(task)
     if participation.user_id != current_user.id
       task.notify_new_participant(current_user, participation)
     end

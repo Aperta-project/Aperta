@@ -571,13 +571,11 @@ class JournalFactory
         lt.to = 'a@b.com'
         lt.body = <<-TEXT.strip_heredoc
         {{intro}}
-        <br><br>
         <ol>
           {% for reason in sendback_reasons %}
             <li>{{reason}}</li>
           {% endfor %}
         </ol>
-        <br><br>
         {{footer}}
         TEXT
 

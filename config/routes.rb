@@ -82,7 +82,6 @@ Tahi::Application.routes.draw do
       put :publish, on: :member
       put :archive, on: :member
       put :revert, on: :member
-      post :sendback_email, on: :member
     end
 
     resources :card_permissions, only: [:create, :show, :update], controller: 'card_permissions'
@@ -208,6 +207,7 @@ Tahi::Application.routes.draw do
       resources :questions, only: [:index]
       resources :snapshots, only: [:index]
       put :send_message, on: :member
+      put :sendback_email, on: :member
       put :sendback_preview, on: :member
       namespace :eligible_users, module: nil do
         get 'admins', to: 'task_eligible_users#admins'

@@ -32,7 +32,7 @@ let template = hbs`
 `;
 
 test('can manage workflow, list appears', function(assert) {
-  let paper = FactoryGuy.make('paper', { publishingState: 'submitted', firstSubmittedAt: '2016-09-28T13:54:58.028Z'});
+  let paper = FactoryGuy.make('paper', { publishingState: 'submitted', submittedAt: '2016-09-28T13:54:58.028Z'});
   let correspondence = FactoryGuy.make('correspondence', { paper: paper });
   const can = FakeCanService.create().allowPermission('manage_workflow', paper);
   this.register('service:can', can.asService());

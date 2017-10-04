@@ -2,8 +2,8 @@ import Ember from 'ember';
 import moment from 'moment';
 
 export default Ember.Component.extend({
-  isRecordLost: Ember.computed('firstSubmittedAt', function() {
-    let dateSubmitted = moment(this.get('paper').get('firstSubmittedAt'));
+  isRecordLost: Ember.computed('submittedAt', function() {
+    let dateSubmitted = moment(this.get('paper').get('submittedAt'));
     let dateChanged = moment('February 1, 2017');
     return dateSubmitted < dateChanged;
   })

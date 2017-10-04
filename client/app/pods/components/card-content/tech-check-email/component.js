@@ -4,6 +4,7 @@ export default Ember.Component.extend({
   classNames: ['card-content-tech-check-email'],
   showEmailPreview: false,
   restless: Ember.inject.service('restless'),
+  flash: Ember.inject.service('flash'),
 
   emailPreview: null,
 
@@ -15,12 +16,17 @@ export default Ember.Component.extend({
     $(document).on('click', '.sendback-reason-row input', () => {
       this.set('showEmailPreview', false);
     });
+
+    $(document).on('click', '.sendback-reason-row .fa-pencil', () => {
+      this.set('showEmailPreview', false);
+    });
   },
 
   willDestroyElement() {
     this._super(...arguments);
     $(document).off('focus', '.card-content-sendback-reason textarea');
     $(document).off('click', '.sendback-reason-row input');
+    $(document).off('click', '.sendback-reason-row .fa-pencil');
   },
 
   intro: Ember.computed(function () {
@@ -71,7 +77,8 @@ export default Ember.Component.extend({
       const config = this._templateConfig('sendback_email');
 
       this.get('restless').put(config.url, config.data).then(()=> {
-        // do something here
+        const flash = this.get('flash');
+        flash.displaySystemLevelMessage('success', 'Sendback reasons email sent');
       });
     },
   }

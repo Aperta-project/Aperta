@@ -568,12 +568,12 @@ class JournalFactory
         lt.ident = ident
         lt.scenario = 'SendbacksScenario'
         lt.subject = 'Manuscript Sendback Reasons'
-        lt.to = 'a@b.com'
+        lt.to = '{{author.email}}'
         lt.body = <<-TEXT.strip_heredoc
         {{intro}}
         <ol>
           {% for reason in sendback_reasons %}
-            <li>{{reason}}</li>
+            <li>{{reason.value}}</li>
           {% endfor %}
         </ol>
         {{footer}}

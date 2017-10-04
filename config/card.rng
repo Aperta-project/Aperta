@@ -56,9 +56,6 @@
         </attribute>
       </optional>
       <optional>
-        <attribute name="default-answer-value"/>
-      </optional>
-      <optional>
         <attribute name="allow-annotations">
           <choice>
             <value>true</value>
@@ -70,6 +67,11 @@
         <optional>
           <element name="instruction-text">
             <ref name="html"/>
+          </element>
+        </optional>
+        <optional>
+          <element name="default-answer-value">
+            <text/>
           </element>
         </optional>
         <optional>
@@ -102,14 +104,6 @@
           </choice>
         </attribute>
       </optional>
-      <optional>
-        <attribute name="default-answer-value">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
-      </optional>
       <attribute name="value-type">
         <value>boolean</value>
       </attribute>
@@ -125,6 +119,11 @@
         <optional>
           <element name="instruction-text">
             <ref name="html"/>
+          </element>
+        </optional>
+        <optional>
+          <element name="default-answer-value">
+            <text/>
           </element>
         </optional>
         <interleave>
@@ -280,9 +279,6 @@
         </attribute>
       </optional>
       <optional>
-        <attribute name="default-answer-value"/>
-      </optional>
-      <optional>
         <attribute name="allow-annotations">
           <choice>
             <value>true</value>
@@ -294,6 +290,11 @@
         <optional>
           <element name="instruction-text">
             <ref name="html"/>
+          </element>
+        </optional>
+        <optional>
+          <element name="default-answer-value">
+            <text/>
           </element>
         </optional>
         <element name="text">
@@ -324,14 +325,6 @@
           </choice>
         </attribute>
       </optional>
-      <optional>
-        <attribute name="default-answer-value">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
-      </optional>
       <attribute name="value-type">
         <value>boolean</value>
       </attribute>
@@ -348,6 +341,11 @@
           <optional>
             <element name="instruction-text">
               <ref name="html"/>
+            </element>
+          </optional>
+          <optional>
+            <element name="default-answer-value">
+              <text/>
             </element>
           </optional>
           <element name="text">

@@ -31,6 +31,7 @@ let template = hbs`{{attachment-manager
                       description=content.text
                       multiple=content.allowMultipleUploads
                       hasCaption=content.allowFileCaptions
+                      showDescription=true
                     }}`;
 
 test(`shows a full attachment manager`, function(assert) {
@@ -40,6 +41,12 @@ test(`shows a full attachment manager`, function(assert) {
   assert.elementFound('.fileinput-button',
     'has a file input button');
 });
+
+test(`shows the description when showDescription is true`, function(assert) {
+  this.render(template);
+  assert.textPresent('.description', 'Please upload a file', 'shows description message');
+});
+
 
 test(`displays attachments and has proper action buttons`, function(assert) {
   let attachment = FactoryGuy.make('question-attachment');

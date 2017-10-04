@@ -235,7 +235,6 @@ class AdminWorkflowsPage(BaseAdminPage):
                                         'register_decision', 'related_articles',
                                         'revision_tech_check', 'send_to_apex',
                                         'title_and_abstract'),
-                           custom_cards=(),
                            uses_resrev_report=True,
                            preprint_eligible=False):
     """
@@ -245,7 +244,6 @@ class AdminWorkflowsPage(BaseAdminPage):
     :param mmt_name: optional name for the new mmt
     :param user_tasks: list of user facing tasks to add to the mmt
     :param staff_tasks: list of staff facing tasks to add to the mmt
-    :param custom_cards: list of custom cards to add to the mmt
     :param uses_resrev_report: boolean, default true, specifies mmt type as research for
       the purposes of reviewer report selection
     :param preprint_eligible: bool, Whether the mmt supports preprint functions, including export
@@ -286,14 +284,12 @@ class AdminWorkflowsPage(BaseAdminPage):
       cancel.click()
       time.sleep(1)
     else:
-      logging.info('Adding {0} MMT with user tasks: {1}, staff tasks {2}, and custom tasks {3}'
-                   ' and that uses the research reviewer report: {4}, with a preprint eligible '
-                   'setting: {5}'.format(mmt_name,
-                                         user_tasks,
-                                         staff_tasks,
-                                         custom_cards,
-                                         uses_resrev_report,
-                                         preprint_eligible))
+      logging.info('Adding {0} MMT with user tasks: {1}, staff tasks {2}, and that uses the research reviewer '
+                   'report: {3}, with a preprint eligible setting: {4}'.format(mmt_name,
+                                                                               user_tasks,
+                                                                               staff_tasks,
+                                                                               uses_resrev_report,
+                                                                               preprint_eligible))
       add_mmt_btn = self._get(self._admin_workflow_add_mmt_btn)
       add_mmt_btn.click()
       self._wait_for_element(self._get(self._mmt_template_name_field))
@@ -318,13 +314,6 @@ class AdminWorkflowsPage(BaseAdminPage):
       time.sleep(1)
       phase2 = phases[1]
       phase2.click()
-      for card_name in custom_cards:
-        self.add_card_to_mmt(card_name)
-      div_buttons = self._get(self._div_buttons)
-      div_buttons.find_element_by_class_name('button-primary').click()
-      time.sleep(1)
-      phase3 = phases[2]
-      phase3.click()
       for card_name in staff_tasks:
         self.add_card_to_mmt(card_name)
       div_buttons = self._get(self._div_buttons)

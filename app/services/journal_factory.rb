@@ -564,7 +564,7 @@ class JournalFactory
   def seed_preprint_sendbacks
     ident = 'preprint-sendbacks'
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
-      LetterTemplate.where(name: 'Sendback Reasons', journal: journal).first_or_initialize.tap do |lt|
+      LetterTemplate.where(name: 'Sendback Reasons', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
         lt.scenario = 'SendbacksScenario'
         lt.subject = 'Manuscript Sendback Reasons'

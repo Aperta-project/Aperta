@@ -86,10 +86,7 @@ class TasksController < ApplicationController
 
   def sendback_preview
     @task = Task.find(params[:id])
-    @paper = @task.paper
-    @journal = @paper.journal
-    @letter_template = @journal.letter_templates.find_by(name: 'Sendback Reasons')
-    @letter_template.render(SendbacksScenario.new(@task), check_blanks: false)
+    @letter_template = render_sendback_template(@task)
     render json:  {
       to: @letter_template.to,
       subject: @letter_template.subject,
@@ -99,10 +96,7 @@ class TasksController < ApplicationController
 
   def sendback_email
     @task = Task.find(params[:id])
-    @paper = @task.paper
-    @journal = @paper.journal
-    @letter_template = @journal.letter_templates.find_by(name: 'Sendback Reasons')
-    @letter_template.render(SendbacksScenario.new(@task), check_blanks: false)
+    @letter_template = render_sendback_template(@task)
     GenericMailer.delay.send_email(
       subject: @letter_template.subject,
       body: @letter_template.body,
@@ -133,6 +127,13 @@ class TasksController < ApplicationController
   end
 
   private
+
+  def render_sendback_template(task_obj)
+    paper = task_obj.paper
+    journal = paper.journal
+    letter_template = journal.letter_templates.find_by(name: 'Sendback Reasons')
+    letter_template.render(SendbacksScenario.new(task_obj), check_blanks: false)
+  end
 
   def paper
     paper_id = params[:paper_id] || params.dig(:task, :paper_id)

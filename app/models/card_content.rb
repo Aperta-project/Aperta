@@ -106,7 +106,7 @@ class CardContent < ActiveRecord::Base
       'custom-class' => custom_class,
       'custom-child-class' => custom_child_class,
       'wrapper-tag' => wrapper_tag,
-      'visible-with-parent-answer' => visible_with_parent_answer,
+      'visible-with-parent-answer' => visible_with_parent_answer
     }.merge(additional_content_attrs).compact
   end
 

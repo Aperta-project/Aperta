@@ -42,7 +42,7 @@ class PaperUpdateWorker
       @epub_stream = Faraday.get(
         job_response.format_url(:epub)
       ).body
-      body = TahiEpub::Zip.extract(stream: epub_stream, filename: 'body').force_encoding("UTF-8")
+      body = TahiEpub::Zip.extract(stream: epub_stream, filename: 'body').force_encoding("UTF-8") rescue nil
       @paper.update!(body: body, processing: false)
       Notifier.notify(event: "paper:data_extracted", data: { record: job_response })
       Notifier.notify(event: 'paper:updated', data: @paper.event_payload(action: 'updated'))

@@ -6,7 +6,7 @@ module CustomCard
     # Card and it can be used to create a new valid Card into the
     # system via the CustomCard::Loader.
     #
-    class EthicsTask < Base
+    class Ethics < Base
       def self.name
         "Ethics Statement"
       end

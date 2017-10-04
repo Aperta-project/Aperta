@@ -28,6 +28,7 @@ export default DS.Model.extend({
   // Card config:
 
   cards: DS.hasMany('card'),
+  cardTaskTypes: DS.hasMany('card-task-type'),
   initials: Ember.computed('name', function() {
     return this.get('name').split(' ').map(s => s[0]).join('');
   })

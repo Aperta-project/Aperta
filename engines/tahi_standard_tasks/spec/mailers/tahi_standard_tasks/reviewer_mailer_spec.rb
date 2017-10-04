@@ -278,7 +278,8 @@ describe TahiStandardTasks::ReviewerMailer do
   describe 'reminder emails' do
     before do
       report.paper.journal.letter_templates.create!(
-        name: template_name,
+        ident: template_ident,
+        name: template_ident,
         scenario: 'ReviewerReportScenario',
         subject: 'review {{ journal.name }}',
         body: '<p>Dear Dr. {{ reviewer.last_name }}, review {{ manuscript.title }} on {{ review.due_at }} </p>'
@@ -290,7 +291,7 @@ describe TahiStandardTasks::ReviewerMailer do
 
     describe '.remind_before_due' do
       subject(:email) { described_class.remind_before_due(reviewer_report_id: report.id) }
-      let(:template_name) { 'Review Reminder - Before Due' }
+      let(:template_ident) { 'review-reminder-before-due' }
 
       it 'is to the reviewer' do
         expect(email.to).to eq([report.user.email])
@@ -317,7 +318,7 @@ describe TahiStandardTasks::ReviewerMailer do
 
     describe '.first_late_notice' do
       subject(:email) { described_class.first_late_notice(reviewer_report_id: report.id) }
-      let(:template_name) { 'Review Reminder - First Late' }
+      let(:template_ident) { 'review-reminder-first-late' }
 
       it 'is to the reviewer' do
         expect(email.to).to eq([report.user.email])
@@ -344,7 +345,7 @@ describe TahiStandardTasks::ReviewerMailer do
 
     describe '.second_late_notice' do
       subject(:email) { described_class.second_late_notice(reviewer_report_id: report.id) }
-      let(:template_name) { 'Review Reminder - Second Late' }
+      let(:template_ident) { 'review-reminder-second-late' }
 
       it 'is to the reviewer' do
         expect(email.to).to eq([report.user.email])

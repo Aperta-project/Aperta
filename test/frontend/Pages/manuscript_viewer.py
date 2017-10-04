@@ -188,6 +188,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     if failed_conversion:
       self.check_failed_conversion_text(status='unsubmitted')
     self._wait_for_element(self._get(self._generic_task_item))
+    # For debugging purposes, it is very important to output the newly created manuscript URL when we create a new manu
+    current_url = self.get_current_url_without_args()
+    logging.info(current_url)
 
   def validate_page_elements_styles_functions(self, user='', admin=''):
     """

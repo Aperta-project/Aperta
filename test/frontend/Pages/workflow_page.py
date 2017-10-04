@@ -287,11 +287,14 @@ class WorkflowPage(AuthenticatedPage):
                                                          'in {0}.'.format(author_card_namelist)
 
     # APERTA-5513 AC 3
-    author_cards[12].click() # Reporting Guidelines
-    author_cards[7].click() # Reviewer Candidates
+    for card in author_cards:
+      if card.text == 'Reporting Guidelines':
+        card.click()
+      if card.text == 'Reviewer Candidates':
+        card.click()
     self._get(self._add_button_overlay).click()
+    # TODO: Remove this pre-existing sleep in exchange for waiting for overlay to clear.
     time.sleep(2)
-    # Check if there
     return self
 
   def count_cards_first_column(self):

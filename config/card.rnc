@@ -28,9 +28,9 @@ radio-input = element content {
                   attribute value-type { "text" | "boolean" },
                   attribute content-type { "radio" },
                   attribute required-field { "true" | "false" }?,
-                  attribute default-answer-value { text }?,
                   attribute allow-annotations { "true" | "false" }?,
-                  (element instruction-text { html }? &
+                  (element instruction-text { text }? &
+                  element default-answer-value { text }? &
                   element text { html }?),
                   possible-value*,
                   content*
@@ -41,10 +41,10 @@ check-box-input = element content {
                 attribute ident { text }?,
                 attribute content-type { "check-box" },
                 attribute required-field { "true" | "false" }?,
-                attribute default-answer-value { "true" | "false" }?,
                 attribute value-type { "boolean" },
                 attribute allow-annotations { "true" | "false" }?,
                 (element instruction-text { html }? &
+                 element default-answer-value { text }? &
                 (element label { text }? &
                 element text { html }?)),
                 content*
@@ -84,9 +84,9 @@ dropdown-input = element content {
                   attribute value-type { "text" | "boolean" },
                   attribute content-type { "dropdown" },
                   attribute required-field { "true" | "false" }?,
-                  attribute default-answer-value { text }?,
                   attribute allow-annotations { "true" | "false" }?,
-                  (element instruction-text { html }? &
+                  (element instruction-text { text }? &
+                  element default-answer-value { text }? &
                   element text { html }),
                   possible-value+,
                   content*
@@ -96,10 +96,10 @@ tech-check = element content {
                 attribute ident { text }?,
                 attribute content-type { "tech-check" },
                 attribute required-field { "true" | "false" }?,
-                attribute default-answer-value { "true" | "false" }?,
                 attribute value-type { "boolean" },
                 attribute allow-annotations { "true" | "false" }?,
-                (element instruction-text { html }? &
+                (element instruction-text { text }? &
+                element default-answer-value { text }? &
                 element text { html })?,
                 content*
             }

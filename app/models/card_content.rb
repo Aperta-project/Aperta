@@ -98,7 +98,7 @@ class CardContent < ActiveRecord::Base
 
   # content_attrs rendered into the <card-content> tag itself
   def content_attrs
-    attrs = {
+    {
       'ident' => ident,
       'content-type' => content_type,
       'value-type' => value_type,
@@ -107,13 +107,7 @@ class CardContent < ActiveRecord::Base
       'custom-child-class' => custom_child_class,
       'wrapper-tag' => wrapper_tag,
       'visible-with-parent-answer' => visible_with_parent_answer,
-    }.merge(additional_content_attrs)
-
-    if content_type != 'paragraph-input' && content_type != 'short-input'
-      attrs = attrs.merge('default-answer-value' => default_answer_value)
-    end
-
-    attrs.compact
+    }.merge(additional_content_attrs).compact
   end
 
   # rubocop:disable Metrics/MethodLength
@@ -168,7 +162,7 @@ class CardContent < ActiveRecord::Base
       render_tag(xml, 'instruction-text', instruction_text)
       render_raw(xml, 'text', text)
       render_tag(xml, 'label', label)
-      render_tag(xml, 'default-answer-value', default_answer_value) if content_type == 'paragraph-input' || content_type == 'short-input'
+      render_tag(xml, 'default-answer-value', default_answer_value)
 
       preload_descendants if @quick_children.nil?
       card_content_validations.each do |ccv|

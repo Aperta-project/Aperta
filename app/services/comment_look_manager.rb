@@ -8,7 +8,6 @@ class CommentLookManager
   def self.sync_comment(comment)
     comment.transaction do
       comment.save!
-      comment.notify_mentioned_people
 
       comment.task.participants.where.not(id: comment.commenter).each do |user|
         create_comment_look(user, comment)
@@ -17,7 +16,7 @@ class CommentLookManager
   end
 
   def self.create_comment_look(user, comment)
-    return unless user.present?
+    return if user.blank?
     return if comment.created_by?(user)
 
     participation = user.participations.find_by(assigned_to: comment.task)

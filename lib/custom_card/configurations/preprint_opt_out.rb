@@ -62,7 +62,8 @@ module CustomCard
                   </text>
                 </content>
               </content>
-              <content content-type="radio" value-type="text" default-answer-value="1" allow-annotations="false" required-field="false">
+              <content content-type="radio" value-type="text" allow-annotations="false" required-field="false">
+                <default-answer-value>1</default-answer-value>
                 <possible-value label="Yes, I want to accelerate research by publishing a preprint ahead of peer review" value="1"/>
                 <possible-value label="No, I do not want my article to appear online ahead of the reviewed article" value="2"/>
               </content>

@@ -3,6 +3,7 @@ class SendbacksScenario < TemplateScenario
   def self.merge_field_definitions
     [{ name: :manuscript, context: PaperContext },
      { name: :journal, context: JournalContext },
+     { name: :author, context: UserContext },
      { name: :sendback_reasons, context: AnswerContext, many: true }]
   end
 
@@ -22,6 +23,10 @@ class SendbacksScenario < TemplateScenario
     task.answer_for('tech-check-email--email-footer').value
   end
 
+  def author
+    UserContext.new(task.paper.creator)
+  end
+
   def sendback_reasons
     reasons = task.answers.select do |answer|
       content = CardContent.find answer.card_content_id
@@ -36,7 +41,7 @@ class SendbacksScenario < TemplateScenario
       selection
     end
 
-    reasons.map(&:value)
+    reasons.map { |reason| AnswerContext.new(reason) }
   end
 
   private

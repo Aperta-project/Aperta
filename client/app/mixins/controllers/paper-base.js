@@ -27,12 +27,12 @@ export default Ember.Mixin.create({
     });
   }),
 
-  pageContainerHTMLClass: computed('model.editorMode', function() {
-    return 'paper-container-' + this.get('model.editorMode');
+  pageContainerHTMLClass: computed('paper.editorMode', function() {
+    return 'paper-container-' + this.get('paper.editorMode');
   }),
 
   save() {
-    this.get('model').save();
+    this.get('paper').save();
   },
 
   actions: {
@@ -43,7 +43,7 @@ export default Ember.Mixin.create({
     showActivityOverlay(type) {
       this.set('activityIsLoading', true);
       this.set('showActivityOverlay', true);
-      const url = `/api/papers/${this.get('model.id')}/activity/${type}`;
+      const url = `/api/papers/${this.get('paper.id')}/activity/${type}`;
 
       this.get('restless').get(url).then((data)=> {
         this.setProperties({

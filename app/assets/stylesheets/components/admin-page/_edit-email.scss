@@ -1,5 +1,6 @@
 .edit-email-backsplash {
   background-color: $aperta-grey-light;
+  padding-bottom: 15px;
 }
 
 .edit-email-button.button-primary {
@@ -7,12 +8,16 @@
   padding: 5px 30px;
 }
 
+.edit-email-button.button-primary[disabled], .edit-email-button:hover.button-primary[disabled]{
+  background-color: $aperta-grey-dark;
+}
+
 .edit-email-well {
   background-color: white;
   padding: 24px;
   border-radius: 6px;
 }
-.edit-email-well #body {
+.edit-email-well .template-body {
   height: 574px;
 }
 
@@ -51,4 +56,20 @@
   .available-merge-field, .available-merge-field-group {
     margin-left: 10px;
   }
+}
+
+.required-field-label:after{
+  content: '*';
+  color: $aperta-red;
+}
+
+.top-marg-10 { margin-top: 10px; }
+
+.name-input-size { 
+  width: 500px;
+  height: 50px;
+}
+
+.pointer-mouse:hover {
+  cursor: pointer;
 }

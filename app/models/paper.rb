@@ -47,7 +47,7 @@ class Paper < ActiveRecord::Base
   has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
   has_many :snapshots, dependent: :destroy
   has_many :notifications, inverse_of: :paper
-  has_many :answers
+  has_many :answers, inverse_of: :paper
   has_many :assignments, as: :assigned_to
   has_many :roles, through: :assignments
   has_many :related_articles, dependent: :destroy
@@ -325,6 +325,11 @@ class Paper < ActiveRecord::Base
 
   def awaiting_decision?
     SUBMITTED_STATES.include? publishing_state.to_sym
+  end
+
+  # this method is mostly for ease of testing
+  def sourcefile?
+    sourcefile.present?
   end
 
   def body
@@ -633,6 +638,10 @@ class Paper < ActiveRecord::Base
   def preprint_doi_suffix
     return nil unless preprint_doi_article_number
     "aarx." + preprint_doi_article_number
+  end
+
+  def front_matter?
+    !uses_research_article_reviewer_report?
   end
 
   private

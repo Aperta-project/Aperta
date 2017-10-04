@@ -4,6 +4,14 @@ describe TaskSerializer, serializer_test: true do
   let(:paper) { FactoryGirl.create(:paper) }
   let(:task) { FactoryGirl.create(:ad_hoc_task, :with_loaded_card, paper: paper) }
   let(:object_for_serializer) { task }
+  let(:user) { FactoryGirl.build_stubbed(:user) }
+  let(:serializer) { TaskSerializer.new(task, scope: user) }
+
+  before do
+    allow(user).to receive(:can?)
+      .with(:view, task)
+      .and_return true
+  end
 
   describe '#is_metadata_task' do
     it 'returns false if task is not a metadata type' do
@@ -69,7 +77,6 @@ describe TaskSerializer, serializer_test: true do
 
   describe '#assigned_to_me' do
     let(:paper) { FactoryGirl.build_stubbed(:paper) }
-    let(:user) { FactoryGirl.build_stubbed(:user) }
 
     before do
       allow(task).to receive(:participations)
@@ -81,7 +88,6 @@ describe TaskSerializer, serializer_test: true do
     end
 
     context 'and the user is participating in this task' do
-      let(:serializer) { TaskSerializer.new(task, scope: user) }
       let(:participation_assignment) do
         FactoryGirl.build_stubbed(:assignment, user: user)
       end
@@ -116,6 +122,18 @@ describe TaskSerializer, serializer_test: true do
       it 'returns false' do
         expect(deserialized_content[:task][:is_workflow_only_task]).to eq(false)
       end
+    end
+  end
+
+  describe '#assigned_user' do
+    it 'returns user when assigned to task' do
+      user = create(:user)
+      task.update(assigned_user: user)
+      expect(deserialized_content[:task][:assigned_user_id]).to be == user.id
+    end
+
+    it 'returns nil when user is not assigned to task' do
+      expect(deserialized_content[:task][:assigned_user]).to be_nil
     end
   end
 end

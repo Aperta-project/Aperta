@@ -35,7 +35,7 @@ feature 'Adhoc cards', js: true do
       expect(page).to have_css('.file-link', text: 'yeti2.jpg')
     end
 
-    scenario 'edits attachment caption on ad-hoc card', flaky: true do
+    scenario 'edits attachment caption on ad-hoc card' do
       overlay.upload_attachment('yeti.jpg')
       find('.file-link', text: 'yeti.jpg')
 
@@ -57,7 +57,7 @@ feature 'Adhoc cards', js: true do
       Page.view_task paper.tasks.first
     end
 
-    scenario 'allows sending email from ad-hoc card', flaky: true do
+    scenario 'allows sending email from ad-hoc card' do
       overlay.find('.fa-plus').click
       overlay.find('.adhoc-toolbar-item--email').click
       overlay.fill_in('Enter a subject', with: 'subject')

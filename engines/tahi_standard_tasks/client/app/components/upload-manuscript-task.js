@@ -1,29 +1,11 @@
 import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
+import { CardEventListener } from 'tahi/pods/card-event/service';
 
-const taskValidations = {
-  hasSourceIfNeeded: [
-    {
-      type: 'equality',
-      message: 'Please upload your source file',
-      validation() {
-        if (this.get('task.paper.file.fileType') !== 'pdf') return true;
-
-        let versions = this.get('task.paper.versionedTexts');
-        let inRevision =
-          this.get('task.paper.publishingState') === 'in_revision';
-        if (inRevision || versions.any(v => v.get('majorVersion') > 0)) {
-          return this.get('task.paper.sourcefile');
-        } else {
-          return true;
-        }
-      }
-    }
-  ]
-};
-
-export default TaskComponent.extend({
-  validations: taskValidations,
+export default TaskComponent.extend(CardEventListener, {
+  cardEvents: {
+    onPaperFileUploaded: 'clearSourcefileErrors'
+  },
 
   validateData() {
     this.validateAll();
@@ -33,13 +15,19 @@ export default TaskComponent.extend({
       this.set('validationErrors.completed', 'Please correct the errors below');
     }
   },
-  pdfAllowed: Ember.computed.reads('task.paper.journal.pdfAllowed'),
+
+  clearSourcefileErrors(filetype) {
+    if (filetype === 'sourcefile' || filetype === 'manuscript') {
+      this.set('validationErrors', {});
+    }
+  },
+
   needsSourcefile: Ember.computed(
     'pdfAllowed',
-    'task.paper.file.fileType',
+    'task.paper.file.computedFileType',
     function() {
       return (
-        this.get('pdfAllowed') && this.get('task.paper.file.fileType') === 'pdf'
+        this.get('pdfAllowed') && this.get('task.paper.file.computedFileType') === 'pdf'
       );
     }
   )

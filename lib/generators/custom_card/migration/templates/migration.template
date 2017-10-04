@@ -4,7 +4,7 @@ class <%= migration_klass_name %> < ActiveRecord::Migration
     CustomCard::Loader.all
 
     # migrate legacy task to custom card
-    migrator = CustomCard::Migrator.new(legacy_task_klass_name: "<%= legacy_task_klass_name %>", card_name: "<%= name %>")
+    migrator = CustomCard::Migrator.new(legacy_task_klass_name: "<%= legacy_task_klass_name %>", configuration_class: <%= configuration %>)
     migrator.migrate
   end
 end

@@ -1,17 +1,17 @@
 module CustomCard
   # The purpose of this class is to migrate a legacy Task, TaskTemplate,
-  # and associated Answers to a CustomCardTask.
+  # and associated Answers to a new Task based on the CustomCard::Configurations class passed in.
   #
   # It performs this migration safely without actually instantiating the
   # Task itself, so it can be run even if the legacy Task code no longer
   # exists, but the database record does.
   #
   class Migrator
-    attr_reader :legacy_class_name, :card_name, :safe_to_destroy
+    attr_reader :legacy_class_name, :configuration_class, :safe_to_destroy
 
-    def initialize(legacy_task_klass_name:, card_name:)
+    def initialize(legacy_task_klass_name:, configuration_class:)
       @legacy_class_name = legacy_task_klass_name
-      @card_name = card_name
+      @configuration_class = configuration_class
       @safe_to_destroy = true
     end
 
@@ -22,11 +22,11 @@ module CustomCard
 
       Card.transaction do
         Journal.pluck(:id).each do |journal_id|
-          new_card = Card.find_by(name: card_name, journal_id: journal_id)
+          new_card = Card.find_by(name: configuration_class.name, journal_id: journal_id)
           new_card_version = new_card.try(:latest_published_card_version)
 
-          unless new_card_version.present?
-            Rails.logger.info "#{card_name} card for journal #{journal_id} doesn't exist, skipping."
+          if new_card_version.blank?
+            Rails.logger.info "#{configuration_class.name} published card version for journal #{journal_id} doesn't exist, skipping."
             @safe_to_destroy = false
             next
           end
@@ -46,11 +46,11 @@ module CustomCard
 
     def migrate_answers(old_card_version, new_card_version, journal_id)
       # Update card content IDs of legacy answers
-      Answer.unscoped do # include soft deleted answers
-        idents = new_card_version.card_contents.pluck(:ident).compact
-        idents.each do |ident|
-          update_content_id(ident, old_card_version, new_card_version, journal_id)
-        end
+      new_idents = new_card_version.card_contents.pluck(:ident).compact
+      old_idents = old_card_version.card_contents.pluck(:ident).compact
+      raise "old idents #{old_idents} do not match new idents #{new_idents}" if Set.new(old_idents) != Set.new(new_idents)
+      new_idents.each do |ident|
+        update_content_id(ident, old_card_version, new_card_version, journal_id)
       end
     end
 
@@ -63,20 +63,19 @@ module CustomCard
       # to an update, so we stay in SQL-land, so Rails won't notice the missing class.
       Task.where(type: legacy_class_name)
         .joins(:paper).where(papers: { journal_id: journal_id })
-        .update_all(type: "CustomCardTask", card_version_id: new_card_version)
+        .update_all(type: configuration_class.task_class, card_version_id: new_card_version) # rubocop:disable Rails/SkipsModelValidations
 
       # Update existing task templates so new papers use new custom card
       TaskTemplate.joins(:journal, :journal_task_type)
         .where(journals: { id: journal_id }, journal_task_types: { kind: legacy_class_name })
-        .update_all(journal_task_type_id: nil, card_id: card_id)
+        .update_all(journal_task_type_id: nil, card_id: card_id) # rubocop:disable Rails/SkipsModelValidations
     end
 
     def update_content_id(ident, old_card_version, new_card_version, journal_id)
       old_content = old_card_version.card_contents.find_by(ident: ident)
       new_content = new_card_version.card_contents.find_by(ident: ident)
       Rails.logger.info "Updating #{old_content.answers.count} answers for ident '#{ident}'"
-      answers = old_content.answers.joins(:paper)
-        .where(papers: { journal_id: journal_id })
+      answers = old_content.answers.joins(:paper).where(papers: { journal_id: journal_id })
       answers.update_all(card_content_id: new_content.id)
       # assert that all answers have been moved to new new card content
       return unless answers.any? && old_content.reload.answers.any?
@@ -85,23 +84,10 @@ module CustomCard
     end
 
     def destroy_legacy_card
-      # -- destroy the old card, since everything has moved to the new one
-      # -- be sure to work around:
-      # --    acts_as_paranoid,
-      # --    active_record callback validations,
-      # --    acts_as_state_machine limitations,
-      # --    event stream notifications
+      # -- forcibly destroy the old card, since everything has moved to the new one
       old_card = Card.find_by!(name: legacy_class_name)
-      old_card.recover if old_card.destroyed?
-      old_card.state = "draft"
-      old_card.notifications_enabled = false
-      Rails.logger.info "Destroying legacy #{card_name} card"
-      old_card.destroy_fully!
-
-      return unless Card.where(name: legacy_class_name).exists?
-      message = "Unable to destroy legacy #{card_name} card"
-      Rails.error.info(message)
-      raise message
+      Rails.logger.info "Destroying legacy #{legacy_class_name} card"
+      old_card.forcibly_destroy!
     end
   end
 end

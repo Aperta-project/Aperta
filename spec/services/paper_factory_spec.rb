@@ -1,13 +1,17 @@
 require 'rails_helper'
 
 describe PaperFactory do
-  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
+  let(:journal) { FactoryGirl.create(:journal, :with_creator_role, :with_default_task_types) }
   let(:card) { FactoryGirl.create(:card, :versioned) }
+  let!(:default_card_task_type) do
+    FactoryGirl.create(:card_task_type)
+  end
+  let(:upload_card_task_type) do
+    FactoryGirl.create(:card_task_type, display_name: 'Upload Manuscript', task_class: 'TahiStandardTasks::UploadManuscriptTask')
+  end
+  let(:special_card) { FactoryGirl.create(:card, :versioned, card_task_type: upload_card_task_type) }
   let(:mmt) do
     FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|
-      phase = mmt.phase_templates.create!(name: "First Phase")
-      mmt.phase_templates.create!(name: "Phase With No Tasks")
-
       # create mmt template from specified task classes
       task_klasses = [TahiStandardTasks::PaperReviewerTask]
 
@@ -16,17 +20,26 @@ describe PaperFactory do
       required_task_klasses.each { |klass| CardLoader.load(klass.to_s) }
 
       # create mmt template
-      JournalServices::CreateDefaultManuscriptManagerTemplates.make_tasks(phase, journal.journal_task_types, *task_klasses)
+      JournalServices::CreateDefaultManuscriptManagerTemplates.create_phase_template(
+        name: "First Phase",
+        journal: journal,
+        mmt: mmt,
+        phase_content: task_klasses
+      )
+
+      mmt.phase_templates.create!(name: "Phase With No Tasks")
 
       # add TaskTemplate using a custom Card
       mmt.phase_templates.first.task_templates.create(card: card, title: card.name)
+
+      # add TaskTemplate using a custom Card with another CardTaskType
+      mmt.phase_templates.first.task_templates.create(card: special_card, title: special_card.name)
 
       journal.manuscript_manager_templates = [mmt]
       journal.save!
     end
   end
 
-  let!(:role) { journal.creator_role }
   let(:user) { FactoryGirl.create :user }
 
   describe ".create" do
@@ -39,7 +52,7 @@ describe PaperFactory do
       it "sets the paper to use the research reviewer report" do
         mmt.update_column :uses_research_article_reviewer_report, true
         paper = PaperFactory.create(paper_attrs, user)
-        expect(paper.uses_research_article_reviewer_report).to eq(true)
+        expect(paper.front_matter?).to eq(false)
       end
     end
 
@@ -47,7 +60,7 @@ describe PaperFactory do
       it "sets the paper to not to use the research reviewer report" do
         mmt.update_column :uses_research_article_reviewer_report, false
         paper = PaperFactory.create(paper_attrs, user)
-        expect(paper.uses_research_article_reviewer_report).to eq(false)
+        expect(paper.front_matter?).to eq(true)
       end
     end
 
@@ -79,14 +92,18 @@ describe PaperFactory do
 
     it "reifies the tasks for the given paper from the correct MMT" do
       new_paper = PaperFactory.create(paper_attrs, user)
-      expect(new_paper.tasks.size).to eq(2)
-      expect(new_paper.tasks.pluck(:type)).to match_array(['TahiStandardTasks::PaperReviewerTask', 'CustomCardTask'])
+      expect(new_paper.tasks.size).to eq(3)
+      expect(new_paper.tasks.pluck(:type)).to match_array([
+                                                            'TahiStandardTasks::PaperReviewerTask',
+                                                            'CustomCardTask',
+                                                            'TahiStandardTasks::UploadManuscriptTask'
+                                                          ])
     end
 
     it "associates task templates with tasks" do
       new_paper = PaperFactory.create(paper_attrs, user)
       task_template_titles = new_paper.tasks.map { |t| t.task_template.title }
-      expect(task_template_titles).to match_array(['Invite Reviewers', card.name])
+      expect(task_template_titles).to match_array(['Invite Reviewers', card.name, special_card.name])
     end
 
     it "adds correct positions to new tasks" do

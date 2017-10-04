@@ -12,6 +12,14 @@
   <div class="button-secondary button--green card-editor-preview-overlay-button" tabindex="-1">Close</div>
 </div>
 <div class="card-editor-preview-overlay-body {{if renderAsDualColumn 'dual-column' 'single-column'}}">
+  <div class="assignable-selector">
+    <span class="participant-selector-label">Assign:</span>
+    <div class="add-participant-button card-editor-preview-overlay-button" title="Add Someone" tabindex="-1">
+      +
+    </div>
+    <br>
+  </div>
+
   <h1 class="card-editor-preview-overlay-title">{{card.name}}</h1>
   {{yield}}
 </div>

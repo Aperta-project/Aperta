@@ -11,9 +11,16 @@ describe Paper do
   let(:user) { FactoryGirl.create :user }
   let(:frozen_time) { 1.day.ago }
 
+  let! (:setting_template) do
+    FactoryGirl.create(:setting_template,
+     key: "Journal",
+     setting_name: "coauthor_confirmation_enabled",
+     value_type: 'boolean',
+     boolean_value: true)
+  end
+
   before do
     CardLoader.load("TahiStandardTasks::ReviseTask")
-    CardLoader.load("TahiStandardTasks::UploadManuscriptTask")
     CardLoader.load("TahiStandardTasks::TitleAndAbstractTask")
   end
 

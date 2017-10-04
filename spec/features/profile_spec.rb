@@ -19,7 +19,7 @@ feature "Profile Page", js: true, vcr: {cassette_name: "ned_countries", record: 
     expect(profile_page).to have_email(admin.email)
   end
 
-  scenario "affiliation errors are handled", flaky: true do
+  scenario "affiliation errors are handled" do
     profile_page.start_adding_affiliate
     profile_page.submit
     expect(page).to have_content(/can't be blank/i)

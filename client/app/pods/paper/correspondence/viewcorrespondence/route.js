@@ -2,7 +2,7 @@ import AuthorizedRoute from 'tahi/routes/authorized';
 
 export default AuthorizedRoute.extend({
   model(params) {
-    return this.store.peekRecord('correspondence', params.id);
+    return this.store.findRecord('correspondence', params.id, { reload: true });
   },
   actions: {
     removeCorrespondenceOverlay() {

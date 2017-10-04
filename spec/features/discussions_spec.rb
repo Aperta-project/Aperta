@@ -9,7 +9,7 @@ feature "Discussions", js: true, selenium: true do
       assign_journal_role(journal, u, :editor)
     end
   end
-  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
+  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions, :with_default_mmt }
   let!(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, creator: creator, journal: journal }
   let(:discussion_page) { DiscussionsPage.new }
   let!(:other_person) { create :user, username: 'pickachu' }
@@ -67,7 +67,7 @@ feature "Discussions", js: true, selenium: true do
       discussion_topic.add_discussion_participant(discussion_participant)
     end
 
-    scenario 'can see discussion and add reply', flaky: true do
+    scenario 'can see discussion and add reply' do
       login_as(user, scope: :user)
       visit "/papers/#{paper.id}/discussions"
 
@@ -91,7 +91,7 @@ feature "Discussions", js: true, selenium: true do
       discussion_topic.add_discussion_participant(discussion_participant)
     end
 
-    scenario 'can see discussion and add reply', flaky: true do
+    scenario 'can see discussion and add reply' do
       login_as(user, scope: :user)
       # the discussion url in popout window
       visit "/discussions/#{paper.id}/#{discussion_topic.id}"

@@ -46,9 +46,10 @@
   </div>
 
   {{#each sortedTasks as |task|}}
-    {{#task-disclosure title=task.title type=task.type completed=task.completed class=task.componentName}}
+    {{#task-disclosure task=task
+                       defaultPreprintTaskOpen=defaultPreprintTaskOpen}}
       {{#task-load task=task}}
-        {{component task.componentName task=task}}
+        {{component task.componentName task=task isOverlay=false}}
       {{else}}
         {{partial "task-loading-section"}}
       {{/task-load}}

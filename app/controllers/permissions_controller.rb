@@ -30,9 +30,9 @@ class PermissionsController < ApplicationController
   private
 
   # Lookup does a best effort attempt at finding the intended klass
-  # based on what the front-end sent in. For example, ember will pass in
-  # ethicsTask, but the EthicsTask is not a top-level class. It belongs inside
-  # the TahiStandardTasks namespace. So we need to find it. Right now we assume
+  # based on what the front-end sent in. For example, ember might pass in
+  # a task model that is not a top-level model, but instead belongs inside
+  # the TahiStandardTasks namespace, so we need to find it. Right now we assume
   # if we cannot find it then limit the scope to task.
   def lookup_task_klass(klass_name)
     if Object.const_defined?(klass_name)

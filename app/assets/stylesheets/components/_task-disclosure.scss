@@ -20,6 +20,12 @@ $task-disclosure-font-size: 1.8rem;
   z-index: 1;
   @include user-select(none);
 
+  &.disabled,
+  a.disabled {
+    background:#f9f9f9;
+    color:#999;
+  }
+
   a {
     display: flex;
     align-items: center;

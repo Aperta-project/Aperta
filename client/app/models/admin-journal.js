@@ -23,10 +23,12 @@ export default DS.Model.extend({
   lastDoiIssued: DS.attr('string'),
   doiJournalPrefix: DS.attr('string'),
   doiPublisherPrefix: DS.attr('string'),
+  letterTemplateScenarios: DS.attr(),
 
   // Card config:
 
   cards: DS.hasMany('card'),
+  cardTaskTypes: DS.hasMany('card-task-type'),
   initials: Ember.computed('name', function() {
     return this.get('name').split(' ').map(s => s[0]).join('');
   })

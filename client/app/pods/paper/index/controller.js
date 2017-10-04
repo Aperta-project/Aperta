@@ -13,16 +13,17 @@ export default Controller.extend(PaperBase, Discussions, {
   queryParams: ['firstView'],
   downloadsVisible: false,
   showFeedbackOverlay: false,
+  paper: Ember.computed.alias('model'),
 
-  isGradualEngagement: equal('model.gradualEngagement', true),
-  renderEngagementBanner: computed('isGradualEngagement', 'model.isWithdrawn',
+  isGradualEngagement: equal('paper.gradualEngagement', true),
+  renderEngagementBanner: computed('isGradualEngagement', 'paper.isWithdrawn',
     function() {
-      return this.get('model.gradualEngagement') &&
-        !this.get('model.isWithdrawn');
+      return this.get('paper.gradualEngagement') &&
+        !this.get('paper.isWithdrawn');
     }
   ),
 
-  showSubmissionProcess: computed('model', 'firstView', 'isGradualEngagement',
+  showSubmissionProcess: computed('paper', 'firstView', 'isGradualEngagement',
     function() {
       if (!this.get('isGradualEngagement')) return false;
 
@@ -39,23 +40,27 @@ export default Controller.extend(PaperBase, Discussions, {
     }
   ),
 
-  showPdfManuscript: computed('model.journal.pdfAllowed', 'model.fileType', 'model.file.status',
+  defaultPreprintTaskOpen: computed('firstView', function () {
+    return this.get('firstView') === 'true';
+  }),
+
+  showPdfManuscript: computed('paper.journal.pdfAllowed', 'paper.fileType', 'paper.file.status',
     function(){
-      return (this.get('model.journal.pdfAllowed') &&
-             (this.get('model.fileType') === 'pdf')) &&
-             (this.get('model.file.status') !== 'error');
+      return (this.get('paper.journal.pdfAllowed') &&
+             (this.get('paper.fileType') === 'pdf')) &&
+             (this.get('paper.file.status') !== 'error');
     }
   ),
 
-  checkFileType: computed('model.fileType', function(){
-    if (this.get('model.fileType') === 'pdf'){
+  checkFileType: computed('paper.fileType', function(){
+    if (this.get('paper.fileType') === 'pdf'){
       return 'fa-file-pdf-o';
     }
     else {
       return 'fa-file-word-o';
     }
   }),
-  
+
   showPaperSubmitOverlay: false,
 
   actions: {
@@ -75,12 +80,12 @@ export default Controller.extend(PaperBase, Discussions, {
       this.toggleProperty('downloadsVisible');
     },
 
-    showFeedbackOverlay() { 
-      this.set('showFeedbackOverlay', true); 
+    showFeedbackOverlay() {
+      this.set('showFeedbackOverlay', true);
     },
 
-    hideFeedbackOverlay() { 
-      this.set('showFeedbackOverlay', false); 
+    hideFeedbackOverlay() {
+      this.set('showFeedbackOverlay', false);
     },
   }
 });

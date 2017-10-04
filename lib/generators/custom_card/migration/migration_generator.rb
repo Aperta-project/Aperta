@@ -4,8 +4,8 @@ module CustomCard
   class MigrationGenerator < ActiveRecord::Generators::Base
     source_root File.expand_path('../templates', __FILE__)
 
-    # card name ("My New Card")
-    argument :name, type: :string, required: true
+    # CustomCard::Configurations class name (CustomCard::Configurations::MyCard)
+    argument :configuration, type: :string, required: true
 
     # legacy class name ("TahiStandardTasks::CoverLetterTask")
     argument :legacy_task_klass_name, type: :string, required: true

@@ -3,37 +3,44 @@ module JournalServices
     def self.call(journal)
       with_noisy_errors do
         mmt = journal.manuscript_manager_templates.create!(paper_type: 'Research')
-        task_types = journal.journal_task_types
-        raise "No task types configured for journal #{journal.id}" unless task_types.present?
 
-        phase = mmt.phase_templates.create! name: "Submission Data"
-        make_tasks phase, task_types,
-          TahiStandardTasks::TitleAndAbstractTask,
-          TahiStandardTasks::FigureTask,
-          TahiStandardTasks::EarlyPostingTask,
-          TahiStandardTasks::SupportingInformationTask,
-          TahiStandardTasks::AuthorsTask,
-          TahiStandardTasks::UploadManuscriptTask,
-          TahiStandardTasks::CoverLetterTask
+        create_phase_template(name: "Submission Data", journal: journal, mmt: mmt,
+                              phase_content: [
+                                TahiStandardTasks::TitleAndAbstractTask,
+                                TahiStandardTasks::FigureTask,
+                                TahiStandardTasks::EarlyPostingTask,
+                                TahiStandardTasks::SupportingInformationTask,
+                                TahiStandardTasks::AuthorsTask,
+                                CustomCard::Configurations::CoverLetter,
+                                CustomCard::Configurations::UploadManuscript
+                              ])
 
-        phase = mmt.phase_templates.create! name: "Invite Editor"
-        make_tasks phase, task_types,
-          TahiStandardTasks::PaperEditorTask
+        create_phase_template(name: "Invite Editor", journal: journal, mmt: mmt,
+                              phase_content: TahiStandardTasks::PaperEditorTask)
 
-        phase = mmt.phase_templates.create! name: "Invite Reviewers"
-        make_tasks phase, task_types, TahiStandardTasks::PaperReviewerTask
+        create_phase_template(name: "Invite Reviewers", journal: journal, mmt: mmt,
+                              phase_content: TahiStandardTasks::PaperReviewerTask)
 
-        phase = mmt.phase_templates.create! name: "Get Reviews"
+        create_phase_template(name: "Get Reviews", journal: journal, mmt: mmt)
 
-        phase = mmt.phase_templates.create! name: "Make Decision"
-        make_tasks phase, task_types, TahiStandardTasks::RegisterDecisionTask
+        create_phase_template(name: "Make Decision", journal: journal, mmt: mmt,
+                              phase_content: TahiStandardTasks::RegisterDecisionTask)
       end
     end
 
-    def self.make_tasks(phase, task_types, *tasks)
-      tasks.each do |kind|
-        jtt = task_types.find_by(kind: kind)
-        phase.task_templates.create! title: jtt.title, journal_task_type: jtt
+    def self.create_phase_template(name:, journal:, mmt:, phase_content: [])
+      mmt.phase_templates.create!(name: name).tap do |phase_template|
+        Array(phase_content).each do |content|
+          if content <= Task
+            # create a new JournalTaskTemplate for a legacy Task
+            journal_task_type = journal.journal_task_types.find_by!(kind: content)
+            phase_template.task_templates.create!(title: journal_task_type.title, journal_task_type: journal_task_type)
+          else
+            # create a new Card via seed data and associate to JournalTaskTemplate
+            card = CustomCard::Loader.load!(content, journal: journal).first
+            phase_template.task_templates.create!(title: card.name, card: card)
+          end
+        end
       end
     end
   end

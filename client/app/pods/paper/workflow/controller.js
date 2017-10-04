@@ -43,11 +43,11 @@ export default Controller.extend(Discussions, {
 
   buildTask(emberStoreKey, title, kind, phase, card) {
     return this.store.createRecord(emberStoreKey, {
-      title: title,
+      title,
       type: kind,
       paper: this.get('paper'),
-      phase: phase,
-      card: card
+      phase,
+      card
     });
   },
 
@@ -69,7 +69,7 @@ export default Controller.extend(Discussions, {
 
   addTaskType: concurrencyTask(function * (phase, selectedCards) {
     if (selectedCards.length === 0) {
-      this.get('flash').displayRouteLevelMessage('error', "No tasks were selected to add to the workflow.");
+      this.get('flash').displayRouteLevelMessage('error', 'No tasks were selected to add to the workflow.');
       return;
     }
 
@@ -78,7 +78,9 @@ export default Controller.extend(Discussions, {
 
       if(item.constructor.modelName === 'card') {
         // task will be created from a Card
-        newTask = this.buildTask('CustomCardTask', item.get('name'), 'CustomCardTask', phase, item);
+        let newTaskType = item.get('cardTaskType.taskClass');
+        let unNamespacedKind = deNamespaceTaskType(newTaskType);
+        newTask = this.buildTask(unNamespacedKind, item.get('name'), newTaskType, phase, item);
       } else {
         // task will be created from a JournalTaskType
         let unNamespacedKind = deNamespaceTaskType(item.get('kind'));
@@ -180,11 +182,23 @@ export default Controller.extend(Discussions, {
     *  @param {Number} newIndex
     *  @param {Array}  itemList Array of DS.Model Task
     **/
-    taskMovedWithinList(item, oldIndex, newIndex, itemList) {
-      itemList.removeAt(oldIndex);
-      itemList.insertAt(newIndex, item);
-      this.updateTaskPositions(itemList);
-      item.save();
+    taskMovedWithinList(task, oldIndex, newIndex, taskList) {
+      taskList.removeAt(oldIndex);
+      taskList.insertAt(newIndex, task);
+      this.updateTaskPositions(taskList);
+
+      const url = `/api/tasks/${task.id}/update_position`;
+      const data = {
+        id: task.id,
+        position: task.get('position')
+      };
+
+      this.get('restless').put(url, data).catch((error)=> {
+        this.get('flash').displayRouteLevelMessage('error', error.resposeText);
+        taskList.removeAt(newIndex);
+        taskList.insertAt(oldIndex, task);
+        this.updateTaskPositions(taskList);
+      });
     },
 
    /**

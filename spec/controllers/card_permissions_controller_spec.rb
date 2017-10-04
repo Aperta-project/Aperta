@@ -76,6 +76,24 @@ describe CardPermissionsController do
       end
     end
 
+    context 'when the action is be_assigned' do
+      let(:action) { 'be_assigned' }
+      it 'does not reject the request' do
+        stub_sign_in user
+        do_request
+        expect(response.status).to be(201)
+      end
+    end
+
+    context 'when the action is assign_others' do
+      let(:action) { 'assign_others' }
+      it 'does not reject the request' do
+        stub_sign_in user
+        do_request
+        expect(response.status).to be(201)
+      end
+    end
+
     context 'when the action is not permitted' do
       let(:action) { 'delete_all_cards' }
       it_behaves_like "an unauthenticated json request"

@@ -12,12 +12,14 @@ class AdminJournalSerializer < ActiveModel::Serializer
     :doi_journal_prefix,
     :doi_publisher_prefix,
     :last_doi_issued,
-    :links
+    :links,
+    :letter_template_scenarios
   has_many :admin_journal_roles,
            embed: :ids,
            include: true,
            serializer: AdminJournalRoleSerializer
   has_many :journal_task_types, embed: :ids, include: true
+  has_many :card_task_types, embed: :ids, include: true
 
   def paper_count
     object.papers.count
@@ -25,6 +27,10 @@ class AdminJournalSerializer < ActiveModel::Serializer
 
   def admin_journal_roles
     object.roles
+  end
+
+  def card_task_types
+    CardTaskType.all
   end
 
   def journal_task_types
@@ -37,5 +43,9 @@ class AdminJournalSerializer < ActiveModel::Serializer
       manuscript_manager_templates: template_path,
       cards: journal_cards_path(object)
     }
+  end
+
+  def letter_template_scenarios
+    TemplateScenario.descendants.map { |d| { name: d.name, merge_fields: d.merge_fields } }
   end
 end

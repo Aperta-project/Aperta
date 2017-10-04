@@ -4,7 +4,7 @@ class MigrateDataAvailabilityTaskToCustomCard < ActiveRecord::Migration
     CustomCard::Loader.all
 
     # migrate legacy task to custom card
-    migrator = CustomCard::Migrator.new(legacy_task_klass_name: "TahiStandardTasks::DataAvailabilityTask", card_name: "Data Availability")
+    migrator = CustomCard::Migrator.new(legacy_task_klass_name: "TahiStandardTasks::DataAvailabilityTask", configuration_class: CustomCard::Configurations::DataAvailability)
     migrator.migrate
   end
 end

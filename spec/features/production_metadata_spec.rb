@@ -4,11 +4,13 @@ include RichTextEditorHelpers
 feature 'Production Metadata Card', js: true do
   let(:admin) { create :user, :site_admin, first_name: 'Admin' }
   let(:author) { create :user, first_name: 'Author' }
+  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
   let!(:paper) do
-    create :paper, :with_integration_journal, :with_tasks, creator: author
+    create :paper, journal: journal, creator: author
   end
+  let(:phase) { FactoryGirl.create(:phase, paper: paper) }
   let!(:production_metadata_task) do
-    create :production_metadata_task, :with_loaded_card, paper: paper, phase: paper.phases.first
+    create :production_metadata_task, :with_loaded_card, paper: paper, phase: phase
   end
 
   before do

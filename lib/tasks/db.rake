@@ -3,7 +3,6 @@ Rake::Task["db:dump"].clear
 Rake::Task["db:load"].clear
 
 namespace :db do
-
   DEFAULT_USER_PASSWORD = "password".freeze
 
   desc <<-DESC
@@ -16,48 +15,53 @@ namespace :db do
   DESC
   task :import_remote, [:env] => :environment do |_t, args|
     return unless Rails.env.development?
-    args[:env] = nil if args[:env] == 'prod'
-    env = args[:env]
-    location = "http://bighector.plos.org/aperta/#{env || 'prod'}_dump.tar.gz"
-    # Minimal footprint local import. Run "hs" node module in a directory containing a production dump file,
-    # Then uncomment this:
-    # location = "http://localhost:8080/prod_dump.tar.gz"
+    env = args[:env] || 'prod'
+    location = "http://bighector.plos.org/aperta/#{env}_dump.tar.gz"
+    path = Rails.root.join("tmp", "#{env}_dump.tar.gz")
 
-    with_config do |_app, host, db, user, password|
-      # ensure that there is no connection to the database since we're
-      # about to drop and recreate it.
-      ActiveRecord::Base.connection.disconnect!
+    # Download if newer than cached version
+    rake_system_or_abort("curl -sH 'Accept-encoding: gzip' -o #{path} -z #{path} #{location}")
 
-      drop_cmd = system("dropdb #{db} && createdb #{db}")
-      raise "\e[31m Error dropping and creating blank database. Is #{db} in use?\e[0m" unless drop_cmd
+    # Restore database
+    rake_reenable_and_invoke('db:restore', path)
 
-      ENV['PGPASSWORD'] = password.to_s
-      cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar --verbose --clean --no-acl --no-owner -h #{host} -U #{user} -d #{db})"
-      result = system(cmd)
-      if result
-        STDERR.puts("Successfully restored #{env || 'prod'} database by running \n #{cmd}")
-      else
-        STDERR.puts("Restored #{env || 'prod'} with errors or warnings")
-      end
+    # run post import tasks
+    ActiveRecord::Base.establish_connection
+    rake_reenable_and_invoke('db:reset_passwords')
+    rake_reenable_and_invoke('db:setup_role_accounts')
+    puts("Successfully restored #{env} database\n")
+  end
 
-      # run any post import tasks
-      ActiveRecord::Base.establish_connection
-      Rake::Task['db:reset_passwords'].invoke
-      Rake::Task['db:setup_role_accounts'].invoke
+  desc "Test migrations against all known environments"
+  task test_migrations: :environment do
+    %w[prod stage rc].each do |env|
+      rake_reenable_and_invoke('db:import_remote', env)
+      rake_reenable_and_invoke('db:migrate')
     end
+  end
+
+  desc "Create seed data from the database"
+  task dump_seed_data: :environment do
+    Rake::Task['db:migrate'].invoke
+    Rake::Task['cards:load'].invoke
+    Rake::Task['roles-and-permissions:seed'].invoke
+    Rake::Task['settings:seed_setting_templates'].invoke
+    Rake::Task['data:update_journal_task_types'].invoke
+    Rake::Task['institutional_accounts:add_seed_accounts'].invoke
+    Rake::Task['create_feature_flags'].invoke
+    Rake::Task['seed:letter_templates:populate'].invoke
+    Rake::Task['db:data:dump'].invoke
   end
 
   desc "Dumps the database to ~/aperta-TIMESTAMP.dump"
   task dump: :environment do
     location = "~/aperta-#{Time.now.utc.strftime('%FT%H:%M:%SZ')}.dump"
 
-    cmd = nil
-    with_config do |_app, host, db, user, password|
-      ENV['PGPASSWORD'] = password.to_s
+    rake_with_db_config do |host, db, user|
       raise('Backup file already exists') if File.exist?(File.expand_path(location))
       cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > #{location}"
+      rake_system_or_abort(cmd, "Dump failed for \n #{cmd}")
     end
-    system(cmd) || STDERR.puts("Dump failed for \n #{cmd}") && exit(1)
   end
 
   desc "Cleans up the database dump files in ~, leaving the 2 newest"
@@ -71,16 +75,35 @@ namespace :db do
   desc "Restores the database dump at LOCATION"
   task :restore, [:location] => :environment do |_t, args|
     location = args[:location]
-    if location
-      cmd = nil
-      with_config do |_app, host, db, user, password|
-        ENV['PGPASSWORD'] = password.to_s
-        cmd = "pg_restore --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} #{location}"
+    abort('Location argument is required.') if location.blank?
+
+    # Monkey patch db:drop and db:create not to catch exceptions so that if a
+    # failure happens, this whole chain is aborted. See
+    # https://github.com/rails/rails/pull/19924
+    module ActiveRecord::Tasks::DatabaseTasks
+      def drop(*arguments)
+        configuration = arguments.first
+        class_for_adapter(configuration['adapter']).new(*arguments).drop
       end
-      puts cmd
-      system(cmd) || STDERR.puts("Restore failed for \n #{cmd}") && exit(1)
-    else
-      STDERR.puts('Location argument is required.')
+
+      def create(*arguments)
+        configuration = arguments.first
+        class_for_adapter(configuration['adapter']).new(*arguments).create
+      end
+    end
+
+    puts "Restoring database from #{location}"
+    rake_reenable_and_invoke('db:drop')
+    rake_reenable_and_invoke('db:create')
+    rake_with_db_config do |host, db, user|
+      cat_bit = if location.to_s.ends_with?(".gz")
+                  "gunzip -dc #{location}"
+                else
+                  "cat #{location}"
+                end
+      rake_system_or_abort(
+        "#{cat_bit} | pg_restore --clean --if-exists --no-acl --no-owner --username #{user} --host #{host} --dbname #{db}"
+      )
     end
   end
 
@@ -98,7 +121,7 @@ namespace :db do
       MSG
     end
     Rake::Task['db:drop'].invoke
-    system("heroku pg:pull DATABASE_URL tahi_development --app #{source_db}")
+    rake_system_or_abort("heroku pg:pull DATABASE_URL tahi_development --app #{source_db}")
     Rake::Task['db:reset_passwords'].invoke
     Rake::Task['db:setup_role_accounts'].invoke
   end
@@ -164,14 +187,23 @@ namespace :db do
     end
   end
 
-  private
+  # These pollute the global namespace. Sorry.
 
-  def with_config
-    yield Rails.application.class.parent_name.underscore,
-      ActiveRecord::Base.connection_config[:host],
-      ActiveRecord::Base.connection_config[:database],
-      ActiveRecord::Base.connection_config[:username],
-      ActiveRecord::Base.connection_config[:password]
+  def rake_with_db_config
+    ENV['PGPASSWORD'] = ActiveRecord::Base.connection_config[:password]
+    yield ActiveRecord::Base.connection_config[:host],
+          ActiveRecord::Base.connection_config[:database],
+          ActiveRecord::Base.connection_config[:username]
+    ENV.delete('PGPASSWORD')
   end
 
+  def rake_system_or_abort(cmd, abort_message = nil)
+    abort_message ||= "Error running #{cmd}"
+    system(cmd) || abort("\e[31m#{abort_message}\e[0m")
+  end
+
+  def rake_reenable_and_invoke(task_name, *args)
+    Rake::Task[task_name].reenable
+    Rake::Task[task_name].invoke(*args)
+  end
 end

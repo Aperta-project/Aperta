@@ -10,7 +10,8 @@ export default ControlBar.extend({
     versionsVisible: PropTypes.bool,
     versioningMode: PropTypes.bool,
     submenuVisible: PropTypes.bool,
-    toggleDownloads: PropTypes.func
+    toggleDownloads: PropTypes.func,
+    showActivity: PropTypes.func
   },
 
   getDefaultProps() {
@@ -55,10 +56,6 @@ export default ControlBar.extend({
 
     addContributors(activity) {
       this.sendAction('addContributors', activity);
-    },
-
-    showActivity(activity) {
-      this.sendAction('showActivity', activity);
     },
 
     toggleDownloads() {

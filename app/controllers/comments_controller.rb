@@ -11,9 +11,6 @@ class CommentsController < ApplicationController
 
   def create
     requires_user_can :edit_discussion_footer, task
-    unless current_user.can?(:administer, task.paper.journal)
-      ParticipationFactory.create(task: comment.task, assignee: current_user, assigner: current_user)
-    end
     Activity.comment_created! comment, user: current_user
     respond_with comment if CommentLookManager.sync_comment(comment)
   end

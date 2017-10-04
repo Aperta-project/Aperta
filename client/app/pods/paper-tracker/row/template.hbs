@@ -6,12 +6,16 @@
     {{/if}}
   </td>
   <td class="paper-tracker-title-column">
-    {{#link-to "paper.index" paper.shortDoi}}
-      {{{paper.title}}}
-    {{/link-to}}
+    {{#tool-tip title="Go to manuscript"}}
+      {{#link-to "paper.index" paper.shortDoi}}
+        {{{paper.title}}}
+      {{/link-to}}
+    {{/tool-tip}}
   </td>
   <td class="paper-tracker-paper-id-column">
-    {{link-to paper.manuscript_id "paper.index" paper.shortDoi}}
+    {{#tool-tip title="Go to workflow"}}
+      {{link-to paper.manuscript_id "paper.workflow" paper.shortDoi}}
+    {{/tool-tip}}
   </td>
   {{#if (feature-flag "PREPRINT")}}
     <td class="paper-tracker-paper-preprint-id-column">

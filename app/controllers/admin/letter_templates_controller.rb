@@ -21,13 +21,24 @@ class Admin::LetterTemplatesController < ApplicationController
     respond_with letter_template
   end
 
+  def create
+    journal = Journal.find(create_params[:journal_id])
+    requires_user_can(:create_email_template, journal)
+    template = LetterTemplate.create!(create_params)
+    respond_with :admin, template
+  end
+
   private
 
   def authorized_user
-    requires_user_can(:administer, Journal)
+    requires_user_can(:manage_users, Journal)
   end
 
   def letter_template_params
-    params.permit(:journal_id, letter_template: [:body, :subject])
+    params.permit(:journal_id, letter_template: [:body, :subject, :name])
+  end
+
+  def create_params
+    params.require(:letter_template).permit(:journal_id, :name, :scenario, :body, :subject)
   end
 end

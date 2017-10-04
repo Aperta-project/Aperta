@@ -1,4 +1,8 @@
-<a href={{href}} {{action "viewCard"}} data-id="{{task.id}}">
+<a href={{href}}
+        {{action "viewCard"}}
+        class={{if notViewable "disabled"}}
+        data-id="{{task.id}}">
+
   {{#if unreadCommentsCount}}
     <span class="badge badge--red unread-comments-count">{{unreadCommentsCount}}</span>
   {{/if}}
@@ -17,12 +21,16 @@
       </div>
     {{/if}}
   {{/if}}
-  {{# if settingsEnabled}}
-  <span {{action "openSettings" bubbles=false}} title="Settings" class="card--settings--container"><i class="fa fa-cog settings card--settings" aria-hidden="true"></i>&nbsp;&nbsp;</span>
+
+  {{#if settingsEnabled}}
+    <span {{action "openSettings" bubbles=false}} title="Settings" class="card--settings--container">
+      <i class="fa fa-cog settings card--settings" aria-hidden="true"></i>&nbsp;&nbsp;
+    </span>
   {{/if}}
   <span class="card-title">{{task.title}}</span>
 </a>
 
 {{#if showDeleteButton}}
-   <span {{action "promptDelete" bubbles=false}} class="card-remove" title="Delete Card"></span> 
+   <span {{action "promptDelete" bubbles=false}} class="card-remove" title="Delete Card"></span>
 {{/if}}
+

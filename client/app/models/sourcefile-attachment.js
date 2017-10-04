@@ -13,5 +13,8 @@ export default Attachment.extend({
     });
   }),
   s3Url: DS.attr('string'), // set by file uploader
-  src: Ember.computed.or('s3Url', 'fileDownloadUrl')
+  src: Ember.computed.or('s3Url', 'fileDownloadUrl'),
+  cancelUploadPath() {
+    return `/api/sourcefile_attachments/${this.get('id')}/cancel`;
+  }
 });

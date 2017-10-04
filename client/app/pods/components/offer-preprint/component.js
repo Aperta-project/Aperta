@@ -11,7 +11,9 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   actions: {
     nextStep() {
       let task = this.get('task');
-      task.set('completed', true);
+      const answer = task.get('answers.firstObject.value');
+      if (answer === '1') { task.set('completed', true); }
+
       task.save();
       this.get('nextStep')();
     },

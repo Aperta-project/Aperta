@@ -56,7 +56,7 @@ class Task < ActiveRecord::Base
   belongs_to :task_template
 
   belongs_to :card_version
-
+  belongs_to :assigned_user, class_name: 'User', foreign_key: 'assigned_user_id'
   acts_as_list scope: :phase
 
   validates :paper_id, presence: true
@@ -113,7 +113,14 @@ class Task < ActiveRecord::Base
     #
     # Returns an Array of attributes.
     def permitted_attributes
-      [:completed, :title, :phase_id, :position]
+      [:completed, :title, :phase_id, :position, :assigned_user_id]
+    end
+
+    # Used in JournalServices::CreateDefaultTaskTypes
+    # Task classes that display card content will need to
+    # subclass this method and return false
+    def create_journal_task_type?
+      true
     end
 
     def assigned_to(*users)
@@ -141,11 +148,12 @@ class Task < ActiveRecord::Base
     end
 
     def safe_constantize(str)
-      raise StandardError, 'Attempted to constantize disallowed value' \
+      raise StandardError, "Attempted to constantize '#{str}' which is a disallowed value" \
         unless Task.descendants.map(&:to_s).member?(str)
       str.constantize
     end
   end
+  # ******** End class methods ***********
 
   # called in the paper factory both as part of paper creation and when an
   # individual task is added to the workflow.  Remember to call super when
@@ -154,8 +162,27 @@ class Task < ActiveRecord::Base
     card_version.try(:create_default_answers, self)
   end
 
+  # called in the Task factory
+  def create_answers
+    required_fields = card_version.card_contents
+                                  .joins(:content_attributes)
+                                  .where('content_attributes.name' => 'required_field',
+                                         'content_attributes.value_type' => 'boolean',
+                                         'content_attributes.boolean_value' => true)
+    required_fields.each do |content|
+      answer = find_or_build_answer_for(card_content: content)
+      answer.save
+    end
+  end
+
   def journal_task_type
     journal.journal_task_types.find_by(kind: self.class.name)
+  end
+
+  # Used in the TaskSerializer to determine whether to serialize the CardVersion for a
+  # given task
+  def custom?
+    false
   end
 
   def metadata_task?
@@ -276,6 +303,10 @@ class Task < ActiveRecord::Base
   def display_status
     return :active_check if completed
     :check
+  end
+
+  def ready?
+    answers.includes(:card_content).all?(&:ready?)
   end
 
   private

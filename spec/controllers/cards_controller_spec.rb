@@ -32,8 +32,8 @@ describe CardsController do
 
         it 'returns cards for journals the user has access to' do
           do_request
-          card_names = res_body['cards'].map { |h| h['name'] }
-          expect(card_names).to contain_exactly('My Journal', 'My Other Journal')
+          journal_ids = res_body['cards'].map { |h| h['journal_id'] }.uniq
+          expect(journal_ids).to contain_exactly(my_journal.id, my_other_journal.id)
         end
       end
 
@@ -45,8 +45,8 @@ describe CardsController do
 
         it 'returns all cards for the specified journal' do
           get :index, journal_id: my_journal.id, format: :json
-          card_names = res_body['cards'].map { |h| h['name'] }
-          expect(card_names).to contain_exactly('My Journal')
+          journal_ids = res_body['cards'].map { |h| h['journal_id'] }.uniq
+          expect(journal_ids).to contain_exactly(my_journal.id)
         end
       end
     end
@@ -90,10 +90,14 @@ describe CardsController do
   end
 
   describe "#create" do
+    let(:card_task_type) do
+      FactoryGirl.create(:card_task_type)
+    end
     subject(:do_request) do
       post(:create, format: 'json', card: {
              name: name,
-             journal_id: my_journal.id
+             journal_id: my_journal.id,
+             card_task_type_id: card_task_type.id
            })
     end
     let(:name) { "Steve" }
@@ -127,6 +131,7 @@ describe CardsController do
           do_request
           expect(res_body['card']['name']).to eq name
           expect(res_body['card']['state']).to eq 'draft'
+          expect(res_body['card']['card_task_type_id']).to eq card_task_type.id
         end
       end
     end
@@ -372,12 +377,6 @@ describe CardsController do
         expect do
           do_request
         end.to change(Card, :count).by(-1)
-      end
-
-      it "sets deleted_at" do
-        do_request
-        card.reload
-        expect(card.deleted_at).to_not be_nil
       end
 
       it "responds with 204" do

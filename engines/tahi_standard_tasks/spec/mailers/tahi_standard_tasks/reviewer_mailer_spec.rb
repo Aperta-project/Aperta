@@ -258,10 +258,28 @@ describe TahiStandardTasks::ReviewerMailer do
     end
   end
 
+  shared_examples_for 'a Liquid email checked for blanks' do
+    before do
+      # rubocop:disable Rails/SkipsModelValidations
+      report.paper.journal.tap { |j| j.update_attribute(:name, nil) }
+      # rubocop:enable Rails/SkipsModelValidations
+    end
+
+    it 'raises a Bugsnag error if there are blank fields' do
+      expect(Bugsnag).to receive(:notify)
+      email.deliver_now
+    end
+
+    it 'does not send emails' do
+      expect { email.deliver_now }.not_to change(ActionMailer::Base.deliveries, :count)
+    end
+  end
+
   describe 'reminder emails' do
     before do
       report.paper.journal.letter_templates.create!(
-        name: template_name,
+        ident: template_ident,
+        name: template_ident,
         scenario: 'ReviewerReportScenario',
         subject: 'review {{ journal.name }}',
         body: '<p>Dear Dr. {{ reviewer.last_name }}, review {{ manuscript.title }} on {{ review.due_at }} </p>'
@@ -273,7 +291,7 @@ describe TahiStandardTasks::ReviewerMailer do
 
     describe '.remind_before_due' do
       subject(:email) { described_class.remind_before_due(reviewer_report_id: report.id) }
-      let(:template_name) { 'Review Reminder - Before Due' }
+      let(:template_ident) { 'review-reminder-before-due' }
 
       it 'is to the reviewer' do
         expect(email.to).to eq([report.user.email])
@@ -294,11 +312,13 @@ describe TahiStandardTasks::ReviewerMailer do
       it 'renders the signature' do
         expect(email.body).to match('Kind regards,')
       end
+
+      it_behaves_like 'a Liquid email checked for blanks'
     end
 
     describe '.first_late_notice' do
       subject(:email) { described_class.first_late_notice(reviewer_report_id: report.id) }
-      let(:template_name) { 'Review Reminder - First Late' }
+      let(:template_ident) { 'review-reminder-first-late' }
 
       it 'is to the reviewer' do
         expect(email.to).to eq([report.user.email])
@@ -319,11 +339,13 @@ describe TahiStandardTasks::ReviewerMailer do
       it 'renders the signature' do
         expect(email.body).to match('Kind regards,')
       end
+
+      it_behaves_like 'a Liquid email checked for blanks'
     end
 
     describe '.second_late_notice' do
       subject(:email) { described_class.second_late_notice(reviewer_report_id: report.id) }
-      let(:template_name) { 'Review Reminder - Second Late' }
+      let(:template_ident) { 'review-reminder-second-late' }
 
       it 'is to the reviewer' do
         expect(email.to).to eq([report.user.email])
@@ -344,6 +366,34 @@ describe TahiStandardTasks::ReviewerMailer do
       it 'renders the signature' do
         expect(email.body).to match('Kind regards,')
       end
+
+      it_behaves_like 'a Liquid email checked for blanks'
     end
+  end
+
+  describe '.thank_reviewer' do
+    subject(:email) { described_class.thank_reviewer(reviewer_report_id: report.id) }
+    let(:appreciation_email) { FactoryGirl.create(:letter_template, :thank_reviewer) }
+
+    before { report.paper.journal.letter_templates << appreciation_email }
+
+    it 'is addressed to the reviewer' do
+      expect(email.to).to eq([report.user.email])
+    end
+
+    it 'renders the subject' do
+      expect(email.subject).to eq("Thank you for reviewing #{report.paper.journal.name}")
+    end
+
+    it 'renders the email template' do
+      expect(email.body).to match("Dear #{report.user.first_name} #{report.user.last_name}")
+    end
+
+    it 'renders the signature' do
+      expect(email.body).to match('Kind regards')
+      expect(email.body).to match(report.paper.journal.name)
+    end
+
+    it_behaves_like 'a Liquid email checked for blanks'
   end
 end

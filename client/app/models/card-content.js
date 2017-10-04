@@ -34,6 +34,7 @@ export default DS.Model.extend({
   allowAnnotations: DS.attr('boolean'),
   answerable: Ember.computed.notEmpty('valueType'),
   errorMessage: DS.attr('string'),
+  key: DS.attr('string'),
 
 
   // The unusual nature of the sendback component (being reliant on other card-content within the context
@@ -57,6 +58,11 @@ export default DS.Model.extend({
 
   childrenSort: ['order:asc'],
   children: Ember.computed.sort('unsortedChildren', 'childrenSort'),
+
+  visitDescendants: function(f) {
+    f(this);
+    this.get('children').forEach((child) => child.visitDescendants(f));
+  },
 
   isRequired: Ember.computed.equal('requiredField', true),
 

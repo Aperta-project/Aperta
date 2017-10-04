@@ -53,18 +53,18 @@ class ReviewerReport < ActiveRecord::Base
     state :submitted
 
     event(:accept_invitation,
-          after_commit: [:set_due_datetime],
+          after_commit: [:set_due_datetime, :thank_reviewer],
           guards: [:invitation_accepted?]) do
       transitions from: :invitation_not_accepted, to: :review_pending
     end
 
-    event(:rescind_invitation) do
+    event(:rescind_invitation, after: [:cancel_reminders]) do
       transitions from: [:invitation_not_accepted, :review_pending],
                   to: :invitation_not_accepted
     end
 
     event(:submit,
-          guards: [:invitation_accepted?], after: [:set_submitted_at]) do
+          guards: [:invitation_accepted?], after: [:set_submitted_at, :thank_reviewer, :cancel_reminders]) do
       transitions from: :review_pending, to: :submitted
     end
   end
@@ -167,5 +167,19 @@ class ReviewerReport < ActiveRecord::Base
       end
     end
     period
+  end
+
+  def thank_reviewer
+    mailer = TahiStandardTasks::ReviewerMailer
+    case state
+    when 'submitted'
+      mailer.delay.thank_reviewer(reviewer_report_id: id)
+    when 'review_pending'
+      mailer.delay.welcome_reviewer(assignee_id: user.id, paper_id: paper.id)
+    end
+  end
+
+  def cancel_reminders
+    scheduled_events.active.map(&:cancel!)
   end
 end

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Typesetter::AuthorListItemSerializer do
-  subject(:serializer) { described_class.new(author_list_item) }
+  subject(:serializer) { described_class.new(author_list_item, options) }
   let(:author_list_item) do
     FactoryGirl.build(:author_list_item, author: author)
   end
@@ -9,8 +9,8 @@ describe Typesetter::AuthorListItemSerializer do
   let(:group_author) { FactoryGirl.build(:group_author) }
 
   let(:output) { serializer.serializable_hash }
-  let!(:feature_flag) { FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true }
   let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
+  let!(:options) { { destination: "em", unique_values: {} } }
 
   describe 'author' do
     it 'includes the author' do
@@ -23,12 +23,12 @@ describe Typesetter::AuthorListItemSerializer do
     DESC
       author_list_item.author = Author.new
       expect(Typesetter::AuthorSerializer).to receive(:new)
-        .with(author_list_item.author)
+        .with(author_list_item.author, options)
       serializer.serializable_hash
 
       author_list_item.author = GroupAuthor.new
       expect(Typesetter::GroupAuthorSerializer).to receive(:new)
-        .with(author_list_item.author)
+        .with(author_list_item.author, options)
       serializer.serializable_hash
     end
   end

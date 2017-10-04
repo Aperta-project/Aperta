@@ -1,6 +1,6 @@
 {{#if taskStateToggleable}}
   <span class="task-completed-section" {{action "toggleTaskCompletion"}}>
-    {{#if task.completed}}
+    {{#if task.completedProxy}}
       <button class="task-completed task-is-completed button-secondary button--grey"
               name="task_completed">
         Make changes to this task
@@ -11,10 +11,11 @@
         I am done with this task
       </button>
     {{/if}}
-
+    {{#if task.taskNotReady}}
+      <span class="error-message">{{completedErrorText}}</span>
+    {{/if}}
     {{#if validationErrors.completed}}
       {{error-message message=validationErrors.completed}}
     {{/if}}
   </span>
 {{/if}}
-

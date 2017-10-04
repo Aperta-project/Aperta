@@ -1,6 +1,6 @@
 require 'rails_helper'
-
-feature 'Viewing Versions:', js: true, flaky: true do
+# rubocop:disable Metrics/BlockLength
+feature 'Viewing Versions:', js: true do
   let(:creator) { FactoryGirl.create :user }
 
   context 'When viewing a paper with more than one version,' do
@@ -13,7 +13,7 @@ feature 'Viewing Versions:', js: true, flaky: true do
                          creator: creator
     end
     let!(:task) do
-      FactoryGirl.create :ethics_task,
+      FactoryGirl.create :figure_task,
                          paper: paper,
                          phase: paper.phases.first
     end
@@ -58,13 +58,12 @@ feature 'Viewing Versions:', js: true, flaky: true do
       page.view_versions
       page.select_viewing_version(version_0)
 
-      page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|
+      page.view_card('Figures', VersionedMetadataOverlay) do |overlay|
         overlay.expect_version('R0.0')
       end
-
       page.select_viewing_version(version_1)
 
-      page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|
+      page.view_card('Figures', VersionedMetadataOverlay) do |overlay|
         overlay.expect_version('(draft)')
       end
     end
@@ -83,41 +82,8 @@ feature 'Viewing Versions:', js: true, flaky: true do
       page.select_viewing_version(version_0)
       page.select_comparison_version(version_1)
 
-      page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|
+      page.view_card('Figures', VersionedMetadataOverlay) do |overlay|
         overlay.expect_versions('R0.0', '(draft)')
-      end
-    end
-
-    context 'The user has limited access' do
-      let(:user) do
-        FactoryGirl.create(:user, first_name: 'reviewer').tap do |u|
-          assign_reviewer_role(paper, u)
-        end
-      end
-
-      let!(:task) do
-        FactoryGirl.create :cover_letter_task,
-                           paper: paper,
-                           phase: paper.phases.first
-      end
-
-      scenario 'The user cannot see the cover letter task' do
-        ensure_user_does_not_have_access_to_task(
-          user: user,
-          task: task
-        )
-      end
-
-      scenario 'The user cannot see cover letter task versions' do
-        SnapshotService.new(paper).snapshot!(task)
-        FactoryGirl.create(:snapshot,
-                           major_version: 0,
-                           minor_version: 0,
-                           source: task)
-        page = PaperPage.new
-        page.view_versions
-
-        expect(page).to_not have_content('Cover Letter')
       end
     end
   end

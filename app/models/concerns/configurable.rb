@@ -1,4 +1,11 @@
 # Configurable models have related Settings stored in the database
+# New settings can be initialized by adding a setting template
+# at lib/tasks/settings/seed_setting_templates.rake and then running:
+# `$ rake settings:seed_setting_templates`
+# that setting value can then be accessed with:
+# `owner.setting(<setting_name>).value` and updated by updating the
+# object that `owner.setting(<setting_name>)` returns
+
 module Configurable
   extend ActiveSupport::Concern
 
@@ -12,8 +19,9 @@ module Configurable
   # setting templates for a given key will be global ones (where journal id is
   # nil) or ones where journal is this Configurable's journal
   def setting_templates
+    journals = respond_to?(:journal) ? [nil, journal] : [nil]
     SettingTemplate.where(key: setting_template_key,
-                          journal: [nil, journal])
+                          journal: journals)
   end
 
   def setting_template_key
@@ -35,7 +43,7 @@ module Configurable
   # setting, a configurable has a setting_template_key that needs to be
   # defined first. Check `TaskTemplate` for an example. The defaults and
   # validations for a given type of setting are handled by the Setting class
-  # itself. The RegisteredSetting is just a simple mapping between a string key
+  # itself. The SettingTemplate is just a simple mapping between a string key
   # and the Setting class name.
   def setting(name)
     settings.find_by(name: name) || begin

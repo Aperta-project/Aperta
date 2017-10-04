@@ -268,34 +268,39 @@ describe XmlCardLoader do
       end
 
       context 'text' do
-        let(:text) { 'Foo' }
-        let(:text2) { " #{text}  \n" }
         let(:content1) { "<content ident='foo' content-type='text'><text>#{text}</text></content>" }
 
-        it 'sets the text to the value of the element text' do
-          card = xml_card_loader.load(xml)
-          card.save
-          expect(root_content.text).to eq(text)
-        end
-
-        context 'and there is trailing whitespace' do
-          let(:content1) { "<content ident='foo' content-type='text'><text>#{text2}</text></content>" }
-
-          it 'is not removed' do
-            card = xml_card_loader.load(xml)
-            card.save
-            expect(root_content.text).to eq(text2)
+        shared_examples_for :the_text_attribute_is_set_properly do
+          it "set the text as expected" do
+            xml_card_loader.load(xml).save
+            expect(root_content.text).to eq(text)
           end
         end
 
-        context 'and the text element includes CDATA' do
+        context 'when the text is a simple string' do
+          let(:text) { 'Foo' }
+          it_behaves_like :the_text_attribute_is_set_properly
+        end
+
+        context 'when there is trailing whitespace' do
+          let(:text) { "Foo  \n" }
+          it_behaves_like :the_text_attribute_is_set_properly
+        end
+
+        context 'when the text is HTML' do
+          let(:text) { '<b>bold</b>' }
+          it_behaves_like :the_text_attribute_is_set_properly
+        end
+
+        # https://stackoverflow.com/questions/8406251/nokogiri-to-xml-without-carriage-returns/8406635#8406635
+        context 'when the text is the special kind that libxml likes to indent for some reason' do
+          let(:text) { '<a href="http://example.org"><b>bold <i>italic</i></b></a>' }
+          it_behaves_like :the_text_attribute_is_set_properly
+        end
+
+        context 'when the text element includes CDATA' do
           let(:text) { '<![CDATA[<a>link</a>]]>' }
-
-          it 'includes the embedded HTML' do
-            card = xml_card_loader.load(xml)
-            card.save
-            expect(root_content.text).to eq('<![CDATA[<a>link</a>]]>')
-          end
+          it_behaves_like :the_text_attribute_is_set_properly
         end
       end
 

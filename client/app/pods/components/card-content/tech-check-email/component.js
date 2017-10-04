@@ -4,19 +4,16 @@ export default Ember.Component.extend({
   classNames: ['card-content-tech-check-email'],
   showEmailPreview: false,
   restless: Ember.inject.service('restless'),
-  flash: Ember.inject.service('flash'),
 
   emailPreview: null,
 
   didInsertElement() {
     $(document).on('focus', '.card-content-sendback-reason textarea', () => {
       this.set('showEmailPreview', false);
-      this.notifyPropertyChange('sendbacksWithReasons');
     });
 
     $(document).on('click', '.sendback-reason-row input', () => {
       this.set('showEmailPreview', false);
-      this.notifyPropertyChange('sendbacksWithReasons');
     });
   },
 
@@ -25,45 +22,6 @@ export default Ember.Component.extend({
     $(document).off('focus', '.card-content-sendback-reason textarea');
     $(document).off('click', '.sendback-reason-row input');
   },
-
-  techChecks: Ember.computed(function() {
-    return this.get('content.parent.children').filter(function(content) {
-      return content.get('contentType') === 'tech-check';
-    });
-  }),
-
-  sendbacks: Ember.computed(function() {
-    let ret = [];
-
-    this.get('techChecks').forEach(function(check) {
-      let sendbacks = check.get('children').filter(function(content) {
-        return content.get('contentType') === 'sendback-reason';
-      });
-
-      ret = ret.concat(sendbacks);
-    });
-
-    return ret;
-  }),
-
-  sendbacksWithReasons: Ember.computed(function() {
-    return this.get('sendbacks').filter((sendback) => {
-      const sendbackCheckbox = sendback.get('children')[0];
-      const sendbackReason = sendback.get('children')[2];
-      const owner = this.get('owner');
-
-      return sendbackCheckbox.answerForOwner(owner).get('value') &&
-        sendbackReason.answerForOwner(owner).get('value');
-    });
-  }),
-
-  sendbackReasons: Ember.computed('sendbacksWithReasons', function () {
-    return this.get('sendbacksWithReasons').map((sendback) => {
-      const owner = this.get('owner');
-      const reason = sendback.get('children')[2];
-      return reason.answerForOwner(owner).get('value');
-    });
-  }),
 
   intro: Ember.computed(function () {
     const editors = this.get('content.children');
@@ -94,7 +52,6 @@ export default Ember.Component.extend({
       url: `/api/tasks/${this.get('owner.id')}/${endpoint}`,
       data: {
         intro: this.get('emailIntroText'),
-        sendbacks: this.get('sendbackReasons'),
         footer: this.get('emailFooterText')
       }
     };

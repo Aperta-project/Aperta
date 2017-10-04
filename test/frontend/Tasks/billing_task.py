@@ -55,6 +55,9 @@ class BillingTask(BaseTask):
       data['city'] = bd['city']
       data['zip'] = bd['ZIP']
 
+    # had to add this wait to be sure it's ready for editing
+    self._wait_for_element(self._get(self._first_name))
+    time.sleep(3)
     self._get(self._first_name).send_keys(data['fist_name'])
     self._get(self._last_name).send_keys(data['last_name'])
     self._get(self._department).send_keys(data['department'])
@@ -67,7 +70,7 @@ class BillingTask(BaseTask):
     payment_prices = self._get(self._payment_prices_ul)
     self._scroll_into_view(payment_prices)
     self._actions.move_to_element(payment_prices).perform()
-    time.sleep(5)
+    time.sleep(2)
     payment_select = self._get(self._payment_option)
     self._actions.move_to_element(payment_select).click().perform()
     # Grab the items in the select2 dropdown, then make selection

@@ -601,6 +601,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         if task_name in task.text \
             and 'active' \
             not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
+          self._scroll_into_view(self._get(self._paper_sidebar_manuscript_id))
           manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
           self._actions.move_to_element(manuscript_id_text).perform()
           self.click_covered_element(task)
@@ -624,8 +625,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # If the task is read only due to completion state, set read-write
       if base_task.completed_state():
         base_task.click_completion_button()
+        time.sleep(1) # added due to delay
       if data:
         ai_task.complete_ai(data)
+        time.sleep(1)
       # complete_addl info task
       if not base_task.completed_state():
         base_task.click_completion_button()
@@ -723,11 +726,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
       logging.info('Completing Author Task')
       author_task = AuthorsTask(self._driver)
       author_task.edit_author(author)
-      self.click_covered_element(task)
-      time.sleep(1)
-      # The next three lines are a bit of a hack to get around APERTA-10622
-      self.click_covered_element(task)
-      time.sleep(1)
       self.click_covered_element(task)
       time.sleep(1)
     elif task_name == 'New Taxon':
@@ -1287,7 +1285,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     failed_conversion_heading = self._get(self._failed_conversion_heading)
     if not status or status.lower() not in ('unsubmitted', 'submitted'):
       logging.warning('You must pass a paper state of "unsubmitted" or "submitted" when calling '
-                      'check_faied_conversion_text')
+                      'check_failed_conversion_text')
       return False
     elif status.lower() == 'unsubmitted':
       # validate unsubmitted failed conversion message - see APERTA-8858

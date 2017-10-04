@@ -143,6 +143,8 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.page_ready()
     paper_viewer.click_task('Additional Information')
+    # added time to make sure the card is ready to be edited
+    time.sleep(1)
     paper_viewer.complete_task('Additional Information',
                                click_override=True,
                                data=new_prq)

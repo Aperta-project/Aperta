@@ -71,7 +71,13 @@ class AITask(BaseTask):
     """
     completed = self.completed_state()
     if completed:
-      return None
+      if data:  # must be in editable state to update data
+        self.click_completion_button()
+        time.sleep(.5)
+      else:
+        logging.info('Additional Information card is in completed state, aborting...')
+        return None
+
     if not data:
       data = self.create_data()
 

@@ -30,7 +30,7 @@ class UploadManuscriptTask(BaseTask):
     self._upload_manuscript_input = (By.ID, 'upload-files')
     self._upload_source_warning = (By.CSS_SELECTOR,
                                    'div.upload-sourcefile  > div.error-message i.fa-exclamation-triangle')
-    self._uploaded_pdf = (By.CSS_SELECTOR, '.task-main-content > div > a')
+    self._uploaded_pdf = (By.CSS_SELECTOR, '.task-main-content div a')
     self._upload_source_file_button = (By.ID, 'upload-files')
     self._upload_source_file_box = (By.CLASS_NAME, 'flex-form')
 
@@ -129,6 +129,7 @@ class UploadManuscriptTask(BaseTask):
     take_name_of_pdf_file: Take the name of the uploaded PDF
     :return: file_name as str
     """
+    self._scroll_into_view(self._get(self._uploaded_pdf))
     uploaded_pdf = self._get(self._uploaded_pdf)
     file_name, file_ext = os.path.splitext(uploaded_pdf.text)
     full_file_name = '{0}{1}'.format(file_name, file_ext)

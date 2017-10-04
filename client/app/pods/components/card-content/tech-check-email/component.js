@@ -89,33 +89,32 @@ export default Ember.Component.extend({
     this.set('showEmailPreview', false);
   }),
 
-  actions: {
-    generatePreview() {
-      const url = `/api/tasks/${this.get('owner.id')}/sendback_preview`;
-
-      let data = {
+  _templateConfig(endpoint) {
+    return {
+      url: `/api/tasks/${this.get('owner.id')}/${endpoint}`,
+      data: {
         intro: this.get('emailIntroText'),
         sendbacks: this.get('sendbackReasons'),
         footer: this.get('emailFooterText')
-      };
+      }
+    };
+  },
 
-      this.get('restless').put(url, data).then((data)=> {
+  actions: {
+    generatePreview() {
+      const config = this._templateConfig('sendback_preview');
 
+      this.get('restless').put(config.url, config.data).then((data)=> {
         this.set('emailPreview', data.body);
         this.set('showEmailPreview', true);
       });
     },
 
     sendChangeRequestEmail() {
-      const url = `/api/tasks/${this.get('owner.id')}/sendback_email`;
+      const config = this._templateConfig('sendback_email');
 
-      let data = {
-        intro: this.get('emailIntroText'),
-        sendbacks: this.get('sendbackReasons'),
-        footer: this.get('emailFooterText')
-      };
-
-      this.get('restless').put(url, data).then(()=> {
+      this.get('restless').put(config.url, config.data).then(()=> {
+        // do something here
       });
     },
   }

@@ -1,18 +1,38 @@
 # Serializes properties for Ember
 # rubocop:disable Style/PredicateName
 class TaskSerializer < ActiveModel::Serializer
-  attributes :id, :title, :type, :completed, :body, :position,
-             :is_metadata_task, :is_submission_task, :is_snapshot_task,
-             :links, :phase_id, :assigned_to_me, :owner_type_for_answer,
-             :card_version_id, :paper_id, :is_workflow_only_task,
-             :display_status, :viewable
+  attributes :id,
+             :assigned_to_me,
+             :body,
+             :card_version_id,
+             :completed,
+             :completed_proxy,
+             :display_status,
+             :is_metadata_task,
+             :is_snapshot_task,
+             :is_submission_task,
+             :is_workflow_only_task,
+             :links,
+             :owner_type_for_answer,
+             :paper_id,
+             :phase_id,
+             :position,
+             :title,
+             :type,
+             :viewable
 
   has_one :assigned_user, embed: :id
 
   self.root = :task
 
+  has_one :card_version, embed: :id, include: true
+
   def viewable
     scope.can?(:view, object)
+  end
+
+  def include_card_version?
+    @options[:include_card_version] && object.custom?
   end
 
   def is_metadata_task
@@ -25,6 +45,10 @@ class TaskSerializer < ActiveModel::Serializer
 
   def is_snapshot_task
     object.snapshottable?
+  end
+
+  def completed_proxy
+    object.completed
   end
 
   def is_workflow_only_task

@@ -4,7 +4,7 @@ class MigrateCoverLetterTaskToCustomCard < ActiveRecord::Migration
     CustomCard::Loader.all
 
     # migrate legacy task to custom card
-    migrator = CustomCard::Migrator.new(legacy_task_klass_name: "TahiStandardTasks::CoverLetterTask", card_name: "Cover Letter")
+    migrator = CustomCard::Migrator.new(legacy_task_klass_name: "TahiStandardTasks::CoverLetterTask", configuration_class: CustomCard::Configurations::CoverLetter)
     migrator.migrate
   end
 end

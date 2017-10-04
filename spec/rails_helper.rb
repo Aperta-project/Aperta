@@ -91,7 +91,7 @@ RSpec.configure do |config|
     # around.
     # Ensure this comes after the generic setup (see above)
     DatabaseCleaner[:active_record].strategy = :truncation, {
-      except: %w[task_types cards card_contents card_versions content_attributes]
+      except: %w[task_types cards card_contents card_task_types card_versions content_attributes]
     }
 
     # Fix to make sure this happens only once
@@ -160,6 +160,7 @@ RSpec.configure do |config|
   config.before(:each, type: :feature) do
     Authorizations.reload_configuration
     Subscriptions.reload
+    CardTaskType.seed_defaults
     Rake::Task['roles-and-permissions:seed'].reenable
     Rake::Task['roles-and-permissions:seed'].invoke
     Rake::Task['settings:seed_setting_templates'].reenable

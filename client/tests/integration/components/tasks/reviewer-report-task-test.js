@@ -164,7 +164,7 @@ test('disallow wrong permissions from viewing scheduled events', function (asser
 test('Canceled events appear with minus icon and "NA" text', function (assert) {
   this.can.allowPermission('manage_scheduled_events', this.task);
   const scheduledEvents = [
-    make('scheduled-event', {state: 'canceled'})
+    make('scheduled-event', {state: 'canceled', finished: true})
   ];
   const reviewerReport = make('reviewer-report', 'with_questions',
     { status: 'completed', task: this.task });

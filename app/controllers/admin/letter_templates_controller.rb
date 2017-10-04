@@ -35,7 +35,7 @@ class Admin::LetterTemplatesController < ApplicationController
   end
 
   def letter_template_params
-    params.permit(:journal_id, letter_template: [:body, :subject])
+    params.permit(:journal_id, letter_template: [:body, :subject, :name])
   end
 
   def create_params

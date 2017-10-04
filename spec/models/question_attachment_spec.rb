@@ -32,6 +32,24 @@ describe QuestionAttachment do
     it_behaves_like 'attachment#download! when the attachment is invalid'
   end
 
+  describe 'self.cover_letter' do
+    it "returns question attachments whose answers' card contents have the 'cover_letter--attachment' ident" do
+      paper = FactoryGirl.create(:paper)
+      cover_letter_content = FactoryGirl.create(:card_content, ident: 'cover_letter--attachment')
+      answer_to_find = FactoryGirl.create(:answer,
+                                          paper: paper,
+                                          card_content: cover_letter_content)
+      other_content = FactoryGirl.create(:card_content, ident: 'foo')
+      other_answer = FactoryGirl.create(:answer, paper: paper, card_content: other_content)
+      a1 = FactoryGirl.create(:question_attachment, paper: paper, owner: answer_to_find)
+      a2 = FactoryGirl.create(:question_attachment, paper: paper, owner: other_answer)
+
+      letters = paper.reload.question_attachments.cover_letter.all
+      expect(letters).to include(a1)
+      expect(letters).to_not include(a2)
+    end
+  end
+
   describe '#paper' do
     it "returns the answer's paper" do
       expect(attachment.paper).to eq(answer.paper)

@@ -35,10 +35,9 @@ module MailLog::LogToDatabase
 
       let(:correspondence_double) { double('Correspondence') }
       let(:attachment_double) { double('CorrespondenceAttachment') }
-      let(:file_name) { 'test' }
+
       it 'logs the email with attachments to the database whilst storing attachments' do
         allow(Correspondence).to receive(:create!).and_return(correspondence_double)
-        expect(File).to receive(:new).with(/#{file_name}$/, 'w+').and_return(File.new(file_name, 'w+'))
         expect(correspondence_double).to receive_message_chain('attachments.create!') { attachment_double }
         expect(attachment_double).to receive(:file).and_return(true)
         expect(attachment_double).to receive(:create_resource_token!).and_return(true)

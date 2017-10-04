@@ -7,20 +7,20 @@
 
     <div class='input-header'>
       <div class='description'>
-        <label class="required" id="cardType">Select your card type:</label>
+        <label class="required" id="cardTaskType">Select your card type:</label>
       </div>
     </div>
 
     <div class='input-with-notification-icon'>
       {{#power-select
-          options=cardTypes
-          selected=cardType
+          options=cardTaskTypes
+          selected=cardTaskType
           onchange=(action "valueChanged")
           searchEnabled=false
           disabled=false
-          ariaLabelledBy="cardType"
-          as |val|}}
-        {{val.label}}
+          ariaLabelledBy="cardTaskType"
+         as |val|}}
+        {{val.displayName}}
       {{/power-select}}
     </div>
   </div>

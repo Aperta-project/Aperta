@@ -27,15 +27,15 @@
             {{/if}}
             <h1 class="overlay-body-title">{{{task.title}}}</h1>
             {{#task-load task=task}}
-              {{component task.componentName task=task}}
+              {{component task.componentName task=task isOverlay=true}}
               {{#if (can 'view_discussion_footer' task)}}
-              <div class="overlay-discussion-board">
-                <h2>Discussion</h2>
-                {{comment-board comments=task.comments
-                                currentUser=currentUser
-                                canEdit=(can 'edit_discussion_footer' task)
-                                postComment=(action "postComment")}}
-              </div>
+                <div class="overlay-discussion-board">
+                  <h2>Discussion</h2>
+                  {{comment-board comments=task.comments
+                                  currentUser=currentUser
+                                  canEdit=(can 'edit_discussion_footer' task)
+                                  postComment=(action "postComment")}}
+                </div>
               {{/if}}
             {{else}}
               {{progress-spinner visible=true size="large" align="middle"}}

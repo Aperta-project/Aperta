@@ -8,10 +8,7 @@
   a.disabled {
     color: $aperta-grey;
     cursor: default;
-
-    &:hover {
-      text-decoration: none;
-    }
+    text-decoration: none;
   }
 }
 

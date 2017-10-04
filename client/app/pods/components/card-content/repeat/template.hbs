@@ -1,9 +1,9 @@
 {{#each repetitions as |rep|}}
   <div class="repeated-block">
     <h4>
-      {{#unless minRepetitionsReached}}
+      {{#if canDeleteRepetition}}
         <a class="fa fa-trash remove-repetition pull-right" {{action "deleteRepetition" rep}} href="#"></a>
-      {{/unless}}
+      {{/if}}
       {{ itemName }}
     </h4>
     {{#if rep.isNew }}
@@ -25,7 +25,7 @@
       {{/each}}
     {{/if}}
   </div>
-  <a class="add {{if maxRepetitionsReached "disabled"}}" {{action "addRepetition"}} href="#">&#43; {{addLabelText}}</a>
+  <a class="add {{unless canAddRepetition "disabled"}}" {{action "addRepetition"}} href="#">&#43; {{addLabelText}}</a>
 {{else}}
-  <a class="add {{if maxRepetitionsReached "disabled"}}" {{action "addRepetition"}} href="#">&#43; {{addLabelText}}</a>
+  <a class="add {{unless canAddRepetition "disabled"}}" {{action "addRepetition"}} href="#">&#43; {{addLabelText}}</a>
 {{/each}}

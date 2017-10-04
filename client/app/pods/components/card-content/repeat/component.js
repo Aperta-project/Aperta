@@ -48,15 +48,25 @@ export default Ember.Component.extend({
     return `Delete ${this.get('itemName')}`;
   }),
 
-  minRepetitionsReached: Ember.computed('repetitions', function() {
+  canDeleteRepetition: Ember.computed('disabled', 'repetitions.[]', function() {
+    if(this.get('disabled')) {
+      return false;
+    }
     if(this.get('min')) {
-      return this.get('repetitions.length') <= this.get('min');
+      return this.get('repetitions.length') > this.get('min');
+    } else {
+      return true;
     }
   }),
 
-  maxRepetitionsReached: Ember.computed('repetitions', function() {
+  canAddRepetition: Ember.computed('disabled', 'repetitions.[]', function() {
+    if(this.get('disabled')) {
+      return false;
+    }
     if(this.get('max')){
-      return this.get('repetitions.length') >= this.get('max');
+      return this.get('repetitions.length') < this.get('max');
+    } else {
+      return true;
     }
   }),
 
@@ -77,13 +87,13 @@ export default Ember.Component.extend({
 
   actions: {
     addRepetition() {
-      if(!this.get('maxRepetitionsReached')) {
+      if(this.get('canAddRepetition')) {
         this.buildRepetition();
       }
     },
 
     deleteRepetition(repetition) {
-      if(!this.get('minRepetitionsReached')) {
+      if(this.get('canDeleteRepetition')) {
         repetition.cascadingDestroy();
       }
     },

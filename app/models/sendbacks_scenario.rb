@@ -5,15 +5,15 @@ class SendbacksScenario < TemplateScenario
   # end
 
   def intro
-    @object.answer_for('tech-check-email--email-intro').value
+    task.answer_for('tech-check-email--email-intro').value
   end
 
   def footer
-    @object.answer_for('tech-check-email--email-footer').value
+    task.answer_for('tech-check-email--email-footer').value
   end
 
   def sendback_reasons
-    reasons = @object.answers.select do |answer|
+    reasons = task.answers.select do |answer|
       content = CardContent.find answer.card_content_id
       parent = CardContent.find content.parent_id
       parent.content_type == 'sendback-reason' && content.content_type != 'check-box'
@@ -24,7 +24,7 @@ class SendbacksScenario < TemplateScenario
 
   private
 
-  def version
-    @object.card_version
+  def task
+    @object
   end
 end

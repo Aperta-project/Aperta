@@ -105,6 +105,8 @@ class ApertaAdminTest(CommonTest):
     adm_settings_page.validate_settings_pane('All My Journals')
     journal = adm_settings_page.select_journal(regular=True)
     logging.info(journal)
+    # need to click one more time on "Settings", possibly due to APERTA-11068
+    adm_settings_page._get(adm_settings_page._base_admin_settings_link).click()
     adm_settings_page.validate_edit_journal(journal)
 
 if __name__ == '__main__':

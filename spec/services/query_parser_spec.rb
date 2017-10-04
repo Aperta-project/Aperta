@@ -351,7 +351,7 @@ describe QueryParser do
       it 'parses TASK x IS ASSIGNED TO a' do
         parse = QueryParser.new.parse "TASK anytask IS ASSIGNED TO #{user.email}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          \"tasks_0\".\"title\" ILIKE 'anytask' AND \"tasks_0\".\"assigned_user_id\" IN (1)
+          \"tasks_0\".\"title\" ILIKE 'anytask' AND \"tasks_0\".\"assigned_user_id\" IN (#{user.id})
         SQL
       end
     end

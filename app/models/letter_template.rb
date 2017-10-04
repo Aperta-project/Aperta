@@ -13,7 +13,6 @@ class LetterTemplate < ActiveRecord::Base
   validates :scenario, presence: { message: "This field is required" }
   validates :body, presence: true
   validates :subject, presence: true
-  validate :template_scenario?
   validate :body_ok?
   validate :subject_ok?
 
@@ -43,21 +42,6 @@ class LetterTemplate < ActiveRecord::Base
     else
       raw
     end
-  end
-
-  def template_scenario?
-    # scenario has two checks, a generic presence check, and then one to make
-    # sure the scenario is a subclass of TemplateScenario. If the presence
-    # check fails, we can skip the subclass error
-    return if errors.include? :scenario
-
-    scenario_class = begin
-      scenario.constantize
-    rescue NameError
-      false
-    end
-    return if scenario_class && scenario_class < TemplateScenario
-    errors.add(:scenario, 'must name a subclass of TemplateScenario')
   end
 
   def body_ok?

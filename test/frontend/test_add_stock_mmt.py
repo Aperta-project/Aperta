@@ -280,7 +280,6 @@ class ApertaSeedJournalMMTTest(CommonTest):
                                          mmt_name=mmt['name'],
                                          user_tasks=mmt['user_tasks'],
                                          staff_tasks=mmt['staff_tasks'],
-                                         custom_cards=mmt['custom_cards'],
                                          uses_resrev_report=mmt['uses_resrev_report'],
                                          preprint_elligible=mmt['preprint_eligible'])
         # It is necessary to reinvoke the driver to avoid a Stale Element Reference Exception

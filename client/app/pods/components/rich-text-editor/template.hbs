@@ -3,7 +3,7 @@
 {{else}}
   <div class="rich-text-editor-container {{ if hasErrors "error" }}">
     {{#unless hideError}}
-      {{card-content/validation-errors errors=errorMessages}}
+      {{card-content/validation-errors errors=errorMessages hideErrors=false}}
     {{/unless}}
     {{tinymce-editor
       class=class

@@ -13,7 +13,8 @@ class CardContent < ActiveRecord::Base
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
   has_many :card_content_validations, dependent: :destroy
-  has_many :repetitions, inverse_of: :card_content
+  has_many :repetitions, inverse_of: :card_content, dependent: :destroy
+  has_many :answers, inverse_of: :card_content, dependent: :destroy
 
   validates :card_version, presence: true
 
@@ -24,7 +25,6 @@ class CardContent < ActiveRecord::Base
             },
             if: -> { root? }
 
-  has_many :answers
 
   # -- Card Content Validations
   # Note that the checks present here work in concert with the xml validations

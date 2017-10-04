@@ -51,7 +51,7 @@ class Task < ActiveRecord::Base
            as: :owner,
            class_name: 'AdhocAttachment',
            dependent: :destroy
-  has_many :repetitions, inverse_of: :task
+  has_many :repetitions, inverse_of: :task, dependent: :destroy
 
   belongs_to :phase, inverse_of: :tasks
   belongs_to :task_template
@@ -160,20 +160,6 @@ class Task < ActiveRecord::Base
   # individual task is added to the workflow.  Remember to call super when
   # subclassing
   def task_added_to_paper(_paper)
-    card_version.try(:create_default_answers, self)
-  end
-
-  # called in the Task factory
-  def create_answers
-    required_fields = card_version.card_contents
-                                  .joins(:content_attributes)
-                                  .where('content_attributes.name' => 'required_field',
-                                         'content_attributes.value_type' => 'boolean',
-                                         'content_attributes.boolean_value' => true)
-    required_fields.each do |content|
-      answer = find_or_build_answer_for(card_content: content)
-      answer.save
-    end
   end
 
   def journal_task_type

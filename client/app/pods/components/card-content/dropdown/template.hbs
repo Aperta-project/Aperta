@@ -13,7 +13,7 @@
     as |val|}}
   {{val.label}}
 {{/power-select}}
-<p>{{card-content/validation-errors content=content errors=answer.readyIssuesArray}}</p>
+<p>{{card-content/validation-errors content=content hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}</p>
 {{card-content/display-children
   content=content
   owner=owner

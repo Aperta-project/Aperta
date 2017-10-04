@@ -1,4 +1,4 @@
-{{#each repetitions as |rep index|}}
+{{#each repetitions as |rep|}}
   <div class="repeated-block">
     <h4>
       {{#unless minRepetitionsReached}}
@@ -6,15 +6,24 @@
       {{/unless}}
       {{ itemName }}
     </h4>
-    {{#each content.children as |child|}}
-      {{card-content
-        content=child
-        disabled=disabled
-        owner=owner
-        answerChanged=answerChanged
-        repetition=rep
-        preview=preview}}
-    {{/each}}
+    {{#if rep.isNew }}
+      {{!--
+        When the repetition is new, it won't have an id. We must wait for the
+        repetition to be saved before rendering the child content. Any
+        requiredField answers are created eagerly, but we need to wait for the
+        reptition to be saved to correctly associate them.
+        --}}
+    {{else}}
+      {{#each content.children as |child|}}
+        {{card-content
+          content=child
+          disabled=disabled
+          owner=owner
+          answerChanged=answerChanged
+          repetition=rep
+          preview=preview}}
+      {{/each}}
+    {{/if}}
   </div>
   <a class="add {{if maxRepetitionsReached "disabled"}}" {{action "addRepetition"}} href="#">&#43; {{addLabelText}}</a>
 {{else}}

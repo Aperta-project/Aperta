@@ -29,9 +29,9 @@ export default Ember.Component.extend({
     }
   },
 
-  repetitions: Ember.computed('content.repetitions.[]', 'repetition', function() {
+  repetitions: Ember.computed('content.repetitions.@each.isDeleted', 'repetition', function() {
     let parent = this.get('repetition');
-    return this.get('content.repetitions').filter(function(rep) {
+    return this.get('content.repetitions').rejectBy('isDeleted').filter(function(rep) {
       if(parent) {
         return rep.get('parent') === parent;
       } else {

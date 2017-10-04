@@ -108,7 +108,8 @@ export default DS.Model.extend({
   createAnswerForOwner(owner){
     return this.get('store').createRecord('answer', {
       owner: owner,
-      cardContent: this
+      cardContent: this,
+      value: this.get('defaultAnswerValue'),
     });
   },
 

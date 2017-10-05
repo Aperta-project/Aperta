@@ -25,7 +25,9 @@
     </content>
     <content content-type="radio" value-type="text" allow-annotations="false" required-field="true">
       <text>
-        This is a radio button question.  <b>Please</b> pick a choice
+        <html>
+          This is a radio button question. <b>Please</b> pick a choice
+        </html>
       </text>
       <possible-value label="Choice 1" value="1"/>
       <possible-value label="Choice 2" value="2"/>
@@ -55,7 +57,9 @@
     </content>
     <content content-type="dropdown" value-type="text" allow-annotations="false" required-field="false">
       <text>
-        This is a dropdown question.  <b>Please</b> pick a choice
+        <html>
+          This is a dropdown question.  <b>Please</b> pick a choice
+        </html>
       </text>
       <possible-value label="Choice 1" value="1"/>
       <possible-value label="Choice 2" value="2"/>

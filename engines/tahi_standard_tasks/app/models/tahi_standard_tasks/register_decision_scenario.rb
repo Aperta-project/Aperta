@@ -1,18 +1,10 @@
 module TahiStandardTasks
   # Provides a template context for RegisterDecisionTasks
-  class RegisterDecisionScenario < TemplateScenario
+  class RegisterDecisionScenario < PaperScenario
     def self.merge_field_definitions
       [{ name: :manuscript, context: PaperContext },
        { name: :journal, context: JournalContext },
        { name: :reviews, context: ReviewerReportContext, many: true }]
-    end
-
-    def manuscript
-      @manuscript ||= PaperContext.new(paper)
-    end
-
-    def journal
-      @journal ||= JournalContext.new(paper.journal)
     end
 
     def reviews
@@ -21,12 +13,6 @@ module TahiStandardTasks
         ReviewerReportContext.new(rr)
       end
       @reviews.sort_by(&:reviewer_number)
-    end
-
-    private
-
-    def paper
-      @object
     end
   end
 end

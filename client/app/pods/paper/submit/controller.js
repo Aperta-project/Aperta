@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { paperDownloadPath } from 'tahi/utils/api-path-helpers';
 
 export default Ember.Controller.extend({
   flash: Ember.inject.service(),
@@ -9,26 +10,29 @@ export default Ember.Controller.extend({
     'previousPublishingState', 'invited_for_full_submission'
   ),
 
-  paper: Ember.computed.alias('model'),
+  paper: Ember.computed.alias('model.paper'),
+  tasks: Ember.computed.alias('model.tasks'),
+  prePrintTask: Ember.computed.alias('model.prePrintTask'),
 
-  pdfDownloadLink: Ember.computed('paperid', function() {
-    return '/papers/' + this.get('paper.id') + '/download.pdf';
+  prePrintOptOut: Ember.computed('paper.tasks.[]', function() {
+    let prePrintTask = this.get('tasks').findBy('title', 'Preprint Posting');
+    const answer = prePrintTask ? prePrintTask.get('answers.firstObject.value') : undefined;
+    let value = (answer === '2');
+    return value;
   }),
 
-  versions: Ember.computed('versions.[]', function() {
-    const versions = this.get('paper.versionedTexts');
-    this.set('versions', versions);
-    return versions;
+  fileDownloadUrl: Ember.computed('paper', function() {
+    return paperDownloadPath({ paperId: this.get('paper.id'), format: 'pdf_with_attachments' });
   }),
 
   recordPreviousPublishingState: function () {
-    this.set('previousPublishingState', this.get('model.publishingState'));
+    this.set('previousPublishingState', this.get('paper.publishingState'));
   },
 
   actions: {
     submit() {
       this.recordPreviousPublishingState();
-      this.get('restless').putUpdate(this.get('model'), '/submit').then(() => {
+      this.get('restless').putUpdate(this.get('paper'), '/submit').then(() => {
         this.set('paperSubmitted', true);
       }, (arg) => {
         const status = arg.status;

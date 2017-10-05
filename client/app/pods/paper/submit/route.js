@@ -1,6 +1,16 @@
 import Ember from 'ember';
+import AuthorizedRoute from 'tahi/routes/authorized';
 
-export default Ember.Route.extend({
+export default AuthorizedRoute.extend({
+  model() {
+    let paper = this.modelFor('paper');
+    paper.reload();
+    return Ember.RSVP.hash({
+      paper : paper,
+      tasks: paper.get('tasks')
+    });
+  },
+
   actions: {
 
     exitVersions() {

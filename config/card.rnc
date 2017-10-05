@@ -132,9 +132,9 @@ text-input = element content {
              }
 
 # Contents
-text-content = element content {
+description = element content {
                    attribute ident { text }?,
-                   attribute content-type { "text" },
+                   attribute content-type { "description" },
                    element text { text },
                    content*
                }
@@ -179,7 +179,7 @@ error-message = element content {
 content = (
            radio-input |
            text-input |
-           text-content |
+           description |
            display-children-content |
            display-with-value-content |
            export-paper |

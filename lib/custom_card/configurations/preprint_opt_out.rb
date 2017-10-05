@@ -46,17 +46,17 @@ module CustomCard
             <content content-type="display-children">
               <content content-type="if" condition="isOverlay">
                 <content content-type="display-children" child-tag="li" wrapper-tag="ol">
-                  <content content-type="text">
+                  <content content-type="description">
                     <text>Benefit: Establish priority</text>
                   </content>
-                  <content content-type="text">
+                  <content content-type="description">
                     <text>Benefit: Gather feedback</text>
                   </content>
-                  <content content-type="text">
+                  <content content-type="description">
                     <text>Benefit: Cite for funding</text>
                   </content>
                 </content>
-                <content content-type="text">
+                <content content-type="description">
                   <text>
                     <![CDATA[Establish priority: take credit for your research and discoveries, by posting a copy of your uncorrected proof online. If you do <b>NOT</b> consent to having an early version of your paper posted online, indicate your choice below.]]>
                   </text>

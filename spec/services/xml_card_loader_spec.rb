@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe XmlCardLoader do
-  let(:content1) { '<content ident="foo" content-type="text"><text>foo</text></content>' }
-  let(:content2) { '<content ident="bar" content-type="text"><text>bar</text></content>' }
+  let(:content1) { '<content ident="foo" content-type="description"><text>foo</text></content>' }
+  let(:content2) { '<content ident="bar" content-type="description"><text>bar</text></content>' }
 
   let!(:card) { FactoryGirl.create(:card, :versioned, name: "original name") }
   let(:xml_card_loader) { XmlCardLoader.new(card) }

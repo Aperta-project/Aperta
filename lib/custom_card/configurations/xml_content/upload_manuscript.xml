@@ -4,7 +4,7 @@
       <!-- Only show if the user has permission to edit the task -->
       <content content-type="display-children">
         <content content-type="if" condition="pdfAllowed">
-          <content content-type="text">
+          <content content-type="description">
             <text>
               <![CDATA[
                 <p>
@@ -24,7 +24,7 @@
               ]]>
             </text>
           </content>
-          <content content-type="text">
+          <content content-type="description">
             <text>
               <![CDATA[
                 <span>
@@ -44,13 +44,13 @@
           <possible-value label="pdf" value=".pdf" />
         </content>
       </content>
-      <content content-type="text">
+      <content content-type="description">
         <text> You are unable to upload a new manuscript while your submission is under review</text>
       </content>
     </content>
     <content content-type="if" condition="needsSourcefile">
       <content content-type="display-children">
-        <content content-type="text">
+        <content content-type="description">
             <text>
               <![CDATA[
                 <h4>Please Upload Your Source File</h4>
@@ -58,7 +58,7 @@
               ]]>
             </text>
         </content>
-        
+
         <content content-type="file-uploader" value-type="sourcefile" >
           <possible-value label="doc" value=".doc" />
           <possible-value label="docx" value=".docx" />

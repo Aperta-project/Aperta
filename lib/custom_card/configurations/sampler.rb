@@ -40,7 +40,7 @@ module CustomCard
           <?xml version="1.0" encoding="UTF-8"?>
           <card required-for-submission="false" workflow-display-only="false">
             <content content-type="display-children">
-              <content content-type="text">
+              <content content-type="description">
                 <text>This is a block of instructional text. It is not a question, and requires no answer.</text>
               </content>
               <content content-type="short-input" value-type="text">
@@ -77,7 +77,7 @@ module CustomCard
                 </content>
                 <content content-type="display-with-value" visible-with-parent-answer="2">
                   <content content-type="display-children" custom-class="card-content-field-set">
-                    <content content-type="text">
+                    <content content-type="description">
                       <text>This is a message that comes up when you pick Choice 2 up above</text>
                     </content>
                     <content content-type="short-input" value-type="text">

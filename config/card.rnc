@@ -125,7 +125,6 @@ tech-check-email = element content {
                 content*
             }
 
-
 sendback-reason = element content {
   attribute content-type { "sendback-reason" }
   & input-attributes

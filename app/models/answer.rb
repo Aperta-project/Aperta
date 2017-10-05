@@ -22,6 +22,7 @@ class Answer < ActiveRecord::Base
 
   delegate :value_type, to: :card_content
 
+  before_save :sanitize_html, if: :html_value_type?
   # The 'value: true' option means it's validating value using
   # the value validator.
   # See http://api.rubyonrails.org/classes/ActiveModel/Validator.html

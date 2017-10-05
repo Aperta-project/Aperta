@@ -9932,6 +9932,96 @@ card_contents:
     - '2017-10-02 20:32:29.167203'
     - '67'
     - error-message
+  - - '409'
+    - 
+    - 
+    - '741'
+    - '760'
+    - '2017-10-05 19:26:33.04651'
+    - '2017-10-05 19:26:33.213783'
+    - '68'
+    - display-children
+  - - '410'
+    - 
+    - '409'
+    - '742'
+    - '747'
+    - '2017-10-05 19:26:33.060558'
+    - '2017-10-05 19:26:33.102625'
+    - '68'
+    - if
+  - - '411'
+    - 
+    - '410'
+    - '743'
+    - '744'
+    - '2017-10-05 19:26:33.068502'
+    - '2017-10-05 19:26:33.102625'
+    - '68'
+    - text
+  - - '412'
+    - 
+    - '410'
+    - '745'
+    - '746'
+    - '2017-10-05 19:26:33.084565'
+    - '2017-10-05 19:26:33.102625'
+    - '68'
+    - text
+  - - '413'
+    - 
+    - '409'
+    - '748'
+    - '749'
+    - '2017-10-05 19:26:33.110675'
+    - '2017-10-05 19:26:33.125416'
+    - '68'
+    - file-uploader
+  - - '414'
+    - 
+    - '409'
+    - '750'
+    - '759'
+    - '2017-10-05 19:26:33.143287'
+    - '2017-10-05 19:26:33.213783'
+    - '68'
+    - if
+  - - '415'
+    - 
+    - '414'
+    - '751'
+    - '758'
+    - '2017-10-05 19:26:33.158344'
+    - '2017-10-05 19:26:33.213783'
+    - '68'
+    - display-children
+  - - '416'
+    - 
+    - '415'
+    - '752'
+    - '753'
+    - '2017-10-05 19:26:33.164835'
+    - '2017-10-05 19:26:33.213783'
+    - '68'
+    - text
+  - - '417'
+    - 
+    - '415'
+    - '754'
+    - '755'
+    - '2017-10-05 19:26:33.178677'
+    - '2017-10-05 19:26:33.213783'
+    - '68'
+    - file-uploader
+  - - '418'
+    - 
+    - '415'
+    - '756'
+    - '757'
+    - '2017-10-05 19:26:33.193111'
+    - '2017-10-05 19:26:33.213783'
+    - '68'
+    - error-message
 
 ---
 card_task_types:
@@ -10367,6 +10457,14 @@ card_versions:
     - '2017-10-02 20:32:29.181684'
     - 
     - Initial version
+    - false
+  - - '68'
+    - '2'
+    - '80'
+    - true
+    - '2017-10-05 19:26:33.314953'
+    - 
+    - fix initial version
     - false
 
 ---
@@ -10807,10 +10905,10 @@ cards:
     - '1'
   - - '80'
     - '2017-10-02 20:32:28.420152'
-    - '2017-10-02 20:32:29.232503'
+    - '2017-10-05 19:26:33.364138'
     - Upload Manuscript
     - '1'
-    - '1'
+    - '2'
     - 
     - published
     - '2'
@@ -30886,6 +30984,238 @@ content_attributes:
     - 
     - '2017-10-02 20:32:29.157154'
     - '2017-10-02 20:32:29.157154'
+  - - '2092'
+    - '409'
+    - possible_values
+    - json
+    - false
+    - 
+    - 
+    - 
+    - '2017-10-05 19:26:33.052004'
+    - '2017-10-05 19:26:33.052004'
+  - - '2093'
+    - '410'
+    - possible_values
+    - json
+    - false
+    - 
+    - 
+    - 
+    - '2017-10-05 19:26:33.063948'
+    - '2017-10-05 19:26:33.063948'
+  - - '2094'
+    - '410'
+    - condition
+    - string
+    - false
+    - 
+    - pdfAllowed
+    - 
+    - '2017-10-05 19:26:33.065663'
+    - '2017-10-05 19:26:33.065663'
+  - - '2095'
+    - '411'
+    - possible_values
+    - json
+    - false
+    - 
+    - 
+    - 
+    - '2017-10-05 19:26:33.071783'
+    - '2017-10-05 19:26:33.071783'
+  - - '2096'
+    - '411'
+    - text
+    - string
+    - false
+    - 
+    - |-
+      <p>
+                    You may upload a manuscript in either Microsoft Word (.docx or .doc) or PDF format.
+                    You can upload a replacement manuscript file at any time before you submit.
+                  </p>
+                  <p>
+                    <b>Microsoft Word format:</b> Manuscripts uploaded in this format can take advantage of automatic
+                    inline figure placement and visual version comparison features.
+                  </p>
+                  <p>
+                    <b>PDF format:</b> For authors uploading a PDF manuscript file, figures and any SI information
+                    can be included in the manuscript and are not required separately for initial assessment.
+                    If a revision is invited, separate figure and SI file upload will be required.
+                    If preferred, you may upload those files separately before completing your submission.
+                  </p>
+    - 
+    - '2017-10-05 19:26:33.073457'
+    - '2017-10-05 19:26:33.073457'
+  - - '2097'
+    - '412'
+    - possible_values
+    - json
+    - false
+    - 
+    - 
+    - 
+    - '2017-10-05 19:26:33.089581'
+    - '2017-10-05 19:26:33.089581'
+  - - '2098'
+    - '412'
+    - text
+    - string
+    - false
+    - 
+    - |-
+      <span>
+                    You can upload a replacement manuscript file at any time before you
+                    submit.
+                  </span>
+    - 
+    - '2017-10-05 19:26:33.092165'
+    - '2017-10-05 19:26:33.092165'
+  - - '2099'
+    - '413'
+    - error_message
+    - string
+    - false
+    - 
+    - Please upload a Microsoft Word File (.docx or .doc) or PDF, if applicable
+    - 
+    - '2017-10-05 19:26:33.114237'
+    - '2017-10-05 19:26:33.114237'
+  - - '2100'
+    - '413'
+    - label
+    - string
+    - false
+    - 
+    - Upload Manuscript
+    - 
+    - '2017-10-05 19:26:33.116389'
+    - '2017-10-05 19:26:33.116389'
+  - - '2101'
+    - '413'
+    - possible_values
+    - json
+    - false
+    - 
+    - 
+    - '[{"label": "doc", "value": ".doc"}, {"label": "docx", "value": ".docx"}, {"label":
+      "pdf", "value": ".pdf"}]'
+    - '2017-10-05 19:26:33.118814'
+    - '2017-10-05 19:26:33.118814'
+  - - '2102'
+    - '413'
+    - value_type
+    - string
+    - false
+    - 
+    - manuscript
+    - 
+    - '2017-10-05 19:26:33.122019'
+    - '2017-10-05 19:26:33.122019'
+  - - '2103'
+    - '414'
+    - possible_values
+    - json
+    - false
+    - 
+    - 
+    - 
+    - '2017-10-05 19:26:33.146863'
+    - '2017-10-05 19:26:33.146863'
+  - - '2104'
+    - '414'
+    - condition
+    - string
+    - false
+    - 
+    - needsSourcefile
+    - 
+    - '2017-10-05 19:26:33.14886'
+    - '2017-10-05 19:26:33.14886'
+  - - '2105'
+    - '415'
+    - possible_values
+    - json
+    - false
+    - 
+    - 
+    - 
+    - '2017-10-05 19:26:33.161893'
+    - '2017-10-05 19:26:33.161893'
+  - - '2106'
+    - '416'
+    - possible_values
+    - json
+    - false
+    - 
+    - 
+    - 
+    - '2017-10-05 19:26:33.168598'
+    - '2017-10-05 19:26:33.168598'
+  - - '2107'
+    - '416'
+    - text
+    - string
+    - false
+    - 
+    - |-
+      <h4>Please Upload Your Source File</h4>
+                      <span>Because you uploaded a PDF, you must also provide your source file (e.g. .tex, .docx) before marking this task as done.</span>
+    - 
+    - '2017-10-05 19:26:33.170525'
+    - '2017-10-05 19:26:33.170525'
+  - - '2108'
+    - '417'
+    - possible_values
+    - json
+    - false
+    - 
+    - 
+    - '[{"label": "doc", "value": ".doc"}, {"label": "docx", "value": ".docx"}, {"label":
+      "tex", "value": ".tex"}, {"label": "zip", "value": ".zip"}]'
+    - '2017-10-05 19:26:33.181722'
+    - '2017-10-05 19:26:33.181722'
+  - - '2109'
+    - '417'
+    - value_type
+    - string
+    - false
+    - 
+    - sourcefile
+    - 
+    - '2017-10-05 19:26:33.184469'
+    - '2017-10-05 19:26:33.184469'
+  - - '2110'
+    - '418'
+    - possible_values
+    - json
+    - false
+    - 
+    - 
+    - 
+    - '2017-10-05 19:26:33.196333'
+    - '2017-10-05 19:26:33.196333'
+  - - '2111'
+    - '418'
+    - text
+    - string
+    - false
+    - 
+    - Please upload your source file
+    - 
+    - '2017-10-05 19:26:33.198358'
+    - '2017-10-05 19:26:33.198358'
+  - - '2112'
+    - '418'
+    - key
+    - string
+    - false
+    - 
+    - validationErrors.sourcefile
+    - 
+    - '2017-10-05 19:26:33.200958'
+    - '2017-10-05 19:26:33.200958'
 
 ---
 decisions:
@@ -63622,7 +63952,7 @@ tasks:
     - '3'
     - '1'
     - 
-    - '67'
+    - '68'
     - 
     - 
   - - '4'
@@ -63916,7 +64246,7 @@ tasks:
     - '3'
     - '2'
     - 
-    - '67'
+    - '68'
     - 
     - 
   - - '25'
@@ -64223,7 +64553,7 @@ tasks:
     - '3'
     - '3'
     - 
-    - '67'
+    - '68'
     - 
     - 
   - - '46'
@@ -64524,7 +64854,7 @@ tasks:
     - '3'
     - '4'
     - '2016-02-02 19:33:00'
-    - '67'
+    - '68'
     - 
     - 
   - - '67'
@@ -64828,7 +65158,7 @@ tasks:
     - '3'
     - '8'
     - 
-    - '67'
+    - '68'
     - 
     - 
   - - '88'
@@ -65122,7 +65452,7 @@ tasks:
     - '3'
     - '9'
     - 
-    - '67'
+    - '68'
     - 
     - 
   - - '109'
@@ -65416,7 +65746,7 @@ tasks:
     - '3'
     - '10'
     - 
-    - '67'
+    - '68'
     - 
     - 
   - - '130'
@@ -65710,7 +66040,7 @@ tasks:
     - '3'
     - '12'
     - '2017-03-30 21:34:36.047631'
-    - '67'
+    - '68'
     - 
     - 
   - - '173'

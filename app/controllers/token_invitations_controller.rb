@@ -92,12 +92,11 @@ class TokenInvitationsController < ApplicationController
 
   def thank_you_message
     journal_name = invitation.paper.journal.name
-    role = if invitation.invitee_role == "Academic Editor"
-             'be an Academic Editor'
-           else
-             'review'
-           end
-    base_message = "Thank you for agreeing to #{role} on this #{journal_name} manuscript."
+    base_message = if invitation.invitee_role == 'Academic Editor'
+                     "Thank you for agreeing to be an Academic Editor on this #{journal_name} manuscript."
+                   else
+                     "Thank you for agreeing to review for #{journal_name}."
+                   end
     if params[:new_user]
       "Your PLOS account was successfully created. " + base_message
     else

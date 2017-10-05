@@ -44,6 +44,7 @@ let createCheckWithSendback = () => {
     valueType: 'boolean',
     parent: sendback
   });
+
   make('card-content', {
     // pencil
     contentType: 'check-box',
@@ -57,6 +58,52 @@ let createCheckWithSendback = () => {
   });
   return [tc, checkbox];
 };
+
+let createCheckWithEmail = () => {
+  let tc = make('card-content', {
+    contentType: 'tech-check',
+    valueType: 'boolean'
+  });
+  let sendback = make('card-content', {
+    contentType: 'sendback-reason',
+    parent: tc
+  });
+  make('card-content', {
+    contentType: 'check-box',
+    valueType: 'boolean',
+    parent: sendback
+  });
+  let tce = make('card-content', {
+    contentType: 'tech-check-email',
+    parent: tc
+  });
+  let intro = make('card-content', {
+    contentType: 'paragraph-input',
+    ident: 'tech-check-email--email-intro',
+    defaultAnswerValue: 'the intro',
+    parent: tce
+  });
+  let footer = make('card-content', {
+    contentType: 'paragraph-input',
+    ident: 'tech-check-email--email-footer',
+    defaultAnswerValue: 'the footer',
+    parent: tce
+  });
+
+  make('card-content', {
+    // pencil
+    contentType: 'check-box',
+    valueType: 'boolean',
+    parent: sendback
+  });
+  make('card-content', {
+    // sendback reason textarea
+    contentType: 'paragraph-input',
+    parent: sendback
+  });
+  return [tc, intro, footer];
+};
+
 test(`it displays the 'Pass' label`, function(assert) {
   this.set('labelText', 'my label');
   this.render(template);
@@ -170,4 +217,38 @@ test(`checking a sendback will set the toggle to 'Fail' and send 'valueChanged'`
     `.card-content-toggle-switch input:checked`,
     'the switch gets toggled off'
   );
+});
+
+test(`tech check email preview`, function(assert) {
+  let owner = make('custom-card-task');
+  let [tc, intro, footer] = createCheckWithEmail();
+  const introText = 'im the intro';
+  const footerText = 'im the footer';
+
+  make('answer', { owner: owner, value: introText, cardContent: intro });
+  make('answer', { owner: owner, value: footerText, cardContent: footer });
+
+
+  this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+  $.mockjax({url: '/api/tasks/1/sendback_preview', type: 'PUT', status: 201, responseText: '{"body": "some text"}'});
+
+  this.set('owner', owner);
+  this.set('content', tc);
+  this.set('preview', false);
+  this.render(template);
+
+  assert.elementNotFound(
+    `.emailPreview`, 'email preview is hidden by default'
+  );
+
+  this.$('.card-content-tech-check-email .button-primary').click();
+  return wait().then(() => {
+    assert.elementFound(
+      `.email-preview`, 'email preview is visible after generated'
+    );
+    assert.equal($('.preview-content').text().trim(), 'some text', 'the preview displays the responses body');
+    assert.elementFound(
+      `.email-preview .button-primary`, 'email preview has a send email button'
+    );
+  });
 });

@@ -6,14 +6,17 @@
       {{/if}}
       {{ itemName }}
     </h4>
-    {{#if rep.isNew }}
+    {{#if (or preview (not rep.isNew)) }}
       {{!--
         When the repetition is new, it won't have an id. We must wait for the
         repetition to be saved before rendering the child content. Any
         requiredField answers are created eagerly, but we need to wait for the
         reptition to be saved to correctly associate them.
-        --}}
-    {{else}}
+
+        None of that is something we need to worry about in the Card Preview
+        though, since neither Repetitions nor Answers are actually persisted to
+        the server.
+      --}}
       {{#each content.children as |child|}}
         {{card-content
           content=child

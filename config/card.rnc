@@ -29,7 +29,7 @@ radio-input = element content {
                   attribute content-type { "radio" },
                   attribute required-field { "true" | "false" }?,
                   attribute allow-annotations { "true" | "false" }?,
-                  (element instruction-text { text }? &
+                  (element instruction-text { html }? &
                   element default-answer-value { text }? &
                   element text { html }?),
                   possible-value*,
@@ -44,7 +44,7 @@ check-box-input = element content {
                 attribute value-type { "boolean" },
                 attribute allow-annotations { "true" | "false" }?,
                 (element instruction-text { html }? &
-                 element default-answer-value { text }? &
+                 element default-answer-value { "true" | "false" }? &
                 (element label { text }? &
                 element text { html }?)),
                 content*
@@ -85,7 +85,7 @@ dropdown-input = element content {
                   attribute content-type { "dropdown" },
                   attribute required-field { "true" | "false" }?,
                   attribute allow-annotations { "true" | "false" }?,
-                  (element instruction-text { text }? &
+                  (element instruction-text { html }? &
                   element default-answer-value { text }? &
                   element text { html }),
                   possible-value+,
@@ -98,8 +98,8 @@ tech-check = element content {
                 attribute required-field { "true" | "false" }?,
                 attribute value-type { "boolean" },
                 attribute allow-annotations { "true" | "false" }?,
-                (element instruction-text { text }? &
-                element default-answer-value { text }? &
+                (element instruction-text { html }? &
+                element default-answer-value { "true" | "false" }? &
                 element text { html })?,
                 content*
             }
@@ -110,7 +110,6 @@ tech-check-email = element content {
                 content*
             }
 
-
 sendback-reason = element content {
                 attribute ident { text }?,
                 attribute content-type { "sendback-reason" },
@@ -120,7 +119,6 @@ sendback-reason = element content {
                 content*
             }
 
-
 text-input = element content {
                  attribute ident { text }?,
                  attribute value-type { "text" | "html" },
@@ -128,7 +126,7 @@ text-input = element content {
                  attribute content-type { "short-input" | "paragraph-input" },
                  attribute required-field { "true" | "false" }?,
                  attribute allow-annotations { "true" | "false" }?,
-                 (element instruction-text { text }? &
+                 (element instruction-text { html }? &
                   element default-answer-value { text }? &
                  (element text { html }? &
                  element validation {

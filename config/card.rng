@@ -123,7 +123,10 @@
         </optional>
         <optional>
           <element name="default-answer-value">
-            <text/>
+            <choice>
+              <value>true</value>
+              <value>false</value>
+            </choice>
           </element>
         </optional>
         <interleave>
@@ -345,7 +348,10 @@
           </optional>
           <optional>
             <element name="default-answer-value">
-              <text/>
+              <choice>
+                <value>true</value>
+                <value>false</value>
+              </choice>
             </element>
           </optional>
           <element name="text">

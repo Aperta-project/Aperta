@@ -39,10 +39,12 @@ module Authorizations
 
     # return users who are assigned directly to assigned_to
     def users_assigned_directly_to(assigned_to)
-      User.joins(assignments: :permissions)
+      query = User.joins(assignments: :permissions)
+        .where(assignments: { assigned_to: assigned_to })
         .where(permissions: { action: @action,
-                              filter_by_card_id: @target.card_version.card_id,
-                              applies_to: [@target.class.name, @target.class.base_class.name] }).all
+                              applies_to: [@target.class.name, @target.class.base_class.name] })
+      query = query.where(permissions: { filter_by_card_id: @target.card_version.card_id }) if @target.is_a?(Task)
+      query.all
     end
 
     # return models which authorize target_model

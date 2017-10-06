@@ -3,7 +3,7 @@ import { PropTypes } from 'ember-prop-types';
 import ValidateTextInput from 'tahi/mixins/validate-text-input';
 
 export default Ember.Component.extend(ValidateTextInput, {
-  classNames: ['card-content-short-input'],
+  classNames: ['card-content', 'card-content-short-input'],
   attributeBindings: ['isRequired:required', 'aria-required'],
   'aria-required': Ember.computed.reads('isRequiredString'),
   hasErrors: Ember.computed.notEmpty('answer.readyIssuesArray.[]'),

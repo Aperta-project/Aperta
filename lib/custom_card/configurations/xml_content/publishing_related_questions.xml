@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<card required-for-submission="true" workflow-display-only="false">
+  <content content-type="display-children" child-tag="li" custom-class="question-list" custom-child-class="question" wrapper-tag="ol">
+    <content ident="publishing_related_questions--published_elsewhere" content-type="radio" value-type="boolean">
+      <text>
+        Have the results, data, or figures in this manuscript been published elsewhere? Are they under consideration for publication elsewhere?
+      </text>
+      <content content-type="display-with-value" visible-with-parent-answer="true">
+        <content content-type="display-children" custom-class="card-content-field-set">
+          <content content-type="text">
+            <text>Please identify which results, data, or figures have been taken from other published or pending manuscripts and explain why inclusion in this submission does not constitute dual publication.</text>
+          </content>
+          <content ident="publishing_related_questions--published_elsewhere--taken_from_manuscripts" content-type="paragraph-input" value-type="html" editor-style="inline">
+            <text>Results, data or figures</text>
+          </content>
+          <content ident="publishing_related_questions--published_elsewhere--upload_related_work" content-type="file-uploader" value-type="attachment">
+            <label>UPLOAD FILE</label>
+          </content>
+        </content>
+      </content>
+    </content>
+    <content ident="publishing_related_questions--submitted_in_conjunction" content-type="radio" value-type="boolean">
+      <text>
+        Is this manuscript being submitted in conjunction with another submission?
+      </text>
+      <content content-type="display-with-value" visible-with-parent-answer="true">
+        <content content-type="display-children" custom-class="card-content-field-set">
+          <content content-type="text">
+            <text>Please provide the title of that submission and the corresponding author</text>
+          </content>
+          <content ident="publishing_related_questions--submitted_in_conjunction--corresponding_title" content-type="paragraph-input" value-type="html" editor-style="inline">
+            <text>Title</text>
+          </content>
+          <content ident="publishing_related_questions--submitted_in_conjunction--corresponding_author" content-type="short-input" value-type="text">
+            <text>Corresponding Author</text>
+          </content>
+          <content ident="publishing_related_questions--submitted_in_conjunction--corresponding_journal" content-type="short-input" value-type="text">
+            <text>Journal</text>
+          </content>
+          <content ident="publishing_related_questions--submitted_in_conjunction--handled_together" content-type="check-box" value-type="boolean">
+            <text>This submission and the manuscript I'm submitting should be handled together</text>
+          </content>
+        </content>
+      </content>
+    </content>
+    <content content-type="text">
+      <text>
+        <html>
+          <p>Please indicate whether you have had any of the following previous interactions about this manuscript.</p>
+          <p>Check all that apply.</p>
+        </html>
+      </text>
+      <content ident="publishing_related_questions--previous_interactions_with_this_manuscript" content-type="check-box" value-type="boolean">
+        <text>I have had previous interactions about this manuscript with a staff editor or Academic Editor of this journal.</text>
+        <content content-type="display-with-value" visible-with-parent-answer="true">
+          <content content-type="display-children" custom-class="card-content-field-set">
+            <content ident="publishing_related_questions--previous_interactions_with_this_manuscript--submission_details" content-type="short-input" value-type="text">
+              <text>Please enter manuscript number and editor name, if known</text>
+            </content>
+          </content>
+        </content>
+      </content>
+      <content ident="publishing_related_questions--presubmission_inquiry" content-type="check-box" value-type="boolean">
+        <text>I submitted a presubmission inquiry for this manuscript.</text>
+        <content content-type="display-with-value" visible-with-parent-answer="true">
+          <content content-type="display-children" custom-class="card-content-field-set">
+            <content ident="publishing_related_questions--presubmission_inquiry--submission_details" content-type="short-input" value-type="text">
+              <text>Please enter manuscript number and editor name, if known</text>
+            </content>
+          </content>
+        </content>
+      </content>
+      <content ident="publishing_related_questions--other_journal_submission" content-type="check-box" value-type="boolean">
+        <text>This manuscript was previously submitted to a different PLOS journal as either a presubmission inquiry or a full submission.</text>
+        <content content-type="display-with-value" visible-with-parent-answer="true">
+          <content content-type="display-children" custom-class="card-content-field-set">
+            <content ident="publishing_related_questions--other_journal_submission--submission_details" content-type="short-input" value-type="text">
+              <text>Please enter manuscript number and editor name, if known</text>
+            </content>
+          </content>
+        </content>
+      </content>
+      <content ident="publishing_related_questions--author_was_previous_journal_editor" content-type="check-box" value-type="boolean">
+        <text>One or more of the authors (including myself) currently serve, or have previously served, as an Academic Editor or Guest Editor for this journal.</text>
+      </content>
+    </content>
+    <content ident="publishing_related_questions--intended_collection" content-type="short-input" value-type="text">
+      <text>
+        <html>
+          <div>If your submission is intended for a <a target="_blank" href="http://collections.plos.org/">PLOS Collection</a>, enter the name of the collection in the box below. Please also ensure the name of the collection is included in your cover letter.</div>
+        </html>
+      </text>
+    </content>
+    <content ident="publishing_related_questions--short_title" content-type="paragraph-input" value-type="html" editor-style="inline">
+      <text>
+        Please give your paper a short title. Short titles are used as the running header on published PDFs.
+      </text>
+    </content>
+  </content>
+</card>

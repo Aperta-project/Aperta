@@ -6,25 +6,17 @@ module CustomCard
     # Card and it can be used to create a new valid Card into the
     # system via the CustomCard::Loader.
     #
-    class <%= klass_name %> < Base
+    class PublishingRelatedQuestions < Base
       def self.name
-        "<%= display_name %>"
+        "Additional Information"
       end
 
       def self.view_role_names
-        <%= view_permissions %>
+        ["Academic Editor", "Billing Staff", "Collaborator", "Cover Editor", "Creator", "Handling Editor", "Internal Editor", "Production Staff", "Publishing Services", "Reviewer", "Staff Admin"]
       end
 
       def self.edit_role_names
-        <%= edit_permissions %>
-      end
-
-      def self.view_discussion_footer_role_names
-        view_role_names
-      end
-
-      def self.edit_discussion_footer_role_names
-        edit_role_names
+        ["Collaborator", "Cover Editor", "Creator", "Handling Editor", "Internal Editor", "Production Staff", "Publishing Services", "Staff Admin"]
       end
 
       def self.publish

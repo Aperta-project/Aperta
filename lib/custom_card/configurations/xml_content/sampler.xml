@@ -22,7 +22,7 @@
     </content>
     <content content-type="radio" value-type="text">
       <text>
-        <![CDATA[This is a radio button question.  <b>Please</b> pick a choice]]>
+        This is a radio button question.  <b>Please</b> pick a choice
       </text>
       <possible-value label="Choice 1" value="1"/>
       <possible-value label="Choice 2" value="2"/>
@@ -52,7 +52,7 @@
     </content>
     <content content-type="dropdown" value-type="text">
       <text>
-        <![CDATA[This is a dropdown question.  <b>Please</b> pick a choice]]>
+        This is a dropdown question.  <b>Please</b> pick a choice
       </text>
       <possible-value label="Choice 1" value="1"/>
       <possible-value label="Choice 2" value="2"/>

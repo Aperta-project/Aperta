@@ -10,12 +10,12 @@
     <content content-type="display-children" child-tag="li" custom-class="question-list" custom-child-class="question" wrapper-tag="ol">
       <content content-type="text">
         <text>
-          <![CDATA[<div class="question-text">Do the authors confirm that all the data underlying the findings described in their manuscript are fully available without restriction?</div>]]>
+          <div class="question-text">Do the authors confirm that all the data underlying the findings described in their manuscript are fully available without restriction?</div>
         </text>
         <content content-type="display-children" child-tag="li" custom-class="question-help" custom-child-class="item" wrapper-tag="ul">
           <content content-type="text">
             <text>
-              <![CDATA[Please see the <a target="_blank" href="http://journals.plos.org/plosbiology/s/data-availability" title="PLOS Data Policy">PLOS Data Policy</a> for details.]]>
+              Please see the <a target="_blank" href="http://journals.plos.org/plosbiology/s/data-availability" title="PLOS Data Policy">PLOS Data Policy</a> for details.
             </text>
           </content>
         </content>
@@ -25,7 +25,7 @@
       </content>
       <content content-type="text">
         <text>
-          <![CDATA[<div class="question-text">Your answers should be entered into the box below and will be published in the form you provide them, if your manuscript is accepted. If you are copying our sample text below, please ensure you replace any instances of XXX with the appropriate details.</div>]]>
+          <div class="question-text">Your answers should be entered into the box below and will be published in the form you provide them, if your manuscript is accepted. If you are copying our sample text below, please ensure you replace any instances of XXX with the appropriate details.</div>
         </text>
         <content content-type="display-children" child-tag="li" custom-class="question-help" custom-child-class="item" wrapper-tag="ul">
           <content content-type="text">
@@ -52,7 +52,7 @@
       </content>
       <content content-type="text">
         <text>
-          <![CDATA[<div class="question-text">Additional Data Availability information</div>]]>
+          <div class="question-text">Additional Data Availability information</div>
         </text>
         <content ident="data_availability--additional_information_doi" content-type="check-box" value-type="boolean" allow-annotations="false" required-field="false">
           <text>Tick here if the URLs/accession numbers/DOIs will be available only after acceptance of the manuscript for publication so that we can ensure their inclusion before publication.</text>

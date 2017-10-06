@@ -6,16 +6,16 @@
     </content>
     <content content-type="text">
       <text>
-        <![CDATA[<ul>
-                 <li>What is the scientific question you are addressing?</li>
-                 <li>What is the key finding that answers this question?</li>
-                 <li>What is the nature of the evidence you provide in support of your conclusion?</li>
-                 <li>What are the three most recently published articles that are relevant to this question?</li>
-                 <li>What significance do your results have for the field?</li>
-                 <li>What significance do your results have for the broader community (of biologists and/or the public)?</li>
-                 <li>What other novel findings do you present?</li>
-                 <li>Is there additional information that we should take into account?</li>
-                 </ul>]]>
+        <ul>
+          <li>What is the scientific question you are addressing?</li>
+          <li>What is the key finding that answers this question?</li>
+          <li>What is the nature of the evidence you provide in support of your conclusion?</li>
+          <li>What are the three most recently published articles that are relevant to this question?</li>
+          <li>What significance do your results have for the field?</li>
+          <li>What significance do your results have for the broader community (of biologists and/or the public)?</li>
+          <li>What other novel findings do you present?</li>
+          <li>Is there additional information that we should take into account?</li>
+        </ul>
       </text>
     </content>
     <content ident="cover_letter--text" content-type="paragraph-input" value-type="html">

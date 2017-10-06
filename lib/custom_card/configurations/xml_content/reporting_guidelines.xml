@@ -4,7 +4,7 @@
     <content content-type="display-children" child-tag="li" custom-class="question-list" custom-child-class="question" wrapper-tag="ol">
       <content content-type="text">
         <text>
-          <![CDATA[Authors should check the <a target="_blank" href="http://www.equator-network.org">EQUATOR Network</a> site for any reporting guidelines that apply to their study design, and ensure that any required Supporting Information (checklists, protocols, flowcharts, etc.) be included in the article submission.]]>
+          Authors should check the <a target="_blank" href="http://www.equator-network.org">EQUATOR Network</a> site for any reporting guidelines that apply to their study design, and ensure that any required Supporting Information (checklists, protocols, flowcharts, etc.) be included in the article submission.
         </text>
       </content>
     </content>
@@ -22,7 +22,7 @@
             <content content-type="display-children" custom-class="card-content-field-set large-description-text-container">
               <content ident="reporting_guidelines--systematic_reviews--checklist" content-type="file-uploader" value-type="attachment" allow-multiple-uploads="false" allow-file-captions="false" allow-annotations="false" required-field="false">
                 <text>
-                  <![CDATA[Provide a completed PRISMA checklist as supporting information. You can <a target="_blank" href="http://www.prisma-statement.org">download it here.</a>]]>
+                  Provide a completed PRISMA checklist as supporting information. You can <a target="_blank" href="http://www.prisma-statement.org">download it here.</a>
                 </text>
                 <label>Upload Review Checklist</label>
               </content>
@@ -35,7 +35,7 @@
             <content content-type="display-children" custom-class="card-content-field-set large-description-text-container">
               <content ident="reporting_guidelines--meta_analyses--checklist" content-type="file-uploader" value-type="attachment" allow-multiple-uploads="false" allow-file-captions="false" allow-annotations="false" required-field="false">
                 <text>
-                  <![CDATA[Provide a completed PRISMA checklist as supporting information. You can <a target="_blank" href="http://www.prisma-statement.org">download it here.</a>]]>
+                  Provide a completed PRISMA checklist as supporting information. You can <a target="_blank" href="http://www.prisma-statement.org">download it here.</a>
                 </text>
                 <label>Upload PRISMA Checklist</label>
               </content>

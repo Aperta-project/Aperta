@@ -124,6 +124,14 @@ class TahiEnv
   required :ITHENTICATE_EMAIL, if: :ithenticate_enabled?
   required :ITHENTICATE_PASSWORD, if: :ithenticate_enabled?
 
+  # JIRA Integration
+  optional :JIRA_INTEGRATION_ENABLED, :boolean, default: false
+  required :JIRA_USERNAME, if: :jira_integration_enabled?
+  required :JIRA_PASSWORD, if: :jira_integration_enabled?
+  required :JIRA_AUTHENTICATE_URL, if: :jira_integration_enabled?
+  required :JIRA_CREATE_ISSUE_URL, if: :jira_integration_enabled?
+  required :JIRA_PROJECT, if: :jira_integration_enabled?
+
   # Mailsafe
   optional :MAILSAFE_REPLACEMENT_ADDRESS
 

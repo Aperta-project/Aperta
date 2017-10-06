@@ -8,7 +8,7 @@ class NedConnection
   RNF_MESSAGE = "Record not found"
 
   def self.enabled?
-    BASE_URL.present?
+    TahiEnv.ned_integration_enabled?
   end
 
   private

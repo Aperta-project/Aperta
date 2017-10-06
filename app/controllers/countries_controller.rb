@@ -8,18 +8,11 @@ class CountriesController < ApplicationController
   private
 
   def countries
-    return countries_list unless NedCountries.enabled?
-
-    begin
+    if NedCountries.enabled?
       NedCountries.new.countries
-    rescue => ex
-      log_error("Error retrieving country list: #{ex}")
+    else
+      # default country list if NED is not configured
       countries_list
     end
-  end
-
-  def log_error(error)
-    Rails.logger.error(error)
-    Bugsnag.notify(error)
   end
 end

@@ -17,6 +17,8 @@ class MergeFieldBuilder
     simple_merge_fields + complex_merge_fields
   end
 
+  private
+
   def complex_merge_fields
     @context.complex_merge_fields
   end

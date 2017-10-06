@@ -225,7 +225,7 @@
     "S3_URL": {
       "required": true
     },
-    "USE_NED_INSTITUTIONS": {
+    "NED_INSTITUTIONS_ENABLED": {
       "required": true
     }
   },

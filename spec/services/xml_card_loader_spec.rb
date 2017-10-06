@@ -300,7 +300,11 @@ describe XmlCardLoader do
 
         context 'when the text element includes CDATA' do
           let(:text) { '<![CDATA[<a>link</a>]]>' }
-          it_behaves_like :the_text_attribute_is_set_properly
+          it 'throws an exception' do
+            expect do
+              xml_card_loader.load(xml).save
+            end.to raise_error(XmlCardDocument::XmlValidationError)
+          end
         end
       end
 

@@ -58,7 +58,7 @@
               ]]>
             </text>
         </content>
-        
+
         <content content-type="file-uploader" value-type="sourcefile" >
           <possible-value label="doc" value=".doc" />
           <possible-value label="docx" value=".docx" />

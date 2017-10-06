@@ -14,6 +14,8 @@ class CountriesController < ApplicationController
     else
       countries_list
     end
-  rescue countries_list
+  rescue => ex
+    Rails.logger.error("Error retrieving country list: #{ex}")
+    countries_list
   end
 end

@@ -1,5 +1,4 @@
 class CountriesController < ApplicationController
-
   include CountriesHelper
 
   def index
@@ -8,6 +7,7 @@ class CountriesController < ApplicationController
 
   private
 
+  # rubocop:disable Lint/HandleExceptions
   def countries
     if NedCountries.enabled?
       NedCountries.new.countries

@@ -30,7 +30,7 @@ class UploadManuscriptTask(BaseTask):
     self._upload_manuscript_input = (By.ID, 'upload-files')
     self._upload_source_warning = (By.CSS_SELECTOR,
                                    'div.upload-sourcefile  > div.error-message i.fa-exclamation-triangle')
-    self._uploaded_pdf = (By.CSS_SELECTOR, '.task-main-content > div > a')
+    self._uploaded_pdf = (By.CSS_SELECTOR, 'a.file-link')
     self._upload_source_file_button = (By.ID, 'upload-files')
     self._upload_source_file_box = (By.CLASS_NAME, 'flex-form')
 

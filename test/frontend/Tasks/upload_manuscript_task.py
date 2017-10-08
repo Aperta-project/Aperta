@@ -60,7 +60,7 @@ class UploadManuscriptTask(BaseTask):
                                              'expected copy'.format(intro_text.text)
     link = intro_text.find_element_by_tag_name('a')
     self.validate_filename_link_style(link)
-    replace = intro_text.find_element_by_tag_name('span')
+    replace = intro_text.find_element(*self._upload_manuscript_replace_btn)
     assert 'Replace' == replace.text, replace.text
     replace_icon = replace.find_element_by_tag_name('i')
     assert 'fa-refresh' in replace_icon.get_attribute('class'), \

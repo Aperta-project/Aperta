@@ -53,8 +53,8 @@ class ReviseManuscriptTest(CommonTest):
     time.sleep(.5)
     paper_type = 'NoCards'
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
-    self.create_article(title='Testing Discussion Forum notifications', journal=journal,
-                        type_=paper_type, random_bit=True)
+    self.create_article(title='Testing Discussion Forum notifications',
+                        journal=journal, type_=paper_type, random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()
     short_doi = manuscript_page.get_paper_short_doi_from_url()
@@ -151,10 +151,8 @@ class ReviseManuscriptTest(CommonTest):
     # need to complete this task again after providing new manuscript
     paper_viewer.complete_task('Response to Reviewers', data={'text': generate_paragraph()[2],
                                                               'response_number': 2})
-
     data = {'attach': 2}
     manuscript_page.complete_task('Response to Reviewers', data=data)
-
     return self
 
 if __name__ == '__main__':

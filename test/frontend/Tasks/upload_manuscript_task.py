@@ -29,10 +29,9 @@ class UploadManuscriptTask(BaseTask):
     self._upload_manuscript_replace_btn = (By.CLASS_NAME, 'replace-attachment')
     self._upload_manuscript_input = (By.ID, 'upload-files')
     self._upload_source_warning = (By.CSS_SELECTOR,
-                                   'div.custom-card-task  .card-content-if '
-                                   '+ .card-content-file-uploader + .card-content-if > .ember-view '
-                                   '+ .ember-view + .ember-view div.error-message '
-                                   'i.fa-exclamation-triangle')
+                                   'div.card-content-view-text + div.card-content-file-uploader '
+                                   '+ div.ember-view div.error-message i.fa-exclamation-triangle')
+
     self._uploaded_pdf = (By.CSS_SELECTOR, 'a.file-link')
     self._upload_source_file_button = (By.ID, 'upload-files')
     self._upload_source_file_box = (By.CSS_SELECTOR, 'div.custom-card-task  .card-content-if '
@@ -114,7 +113,7 @@ class UploadManuscriptTask(BaseTask):
 
   def replace_manuscript(self, doc='random'):
     """
-    Function to replace a uploaded doc/docx file
+    Function to replace an uploaded doc/docx/pdf file
     :param doc: Name of the document to upload. If blank will default to 'random', this will choose
       one of available papers
     :return void function
@@ -126,9 +125,18 @@ class UploadManuscriptTask(BaseTask):
       fn = os.path.join(os.getcwd(), doc)
     logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)
-    self._driver.find_element_by_id('upload-files').send_keys(fn)
-    # Time needed for script execution.
-    time.sleep(10)
+    # If the originally uploaded file was a doc/docx there will be no upload source file bits
+    # If it was a pdf, you need to upload to complete card
+    skip_source_upload = False
+    try:
+      upload_source_file_btn = self._get(self._upload_source_file_button)
+    except ElementDoesNotExistAssertionError:
+      skip_source_upload = True
+    if not skip_source_upload:
+      self._scroll_into_view(upload_source_file_btn)
+      upload_source_file_btn.send_keys(fn)
+      # Time needed for script execution.
+      time.sleep(10)
 
   def take_name_of_pdf_file(self):
     """

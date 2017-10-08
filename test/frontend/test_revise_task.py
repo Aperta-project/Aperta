@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This test case validates the Revise Manuscript task
-Automated test case for: fill response to reviweres and attach a file in Revise Manuscript task
+Automated test case for: fill response to reviewers and attach a file in Revise Manuscript task
 """
 import logging
 import os

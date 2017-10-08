@@ -29,10 +29,15 @@ class UploadManuscriptTask(BaseTask):
     self._upload_manuscript_replace_btn = (By.CLASS_NAME, 'replace-attachment')
     self._upload_manuscript_input = (By.ID, 'upload-files')
     self._upload_source_warning = (By.CSS_SELECTOR,
-                                   'div.upload-sourcefile  > div.error-message i.fa-exclamation-triangle')
+                                   'div.custom-card-task  .card-content-if '
+                                   '+ .card-content-file-uploader + .card-content-if > .ember-view '
+                                   '+ .ember-view + .ember-view div.error-message '
+                                   'i.fa-exclamation-triangle')
     self._uploaded_pdf = (By.CSS_SELECTOR, 'a.file-link')
     self._upload_source_file_button = (By.ID, 'upload-files')
-    self._upload_source_file_box = (By.CLASS_NAME, 'flex-form')
+    self._upload_source_file_box = (By.CSS_SELECTOR, 'div.custom-card-task  .card-content-if '
+                                                     '+ .card-content-file-uploader '
+                                                     '+ .card-content-if')
 
   # POM Actions
   def validate_styles(self, type_='doc', source_uploaded=False):
@@ -62,6 +67,7 @@ class UploadManuscriptTask(BaseTask):
         replace_icon.get_attribute('class')
     if type_ == 'pdf':
       source_file_box = self._get(self._upload_source_file_box)
+      logging.info(source_file_box.text)
       assert 'Please Upload Your Source File\nBecause you uploaded a PDF, you must also provide ' \
              'your source file (e.g. .tex, .docx) before marking this task as done.' \
              in source_file_box.text, source_file_box.text

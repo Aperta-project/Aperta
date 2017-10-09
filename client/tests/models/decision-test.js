@@ -4,20 +4,20 @@ import FactoryGuy from 'ember-data-factory-guy';
 import customAssertions from '../helpers/custom-assertions';
 import sinon from 'sinon';
 import startApp from '../helpers/start-app';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 
 var app;
 moduleForModel('decision', 'Unit | Model | decision', {
-  needs: ['model:invitation', 'model:paper', 'model:nested-question-answer'],
+  integration: true,
   afterEach: function() {
     Ember.run(function() {
-      return TestHelper.teardown();
+      return TestHelper.mockTeardown();
     });
     return Ember.run(app, 'destroy');
   },
   beforeEach: function() {
     app = startApp();
-    return TestHelper.setup(app);
+    return TestHelper.mockSetup();
   }
 });
 

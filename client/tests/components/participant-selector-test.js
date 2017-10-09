@@ -178,7 +178,7 @@ test('it does not suggest people who are already participants', function(assert)
   });
 });
 
-moduleFor('component:participant-selector', 'Unit | Component | participant selector');
+moduleFor('component:participant-selector', 'Unit | Component | participant selector', {integration: true});
 
 test('participantUrl defaults to the filtered users endpoint for the given paperId', function(assert) {
   assert.equal(

@@ -1,22 +1,56 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import { make } from 'ember-data-factory-guy';
+import { manualSetup, make } from 'ember-data-factory-guy';
 import MockDataTransfer from 'tahi/tests/helpers/data-transfer';
-import startApp from 'tahi/tests/helpers/start-app';
-import Ember from 'ember';
 import DragNDrop from 'tahi/services/drag-n-drop';
+import { triggerEvent } from 'ember-native-dom-helpers';
 
-let App;
-moduleForComponent('invitation-group', 'Integration | Component | invitation group', {
-  integration: true,
-  setup: function() {
-    //since we're starting the full app we don't need to manually set up factoryguy
-    App = startApp();
-  },
-  teardown: function() {
-    Ember.run(App, 'destroy');
+moduleForComponent(
+  'invitation-group',
+  'Integration | Component | invitation group',
+  {
+    integration: true,
+    afterEach() {
+      DragNDrop.set('dragItem', null);
+    },
+    beforeEach() {
+      manualSetup(this.container);
+      this.makeInvitations = () => {
+        return [
+          make('invitation', {
+            state: 'pending',
+            position: 1,
+            validNewPositionsForInvitation: [2]
+          }),
+          make('invitation', {
+            state: 'pending',
+            position: 2,
+            validNewPositionsForInvitation: [1]
+          })
+        ];
+      };
+      this.makeThreeInvitations = () => {
+        return [
+          make('invitation', {
+            state: 'pending',
+            position: 1,
+            validNewPositionsForInvitation: [2, 3]
+          }),
+          make('invitation', {
+            state: 'pending',
+            position: 2,
+            validNewPositionsForInvitation: [1, 3]
+          }),
+          make('invitation', {
+            state: 'pending',
+            position: 3,
+            validNewPositionsForInvitation: [1, 2]
+          })
+        ];
+      };
+    }
   }
-});
+);
 
 let template = hbs`{{invitation-group
   invitations=invitations
@@ -32,87 +66,74 @@ let template = hbs`{{invitation-group
 
 let noop = () => {};
 
-let makeInvitations = () => {
-  return [
-    make(
-      'invitation',
-      {
-        state: 'pending',
-        position: 1,
-        validNewPositionsForInvitation: [2]
-      }),
-    make(
-      'invitation',
-      {
-        state: 'pending',
-        position: 2,
-        validNewPositionsForInvitation: [1]
-      }),
-  ];
-};
 
 test('it renders the invitations and drop targets', function(assert) {
-  let invitations = makeInvitations();
+  let invitations = this.makeInvitations();
 
-  this.setProperties({invitations, noop});
+  this.setProperties({ invitations, noop });
   this.render(template);
-
   assert.equal($('.invitation-item').length, 2);
   assert.equal($('.invitation-drop-target').length, 3);
 });
 
 test('dragging an invitation item', function(assert) {
-  let invitations = makeInvitations();
+  let invitations = this.makeInvitations();
 
-  this.setProperties({invitations, noop});
+  this.setProperties({ invitations, noop });
   this.render(template);
 
   let mockEvent = MockDataTransfer.makeMockEvent();
 
-  let $invitation = $('.invitation-item').first();
+  let $invitation = $('.invitation-item').get(0);
 
-  Ember.run(() => {
-    triggerEvent($invitation, 'dragstart', mockEvent);
-  });
+  let $topTarget, $bottomTarget, $middleTarget;
+  return triggerEvent($invitation, 'dragstart', mockEvent)
+    .then(() => {
+      assert.equal(DragNDrop.dragItem, invitations[0], 'the dragitem gets set');
 
-  assert.equal(DragNDrop.dragItem, invitations[0], 'the dragitem gets set');
+      $topTarget = $('.invitation-drop-target').get(0);
+      $bottomTarget = $('.invitation-drop-target')
+        .last()
+        .get(0);
 
-  let $topTarget = $('.invitation-drop-target').first();
-  let $bottomTarget = $('.invitation-drop-target').last();
+      return triggerEvent($bottomTarget, 'dragenter', mockEvent);
+    })
+    .then(() => {
+      assert.ok(
+        $($bottomTarget).hasClass('current-drop-target'),
+        'the bottom target is valid for the first invitation'
+      );
 
-  Ember.run(() => {
-    triggerEvent($bottomTarget, 'dragenter', mockEvent);
-  });
+      return triggerEvent($bottomTarget, 'dragleave');
+    })
+    .then(() => {
+      assert.notOk(
+        $($bottomTarget).hasClass('current-drop-target'),
+        'the class gets removed on dragleave'
+      );
 
-  assert.ok(
-    $bottomTarget.hasClass('current-drop-target'),
-    'the bottom target is valid for the first invitation'
-  );
-  Ember.run(() => {
-    triggerEvent($bottomTarget, 'dragleave');
-  });
-  assert.notOk(
-    $bottomTarget.hasClass('current-drop-target'),
-    'the class gets removed on dragleave'
-  );
+      return triggerEvent($topTarget, 'dragenter');
+    })
+    .then(() => {
+      assert.notOk(
+        $($topTarget).hasClass('current-drop-target'),
+        'the top target is not valid for the first invitation'
+      );
 
-  Ember.run(() => {
-    triggerEvent($topTarget, 'dragenter');
-  });
-  assert.notOk(
-    $topTarget.hasClass('current-drop-target'),
-    'the top target is not valid for the first invitation'
-  );
-
-  let $middleTarget = $('.invitation-drop-target').eq(1);
-  Ember.run(() => {
-    triggerEvent($topTarget, 'dragleave');
-    triggerEvent($middleTarget, 'dragenter');
-  });
-  assert.notOk(
-    $middleTarget.hasClass('current-drop-target'),
-    'the middle target is not valid for the first invitation'
-  );
+      $middleTarget = $('.invitation-drop-target')
+        .eq(1)
+        .get(0);
+      return triggerEvent($topTarget, 'dragleave');
+    })
+    .then(() => {
+      return triggerEvent($middleTarget, 'dragenter');
+    })
+    .then(() => {
+      assert.notOk(
+        $($middleTarget).hasClass('current-drop-target'),
+        'the middle target is not valid for the first invitation'
+      );
+    });
 });
 
 let dropInvitation = (originalPosition, dropTargetIndex) => {
@@ -129,111 +150,93 @@ let dropInvitation = (originalPosition, dropTargetIndex) => {
 * Invitations are interleaved through drop zones
 */
 
-  let $invitation = $('.invitation-item').eq(originalPosition - 1);
-  let $target = $('.invitation-drop-target').eq(dropTargetIndex);
+  let $invitation = $('.invitation-item')
+    .eq(originalPosition - 1)
+    .get(0);
+  let $target = $('.invitation-drop-target')
+    .eq(dropTargetIndex)
+    .get(0);
   let mockEvent = MockDataTransfer.makeMockEvent();
-  Ember.run(() => {
-    triggerEvent($invitation, 'dragstart', mockEvent);
-
+  return triggerEvent($invitation, 'dragstart', mockEvent).then(() => {
     triggerEvent($target, 'drop', mockEvent);
   });
 };
 
 let assertChange = (assert, invitation, assertedPosition) => {
-  invitation.changePosition = (newPosition) => {
-    assert.equal(newPosition, assertedPosition, 'the new position should be the position of the last item');
+  invitation.changePosition = newPosition => {
+    assert.equal(
+      newPosition,
+      assertedPosition,
+      'the new position should be the position of the last item'
+    );
   };
 };
 
-let failIfCalled = (assert) => {
+let failIfCalled = assert => {
   return () => {
     assert.ok(false, 'ChangePosition should not be called');
   };
 };
 
-let makeThreeInvitations = () => {
-  return [
-    make(
-      'invitation',
-      {
-        state: 'pending',
-        position: 1,
-        validNewPositionsForInvitation: [2, 3]
-      }),
-    make(
-      'invitation',
-      {
-        state: 'pending',
-        position: 2,
-        validNewPositionsForInvitation: [1, 3]
-      }),
-    make(
-      'invitation',
-      {
-        state: 'pending',
-        position: 3,
-        validNewPositionsForInvitation: [1, 2]
-      }),
-  ];
-};
-
 test('dropping an invitation in a lower position', function(assert) {
   assert.expect(1);
 
-  let invitations = makeThreeInvitations();
-  assertChange(assert, invitations[0], 2);
+  let invitations = this.makeThreeInvitations();
 
-  this.setProperties({invitations, noop});
+  assertChange(assert, invitations[0], 2);
+  this.setProperties({ invitations, noop });
   this.render(template);
 
-  dropInvitation(1, 2);
+  return dropInvitation(1, 2);
 });
 
 test('dropping an invitation to the bottom position', function(assert) {
   assert.expect(1);
 
-  let invitations = makeThreeInvitations();
-  let changePosition = assertChange(assert, invitations[0], 3);
+  let invitations = this.makeThreeInvitations();
 
-  this.setProperties({invitations, noop});
+  assertChange(assert, invitations[0], 3);
+  this.setProperties({ invitations, noop });
   this.render(template);
 
-  dropInvitation(1, 3);
+  return dropInvitation(1, 3);
+
 });
 
 test('dropping an invitation in a higher position', function(assert) {
   assert.expect(1);
 
-  let invitations = makeThreeInvitations();
-  let changePosition = assertChange(assert, invitations[2], 2);
+  let invitations = this.makeThreeInvitations();
 
-  this.setProperties({invitations, noop});
+  assertChange(assert, invitations[2], 2);
+  this.setProperties({ invitations, noop });
   this.render(template);
-  dropInvitation(3, 1);
-
+  return dropInvitation(3, 1);
 });
 
 test('dropping an invitation in the top position', function(assert) {
   assert.expect(1);
 
-  let invitations = makeThreeInvitations();
-  let changePosition = assertChange(assert, invitations[2], 1);
-
-  this.setProperties({invitations, noop});
+  let invitations = this.makeThreeInvitations();
+  assertChange(assert, invitations[2], 1);
+  this.setProperties({ invitations, noop });
   this.render(template);
-  dropInvitation(3, 0);
-
+  return  dropInvitation(3, 0);
 });
 
-test('dropping an invitation on an adjacent target is a noop', function(assert) {
+test('dropping an invitation on an adjacent target is a noop', function(
+  assert
+) {
   assert.expect(1);
 
-  let invitations = makeThreeInvitations();
-  let changePosition = failIfCalled(assert);
+  let invitations = this.makeThreeInvitations();
+  failIfCalled(assert);
 
-  this.setProperties({invitations, noop});
+  this.setProperties({ invitations, noop });
   this.render(template);
-  dropInvitation(1, 0);
-  dropInvitation(1, 1);
-  assert.ok(true);
+  return dropInvitation(1, 0).then(() => {
+    dropInvitation(1, 1);
+  }).then(() => {
+    assert.ok(true);
+  });
 });

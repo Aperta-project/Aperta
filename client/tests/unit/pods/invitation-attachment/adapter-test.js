@@ -1,7 +1,7 @@
 import { moduleFor, test } from 'ember-qunit';
 import Ember from 'ember';
 
-moduleFor('adapter:invitation-attachment', 'Unit | Adapter | invitation attachment');
+moduleFor('adapter:invitation-attachment', 'Unit | Adapter | invitation attachment', { integration: true });
 
 test('findRecord returns a hollow promise if it doesnt belongTo anything', function(assert) {
   assert.expect(1);

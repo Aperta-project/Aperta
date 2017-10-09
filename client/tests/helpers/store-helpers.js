@@ -6,6 +6,6 @@ export default function() {
   });
 
   Ember.Test.registerHelper('getCurrentUser', function(app) {
-    return app.__container__.lookup('user:current');
+    return app.__container__.lookup('service:currentUser');
   });
 }

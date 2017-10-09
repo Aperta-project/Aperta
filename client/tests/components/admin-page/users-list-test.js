@@ -14,7 +14,7 @@ moduleForComponent('review-status', 'Integration | Component | Admin Page | User
 
   beforeEach() {
     manualSetup(this.container);
-    this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+    this.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
     this.set('journal', make('admin-journal'));
   }
 });
@@ -22,7 +22,10 @@ moduleForComponent('review-status', 'Integration | Component | Admin Page | User
 test('Searches are scoped on Journal', function (assert) {
   $.mockjax({url: '/api/admin/journal_users', type: 'GET', status: 200, responseText: '{}'});
 
-  this.render(hbs`{{admin-page/users-list adminJournalUsers=[] journal=journal roles=[] }}`);
+  this.set('adminJournalUsers', Ember.A());
+  this.set('roles', Ember.A());
+
+  this.render(hbs`{{admin-page/users-list adminJournalUsers=adminJournalUsers journal=journal roles=roles }}`);
 
   this.$('.admin-user-search input').val('author').change();
   this.$('.admin-user-search button').click();

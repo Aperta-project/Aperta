@@ -15,7 +15,7 @@ moduleForComponent(
       manualSetup(this.container);
 
       this.registry.register(
-        'pusher:main',
+        'service:pusher',
         Ember.Object.extend({ socketId: 'foo' })
       );
     },

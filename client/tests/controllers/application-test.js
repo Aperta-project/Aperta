@@ -4,6 +4,7 @@ import { moduleFor, test } from 'ember-qunit';
 let healthCheckStub, pusherStub, pusherFailureMessagesStub, flashStub;
 
 moduleFor('controller:application', 'Unit | Controller | application', {
+  integration: true,
   beforeEach: function() {
     healthCheckStub = { start: ()=>{} };
     pusherStub = Ember.Object.create({connection: { connection: { state: 'connecting' } }});
@@ -37,7 +38,7 @@ test('Slanger notifications - happy path', function(assert) {
   pusherStub.set('connection.connection.state', 'connecting');
   let controller = null;
   Ember.run(() => {
-    controller = this.subject({ 
+    controller = this.subject({
       pusher: pusherStub,
       flash: flashStub,
       healthCheck: healthCheckStub,
@@ -70,7 +71,7 @@ test('Slanger notifications - failed to connect', function(assert) {
     });
 
     assert.ok(controller);
-    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'c'}], 
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'c'}],
       'flashes connecting message');
   });
   Ember.run(() => {
@@ -102,7 +103,7 @@ test('Slanger notifications - spotty but ultimately able to connect', function(a
     });
 
     assert.ok(controller);
-    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'c'}], 
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'c'}],
       'flashes connecting message');
   });
   Ember.run(() => {
@@ -111,7 +112,7 @@ test('Slanger notifications - spotty but ultimately able to connect', function(a
   });
   Ember.run(() => {
     updatePusher('connecting');
-    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'c'}], 
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'c'}],
       'flashes connecting message');
   });
   Ember.run(() => {
@@ -131,7 +132,7 @@ test('Slanger notifications - spotty but ultimately able to connect', function(a
   });
   Ember.run(() => {
     updatePusher('connecting');
-    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), 
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'),
       [{type: 'error', text: 'u'}, {type: 'error', text: 'c'}],
       'flashes connecting and unavailable messages');
   });
@@ -161,7 +162,7 @@ test('Slanger notifications - browser doesnt support web sockets', function(asse
   updatePusher('connecting');
   let controller = null;
   Ember.run(() => {
-    controller = this.subject({ 
+    controller = this.subject({
       pusher: pusherStub,
       flash: flashStub,
       healthCheck: healthCheckStub,
@@ -169,7 +170,7 @@ test('Slanger notifications - browser doesnt support web sockets', function(asse
     });
 
     assert.ok(controller);
-    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'c'}], 
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'c'}],
       'flashes connecting message');
   });
   Ember.run(() => {
@@ -184,7 +185,7 @@ test('Slanger notifications - intentional disconnect', function(assert) {
 
   assert.expect(4);
   let complete = assert.async();
-  
+
   updatePusher('connecting');
   let controller = null;
   Ember.run(() => {
@@ -196,10 +197,10 @@ test('Slanger notifications - intentional disconnect', function(assert) {
     });
 
     assert.ok(controller);
-    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'c'}], 
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'c'}],
       'flashes connecting message');
   });
-  
+
   Ember.run(() => {
     updatePusher('connected');
     assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [], 'flashes connection messages are empty');

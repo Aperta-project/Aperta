@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import startApp from '../helpers/start-app';
-import { test } from 'ember-qunit';
+import { module, test } from 'ember-qunit';
 var container, subject;
 
 subject = null;

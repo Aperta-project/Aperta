@@ -2,6 +2,7 @@ import Ember from 'ember';
 import Application from '../../app';
 import Router from '../../router';
 import config from '../../config/environment';
+import * as TestHelper from 'ember-data-factory-guy';
 
 import registerPowerSelectHelpers from '../../tests/helpers/ember-power-select';
 
@@ -13,7 +14,6 @@ import registerSelectHelpers    from './select-native-helper';
 import registerSelect2Helpers   from './select2-helpers';
 
 import Factory from './factory';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
 registerPowerSelectHelpers();
 registerCustomAssertions();
@@ -59,24 +59,23 @@ export default function startApp(attrs) {
     auth_endpoint_path: '/event_stream/auth'
   };
 
-  TestHelper.reopen({
-    mapFind: function(modelName, json) {
-      let responseJson = {};
-      // hack to work around
-      // https://github.com/danielspaniel/ember-data-factory-guy/issues/82
-      if ((/Task/).test(modelName)) {
-        modelName = 'task';
-      }
-      responseJson[Ember.String.pluralize(modelName)] = json;
-      return responseJson;
-    },
-    mockPaperQuery: function(paper) {
-      let mockedQuery = this.mockQuery('paper').returns({models: [paper]});
-      var shortDoi = Ember.get(paper, 'shortDoi');
-      mockedQuery.getUrl = function() { return `/api/papers/${shortDoi}`; };
-      return mockedQuery;
-    }
-  });
+  // TestHelper.reopen({
+  //   mapFind: function(modelName, json) {
+  //     let responseJson = {};
+  //     // hack to work around
+  //     // https://github.com/danielspaniel/ember-data-factory-guy/issues/82
+  //     if ((/Task/).test(modelName)) {
+  //       modelName = 'task';
+  //     }
+  //     responseJson[Ember.String.pluralize(modelName)] = json;
+  //     return responseJson;
+  //   },
+  TestHelper.mockPaperQuery = (paper) => {
+    let mockedQuery = TestHelper.mockQuery('paper').returns({models: [paper]});
+    var shortDoi = Ember.get(paper, 'shortDoi');
+    mockedQuery.getUrl = function() { return `/api/papers/${shortDoi}`; };
+    return mockedQuery;
+  };
 
   $.mockjax({
     url: '/api/feature_flags',

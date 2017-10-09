@@ -1,14 +1,13 @@
 import Ember from 'ember';
 import { test, moduleFor } from 'ember-qunit';
 import startApp from '../helpers/start-app';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 import setupMockServer from '../helpers/mock-server';
 
 let app = null;
 let server = null;
 
 moduleFor('controller:paper/workflow', 'PaperWorkflowController', {
-  needs: ['controller:application'],
+  integration: true,
 
   beforeEach() {
     app = startApp();

@@ -15,7 +15,7 @@ moduleForComponent(
       registerCustomAssertions();
       manualSetup(this.container);
       this.registry.register(
-        'pusher:main',
+        'service:pusher',
         Ember.Object.extend({ socketId: 'foo' })
       );
       this.set('dirtyEditorConfig', {model: 'card', properties: ['xml']});
@@ -280,6 +280,7 @@ test('reversion button is only present when the card is published with changes a
   $.mockjax({
     url: `/api/cards/${card.id}/revert`,
     method: 'PUT',
+    status: 204
   });
 
   this.$('.publish-card-overlay.revert .button-primary').click();

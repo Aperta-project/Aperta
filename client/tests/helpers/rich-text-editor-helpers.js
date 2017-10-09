@@ -12,7 +12,8 @@ export function getRichText(name) {
 export function setRichText(name, text) {
   let editor = findEditor(name);
   editor.setContent(text);
-  editor.target.triggerSave();
+  editor.setDirty(true);
+  editor.fire('change');
 }
 
 export function pasteText(name, text) {

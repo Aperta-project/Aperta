@@ -69,7 +69,7 @@
 
 // test('admin routes with only manage users permissions', function(assert) {
 //   Ember.run(function(){
-//     TestHelper.mockFind('task').returns({model: task});
+//     TestHelper.mockFindRecord('task').returns({model: task});
 //     visit('/');
 //     click('#nav-admin');
 
@@ -82,7 +82,7 @@
 
 // test('admin routes with only manage users permissions', function(assert) {
 //   Ember.run(function(){
-//     TestHelper.mockFind('task').returns({model: task});
+//     TestHelper.mockFindRecord('task').returns({model: task});
 //     visit('/admin/journals/1/settings');
 
 //     andThen(function() {

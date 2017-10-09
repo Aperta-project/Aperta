@@ -1,16 +1,17 @@
 import { test } from 'ember-qunit';
 import startApp from '../helpers/start-app';
 import Ember from 'ember';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 import setupMockServer from '../helpers/mock-server';
 import Factory from '../helpers/factory';
+import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 
 var server = null;
 
-module('Integration: Authorized Profile View', {
+moduleForAcceptance('Integration: Authorized Profile View', {
   beforeEach(){
     this.App = startApp();
-    TestHelper.setup(this.App);
+    TestHelper.mockSetup();
     server = setupMockServer();
     server.respondWith(
       'GET',
@@ -75,7 +76,7 @@ module('Integration: Authorized Profile View', {
 });
 
 test('transition to route without permission fails', function(assert){
-  expect(1);
+  assert.expect(1);
   // This tells the qunit test runner that it needs to stop and wait for
   // something asynchronous. calling start() indicates to qunit that the async
   // code has finished and that it can move on.  Without this, the callback
@@ -99,7 +100,7 @@ test('transition to route without permission fails', function(assert){
 });
 
 test('transition to route with permission succeedes', function(assert){
-  expect(1);
+  assert.expect(1);
   // stop qunit for async code. See note above
   const start = assert.async();
 
@@ -119,7 +120,7 @@ test('transition to route with permission succeedes', function(assert){
 });
 
 test('User is linked to thier Akita profile page', function(assert) {
-  expect(3);
+  assert.expect(3);
   Factory.createPermission('User', 1, ['view']);
 
   visit('/profile');

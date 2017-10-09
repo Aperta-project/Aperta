@@ -2,16 +2,17 @@ import Ember from 'ember';
 import startApp from '../helpers/start-app';
 import { paperWithParticipant } from '../helpers/setups';
 import setupMockServer from '../helpers/mock-server';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
+import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 
 let app = null;
 let server = null;
 
-module('Integration: adding a new card', {
+moduleForAcceptance('Integration: adding a new card', {
   afterEach() {
     server.restore();
     Ember.run(function() {
-      return TestHelper.teardown();
+      return TestHelper.mockTeardown();
     });
     return Ember.run(app, app.destroy);
   },

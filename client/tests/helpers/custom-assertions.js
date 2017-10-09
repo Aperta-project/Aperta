@@ -16,8 +16,7 @@ export default function() {
    * assert.mockjaxRequestMade({url: '/foo', type: 'PUT', data: '{"update": true}'})
    * will find a PUT request to '/foo' with the specified data in the body.
    */
-  QUnit.assert.mockjaxRequestMade = function(url, type, message){
-
+  QUnit.assert.mockjaxRequestMade = function(url, type, message) {
     let actualDescription;
     let expectedDescription;
 
@@ -28,7 +27,7 @@ export default function() {
       let matchDef = url;
       expectedDescription = `#{url}`;
       matcher = _.matches(matchDef);
-      actualDescriptionMapper = (mockjaxCall) => {
+      actualDescriptionMapper = mockjaxCall => {
         return _.pick(mockjaxCall, _.keys(matchDef));
       };
 
@@ -37,153 +36,173 @@ export default function() {
       message = arguments[1];
     } else {
       expectedDescription = `{ url: "${url}" type: "${type}"`;
-      matcher = (mockjaxCall) => {
+      matcher = mockjaxCall => {
         return mockjaxCall.url === url && mockjaxCall.type === type;
       };
-      actualDescriptionMapper = (mockjaxCall) => {
+      actualDescriptionMapper = mockjaxCall => {
         return { url: mockjaxCall.url, type: mockjaxCall.type };
       };
     }
 
-    if(!message){
+    if (!message) {
       message = `Request to server was made thru $.mockjax: ${expectedDescription}`;
     }
 
     let mockjaxCalls = $.mockjax.mockedAjaxCalls();
     let requestFound = _.find(mockjaxCalls, matcher);
 
-    if(!requestFound) {
+    if (!requestFound) {
       actualDescription = _.map(mockjaxCalls, actualDescriptionMapper);
     }
 
-    return this.push(
-      requestFound,
-      actualDescription,
-      expectedDescription,
+    return this.pushResult({
+      result: requestFound,
+      actual: actualDescription,
+      expected: expectedDescription,
       message
-    );
+    });
   };
 
-  QUnit.assert.mockjaxRequestNotMade = function(url, type, message){
+  QUnit.assert.mockjaxRequestNotMade = function(url, type, message) {
     let actualDescription;
     let expectedDescription = `{ url: "${url}" type: "${type}"`;
 
-    if(!message){
+    if (!message) {
       message = `Request to server was not made thru $.mockjax: ${expectedDescription}`;
     }
 
     let mockjaxCalls = $.mockjax.mockedAjaxCalls();
-    let requestFound = _.find(mockjaxCalls, (mockjaxCall) => {
+    let requestFound = _.find(mockjaxCalls, mockjaxCall => {
       return mockjaxCall.url === url && mockjaxCall.type === type;
     });
 
-    if(requestFound) {
-      actualDescription = _.map(mockjaxCalls, (mockjaxCall) => {
+    if (requestFound) {
+      actualDescription = _.map(mockjaxCalls, mockjaxCall => {
         return { url: mockjaxCall.url, type: mockjaxCall.type };
       });
     }
 
-    return this.push(
-      !requestFound,
-      actualDescription,
-      expectedDescription,
+    return this.pushResult({
+      result: !requestFound,
+      actual: actualDescription,
+      expected: expectedDescription,
       message
+    }
     );
   };
 
-  QUnit.assert.arrayContainsExactly = function(actualArray, expectedArray, message){
-    if(!message){
+  QUnit.assert.arrayContainsExactly = function(
+    actualArray,
+    expectedArray,
+    message
+  ) {
+    if (!message) {
       message = `Expected array to contain the contents, but did not`;
     }
 
     let result = true;
 
-    if(actualArray.length !== expectedArray.length){
+    if (actualArray.length !== expectedArray.length) {
       result = false;
     }
-    if(_.intersection(actualArray, expectedArray).length !== expectedArray.length){
+    if (
+      _.intersection(actualArray, expectedArray).length !== expectedArray.length
+    ) {
       result = false;
     }
 
-    return this.push(
+    return this.pushResult({
       result,
-      actualArray.invoke('toString'),
-      expectedArray.invoke('toString'),
+      actual: actualArray.invoke('toString'),
+      expected: expectedArray.invoke('toString'),
       message
-    );
+    });
   };
 
   QUnit.assert.textPresent = function(selector, text, message) {
-    let elementText  = Ember.$.trim(Ember.$(selector).text());
-    let result       = elementText.indexOf(text) !== -1;
+    let elementText = Ember.$.trim(Ember.$(selector).text());
+    let result = elementText.indexOf(text) !== -1;
     let finalMessage;
 
-    if(Ember.isEmpty(message)) {
+    if (Ember.isEmpty(message)) {
       finalMessage = 'it should have text: ' + text + ' within ' + selector;
     } else {
       finalMessage = message;
     }
 
-    return this.push(result, elementText, text, finalMessage);
+    return this.pushResult({
+      result,
+      actual: elementText,
+      expected: text,
+      message: finalMessage
+    });
   };
 
   QUnit.assert.textNotPresent = function(selector, text, message) {
-    let elementText  = Ember.$.trim(Ember.$(selector).text());
-    let result       = elementText.indexOf(text) === -1;
+    let elementText = Ember.$.trim(Ember.$(selector).text());
+    let result = elementText.indexOf(text) === -1;
     let finalMessage;
 
-    if(Ember.isEmpty(message)) {
+    if (Ember.isEmpty(message)) {
       finalMessage = 'it should not have text: ' + text + ' within ' + selector;
     } else {
       finalMessage = message;
     }
 
-    return this.push(result, elementText, text, finalMessage);
+    return this.pushResult({
+      result,
+      actual: elementText,
+      expected: text,
+      message: finalMessage
+    });
   };
 
   QUnit.assert.elementFound = function(selector, message) {
     const matches = $(selector).length;
 
-    return this.push(
-      matches === 1,
-      `found ${matches} '${selector}'s`,
-      `found 1 '${selector}'s'`,
-      message || `should find single element at ${selector}`);
+    return this.pushResult({
+      result: matches === 1,
+      actual: `found ${matches} '${selector}'s`,
+      expected: `found 1 '${selector}'s'`,
+      message: message || `should find single element at ${selector}`
+    });
   };
 
   QUnit.assert.nElementsFound = function(selector, n, message) {
     const matches = $(selector).length;
 
-    return this.push(
-      matches === n,
-      `found ${matches} '${selector}'s`,
-      `found ${n} '${selector}'s`,
-      message || `should find ${n} elements at ${selector}`);
+    return this.pushResult({
+      result: matches === n,
+      actual: `found ${matches} '${selector}'s`,
+      expected: `found ${n} '${selector}'s`,
+      message: message || `should find ${n} elements at ${selector}`
+    });
   };
 
   QUnit.assert.elementNotFound = function(selector, message) {
     const matches = Ember.$('#ember-testing ' + selector).length;
-    return this.push(
-      matches === 0,
-      `'${selector}' found`,
-      `'${selector}' not found`,
-      message || `should find no element at ${selector}`);
+    return this.pushResult({
+      result: matches === 0,
+      actual: `'${selector}' found`,
+      expected: `'${selector}' not found`,
+      message: message || `should find no element at ${selector}`
+    });
   };
 
-  QUnit.assert.inputContains = function(selector, expectedValue) {
+  QUnit.assert.inputContains = function(selector, expected) {
     selector = selector + ':input';
 
     this.elementFound(selector);
-    var input  = Ember.$(selector);
-    let value  = input.val();
-    let result = value.indexOf(expectedValue) !== -1;
+    var input = Ember.$(selector);
+    let actual = input.val();
+    let result = actual.indexOf(expected) !== -1;
 
-    return this.push(
+    return this.pushResult({
       result,
-      value,
-      expectedValue,
-      `should find ${expectedValue} in input at ${selector}`);
-
+      actual,
+      expected,
+      message: `should find ${expected} in input at ${selector}`
+    });
   };
 
   QUnit.assert.inputPresent = function(selector, value, message) {
@@ -192,13 +211,15 @@ export default function() {
 
     this.elementFound(selector, message);
 
-    return this.push(
-      input.val() === value,
-      input.val(),
-      value,
-      message + '(wrong value found)' ||
-        `should find ${value} in input at ${selector}`);
-
+    return this.pushResult(
+      {
+        result: input.val() === value,
+        actual: input.val(),
+        expected: value,
+        message: message + '(wrong value found)' ||
+          `should find ${value} in input at ${selector}`
+      }
+    );
   };
 
   QUnit.assert.checkboxPresent = function(selector, value, message) {
@@ -207,18 +228,28 @@ export default function() {
 
     this.elementFound(selector, message);
 
-    return this.push(
-      input.is(':checked') === value,
-      input.is(':checked'),
-      value,
-      message + '(wrong value found)' ||
-        `should find ${value} in input at ${selector}`);
+    return this.pushResult(
+      {
+        result: input.is(':checked') === value,
+        actual: input.is(':checked'),
+        expected: value,
+        message: message + '(wrong value found)' ||
+          `should find ${value} in input at ${selector}`
+      }
+    );
   };
 
   QUnit.assert.elementsFound = function(selector, count, message) {
     const matches = Ember.$(selector).length;
 
-    return this.push(matches === count, matches, count, message || `should find ${count} elements for ${selector}`);
+    return this.pushResult(
+      {
+        result:  matches === count,
+        actual: matches,
+        expected: count,
+        message: message || `should find ${count} elements for ${selector}`
+      }
+    );
   };
 
   QUnit.assert.spyCalledWith = function(spy, args, message) {
@@ -226,61 +257,85 @@ export default function() {
       return QUnit.assert.spyCalled(spy, message);
     }
 
-    return this.push(
-      spy.calledWith(...args),
-      spy.lastCall.args,
-      args,
-      message || `should've been called with args ${args}`);
+    return this.pushResult(
+      {
+        result:  spy.calledWith(...args),
+        actual: spy.lastCall.args,
+        expected: args,
+        message: message || `should've been called with args ${args}`
+      }
+    );
   };
 
   QUnit.assert.spyCalled = function(spy, message) {
-    return this.push(
-      spy.called,
-      'never called',
-      'called',
-      message || 'spy should have been called.');
+    return this.pushResult(
+      {
+        result:  spy.called,
+        actual: 'never called',
+        expected: 'called',
+        message: message || 'spy should have been called.'
+      }
+    );
   };
 
   QUnit.assert.spyNotCalled = function(spy, message) {
-    return this.push(
-      spy.notCalled,
-      'called',
-      'not called',
-      message || 'spy should not have been called.');
+    return this.pushResult(
+      {
+        result:  spy.notCalled,
+        actual: 'called',
+        expected: 'not called',
+        message: message || 'spy should not have been called.'
+      }
+    );
   };
 
-  QUnit.assert.selectorAttibuteIncludes = function(attribute, selector, values, message, expectedFoundElementsCount) {
-
+  QUnit.assert.selectorAttibuteIncludes = function(
+    attribute,
+    selector,
+    values,
+    message,
+    expectedFoundElementsCount
+  ) {
     let elements = Ember.$(selector);
-    let includesValues = _.map(elements, (element) => {
-      _.include( Ember.$(element).attr(attribute), ...values);
+    let includesValues = _.map(elements, element => {
+      _.include(Ember.$(element).attr(attribute), ...values);
     });
 
     // Optional feature, possibly pull out into it's own assertion.
-    if (!_.isUndefined(expectedFoundElementsCount)){
-      this.push(
-        elements.length === expectedFoundElementsCount,
-        elements.length,
-        expectedFoundElementsCount,
-        message + `Expected to find ${expectedFoundElementsCount} elements with selector ${selector}, but found ${elements.length}`
+    if (!_.isUndefined(expectedFoundElementsCount)) {
+      this.pushResult(
+        {
+          result:  elements.length === expectedFoundElementsCount,
+          actual: elements.length,
+          expected: expectedFoundElementsCount,
+          message: message +
+            `Expected to find ${expectedFoundElementsCount} elements with selector ${selector}, but found ${elements.length}`
+        }
       );
     } else {
       this.ok(
         true,
-        message + 'This assertion is to maintain the same amount of expected assertions');
+        message +
+          'This assertion is to maintain the same amount of expected assertions'
+      );
     }
 
-    let assertionMessage = message ? message : `Expected elements with selector ( ${selector} ) to have an attribute ( ${attribute} ) with value(s) ( ${values} ). Found ( ${elements.length} ) elements.`;
+    let assertionMessage = message
+      ? message
+      : `Expected elements with selector ( ${selector} ) to have an attribute ( ${attribute} ) with value(s) ( ${values} ). Found ( ${elements.length} ) elements.`;
     let rejectedElementsFound = _.reject(includesValues).length;
-    let expectedMessage = rejectedElementsFound === 0 ?
-      'No elements found' :
-      `${rejectedElementsFound} elements missing ( ${values} ).`;
+    let expectedMessage =
+      rejectedElementsFound === 0
+        ? 'No elements found'
+        : `${rejectedElementsFound} elements missing ( ${values} ).`;
 
-    return this.push(
-      rejectedElementsFound > 0,
-      expectedMessage,
-      `all elements to have ( ${values} ).`,
-      assertionMessage
+    return this.pushResult(
+      {
+        result:  rejectedElementsFound > 0,
+        actual: expectedMessage,
+        expected: `all elements to have ( ${values} ).`,
+        message: assertionMessage
+      }
     );
   };
 
@@ -289,19 +344,22 @@ export default function() {
   };
 
   QUnit.assert.arrayEqual = function(actual, expected) {
-    const good =  {
+    const good = {
       result: true,
       actual: actual,
       expected: expected,
       message: `equals: ${actual} and ${expected}`
     };
-    if (actual === expected) { return this.pushResult(good); }
+    if (actual === expected) {
+      return this.pushResult(good);
+    }
     if (actual.length !== expected.length) {
       return this.pushResult({
         result: false,
         actual: actual,
         expected: expected,
-        message: `different lengths: ${actual} v. ${expected}`});
+        message: `different lengths: ${actual} v. ${expected}`
+      });
     }
     for (var i = 0; i < actual.length; ++i) {
       if (actual[i] !== expected[i]) {
@@ -309,7 +367,8 @@ export default function() {
           result: false,
           actual: actual,
           expected: expected,
-          message: `element ${i} of ${actual} did not match ${expected}`});
+          message: `element ${i} of ${actual} did not match ${expected}`
+        });
       }
     }
     return this.pushResult(good);

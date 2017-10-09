@@ -1,15 +1,17 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import FactoryGuy from 'ember-data-factory-guy';
-import { manualSetup } from 'ember-data-factory-guy';
+import { manualSetup, mockUpdate } from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import Ember from 'ember';
+import wait from 'ember-test-helpers/wait';
 
 moduleForComponent('admin-page/email-templates/edit',
   'Integration | Component | Admin Page | Email Templates | Edit', {
     integration: true,
     beforeEach() {
       manualSetup(this.container);
+      this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
       this.set('dirtyEditorConfig', {model: 'template', properties: ['subject', 'body']});
     }
   }
@@ -63,8 +65,10 @@ test('it displays a success message if save succeeds and disables save button', 
   Ember.run(() => generateKeyEvent.call(this, 20));
   Ember.run(() => this.$('.button-primary').click());
 
-  assert.elementFound('.button-primary[disabled]');
-  assert.equal(this.$('span.text-success').text(), 'Your changes have been saved.');
+  return wait().then(() => {
+    assert.elementFound('.button-primary[disabled]');
+    assert.equal(this.$('span.text-success').text(), 'Your changes have been saved.');
+  });
 });
 
 test('it displays an error message if save fails', function(assert) {
@@ -84,20 +88,17 @@ test('it displays an error message if save fails', function(assert) {
   Ember.run(() => generateKeyEvent.call(this, 32));
   Ember.run(() => this.$('.button-primary').click());
 
-  assert.elementNotFound('.button-primary[disabled]');
-  assert.equal(this.$('span.text-danger').text(), 'Please correct errors where indicated.');
+  return wait().then(() => {
+    assert.elementNotFound('.button-primary[disabled]');
+    assert.equal(this.$('span.text-danger').text(), 'Please correct errors where indicated.');
+  });
 });
 
 
 test('it warns user if input field has invalid content', function(assert) {
-  assert.expect(1);
-
   let template = FactoryGuy.make('letter-template', {subject: 'foo', body: 'bar'});
-
-  let saveStub = sinon.stub(template, 'save');
-  saveStub.returns(Ember.RSVP.Promise.reject(
-    { errors: [ { source: { pointer: '/subject'}, detail: 'Syntax Error'}]})
-  );
+  // see https://github.com/danielspaniel/ember-data-factory-guy#using-fails-method
+  mockUpdate(template).fails({status: 422, response: {errors: {subject: 'Syntax Error'}}});
 
   this.set('template', template);
 
@@ -109,7 +110,9 @@ test('it warns user if input field has invalid content', function(assert) {
   Ember.run(() => this.$('.template-subject').val('{{ name }').blur());
   Ember.run(() => this.$('.button-primary').click());
 
-  assert.equal(this.$('.error>ul>li').text().trim(), 'Syntax Error');
+  return wait().then(() => {
+    assert.equal(this.$('.error>ul>li').text().trim(), 'Syntax Error', 'has the right text');
+  });
 });
 
 let generateKeyEvent = function(keyCode) {

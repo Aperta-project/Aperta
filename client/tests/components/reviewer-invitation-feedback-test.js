@@ -2,6 +2,7 @@ import Ember from 'ember';
 import {moduleForComponent, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import {setRichText} from 'tahi/tests/helpers/rich-text-editor-helpers';
+import wait from 'ember-test-helpers/wait';
 
 moduleForComponent(
   'reviewer-invitation-feedback',
@@ -83,18 +84,6 @@ test('can Send Feedback', function(assert){
   this.set('decline', (invitation) => {
     assert.ok(this.get('invitation') === invitation,
       'The invitation object is passed in to the action');
-
-    // assert the values are set on the invitation
-    Ember.run.next(() => {
-      assert.equal(invitation.get('declineReason'),
-                  '<p>some value</p>',
-                  'Expected decline reason to be our value'
-      );
-      assert.equal(invitation.get('reviewerSuggestions'),
-                  '<p>some other value</p>',
-                  'Expected decline reason to be our other value'
-      );
-    });
   });
 
   this.render(template);
@@ -103,4 +92,16 @@ test('can Send Feedback', function(assert){
   setRichText('reviewerSuggestions', 'some other value');
 
   this.$('.reviewer-feedback-buttons > .reviewer-send-feedback').click();
+  // assert the values are set on the invitation
+  return wait().then(() => {
+    let invitation = this.get('invitation');
+    assert.equal(invitation.get('declineReason'),
+                 '<p>some value</p>',
+                 'Expected decline reason to be our value'
+                );
+    assert.equal(invitation.get('reviewerSuggestions'),
+                 '<p>some other value</p>',
+                 'Expected decline reason to be our other value'
+                );
+  });
 });

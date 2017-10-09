@@ -12,7 +12,7 @@ moduleForComponent(
     integration: true,
     beforeEach() {
       manualSetup(this.container);
-      this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+      this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
       Factory.createPermission('reviseTask', 1, ['edit', 'view']);
     },
     afterEach() {
@@ -37,7 +37,7 @@ let createTaskWithTwoDecisions = function() {
   });
 };
 
-let createTaskWithoutDecision = function(decisionAttrs) {
+let createTaskWithoutDecision = function() {
   return make('revise-task');
 };
 

@@ -2,7 +2,8 @@ import { moduleFor, test } from 'ember-qunit';
 import sinon from 'sinon';
 
 
-moduleFor('service:feedback', 'Unit | Service | Feedback')
+moduleFor('service:feedback', 'Unit | Service | Feedback',
+          {integration: true});
 
 
 test('sendFeedback calls Restless with the appropriate params', function(assert) {

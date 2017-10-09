@@ -457,34 +457,4 @@ describe User do
       end
     end
   end
-
-  describe '#who_can' do
-    context 'when permission action is be assigned or assign others and target is task' do
-      let(:paper) { FactoryGirl.create :paper, journal: journal }
-      let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
-      let(:reviewer) { FactoryGirl.create :user }
-      let(:cover_editor) { FactoryGirl.create :user }
-      let(:creator) { FactoryGirl.create :user }
-      let(:billing) { FactoryGirl.create :user }
-      let(:task) { FactoryGirl.create(:task, :with_card, title: 'AwesomeSauce') }
-      let!(:role_reviewer) { FactoryGirl.create(:role, name: Role::REVIEWER_ROLE, journal: journal) }
-      let!(:role_cover_editor) { FactoryGirl.create(:role, name: Role::COVER_EDITOR_ROLE, journal: journal) }
-      let!(:role_creator) { FactoryGirl.create(:role, name: Role::CREATOR_ROLE, journal: journal) }
-      let!(:role_billing) { FactoryGirl.create(:role, name: Role::BILLING_ROLE, journal: journal) }
-
-      it 'returns a list of users who can assign others and be assigned to a task' do
-        task.assignments.create!(user: reviewer, role: role_reviewer)
-        task.assignments.create!(user: cover_editor, role: role_cover_editor)
-        task.assignments.create!(user: creator, role: role_creator)
-        task.assignments.create!(user: billing, role: role_billing)
-
-        CardPermissions.add_roles(task.card, 'view', [role_billing])
-        CardPermissions.add_roles(task.card, 'be_assigned', [role_reviewer, role_cover_editor])
-        CardPermissions.add_roles(task.card, 'assign_others', [role_creator, role_billing])
-
-        expect(User.who_can('be_assigned', task)).to be == [reviewer, cover_editor]
-        expect(User.who_can('assign_others', task)).to be == [creator, billing]
-      end
-    end
-  end
 end

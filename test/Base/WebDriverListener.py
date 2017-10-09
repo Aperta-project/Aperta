@@ -77,7 +77,7 @@ class WebDriverListener(AbstractEventListener):
                            ErrorAlertThrownException,
                            ]:
       self._log('The locator provided did not match any element in the page. %s' % exception.msg)
-    driver.save_screenshot(self._generate_png_filename(exception))
+      driver.save_screenshot(self._generate_png_filename(exception))
 
   def _generate_png_filename(self, exception):
     """

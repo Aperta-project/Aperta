@@ -3,18 +3,29 @@ import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   classNames: ['card-content-display-children'],
+  classNameBindings: ['customDisplayClass'],
   tagName: '',
+  enabled: true,
 
   init() {
     this._super(...arguments);
-    let customClass = this.get('customClass');
-    if (customClass) {
-      let classNames = this.get('classNames');
-      classNames.push(customClass);
-      this.set('classNames', classNames);
-    }
     this.set('tagName', this.getWithDefault('wrapperTag', ''));
+    if (this.get('tagName') === '') {
+      // We can't have classNameBindings on tagless view wrappers
+      this.set('classNameBindings', Ember.A());
+    }
   },
+
+  // see https://github.com/emberjs/ember.js/pull/14389
+  customDisplayClass: Ember.computed('customClass', {
+    get() {
+      if (this.get('customClass')) {
+        return `${this.get('customClass')}`;
+      } else {
+        return null;
+      }
+    }
+  }),
 
   customChildClass: Ember.computed.readOnly('content.customChildClass'),
   childTag: Ember.computed.readOnly('content.childTag'),

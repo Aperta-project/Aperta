@@ -38,8 +38,8 @@ describe MergeFieldBuilder do
           ] }
         ] }
       ]
-      mfb = MergeFieldBuilder.new(SampleContext)
-      expect(mfb.merge_fields).to eq(expanded)
+      merge_fields = MergeFieldBuilder.merge_fields(SampleContext)
+      expect(merge_fields).to eq(expanded)
     end
   end
 end

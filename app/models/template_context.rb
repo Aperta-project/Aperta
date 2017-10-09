@@ -10,7 +10,7 @@ class TemplateContext < Liquid::Drop
   end
 
   def self.merge_fields
-    MergeFieldBuilder.new(self).merge_fields
+    MergeFieldBuilder.merge_fields(self)
   end
 
   def self.complex_merge_fields

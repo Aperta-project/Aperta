@@ -29,7 +29,9 @@ export default AuthorizedRoute.extend(PopoutParentRouteMixin,{
 
     let popout = this.get('popoutParent');
     $(window).on('beforeunload.popout', function(){
-      popout.closeAll();
+      if (Ember.isPresent(popout.get('popoutNames'))) {
+        popout.closeAll();
+      }
     });
   },
 

@@ -5,13 +5,13 @@ import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 import setupMockServer from '../helpers/mock-server';
 import Factory from '../helpers/factory';
 import { make } from 'ember-data-factory-guy';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 
 moduleForAcceptance('Integration: orcid connect permissions', {
   beforeEach: function() {
     let journal = make('journal');
     TestHelper.mockFindAll('journal').returns({models: [journal]});
-    TestHelper.mockFind('journal').returns({model: journal});
+    TestHelper.mockFindRecord('journal').returns({model: journal});
   }
 });
 

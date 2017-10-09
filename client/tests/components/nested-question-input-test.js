@@ -12,7 +12,7 @@ moduleForComponent('nested-question-input', 'Integration | Component | nested qu
   beforeEach() {
     registerCustomAssertions();
     manualSetup(this.container);
-    this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+    this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
     this.registry.register('service:can', FakeCanService);
 
     this.getAnswers = function() {
@@ -44,7 +44,7 @@ test('it puts a new answer in the store for unanswered questions, then saves on 
   assert.equal(newAnswer.get('owner.id'), task.id, 'the new answer belongs to the task');
   assert.equal(newAnswer.get('nestedQuestion.id'), question.id, 'the new answer belongs to the question');
 
-  $.mockjax({url: '/api/nested_questions/1/answers', type: 'POST', status: 204, responseText: '{}'});
+  $.mockjax({url: '/api/nested_questions/1/answers', type: 'POST', status: 201, responseText: {nested_question_answer: {id: 5}}});
   setValue(this.$('input'), 'new value');
   return wait().then(() => {
     assert.mockjaxRequestMade('/api/nested_questions/1/answers', 'POST', 'it saves the new answer on change');
@@ -92,7 +92,15 @@ test('it deletes and replaces the existing answer on input if the answer is blan
     assert.ok(answer.get('isNew'), 'the answer is new');
 
     $.mockjax.clear();
-    $.mockjax({url: '/api/nested_questions/1/answers', type: 'POST', status: 204, responseText: '{}'});
+    $.mockjax({
+      url: /api\/nested_questions\/\d+\/answers/,
+      type: 'POST',
+      status: 201,
+      response() {
+        let id = 'testId' + Math.random();
+        this.responseText = { nested_question_answer: { id } };
+      }
+    });
 
     setValue(this.$('input'), 'really new answer');
   }).then(wait)
@@ -108,7 +116,7 @@ test('it does not render when the type is invalid', function(assert) {
   createQuestionWithAnswer(task, 'foo', 'Old Answer');
   this.set('task', task);
   return assert.throws(() => {
-    this.render(hbs`
+    this.subject(hbs`
       {{nested-question-input ident="foo" owner=task type="radio"}}
     `);
   });

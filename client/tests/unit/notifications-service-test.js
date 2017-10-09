@@ -60,7 +60,8 @@ const dr1 = {
 };
 
 
-moduleFor('service:notifications', 'NotificationsService');
+moduleFor('service:notifications', 'NotificationsService',
+          {integration: true});
 
 test('#peekNotifications', function(assert) {
   let notifications;

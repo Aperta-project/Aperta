@@ -1,14 +1,7 @@
 import Ember from 'ember';
 import { test, moduleForModel } from 'ember-qunit';
 moduleForModel('nested-question-answer', 'Unit: NestedQuestionAnswer Model', {
-  needs: ['model:author', 'model:user', 'model:figure',
-    'model:journal',
-    'model:decision', 'model:invitation', 'model:affiliation', 'model:attachment',
-    'model:question-attachment', 'model:comment-look',
-    'model:phase', 'model:task', 'model:comment', 'model:participation',
-    'model:card-thumbnail', 'model:nested-question-owner',
-    'model:nested-question', 'model:nested-question-answer', 'model:collaboration',
-    'model:supporting-information-file', 'model:paper']
+  integration: true
 });
 
 test("wasAnswered returns true when the answer has a value (including false)", function(assert) {

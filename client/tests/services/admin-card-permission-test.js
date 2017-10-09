@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import Ember from 'ember';
 
 moduleFor('service:admin-card-permission', 'Unit | Service | Admin Card Permission', {
-  needs: ['service:store', 'model:card-permission', 'model:card', 'model:admin-journal-role'],
+  integration: true,
   beforeEach: function () {
     manualSetup(this.container);
     this.cardId = '1';

@@ -2,7 +2,7 @@ import {moduleForComponent, test} from 'ember-qunit';
 import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup } from 'ember-data-factory-guy';
 import { createQuestionWithAnswer } from 'tahi/tests/factories/nested-question';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 
 import hbs from 'htmlbars-inline-precompile';
 
@@ -14,7 +14,7 @@ moduleForComponent(
     beforeEach: function() {
       manualSetup(this.container);
       let journal = FactoryGuy.make('journal');
-      TestHelper.mockFind('journal').returns({model: journal});
+      TestHelper.mockFindRecord('journal').returns({model: journal});
       //
       let user = FactoryGuy.make('user');
       let author = FactoryGuy.make('author', { user: user });

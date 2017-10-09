@@ -1,29 +1,21 @@
 import Ember from 'ember';
-import { module, test } from 'qunit';
-import startApp from '../helpers/start-app';
-import FactoryGuy from 'ember-data-factory-guy';
+import { test } from 'qunit';
+import moduleForAcceptance from '../helpers/module-for-acceptance';
+import { mockFindRecord, mockDelete, make, mockFindAll } from 'ember-data-factory-guy';
 import Factory from '../helpers/factory';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 
-let App, paper, phase, task, inviteeEmail;
+let paper, phase, task, inviteeEmail;
 
-module('Integration: Inviting a reviewer', {
-  afterEach() {
-    Ember.run(function() { TestHelper.teardown(); });
-    Ember.run(App, 'destroy');
-  },
-
+moduleForAcceptance('Integration: Inviting a reviewer', {
   beforeEach() {
-    App = startApp();
-    TestHelper.setup(App);
-
-    phase = FactoryGuy.make('phase');
-    task  = FactoryGuy.make('paper-reviewer-task', { phase: phase, letter: '"A letter"', viewable: true });
-    paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task] });
+    phase = make('phase');
+    task  = make('paper-reviewer-task', { phase: phase, letter: '"A letter"', viewable: true });
+    paper = make('paper', { phases: [phase], tasks: [task] });
     inviteeEmail = window.currentUserData.user.email;
 
     TestHelper.mockPaperQuery(paper);
-    TestHelper.mockFindAll('discussion-topic', 1);
+    mockFindAll('discussion-topic', 1);
 
     Factory.createPermission('Paper', 1, ['manage_workflow']);
     Factory.createPermission('PaperReviewerTask', task.id, ['edit']);
@@ -52,7 +44,7 @@ module('Integration: Inviting a reviewer', {
 
 test('disables the Compose Invite button until a user is selected', function(assert) {
   Ember.run(function(){
-    TestHelper.mockFind('task').returns({model: task});
+    mockFindRecord('paper-reviewer-task').returns({model: task});
     visit(`/papers/${paper.get('shortDoi')}/workflow`);
     click(".card-title:contains('Invite Reviewers')");
 
@@ -77,7 +69,7 @@ test('disables the Compose Invite button until a user is selected', function(ass
     });
 
     andThen(function() {
-      fillIn('#invitation-recipient', 'errorEmail');
+      //fillIn('#invitation-recipient', 'errorEmail');
       assert.elementFound(
         '.ember-view .error-message',
         'Show an error when email is not right'
@@ -88,10 +80,10 @@ test('disables the Compose Invite button until a user is selected', function(ass
 
 test('can delete a pending invitation', function(assert) {
   Ember.run(function() {
-    let decision = FactoryGuy.make('decision', 'draft');
+    let decision = make('decision', 'draft');
     task.set('decisions', [decision]);
 
-    let invitation = FactoryGuy.make('invitation', {
+    let invitation = make('invitation', {
       email: 'foo@bar.com',
       inviteeRole: 'Reviewer',
       state: 'pending'
@@ -99,9 +91,9 @@ test('can delete a pending invitation', function(assert) {
 
     decision.set('invitations', [invitation]);
 
-    TestHelper.mockFind('task').returns({model: task});
-    TestHelper.mockDelete('invitation', invitation.id);
-    TestHelper.mockFind('decision').returns({model: decision});
+    mockFindRecord('paper-reviewer-task').returns({model: task});
+    mockDelete('invitation', invitation.id);
+    mockFindRecord('decision').returns({model: decision});
 
     visit(`/papers/${paper.get('shortDoi')}/workflow`);
     click(".card-title:contains('Invite Reviewers')");
@@ -122,19 +114,19 @@ test('can delete a pending invitation', function(assert) {
 
 test('can not send or delete a pending invitation from a previous round', function(assert) {
   Ember.run(function() {
-    let decision = FactoryGuy.make('decision', 'draft');
-    let oldDecision = FactoryGuy.make('decision');
+    let decision = make('decision', 'draft');
+    let oldDecision = make('decision');
     task.set('decisions', [decision, oldDecision]);
 
-    let invitation = FactoryGuy.make('invitation', {
+    let invitation = make('invitation', {
       email: 'foo@bar.com',
       inviteeRole: 'Reviewer',
       state: 'pending'
     });
     oldDecision.set('invitations', [invitation]);
 
-    TestHelper.mockFind('task').returns({model: task});
-    TestHelper.mockFind('decision').returns({model: decision});
+    mockFindRecord('paper-reviewer-task').returns({model: task});
+    mockFindRecord('decision').returns({model: decision});
     $.mockjax({url: /\/api\/decisions\/2/, type: 'GET', status: 200, responseText: {
       decision: $.extend({id: oldDecision.id}, oldDecision.toJSON())
     }});

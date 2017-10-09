@@ -5,7 +5,7 @@ let flash, server;
 const health_uri = '/health';
 
 moduleFor('service:health-check', 'Unit | Service | Health Check', {
-  needs: [],
+  integration: true,
 
   afterEach() {
     $.mockjax.clear()

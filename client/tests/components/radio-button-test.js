@@ -22,7 +22,7 @@ test('value is required', function(assert) {
   assert.expect(1);
 
   assert.throws(function() {
-    this.render(hbs`
+    this.subject(hbs`
       {{radio-button}}
     `);
   }, Error, 'has thrown an Error');
@@ -32,7 +32,7 @@ test('selection is required', function(assert) {
   assert.expect(1);
 
   assert.throws(function() {
-    this.render(hbs`
+    this.subject(hbs`
       {{radio-button value="red"}}
     `);
   }, Error, 'has thrown an Error');

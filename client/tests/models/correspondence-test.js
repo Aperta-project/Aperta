@@ -1,28 +1,16 @@
 import Ember from 'ember';
-import { moduleForModel, test } from 'ember-qunit';
-import FactoryGuy from 'ember-data-factory-guy';
-import startApp from '../helpers/start-app';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import { moduleFor, test } from 'ember-qunit';
+import { manualSetup, make } from 'ember-data-factory-guy';
 
-var app;
-
-moduleForModel('correspondence', 'Unit | Model | Correspondence', {
-  needs: ['model:correspondence', 'model:paper'],
-
-  afterEach: function() {
-    Ember.run(function() {
-      return TestHelper.teardown();
-    });
-    return Ember.run(app, 'destroy');
-  },
-  beforeEach: function() {
-    app = startApp();
-    return TestHelper.setup(app);
+moduleFor('model:correspondence', 'Unit | Model | Correspondence', {
+  integration: true,
+  beforeEach() {
+    manualSetup(this.container);
   }
 });
 
 test('manuscriptVersionStatus with  valid values', function(assert) {
-  var correspondence = FactoryGuy.make('correspondence', {
+  var correspondence = make('correspondence', {
   });
   var scenarios = [
     {
@@ -41,16 +29,16 @@ test('manuscriptVersionStatus with  valid values', function(assert) {
 });
 
 test('manuscriptVersionStatus for external correspondence and old papers', function(assert) {
-  var correspondence = FactoryGuy.make('correspondence', {
+  var correspondence = make('correspondence', {
   });
-  
+
   var scenarios = [
     {
       data: {
         manuscriptVersion: 'v2.0',
-        manuscriptStatus: 'submitted',
-      },
-    },
+        manuscriptStatus: 'submitted'
+      }
+    }
   ];
   scenarios.forEach(function(scenario) {
     Ember.run(function() {
@@ -58,4 +46,4 @@ test('manuscriptVersionStatus for external correspondence and old papers', funct
     }),
     assert.equal(correspondence.get('manuscriptVersionStatus'), 'v2.0 submitted');
   });
-}); 
+});

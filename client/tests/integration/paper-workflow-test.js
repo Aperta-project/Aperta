@@ -2,13 +2,12 @@ import Ember from 'ember';
 import { test } from 'ember-qunit';
 import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 import setupMockServer from 'tahi/tests/helpers/mock-server';
-import { paperWithParticipant } from 'tahi/tests/helpers/setups';
 import Factory from 'tahi/tests/helpers/factory';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
+import { make, mockFindAll } from 'ember-data-factory-guy';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 
 let server = null;
-let paper = null;
 
 moduleForAcceptance('Integration: Paper Workflow page', {
   afterEach() {
@@ -16,64 +15,30 @@ moduleForAcceptance('Integration: Paper Workflow page', {
   },
 
   beforeEach() {
+
+    let paper = make('paper', {journal: {id: 1}});
+    let user = make('user');
+    let task = make('task');
+    make('phase', { paper: paper, tasks: [task] });
+    make('participation', { user: user, task: task });
     Factory.resetFactoryIds();
     server = setupMockServer();
     TestHelper.mockFindAll('discussion-topic', 1);
     registerCustomAssertions();
 
-    let taskPayload = {
-      task: {
-        id: 1,
-        title: 'New Ad-Hoc Task',
-        type: 'AdHocTask',
-        phase_id: 1,
-        paper_id: 1,
-        lite_paper_id: 1
-      }
-    };
-
-    paper = paperWithParticipant();
-
-    $.mockjax({type: 'GET',
-      url: '/api/papers',
-      status: 200,
-      responseText: {papers:[]}
-    });
-
-    $.mockjax({type: 'GET',
-      url: '/api/papers/' + paper.shortDoi,
-      status: 200,
-      responseText: paperWithParticipant().toJSON()
-    });
-
-    $.mockjax({type: 'POST',
-      url: '/api/tasks',
-      status: 200,
-      responseText: taskPayload
-    });
+    TestHelper.mockPaperQuery(paper);
 
     $.mockjax({type: 'DELETE',
       url: '/api/tasks/1',
       status: 204
     });
-    $.mockjax({type: 'DELETE',
-      url: '/api/tasks/2',
-      status: 204
-    });
 
-    $.mockjax({type: 'GET',
-      url: '/api/invitations',
-      status: 200,
-      responseText: {invitations:[]}
-    });
-
-    $.mockjax({type: 'GET',
-      url: '/api/journals',
-      status: 200,
-      responseText: {journals:[]}
-    });
+    mockFindAll('journal');
+    mockFindAll('paper');
+    mockFindAll('invitation');
 
     Factory.createPermission('Paper', 1, ['manage_workflow']);
+    this.paper = paper;
   }
 });
 
@@ -82,7 +47,7 @@ test('transition to route without permission fails', function(assert){
   var store = getStore();
   Ember.run(() => store.peekAll('permission').invoke('unloadRecord'));
 
-  visit('/papers/' + paper.shortDoi + '/workflow');
+  visit('/papers/' + this.paper.get('shortDoi') + '/workflow');
   andThen(function(){
     assert.equal(
       currentPath(),
@@ -94,7 +59,7 @@ test('transition to route without permission fails', function(assert){
 
 test('transition to route with permission succeeds', function(assert){
   assert.expect(1);
-  visit('/papers/' + paper.shortDoi + '/workflow');
+  visit('/papers/' + this.paper.get('shortDoi') + '/workflow');
 
   andThen(function(){
     assert.equal(
@@ -106,7 +71,7 @@ test('transition to route with permission succeeds', function(assert){
 });
 
 test('show delete confirmation overlay on deletion of a Task', function(assert) {
-  visit('/papers/' + paper.shortDoi + '/workflow');
+  visit('/papers/' + this.paper.get('shortDoi') + '/workflow');
   andThen(function() {
     $('.card .card-remove').show();
     click('.card .card-remove');
@@ -128,7 +93,7 @@ test('show delete confirmation overlay on deletion of a Task', function(assert) 
 });
 
 test('click delete confirmation overlay cancel button', function(assert) {
-  visit('/papers/' + paper.shortDoi + '/workflow');
+  visit('/papers/' + this.paper.get('shortDoi') + '/workflow');
 
   andThen(function() {
     assert.equal(find('.card-title').length, 1);
@@ -140,7 +105,7 @@ test('click delete confirmation overlay cancel button', function(assert) {
 });
 
 test('click delete confirmation overlay submit button', function(assert) {
-  visit('/papers/' + paper.shortDoi + '/workflow');
+  visit('/papers/' + this.paper.get('shortDoi') + '/workflow');
 
   andThen(function() {
     assert.equal(find('.card-title').length, 1, 'card exists');
@@ -153,6 +118,6 @@ test('click delete confirmation overlay submit button', function(assert) {
     assert.equal(find('.card-title').length, 0, 'card deleted');
 
 
-    assert.mockjaxRequestMade('/api/tasks/2', 'DELETE', 'It sends a DELETE request to the server');
+    assert.mockjaxRequestMade('/api/tasks/1', 'DELETE', 'It sends a DELETE request to the server');
   });
 });

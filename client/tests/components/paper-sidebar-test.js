@@ -32,9 +32,16 @@ test('Shows the submit button when the paper is ready to submit and the user is 
     '#sidebar-submit-paper',
     'the submit button should be visible when the user is authorized'
   );
+});
 
+test('does not show the submit button if the user is unauthorized', function(assert) {
+  let paper = Ember.Object.create({isReadyForSubmission: true});
+  this.set('paper', paper);
+
+  this.registry.register('service:can', FakeCanService);
+  let fake = this.container.lookup('service:can');
+  let template = hbs`{{paper-sidebar paper=paper}}`;
   fake.rejectPermission('submit');
-  this.$().empty(); // this.render() only appends to the test container
   this.render(template);
   assert.elementNotFound(
     '#sidebar-submit-paper',

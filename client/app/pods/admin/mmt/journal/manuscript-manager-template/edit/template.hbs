@@ -36,7 +36,7 @@
       outAnimationComplete=(action "hideAdHocTaskOverlay")}}
 {{/if}}
 
-{{#control-bar}}
+{{#ember-wormhole to="mobile-nav"}}
   <nav role="navigation" id="control-bar">
     {{#unless showSaveButton}}
       {{#link-to "admin.journals.workflows" journal.id id="control-bar-journal-back-button"}}
@@ -89,7 +89,7 @@
     {{/if}}
     <div class="spacer"></div>
   </nav>
-{{/control-bar}}
+{{/ember-wormhole}}
 
 <div class="columns manuscript-manager-template-columns">
   {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}

@@ -617,9 +617,9 @@ users = [creator_login1,
          creator_login7,
          creator_login8,
          creator_login9,
-         creator_login10,
+         # creator_login10, # temporarily commented username with non ascii characters due to APERTA-11437
          creator_login11,
-         creator_login12,
+         # creator_login12, # temporarily commented username with non ascii characters due to APERTA-11437
          creator_login13,
          creator_login14,
          creator_login15,
@@ -698,9 +698,9 @@ all_orcid_users = [
                    creator_login7,
                    creator_login8,
                    creator_login9,
-                   creator_login10,
+                   # creator_login10, # temporarily commented username with non-ascii characters due to APERTA-11437
                    creator_login11,
-                   creator_login12,
+                   # creator_login12, # temporarily commented username with non-ascii characters due to APERTA-11437
                    creator_login13,
                    creator_login14,
                    creator_login15,

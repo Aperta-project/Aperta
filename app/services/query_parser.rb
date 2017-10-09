@@ -98,7 +98,9 @@ class QueryParser < QueryLanguageParser
       Arel::Nodes::SqlLiteral.new(
         assignment.project(:assigned_to_id)
                   .where(assignment[:role_id].in(role_ids)
-                  .and(assignment[:assigned_to_type].eq('Paper'))).to_sql))
+                  .and(assignment[:assigned_to_type].eq('Paper'))).to_sql
+      )
+    )
   end
 
   add_two_part_expression('TASK', 'IS COMPLETE') do |task, _|
@@ -110,14 +112,16 @@ class QueryParser < QueryLanguageParser
     task_table = join Task
     invite_table = join Invitation, "task_id", task_table.table_alias + ".id"
     task_table[:title].matches(task).and(
-      invite_table[:state].in(%w(pending invited)))
+      invite_table[:state].in(%w[pending invited])
+    )
   end
 
   add_two_part_expression('TASK', 'HAS NO OPEN INVITATIONS') do |task, _|
     task_table = join Task
     invite_table = join Invitation, "task_id", task_table.table_alias + ".id"
     task_table[:title].matches(task).and(
-      invite_table[:state].not_in(%w(pending invited)))
+      invite_table[:state].not_in(%w[pending invited])
+    )
   end
 
   add_two_part_expression('TASK',
@@ -141,6 +145,23 @@ class QueryParser < QueryLanguageParser
     end
   end
 
+  add_two_part_expression('TASK', 'IS UNASSIGNED') do |task, _|
+    table = join Task
+    table.grouping(table[:title].matches(task).and(table[:assigned_user_id].eq(nil))).or(
+      paper_table[:id].not_in(
+        Arel::Nodes::SqlLiteral.new(
+          Task.arel_table.project(:paper_id).where(Task.arel_table[:title].matches(task)).to_sql
+        )
+      )
+    )
+  end
+
+  add_two_part_expression('TASK', 'IS ASSIGNED TO') do |task, user_query|
+    table = join Task
+    user_ids = get_user_ids(user_query)
+    table[:title].matches(task).and(table[:assigned_user_id].in(user_ids))
+  end
+
   add_simple_expression('HAS TASK') do |task|
     table = join Task
     table[:title].matches(task)
@@ -150,26 +171,32 @@ class QueryParser < QueryLanguageParser
     paper_table[:id].not_in(
       Arel::Nodes::SqlLiteral.new(
         Task.arel_table.project(:paper_id).where(
-          Task.arel_table[:title].matches(task)).to_sql))
+          Task.arel_table[:title].matches(task)
+        ).to_sql
+      )
+    )
   end
 
   add_no_args_expression('ALL REVIEWS COMPLETE') do
     task_table = Task.arel_table
     incomplete_reviews = task_table.project(:paper_id).where(
-      task_table[:type].in(types_for_sti TahiStandardTasks::ReviewerReportTask)
-      .and(task_table[:completed].eq(false)))
+      task_table[:type].in(types_for_sti(TahiStandardTasks::ReviewerReportTask))
+      .and(task_table[:completed].eq(false))
+    )
 
     joined_tasks = join Task
 
     paper_table[:id].not_in(
-      Arel::Nodes::SqlLiteral.new(incomplete_reviews.to_sql)).and(
-        joined_tasks[:type].in(types_for_sti TahiStandardTasks::ReviewerReportTask))
+      Arel::Nodes::SqlLiteral.new(incomplete_reviews.to_sql)
+    ).and(
+      joined_tasks[:type].in(types_for_sti(TahiStandardTasks::ReviewerReportTask))
+    )
   end
 
   add_no_args_expression('NOT ALL REVIEWS COMPLETE') do
     table = join Task
 
-    table[:type].in(types_for_sti TahiStandardTasks::ReviewerReportTask)
+    table[:type].in(types_for_sti(TahiStandardTasks::ReviewerReportTask))
       .and(table[:completed].eq(false))
   end
 
@@ -219,7 +246,7 @@ class QueryParser < QueryLanguageParser
   end
 
   def get_user_ids(user_query)
-    if user_query == "me"
+    if user_query.casecmp("me").zero?
       [@current_user.id]
     else
       User.fuzzy_search(user_query).pluck(:id)
@@ -313,12 +340,14 @@ class QueryParser < QueryLanguageParser
     language = Arel::Nodes.build_quoted('english')
     title_vector = Arel::Nodes::NamedFunction.new(
       'to_tsvector',
-      [language, title_col])
+      [language, title_col]
+    )
 
     quoted_query_str = Arel::Nodes.build_quoted(title.gsub(/\s+/, '&'))
     query_vector = Arel::Nodes::NamedFunction.new(
       'to_tsquery',
-      [language, quoted_query_str])
+      [language, quoted_query_str]
+    )
 
     Arel::Nodes::InfixOperation.new('@@', title_vector, query_vector)
   end
@@ -333,7 +362,8 @@ class QueryParser < QueryLanguageParser
     @join_counter += 1
     latest_decisions = decision_table.project(
       :paper_id,
-      decision_table[:registered_at].maximum.as('registered_at'))
+      decision_table[:registered_at].maximum.as('registered_at')
+    )
       .where(decision_table[:registered_at].not_eq(nil)
              .and(decision_table[:rescinded].not_eq(true)))
       .group(:paper_id)

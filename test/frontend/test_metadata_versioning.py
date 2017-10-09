@@ -25,7 +25,7 @@ class MetadataVersioningTest(CommonTest):
 
   APERTA-5747
   """
-  def test_metadata_versioning(self):
+  def test_smoke__metadata_versioning(self):
     """
     test_metadata_versioning: Validates diffing and versioning functions
       creates, doc, submits, is invited for major revision, makes changes, submits, views diffs

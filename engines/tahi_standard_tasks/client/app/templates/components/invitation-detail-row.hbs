@@ -28,9 +28,12 @@
             {{else}}
               <span>
                 {{#if invitation.reviewerReport.dueAt}}
-                  Review due {{format-date invitation.reviewerReport.dueAt format="MMM D, YYYY"}}
+                  <p>Review due {{format-date invitation.reviewerReport.dueAt format="MMM D, YYYY"}}</p>
                 {{else}}
                   Review pending
+                {{/if}}
+                {{#if (and invitation.actor notAcceptedByInvitee)}}
+                  <p class="not-bold">Accepted by <em>{{invitation.actor.fullName}}</em></p>
                 {{/if}}
               </span>
             {{/if}}
@@ -73,13 +76,17 @@
           {{/tool-tip}}
         </span>
       {{/if}}
+      {{#if displayAcceptOnBehalfButton}}
+        <span class="invitation-item-action" {{action "acceptInvitation" invitation bubbles=false}}>
+          {{fa-icon icon="check-circle-o"}}
+          Accept invitation for reviewer
+        </span>
+      {{/if}}
       {{#if displayRescindButton}}
         <span class="invitation-item-action invitation-item-action-rescind {{if invitationsInFlight "invitation-item-action--disabled"}}"
               {{action "rescindInvitation" invitation bubbles=false}}>
           <span class="fa fa-ban invite-rescind"></span>
-          {{#unless disabled}}
-            <span class="invitation-item-action-text">Rescind</span>
-          {{/unless}}
+          <span class="invitation-item-action-text">Rescind</span>
         </span>
         {{/if}}
       {{#if displaySendButton}}
@@ -116,6 +123,9 @@
     <div class="invitation-item-state-and-date">
       {{#if invitation.accepted}}
         <span>Accepted {{format-date invitation.acceptedAt format="LLL"}}</span>
+        {{#if (and invitation.actor notAcceptedByInvitee)}}
+          <span> by {{invitation.actor.fullName}}</span>
+        {{/if}}
         <hr>
       {{else if invitation.rescinded}}
         <span>Rescinded {{format-date invitation.rescindedAt format="LLL"}}</span>

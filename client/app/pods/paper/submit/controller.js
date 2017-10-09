@@ -12,13 +12,9 @@ export default Ember.Controller.extend({
 
   paper: Ember.computed.alias('model.paper'),
   tasks: Ember.computed.alias('model.tasks'),
-  prePrintTask: Ember.computed.alias('model.prePrintTask'),
 
-  prePrintOptOut: Ember.computed('paper.tasks.[]', function() {
-    let prePrintTask = this.get('tasks').findBy('title', 'Preprint Posting');
-    const answer = prePrintTask ? prePrintTask.get('answers.firstObject.value') : undefined;
-    let value = (answer === '2');
-    return value;
+  preprintOptOut: Ember.computed('paper.preprintOptOut', function() {
+    return this.get('paper.preprintOptOut');
   }),
 
   fileDownloadUrl: Ember.computed('paper', function() {
@@ -34,11 +30,12 @@ export default Ember.Controller.extend({
       this.recordPreviousPublishingState();
       this.get('restless').putUpdate(this.get('paper'), '/submit').then(() => {
         this.set('paperSubmitted', true);
+        this.transitionToRoute('paper.index', this.get('paper.shortDoi'));
       }, (arg) => {
         const status = arg.status;
         const model = arg.model;
         let message;
-        const errors = model.get('errors.messages');
+        const errors = model ? model.get('errors.messages') : arg.errors;
         switch (status) {
         case 422:
           message = errors + ' You should probably reload.';

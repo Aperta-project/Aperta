@@ -1,20 +1,20 @@
 import Ember from 'ember';
 import { task as concurrencyTask, timeout } from 'ember-concurrency';
 
+let pusherConnectionState = 'pusher.pusher.connection.state';
 export default Ember.Mixin.create({
 
   pusher: Ember.inject.service('pusher'),
   flash: Ember.inject.service('flash'),
 
   pusherNotConnected: Ember.computed.alias('pusher.isDisconnected'),
-  pusherConnectionState: Ember.computed.alias('pusher.connection.connection.state'),
 
   pusherConnectionStatusChanged: Ember.on('init', Ember.observer('pusherNotConnected', function() {
     this.handlePusherConnectionStatusChange();
   })),
 
   handlePusherConnectionStatusChange() {
-    if (this.get('pusherConnectionState') === 'connecting') {
+    if (this.get(pusherConnectionState) === 'connecting') {
       this.get('handlePusherConnecting').perform();
     } else {
       this.cleanupPusherConnecting();
@@ -46,7 +46,7 @@ export default Ember.Mixin.create({
   },
 
   updatePusherConnectionMessage() {
-    let message = this.pusherFailureMessages[this.get('pusherConnectionState')];
+    let message = this.pusherFailureMessages[this.get(pusherConnectionState)];
     let messages = this.get('flash').get('systemLevelMessages').filterBy('text', message);
     if (!messages.length) {
       this.get('flash').displaySystemLevelMessage('error', message);

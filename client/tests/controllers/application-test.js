@@ -6,7 +6,7 @@ let healthCheckStub, pusherStub, pusherFailureMessagesStub, flashStub;
 moduleFor('controller:application', 'Unit | Controller | application', {
   beforeEach: function() {
     healthCheckStub = { start: ()=>{} };
-    pusherStub = Ember.Object.create({connection: { connection: { state: 'connecting' } }});
+    pusherStub = Ember.Object.create({pusher: { connection: { state: 'connecting' } }});
     pusherFailureMessagesStub = { failed: 'f', unavailable: 'u', connecting: 'c', disconnected: 'd' };
     flashStub = Ember.Object.create({
       systemLevelMessages: Ember.A(),
@@ -21,7 +21,7 @@ moduleFor('controller:application', 'Unit | Controller | application', {
 });
 
 function updatePusher(connectionState) {
-  pusherStub.set('connection.connection.state', connectionState);
+  pusherStub.set('pusher.connection.state', connectionState);
   pusherStub.set('isDisconnected', connectionState !== 'connected');
 }
 function simulateConnectingCompleted(connectionState, controller){
@@ -34,7 +34,7 @@ test('Slanger notifications - happy path', function(assert) {
   assert.expect(3);
   let complete = assert.async();
 
-  pusherStub.set('connection.connection.state', 'connecting');
+  pusherStub.set('pusher.connection.state', 'connecting');
   let controller = null;
   Ember.run(() => {
     controller = this.subject({ 
@@ -48,7 +48,7 @@ test('Slanger notifications - happy path', function(assert) {
     assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [], 'flashes no connection messages');
   });
   Ember.run(() => {
-    pusherStub.set('connection.connection.state', 'connected');
+    pusherStub.set('pusher.connection.state', 'connected');
     assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [], 'flashes no connection messages');
     complete();
   });
@@ -79,7 +79,7 @@ test('Slanger notifications - failed to connect', function(assert) {
       'flashes unavailable message');
   });
   Ember.run(() => {
-    pusherStub.set('connection.connection.state', 'failed');
+    pusherStub.set('pusher.connection.state', 'failed');
     assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}],
       'flashes unavailable because we can\'t see a change between two disconnected states');
     complete();

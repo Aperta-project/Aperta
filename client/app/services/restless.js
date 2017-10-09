@@ -13,10 +13,10 @@ export default Ember.Service.extend({
   },
 
   ajaxPromise(method, path, data) {
-    let pusher = getOwner(this).lookup('pusher:main');
+    let pusher = getOwner(this).lookup('service:pusher');
     let socketId = null;
     if (pusher) {
-      socketId = getOwner(this).lookup('pusher:main').get('socketId');
+      socketId = getOwner(this).lookup('service:pusher').get('socketId');
     }
 
     let contentType = 'application/x-www-form-urlencoded; charset=UTF-8';

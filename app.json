@@ -154,6 +154,9 @@
     "MAX_THREADS": {
       "required": true
     },
+    "NED_API_ENABLED": {
+      "required": true
+    },
     "NED_API_URL": {
       "required": true
     },
@@ -161,6 +164,9 @@
       "required": true
     },
     "NED_CAS_APP_PASSWORD": {
+      "required": true
+    },
+    "NED_INSTITUTIONS_ENABLED": {
       "required": true
     },
     "NED_SSL_VERIFY": {
@@ -223,9 +229,6 @@
       "required": true
     },
     "S3_URL": {
-      "required": true
-    },
-    "NED_INSTITUTIONS_ENABLED": {
       "required": true
     }
   },

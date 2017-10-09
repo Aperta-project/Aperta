@@ -5,10 +5,10 @@ class NedConnection
   BASE_URL = TahiEnv.ned_api_url
   APP_ID = TahiEnv.ned_cas_app_id
   APP_PASSWORD = TahiEnv.ned_cas_app_password
-  RNF_MESSAGE = "Record not found"
+  RNF_MESSAGE = "Record not found".freeze
 
   def self.enabled?
-    TahiEnv.ned_integration_enabled?
+    TahiEnv.ned_api_enabled?
   end
 
   private

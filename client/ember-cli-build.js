@@ -30,16 +30,6 @@ module.exports = function(defaults) {
 
   app.import(app.bowerDirectory + '/underscore/underscore.js');
 
-  // Pusher
-  app.import(app.bowerDirectory + '/pusher/dist/web/pusher.js');
-  app.import(app.bowerDirectory + '/ember-pusher/ember-pusher.amd.js', {
-    exports: {
-      'ember-pusher/controller':    ['Controller'],
-      'ember-pusher/bindings':      ['Bindings'],
-      'ember-pusher/client_events': ['ClientEvents']
-    }
-  });
-
   // jQuery UI
   app.import(app.bowerDirectory + '/jquery-ui/ui/core.js');
   app.import(app.bowerDirectory + '/jquery-ui/ui/widget.js');

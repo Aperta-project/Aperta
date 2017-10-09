@@ -5,6 +5,7 @@ const { getOwner } = Ember;
 
 export default ActiveModelAdapter.extend({
   namespace: 'api',
+  pusher: Ember.inject.service(),
   headers: function() {
     Ember.assert(`Can't find the pusher service.  Most likely you're seeing this error in a test environment, and
                  Ember is making an ajax request for a resource you haven't stubbed, like a permissions check for a task.
@@ -17,14 +18,14 @@ export default ActiveModelAdapter.extend({
                  If you WERE planning on making a request to mockjax:
                    You're probably in a component integration test and you've forgotten
                    to use register a stub for the pusher service.  You can do that like this in the beforeEach hook:
-                   this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
-                 `, getOwner(this).lookup('pusher:main'));
+                   this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
+                 `, this.get('pusher'));
     return {
       namespace: 'api',
       // Weird capitalization and hyphens are intentional since this is is an
       // HTTP header name. Whatever you do, DO NOT add underscores to the header
       // name because nginx will start to ignore it.
-      'Pusher-Socket-ID': getOwner(this).lookup('pusher:main').get('socketId')
+      'Pusher-Socket-ID': this.get('pusher').get('socketId')
     };
   }.property().volatile(),
 

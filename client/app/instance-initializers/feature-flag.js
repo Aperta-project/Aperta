@@ -5,5 +5,6 @@ export function initialize(app) {
 
 export default {
   name: 'feature-flag',
-  initialize: initialize,
+  after: 'pusher-setup',
+  initialize: initialize
 };

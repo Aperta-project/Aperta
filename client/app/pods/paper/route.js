@@ -5,6 +5,7 @@ import Ember from 'ember';
 export default AuthorizedRoute.extend(PopoutParentRouteMixin,{
   channelName: null,
   popoutParams: { top: 10, left: 10, height: window.screen.height, width: 900 },
+  pusher: Ember.inject.service(),
 
   model(params) {
     return this.store.query('paper', { shortDoi: params.paper_shortDoi })

@@ -68,7 +68,7 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
   }),
 
   paperTitle: Ember.computed('paper', function() {
-    return this.get('paper.displayTitle');
+    return Ember.String.htmlSafe(this.get('paper.displayTitle'));
   }),
 
   getSnapshotForVersion: function(fullVersion) {

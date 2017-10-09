@@ -2,8 +2,15 @@
 
 <%= render layout: 'container' do %>
   <div class='message'>
-    <span class='bold'>You've successfully declined the invitation to
-      review</span> "<%= @paper.title.html_safe %>". We're always trying to improve our
+    <% if @invitation.invitee_role == 'Reviewer' %>
+      <span class='bold'>You've successfully declined the invitation to
+        review </span>  
+    <% else %>
+      <span class='bold'>You've successfully declined the invitation to
+        be the Academic Editor for </span>
+    <% end %>
+      "<%= @paper.title.html_safe %>".
+      We're always trying to improve our
     invitation process and would appreciate your feedback below.
   </div>
   <div>
@@ -18,8 +25,12 @@
 
       <%= f.label :reviewer_suggestions do %>
         <div style='margin-bottom: 0.5em;'>
-          We would value your suggestions of alternative reviewers for this manuscript.<br/>
-          Please provide reviewers' names, institutions, and email addresses if known.
+          We would value your suggestions of alternative <%= @invitation.invitee_role %>s for this manuscript.<br/>
+          <% if @invitation.invitee_role == 'Reviewer' %>
+            Please provide reviewers' names, institutions, and email addresses if known.
+          <% else %>
+            Please provide editors' names, institutions, and email addresses if known.
+          <% end %>
         </div>
       <% end %>
       <%= f.text_area :reviewer_suggestions, class: 'tinymce', id: 'invitation_reviewer_suggestions' %>

@@ -97,9 +97,9 @@
         </thead>
 
         <tbody>
-          {{#each model as |paper|}}
-            {{partial "paper-tracker/row"}}
-          {{/each}}
+        {{#each model as |paper|}}
+          {{paper-tracker-row paper=paper}}
+        {{/each}}
         </tbody>
 
       </table>

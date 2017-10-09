@@ -48,7 +48,7 @@ export default AuthorizedRoute.extend({
   setupController(controller, model) {
     this._super(controller, model);
     this.store.findAll('comment-look');
-    this.setControllerData(controller);
+    this.setControllerData(controller);  
   },
 
   metaData: null, // comes in payload, must be plucked for use in setupController

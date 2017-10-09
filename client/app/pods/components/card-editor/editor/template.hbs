@@ -1,13 +1,15 @@
 {{#ember-wormhole to="card-editor-action-buttons"}}
-  {{#if (eq card.state "draft")}}
-    <button class="button button-secondary button--blue editor-delete"
-            disabled={{or editorIsDirty deleteCard.isRunning}}
-            {{action "confirmDelete"}}>Delete</button>
-  {{/if}}
+  <div>
+    {{#if (eq card.state "draft")}}
+      <button class="button button-secondary button--blue editor-delete"
+              disabled={{or editorIsDirty deleteCard.isRunning}}
+              {{action "confirmDelete"}}>Delete</button>
+    {{/if}}
 
   <button class="button button-secondary button--blue editor-archive"
           disabled={{or (not-eq card.state "published") archiveCard.isRunning}}
           {{action "confirmArchive"}}>Archive</button>
+  </div>
 {{/ember-wormhole}}
 
 <div class="card-editor-save-buttons">

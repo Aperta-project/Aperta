@@ -19,7 +19,7 @@ export default DS.Model.extend({
   inviteeRole: DS.attr('string'),
   position: DS.attr('number'),
   primary: DS.belongsTo('invitation', { inverse: 'alternates', async: false }),
-  alternates: DS.hasMany('invitation'),
+  alternates: DS.hasMany('invitation', { inverse: 'primary' }),
   reviewerSuggestions: DS.attr('string'),
   state: DS.attr('string'),
   task: DS.belongsTo('task', { polymorphic: true }),

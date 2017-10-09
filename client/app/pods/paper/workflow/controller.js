@@ -20,9 +20,11 @@ export default Controller.extend(Discussions, {
   restless: service('restless'),
   routing: service('-routing'),
   positionSort: ['position:asc'],
-  sortedPhases: sort('model.phases', 'positionSort'),
+  sortedPhases: sort('phases', 'positionSort'),
+  phases: alias('model.phases'),
 
   paper: alias('model'),
+  tasks: alias('model.tasks'),
   subRouteName: 'workflow',
 
   activityIsLoading: false,
@@ -98,14 +100,14 @@ export default Controller.extend(Discussions, {
 
   actions: {
     viewCard(task) {
-      const r = this.get('routing.router.router');
+      const r = this.get('routing.router._routerMicrolib');
       r.updateURL(r.generate('paper.task', task.get('id')));
       this.set('taskToDisplay', task);
       this.set('showTaskOverlay', true);
     },
 
     hideTaskOverlay() {
-      const r = this.get('routing.router.router');
+      const r = this.get('routing.router._routerMicrolib');
       const lastRoute = r.currentHandlerInfos[r.currentHandlerInfos.length - 1];
       r.updateURL(r.generate(lastRoute.name, lastRoute.context.get('shortDoi')));
       this.set('showTaskOverlay', false);

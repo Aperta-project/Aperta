@@ -21,7 +21,7 @@
       <th>Last Name</th>
       <th>First Name</th>
       <th>Username</th>
-      {{#if roles }}
+      {{#if roles}}
         <th class="admin-users-list-roles">Roles</th>
       {{/if}}
     </tr>
@@ -30,7 +30,7 @@
       {{admin-journal-user user=user
         journal=journal
         displayDialog=(action "showUserDetailsOverlay" user)
-        journalRoles=roles }}
+        journalRoles=roles}}
     {{/each}}
   </table>
 {{else}}

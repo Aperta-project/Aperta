@@ -17,7 +17,7 @@ export default Ember.Component.extend({
     );
     Ember.assert(
       'You must pass a selection property to the RadioButtonComponent',
-      this.attrs.hasOwnProperty('selection')
+      this.hasOwnProperty('selection')
     );
   },
 

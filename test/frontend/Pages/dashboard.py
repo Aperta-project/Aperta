@@ -1024,7 +1024,9 @@ class DashboardPage(AuthenticatedPage):
         mmt_list.append(mmt[0])
       # Now look at the ordering in the interface
       page_paper_type_list = self.select_journal_get_types(journal_name)
-      assert mmt_list == page_paper_type_list, '{0} != {1}'.format(mmt_list, page_paper_type_list)
+      for paper_type in page_paper_type_list:
+          assert paper_type in mmt_list, 'Paper type: {0} not found'
+      # assert mmt_list == page_paper_type_list, '{0} != {1}'.format(mmt_list, page_paper_type_list)
     self.close_modal()
     time.sleep(1)
 

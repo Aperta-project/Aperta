@@ -43,26 +43,38 @@ export default Service.extend({
   },
 
   _didStartLoading() {
-    this.setProperties({
-      loaded: false,
-      loading: true,
-      error: false
+    Ember.run.schedule('afterRender', () => {
+      if (!this.get('isDestroying')) {
+        this.setProperties({
+          loaded: false,
+          loading: true,
+          error: false
+        });
+      }
     });
   },
 
   _didError() {
-    this.setProperties({
-      loaded: false,
-      loading: false,
-      error: true
+    Ember.run.schedule('afterRender', () => {
+      if (!this.get('isDestroying')) {
+        this.setProperties({
+          loaded: false,
+          loading: false,
+          error: true
+        });
+      }
     });
   },
 
   _didLoad() {
-    this.setProperties({
-      loaded: true,
-      loading: false,
-      error: false
+    Ember.run.schedule('afterRender', () => {
+      if (!this.get('isDestroying')) {
+        this.setProperties({
+          loaded: true,
+          loading: false,
+          error: false
+        });
+      }
     });
   }
 });

@@ -5,8 +5,6 @@ import config from './config/environment';
 
 let App;
 
-Ember.MODEL_FACTORY_INJECTIONS = true;
-
 // uncomment and navigate to invoke or invokeWithOnError and look
 // at the errorRecordedForStack property to get stack traces for the run loop
 // Ember.run.backburner.DEBUG = true;

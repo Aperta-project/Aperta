@@ -5,18 +5,18 @@ export default {
     const data = window.currentUserData;
     if($.isEmptyObject(data)) { return; }
 
-    const store = instance.container.lookup('service:store');
+    const store = instance.lookup('service:store');
     store.pushPayload(data);
 
     let user = store.peekRecord('user', data.user.id);
-    instance.registry.register('user:current', user, {
+    instance.register('service:currentUser', user, {
       instantiate: false
     });
 
-    instance.registry.injection('controller', 'currentUser', 'user:current');
-    instance.registry.injection('route',      'currentUser', 'user:current');
-    instance.registry.injection('component', 'currentUser', 'user:current');
-    instance.registry.injection('model:author', 'currentUser', 'user:current');
-    instance.registry.injection('service:notifications', 'currentUser',  'user:current');
+    instance.inject('controller', 'currentUser', 'service:currentUser');
+    instance.inject('route',      'currentUser', 'service:currentUser');
+    instance.inject('component', 'currentUser', 'service:currentUser');
+    instance.inject('model:author', 'currentUser', 'service:currentUser');
+    instance.inject('service:notifications', 'currentUser',  'service:currentUser');
   }
 };

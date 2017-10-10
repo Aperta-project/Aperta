@@ -24,7 +24,7 @@ class ReportingGuidelinesTask(BaseTask):
     # Locators - Instance members
     self._question_text = (By.CSS_SELECTOR, 'li.question')
     self._select_instruction = (By.CSS_SELECTOR, 'div.question-list div.card-content-view-text p')
-    self._selection_list = (By.CSS_SELECTOR, 'div.question-list div.left-indent')
+    self._selection_list = (By.CSS_SELECTOR, 'div.task-main-content.custom-card-task.single-column')
     self._prisma_upload_button = (By.CLASS_NAME, 'fileinput-button')
     self._prisma_uploaded_file_link = (By.CLASS_NAME, 'file-link')
     self._file_replace = (By.CLASS_NAME, 'replace-attachment')

@@ -54,6 +54,7 @@ class UploadManuscriptTest(CommonTest):
     upms = UploadManuscriptTask(self.getDriver())
     upms.validate_styles()
     upms.click_completion_button()
+    time.sleep(1)
     assert ms_page.is_task_marked_complete('Upload Manuscript'), \
         'The task in not marked as complete and it should be completed'
 

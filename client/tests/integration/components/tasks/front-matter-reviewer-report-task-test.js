@@ -212,7 +212,7 @@ test('allows right permissions to view scheduled events', function (assert) {
     make('scheduled-event', { }),
     make('scheduled-event', { })
   ];
-  const reviewerReport = make('reviewer-report', 'with_questions',
+  const reviewerReport = make('reviewer-report', 'with_front_matter_questions',
     { status: 'completed', task: this.task });
   Ember.run(() => {
     this.task.set('reviewerReports', [reviewerReport]);

@@ -56,7 +56,7 @@ class ReviewerReportCard(BaseCard):
     :return void function
     """
     question_block_list = self._gets(self._question_block)
-    qb1, qb2, qb3, qb4, qb5, qb6 = question_block_list
+    qb1, qb2, qb3, qb4, qb5, qb6, qb7 = question_block_list
     if research_type:
       recc_entry, q2bentry, q2entry, q3entry, q4entry, q5entry, q6bentry, q6entry = data
       recommendation = qb1.find_element(*self._res_q1_answer)

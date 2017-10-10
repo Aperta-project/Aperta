@@ -33,15 +33,18 @@ class BaseCard(AuthenticatedPage):
     self._manuscript_icon = (By.CLASS_NAME, 'manuscript-icon')
     self._close_button = (By.CSS_SELECTOR, 'a.overlay-close-button')
     self._card_heading = (By.CSS_SELECTOR, 'h1.overlay-body-title')
-
+    self._card_assingment_label = (By.CSS_SELECTOR, 'div.overlay-assignable-user > span')
+    self._card_assignment_button = (By.CSS_SELECTOR, 'div.overlay-assignable-user '
+                                                     '> div.add-participant-button')
     self._notepad_textarea = (By.CSS_SELECTOR, 'textarea.notepad')
     self._notepad_toggle_icon = (
         By.XPATH, '//span[contains(text(), "Your notepad")]/preceding-sibling::i')
 
     self._discussion_div = (By.CLASS_NAME, 'overlay-discussion-board')
     self._add_comment = (By.CLASS_NAME, 'new-comment-field')
-    self._following_label = (By.CLASS_NAME, 'participant-selector-label')
-    self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
+    self._following_label = (By.CSS_SELECTOR, '.overlay-footer > div '
+                                              '> span.participant-selector-label')
+    self._add_participant_btn = (By.CSS_SELECTOR, '.overlay-footer > div > .add-participant-button')
     self._message_comment = (By.CLASS_NAME, 'message-comment')
     self._completion_button = (By.CSS_SELECTOR, 'button.task-completed')
     self._bottom_close_button = (By.CSS_SELECTOR, 'footer.overlay-footer > a')
@@ -253,6 +256,7 @@ class BaseCard(AuthenticatedPage):
     assert expected_text.strip() in message_comment.text, (expected_text.strip(),
                                                            message_comment.text)
     # Check footer
+    self._scroll_into_view(self._get(self._following_label))
     following_label = self._get(self._following_label)
     assert following_label.text == 'Following:', following_label.text
     self._wait_for_element(self._get(self._add_participant_btn))

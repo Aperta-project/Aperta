@@ -41,8 +41,6 @@ moduleForAcceptance('Integration: FinancialDisclosure', {
 
     currentPaper = records[0];
     financialDisclosureTask = records[1];
-    journal = records[2];
-    phase = records[3];
 
     paperPayload = Factory.createPayload('paper');
     paperPayload.addRecords(records.concat([fakeUser]));
@@ -64,13 +62,6 @@ moduleForAcceptance('Integration: FinancialDisclosure', {
     taskPayload.addRecords([financialDisclosureTask, fakeUser]);
 
     financialDisclosureTask = taskPayload.toJSON();
-    collaborators = [
-      {
-        id: '35',
-        full_name: 'Aaron Baker',
-        info: 'testroles2, collaborator'
-      }
-    ];
 
     var tasksPayload = Factory.createPayload('tasks');
     tasksPayload.addRecords([financialDisclosureTask]);

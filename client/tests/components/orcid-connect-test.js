@@ -5,6 +5,8 @@ import { manualSetup }  from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import wait from 'ember-test-helpers/wait';
 import hbs from 'htmlbars-inline-precompile';
+import { pollTaskFor } from 'ember-lifeline/mixins/run';
+
 
 moduleForComponent('orcid-connect',
                    'Integration | Component | orcid connect',
@@ -51,32 +53,25 @@ test('component disables button when popup is open, and enables button when it i
   );
 
   this.$(buttonSelector).click();
-  assert.spyCalled(open);
-
-  let done1 = assert.async();
-  Ember.run.later(this, ()=>{
+  return wait().then(() => {
+    assert.spyCalled(open);
     assert.ok(
       isDisabled(buttonSelector) === true,
       'Button is disabled after clicking'
     );
-    done1();
-  });
-
-  // simulate closing the popup window.
-  this.get('openObject')['closed'] = true;
-  let done2 = assert.async();
-  Ember.run.later(this, ()=>{
+    // simulate closing the popup window.
+    this.set('openObject.closed', true);
+    pollTaskFor('orcid-connect#popup-closed');
+    return wait();
+  }).then(() => {
     assert.ok(
       isDisabled(buttonSelector) === false,
       'Button is not disabled after popup is closed'
     );
-    done2();
-    // Waiting 300ms to ensure we've given the orcid-connect component to test
-    // the `closed` property at least once.
-  }, 300);
+  });
 });
 
-test("component shows orcid id and trash can when a user is connected to orcid", function(assert){
+test('component shows orcid id and trash can when a user is connected to orcid', function(assert){
   let orcidAccount = FactoryGuy.make('orcid-account', {
     'status': 'authenticated',
     'identifier': '0000-0000-0000-0000',

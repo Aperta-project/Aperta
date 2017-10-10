@@ -1,7 +1,8 @@
 class Snapshot::CardContentSerializer
-  def initialize(card_content, owner)
+  def initialize(card_content, owner, repetition = nil)
     @card_content = card_content
     @owner = owner
+    @repetition = repetition
     @answer = fetch_answer
   end
 
@@ -9,7 +10,9 @@ class Snapshot::CardContentSerializer
     {
       name: @card_content.ident,
       type: 'question',
+      content_type: @card_content.content_type,
       value: {
+        repetition: @repetition.try(:id),
         id: @card_content.id,
         title: @card_content.text,
         answer_type: @card_content.value_type,
@@ -23,8 +26,16 @@ class Snapshot::CardContentSerializer
   private
 
   def serialized_children_json
-    @card_content.children.map do |child|
-      Snapshot::CardContentSerializer.new(child, @owner).as_json
+    if @card_content.content_type == "repeat"
+      @card_content.repetitions.where(task: @owner, parent: @repetition).order(:lft).flat_map do |repetition|
+        @card_content.children.map do |child|
+          Snapshot::CardContentSerializer.new(child, @owner, repetition).as_json
+        end
+      end
+    else
+      @card_content.children.flat_map do |child|
+        Snapshot::CardContentSerializer.new(child, @owner, @repetition).as_json
+      end
     end
   end
 
@@ -38,7 +49,7 @@ class Snapshot::CardContentSerializer
 
   def fetch_answer
     @owner.answers
-      .where(card_content: @card_content)
+      .where(card_content: @card_content, repetition: @repetition)
       .first
   end
 end

@@ -65,8 +65,8 @@ class Snapshot::BaseSerializer
     if model.try(:card_version).present?
       card_contents = model.card_version.content_root.children.order('lft')
 
-      card_contents.map do |question|
-        Snapshot::CardContentSerializer.new(question, model).as_json
+      card_contents.map do |card_content|
+        Snapshot::CardContentSerializer.new(card_content, model).as_json
       end
     else
       []

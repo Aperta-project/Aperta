@@ -281,7 +281,7 @@ describe XmlCardLoader do
       end
 
       context 'text' do
-        let(:content1) { "<content ident='foo' content-type='text'><text>#{text}</text></content>" }
+        let(:content1) { "<content ident='foo' content-type='description'><text>#{text}</text></content>" }
 
         shared_examples_for :the_text_attribute_is_set_properly do
           it "set the text as expected" do

@@ -324,7 +324,7 @@ describe CardsController do
           let(:xml) do
             <<-XML
               <card required-for-submission='false' workflow-display-only='false'>
-                <content content-type='text'>
+                <content content-type='description'>
                   <text>#{text}</text>
                 </content>
               </card>

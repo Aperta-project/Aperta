@@ -99,54 +99,6 @@ moduleForAcceptance('Integration: PaperIndex', {
     mockFindAll('journal');
   }
 });
-//
-// test('on paper.index as a participant on a task but not author of paper', function(assert) {
-//   var journal, litePaper, paperPayload, paperResponse, phase, records, task;
-//   assert.expect(1);
-//   records = paperWithTask('Task', {
-//     id: 1,
-//     type: 'AdHocTask',
-//     title: 'ReviewMe',
-//     viewable: true
-//   });
-//   currentPaper = records[0], task = records[1], journal = records[2], litePaper = records[3], phase = records[4];
-//   paperPayload = Factory.createPayload('paper');
-//   paperPayload.addRecords(records.concat([fakeUser]));
-//   paperResponse = paperPayload.toJSON();
-//   paperResponse.participations = [addUserAsParticipant(task, fakeUser)];
-//   server.respondWith('GET', '/api/papers/' + currentPaper.shortDoi, [
-//     200, {
-//       "Content-Type": "application/json"
-//     }, JSON.stringify(paperResponse)
-//   ]);
-//   return visit('/papers/' + currentPaper.shortDoi).then(function() {
-//     return assert.elementFound('.task-disclosure-heading:contains("ReviewMe")');
-//   });
-// });
-//
-// test('on paper.index as a participant on a task and author of paper', function(assert) {
-//   var journal, litePaper, paperPayload, paperResponse, phase, records, task;
-//   assert.expect(1);
-//   records = paperWithTask('ReviseTask', {
-//     id: 1,
-//     qualifiedType: 'TahiStandardTasks::ReviseTask'
-//   });
-//   currentPaper = records[0], task = records[1], journal = records[2], litePaper = records[3], phase = records[4];
-//   paperPayload = Factory.createPayload('paper');
-//   paperPayload.addRecords(records.concat([fakeUser]));
-//   paperResponse = paperPayload.toJSON();
-//   paperResponse.participations = [addUserAsParticipant(task, fakeUser)];
-//   paperResponse.collaborations = [addUserAsCollaborator(currentPaper, fakeUser)];
-//   server.respondWith('GET', "/api/papers/" + currentPaper.shortDoi, [
-//     200, {
-//       "Content-Type": "application/json"
-//     }, JSON.stringify(paperResponse)
-//   ]);
-//   return visit('/papers/' + currentPaper.shortDoi).then(function() {
-//     return assert.ok(!!find('.card-title:contains("Revise Task")'),
-//       'Participant task is displayed in the sidebar for author');
-//   });
-// });
 
 test('visiting /paper: Author completes all metadata cards', function(assert) {
   assert.expect(3);

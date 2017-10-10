@@ -219,7 +219,7 @@ test('allows right permissions to view scheduled events', function (assert) {
     this.task.set('reviewerReports.firstObject.dueAt', new Date('2017-08-19'));
     this.task.set('reviewerReports.firstObject.scheduledEvents', scheduledEvents);
   });
-  this.render(hbs`{{reviewer-report-task task=task}}`);
+  this.render(hbs`{{front-matter-reviewer-report-task task=task}}`);
   assert.textPresent('.scheduled-events p', 'Reminders');
 });
 

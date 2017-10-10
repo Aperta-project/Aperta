@@ -1,6 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import { manualSetup, make } from 'ember-data-factory-guy';
-import { mockCreate } from 'ember-data-factory-guy/factory-guy-test-helper';
+import { mockCreate } from 'ember-data-factory-guy';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import Ember from 'ember';
 import wait from 'ember-test-helpers/wait';
@@ -16,7 +16,7 @@ moduleForComponent(
     beforeEach() {
       manualSetup(this.container);
       registerCustomAssertions();
-      this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+      this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
       this.set(
         'journal',
         make('admin-journal', { cardTaskTypes: [make('card-task-type')] })

@@ -117,7 +117,7 @@ test('can Send Feedback', function(assert){
   setRichText('declineReason', 'some value');
   setRichText('reviewerSuggestions', 'some other value');
 
-  this.$('.reviewer-feedback-buttons > .reviewer-send-feedback').click();
+  this.$('.feedback-buttons > .send-feedback').click();
   // assert the values are set on the invitation
   return wait().then(() => {
     let invitation = this.get('invitation');

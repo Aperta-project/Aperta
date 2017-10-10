@@ -25,7 +25,7 @@ class ReviewerReportTask(BaseTask):
     self._review_note = (By.CSS_SELECTOR, 'div.reviewer-report-wrapper p strong')
     self._question_block = (By.CSS_SELECTOR, 'li.question')
     self._questions = (By.CLASS_NAME, 'question-text')
-    self._questions_help = (By.TAG_NAME, 'p')
+    self._questions_help = (By.CSS_SELECTOR, 'ul.question-help')
     self._submit_button = (By.CLASS_NAME, 'button-primary')
     self._submit_confirm_text = (By.CLASS_NAME, 'reviewer-report-confirmation')
     self._submit_confirm_yes_btn = (By.CSS_SELECTOR, 'div.reviewer-report-confirmation > button')
@@ -280,7 +280,7 @@ class ReviewerReportTask(BaseTask):
           u'think it is suitable for another PLOS journal with only minor revisions?', q6.text
       assert '(Optional) If you\'d like to include files to support your review, please attach ' \
              'them here.' in q7.text, q7.text
-      qh2, qh3, qh4, qh5, qh6, qh7 = self._gets(self._questions_help)
+      qh2, qh3, qh4, qh5, qh6 = self._gets(self._questions_help)
       assert qh2.text == u'Please review our Competing Interests policy and declare any potential'\
           u' interests that you feel the Editor should be aware of when considering your review.', \
           qh2.text
@@ -301,10 +301,6 @@ class ReviewerReportTask(BaseTask):
                          u'redundant review cycles, PLOS Biology is committed to facilitating the '\
                          u'transfer of suitable manuscripts between journals, and we appreciate ' \
                          u'your support.'.format(journal), qh6.text
-      assert 'Please do NOT attach your review comments here as a separate file.\nInstead, paste ' \
-             'your review into the text fields provided above. Attachments should only be for ' \
-             'supporting documents.' in qh7.text, qh7.text
-
     else:
       assert u'Please refer to our reviewer guidelines and information on our article ' \
                          u'types.' in review_note.text, review_note.text
@@ -327,7 +323,7 @@ class ReviewerReportTask(BaseTask):
                         u'editor.', q5.text
       assert q6.text == u'(Optional) If you’d like your identity to be revealed to the authors, ' \
                         u'please include your name here.', q6.text
-      qh2, qh3, qh4, qh5, qh6, qh7 = self._gets(self._questions_help)
+      qh2, qh3, qh4, qh5, qh6 = self._gets(self._questions_help)
       assert qh2.text == u'Please review our Competing Interests policy and declare any potential' \
                          u' interests that you feel the Editor should be aware of when ' \
                          u'considering your review.', qh2.text
@@ -354,9 +350,9 @@ class ReviewerReportTask(BaseTask):
     """
     research_type = False
     question_list = self._gets(self._questions)
-    q1, q2, q3, q4, q5, q6 = question_list
+    q1, q2, q3, q4, q5, q6, q7 = question_list
     question_block_list = self._gets(self._question_block)
-    qb1, qb2, qb3, qb4, qb5, qb6 = question_block_list
+    qb1, qb2, qb3, qb4, qb5, qb6, qb7 = question_block_list
     if q3.text == u'(Optional) If you\'d like your identity to be revealed to the authors, '\
                   u'please include your name here.':
       research_type = True
@@ -401,6 +397,8 @@ class ReviewerReportTask(BaseTask):
           '{0} != {1}'.format(recommendation.text, recc_data)
       q2_page_ans = qb2.find_element(*self._fm_q2_answer)
       self.validate_application_body_text(q2_page_ans)
+      if q2_data == True:
+        q2_data = "Yes"
       assert q2_page_ans.text == q2_data, '{0} != {1}'.format(q2_page_ans.text, q2_data)
       q3_page_bool = qb3.find_element(*self._fm_q3_answer_bool)
       self.validate_application_body_text(q3_page_bool)
@@ -443,7 +441,7 @@ class ReviewerReportTask(BaseTask):
       research_type = True
     logging.info('Is this a research type report? {0}'.format(research_type))
     question_block_list = self._gets(self._question_block)
-    qb1, qb2, qb3, qb4, qb5, qb6 = question_block_list
+    qb1, qb2, qb3, qb4, qb5, qb6, qb7 = question_block_list
     if not recommendation:
       choices = ['Accept', 'Reject', 'Major Revision', 'Minor Revision']
       recommendation = choice(choices)

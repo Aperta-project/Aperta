@@ -43,7 +43,7 @@ export default ControlBar.extend({
       if (this.get('submenuVisible') && this.get(`${sectionName}Visible`)) {
         this.resetSubmenuFlags();
         this.set('submenuVisible', false);
-        this.get('transitionToPaperIndex')();
+        if (this.get('versioningMode')) this.get('transitionToPaperIndex')();
       } else {
         this.showSection(sectionName);
       }

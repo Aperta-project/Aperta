@@ -95,10 +95,8 @@ test(`it sends 'onContentsChanged' after keyed input`, function(assert) {
                   value=value
                   onContentsChanged=(action changeStub)}}`);
   let editor = window.tinymce.activeEditor;
-  window.editor = editor;
   editor.setContent('New');
-  editor.setDirty(true);
-  editor.fire('change');
+  editor.target.triggerSave();
 });
 
 

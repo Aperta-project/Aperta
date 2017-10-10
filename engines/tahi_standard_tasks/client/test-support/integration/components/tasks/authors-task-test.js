@@ -19,6 +19,7 @@ moduleForComponent(
         Ember.Object.extend({ socketId: 'foo' })
       );
       Factory.createPermission('authorsTask', 1, ['edit', 'view']);
+      Factory.createPermission('journal', 1, []);
 
       // For any answers that will be sent to the server
       $.mockjax({

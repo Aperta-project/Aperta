@@ -33,6 +33,7 @@ class CardContent < ActiveRecord::Base
   validate :content_value_type_combination
   validate :value_type_for_default_answer_value
   validate :default_answer_present_in_possible_values
+  validate :text_does_not_contain_cdata
 
   SUPPORTED_VALUE_TYPES = %w[attachment boolean question-set text html].freeze
 
@@ -65,6 +66,11 @@ class CardContent < ActiveRecord::Base
       :content_type,
       "'#{content_type}' not valid with value_type '#{value_type}'"
     )
+  end
+
+  def text_does_not_contain_cdata
+    return unless text.present? && text.match(/^<!\[CDATA.*\]\]>/)
+    errors.add(:base, "do not use CDATA, use regular HTML")
   end
 
   def value_type_for_default_answer_value

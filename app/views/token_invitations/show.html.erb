@@ -12,7 +12,11 @@
         <p><%= @paper.abstract.html_safe %></p>
       <% end %>
     <%= form_for @invitation, url: decline_token_invitation_path(@invitation.token), method: 'post'  do |f| %>
-      <%= link_to "Accept Reviewer Invitation", root_path, class: 'button-primary button--green' %>
+      <%if @invitation.invitee_role == 'Reviewer' %>
+        <%= link_to "Accept Reviewer Invitation", root_path, class: 'button-primary button--green' %>
+      <% else %>
+        <%= link_to "Accept Editor Invitation", "#{root_path}/papers/#{@paper.short_doi}", class: 'button-primary button--green' %>
+      <% end %>
       <%= f.submit value: 'Decline', class: 'button-secondary button--green decline-button' %>
     <% end %>
   </div>

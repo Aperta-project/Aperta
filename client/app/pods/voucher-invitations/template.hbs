@@ -1,1 +1,11 @@
-{{model}}
+{{#overlay-fullscreen visible='true'
+                      outAnimationComplete=(action "hideInvitationsOverlay")
+                      title="Aperta"
+                      overlayClass="voucher-invitations-overlay"
+                      enableClose=false
+                      as |overlay|}}
+    {{invitations-x invitations=invitations
+                    loading=invitationsLoading
+                    accept=(action "acceptVoucherInvitation")
+                    decline=(action "declineVoucherInvitation")}}
+{{/overlay-fullscreen}}

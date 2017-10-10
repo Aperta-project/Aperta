@@ -1,6 +1,9 @@
 <%= tinymce_assets %>
 
 <%= render layout: 'container' do %>
+  <div>
+    <img class="journal-logo" src="<%= @invitation.paper.journal.logo_url %>">
+  </div>
   <div class='message'>
     <span class='bold'>
       <% if @invitation.invitee_role == 'Reviewer' %>

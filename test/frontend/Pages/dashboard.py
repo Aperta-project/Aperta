@@ -108,17 +108,17 @@ class DashboardPage(AuthenticatedPage):
     # The next sequence of 10 locators are all per invitation so should be used withing a
     #   find_element()
     self._invitation_type_and_date = (By.CLASS_NAME, 'invitation-metadata')
-    self._invitation_date = (By.CSS_SELECTOR, 'h2.invitation-metadata > span.date')
+    self._invitation_date = (By.CSS_SELECTOR, 'div.invitation-metadata > span.date')
     self._invitation_paper_type = (By.CLASS_NAME, 'invitation-paper-type')
     self._invitation_paper_title = (By.CSS_SELECTOR, 'li.dashboard-paper-title > h3')
-    self._invitation_author_label = (By.CSS_SELECTOR, 'li.dashboard-paper-title > h4')
+    self._invitation_author_label = (By.CSS_SELECTOR, 'div.invitation-header + h4')
     # The author listing includes an index, lastname, first, and optionally 'from' affiliation
     #   IT seems like we *could* have multiple such lines.
-    self._invitation_author_listing = (By.CSS_SELECTOR, 'li.dashboard-paper-title > p')
+    self._invitation_author_listing = (By.CSS_SELECTOR, 'div.pending-invitation > div + h4 + p')
     # The following elements will only appear if we are able to extract an abstract or if one is
     #   is set explicitly in the Title and Abstract Card.
-    self._invitation_abstract_label = (By.CSS_SELECTOR, 'li.dashboard-paper-title > h4 + p + h4')
-    self._invitation_abstract_text = (By.CSS_SELECTOR, 'li.dashboard-paper-title > h4 + p + h4 + p')
+    self._invitation_abstract_label = (By.CSS_SELECTOR, 'div.pending-invitation > div + h4 + p + h4')
+    self._invitation_abstract_text = (By.CSS_SELECTOR, 'div.pending-invitation > div + h4 + p + h4 + p')
     self._invitation_accept_button = (By.CSS_SELECTOR, 'button.invitation-accept')
     self._invitation_decline_button = (By.CSS_SELECTOR, 'button.invitation-decline')
 
@@ -127,14 +127,13 @@ class DashboardPage(AuthenticatedPage):
     self._yes_no_button = (By.CSS_SELECTOR, 'ul.dashboard-submitted-papers button')
 
     # Reviewer invitation modal
-    self._rim_title = (By.CSS_SELECTOR, '.feedback-reviewer-invitation')
-    self._rim_ms_title = (By.CSS_SELECTOR, 'h3.feedback-invitation-title')
-    self._rim_ms_decline_notice = (By.CSS_SELECTOR, 'h4.feedback-decline-notice')
-    self._rim_ms_decline_notice = (By.CSS_SELECTOR, 'h4.feedback-decline-notice')
+    self._rim_title = (By.CSS_SELECTOR, 'div.invitation-feedback > h2.feedback-header')
+    self._rim_ms_title = (By.CSS_SELECTOR, 'div.invitation-feedback h3.invitation-paper-title')
+    self._rim_ms_decline_notice = (By.CSS_SELECTOR, 'p.feedback-decline-notice')
     self._rim_request_labels = (By.CLASS_NAME, 'feedback-request')
-    self._rim_reasons = (By.CSS_SELECTOR, 'textarea.declineReason')
-    self._rim_suggestions = (By.CSS_SELECTOR, 'textarea.reviewerSuggestions')
-    self._rim_send_fb_btn = (By.CSS_SELECTOR, 'button.reviewer-send-feedback')
+    self._rim_reasons = (By.CSS_SELECTOR, 'div.declineReason')
+    self._rim_suggestions = (By.CSS_SELECTOR, 'div.reviewerSuggestions')
+    self._rim_send_fb_btn = (By.CSS_SELECTOR, 'button.send-feedback')
 
   # POM Actions
   def click_on_existing_manuscript_link(self, title):
@@ -360,7 +359,6 @@ class DashboardPage(AuthenticatedPage):
     # Disable due APERTA-7212
     #self.validate_modal_title_style(fb_modal_title)
     # paper_title
-    assert self._get(self._dashboard_paper_icon)
     rim_ms_title = self._get(self._rim_ms_title)
     assert rim_ms_title.text.strip() == paper_title.strip(), \
         (rim_ms_title.text.strip(), paper_title.strip())

@@ -97,8 +97,8 @@ DESC
         CardPermissions.add_roles(another_task.card, 'assign_others', [role_reviewer])
         CardPermissions.add_roles(task.card, 'assign_others', [role_creator, role_billing])
 
-        expect(User.who_can('be_assigned', task)).to be == [cover_editor, reviewer]
-        expect(User.who_can('assign_others', task)).to be == [creator, billing]
+        expect(User.who_can('be_assigned', task)).to match_array([cover_editor, reviewer])
+        expect(User.who_can('assign_others', task)).to match_array([creator, billing])
       end
     end
   end

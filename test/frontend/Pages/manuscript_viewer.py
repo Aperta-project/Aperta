@@ -135,7 +135,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._research_reviewer_report_task = (By.CLASS_NAME, 'reviewer-report-task')
     self._front_matter_reviewer_report_task = (By.CLASS_NAME, 'front-matter-reviewer-report-task')
     self._supporting_info_task = (By.CLASS_NAME, 'supporting-info-task')
-    self._upload_manu_task = (By.CLASS_NAME, 'upload-manuscript-task')
+    self._upload_manu_task = (By.CLASS_NAME, 'task-type-upload-manuscript-task')
     # infobox
     self._question_mark_icon = (By.ID, 'submission-process-toggle')
     # While IDs are normally king, for this element, we don't hide the element, we just change

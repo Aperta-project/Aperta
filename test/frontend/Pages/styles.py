@@ -164,7 +164,7 @@ class StyledPage(PlosPage):
     :param paragraph: paragraph to validate
     :return: Void Function
     """
-    assert APPLICATION_TYPEFACE in paragraph.value_of_css_property('font-family').lower(), \
+    assert APPLICATION_TYPEFACE in paragraph.value_of_css_property('font-family'), \
         paragraph.value_of_css_property('font-family')
     assert paragraph.value_of_css_property('font-size') == '14px', \
         paragraph.value_of_css_property('font-size')
@@ -180,7 +180,7 @@ class StyledPage(PlosPage):
   @staticmethod
   def validate_input_field_placeholder_style(placeholder):
     """
-    Ensure consistency in rendering page, card and overlay internal input field placeholders across
+    Ensure consistency in rendering page, card and overlay internal input field placeholders across 
       the application
     :param placeholder: text to validate
     """
@@ -350,7 +350,7 @@ class StyledPage(PlosPage):
     """
     Validate a basic column/row item (td)
     :param td: the td element to validate
-    :param highlighted: whether the column is selected or otherwise highlighted,
+    :param highlighted: whether the column is selected or otherwise highlighted, 
       default value=False
     :return: void function
     """

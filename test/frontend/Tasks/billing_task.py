@@ -55,7 +55,6 @@ class BillingTask(BaseTask):
       data['city'] = bd['city']
       data['zip'] = bd['ZIP']
 
-    self._wait_for_element(self._get(self._first_name))
     self._get(self._first_name).send_keys(data['fist_name'])
     self._get(self._last_name).send_keys(data['last_name'])
     self._get(self._department).send_keys(data['department'])
@@ -65,16 +64,15 @@ class BillingTask(BaseTask):
     self._get(self._address1).send_keys(data['address1'])
     self._get(self._city).send_keys(data['city'])
     self._get(self._zip).send_keys(data['zip'])
-    self._wait_for_text_to_be_present_in_element_value(self._zip, data['zip'])
     payment_prices = self._get(self._payment_prices_ul)
     self._scroll_into_view(payment_prices)
     self._actions.move_to_element(payment_prices).perform()
-    self._wait_for_element(self._get(self._payment_option))
+    time.sleep(5)
     payment_select = self._get(self._payment_option)
     self._actions.move_to_element(payment_select).click().perform()
     # Grab the items in the select2 dropdown, then make selection
     # previous send_keys method no longer works.
-    self._wait_for_element(self._get(self._payment_items_parent))
+    time.sleep(1)
     payment_option_default = 'I will pay the full fee upon article acceptance'
     parent_div = self._get(self._payment_items_parent)
     for item in parent_div.find_elements_by_class_name('select2-result-label'):
@@ -87,7 +85,7 @@ class BillingTask(BaseTask):
       # Scroll to top to leave the complete button without obstructions
       manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
       self._scroll_into_view(manuscript_id_text)
-      self._wait_for_element(self._get(self._completion_button))
+      time.sleep(.5)
       self.click_completion_button()
       time.sleep(1)
     return self

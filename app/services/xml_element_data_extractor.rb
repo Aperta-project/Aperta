@@ -20,11 +20,6 @@ class XmlElementDataExtractor
     el.xpath(tag).first.try(:text).try(:strip)
   end
 
-  def tag_xml(tag)
-    el.xpath(tag).first.try(:children).try(:to_xml,
-       save_with: Nokogiri::XML::Node::SaveOptions::AS_XML | Nokogiri::XML::Node::SaveOptions::NO_DECLARATION)
-  end
-
   # fetch_values will map over an array of child elements with the given `name`
   # and extract the attributes for the provided keys.
   # ex: for

@@ -38,7 +38,7 @@ class Author < ActiveRecord::Base
 
   validates :email,
     format: { with: Devise.email_regexp, message: "needs to be a valid email address" },
-    if: :task_completed?
+      if: :task_completed?
 
   validates :contributions,
     presence: { message: "one must be selected" }, if: :task_completed?
@@ -82,8 +82,8 @@ class Author < ActiveRecord::Base
   end
 
   def corresponding?
-    answer = answer_for(CORRESPONDING_QUESTION_IDENT)
-    answer ? answer.value : false
+    return false unless answer_for(CORRESPONDING_QUESTION_IDENT)
+    answer_for(CORRESPONDING_QUESTION_IDENT).value
   end
 
   def self.contributions_content

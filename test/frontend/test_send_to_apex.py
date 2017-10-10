@@ -5,7 +5,6 @@ This test validates the Send to Apex workflow
 This test requires the following data:
 The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extracted into
     frontend/assets/docs/
-The APEX_FTP_CREDENTIAL environment variable must be set to run this test (user:password)
 """
 import logging
 import random
@@ -212,7 +211,7 @@ class SendToApexTest(CommonTest):
 
   def test_send_to_apex_source_pdf(self):
     """
-    test_send_to_apex_source_PDF: Validate if the source file is sent to apex
+    test_send_to_apex_source_PDF: Validate if the source file is sent to apex 
                                   when the manuscript is PDF
     """
     logging.info('test_send_to_apex_source_PDF')

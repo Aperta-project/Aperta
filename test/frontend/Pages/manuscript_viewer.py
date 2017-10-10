@@ -135,7 +135,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._research_reviewer_report_task = (By.CLASS_NAME, 'reviewer-report-task')
     self._front_matter_reviewer_report_task = (By.CLASS_NAME, 'front-matter-reviewer-report-task')
     self._supporting_info_task = (By.CLASS_NAME, 'supporting-info-task')
-    self._upload_manu_task = (By.CLASS_NAME, 'task-type-upload-manuscript-task')
+    self._upload_manu_task = (By.CLASS_NAME, 'upload-manuscript-task')
     # infobox
     self._question_mark_icon = (By.ID, 'submission-process-toggle')
     # While IDs are normally king, for this element, we don't hide the element, we just change
@@ -604,7 +604,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
         if task_name in task.text \
             and 'active' \
             not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
-          self._scroll_into_view(self._get(self._paper_sidebar_manuscript_id))
           manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
           self._actions.move_to_element(manuscript_id_text).perform()
           self.click_covered_element(task)
@@ -626,23 +625,22 @@ class ManuscriptViewerPage(AuthenticatedPage):
     if task_name == 'Additional Information':
       ai_task = AITask(self._driver)
       # If the task is read only due to completion state, set read-write
-      if ai_task.completed_state():
-        ai_task.click_completion_button()
-        self._wait_on_lambda(lambda: ai_task.is_task_editable() == True)
+      if base_task.completed_state():
+        base_task.click_completion_button()
       if data:
         ai_task.complete_ai(data)
-        self._wait_for_element(task.find_element_by_css_selector('div.active'))
       # complete_addl info task
       if not base_task.completed_state():
         base_task.click_completion_button()
       task.click()
-      self._wait_on_lambda(lambda: self.is_task_open('Additional Information') == False)
+      time.sleep(1)
     elif task_name == 'Billing':
       billing_task = BillingTask(self._driver)
       billing_task.complete(data)
-      self._wait_for_element(task.find_element_by_css_selector('div.active'))
+      time.sleep(2)
+      tasks = self._gets(self._task_headings)
       self.click_covered_element(task)
-      self._wait_on_lambda(lambda: self.is_task_open('Billing') == False)
+      time.sleep(2)
     elif task_name == 'Review by':
       review_report = ReviewerReportTask(self._driver)
       outdata = review_report.complete_reviewer_report()
@@ -729,7 +727,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
       author_task = AuthorsTask(self._driver)
       author_task.edit_author(author)
       self.click_covered_element(task)
-      self._wait_on_lambda(lambda: self.is_task_open('Authors') == False)
+      time.sleep(1)
+      # The next three lines are a bit of a hack to get around APERTA-10622
+      self.click_covered_element(task)
+      time.sleep(1)
+      self.click_covered_element(task)
+      time.sleep(1)
     elif task_name == 'New Taxon':
       # Complete New Taxon data before mark close
       logging.info('Completing New Taxon Task')
@@ -757,7 +760,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       time.sleep(3)
       base_task.click_completion_button()
       self.click_covered_element(task)
-      self._wait_on_lambda(lambda: self.is_task_open('Title And Abstract') == False)
+      time.sleep(2) # added sleep because after this call, submissions were failing because title and abstract was not done closing
     elif task_name in ('Competing Interest', 'Data Availability', 'Early Article Posting',
                        'Ethics Statement', 'Reporting Guidelines'):
       # Complete Competing Interest data before mark close
@@ -1287,7 +1290,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     failed_conversion_heading = self._get(self._failed_conversion_heading)
     if not status or status.lower() not in ('unsubmitted', 'submitted'):
       logging.warning('You must pass a paper state of "unsubmitted" or "submitted" when calling '
-                      'check_failed_conversion_text')
+                      'check_faied_conversion_text')
       return False
     elif status.lower() == 'unsubmitted':
       # validate unsubmitted failed conversion message - see APERTA-8858

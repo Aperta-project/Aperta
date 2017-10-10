@@ -7,19 +7,6 @@ describe XmlCardLoader do
   let!(:card) { FactoryGirl.create(:card, :versioned, name: "original name") }
   let(:xml_card_loader) { XmlCardLoader.new(card) }
 
-  describe 'XML format check' do
-    xml_dir = Rails.root.join('lib', 'custom_card', 'configurations', 'xml_content')
-
-    Dir.glob("#{xml_dir}/*.xml").each do |xml_file|
-      it "should round-trip #{xml_file}" do
-        xml = File.read(xml_file)
-        card = xml_card_loader.load(xml)
-        card.save
-        expect(card.reload.to_xml).to be_equivalent_to(xml)
-      end
-    end
-  end
-
   describe 'error handling' do
     context 'xml does not adhere to xml schema' do
       let(:xml) { '<foo/>' }
@@ -281,42 +268,32 @@ describe XmlCardLoader do
       end
 
       context 'text' do
+        let(:text) { 'Foo' }
         let(:content1) { "<content ident='foo' content-type='text'><text>#{text}</text></content>" }
 
-        shared_examples_for :the_text_attribute_is_set_properly do
-          it "set the text as expected" do
-            xml_card_loader.load(xml).save
+        it 'sets the text to the value of the element text' do
+          card = xml_card_loader.load(xml)
+          card.save
+          expect(root_content.text).to eq(text)
+        end
+
+        context 'and there is trailing whitespace' do
+          let(:content1) { "<content ident='foo' content-type='text'><text> #{text}  \n</text></content>" }
+
+          it 'is removed' do
+            card = xml_card_loader.load(xml)
+            card.save
             expect(root_content.text).to eq(text)
           end
         end
 
-        context 'when the text is a simple string' do
-          let(:text) { 'Foo' }
-          it_behaves_like :the_text_attribute_is_set_properly
-        end
-
-        context 'when there is trailing whitespace' do
-          let(:text) { "Foo  \n" }
-          it_behaves_like :the_text_attribute_is_set_properly
-        end
-
-        context 'when the text is HTML' do
-          let(:text) { '<b>bold</b>' }
-          it_behaves_like :the_text_attribute_is_set_properly
-        end
-
-        # https://stackoverflow.com/questions/8406251/nokogiri-to-xml-without-carriage-returns/8406635#8406635
-        context 'when the text is the special kind that libxml likes to indent for some reason' do
-          let(:text) { '<a href="http://example.org"><b>bold <i>italic</i></b></a>' }
-          it_behaves_like :the_text_attribute_is_set_properly
-        end
-
-        context 'when the text element includes CDATA' do
+        context 'and the text element includes CDATA' do
           let(:text) { '<![CDATA[<a>link</a>]]>' }
-          it 'throws an exception' do
-            expect do
-              xml_card_loader.load(xml).save
-            end.to raise_error(XmlCardDocument::XmlValidationError)
+
+          it 'includes the embedded HTML' do
+            card = xml_card_loader.load(xml)
+            card.save
+            expect(root_content.text).to eq('<a>link</a>')
           end
         end
       end

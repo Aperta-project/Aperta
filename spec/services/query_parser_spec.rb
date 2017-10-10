@@ -182,13 +182,6 @@ describe QueryParser do
         SQL
       end
 
-      it 'parses TASK x IS UNASSIGNED' do
-        parse = QueryParser.new.parse 'TASK anytask IS UNASSIGNED'
-        expect(parse.to_sql).to eq(<<-SQL.strip)
-          ((\"tasks_0\".\"title\" ILIKE 'anytask' AND \"tasks_0\".\"assigned_user_id\" IS NULL) OR \"papers\".\"id\" NOT IN (SELECT paper_id FROM \"tasks\" WHERE \"tasks\".\"title\" ILIKE 'anytask'))
-        SQL
-      end
-
       it 'parses ANDed TASK queries as multiple joins' do
         query = 'TASK anytask IS COMPLETE AND TASK someothertask IS INCOMPLETE'
         parse = QueryParser.new.parse query
@@ -345,13 +338,6 @@ describe QueryParser do
         parse = QueryParser.new.parse "NO ONE HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
           "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{role.id}) AND "assignments"."assigned_to_type" = 'Paper')
-        SQL
-      end
-
-      it 'parses TASK x IS ASSIGNED TO a' do
-        parse = QueryParser.new.parse "TASK anytask IS ASSIGNED TO #{user.email}"
-        expect(parse.to_sql).to eq(<<-SQL.strip)
-          \"tasks_0\".\"title\" ILIKE 'anytask' AND \"tasks_0\".\"assigned_user_id\" IN (#{user.id})
         SQL
       end
     end

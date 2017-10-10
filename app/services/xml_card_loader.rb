@@ -134,7 +134,7 @@ class XmlCardLoader
       label: content.tag_text('label'),
       instruction_text: content.tag_text('instruction-text'),
       possible_values: content.fetch_values('possible-value', [:label, :value]),
-      text: content.tag_xml('text'),
+      text: content.tag_text('text'),
       editor_style: content.attr_value('editor-style'),
       condition: content.attr_value('condition'),
       value_type: content.attr_value('value-type'),

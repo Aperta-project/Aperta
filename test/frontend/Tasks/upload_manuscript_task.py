@@ -29,13 +29,10 @@ class UploadManuscriptTask(BaseTask):
     self._upload_manuscript_replace_btn = (By.CLASS_NAME, 'replace-attachment')
     self._upload_manuscript_input = (By.ID, 'upload-files')
     self._upload_source_warning = (By.CSS_SELECTOR,
-                                   'div.card-content-view-text + div.card-content-file-uploader '
-                                   '+ div.ember-view div.error-message i.fa-exclamation-triangle')
-    self._uploaded_pdf = (By.CSS_SELECTOR, 'a.file-link')
+                                   'div.upload-sourcefile  > div.error-message i.fa-exclamation-triangle')
+    self._uploaded_pdf = (By.CSS_SELECTOR, '.task-main-content > div > a')
     self._upload_source_file_button = (By.ID, 'upload-files')
-    self._upload_source_file_box = (By.CSS_SELECTOR, 'div.custom-card-task  .card-content-if '
-                                                     '+ .card-content-file-uploader '
-                                                     '+ .card-content-if')
+    self._upload_source_file_box = (By.CLASS_NAME, 'flex-form')
 
   # POM Actions
   def validate_styles(self, type_='doc', source_uploaded=False):
@@ -58,14 +55,13 @@ class UploadManuscriptTask(BaseTask):
                                              'expected copy'.format(intro_text.text)
     link = intro_text.find_element_by_tag_name('a')
     self.validate_filename_link_style(link)
-    replace = intro_text.find_element(*self._upload_manuscript_replace_btn)
+    replace = intro_text.find_element_by_tag_name('span')
     assert 'Replace' == replace.text, replace.text
     replace_icon = replace.find_element_by_tag_name('i')
     assert 'fa-refresh' in replace_icon.get_attribute('class'), \
         replace_icon.get_attribute('class')
     if type_ == 'pdf':
       source_file_box = self._get(self._upload_source_file_box)
-      logging.info(source_file_box.text)
       assert 'Please Upload Your Source File\nBecause you uploaded a PDF, you must also provide ' \
              'your source file (e.g. .tex, .docx) before marking this task as done.' \
              in source_file_box.text, source_file_box.text
@@ -112,7 +108,7 @@ class UploadManuscriptTask(BaseTask):
 
   def replace_manuscript(self, doc='random'):
     """
-    Function to replace an uploaded doc/docx/pdf file
+    Function to replace a uploaded doc/docx file
     :param doc: Name of the document to upload. If blank will default to 'random', this will choose
       one of available papers
     :return void function
@@ -124,25 +120,15 @@ class UploadManuscriptTask(BaseTask):
       fn = os.path.join(os.getcwd(), doc)
     logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)
-    # If the originally uploaded file was a doc/docx there will be no upload source file bits
-    # If it was a pdf, you need to upload to complete card
-    skip_source_upload = False
-    try:
-      upload_source_file_btn = self._get(self._upload_source_file_button)
-    except ElementDoesNotExistAssertionError:
-      skip_source_upload = True
-    if not skip_source_upload:
-      self._scroll_into_view(upload_source_file_btn)
-      upload_source_file_btn.send_keys(fn)
-      # Time needed for script execution.
-      time.sleep(10)
+    self._driver.find_element_by_id('upload-files').send_keys(fn)
+    # Time needed for script execution.
+    time.sleep(10)
 
   def take_name_of_pdf_file(self):
     """
     take_name_of_pdf_file: Take the name of the uploaded PDF
     :return: file_name as str
     """
-    self._scroll_into_view(self._get(self._uploaded_pdf))
     uploaded_pdf = self._get(self._uploaded_pdf)
     file_name, file_ext = os.path.splitext(uploaded_pdf.text)
     full_file_name = '{0}{1}'.format(file_name, file_ext)

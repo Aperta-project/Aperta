@@ -53,7 +53,7 @@ class ApertaProfileTest(CommonTest):
     profile_page.validate_nav_toolbar_elements(profile_user)
     profile_page.clear_transients()
 
-  def rest_core_avatar(self):
+  def test_core_avatar(self):
     """
     Tests editing of the avatar image for a user profile
     :return:

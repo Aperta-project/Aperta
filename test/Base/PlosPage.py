@@ -208,20 +208,6 @@ class PlosPage(object):
       locator, text))
     self.restore_timeout()
 
-  def _wait_for_text_to_be_present_in_element_value(self, locator, text,
-                                           multiplier=5):
-    """
-    Wait for a string be present in an element text
-    :param locator: the page locator of the element with value that should have the text
-    :param text: text to be present in the located element value
-    :param multiplier: the multiplier of Config.wait_timeout to wait for a locator to be not present
-    """
-    timeout = wait_timeout * multiplier
-    self.set_timeout(timeout)
-    self._wait.until(expected_conditions.text_to_be_present_in_element_value(
-      locator, text))
-    self.restore_timeout()
-
   def _wait_for_not_element(self, locator, multiplier):
     """
     Waits for an element to go invisible or detach from the DOM

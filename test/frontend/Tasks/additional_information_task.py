@@ -69,7 +69,9 @@ class AITask(BaseTask):
     This method completes the task Additional Information
     :data: A dictionary with the answers to all questions
     """
-
+    completed = self.completed_state()
+    if completed:
+      return None
     if not data:
       data = self.create_data()
 
@@ -260,16 +262,3 @@ class AITask(BaseTask):
     self._wait_for_text_be_present_in_element(
       self._uploaded_file_link, file_name)
     return file_name
-
-  def is_task_editable(self):
-    """
-    Check if Additional information task is editable
-    :return: True if task is ready to edit and False if it is not
-    """
-    questions = self._gets(self._questions)
-    div_list = questions[4].find_elements_by_xpath("div/div")
-    # if the task is editable it should be 2 <div>s under the last question,
-    # where the last one is for TinyMCE (rich-text-editor-container)
-    # if the task is completed, only 1
-    return len(div_list) == 2
-

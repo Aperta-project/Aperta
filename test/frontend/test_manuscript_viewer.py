@@ -260,7 +260,7 @@ class ManuscriptViewerTest(CommonTest):
         manuscript_page.get_submission_status_ready2submit_text()
     return self
 
-  def rest_paper_download(self):
+  def test_paper_download(self):
     """
     test_manuscript_viewer: Validates the download functions for different
     versions, formats, UI elements and styles

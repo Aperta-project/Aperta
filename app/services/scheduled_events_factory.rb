@@ -9,14 +9,14 @@ class ScheduledEventFactory
 
   def schedule_events
     return unless due_datetime
-    return schedule_new_events unless owned_serviceable_events.exists?
+    return schedule_new_events unless owned_active_events.exists?
     update_scheduled_events
   end
 
   private
 
-  def owned_serviceable_events
-    due_datetime.scheduled_events.where(state: ['passive', 'active'])
+  def owned_active_events
+    due_datetime.scheduled_events.active
   end
 
   def dispatch_date(event)

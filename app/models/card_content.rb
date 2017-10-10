@@ -33,7 +33,6 @@ class CardContent < ActiveRecord::Base
   validate :content_value_type_combination
   validate :value_type_for_default_answer_value
   validate :default_answer_present_in_possible_values
-  validate :text_does_not_contain_cdata
 
   SUPPORTED_VALUE_TYPES = %w[attachment boolean question-set text html].freeze
 
@@ -68,11 +67,6 @@ class CardContent < ActiveRecord::Base
     )
   end
 
-  def text_does_not_contain_cdata
-    return unless text.present? && text.match(/^<!\[CDATA.*\]\]>/)
-    errors.add(:base, "do not use CDATA, use regular HTML")
-  end
-
   def value_type_for_default_answer_value
     if value_type.blank? && default_answer_value.present?
       errors.add(:base, "value type must be present in order to set a default answer value")
@@ -89,10 +83,6 @@ class CardContent < ActiveRecord::Base
 
   def render_tag(xml, attr_name, attr)
     safe_dump_text(xml, attr_name, attr) if attr.present?
-  end
-
-  def render_raw(xml, attr_name, attr)
-    raw_dump_text(xml, attr_name, attr) if attr.present?
   end
 
   # content_attrs rendered into the <card-content> tag itself
@@ -160,7 +150,7 @@ class CardContent < ActiveRecord::Base
   def to_xml(options = {})
     setup_builder(options).tag!('content', content_attrs) do |xml|
       render_tag(xml, 'instruction-text', instruction_text)
-      render_raw(xml, 'text', text)
+      render_tag(xml, 'text', text)
       render_tag(xml, 'label', label)
       preload_descendants if @quick_children.nil?
       card_content_validations.each do |ccv|

@@ -161,7 +161,6 @@ class CommonTest(FrontEndTest):
     logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)
     self._driver.find_element_by_id('upload-files').send_keys(fn)
-
     # Time needed for script execution.
     time.sleep(7)
     # poics = Preprint Overlay In Create Sequence

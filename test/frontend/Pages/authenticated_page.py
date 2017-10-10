@@ -532,10 +532,7 @@ class AuthenticatedPage(StyledPage):
     :return: void function
     """
     self.set_timeout(15)
-    try:
-      self._get(self._flash_closer).click()
-    except ElementDoesNotExistAssertionError:
-      logging.warning('Flash message not found to close...')
+    self._get(self._flash_closer).click()
     self.restore_timeout()
 
   def close_modal(self):

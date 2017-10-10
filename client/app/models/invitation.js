@@ -122,7 +122,12 @@ export default DS.Model.extend({
     this.set('pendingFeedback', false);
   },
 
-  accept() {
-    this.get('restless').putUpdate(this, '/accept');
+  accept(data={}) {
+    return this.get('restless')
+    .put(`/api/invitations/${this.get('id')}/accept`, data)
+    .then((data) => {
+      this.store.pushPayload(data);
+      return this;
+    });
   }
 });

@@ -15,7 +15,8 @@ moduleForComponent('invitation-detail-row', 'Integration | Component | invitatio
       declineReason: null,
       declined: false,
       email: 'jane@example.com',
-      invitee: { fullName: 'Jane McEdits' },
+      invitee: { fullName: 'Jane McEdits', id: 1},
+      actor: { fullName: 'Some Editor', id: 2},
       reviewerSuggestions: null,
       reviewerReport: this.get('reviewerReport'),
       state: 'pending',
@@ -186,6 +187,50 @@ test('the row is in the show state, invitation is declined, and in current round
   assert.elementNotFound('.invitation-item-action-rescind');
   assert.elementNotFound('.invitation-item-action-send');
 });
+
+test('the row is in the show state, invitation is invited, and in current round', function(assert) {
+  assert.expect(2);
+  const spy = sinon.spy();
+  this.setProperties({
+    'invitation.state': 'invited',
+    currentRound: true,
+    uiState: 'show',
+    'invitation.accept': spy
+  });
+
+  this.render(openTemplate);
+
+  assert.textPresent('.invitation-item-action', 'Accept invitation for reviewer', 'Shows Accept button');
+  this.$('.invitation-item-action-accept').click();
+
+  assert.spyCalled(spy, 'clicking on button invokes invitation.accept()');
+});
+
+test('the row is in the show state, invitation is accepted, and in current round', function(assert) {
+  this.setProperties({
+    'invitation.state': 'accepted',
+    currentRound: true,
+    uiState: 'closed'
+  });
+
+  this.render(openTemplate);
+
+  assert.textPresent('.invitation-item-status', this.get('invitation.actor.fullName'), 'Shows actor name');
+});
+
+test('the row is in the show state, invitation is accepted, there is no actor, and in current round', function(assert) {
+  this.setProperties({
+    'invitation.state': 'accepted',
+    currentRound: true,
+    uiState: 'closed',
+    'invitation.actor': null
+  });
+
+  this.render(openTemplate);
+
+  assert.textNotPresent('.invitation-item-status', 'Accepted by', 'Does not show actor name');
+});
+
 
 test('grouped invitations are disabled when their primary has been invited or accepted', function(assert) {
   this.set('invitation', make('invitation', {

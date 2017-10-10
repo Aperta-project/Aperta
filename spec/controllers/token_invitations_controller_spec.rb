@@ -405,7 +405,10 @@ describe TokenInvitationsController do
       end
       context 'when the invitation hasn\'t been accepted' do
         context 'when invitation and current user emails are the same' do
-          before { expect(Activity).to receive(:invitation_accepted!).and_return(true) }
+          before do
+            expect(Activity).to receive(:invitation_accepted!).and_return(true)
+            allow(invitation_double).to receive(:actor=)
+          end
           let(:invitation_double) do
             double('Invitation', invited?: true, declined?: false, rescinded?: false, email: user.email, accept!: true, paper: task.paper, invitee_role: 'Reviewer', invitee_id: 123)
           end

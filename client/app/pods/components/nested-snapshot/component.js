@@ -63,16 +63,6 @@ export default Ember.Component.extend({
   ),
 
   levelClassName: Ember.computed('nestedLevel', function(){
-    Ember.run.next(() => {
-      if (this.get('isDestroying')) { return; }
-      return `nested-level-${this.get('nestedLevel')}`;
-    });
-  }),
-
-  incrementedNestedLevel: Ember.computed('nestedLevel', function(){
-    Ember.run.next(() => {
-      if (this.get('isDestroying')) { return; }
-      return this.incrementProperty('nestedLevel');
-    });
+    return `nested-level-${this.get('nestedLevel')}`;
   })
 });

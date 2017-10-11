@@ -178,19 +178,22 @@ class ManuscriptViewerPage(AuthenticatedPage):
       new manuscript
     :return: void function
     """
-    failed_conversion = False
     try:
       self.check_for_flash_success(timeout=60)
     except ElementDoesNotExistAssertionError:
       self.check_for_flash_error()
-      failed_conversion = True
-    self.close_flash_message()
-    if failed_conversion:
+      logging.warning('No success conversion message displayed within timeout period...')
+    try:
       self.check_failed_conversion_text(status='unsubmitted')
+    except ElementDoesNotExistAssertionError:
+      logging.warning('Neither a success, nor a fail, conversion message displayed after '
+                      'document creation...')
     self._wait_for_element(self._get(self._generic_task_item))
-    # For debugging purposes, it is very important to output the newly created manuscript URL when we create a new manu
+    # For debugging purposes, it is very important to output the newly created manuscript URL when
+    #   we create a new manu
     current_url = self.get_current_url_without_args()
     logging.info(current_url)
+    self.close_flash_message()
 
   def validate_page_elements_styles_functions(self, user='', admin=''):
     """

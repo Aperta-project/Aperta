@@ -22,8 +22,8 @@ moduleForComponent('review-status', 'Integration | Component | Admin Page | User
 test('Searches are scoped on Journal', function (assert) {
   $.mockjax({url: '/api/admin/journal_users', type: 'GET', status: 200, responseText: '{}'});
 
-  this.set('adminJournalUsers', Ember.A());
-  this.set('roles', Ember.A());
+  this.set('adminJournalUsers', []);
+  this.set('roles', []);
 
   this.render(hbs`{{admin-page/users-list adminJournalUsers=adminJournalUsers journal=journal roles=roles }}`);
 

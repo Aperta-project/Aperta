@@ -116,25 +116,37 @@ sendback-reason = element content {
                 attribute value-type { "boolean" },
                 (element label { text }? &
                 element text { html }?),
-                content*
+                check-box-input,
+                check-box-input,
+                paragraph-input
             }
 
-text-input = element content {
-                 attribute ident { text }?,
-                 attribute value-type { "text" | "html" },
-                 attribute editor-style { text }?,
-                 attribute content-type { "short-input" | "paragraph-input" },
-                 attribute required-field { "true" | "false" }?,
-                 attribute allow-annotations { "true" | "false" }?,
-                 (element instruction-text { html }? &
-                  element default-answer-value { text }? &
-                 (element text { html }? &
-                 element validation {
+common-text-content =
+            attribute ident { text }?,
+            attribute value-type { "text" | "html" },
+            attribute editor-style { text }?,
+            attribute required-field { "true" | "false" }?,
+            attribute allow-annotations { "true" | "false" }?,
+            (element instruction-text { html }? &
+             element default-answer-value { text }? &
+             (element text { html }? &
+              element validation {
                   attribute validation-type { "string-match" | "string-length-minimum" | "string-length-maximum" },
                   element error-message { text },
                   element validator { text }
-                }*))
-             }
+              }*))
+
+short-input = element content {
+                  attribute content-type { "short-input" },
+                  common-text-content
+              }
+
+paragraph-input = element content {
+                  attribute content-type { "paragraph-input" },
+                  common-text-content
+              }
+
+text-input = short-input | paragraph-input
 
 # Contents
 text-content = element content {

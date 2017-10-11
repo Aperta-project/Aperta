@@ -400,84 +400,98 @@
           </element>
         </optional>
       </interleave>
-      <zeroOrMore>
-        <ref name="content"/>
-      </zeroOrMore>
+      <ref name="check-box-input"/>
+      <ref name="check-box-input"/>
+      <ref name="paragraph-input"/>
     </element>
   </define>
-  <define name="text-input">
-    <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <attribute name="value-type">
+  <define name="common-text-content">
+    <optional>
+      <attribute name="ident"/>
+    </optional>
+    <attribute name="value-type">
+      <choice>
+        <value>text</value>
+        <value>html</value>
+      </choice>
+    </attribute>
+    <optional>
+      <attribute name="editor-style"/>
+    </optional>
+    <optional>
+      <attribute name="required-field">
         <choice>
-          <value>text</value>
-          <value>html</value>
+          <value>true</value>
+          <value>false</value>
         </choice>
       </attribute>
-      <optional>
-        <attribute name="editor-style"/>
-      </optional>
-      <attribute name="content-type">
+    </optional>
+    <optional>
+      <attribute name="allow-annotations">
         <choice>
-          <value>short-input</value>
-          <value>paragraph-input</value>
+          <value>true</value>
+          <value>false</value>
         </choice>
       </attribute>
+    </optional>
+    <interleave>
       <optional>
-        <attribute name="required-field">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
+        <element name="instruction-text">
+          <ref name="html"/>
+        </element>
       </optional>
       <optional>
-        <attribute name="allow-annotations">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
+        <element name="default-answer-value">
+          <text/>
+        </element>
       </optional>
       <interleave>
         <optional>
-          <element name="instruction-text">
+          <element name="text">
             <ref name="html"/>
           </element>
         </optional>
-        <optional>
-          <element name="default-answer-value">
-            <text/>
+        <zeroOrMore>
+          <element name="validation">
+            <attribute name="validation-type">
+              <choice>
+                <value>string-match</value>
+                <value>string-length-minimum</value>
+                <value>string-length-maximum</value>
+              </choice>
+            </attribute>
+            <element name="error-message">
+              <text/>
+            </element>
+            <element name="validator">
+              <text/>
+            </element>
           </element>
-        </optional>
-        <interleave>
-          <optional>
-            <element name="text">
-              <ref name="html"/>
-            </element>
-          </optional>
-          <zeroOrMore>
-            <element name="validation">
-              <attribute name="validation-type">
-                <choice>
-                  <value>string-match</value>
-                  <value>string-length-minimum</value>
-                  <value>string-length-maximum</value>
-                </choice>
-              </attribute>
-              <element name="error-message">
-                <text/>
-              </element>
-              <element name="validator">
-                <text/>
-              </element>
-            </element>
-          </zeroOrMore>
-        </interleave>
+        </zeroOrMore>
       </interleave>
+    </interleave>
+  </define>
+  <define name="short-input">
+    <element name="content">
+      <attribute name="content-type">
+        <value>short-input</value>
+      </attribute>
+      <ref name="common-text-content"/>
     </element>
+  </define>
+  <define name="paragraph-input">
+    <element name="content">
+      <attribute name="content-type">
+        <value>paragraph-input</value>
+      </attribute>
+      <ref name="common-text-content"/>
+    </element>
+  </define>
+  <define name="text-input">
+    <choice>
+      <ref name="short-input"/>
+      <ref name="paragraph-input"/>
+    </choice>
   </define>
   <!-- Contents -->
   <define name="text-content">

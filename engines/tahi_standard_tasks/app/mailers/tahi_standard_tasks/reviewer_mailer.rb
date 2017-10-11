@@ -102,7 +102,9 @@ module TahiStandardTasks
         @subject = @letter_template.subject
         @body = @letter_template.body
         @to = @reviewer_report.user.email
-        mail(to: @to, subject: @subject)
+        @cc = @letter_template.cc
+        @bcc = @letter_template.bcc
+        mail(to: @to, cc: @cc, bcc: @bcc, subject: @subject)
       rescue BlankRenderFieldsError => e
         Bugsnag.notify(e)
       end

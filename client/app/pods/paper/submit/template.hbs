@@ -1,78 +1,101 @@
-<main id="main-content" class="main-content" role="main">
-  <div class="main-content-section">
-    <div class="base-screen">
-      <div class="task-main-content">
-        <h1 class="overlay-body-title">Review Your Submission</h1>
-        <p>Please verify that the metadata you entered is correct before completing your submission.</p>
-        <table class="table table-hover">
-          <tfoot>
-          <tr>
-            <td>
-              {{#link-to 'paper.index' paper.shortDoi}}
-                <button name="task_completed" class="task-completed task-not-completed button-secondary button--green">
-                  Make changes
+{{#if paperSubmitted}}
+  {{#overlay-fullscreen visible=showFeedbackOverlay
+                        outAnimationComplete=(action "hideFeedbackOverlay")
+                        overlayClass="overlay--green paper-submit-overlay"
+  as |overlay|}}
+    {{#if paper.gradualEngagement}}
+
+      {{#if paper.isInitiallySubmitted}}
+        {{partial 'components/paper-submit/initial-submit'}}
+      {{else if isFirstFullSubmission}}
+        {{partial 'components/paper-submit/full-submit'}}
+      {{else if paper.isSubmitted}}
+        {{partial 'components/paper-submit/standard-submit'}}
+      {{/if}}
+
+    {{else}}
+      {{partial 'components/paper-submit/standard-submit'}}
+    {{/if}}
+
+    {{feedback-form close=(action overlay.animateOut)}}
+  {{/overlay-fullscreen}}
+{{else}}
+  <main id="main-content" class="main-content" role="main">
+    <div class="main-content-section">
+      <div class="base-screen">
+        <div class="task-main-content">
+          <h1 class="overlay-body-title">Review Your Submission</h1>
+          <p>Please verify that the metadata you entered is correct before completing your submission.</p>
+          <table class="table table-hover">
+            <tfoot>
+            <tr>
+              <td>
+                {{#link-to 'paper.index' paper.shortDoi}}
+                  <button id="review-submission-make-changes-button" name="task_completed" class="task-completed task-not-completed button-secondary button--green">
+                    Make changes
+                  </button>
+                {{/link-to}}
+              </td>
+              <td>{{flash-messages}}</td>
+              <td>
+                <button id="review-submission-submit-button" name="task_completed" class="task-completed task-not-completed button-primary button--green pull-right" {{action "submit"}}>
+                  Submit
                 </button>
-              {{/link-to}}
-            </td>
-            <td>{{flash-messages}}</td>
-            <td>
-              <button name="task_completed" class="task-completed task-not-completed button-primary button--green pull-right" {{action "submit"}}>
-                Submit
-              </button>
-            </td>
-          </tr>
-          </tfoot>
-          <tbody>
-          <tr>
-            <th>Preprint</th>
-            <td>
-              <dl>
-                <dt>Would you like to post this paper as a preprint?</dt>
-                <dd><mark>{{#if preprintOptOut}}<b>No</b> -- I don't want to post to preprint.{{else}}<b>Yes</b> -- I want to post this paper to the preprint server.{{/if}}</mark></dd>
-              </dl>
-            </td>
-          </tr>
-          <tr>
-            <th>Title</th>
-            <td>
-              <p>{{{paper.displayTitle}}}</p>
-            </td>
-          </tr>
-          <tr>
-            <th>Author</th>
-            <td>
-              <p>
-                <span>{{paper.authors.firstObject.firstName}} {{if paper.authors.firstObject.middleInitial paper.authors.firstObject.middleInitial ''}} {{paper.authors.firstObject.lastName}}</span>
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <th>Co-Authors</th>
-            <td>
-              <p>
-                {{#each paper.authors as |author|}}
-                  <span>{{author.firstName}} {{if author.middleInitial author.middleInitial ''}} {{author.lastName}}{{#unless (eq author paper.authors.lastObject)}}<br/>{{/unless}}</span>
-                {{/each}}
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <th>Abstract</th>
-            <td>
-              <p>{{{paper.abstract}}}</p>
-            </td>
-          </tr>
-          <tr>
-            <th>Manuscript</th>
-            <td>
-              <p><a class="" href={{fileDownloadUrl}}><i class="fa fa-file-pdf-o"></i> Download PDF</a> </p>
-              <p class="muted">Note: Figures and Supplemental Files are included in the PDF.</p>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+              </td>
+            </tr>
+            </tfoot>
+            <tbody>
+            <tr>
+              <th>Preprint</th>
+              <td>
+                <dl>
+                  <dt>Would you like to post this paper as a preprint?</dt>
+                  <dd><mark>{{#if preprintOptOut}}<b>No</b> -- I don't want to post to preprint.{{else}}<b>Yes</b> -- I want to post this paper to the preprint server.{{/if}}</mark></dd>
+                </dl>
+              </td>
+            </tr>
+            <tr>
+              <th>Title</th>
+              <td>
+                <p>{{{paper.displayTitle}}}</p>
+              </td>
+            </tr>
+            <tr>
+              <th>Author</th>
+              <td>
+                <p>
+                  <span>{{paper.authors.firstObject.firstName}} {{if paper.authors.firstObject.middleInitial paper.authors.firstObject.middleInitial ''}} {{paper.authors.firstObject.lastName}}</span>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <th>Co-Authors</th>
+              <td>
+                <p>
+                  {{#each paper.authors as |author|}}
+                    <span>{{author.firstName}} {{if author.middleInitial author.middleInitial ''}} {{author.lastName}}{{#unless (eq author paper.authors.lastObject)}}<br/>{{/unless}}</span>
+                  {{/each}}
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <th>Abstract</th>
+              <td>
+                <p>{{{paper.abstract}}}</p>
+              </td>
+            </tr>
+            <tr>
+              <th>Manuscript</th>
+              <td>
+                <p><a class="" href={{fileDownloadUrl}}><i class="fa fa-file-pdf-o"></i> Download PDF</a> </p>
+                <p class="muted">Note: Figures and Supplemental Files are included in the PDF.</p>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
-</main>
+  </main>
+{{/if}}
 {{outlet}}

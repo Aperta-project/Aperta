@@ -4,6 +4,7 @@ import { paperDownloadPath } from 'tahi/utils/api-path-helpers';
 export default Ember.Controller.extend({
   flash: Ember.inject.service(),
   restless: Ember.inject.service(),
+  showFeedbackOverlay: false,
   paperSubmitted: false,
   previousPublishingState: null,
   isFirstFullSubmission: Ember.computed.equal(
@@ -25,12 +26,20 @@ export default Ember.Controller.extend({
     this.set('previousPublishingState', this.get('paper.publishingState'));
   },
 
+  showFeedbackOverlayFunc() {
+    this.set('showFeedbackOverlay', true);
+  },
+
+  setPaperStateAsSubmitted() {
+    this.set('paperSubmitted', true);
+  },
+
   actions: {
     submit() {
       this.recordPreviousPublishingState();
       this.get('restless').putUpdate(this.get('paper'), '/submit').then(() => {
-        this.set('paperSubmitted', true);
-        this.transitionToRoute('paper.index', this.get('paper.shortDoi'));
+        this.setPaperStateAsSubmitted();
+        this.showFeedbackOverlayFunc();
       }, (arg) => {
         const status = arg.status;
         const model = arg.model;
@@ -49,6 +58,15 @@ export default Ember.Controller.extend({
 
         this.get('flash').displayRouteLevelMessage('error', message);
       });
+    },
+
+    hideFeedbackOverlay() {
+      this.set('showFeedbackOverlay', false);
+      this.transitionToRoute('paper.index', this.get('paper.shortDoi'));
+    },
+
+    close() {
+      this.attrs.close();
     }
   }
 });

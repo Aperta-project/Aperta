@@ -29,9 +29,6 @@ export default AuthorizedRoute.extend({
 
   actions: {
 
-    exitVersions() {
-      this.transitionTo('paper.index', this.modelFor('paper'));
-    },
     // Required until Ember has routable components.
     // We need to cleanup because controllers are singletons
     // and are not torn down:

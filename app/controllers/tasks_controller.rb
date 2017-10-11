@@ -133,15 +133,13 @@ class TasksController < ApplicationController
     spawning_task = Task.find(params[:id])
     letter_template = render_sendback_template(spawning_task)
 
-    PlosBioTechCheck::ChangesForAuthorTask.create!(
+    task_attrs = {
       body: { initialTechCheckBody: letter_template.body },
-      title: PlosBioTechCheck::ChangesForAuthorTask::DEFAULT_TITLE,
       paper: paper,
       phase: paper.phases.first
-    ).tap do |changes_for_author_task|
-      changes_for_author_task.add_participant(paper.creator)
-      changes_for_author_task.save!
-    end
+    }
+
+    PlosBioTechCheck::ChangesForAuthorTask.create_with_particpants! task_attrs
   end
 
   def render_sendback_template(task_obj)

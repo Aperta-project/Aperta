@@ -31,15 +31,13 @@ module PlosBioTechCheck
     end
 
     def create_changes_for_author_task
-      ChangesForAuthorTask.create!({
+      task_attrs = {
         body: {},
-        title: ChangesForAuthorTask::DEFAULT_TITLE,
         paper: paper,
         phase: task.phase
-      }).tap do |changes_for_author_task|
-        changes_for_author_task.add_participant(paper.creator)
-        changes_for_author_task.save!
-      end
+      }
+
+      PlosBioTechCheck::ChangesForAuthorTask.create_with_particpants! task_attrs
     end
 
     def ensure_paper_editable!

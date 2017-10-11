@@ -18,21 +18,28 @@ export default AuthorizedRoute.extend({
   // FYI - the preprintOptOut field is defined on paper in the
   // backend data model but is never set by any component. Its set
   // here in the UI only on load and is not persisted to the backend.
+  //
+
 
   afterModel(model) {
     let prePrintTask = model.tasks.findBy('title', 'Preprint Posting');
-    prePrintTask.get('answers').then((answers) => {
-      let value = answers.get('firstObject').get('value');
-      model.paper.set('preprintOptOut', (value === '2'));
-    });
+
+    // set the model based on the located preprint posting task
+    // if there is no preprint posting task do nothing and use the
+    // default value which is false
+    if(prePrintTask) {
+      prePrintTask.get('answers').then((answers) => {
+        let value = answers.get('firstObject').get('value');
+        model.paper.set('preprintOptOut', (value === '2'));
+      });
+    }
   },
 
   actions: {
 
     // Required until Ember has routable components.
     // We need to cleanup because controllers are singletons
-    // and are not torn down:
-
+    // and are not torn do
     willTransition() {
       this.controllerFor('paper.submit').setProperties({
         taskToDisplay: null,

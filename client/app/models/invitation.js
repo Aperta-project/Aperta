@@ -24,6 +24,9 @@ export default DS.Model.extend({
   task: DS.belongsTo('task', { polymorphic: true }),
   decision: DS.belongsTo('decision', {async: false}),
   title: DS.attr('string'),
+  htmlSafeTitle: Ember.computed('title', function () {
+    return Ember.String.htmlSafe(this.get('title'));
+  }),
   reviewerReport: DS.belongsTo('reviewer_report'),
   paperShortDoi: DS.attr('string'),
   journalName: DS.attr('string'),

@@ -32,7 +32,7 @@ let template = hbs`
 `;
 
 test('can manage workflow, list appears', function(assert) {
-  let paper = FactoryGuy.make('paper');
+  let paper = FactoryGuy.make('paper', { publishingState: 'submitted', submittedAt: '2016-09-28T13:54:58.028Z'});
   let correspondence = FactoryGuy.make('correspondence', { paper: paper });
   const can = FakeCanService.create().allowPermission('manage_workflow', paper);
   this.register('service:can', can.asService());
@@ -48,6 +48,7 @@ test('can manage workflow, list appears', function(assert) {
     assert.textPresent('tr:last td:nth-child(3)', correspondence.get('recipient'));
     assert.textPresent('tr:last td:nth-child(4)', 'v0.0 rejected');
     assert.textPresent('tr:last td:nth-child(5)', correspondence.get('sender'));
+    assert.textPresent('.correspondence-table > p', 'Correspondence sent before February 1, 2017 is not available for display.');
   });
 });
 
@@ -68,6 +69,7 @@ test('can manage workflow, list appears for manually created correspondence', fu
     assert.textPresent('tr:last td:nth-child(3)', correspondence.get('recipient'));
     assert.textPresent('tr:last td:nth-child(4)', 'Unavailable');
     assert.textPresent('tr:last td:nth-child(5)', correspondence.get('sender'));
+    assert.equal(this.$('.correspondence-table > p').length, 0);
   });
 });
 

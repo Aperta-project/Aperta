@@ -46,6 +46,6 @@ class AdminJournalSerializer < ActiveModel::Serializer
   end
 
   def letter_template_scenarios
-    TemplateScenario.descendants.map { |d| { name: d.name, merge_fields: d.merge_fields } }
+    TemplateContext.scenarios.map { |d| { name: d.name, merge_fields: d.merge_fields } }
   end
 end

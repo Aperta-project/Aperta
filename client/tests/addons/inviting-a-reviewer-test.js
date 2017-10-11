@@ -66,10 +66,7 @@ test('disables the Compose Invite button until a user is selected', function(ass
         '.invitation-email-entry-button:not(.button--disabled)',
         'Expected to find Compose Invite button enabled'
       );
-    });
 
-    andThen(function() {
-      //fillIn('#invitation-recipient', 'errorEmail');
       assert.elementFound(
         '.ember-view .error-message',
         'Show an error when email is not right'

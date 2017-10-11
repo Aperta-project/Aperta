@@ -103,7 +103,8 @@ class TasksController < ApplicationController
       to: @letter_template.to,
       task: @task
     )
-    head :no_content
+    task = create_changes_for_author_task
+    render json: task.to_json
   end
 
   def nested_questions
@@ -127,6 +128,19 @@ class TasksController < ApplicationController
   end
 
   private
+
+  def create_changes_for_author_task
+    spawning_task = Task.find(params[:id])
+    letter_template = render_sendback_template(spawning_task)
+
+    task_attrs = {
+      body: { initialTechCheckBody: letter_template.body },
+      paper: paper,
+      phase: paper.phases.first
+    }
+
+    PlosBioTechCheck::ChangesForAuthorTask.create_with_particpants! task_attrs
+  end
 
   def render_sendback_template(task_obj)
     paper = task_obj.paper

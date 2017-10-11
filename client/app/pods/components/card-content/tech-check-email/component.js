@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   showEmailPreview: false,
   restless: Ember.inject.service('restless'),
   flash: Ember.inject.service('flash'),
+  routing: Ember.inject.service('-routing'),
 
   emailPreview: null,
 
@@ -75,10 +76,12 @@ export default Ember.Component.extend({
 
     sendChangeRequestEmail() {
       const config = this._templateConfig('sendback_email');
+      const paperDOI = this.get('owner.paper.shortDoi');
 
-      this.get('restless').put(config.url, config.data).then(()=> {
+      this.get('restless').put(config.url, config.data).then((data)=> {
         const flash = this.get('flash');
         flash.displaySystemLevelMessage('success', 'Sendback reasons email sent');
+        this.get('routing').transitionTo('paper.task.index', [paperDOI, data.id]);
       });
     },
   }

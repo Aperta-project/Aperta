@@ -10,6 +10,15 @@ module PlosBioTechCheck
     DEFAULT_ROLE_HINT = 'author'.freeze
     SYSTEM_GENERATED = true
 
+    def self.create_with_particpants!(attrs)
+      attrs[:title] = PlosBioTechCheck::ChangesForAuthorTask::DEFAULT_TITLE
+
+      PlosBioTechCheck::ChangesForAuthorTask.create!(attrs).tap do |changes_for_author_task|
+        changes_for_author_task.add_participant(attrs[:paper].creator)
+        changes_for_author_task.save!
+      end
+    end
+
     def active_model_serializer
       TaskSerializer
     end

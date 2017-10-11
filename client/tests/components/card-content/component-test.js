@@ -50,6 +50,5 @@ test('it does not create an answer for non answerables', function(assert) {
   this.render(hbs`
     {{custom-card-task task=task preview=false}}
   `);
-
   assert.equal(this.get('task.cardVersion.contentRoot.answers.length'), 0, 'there are no answers for a paragraph tag');
 });

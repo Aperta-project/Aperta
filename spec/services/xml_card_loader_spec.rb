@@ -189,9 +189,9 @@ describe XmlCardLoader do
         card = xml_card_loader.load(xml)
         card.save
         expect(first.ident).to eq('foo')
-        expect(first.content_type).to eq('text')
+        expect(first.content_type).to eq('description')
         expect(second.ident).to eq('bar')
-        expect(second.content_type).to eq('text')
+        expect(second.content_type).to eq('description')
       end
     end
 

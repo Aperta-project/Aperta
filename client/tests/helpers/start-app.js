@@ -59,17 +59,6 @@ export default function startApp(attrs) {
     auth_endpoint_path: '/event_stream/auth'
   };
 
-  // TestHelper.reopen({
-  //   mapFind: function(modelName, json) {
-  //     let responseJson = {};
-  //     // hack to work around
-  //     // https://github.com/danielspaniel/ember-data-factory-guy/issues/82
-  //     if ((/Task/).test(modelName)) {
-  //       modelName = 'task';
-  //     }
-  //     responseJson[Ember.String.pluralize(modelName)] = json;
-  //     return responseJson;
-  //   },
   TestHelper.mockPaperQuery = (paper) => {
     let mockedQuery = TestHelper.mockQuery('paper').returns({models: [paper]});
     var shortDoi = Ember.get(paper, 'shortDoi');

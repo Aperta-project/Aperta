@@ -109,6 +109,14 @@ describe ScheduledEventFactory do
 
         it_behaves_like 'templated scheduled events', ScheduledEventTestTask::SCHEDULED_EVENTS_TEMPLATE
       end
+
+      context 'when all scheduled events are in the passive state' do
+        it 'should not change the event count' do
+          reviewer_report.due_datetime.scheduled_events.each(&:switch_off!)
+          DueDatetime.set_for(reviewer_report, length_of_time: 10.days)
+          expect { subject }.to change { ScheduledEvent.count }.by(0)
+        end
+      end
     end
   end
 end

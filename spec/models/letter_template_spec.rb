@@ -102,6 +102,23 @@ describe LetterTemplate do
         expect(letter_template.render(html_letter_context.stringify_keys).to).to eq("myemail@example.com")
       end
     end
+
+    context "with missing data" do
+      let(:letter_template) do
+        FactoryGirl.create(:letter_template,
+                           body: "Interesting text about {{ subject }} from {{ email }}")
+      end
+      let(:letter_context) do
+        {
+          subject: "",
+          email: ""
+        }
+      end
+
+      it 'adds blank fields to error object' do
+        expect { letter_template.render(letter_context.stringify_keys, check_blanks: true) }.to raise_error BlankRenderFieldsError, '["subject", "email"]'
+      end
+    end
   end
 
   describe "letter template seed" do

@@ -1,6 +1,6 @@
 # Provides a template context for the Sendback Reasons Letter Template
-class SendbacksScenario < TemplateScenario
-  def self.merge_field_definitions
+class SendbacksContext < TemplateContext
+  def self.complex_merge_fields
     [{ name: :manuscript, context: PaperContext },
      { name: :journal, context: JournalContext },
      { name: :author, context: UserContext },

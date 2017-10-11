@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { test, moduleFor } from 'ember-qunit';
 import { manualSetup, make } from 'ember-data-factory-guy';
+import wait from 'ember-test-helpers/wait';
 
 moduleFor('controller:paper/workflow', 'Unit | Controller | paper workflow', {
   integration: true,

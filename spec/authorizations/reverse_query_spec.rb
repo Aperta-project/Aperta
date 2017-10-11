@@ -75,7 +75,7 @@ DESC
 
     context "when different tasks have the same permission such as 'be_assigned' or 'assign_others'" do
       let!(:task) { FactoryGirl.create(:task, :with_card, title: 'AwesomeSauce') }
-      let(:another_task) { FactoryGirl.create(:task, title: 'Another task', journal: my_journal) }
+      let(:another_task) { FactoryGirl.create(:task, title: 'Another task') }
       let(:my_journal) { task.journal }
       let(:reviewer) { FactoryGirl.create :user }
       let(:cover_editor) { FactoryGirl.create :user }

@@ -132,7 +132,7 @@ class TasksController < ApplicationController
     paper = task_obj.paper
     journal = paper.journal
     letter_template = journal.letter_templates.find_by(name: 'Sendback Reasons')
-    letter_template.render(SendbacksScenario.new(task_obj), check_blanks: false)
+    letter_template.render(SendbacksContext.new(task_obj), check_blanks: false)
   end
 
   def paper

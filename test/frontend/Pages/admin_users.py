@@ -21,6 +21,7 @@ class AdminUsersPage(BaseAdminPage):
   """
   Model the common base Admin page, users Tab elements and their functions
   """
+
   def __init__(self, driver):
     super(AdminUsersPage, self).__init__(driver)
 
@@ -175,7 +176,7 @@ class AdminUsersPage(BaseAdminPage):
         result_username = result.find_element(*self._admin_users_row_username)
         logging.info('Clicking result set row for user {0}'.format(result_username.text))
         result_username.click()
-        self._wait_for_element(self._get(self._ud_overlay_title), 15)
+        self._wait_for_element(self._get(self._ud_overlay_title), .25)
         self._get(self._ud_overlay_title)
         user_details_closer = self._get(self._overlay_header_close)
         self._get(self._ud_overlay_fname_label)

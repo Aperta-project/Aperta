@@ -206,6 +206,19 @@ test('the row is in the show state, invitation is invited, and in current round'
   assert.spyCalled(spy, 'clicking on button invokes invitation.accept()');
 });
 
+test('the row is in the show state, invitation is invited, and in current round but invitee has no id', function(assert) {
+  this.setProperties({
+    'invitation.state': 'invited',
+    currentRound: true,
+    uiState: 'show',
+    'invitation.invitee': {}
+  });
+
+  this.render(openTemplate);
+
+  assert.elementNotFound('.invitation-item-action-accept', 'Does not show Accept button');
+});
+
 test('the row is in the show state, invitation is accepted, and in current round', function(assert) {
   this.setProperties({
     'invitation.state': 'accepted',

@@ -116,7 +116,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
 
   displayAcceptOnBehalfButton: computed('invitation.{invited,reviewer}', 'closedState', 'currentRound', 'invitee', function() {
     // similar to rescind button but only if its for a reviewer and if there's an invitee
-    return this.get('currentRound') && !this.get('closedState') && this.get('invitation.invited') && this.get('invitee') && this.get('invitation.reviewer');
+    return this.get('currentRound') && !this.get('closedState') && this.get('invitation.invited') && this.get('invitation.invitee.id') && this.get('invitation.reviewer');
   }),
 
   notAcceptedByInvitee: not('invitation.isAcceptedByInvitee'),

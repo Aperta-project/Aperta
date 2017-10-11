@@ -23,7 +23,7 @@ moduleForModel('invitation', 'Unit | Model | invitation', {
   }
 });
 
-test('rescind() and accept() uses restless to touch endpoints', function(assert) {
+test('rescind() and accept() use restless to touch endpoints', function(assert) {
   let fakeRestless = {
     put: sinon.stub()
   };

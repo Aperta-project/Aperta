@@ -88,6 +88,11 @@ class ExportPackager
     "#{@paper.manuscript_id}.#{extension}"
   end
 
+  def cover_letter_filename
+    extension = @paper.file.filename.split('.').last
+    "aperta-cover-letter-#{@paper.short_doi}.#{extension}"
+  end
+
   def add_figures(package)
     @paper.figures.each do |figure|
       add_file_to_package package,
@@ -98,7 +103,7 @@ class ExportPackager
 
   def add_cover_letter(package)
     letter = @paper.question_attachments.cover_letter.first
-    add_file_to_package(package, letter.filename, letter.file.read) if letter
+    add_file_to_package(package, cover_letter_filename, letter.file.read) if letter
   end
 
   def add_supporting_information(package)

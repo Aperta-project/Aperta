@@ -75,7 +75,11 @@ class AdHocCardTest(CommonTest):
     ad_hoc_card.card_ready()
     ad_hoc_card.validate_card_elements_styles(short_doi, ad_hoc_user)
     ad_hoc_card._get(ad_hoc_card._add_btn).click()
-    widget = random.choice(('checkbox', 'input_text', 'paragraph', 'email', 'file_upload'))
+    # By design the email widget is only available to users who can properly utilize it - staff.
+    if ad_hoc_user == 'Staff Only':
+        widget = random.choice(('checkbox', 'input_text', 'paragraph', 'email', 'file_upload'))
+    else:
+      widget = random.choice(('checkbox', 'input_text', 'paragraph', 'file_upload'))
     logging.info('Testing {0} widget'.format(widget))
     ad_hoc_card.validate_widgets_styles(widget)
     return None

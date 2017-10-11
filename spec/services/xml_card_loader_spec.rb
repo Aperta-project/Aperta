@@ -7,6 +7,19 @@ describe XmlCardLoader do
   let!(:card) { FactoryGirl.create(:card, :versioned, name: "original name") }
   let(:xml_card_loader) { XmlCardLoader.new(card) }
 
+  describe 'XML format check' do
+    xml_dir = Rails.root.join('lib', 'custom_card', 'configurations', 'xml_content')
+
+    Dir.glob("#{xml_dir}/*.xml").each do |xml_file|
+      it "should round-trip #{xml_file}" do
+        xml = File.read(xml_file)
+        card = xml_card_loader.load(xml)
+        card.save
+        expect(card.reload.to_xml).to be_equivalent_to(xml)
+      end
+    end
+  end
+
   describe 'error handling' do
     context 'xml does not adhere to xml schema' do
       let(:xml) { '<foo/>' }
@@ -300,7 +313,11 @@ describe XmlCardLoader do
 
         context 'when the text element includes CDATA' do
           let(:text) { '<![CDATA[<a>link</a>]]>' }
-          it_behaves_like :the_text_attribute_is_set_properly
+          it 'throws an exception' do
+            expect do
+              xml_card_loader.load(xml).save
+            end.to raise_error(XmlCardDocument::XmlValidationError)
+          end
         end
       end
 

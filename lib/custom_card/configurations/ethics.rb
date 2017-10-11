@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/MethodLength
 module CustomCard
   module Configurations
     #
@@ -5,9 +6,9 @@ module CustomCard
     # Card and it can be used to create a new valid Card into the
     # system via the CustomCard::Loader.
     #
-    class ReportingGuidelines < Base
+    class Ethics < Base
       def self.name
-        "Reporting Guidelines"
+        "Ethics Statement"
       end
 
       def self.view_role_names
@@ -16,6 +17,14 @@ module CustomCard
 
       def self.edit_role_names
         ["Collaborator", "Cover Editor", "Creator", "Handling Editor", "Internal Editor", "Production Staff", "Publishing Services", "Staff Admin"]
+      end
+
+      def self.view_discussion_footer_role_names
+        view_role_names
+      end
+
+      def self.edit_discussion_footer_role_names
+        edit_role_names
       end
 
       def self.publish

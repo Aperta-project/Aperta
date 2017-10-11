@@ -12,19 +12,6 @@ describe LetterTemplate do
       end
     end
 
-    it 'requires #scenario to name a subclass of TemplateScenario' do
-      letter_template = LetterTemplate.new(scenario: "TahiStandardTasks::RegisterDecisionScenario")
-      letter_template.valid?
-      expect(letter_template.errors[:scenario]).to be_empty
-
-      ['Blah', 'TemplateScenario'].each do |value|
-        letter_template.scenario = value
-        letter_template.valid?
-        expect(letter_template).to_not be_valid
-        expect(letter_template.errors[:scenario]).to include('must name a subclass of TemplateScenario')
-      end
-    end
-
     it 'has valid liquid syntax in subject' do
       letter_template =
         FactoryGirl.build(:letter_template,
@@ -100,6 +87,23 @@ describe LetterTemplate do
 
       it "sanitizes the to field" do
         expect(letter_template.render(html_letter_context.stringify_keys).to).to eq("myemail@example.com")
+      end
+    end
+
+    context "with missing data" do
+      let(:letter_template) do
+        FactoryGirl.create(:letter_template,
+                           body: "Interesting text about {{ subject }} from {{ email }}")
+      end
+      let(:letter_context) do
+        {
+          subject: "",
+          email: ""
+        }
+      end
+
+      it 'adds blank fields to error object' do
+        expect { letter_template.render(letter_context.stringify_keys, check_blanks: true) }.to raise_error BlankRenderFieldsError, '["subject", "email"]'
       end
     end
   end

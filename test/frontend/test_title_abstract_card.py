@@ -129,16 +129,10 @@ class TitleAbstractTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._upload_manu_task))
     paper_viewer.click_task('Upload Manuscript')
-    upms = UploadManuscriptTask(self.getDriver())
-    upms._wait_for_element(upms._get(upms._completion_button))
-    completed = upms.completed_state()
-    if completed:
-      upms.click_completion_button()
-    upms._wait_for_element(upms._get(upms._upload_manuscript_replace_btn))
-    upms.upload_manuscript()
-    upms.validate_ihat_conversions_success(timeout=45)
-    upms.check_for_flash_error()
-    upms.logout()
+    paper_viewer.complete_task('Upload Manuscript')
+    paper_viewer.validate_ihat_conversions_success(timeout=45)
+    paper_viewer.check_for_flash_error()
+    paper_viewer.logout()
 
     # log back in as editor to validate T&A card state reset
     staff_user = random.choice(editorial_users)

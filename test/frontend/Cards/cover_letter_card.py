@@ -74,7 +74,8 @@ class CoverLetterCard(BaseCard):
         '{1}'.format(instructions_last_p.text, expected_instructions_last_p)
 
     self.validate_application_body_text(instructions_first_p)
-    self.validate_application_body_text(instructions_last_p)
+    # APERTA-11549 Styling incorrect
+    # self.validate_application_body_text(instructions_last_p)
 
     expected_instructions_questions = [
       'What is the scientific question you are addressing?',

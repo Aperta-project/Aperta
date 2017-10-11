@@ -25,8 +25,7 @@ class ReviewerReportTask(BaseTask):
     self._review_note = (By.CSS_SELECTOR, 'div.reviewer-report-wrapper p strong')
     self._question_block = (By.CSS_SELECTOR, 'li.question')
     self._questions = (By.CLASS_NAME, 'question-text')
-    self._questions_help = (By.CLASS_NAME, 'question-help')
-    self._question_textarea = (By.CSS_SELECTOR, 'li.question > div > textarea')
+    self._questions_help = (By.CSS_SELECTOR, 'ul.question-help')
     self._submit_button = (By.CLASS_NAME, 'button-primary')
     self._submit_confirm_text = (By.CLASS_NAME, 'reviewer-report-confirmation')
     self._submit_confirm_yes_btn = (By.CSS_SELECTOR, 'div.reviewer-report-confirmation > button')
@@ -53,6 +52,12 @@ class ReviewerReportTask(BaseTask):
     self._res_q4_form = (By.NAME, 'reviewer_report--comments_for_author')
     self._res_q5_form = (By.NAME, 'reviewer_report--additional_comments')
     self._res_q6_form = (By.NAME, 'reviewer_report--suitable_for_another_journal--journal')
+    self._res_q7_question = (By.CSS_SELECTOR, 'div.reviewer_report--attachments-question-text')
+    self._res_q7_explain = (By.CSS_SELECTOR, 'div.reviewer_report--attachments-question-text > p')
+    self._res_q7_file_link = (By.CSS_SELECTOR, 'div.attachment-item > a')
+    self._res_q7_file_replace = (By.CSS_SELECTOR, 'div.attachment-item > span.replace-attachment')
+    self._res_q7_file_delete = (By.CSS_SELECTOR, 'div.attachment-item > span.delete-attachment')
+    self._res_q7_upload_btn = (By.CSS_SELECTOR, 'div.attachment-manager > div.fileinput-button')
     # The following locators (except res_q6_ans) must be used with a find under each question block
     self._res_q1_answer = (By.CSS_SELECTOR, 'div.answer-text')
     self._res_q2_answer_bool = (By.CSS_SELECTOR, 'div.answer-text')
@@ -94,6 +99,7 @@ class ReviewerReportTask(BaseTask):
       reviewer report (default) or a front-matter type report.
     :return void function
     """
+    time.sleep(2)
     # First the global elements/sytles
     #self.validate_common_elements_styles() # not working - button.task-completed is no longer there
     accrb = self._get(self._q1_accept_radio)
@@ -117,13 +123,14 @@ class ReviewerReportTask(BaseTask):
     assert majrevlbl.text == 'Major Revision', majrevlbl.text
     self.validate_radio_button_label(majrevlbl)
     question_block_list = self._gets(self._question_block)
-    qb1, qb2, qb3, qb4, qb5, qb6 = question_block_list
+    qb1, qb2, qb3, qb4, qb5, qb6, qb7 = question_block_list
     question_list = self._gets(self._questions)
     for q in question_list:
       self.validate_application_list_style(q)
-    question_help_list = self._gets(self._questions_help)
-    for qh in question_help_list:
-      self.validate_application_body_text(qh)
+    # APERTA-11450
+    # question_help_list = self._gets(self._questions_help)
+    # for qh in question_help_list:
+      # self.validate_application_body_text(qh)
     # Then the specific styles
     if research_type:
       q2yeslbl = qb2.find_element(*self._res_yes_label)
@@ -146,6 +153,9 @@ class ReviewerReportTask(BaseTask):
       self.validate_radio_button_label(q6nolbl)
       q6noradio = qb6.find_element(*self._res_no_radio)
       self.validate_radio_button(q6noradio)
+      q7uplbtn = qb7.find_element(*self._res_q7_upload_btn)
+      assert q7uplbtn.text == 'UPLOAD FILE'
+
       # Research reviewer report competing interests question
       fm_ci_tinymce_editor_instance_id, fm_ci_tinymce_editor_instance_iframe = \
           self.get_rich_text_editor_instance('reviewer_report--competing_interests--detail')
@@ -257,7 +267,7 @@ class ReviewerReportTask(BaseTask):
       assert '<a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-'\
           'for-publication">reviewer</a>' in review_note.get_attribute('innerHTML')
       question_list = self._gets(self._questions)
-      q1, q2, q3, q4, q5, q6 = question_list
+      q1, q2, q3, q4, q5, q6, q7 = question_list
       assert q1.text == u'Please provide your publication recommendation:', q1.text
       assert q2.text == u'Do you have any potential or perceived competing interests that may '\
           u'influence your review?', q2.text
@@ -268,6 +278,8 @@ class ReviewerReportTask(BaseTask):
           u' please add them below.', q5.text
       assert q6.text == u'If the manuscript does not meet the standards of PLOS Biology, do you '\
           u'think it is suitable for another PLOS journal with only minor revisions?', q6.text
+      assert '(Optional) If you\'d like to include files to support your review, please attach ' \
+             'them here.' in q7.text, q7.text
       qh2, qh3, qh4, qh5, qh6 = self._gets(self._questions_help)
       assert qh2.text == u'Please review our Competing Interests policy and declare any potential'\
           u' interests that you feel the Editor should be aware of when considering your review.', \
@@ -296,7 +308,7 @@ class ReviewerReportTask(BaseTask):
              'loc-reviewing-magazine-submissions" target="_blank">reviewer guidelines</a>' in \
              review_note.get_attribute('innerHTML'), review_note.get_attribute('innerHTML')
       question_list = self._gets(self._questions)
-      q1, q2, q3, q4, q5, q6 = question_list
+      q1, q2, q3, q4, q5, q6, q7 = question_list
       assert q1.text == u'Please provide your publication recommendation:', q1.text
       assert q2.text == u'Do you have any potential or perceived competing interests that may ' \
                         u'influence your review?', q2.text
@@ -338,9 +350,9 @@ class ReviewerReportTask(BaseTask):
     """
     research_type = False
     question_list = self._gets(self._questions)
-    q1, q2, q3, q4, q5, q6 = question_list
+    q1, q2, q3, q4, q5, q6, q7 = question_list
     question_block_list = self._gets(self._question_block)
-    qb1, qb2, qb3, qb4, qb5, qb6 = question_block_list
+    qb1, qb2, qb3, qb4, qb5, qb6, qb7 = question_block_list
     if q3.text == u'(Optional) If you\'d like your identity to be revealed to the authors, '\
                   u'please include your name here.':
       research_type = True
@@ -385,6 +397,8 @@ class ReviewerReportTask(BaseTask):
           '{0} != {1}'.format(recommendation.text, recc_data)
       q2_page_ans = qb2.find_element(*self._fm_q2_answer)
       self.validate_application_body_text(q2_page_ans)
+      if q2_data == True:
+        q2_data = "Yes"
       assert q2_page_ans.text == q2_data, '{0} != {1}'.format(q2_page_ans.text, q2_data)
       q3_page_bool = qb3.find_element(*self._fm_q3_answer_bool)
       self.validate_application_body_text(q3_page_bool)
@@ -427,7 +441,7 @@ class ReviewerReportTask(BaseTask):
       research_type = True
     logging.info('Is this a research type report? {0}'.format(research_type))
     question_block_list = self._gets(self._question_block)
-    qb1, qb2, qb3, qb4, qb5, qb6 = question_block_list
+    qb1, qb2, qb3, qb4, qb5, qb6, qb7 = question_block_list
     if not recommendation:
       choices = ['Accept', 'Reject', 'Major Revision', 'Minor Revision']
       recommendation = choice(choices)
@@ -544,3 +558,11 @@ class ReviewerReportTask(BaseTask):
                  q5response,
                  q6response]
     return outdata
+
+  def task_ready(self):
+    """
+    A basic method to test that a task is fully populated before we interact with it.
+    This card lacks the common Completion button, so this method overrides the one in basetask
+    :return: Void Function
+    """
+    self._wait_for_element(self._get(self._submit_button))

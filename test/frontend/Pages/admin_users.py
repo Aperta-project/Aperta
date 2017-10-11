@@ -37,17 +37,17 @@ class AdminUsersPage(BaseAdminPage):
     self._admin_users_search_results_table_rname_header = (By.XPATH, '//table[1]/tr/th[4]')
     self._admin_users_search_results_row = (By.CLASS_NAME, 'user-row')
 
-    self._admin_users_row_lname = (By.CSS_SELECTOR, 'tr.user-row td')
-    self._admin_users_row_fname = (By.CSS_SELECTOR, 'tr.user-row td + td')
-    self._admin_users_row_username = (By.CSS_SELECTOR, 'tr.user-row td + td + td')
+    self._admin_users_row_lname = (By.CSS_SELECTOR, 'td.last-name')
+    self._admin_users_row_fname = (By.CSS_SELECTOR, 'td.first-name')
+    self._admin_users_row_username = (By.CSS_SELECTOR, 'td.username')
     self._admin_users_row_roles = (By.CSS_SELECTOR,
-                                          'tr.user-row td div ul.select2-choices li div')
+                                   'tr.user-row td div ul.select2-choices li div')
     self._admin_users_row_role_delete = (By.CSS_SELECTOR,
-                                                'tr.user-row td div ul.select2-choices li a')
+                                         'tr.user-row td div ul.select2-choices li a')
     self._admin_users_row_role_add = (By.CSS_SELECTOR, 'tr.user-row td div span.assign-role-button')
     self._admin_users_row_role_add_field = (
         By.CSS_SELECTOR, 'tr.user-row td div div ul li.select2-search-field input')
-    self._admin_users_row_role_search_result_item = (By. CSS_SELECTOR, 'ul.select2-results li div')
+    self._admin_users_row_role_search_result_item = (By.CSS_SELECTOR, 'ul.select2-results li div')
     # User Detail Overlay items
     self._ud_overlay_title = (By.CLASS_NAME, 'overlay-header-title')
     self._ud_overlay_uname_label = (By.XPATH, '//label[contains(@for, \'user-detail-username\')]')
@@ -175,7 +175,7 @@ class AdminUsersPage(BaseAdminPage):
         result_username = result.find_element(*self._admin_users_row_username)
         logging.info('Clicking result set row for user {0}'.format(result_username.text))
         result_username.click()
-        time.sleep(4) #bumping sleep per failure here: https://teamcity.plos.org/teamcity/viewLog.html?buildId=138228&tab=buildResultsDiv&buildTypeId=Aperta_NoNoseIntegrationTestOnSfoRc
+        self._wait_for_element(self._get(self._ud_overlay_title), 15)
         self._get(self._ud_overlay_title)
         user_details_closer = self._get(self._overlay_header_close)
         self._get(self._ud_overlay_fname_label)
@@ -187,6 +187,7 @@ class AdminUsersPage(BaseAdminPage):
         self._get(self._ud_overlay_cancel_link)
         self._get(self._ud_overlay_save_button)
         user_details_closer.click()
+        self._wait_for_not_element(self._ud_overlay_title, .1)
     assert success_count > 0
 
   def _search_user(self, username):

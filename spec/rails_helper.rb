@@ -118,9 +118,12 @@ RSpec.configure do |config|
       end
 
       client = Selenium::WebDriver::Remote::Http::Default.new
-      client.timeout = 90
+      client.read_timeout = 90
+      client.open_timeout = 90
+      options = Selenium::WebDriver::Firefox::Options.new
+      options.profile = profile
       Capybara::Selenium::Driver
-        .new(app, browser: :firefox, profile: profile, http_client: client)
+        .new(app, browser: :firefox, options: options, http_client: client)
     end
 
     Capybara.javascript_driver = :selenium
@@ -140,11 +143,6 @@ RSpec.configure do |config|
 
     $capybara_setup_done = true
     # rubocop:enable Style/GlobalVars
-  end
-
-  config.before(:each, js: true) do
-    # Get a consistent window size.
-    Capybara.page.driver.browser.manage.window.resize_to(1500, 1000)
   end
 
   config.before(:each) do

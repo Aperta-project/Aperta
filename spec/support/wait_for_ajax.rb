@@ -10,7 +10,7 @@ class Capybara::Session
   private
 
   def jquery_and_ember_present?
-    evaluate_script('jQuery')
+    evaluate_script('jQuery().jquery')
     evaluate_script('Ember.VERSION')
     return true
   rescue Selenium::WebDriver::Error::JavascriptError,

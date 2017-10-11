@@ -2,13 +2,18 @@ require 'rails_helper'
 
 describe FeedbackController do
   let(:user) { FactoryGirl.create(:user) }
-  before { sign_in user }
+
+  before do
+    FactoryGirl.create :feature_flag, name: 'JIRA_INTEGRATION'
+    sign_in user
+  end
 
   describe '#create' do
 
     context "with valid params" do
       include ActiveJob::TestHelper
 
+      before { allow(JIRAIntegrationService).to receive(:create_issue) }
       after  { clear_enqueued_jobs }
 
       let(:valid_params){ {remarks: 'foo', referrer: 'http://example.com',

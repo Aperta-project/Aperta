@@ -88,3 +88,13 @@ test('#feedbackSent sets pendingFeedback to false', function(assert) {
                false,
                'invitation is not pending feedback');
 });
+
+test('academicEditor', function(assert) {
+  const invitation = FactoryGuy.make('invitation', {inviteeRole: 'Academic Editor'});
+  assert.ok(invitation.get('academicEditor'));
+});
+
+test('reviewer', function(assert) {
+  const invitation = FactoryGuy.make('invitation', {inviteeRole: 'Reviewer'});
+  assert.ok(invitation.get('reviewer'));
+});

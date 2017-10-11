@@ -22,17 +22,22 @@ export default Component.extend(ValidationErrorsMixin, {
 
   completedErrorText: 'Please fix all errors',
 
+  /**
+   * isOverlay is currently only used directly by the preprint opt out card
+   * (which is a custom card).  It's picked up as a condition by an 'if' card content
+   */
+  isOverlay: false,
+
   init() {
     this._super(...arguments);
     this.set('editAbility', this.get('can').build('edit', this.get('task')));
   },
-
   isMetadataTask: alias('task.isMetadataTask'),
   isSubmissionTask: alias('task.isSubmissionTask'),
   isOnlyEditableIfPaperEditable: alias('task.isOnlyEditableIfPaperEditable'),
 
   isEditableDueToPermissions: alias('editAbility.can'),
-  isEditableDueToTaskState: not('task.completed'),
+  isEditableDueToTaskState: not('task.completedProxy'),
 
   isEditable: and(
     'isEditableDueToPermissions',
@@ -40,6 +45,8 @@ export default Component.extend(ValidationErrorsMixin, {
   isNotEditable: not('isEditable'),
 
   taskStateToggleable: alias('isEditableDueToPermissions'),
+  pdfAllowed: Ember.computed.reads('task.paper.journal.pdfAllowed'),
+  contentRoot: Ember.computed.reads('task.cardVersion.contentRoot'),
 
   saveTask: concurrencyTask(function * () {
     try {
@@ -60,7 +67,7 @@ export default Component.extend(ValidationErrorsMixin, {
       if(this.validationErrorsPresent()) {
         this.set('task.completed', false);
         this.set('validationErrors.completed', this.get('completedErrorText'));
-        return new Ember.RSVP.Promise((resolve) => { resolve() });
+        return new Ember.RSVP.Promise((resolve) => resolve() );
       }
     }
 

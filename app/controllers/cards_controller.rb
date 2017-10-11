@@ -87,7 +87,7 @@ class CardsController < ApplicationController
   end
 
   def card_params
-    keys = %i[name journal_id xml]
+    keys = %i[name journal_id xml card_task_type_id]
     params.require(:card).permit(*keys)
   end
 end

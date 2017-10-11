@@ -6,7 +6,7 @@ describe SnapshotsController do
   let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
   let(:paper) { FactoryGirl.create(:paper, :with_creator, :submitted, journal: journal) }
   let(:task) do
-    FactoryGirl.create(:ethics_task, paper: paper, participants: [owner])
+    FactoryGirl.create(:custom_card_task, paper: paper, participants: [owner])
   end
   let(:preview) { SnapshotService.new(paper).preview(task) }
 

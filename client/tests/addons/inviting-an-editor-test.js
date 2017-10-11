@@ -38,7 +38,7 @@ module('Integration: Inviting an editor', {
     });
 
     phase = FactoryGuy.make('phase');
-    task  = FactoryGuy.make('paper-editor-task', { phase: phase, letter: '"A letter"' });
+    task  = FactoryGuy.make('paper-editor-task', { phase: phase, letter: '"A letter"', viewable: true });
     paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task] });
     TestHelper.mockPaperQuery(paper);
     TestHelper.mockFindAll('discussion-topic', 1);

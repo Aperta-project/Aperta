@@ -76,6 +76,10 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
   end
 
   scenario 'A review can see their previous rounds of review' do
+    # seed the Upload Manuscript card so that it can be created after a decision has been registered
+    ctt = CardTaskType.find_by(task_class: "TahiStandardTasks::UploadManuscriptTask")
+    FactoryGirl.create(:card, :versioned, card_task_type: ctt)
+
     create_reviewer_invitation(paper)
     reviewer_report_task = create_reviewer_report_task
 
@@ -161,5 +165,22 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     expect(report.scheduled_events.pluck(:state).uniq).to eq ['active']
     report.rescind_invitation!
     expect(report.scheduled_events.pluck(:state).uniq).to eq ['canceled']
+  end
+
+  scenario 'Reviewer can upload attachments' do
+    create_reviewer_invitation(paper)
+    create_reviewer_report_task
+
+    Page.view_paper paper
+    paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
+
+    expect(page).to have_css('.attachment-manager')
+    expect(page).to have_content('UPLOAD FILE')
+
+    expect(DownloadAttachmentWorker).to receive(:perform_async)
+    file_path = Rails.root.join('spec', 'fixtures', 'about_turtles.docx')
+    attach_file 'file', file_path, visible: false
+
+    expect(page).to have_css('.attachment-item')
   end
 end

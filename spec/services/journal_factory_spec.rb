@@ -179,7 +179,9 @@ describe JournalFactory do
         ContentAttribute.delete_all
         CardContent.delete_all
         CardVersion.delete_all
+        TaskTemplate.delete_all
         Card.delete_all
+        CardTaskType.delete_all
       end
 
       let!(:journal) { @journal }
@@ -1337,7 +1339,7 @@ describe JournalFactory do
         let(:permissions) { journal.staff_admin_role.permissions }
 
         context 'has Journal permission to' do
-          let(:journal_actions) { ['administer', 'view_paper_tracker', 'remove_orcid'] }
+          let(:journal_actions) { ['manage_users', 'view_paper_tracker', 'remove_orcid'] }
 
           it 'has journal permissions' do
             journal_actions.each do |action|

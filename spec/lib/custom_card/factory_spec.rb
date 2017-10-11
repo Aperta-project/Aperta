@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe CustomCard::Factory do
   let!(:journal) { FactoryGirl.create(:journal) }
+  let!(:card_task_type) { FactoryGirl.create(:card_task_type, task_class: 'TahiStandardTasks::UploadManuscriptTask') }
   let(:custom_card_factory) { CustomCard::Factory.new(journal: journal) }
 
   # fake custom card config to use for testing
@@ -9,6 +10,10 @@ describe CustomCard::Factory do
     Class.new(CustomCard::Configurations::Base) do
       def self.name
         "A Test Card"
+      end
+
+      def self.task_class
+        'TahiStandardTasks::UploadManuscriptTask'
       end
 
       def self.xml_content
@@ -34,6 +39,11 @@ describe CustomCard::Factory do
     expect {
       custom_card_factory.first_or_create(card_configuration)
     }.to change { CardContent.count }.by(1)
+  end
+
+  it "looks up an existing CardTaskType based on the task_class" do
+    new_card = custom_card_factory.first_or_create(card_configuration).first
+    expect(new_card.card_task_type).to eq(card_task_type)
   end
 
   describe "publishing the card" do

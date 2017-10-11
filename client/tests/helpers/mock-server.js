@@ -17,5 +17,21 @@ export default function() {
     xhr.respond(200, { 'Content-Type': 'application/json' }, json);
   });
 
+  /* ^^ can be done with $.mockjax as follows if you don't wish to use sinon for your test:
+  $.mockjax({
+    type: 'GET',
+    url: RegExp('/api/permissions/(.*)%2B(\\d+)'),
+    urlParams: ['object', 'id'],
+    status: 200,
+    response: function(settings) {
+      let { object, id } = settings;
+      const json = JSON.stringify({
+        permissions: [{ id: '' + object + '+' + id, permissions: [] }]
+      });
+      this.responseText = json;
+    }
+  });
+  */
+
   return server;
 }

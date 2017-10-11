@@ -81,40 +81,49 @@ module TahiStandardTasks
     end
 
     def remind_before_due(reviewer_report_id:)
-      reminder_notice(template_name: 'Review Reminder - Before Due', reviewer_report_id: reviewer_report_id)
+      reminder_notice(letter_template_ident: 'review-reminder-before-due', reviewer_report_id: reviewer_report_id)
     end
 
     def first_late_notice(reviewer_report_id:)
-      reminder_notice(template_name: 'Review Reminder - First Late', reviewer_report_id: reviewer_report_id)
+      reminder_notice(letter_template_ident: 'review-reminder-first-late', reviewer_report_id: reviewer_report_id)
     end
 
     def second_late_notice(reviewer_report_id:)
-      reminder_notice(template_name: 'Review Reminder - Second Late', reviewer_report_id: reviewer_report_id)
+      reminder_notice(letter_template_ident: 'review-reminder-second-late', reviewer_report_id: reviewer_report_id)
     end
 
-    def thank_reviewer(reviewer_report:)
-      @paper = reviewer_report.paper
+    def thank_reviewer(reviewer_report_id:)
+      @reviewer_report = ReviewerReport.find(reviewer_report_id)
+      @paper = @reviewer_report.paper
       @journal = @paper.journal
-      @letter_template = @journal.letter_templates.find_by(name: 'Reviewer Appreciation')
-      @letter_template.render(ReviewerReportScenario.new(reviewer_report))
-      @subject = @letter_template.subject
-      @body = @letter_template.body
-      @to = reviewer_report.user.email
-      mail(to: @to, subject: @subject)
+      @letter_template = @journal.letter_templates.find_by(ident: 'reviewer-appreciation')
+      begin
+        @letter_template.render(ReviewerReportScenario.new(@reviewer_report), check_blanks: true)
+        @subject = @letter_template.subject
+        @body = @letter_template.body
+        @to = @reviewer_report.user.email
+        mail(to: @to, subject: @subject)
+      rescue BlankRenderFieldsError => e
+        Bugsnag.notify(e)
+      end
     end
 
     private
 
-    def reminder_notice(template_name:, reviewer_report_id:)
+    def reminder_notice(letter_template_ident:, reviewer_report_id:)
       @reviewer_report = ReviewerReport.find(reviewer_report_id)
       @paper = @reviewer_report.paper
       @journal = @paper.journal
-      @letter_template = @journal.letter_templates.find_by(name: template_name)
-      @letter_template.render(ReviewerReportScenario.new(@reviewer_report))
-      @subject = @letter_template.subject
-      @body = @letter_template.body
-      @to = @reviewer_report.user.email
-      mail(to: @to, subject: @subject, template_name: 'review_due_reminder')
+      @letter_template = @journal.letter_templates.find_by(ident: letter_template_ident)
+      begin
+        @letter_template.render(ReviewerReportScenario.new(@reviewer_report), check_blanks: true)
+        @subject = @letter_template.subject
+        @body = @letter_template.body
+        @to = @reviewer_report.user.email
+        mail(to: @to, subject: @subject, template_name: 'review_due_reminder')
+      rescue BlankRenderFieldsError => e
+        Bugsnag.notify(e)
+      end
     end
   end
 end

@@ -2,37 +2,23 @@
   {{progress-spinner visible=true align="middle" size="large"}}
 {{else}}
   <div class="row">
-    <div class="col-md-4 author-task-cards">
+    <div class="col-md-6 author-task-cards">
       <h3>Author task cards</h3>
-      {{#each authorTasks as |authorTask|}}
+      {{#each authorColumn as |authorTask|}}
         <label>
           {{check-box task=authorTask action="updateList"}} {{authorTask.title}}
         </label>
         <br>
       {{/each}}
     </div>
-    <div class="col-md-4 staff-task-cards">
+    <div class="col-md-6 staff-task-cards">
       <h3>Staff task cards</h3>
-      {{#each staffTasks as |staffTask|}}
+      {{#each staffColumn as |staffTask|}}
         <label>
           {{check-box task=staffTask action="updateList"}} {{staffTask.title}}
         </label>
         <br>
       {{/each}}
-    </div>
-
-    <div class="col-md-4 custom-cards">
-      <h3>Custom Cards</h3>
-      {{#if addableCards.length}}
-        {{#each addableCards as |card|}}
-          <label>
-            {{check-box task=card action="updateList"}} {{card.name}}
-          </label>
-          <br>
-        {{/each}}
-      {{else}}
-        No cards are available.
-      {{/if}}
     </div>
   </div>
 

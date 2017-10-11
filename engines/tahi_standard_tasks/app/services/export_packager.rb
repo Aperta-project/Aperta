@@ -21,6 +21,7 @@ class ExportPackager
     @zip_file ||= Tempfile.new('zip').tap do |f|
       Zip::OutputStream.open(f) do |package|
         add_figures(package)
+        add_cover_letter(package) if article_router_package?
         add_supporting_information(package)
         add_metadata(package)
         add_manuscript(package)
@@ -87,12 +88,22 @@ class ExportPackager
     "#{@paper.manuscript_id}.#{extension}"
   end
 
+  def cover_letter_filename
+    extension = @paper.file.filename.split('.').last
+    "aperta-cover-letter-#{@paper.short_doi}.#{extension}"
+  end
+
   def add_figures(package)
     @paper.figures.each do |figure|
       add_file_to_package package,
                           figure.filename,
                           figure.file.read
     end
+  end
+
+  def add_cover_letter(package)
+    letter = @paper.question_attachments.cover_letter.first
+    add_file_to_package(package, cover_letter_filename, letter.file.read) if letter
   end
 
   def add_supporting_information(package)

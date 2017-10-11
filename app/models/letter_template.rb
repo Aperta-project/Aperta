@@ -4,20 +4,26 @@
 class LetterTemplate < ActiveRecord::Base
   belongs_to :journal
 
+  validates :name, presence: { message: "This field is required" }, uniqueness: {
+    scope: [:journal_id],
+    case_sensitive: false,
+    message: "That template name is taken for this journal. Please give your template a new name."
+  }
+
+  validates :scenario, presence: { message: "This field is required" }
   validates :body, presence: true
   validates :subject, presence: true
-  validate :template_scenario?
   validate :body_ok?
   validate :subject_ok?
 
-  def render(context)
+  def render(context, check_blanks: false)
     tap do |my|
       # This is just an in-memory edit (render) of the letter template
       # fields that then get passed to the serializer. DO NOT save the
       # rendered versions.
-      my.subject = render_attr(subject, context, sanitize: true)
-      my.to = render_attr(to, context, sanitize: true)
-      my.body = render_attr(body, context)
+      my.subject = render_attr(subject, context, sanitize: true, check_blanks: check_blanks)
+      my.to = render_attr(to, context, sanitize: true, check_blanks: check_blanks)
+      my.body = render_attr(body, context, check_blanks: check_blanks)
     end
   end
 
@@ -27,24 +33,17 @@ class LetterTemplate < ActiveRecord::Base
 
   private
 
-  def render_attr(template, context, sanitize: false)
-    raw = Liquid::Template.parse(template).render(context)
+  def render_attr(template, context, sanitize: false, check_blanks: false)
+    raw = Liquid::Template.parse(template)
+    if check_blanks && LetterTemplateBlankValidator.blank_fields?(raw, context)
+      raise BlankRenderFieldsError, LetterTemplateBlankValidator.blank_fields(raw, context)
+    end
+    raw = raw.render(context)
     if sanitize
       ActionView::Base.full_sanitizer.sanitize(raw)
     else
       raw
     end
-  end
-
-  def template_scenario?
-    scenario_class = begin
-      scenario.constantize
-    rescue NameError
-      false
-    end
-    return if scenario_class && scenario_class < TemplateScenario
-
-    errors.add(:scenario, 'must name a subclass of TemplateScenario')
   end
 
   def body_ok?

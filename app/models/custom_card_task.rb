@@ -16,4 +16,9 @@ class CustomCardTask < Task
   def default_card
     # noop
   end
+
+  # Overrides Task
+  def self.create_journal_task_type?
+    false
+  end
 end

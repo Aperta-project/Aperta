@@ -199,6 +199,9 @@ GEM
       activesupport
       json
       multipart-post (~> 1.1)
+    db-query-matchers (0.9.0)
+      activesupport (>= 4.0, <= 6.0)
+      rspec (~> 3.0)
     devise (3.5.6)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -745,6 +748,7 @@ DEPENDENCIES
   combine_pdf
   database_cleaner
   databasedotcom
+  db-query-matchers
   devise (~> 3.5.6)
   dotenv
   dotenv-rails
@@ -842,7 +846,7 @@ DEPENDENCIES
   yaml_db!
 
 RUBY VERSION
-   ruby 2.2.6p396
+   ruby 2.2.8p477
 
 BUNDLED WITH
-   1.15.3
+   1.15.4

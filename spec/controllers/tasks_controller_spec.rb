@@ -23,7 +23,7 @@ describe TasksController, redis: true do
       get :index, format: 'json',
                   paper_id: paper.to_param
     end
-    let(:tasks) { [FactoryGirl.build_stubbed(:ad_hoc_task)] }
+    let(:tasks) { [FactoryGirl.create(:ad_hoc_task, paper: paper)] }
 
     it_behaves_like "an unauthenticated json request"
 
@@ -35,21 +35,12 @@ describe TasksController, redis: true do
           .with(:view, paper)
           .and_return true
 
-        allow(user).to receive(:filter_authorized).and_return instance_double(
-          'Authorizations::Query::Result',
-          objects: tasks
-        )
+        allow(user).to receive(:can?)
+          .with(:view, tasks[0])
+          .and_return true
       end
 
       it "returns only the paper's tasks the user has access to" do
-        expect(user).to receive(:filter_authorized).with(
-          :view,
-          paper.tasks.includes(:paper),
-          participations_only: false
-        ).and_return instance_double(
-          'Authorizations::Query::Result',
-          objects: tasks
-        )
         do_request
         expect(res_body['tasks'].count).to eq(1)
       end
@@ -90,6 +81,10 @@ describe TasksController, redis: true do
         allow(user).to receive(:can?)
           .with(:manage_workflow, paper)
           .and_return true
+
+        allow(user).to receive(:can?)
+          .with(:view, Task)
+          .and_return true
       end
 
       it "creates a task" do
@@ -110,11 +105,11 @@ describe TasksController, redis: true do
         do_request
       end
 
-      context "custom cards" do
+      context "a card_id is included in the params" do
         let(:card) { FactoryGirl.create(:card, :versioned, journal: journal) }
         let(:task_params) do
           {
-            type: 'CustomCardTask',
+            type: 'TahiStandardTasks::UploadManuscriptTask',
             paper_id: paper.to_param,
             phase_id: paper.phases.last.id,
             title: card.name,
@@ -122,8 +117,12 @@ describe TasksController, redis: true do
           }
         end
 
-        it "creates a new task from a card template" do
-          expect { do_request }.to change(CustomCardTask, :count).by(1)
+        it "creates a new task from a card template, using the latest published version" do
+          expect(TaskFactory).to(receive(:create)
+                                   .with(TahiStandardTasks::UploadManuscriptTask, hash_including(card_version: anything))
+                                   .and_call_original)
+          expect { do_request }.to change(TahiStandardTasks::UploadManuscriptTask, :count).by(1)
+          expect(TahiStandardTasks::UploadManuscriptTask.last.card_version).to eq(card.latest_published_card_version)
         end
       end
     end
@@ -162,6 +161,10 @@ describe TasksController, redis: true do
         stub_sign_in user
         allow(user).to receive(:can?)
           .with(:edit, task)
+          .and_return true
+
+        allow(user).to receive(:can?)
+          .with(:view, task)
           .and_return true
       end
 
@@ -202,15 +205,31 @@ describe TasksController, redis: true do
           end.to change { task.reload.completed }.from(true).to(false)
         end
 
+        it "allows assigning an user to the task" do
+          expect do
+            task_params[:assigned_user_id] = 1
+            do_request
+          end.to change { task.reload.assigned_user_id }.from(nil).to(1)
+        end
+
+        it "allows revoking an user from the task" do
+          task.update(assigned_user_id: 11)
+          expect do
+            task_params[:assigned_user_id] = nil
+            do_request
+          end.to change { task.reload.assigned_user_id }.from(11).to(nil)
+        end
+
         it "does not incomplete the task when the completed param is not a part of the request" do
           expect do
-            task_params.merge!(title: 'vernors')
+            task_params = { title: 'vernors' }
             do_request
           end.to_not change { task.reload.completed }
         end
 
         it "does not update anything else on the task" do
           expect do
+            task_params[:title] = 'vernors'
             do_request
           end.to_not change { task.reload.title }
         end

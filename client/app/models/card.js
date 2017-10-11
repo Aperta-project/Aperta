@@ -25,12 +25,14 @@ export default DS.Model.extend({
   journal: DS.belongsTo('admin-journal'),
   content: DS.belongsTo('card-content', { async: false }),
   cardVersions: DS.hasMany('card-version'),
+  cardTaskType: DS.belongsTo('card-task-type'),
 
   name: DS.attr('string'),
   state: DS.attr('string'),
   addable: DS.attr('boolean'),
+  workflow_only: DS.attr('boolean'),
   xml: DS.attr('string'),
-
+  title: Ember.computed.alias('name'),
   // used by the publish() function, set in the card editor's publish modal
   historyEntry: '',
 

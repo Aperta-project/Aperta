@@ -5,7 +5,7 @@ machine:
 
   ruby:
     version:
-      2.2.6 # when changing ruby versions, also update the cache_directory path below
+      2.2.8 # when changing ruby versions, also update the cache_directory path below
   node:
     version: 6.11.1
 
@@ -18,14 +18,14 @@ machine:
 ## Customize dependencies
 dependencies:
   cache_directories:
-    - "/opt/circleci/.rvm/gems/ruby-2.2.6@tahi"
+    - "/opt/circleci/.rvm/gems/ruby-2.2.8@tahi"
     - "client/node_modules"
     - "client/bower_components"
     - ff
 
   pre:
     - gem update --system
-    - gem install bundler -v '1.15.3'
+    - gem install bundler -v '1.15.4'
     - bundle config --global jobs 7
     - bundle config --global without staging:production
     - "[ -f $FF_FILE ] || wget $FIREFOX_URL -qP ff"

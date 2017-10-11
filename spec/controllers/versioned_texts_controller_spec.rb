@@ -32,7 +32,6 @@ describe VersionedTextsController do
           paper_id
           major_version
           minor_version
-          version_string
           file_type
           source_type
         )

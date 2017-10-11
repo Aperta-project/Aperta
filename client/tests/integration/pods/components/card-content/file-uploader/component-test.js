@@ -17,7 +17,8 @@ moduleForComponent(
           allowFileCaptions: true,
           allowMultipleUploads: true,
           label: 'Upload',
-          text: 'Please upload a file'
+          text: 'Please upload a file',
+          valueType: 'attachment'
         }),
         answer: Ember.Object.create({ value: null, attachments: [] })
       });
@@ -51,10 +52,10 @@ test(`shows an uploader with text and a button`, function(assert) {
     'fileinput-button',
     'disabling will hide the button unless alwaysShowAddButton is set to true'
   );
-  assert.textNotPresent(
+  assert.textPresent(
     '.description',
     'Please upload a file',
-    `the description is hidden when the uploader is disabled (like when the task is completed)`
+    `the description is shown for custom cards`
   );
 
   this.setProperties({ disabled: false, preview: true });

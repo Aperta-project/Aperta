@@ -62,10 +62,14 @@ Style/StringLiteralsInInterpolation:
 Metrics/LineLength:
   Enabled: false
 
+Metrics/BlockLength:
+  Enabled: false
+
 Style/PredicateName:
   Exclude:
     # has_foo? is idiomatic usage in page objects
     - '**/spec/**/*'
+
 
 Style/ClassCheck:
   # Sometimes is_a? is better, sometimes 'kind_of?'.

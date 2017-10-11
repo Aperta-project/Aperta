@@ -1,7 +1,5 @@
 module TahiStandardTasks
+  #  Shell class to be deleted later. This has been replaced with a custom card
   class EthicsTask < Task
-    include MetadataTask
-    DEFAULT_TITLE = 'Ethics Statement'.freeze
-    DEFAULT_ROLE_HINT = 'author'.freeze
   end
 end

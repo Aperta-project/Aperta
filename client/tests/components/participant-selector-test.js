@@ -22,6 +22,7 @@ moduleForComponent('participant-selector', 'Integration | Component | participan
     this.setProperties({
       currentParticipants: [this.testUser],
       searchingParticipant: false,
+      canRemoveSingleUser: false,
       canManage: true,
       onRemove() {},
       onSelect() {},
@@ -176,6 +177,64 @@ test('it does not suggest people who are already participants', function(assert)
   withUserSuggestions([user], assert, this, function() {
     assert.textPresent('.ember-power-select-option', 'No results found');
   });
+});
+
+
+test('renders remove link if canRemoveSingleUser is set to true and there is one participant', function(assert) {
+  this.render(hbs`
+   {{participant-selector currentParticipants=currentParticipants
+                          url="url"
+                          displayEmails=false
+                          searching=searchingParticipant
+                          onRemove=onRemove
+                          onSelect=onSelect
+                          searchStarted=searchStarted
+                          searchFinished=searchFinished
+                          canRemoveSingleUser=true
+                          canManage=canManage}}
+ `);
+
+  let thumb  = $('.participant-selector-user:first');
+  let remove = thumb.find('.participant-selector-user-remove');
+  assert.ok(remove.length, 'remove is available when canRemoveSingleUser is true');
+});
+
+test('remove link is not rendered if canRemoveSingleUser is set to false', function(assert) {
+  this.render(hbs`
+   {{participant-selector currentParticipants=currentParticipants
+                          url="url"
+                          displayEmails=false
+                          searching=searchingParticipant
+                          onRemove=onRemove
+                          onSelect=onSelect
+                          searchStarted=searchStarted
+                          canRemoveSingleUser=false
+                          searchFinished=searchFinished
+                          canManage=canManage}}
+ `);
+
+  let thumb  = $('.participant-selector-user:first');
+  let remove = thumb.find('.participant-selector-user-remove');
+  assert.ok(!remove.length, 'remove is not available when canRemoveSingleUser is false even if there is an assigned user');
+});
+
+test('remove link is not rendered if there are not currentParticipants but canRemoveSingleUser is true', function(assert) {
+  this.render(hbs`
+   {{participant-selector currentParticipants=[]
+                          url="url"
+                          displayEmails=false
+                          searching=searchingParticipant
+                          onRemove=onRemove
+                          onSelect=onSelect
+                          searchStarted=searchStarted
+                          canRemoveSingleUser=true
+                          searchFinished=searchFinished
+                          canManage=canManage}}
+ `);
+
+  let thumb  = $('.participant-selector-user:first');
+  let remove = thumb.find('.participant-selector-user-remove');
+  assert.ok(!remove.length, 'remove is not available because there are not participants');
 });
 
 moduleFor('component:participant-selector', 'Unit | Component | participant selector');

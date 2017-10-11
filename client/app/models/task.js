@@ -11,13 +11,13 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
     inverse: 'task'
   }),
   attachments: DS.hasMany('adhoc-attachment', {
-    async: true,
     inverse: 'task'
   }),
   cardThumbnail: DS.belongsTo('card-thumbnail', {
     inverse: 'task',
     async: false
   }),
+  cardVersion: DS.belongsTo('card-version'),
   commentLooks: DS.hasMany('comment-look', {
     inverse: 'task',
     async: false
@@ -29,12 +29,10 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
   }),
   participations: DS.hasMany('participation', { async: true }),
   phase: DS.belongsTo('phase', {
-    inverse: 'tasks',
-    async: true
+    inverse: 'tasks'
   }),
   snapshots: DS.hasMany('snapshot', {
-    inverse: 'source',
-    async: true
+    inverse: 'source'
   }),
   invitations: DS.hasMany('invitation', {
     async: false
@@ -42,6 +40,7 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
 
   body: DS.attr(),
   completed: DS.attr('boolean'),
+  completedProxy: DS.attr('boolean'),
   decisions: Ember.computed.alias('paper.decisions'),
   isMetadataTask: DS.attr('boolean'),
   isSnapshotTask: DS.attr('boolean'),
@@ -56,11 +55,12 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
   qualifiedType: DS.attr('string'),
   title: DS.attr('string'),
   type: DS.attr('string'),
+  viewable: DS.attr('boolean'),
   notReady: DS.attr('boolean'),
   displayStatus: DS.attr('string'),
   assignedToMe: DS.attr(),
   debouncePeriod: 200, // ms
-
+  assignedUser: DS.belongsTo('user'),
   taskNotReady: Ember.computed.equal('notReady', true),
 
   componentName: Ember.computed('type', function() {

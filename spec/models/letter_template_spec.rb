@@ -1,24 +1,14 @@
+# rubocop:disable Metrics/BlockLength
 require 'rails_helper'
 
 describe LetterTemplate do
-  describe 'validations' do
+  describe 'update validations' do
     [:body, :subject].each do |attr_key|
       it "requires a #{attr_key}" do
-        letter_template = LetterTemplate.new(attr_key => '')
+        letter_template = LetterTemplate.new(id: 1)
+        letter_template.valid?
         expect(letter_template).to_not be_valid
         expect(letter_template.errors[attr_key]).to include("can't be blank")
-      end
-    end
-
-    it 'requires #scenario to name a subclass of TemplateScenario' do
-      letter_template = LetterTemplate.new(scenario: "TahiStandardTasks::RegisterDecisionScenario")
-      letter_template.valid?
-      expect(letter_template.errors[:scenario]).to be_empty
-
-      [nil, 'Blah', 'TemplateScenario'].each do |value|
-        letter_template = LetterTemplate.new(scenario: value)
-        expect(letter_template).to_not be_valid
-        expect(letter_template.errors[:scenario]).to include('must name a subclass of TemplateScenario')
       end
     end
 
@@ -38,6 +28,20 @@ describe LetterTemplate do
       expect(letter_template).to_not be_valid
       expect(letter_template.errors[:body])
         .to include("Variable '{{ email }' was not properly terminated with regexp: /\\}\\}/")
+    end
+  end
+
+  describe 'new template validations' do
+    it 'requires a name and a valid scenario subclass on first create' do
+      letter_template = LetterTemplate.new(name: 'Test', scenario: 'ReviewerReportScenario')
+      letter_template.valid?
+      expect(letter_template).to_not be_valid
+
+      [:name, :scenario].each do |attr_key|
+        letter_template[attr_key] = nil
+        letter_template.valid?
+        expect(letter_template.errors[attr_key]).to include('This field is required')
+      end
     end
   end
 
@@ -85,5 +89,53 @@ describe LetterTemplate do
         expect(letter_template.render(html_letter_context.stringify_keys).to).to eq("myemail@example.com")
       end
     end
+
+    context "with missing data" do
+      let(:letter_template) do
+        FactoryGirl.create(:letter_template,
+                           body: "Interesting text about {{ subject }} from {{ email }}")
+      end
+      let(:letter_context) do
+        {
+          subject: "",
+          email: ""
+        }
+      end
+
+      it 'adds blank fields to error object' do
+        expect { letter_template.render(letter_context.stringify_keys, check_blanks: true) }.to raise_error BlankRenderFieldsError, '["subject", "email"]'
+      end
+    end
+  end
+
+  describe "letter template seed" do
+    before :all do
+      Rake::Task.define_task(:environment)
+    end
+
+    before :each do
+      FactoryGirl.create(:journal)
+      Rake::Task['seed:letter_templates:populate'].reenable
+      Rake.application.invoke_task 'seed:letter_templates:populate'
+      Rake::Task['seed:letter_templates:populate'].reenable
+    end
+
+    it "doesn't reset a changed name" do
+      letter_template = LetterTemplate.first
+      letter_template.update(name: 'spec')
+      Rake.application.invoke_task 'seed:letter_templates:populate'
+      letter_template.reload
+      expect(letter_template.name).to eq('spec')
+    end
+
+    it "sets idents if they were nil and template name is known" do
+      letter_template = LetterTemplate.first
+      orig_ident = letter_template.ident
+      letter_template.update(ident: nil)
+      Rake.application.invoke_task 'seed:letter_templates:populate'
+      letter_template.reload
+      expect(letter_template.ident).to eq(orig_ident)
+    end
   end
 end
+# rubocop:enable Metrics/BlockLength

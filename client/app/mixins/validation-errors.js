@@ -178,6 +178,10 @@ export default Mixin.create({
       'validationErrors',
       errors
     );
+
+    if (this.get('completedErrorText')) {
+      this.set('validationErrors.completed', this.get('completedErrorText'));
+    }
   },
 
   /**

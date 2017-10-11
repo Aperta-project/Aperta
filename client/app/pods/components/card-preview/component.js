@@ -4,8 +4,9 @@ import ENV from 'tahi/config/environment';
 const { getOwner } = Ember;
 
 export default Ember.Component.extend({
+  can: Ember.inject.service('can'),
   classNames: ['task-disclosure-heading', 'card'],
-  classNameBindings: ['task.completed:card--completed', 'classComponentName'],
+  classNameBindings: ['task.completed:card--completed', 'classComponentName', 'notViewable:disabled'],
 
   classComponentName: Ember.computed.readOnly('task.componentName'),
 
@@ -68,14 +69,18 @@ export default Ember.Component.extend({
   notReviewerReportTask: Ember.computed('task', function() {
     let taskType = this.get('task.type');
     return (taskType !== 'ReviewerReportTask') && (taskType !== 'FrontMatterReviewerReportTask');
-  }),  
+  }),
 
   showDeleteButton: Ember.computed.and('canRemoveCard', 'notReviewerReportTask'),
 
+  notViewable: Ember.computed.not('task.viewable'),
+
   actions: {
     viewCard() {
-      let action = this.get('action');
-      if (action) { action(); }
+      if (!this.get('notViewable')) {
+        let action = this.get('action');
+        if (action) { action(); }
+      }
     },
 
     promptDelete() {

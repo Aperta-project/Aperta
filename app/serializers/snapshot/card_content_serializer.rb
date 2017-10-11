@@ -27,7 +27,7 @@ class Snapshot::CardContentSerializer
 
   def serialized_children_json
     if @card_content.content_type == "repeat"
-      @card_content.repetitions.where(task: @owner, parent: @repetition).order(:lft).flat_map do |repetition|
+      @card_content.repetitions.where(task: @owner, parent: @repetition).order(:position).flat_map do |repetition|
         @card_content.children.map do |child|
           Snapshot::CardContentSerializer.new(child, @owner, repetition).as_json
         end

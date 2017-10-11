@@ -29,7 +29,7 @@ export default Ember.Component.extend({
     }
   },
 
-  repetitions: Ember.computed('content.repetitions.@each.isDeleted', 'repetition', function() {
+  unsortedRepetitions: Ember.computed('content.repetitions.@each.isDeleted', 'repetition', function() {
     let parent = this.get('repetition');
     return this.get('content.repetitions').rejectBy('isDeleted').filter(function(rep) {
       if(parent) {
@@ -39,6 +39,8 @@ export default Ember.Component.extend({
       }
     });
   }),
+  repetitionSort: ['position:asc'],
+  repetitions: Ember.computed.sort('unsortedRepetitions', 'repetitionSort'),
 
   addLabelText: Ember.computed('itemName', function() {
     return `Add ${this.get('itemName')}`;
@@ -70,10 +72,12 @@ export default Ember.Component.extend({
     }
   }),
 
-  buildRepetition() {
+  buildRepetition(previousRepetition) {
+    let position = previousRepetition ? previousRepetition.get('position') + 1 : 0;
     let repetition = this.get('store').createRecord('repetition', {
       cardContent: this.get('content'),
-      parent: this.get('repetition')
+      parent: this.get('repetition'),
+      position: position,
     });
 
     if(!this.get('preview')) {

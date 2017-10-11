@@ -6,8 +6,9 @@ export default DS.Model.extend({
   answers: DS.hasMany('answer', { async: false }),
   unsortedChildren: DS.hasMany('repetition', { inverse: 'parent', async: false }),
   parent: DS.belongsTo('repetition', { inverse: 'unsortedChildren', async: false }),
+  position: DS.attr('number'),
 
-  childrenSort: ['order:asc'],
+  childrenSort: ['position:asc'],
   children: Ember.computed.sort('unsortedChildren', 'childrenSort'),
 
   cascadingDestroy() {

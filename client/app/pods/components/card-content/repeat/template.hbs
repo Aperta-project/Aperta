@@ -28,7 +28,7 @@
       {{/each}}
     {{/if}}
   </div>
-  <a class="add {{unless canAddRepetition "disabled"}}" {{action "addRepetition"}} href="#">&#43; {{addLabelText}}</a>
+  <a class="add {{unless canAddRepetition "disabled"}}" {{action "addRepetition" rep}} href="#">&#43; {{addLabelText}}</a>
 {{else}}
   <a class="add {{unless canAddRepetition "disabled"}}" {{action "addRepetition"}} href="#">&#43; {{addLabelText}}</a>
 {{/each}}

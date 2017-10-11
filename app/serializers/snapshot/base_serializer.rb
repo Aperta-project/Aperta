@@ -63,7 +63,7 @@ class Snapshot::BaseSerializer
   # semantics as it had with nested questions
   def snapshot_card_content
     if model.try(:card_version).present?
-      card_contents = model.card_version.content_root.children.order('lft')
+      card_contents = model.card_version.content_root.children.order(:position)
 
       card_contents.map do |card_content|
         Snapshot::CardContentSerializer.new(card_content, model).as_json

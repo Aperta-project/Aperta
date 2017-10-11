@@ -699,19 +699,25 @@ ActiveRecord::Schema.define(version: 20171018200454) do
 
   add_index "related_articles", ["paper_id"], name: "index_related_articles_on_paper_id", using: :btree
 
-  create_table "repetitions", force: :cascade do |t|
-    t.integer  "card_content_id", null: false
-    t.integer  "task_id",         null: false
-    t.integer  "parent_id"
-    t.integer  "lft"
-    t.integer  "rgt"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+  create_table "repetition_hierarchies", id: false, force: :cascade do |t|
+    t.integer "ancestor_id",   null: false
+    t.integer "descendant_id", null: false
+    t.integer "generations",   null: false
   end
 
-  add_index "repetitions", ["lft"], name: "index_repetitions_on_lft", using: :btree
+  add_index "repetition_hierarchies", ["ancestor_id", "descendant_id", "generations"], name: "repetition_anc_desc_idx", unique: true, using: :btree
+  add_index "repetition_hierarchies", ["descendant_id"], name: "repetition_desc_idx", using: :btree
+
+  create_table "repetitions", force: :cascade do |t|
+    t.integer  "card_content_id",             null: false
+    t.integer  "task_id",                     null: false
+    t.integer  "parent_id"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "position",        default: 0, null: false
+  end
+
   add_index "repetitions", ["parent_id"], name: "index_repetitions_on_parent_id", using: :btree
-  add_index "repetitions", ["rgt"], name: "index_repetitions_on_rgt", using: :btree
 
   create_table "resource_tokens", force: :cascade do |t|
     t.datetime "created_at"

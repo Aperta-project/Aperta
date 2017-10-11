@@ -3,12 +3,8 @@ class RepetitionSerializer < ActiveModel::Serializer
     :card_content_id,
     :task_id,
     :parent_id,
-    :order
+    :position
 
   has_one :card_content, embed: :id
   has_one :task, embed: :id
-
-  def order
-    object.lft
-  end
 end

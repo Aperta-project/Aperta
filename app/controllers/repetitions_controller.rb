@@ -39,7 +39,8 @@ class RepetitionsController < ApplicationController
     params.require(:repetition).permit(
       :card_content_id,
       :task_id,
-      :parent_id
+      :parent_id,
+      :position
     )
   end
 end

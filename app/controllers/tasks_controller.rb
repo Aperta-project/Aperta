@@ -130,9 +130,11 @@ class TasksController < ApplicationController
   private
 
   def create_changes_for_author_task
-    # // this is probably the old version of this text
+    spawning_task = Task.find(params[:id])
+    letter_template = render_sendback_template(spawning_task)
+
     PlosBioTechCheck::ChangesForAuthorTask.create!(
-      body: {},
+      body: { initialTechCheckBody: letter_template.body },
       title: PlosBioTechCheck::ChangesForAuthorTask::DEFAULT_TITLE,
       paper: paper,
       phase: paper.phases.first

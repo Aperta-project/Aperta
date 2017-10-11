@@ -206,21 +206,16 @@ describe XmlCardLoader do
             <content ident='doesntmatter' value-type='boolean' content-type='tech-check'>
               <text>You shall not PASS!</text>
               <content content-type="sendback-reason" value-type="boolean">
-                <content content-type="display-children">
-                  <content ident="first-tech-check-box" value-type="boolean" content-type="check-box">
-                    <default-answer-value>false</default-answer-value>
-                    <text>Because REASONS!</text>
-                    <content ident='potato' value-type='text' content-type="paragraph-input">
-                      <default-answer-value>I told you, Mr. Balrog!  You shall not PASS!</default-answer-value>
-                    </content>
-                  </content>
-                  <content ident='second-tech-check-box' value-type='boolean' content-type="check-box">
-                    <default-answer-value>false</default-answer-value>
-                    <text>Because more REASONS!</text>
-                    <content ident='potatoe' value-type='text' content-type="paragraph-input">
-                      <default-answer-value>I really mean it!  You shall not PASS!</default-answer-value>
-                    </content>
-                  </content>
+                <content ident="first-tech-check-box" value-type="boolean" content-type="check-box">
+                  <default-answer-value>false</default-answer-value>
+                  <text>Because REASONS!</text>
+                </content>
+                <content ident='second-tech-check-box' value-type='boolean' content-type="check-box">
+                  <default-answer-value>false</default-answer-value>
+                  <text>Because more REASONS!</text>
+                </content>
+                <content ident='potatoe' value-type='text' content-type="paragraph-input">
+                  <default-answer-value>I really mean it!  You shall not PASS!</default-answer-value>
                 </content>
               </content>
             </content>

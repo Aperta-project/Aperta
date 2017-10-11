@@ -1,7 +1,7 @@
 <card required-for-submission="true" workflow-display-only="false">
   <content content-type="display-children">
     <content content-type="if" condition="pdfAllowed">
-      <content content-type="text">
+      <content content-type="description">
         <text>
             <p>
               You may upload a manuscript in either Microsoft Word (.docx or .doc) or PDF format.

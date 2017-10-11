@@ -76,12 +76,12 @@ export default Ember.Component.extend({
 
     sendChangeRequestEmail() {
       const config = this._templateConfig('sendback_email');
-      const paperId = this.get('owner.paper.id');
+      const paperDOI = this.get('owner.paper.shortDoi');
 
       this.get('restless').put(config.url, config.data).then((data)=> {
         const flash = this.get('flash');
         flash.displaySystemLevelMessage('success', 'Sendback reasons email sent');
-        this.get('routing').transitionTo('paper.task.index', paperId, data.id);
+        this.get('routing').transitionTo('paper.task.index', [paperDOI, data.id]);
       });
     },
   }

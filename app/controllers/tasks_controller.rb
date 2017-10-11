@@ -130,6 +130,7 @@ class TasksController < ApplicationController
   private
 
   def create_changes_for_author_task
+    # // this is probably the old version of this text
     PlosBioTechCheck::ChangesForAuthorTask.create!(
       body: {},
       title: PlosBioTechCheck::ChangesForAuthorTask::DEFAULT_TITLE,

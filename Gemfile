@@ -135,7 +135,6 @@ group :test do
   gem 'fake_ftp'
   gem 'faker'
   gem 'fakeredis'
-  gem 'fake_ftp'
   gem 'geckodriver-helper'
   gem 'rspec-retry'
   gem 'generator_spec'

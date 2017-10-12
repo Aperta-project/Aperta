@@ -105,8 +105,7 @@ group :development, :test do
   gem 'pry-remote'
   gem 'pry-rescue'
   gem 'quiet_assets'
-  # This needs to be in the development group to make rake tasks work
-  gem 'rspec-rails'
+  gem 'rspec-rails' # This needs to be in the development group to make rake tasks work
 end
 
 group :development do
@@ -136,12 +135,12 @@ group :test do
   gem 'faker'
   gem 'fakeredis'
   gem 'geckodriver-helper'
-  gem 'rspec-retry'
   gem 'generator_spec'
   gem 'pusher-fake'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-collection_matchers'
   gem 'rspec-instafail'
+  gem 'rspec-retry'
   gem 'rspec_junit_formatter'
   gem 'selenium-webdriver'
   gem 'simplecov'

@@ -2,6 +2,10 @@
 # -*- coding: utf-8 -*-
 """
 This test case validates the Aperta Admin page.
+NOTA BENE - this test case temporarily requires the site and staff admin test accounts to *ALSO*
+  have the Journal Setup Admin role or you will get failures in the
+  ApertaAdminTest.test_validate_components_styles test regarding:
+  Base.CustomException.ElementDoesNotExistAssertionError: ('class name', 'admin-workflow-catalogue')
 """
 
 import logging

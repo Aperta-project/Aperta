@@ -70,8 +70,9 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
         ccErrors: [],
         bccErrors: []
       });
-      if (this.get('template.subject') && this.get('template.body') && this.get('template.name')) {
-        this.get('template').save()
+      let template = this.get('template');
+      if (template.get('subject') && template.get('body') && template.get('name')) {
+        template.save()
           .then(() => {
             this.setProperties({
               saved: true,
@@ -79,6 +80,7 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
               message: 'Your changes have been saved.',
               messageType: 'success'
             });
+            template.reload();
           })
           .catch(error => {
             const subjectErrors = error.errors.filter((e) => e.source.pointer.includes('subject'));

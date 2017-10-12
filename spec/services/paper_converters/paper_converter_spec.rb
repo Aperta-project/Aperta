@@ -60,9 +60,7 @@ describe PaperConverters::PaperConverter do
       context 'the export format is pdf_with_attachments' do
         let(:export_format) { 'pdf_with_attachments' }
 
-        it 'raises an error' do
-          expect { subject }.to raise_error PaperConverters::UnknownConversionError
-        end
+        it { is_expected.to be_an_instance_of PaperConverters::PdfPaperConverter }
       end
     end
   end

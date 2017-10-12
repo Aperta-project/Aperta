@@ -154,7 +154,7 @@ HERE
   end
 
   def submit(&blk)
-    click_on "Submit"
+    click_on "Review Before Submission"
     SubmitPaperOverlay.new.tap do |overlay|
       if blk
         blk.call overlay

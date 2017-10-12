@@ -30,7 +30,7 @@
                 {{#if invitation.reviewerReport.dueAt}}
                   <p>Review due {{format-date invitation.reviewerReport.dueAt format="MMM D, YYYY"}}</p>
                 {{else}}
-                  Review pending
+                  <p>Review pending</p>
                 {{/if}}
                 {{#if (and invitation.actor notAcceptedByInvitee)}}
                   <p class="not-bold">Accepted by <em>{{invitation.actor.fullName}}</em></p>

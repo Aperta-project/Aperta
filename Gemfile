@@ -142,7 +142,6 @@ group :test do
   gem 'rspec-activemodel-mocks'
   gem 'rspec-collection_matchers'
   gem 'rspec-instafail'
-  gem 'rspec-retry'
   gem 'rspec_junit_formatter'
   gem 'selenium-webdriver'
   gem 'simplecov'

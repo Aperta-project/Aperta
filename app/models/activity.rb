@@ -133,12 +133,17 @@ class Activity < ActiveRecord::Base
   end
 
   def self.invitation_accepted!(invitation, user:)
+    message = if user == invitation.invitee
+                "#{invitation.recipient_name} accepted invitation as #{invitation.invitee_role.capitalize}"
+              else
+                "#{user.username} accepted invitation as #{invitation.invitee_role.capitalize} on behalf of #{invitation.recipient_name}"
+              end
     create(
       feed_name: "workflow",
       activity_key: "invitation.accepted",
       subject: invitation.paper,
       user: user,
-      message: "#{invitation.recipient_name} accepted invitation as #{invitation.invitee_role.capitalize}"
+      message: message
     )
   end
 

@@ -172,17 +172,34 @@ describe Activity do
   end
 
   describe "#invitation_accepted!" do
-    subject(:activity) { Activity.invitation_accepted!(invitation, user: user) }
+    subject(:activity) { Activity.invitation_accepted!(invitation, user: activity_user) }
     let(:invitation) { FactoryGirl.build_stubbed(:invitation) }
 
-    it {
-      is_expected.to have_attributes(
-        feed_name: "workflow",
-        activity_key: "invitation.accepted",
-        subject: invitation.paper,
-        user: user,
-        message: "#{invitation.recipient_name} accepted invitation as #{invitation.invitee_role.capitalize}"
-    )}
+    context 'accepted by invitee' do
+      let(:activity_user) { invitation.invitee }
+      it {
+        is_expected.to have_attributes(
+          feed_name: "workflow",
+          activity_key: "invitation.accepted",
+          subject: invitation.paper,
+          user: activity_user,
+          message: "#{invitation.recipient_name} accepted invitation as #{invitation.invitee_role.capitalize}"
+        )
+      }
+    end
+
+    context 'accepted by different user' do
+      let(:activity_user) { invitation.actor }
+      it {
+        is_expected.to have_attributes(
+          feed_name: "workflow",
+          activity_key: "invitation.accepted",
+          subject: invitation.paper,
+          user: activity_user,
+          message: "#{activity_user.username} accepted invitation as #{invitation.invitee_role.capitalize} on behalf of #{invitation.recipient_name}"
+        )
+      }
+    end
   end
 
   describe "#invitation_declined!" do

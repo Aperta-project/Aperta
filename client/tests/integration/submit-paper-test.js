@@ -51,6 +51,13 @@ module('Integration: Submitting Paper', {
       status: 200,
       responseText: {papers: []}
     });
+
+    $.mockjax({
+      url: `/api/papers/${paper.get('id')}`,
+      type: 'get',
+      status: 200,
+      responseText: {paper : { id: paper.id }}
+    });
   }
 });
 

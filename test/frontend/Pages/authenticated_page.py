@@ -492,12 +492,8 @@ class AuthenticatedPage(StyledPage):
   def check_for_flash_error(self):
     """
     Check that any process (submit, save, send, etc) did not trigger a flash error
-    :return: void function
+    :return: False if no error message, text of error if found.
     """
-    return # see comment below.  If we decide to do more than log, then we need
-           # spend time on the self._get(self._flash_error_msg) call.  In many of the
-           # places where this is called, self._get(self._flash_error_msg) just throws
-           # ElementNotFound after much more than 3 seconds
     error_msg = ''
     self.set_timeout(3)
     try:
@@ -505,13 +501,9 @@ class AuthenticatedPage(StyledPage):
       error_msg = self._get(self._flash_error_msg).text.strip(u'\xd7')
     except ElementDoesNotExistAssertionError:
       self.restore_timeout()
-
-    if error_msg:
-      # For the time being, capturing the error message and continuing rather than failing
-      #   and stopping the test is of greater importance. At some point we may want to enforce
-      #   this failure, so leaving it in place.
-      # raise ElementExistsAssertionError('Error Message found: {0}'.format(error_msg_string))
-      logging.error('Error Message found: {0}'.format(error_msg))
+      return False
+    self.restore_timeout()
+    return error_msg
 
   def check_for_flash_success(self, timeout=15):
     """

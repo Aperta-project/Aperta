@@ -1,0 +1,7 @@
+<div class='invitation-metadata'>
+  {{fa-icon icon='envelope'}}
+  <span class="invitation-type">{{invitation.inviteeRole}} Invitation</span> |
+  <span class="invitation-paper-type">{{invitation.paperType}}</span> |
+  <span class="date">{{format-date invitation.createdAt format='MMMM D, YYYY'}}</span>
+</div>
+<h3 class="invitation-paper-title">{{{invitation.title}}}</h3>

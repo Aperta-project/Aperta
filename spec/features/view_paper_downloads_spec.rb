@@ -1,6 +1,6 @@
 require 'rails_helper'
-
-feature 'Viewing Versions:', js: true, flaky: true do
+# rubocop:disable Metrics/BlockLength
+feature 'Viewing Versions:', js: true do
   let(:creator) { FactoryGirl.create :user }
 
   context 'When viewing a paper with more than one version,' do
@@ -42,14 +42,14 @@ feature 'Viewing Versions:', js: true, flaky: true do
       expect(page.find('tbody .paper-downloads-row:nth-child(2)')).to have_css '.paper-downloads-link--pdf'
       expect(page).not_to have_selector('tbody .paper-downloads-row:nth-child(2) .paper-downloads-link--docx')
 
-      expect(page.find('tbody .paper-downloads-row:nth-child(3)')).to have_css '.paper-downloads-link--docx'
       expect(page.find('tbody .paper-downloads-row:nth-child(3)')).to have_css '.paper-downloads-link--pdf'
+      expect(page).not_to have_selector('tbody .paper-downloads-row:nth-child(3) .paper-downloads-link--docx')
 
       expect(page.find('tbody .paper-downloads-row:nth-child(4)')).to have_css '.paper-downloads-link--pdf'
-      expect(page).not_to have_selector('tbody .paper-downloads-row:nth-child(4) .paper-downloads-link--docx')
+      expect(page.find('tbody .paper-downloads-row:nth-child(4)')).to have_css '.paper-downloads-link--docx'
 
-      expect(page.find('tbody .paper-downloads-row:nth-child(5)')).to have_css '.paper-downloads-link--docx'
       expect(page.find('tbody .paper-downloads-row:nth-child(5)')).to have_css '.paper-downloads-link--pdf'
+      expect(page.find('tbody .paper-downloads-row:nth-child(5)')).to have_css '.paper-downloads-link--docx'
     end
   end
 end

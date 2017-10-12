@@ -91,7 +91,7 @@ RSpec.configure do |config|
     # around.
     # Ensure this comes after the generic setup (see above)
     DatabaseCleaner[:active_record].strategy = :truncation, {
-      except: %w[task_types cards card_contents card_versions content_attributes]
+      except: %w[task_types cards card_contents card_task_types card_versions content_attributes]
     }
 
     # Fix to make sure this happens only once
@@ -118,9 +118,12 @@ RSpec.configure do |config|
       end
 
       client = Selenium::WebDriver::Remote::Http::Default.new
-      client.timeout = 90
+      client.read_timeout = 90
+      client.open_timeout = 90
+      options = Selenium::WebDriver::Firefox::Options.new
+      options.profile = profile
       Capybara::Selenium::Driver
-        .new(app, browser: :firefox, profile: profile, http_client: client)
+        .new(app, browser: :firefox, options: options, http_client: client)
     end
 
     Capybara.javascript_driver = :selenium
@@ -142,11 +145,6 @@ RSpec.configure do |config|
     # rubocop:enable Style/GlobalVars
   end
 
-  config.before(:each, js: true) do
-    # Get a consistent window size.
-    Capybara.page.driver.browser.manage.window.resize_to(1500, 1000)
-  end
-
   config.before(:each) do
     ActionMailer::Base.deliveries.clear
     DatabaseCleaner.start
@@ -160,6 +158,7 @@ RSpec.configure do |config|
   config.before(:each, type: :feature) do
     Authorizations.reload_configuration
     Subscriptions.reload
+    CardTaskType.seed_defaults
     Rake::Task['roles-and-permissions:seed'].reenable
     Rake::Task['roles-and-permissions:seed'].invoke
     Rake::Task['settings:seed_setting_templates'].reenable

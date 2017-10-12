@@ -19,6 +19,7 @@ class AdminJournalSerializer < ActiveModel::Serializer
            include: true,
            serializer: AdminJournalRoleSerializer
   has_many :journal_task_types, embed: :ids, include: true
+  has_many :card_task_types, embed: :ids, include: true
 
   def paper_count
     object.papers.count
@@ -26,6 +27,10 @@ class AdminJournalSerializer < ActiveModel::Serializer
 
   def admin_journal_roles
     object.roles
+  end
+
+  def card_task_types
+    CardTaskType.all
   end
 
   def journal_task_types
@@ -41,6 +46,6 @@ class AdminJournalSerializer < ActiveModel::Serializer
   end
 
   def letter_template_scenarios
-    TemplateScenario.descendants.map { |d| { name: d.name, merge_fields: d.merge_fields } }
+    TemplateContext.scenarios.map { |d| { name: d.name, merge_fields: d.merge_fields } }
   end
 end

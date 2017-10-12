@@ -10,10 +10,17 @@
 #
 # card.rng: If this file is card.rng, please edit card.rnc instead. You will be happier.
 
+file-type = xsd:string { pattern = "\.\w*" }
+
 possible-value = element possible-value {
                      attribute label { text },
                      attribute value { text }
                  }
+
+accepted-file-type = element possible-value {
+                         attribute label { text },
+                         attribute value { file-type }
+                     }
 
 # Inputs
 radio-input = element content {
@@ -23,8 +30,8 @@ radio-input = element content {
                   attribute required-field { "true" | "false" }?,
                   attribute default-answer-value { text }?,
                   attribute allow-annotations { "true" | "false" }?,
-                  (element instruction-text { text }? &
-                  element text { text }?),
+                  (element instruction-text { html }? &
+                  element text { html }?),
                   possible-value*,
                   content*
               }
@@ -37,9 +44,9 @@ check-box-input = element content {
                 attribute default-answer-value { "true" | "false" }?,
                 attribute value-type { "boolean" },
                 attribute allow-annotations { "true" | "false" }?,
-                (element instruction-text { text }? &
+                (element instruction-text { html }? &
                 (element label { text }? &
-                element text { text }?)),
+                element text { html }?)),
                 content*
             }
 
@@ -47,20 +54,20 @@ file-uploader = element content {
                     attribute ident { text }?,
                     attribute error-message { text }?,
                     attribute content-type { "file-uploader" },
-                    attribute value-type { "attachment" },
+                    attribute value-type { "attachment" | "manuscript" | "sourcefile" },
                     attribute required-field { "true" | "false" }?,
                     attribute allow-multiple-uploads { "true" | "false" }?,
                     attribute allow-file-captions { "true" | "false" }?,
                     attribute allow-annotations { "true" | "false" }?,
-                    (element instruction-text { text }? &
+                    (element instruction-text { html }? &
                     (element validation {
                       attribute validation-type { "file-name" },
                       element error-message { text },
                       element validator { text }
                     }* &
                     element label { text }? &
-                    element text { text }?)),
-                    possible-value*
+                    element text { html }?)),
+                    accepted-file-type*
                 }
 
 date-picker = element content {
@@ -68,7 +75,7 @@ date-picker = element content {
                   attribute value-type { "text" },
                   attribute content-type { "date-picker" },
                   attribute required-field { "true" | "false" }?,
-                  element text { text }
+                  element text { html }
               }
 
 # for now duplicating radio-input for dropdown
@@ -79,8 +86,8 @@ dropdown-input = element content {
                   attribute required-field { "true" | "false" }?,
                   attribute default-answer-value { text }?,
                   attribute allow-annotations { "true" | "false" }?,
-                  (element instruction-text { text }? &
-                  element text { text }),
+                  (element instruction-text { html }? &
+                  element text { html }),
                   possible-value+,
                   content*
               }
@@ -92,8 +99,8 @@ tech-check = element content {
                 attribute default-answer-value { "true" | "false" }?,
                 attribute value-type { "boolean" },
                 attribute allow-annotations { "true" | "false" }?,
-                (element instruction-text { text }? &
-                element text { text })?,
+                (element instruction-text { html }? &
+                element text { html })?,
                 content*
             }
 
@@ -102,7 +109,7 @@ sendback-reason = element content {
                 attribute content-type { "sendback-reason" },
                 attribute value-type { "boolean" },
                 (element label { text }? &
-                element text { text }?),
+                element text { html }?),
                 content*
             }
 
@@ -115,8 +122,8 @@ text-input = element content {
                  attribute required-field { "true" | "false" }?,
                  attribute default-answer-value { text }?,
                  attribute allow-annotations { "true" | "false" }?,
-                 (element instruction-text { text }? &
-                 (element text { text }? &
+                 (element instruction-text { html }? &
+                 (element text { html }? &
                  element validation {
                   attribute validation-type { "string-match" | "string-length-minimum" | "string-length-maximum" },
                   element error-message { text },
@@ -128,7 +135,7 @@ text-input = element content {
 text-content = element content {
                    attribute ident { text }?,
                    attribute content-type { "text" },
-                   element text { text },
+                   element text { html },
                    content*
                }
 
@@ -153,7 +160,7 @@ export-paper = element content {
                 attribute ident { text }?,
                 attribute content-type { "export-paper" },
                 (element label { text } &
-                element text { text }?)
+                element text { html }?)
 }
 
 if = element content {
@@ -162,6 +169,16 @@ if = element content {
                 content,
                 content?
 }
+
+error-message = element content {
+                    attribute content-type { "error-message" },
+                    attribute key { text },
+                    element text { text }?
+                }
+
+html = any-element* & text
+any-element = element * { any-attribute*, html }
+any-attribute = attribute * { text }
 
 content = (
            radio-input |
@@ -176,7 +193,8 @@ content = (
            date-picker |
            tech-check |
            sendback-reason |
-           if
+           if |
+           error-message
 )
 
 start = element card {

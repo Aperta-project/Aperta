@@ -27,7 +27,7 @@ describe Card do
   end
 
   describe 'create_published!' do
-    let(:new_card) { Card.create_published!(name: 'foo') }
+    let(:new_card) { Card.create_published!(name: 'foo', card_task_type: FactoryGirl.create(:card_task_type)) }
     it 'creates a new card with the given attributes' do
       expect(new_card.name).to eq('foo')
     end

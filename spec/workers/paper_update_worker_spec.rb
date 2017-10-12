@@ -20,11 +20,6 @@ describe PaperUpdateWorker do
       expect(WebMock).to have_requested(:get, stubbed_url)
     end
 
-    it "requests attribute extraction" do
-      expect_any_instance_of(PaperAttributesExtractor).to receive(:sync!)
-      worker.perform(ihat_job_params)
-    end
-
     it "sets the paper's status to 'done'" do
       expect do
         worker.perform(ihat_job_params)

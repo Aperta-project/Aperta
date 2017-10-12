@@ -38,38 +38,6 @@ module CustomCard
       def self.do_not_create_in_production_environment
         false
       end
-
-      def self.xml_content
-        <<-XML.strip_heredoc
-          <?xml version="1.0" encoding="UTF-8"?>
-          <card required-for-submission="true" workflow-display-only="false">
-            <content content-type="display-children">
-              <content content-type="if" condition="isOverlay">
-                <content content-type="display-children" child-tag="li" wrapper-tag="ol">
-                  <content content-type="text">
-                    <text>Benefit: Establish priority</text>
-                  </content>
-                  <content content-type="text">
-                    <text>Benefit: Gather feedback</text>
-                  </content>
-                  <content content-type="text">
-                    <text>Benefit: Cite for funding</text>
-                  </content>
-                </content>
-                <content content-type="text">
-                  <text>
-                    <![CDATA[Establish priority: take credit for your research and discoveries, by posting a copy of your uncorrected proof online. If you do <b>NOT</b> consent to having an early version of your paper posted online, indicate your choice below.]]>
-                  </text>
-                </content>
-              </content>
-              <content content-type="radio" value-type="text" default-answer-value="1" allow-annotations="false" required-field="false">
-                <possible-value label="Yes, I want to accelerate research by publishing a preprint ahead of peer review" value="1"/>
-                <possible-value label="No, I do not want my article to appear online ahead of the reviewed article" value="2"/>
-              </content>
-            </content>
-          </card>
-        XML
-      end
     end
   end
 end

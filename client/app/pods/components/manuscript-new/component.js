@@ -21,6 +21,43 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   journalEmpty: computed.empty('paper.journal.content'),
   hasTitle: computed.notEmpty('paper.title'),
 
+  orderedPaperTypeNames: [
+    'Research Article',
+    'Short Reports',
+    'Methods and Resources',
+    'Meta-Research Article',
+    'Essay',
+    'Perspective',
+    'Community Page',
+    'Unsolved Mystery',
+    'Primer (invitation only)',
+    'Research Matters (invitation only)',
+    'Formal Comment (invitation only)',
+    'Editorial (staff use only)',
+    'Open Highlights (staff use only)'
+  ],
+
+  // This is a short-term solution for ordering paper types based entirely on
+  // PLOS Biology's needs. We expect to replace this with something more
+  // user configurable in the future. APERTA-11315
+  orderedPaperTypes: Ember.computed('orderedPaperTypeNames.[]', 'paper.journal.manuscriptManagerTemplates.[]', function() {
+    const orderedPaperTypes = Ember.A();
+    return this.get('paper.journal').then((journal) => {
+      if (!journal) { return orderedPaperTypes; }
+      const mmts = journal.get('manuscriptManagerTemplates').copy();
+      this.get('orderedPaperTypeNames').forEach((name) => {
+        const match = mmts.find((mmt) => {
+          return mmt.paper_type === name;
+        });
+        if (match) {
+          orderedPaperTypes.push(match);
+          mmts.removeObject(match);
+        }
+      });
+      return orderedPaperTypes.pushObjects(mmts.sortBy('paper_type'));
+    });
+  }),
+
   actions: {
     titleChanged(contents) {
       this.set('paper.title', contents);

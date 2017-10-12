@@ -21,6 +21,17 @@ describe ScheduledEvent do
       expect(subject.active?).to be true
     end
 
+    it 'can move from active to passive' do
+      subject.switch_off
+      expect(subject.passive?).to be true
+    end
+
+    it 'can move from passive to active' do
+      subject.switch_off
+      subject.switch_on
+      expect(subject.active?).to be true
+    end
+
     it 'can move from active to processing' do
       subject.trigger
       expect(subject.processing?).to be true
@@ -123,6 +134,30 @@ describe ScheduledEvent do
       subject.due_datetime = DueDatetime.create! due_at: DateTime.now.utc - 1.day
       subject.send_email
       expect(subject.state).to eq('completed')
+    end
+  end
+
+  describe '#finished?' do
+    it 'should be true if state is completed, inactive or errored' do
+      subject.state = 'completed'
+      expect(subject.finished?).to eq(true)
+
+      subject.state = 'inactive'
+      expect(subject.finished?).to eq(true)
+
+      subject.state = 'canceled'
+      expect(subject.finished?).to eq(true)
+
+      subject.state = 'errored'
+      expect(subject.finished?).to eq(true)
+    end
+
+    it 'should be false if state is not completed, not inactive or not errored' do
+      subject.state = 'processing'
+      expect(subject.finished?).to eq(false)
+
+      subject.state = 'active'
+      expect(subject.finished?).to eq(false)
     end
   end
 end

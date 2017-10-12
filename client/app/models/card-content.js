@@ -34,6 +34,7 @@ export default DS.Model.extend({
   allowAnnotations: DS.attr('boolean'),
   answerable: Ember.computed.notEmpty('valueType'),
   errorMessage: DS.attr('string'),
+  key: DS.attr('string'),
 
 
   // The unusual nature of the sendback component (being reliant on other card-content within the context

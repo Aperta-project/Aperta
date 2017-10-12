@@ -3,6 +3,7 @@ class FeedbackController < ApplicationController
 
   def create
     FeedbackMailer.contact(current_user, feedback_params).deliver_later
+    JIRAIntegrationWorker.perform_async(current_user.full_name, feedback_params[:remarks]) if FeatureFlag[:JIRA_INTEGRATION]
     render json: {}, status: :created
   end
 

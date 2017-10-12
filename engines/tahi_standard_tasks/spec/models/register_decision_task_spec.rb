@@ -25,7 +25,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
   describe "#after_register" do
     context "decision is a revision" do
       before do
-        CardLoader.load("TahiStandardTasks::UploadManuscriptTask")
         CardLoader.load("TahiStandardTasks::ReviseTask")
         CardLoader.load("TahiStandardTasks::TitleAndAbstractTask")
         allow(decision).to receive(:revision?).and_return(true)

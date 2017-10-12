@@ -2,7 +2,7 @@ require_relative "./support/card_loader.rb"
 
 namespace :cards do
   desc "Load default Card models into the system"
-  task load: :environment do
+  task load: [:environment, 'card_task_types:seed'] do
     puts "Loading legacy Cards unattached to any specific Journal ..."
     CardLoader.load_standard(journal: nil)
 

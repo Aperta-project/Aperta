@@ -1,11 +1,19 @@
 class LetterTemplateBlankValidator
   class << self
     def blank_fields?(letter_template, context)
-      liquid_variables = get_liquid_variables(letter_template.root.nodelist).flatten
-      liquid_variables.any? { |node| blank_liquid_variable?(node.name.name, node.name.lookups, context) }
+      !get_blank_fields(letter_template, context).empty?
+    end
+
+    def blank_fields(letter_template, context)
+      get_blank_fields(letter_template, context).map(&:raw).map(&:strip)
     end
 
     private
+
+    def get_blank_fields(letter_template, context)
+      liquid_variables = get_liquid_variables(letter_template.root.nodelist).flatten
+      liquid_variables.select { |node| blank_liquid_variable?(node.name.name, node.name.lookups, context) }
+    end
 
     def blank_liquid_variable?(name, lookups, context)
       context = context.deep_symbolize_keys if context.is_a? Hash

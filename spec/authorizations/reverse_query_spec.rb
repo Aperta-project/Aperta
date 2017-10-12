@@ -72,6 +72,35 @@ DESC
         expect(users).to match [author_user]
       end
     end
+
+    context "when different tasks have the same permission such as 'be_assigned' or 'assign_others'" do
+      let!(:task) { FactoryGirl.create(:task, :with_card, title: 'AwesomeSauce') }
+      let(:another_task) { FactoryGirl.create(:task, title: 'Another task') }
+      let(:my_journal) { task.journal }
+      let(:reviewer) { FactoryGirl.create :user }
+      let(:cover_editor) { FactoryGirl.create :user }
+      let(:creator) { FactoryGirl.create :user }
+      let(:billing) { FactoryGirl.create :user }
+      let(:role_reviewer) { FactoryGirl.create(:role, name: Role::REVIEWER_ROLE, journal: my_journal) }
+      let(:role_cover_editor) { FactoryGirl.create(:role, name: Role::COVER_EDITOR_ROLE, journal: my_journal) }
+      let(:role_creator) { FactoryGirl.create(:role, name: Role::CREATOR_ROLE, journal: my_journal) }
+      let(:role_billing) { FactoryGirl.create(:role, name: Role::BILLING_ROLE, journal: my_journal) }
+
+      it 'returns a list of users who can perform that action to that specific task' do
+        assign_user cover_editor, to: task, with_role: role_cover_editor
+        assign_user reviewer, to: task, with_role: role_reviewer
+        assign_user creator, to: task, with_role: role_creator
+        assign_user billing, to: task, with_role: role_billing
+
+        CardPermissions.add_roles(another_task.card, 'be_assigned', [role_billing])
+        CardPermissions.add_roles(task.card, 'be_assigned', [role_reviewer, role_cover_editor])
+        CardPermissions.add_roles(another_task.card, 'assign_others', [role_reviewer])
+        CardPermissions.add_roles(task.card, 'assign_others', [role_creator, role_billing])
+
+        expect(User.who_can('be_assigned', task)).to match_array([cover_editor, reviewer])
+        expect(User.who_can('assign_others', task)).to match_array([creator, billing])
+      end
+    end
   end
 
   context 'an assignment which authorizes the object in question' do

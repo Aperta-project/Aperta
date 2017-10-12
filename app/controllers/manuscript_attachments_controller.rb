@@ -10,4 +10,15 @@ class ManuscriptAttachmentsController < ApplicationController
     requires_user_can :view, attachment.paper
     respond_with attachment, root: 'attachment', serializer: AttachmentSerializer
   end
+
+  def cancel
+    requires_user_can :edit, attachment.paper.tasks.where(type: 'TahiStandardTasks::UploadManuscriptTask').first
+    attachment.cancel_download
+
+    head :no_content
+  end
+
+  def attachment
+    ManuscriptAttachment.find(params[:id])
+  end
 end

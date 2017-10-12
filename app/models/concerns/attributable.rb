@@ -5,7 +5,7 @@ module Attributable
     boolean: %w[allow_annotations allow_file_captions allow_multiple_uploads required_field],
     json:    %w[possible_values],
     string:  %w[child_tag condition custom_class custom_child_class default_answer_value
-                editor_style error_message instruction_text label text value_type
+                editor_style error_message instruction_text key label text value_type
                 visible_with_parent_answer wrapper_tag]
   }.freeze
 
@@ -20,7 +20,11 @@ module Attributable
         has_one getter, -> { where(name: name) }, class_name: 'ContentAttribute'
 
         define_method(name) do
-          send(getter).try(:value)
+          if content_attributes.loaded?
+            content_attributes.find { |a| a.name == name }.try(:value)
+          else
+            send(getter).try(:value)
+          end
         end
 
         define_method("#{name}=") do |new_value|

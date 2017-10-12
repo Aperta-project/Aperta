@@ -1,14 +1,30 @@
-{{attachment-manager filePath="tasks/attachment"
-  attachments=answer.attachments
-  buttonText=content.label
-  description=content.text
-  disabled=disabled
-  errorMessage=content.errorMessage
-  preview=preview
-  multiple=content.allowMultipleUploads
-  hasCaption=content.allowFileCaptions
-  accept=acceptedFileTypes
-  uploadFinished=(action "updateAttachment")
-  updateAttachment=(action "updateAttachment")
-  answer=answer
-  content=content}}
+{{#if (eq content.valueType "attachment")}}
+  {{attachment-manager filePath="tasks/attachment"
+    attachments=answer.attachments
+    buttonText=content.label
+    description=content.text
+    disabled=disabled
+    preview=preview
+    multiple=content.allowMultipleUploads
+    hasCaption=content.allowFileCaptions
+    errorMessage=content.errorMessage
+    accept=acceptedFileTypes
+    uploadFinished=(action "updateAttachment")
+    updateAttachment=(action "updateAttachment")
+    answer=answer
+    content=content
+    showDescription=true}}
+{{else}}
+  {{paper-attachment-manager
+    task=owner
+    attachmentType=content.valueType
+    disabled=disabled
+    preview=preview
+    answer=answer
+    content=content
+    showDescription=true
+    buttonText=content.label
+    description=content.text
+    errorMessage=content.errorMessage
+    accept=acceptedFileTypes}}
+{{/if}}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
   <!--
     card.rnc: If this file is card.rnc: Do not forget to update card.rng if you
     change this file! This is not actually used by Aperta, but it is far easier to
@@ -13,10 +13,23 @@
     
     card.rng: If this file is card.rng, please edit card.rnc instead. You will be happier.
   -->
+  <define name="file-type">
+    <data type="string">
+      <param name="pattern">\.\w*</param>
+    </data>
+  </define>
   <define name="possible-value">
     <element name="possible-value">
       <attribute name="label"/>
       <attribute name="value"/>
+    </element>
+  </define>
+  <define name="accepted-file-type">
+    <element name="possible-value">
+      <attribute name="label"/>
+      <attribute name="value">
+        <ref name="file-type"/>
+      </attribute>
     </element>
   </define>
   <!-- Inputs -->
@@ -56,12 +69,12 @@
       <interleave>
         <optional>
           <element name="instruction-text">
-            <text/>
+            <ref name="html"/>
           </element>
         </optional>
         <optional>
           <element name="text">
-            <text/>
+            <ref name="html"/>
           </element>
         </optional>
       </interleave>
@@ -111,7 +124,7 @@
       <interleave>
         <optional>
           <element name="instruction-text">
-            <text/>
+            <ref name="html"/>
           </element>
         </optional>
         <interleave>
@@ -122,7 +135,7 @@
           </optional>
           <optional>
             <element name="text">
-              <text/>
+              <ref name="html"/>
             </element>
           </optional>
         </interleave>
@@ -144,7 +157,11 @@
         <value>file-uploader</value>
       </attribute>
       <attribute name="value-type">
-        <value>attachment</value>
+        <choice>
+          <value>attachment</value>
+          <value>manuscript</value>
+          <value>sourcefile</value>
+        </choice>
       </attribute>
       <optional>
         <attribute name="required-field">
@@ -181,7 +198,7 @@
       <interleave>
         <optional>
           <element name="instruction-text">
-            <text/>
+            <ref name="html"/>
           </element>
         </optional>
         <interleave>
@@ -205,13 +222,13 @@
           </optional>
           <optional>
             <element name="text">
-              <text/>
+              <ref name="html"/>
             </element>
           </optional>
         </interleave>
       </interleave>
       <zeroOrMore>
-        <ref name="possible-value"/>
+        <ref name="accepted-file-type"/>
       </zeroOrMore>
     </element>
   </define>
@@ -235,7 +252,7 @@
         </attribute>
       </optional>
       <element name="text">
-        <text/>
+        <ref name="html"/>
       </element>
     </element>
   </define>
@@ -276,11 +293,11 @@
       <interleave>
         <optional>
           <element name="instruction-text">
-            <text/>
+            <ref name="html"/>
           </element>
         </optional>
         <element name="text">
-          <text/>
+          <ref name="html"/>
         </element>
       </interleave>
       <oneOrMore>
@@ -330,11 +347,11 @@
         <interleave>
           <optional>
             <element name="instruction-text">
-              <text/>
+              <ref name="html"/>
             </element>
           </optional>
           <element name="text">
-            <text/>
+            <ref name="html"/>
           </element>
         </interleave>
       </optional>
@@ -362,7 +379,7 @@
         </optional>
         <optional>
           <element name="text">
-            <text/>
+            <ref name="html"/>
           </element>
         </optional>
       </interleave>
@@ -413,13 +430,13 @@
       <interleave>
         <optional>
           <element name="instruction-text">
-            <text/>
+            <ref name="html"/>
           </element>
         </optional>
         <interleave>
           <optional>
             <element name="text">
-              <text/>
+              <ref name="html"/>
             </element>
           </optional>
           <zeroOrMore>
@@ -453,7 +470,7 @@
         <value>text</value>
       </attribute>
       <element name="text">
-        <text/>
+        <ref name="html"/>
       </element>
       <zeroOrMore>
         <ref name="content"/>
@@ -515,7 +532,7 @@
         </element>
         <optional>
           <element name="text">
-            <text/>
+            <ref name="html"/>
           </element>
         </optional>
       </interleave>
@@ -533,6 +550,41 @@
       </optional>
     </element>
   </define>
+  <define name="error-message">
+    <element name="content">
+      <attribute name="content-type">
+        <value>error-message</value>
+      </attribute>
+      <attribute name="key"/>
+      <optional>
+        <element name="text">
+          <text/>
+        </element>
+      </optional>
+    </element>
+  </define>
+  <define name="html">
+    <interleave>
+      <zeroOrMore>
+        <ref name="any-element"/>
+      </zeroOrMore>
+      <text/>
+    </interleave>
+  </define>
+  <define name="any-element">
+    <element>
+      <anyName/>
+      <zeroOrMore>
+        <ref name="any-attribute"/>
+      </zeroOrMore>
+      <ref name="html"/>
+    </element>
+  </define>
+  <define name="any-attribute">
+    <attribute>
+      <anyName/>
+    </attribute>
+  </define>
   <define name="content">
     <choice>
       <ref name="radio-input"/>
@@ -548,6 +600,7 @@
       <ref name="tech-check"/>
       <ref name="sendback-reason"/>
       <ref name="if"/>
+      <ref name="error-message"/>
     </choice>
   </define>
   <start>

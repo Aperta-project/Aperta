@@ -34,11 +34,10 @@ test('pending invitation loads with accept/decline options', function(assert){
   this.set('loading', false);
   this.render(template);
 
-  assert.textPresent('h2', 'Reviewer Invitation');
+  assert.textPresent('.invitation-type', 'Reviewer Invitation');
   assert.textPresent('button.invitation-accept', 'Accept Reviewer Invitation');
   assert.textPresent('button.invitation-decline', 'Decline');
   assert.elementFound('.pending-invitation', 'flagged as pending invitation');
-  assert.elementFound('.dashboard-paper-title', 'has paper title');
 });
 
 test('shows spinner when loading prop is true', function(assert){

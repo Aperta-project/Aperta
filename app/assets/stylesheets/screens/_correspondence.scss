@@ -44,12 +44,16 @@
   .correspondence-sender-column {
     min-width: 160px;
   }
+
+  p {
+    color: $aperta-grey-dark;
+  }
 }
 
 .correspondence-attachment-link {
   .attachment-item {
     display: inline;
-    
+
     &:after {
       content: ",";
       color: #333;

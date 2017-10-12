@@ -77,7 +77,7 @@ module CardConfiguration
         {
           ident: "plos_bio_final_tech_check--cover_letter",
           value_type: "boolean",
-          text: "Have the authors asked any content in the cover letter? If yes, contact the editor/journal team."
+          text: "Have the authors asked any questions in the cover letter? If yes, contact the editor/journal team."
         },
 
         {

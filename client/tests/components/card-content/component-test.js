@@ -44,12 +44,11 @@ test('it creates an answer for card-content', function(assert) {
 test('it does not create an answer for non answerables', function(assert) {
 
   // add a single piece of non-answerable card content to work with
-  let cardContent = FactoryGuy.make('card-content', 'text');
+  let cardContent = FactoryGuy.make('card-content', 'description');
   this.set('task.cardVersion.contentRoot', cardContent);
 
   this.render(hbs`
     {{custom-card-task task=task preview=false}}
   `);
-
   assert.equal(this.get('task.cardVersion.contentRoot.answers.length'), 0, 'there are no answers for a paragraph tag');
 });

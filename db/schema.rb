@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170926204952) do
+ActiveRecord::Schema.define(version: 20171005164752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -256,8 +256,8 @@ ActiveRecord::Schema.define(version: 20170926204952) do
   add_index "card_versions", ["version"], name: "index_card_versions_on_version", using: :btree
 
   create_table "cards", force: :cascade do |t|
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.string   "name"
     t.integer  "journal_id"
     t.integer  "latest_version",    default: 1, null: false
@@ -515,8 +515,8 @@ ActiveRecord::Schema.define(version: 20170926204952) do
     t.string   "ident"
   end
 
-  add_index "letter_templates", ["name", "journal_id"], name: "index_letter_templates_on_name_and_journal_id", unique: true, using: :btree
   add_index "letter_templates", ["ident", "journal_id"], name: "index_letter_templates_on_ident_and_journal_id", unique: true, using: :btree
+  add_index "letter_templates", ["name", "journal_id"], name: "index_letter_templates_on_name_and_journal_id", unique: true, using: :btree
 
   create_table "manuscript_manager_templates", force: :cascade do |t|
     t.string   "paper_type"

@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe XmlCardLoader do
-  let(:content1) { '<content ident="foo" content-type="text"><text>foo</text></content>' }
-  let(:content2) { '<content ident="bar" content-type="text"><text>bar</text></content>' }
+  let(:content1) { '<content ident="foo" content-type="description"><text>foo</text></content>' }
+  let(:content2) { '<content ident="bar" content-type="description"><text>bar</text></content>' }
 
   let!(:card) { FactoryGirl.create(:card, :versioned, name: "original name") }
   let(:xml_card_loader) { XmlCardLoader.new(card) }
@@ -189,9 +189,9 @@ describe XmlCardLoader do
         card = xml_card_loader.load(xml)
         card.save
         expect(first.ident).to eq('foo')
-        expect(first.content_type).to eq('text')
+        expect(first.content_type).to eq('description')
         expect(second.ident).to eq('bar')
-        expect(second.content_type).to eq('text')
+        expect(second.content_type).to eq('description')
       end
     end
 
@@ -281,7 +281,7 @@ describe XmlCardLoader do
       end
 
       context 'text' do
-        let(:content1) { "<content ident='foo' content-type='text'><text>#{text}</text></content>" }
+        let(:content1) { "<content ident='foo' content-type='description'><text>#{text}</text></content>" }
 
         shared_examples_for :the_text_attribute_is_set_properly do
           it "set the text as expected" do

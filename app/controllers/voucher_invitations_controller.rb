@@ -5,7 +5,12 @@ class VoucherInvitationsController < ApplicationController
   respond_to :json
 
   def show
-    render json: @invitation, root: 'voucher-invitation', serializer: ::VoucherInvitationsSerializer
+    return unless @invitation
+    if @invitation.invited?
+      render json: @invitation, root: 'voucher-invitation', serializer: ::VoucherInvitationsSerializer
+    else
+      render nothing: true, status: :not_found
+    end
   end
 
   def update
@@ -14,7 +19,7 @@ class VoucherInvitationsController < ApplicationController
     @invitation.update! decline_reason: voucher_invitation_decline_reason
     @invitation.decline!
     Activity.invitation_declined!(@invitation, user: nil)
-    head :ok
+    respond_with @invitation, root: 'voucher-invitation', serializer: ::VoucherInvitationsSerializer, status: :ok
   end
 
   private

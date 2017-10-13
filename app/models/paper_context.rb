@@ -7,7 +7,7 @@ class PaperContext < TemplateContext
      { name: :academic_editors, context: UserContext, many: true },
      { name: :handling_editors, context: UserContext, many: true },
      { name: :authors, context: AuthorContext, many: true },
-     { name: :corresponding_authors, context: UserContext, many: true }]
+     { name: :corresponding_authors, context: AuthorContext, many: true }]
   end
 
   def self.blacklisted_merge_fields

@@ -275,7 +275,6 @@ class JournalFactory
 
       # Paper
       role.ensure_permission_exists(:assign_roles, applies_to: Paper)
-      role.ensure_permission_exists(:assign_roles, applies_to: Paper)
       role.ensure_permission_exists(:edit, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)

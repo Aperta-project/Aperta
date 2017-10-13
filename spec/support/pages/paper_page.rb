@@ -153,9 +153,11 @@ HERE
     page.execute_script code
   end
 
-  def submit(&blk)
-    find('#sidebar-submit-paper').click
-    find('button#review-submission-submit-button').click
+  def submit
+    click_on "sidebar-submit-paper"
+    wait_for_ajax
+    click_on 'review-submission-submit-button'
+    wait_for_ajax
   end
 
   def withdraw_paper

@@ -20,16 +20,21 @@
     </div>
 
     <div id="submission-state-information">
-
       {{#if (and paper.isReadyForSubmission (can 'submit' paper))}}
         <div class="ready-to-submit {{paper.engagementState}}">Your manuscript is ready for <span class="text-capitalize">{{paper.engagementState}}</span> Submission.</div>
-
-        {{#link-to 'paper.submit'}}
-          <button id="sidebar-submit-paper"
+        {{#if (feature-flag "PREPRINT")}}
+          {{#link-to 'paper.submit'}}
+            <button id="sidebar-submit-paper"
+                    class="button-primary button-pre-submit-paper button--green">
+              Review Before Submission
+            </button>
+          {{/link-to}}
+        {{else}}
+          <button id="sidebar-submit-paper" {{action "submitPaper"}}
                   class="button-primary button-pre-submit-paper button--green">
-            Review Before Submission
+            Submit
           </button>
-        {{/link-to}}
+        {{/if}}
       {{/if}}
 
       {{#if paper.isPreSubmission}}

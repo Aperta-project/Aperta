@@ -461,13 +461,13 @@
     </element>
   </define>
   <!-- Contents -->
-  <define name="text-content">
+  <define name="description">
     <element name="content">
       <optional>
         <attribute name="ident"/>
       </optional>
       <attribute name="content-type">
-        <value>text</value>
+        <value>description</value>
       </attribute>
       <element name="text">
         <ref name="html"/>
@@ -589,7 +589,7 @@
     <choice>
       <ref name="radio-input"/>
       <ref name="text-input"/>
-      <ref name="text-content"/>
+      <ref name="description"/>
       <ref name="display-children-content"/>
       <ref name="display-with-value-content"/>
       <ref name="export-paper"/>

@@ -7,6 +7,7 @@ let currentState = function(stateName) {
 
 export default DS.Model.extend({
   abstract: DS.attr('string'),
+  actor: DS.belongsTo('user', { inverse: 'invitations' }),
   attachments: DS.hasMany('invitation-attachment'),
   body: DS.attr('string'),
   createdAt: DS.attr('date'),
@@ -63,6 +64,8 @@ export default DS.Model.extend({
 
   isInvitedOrAccepted: Ember.computed.or('invited', 'accepted'),
 
+  isAcceptedByInvitee: Ember.computed.equal('actor.id', 'invitee.id'),
+
   needsUserUpdate: Ember.computed.or('invited', 'pendingFeedback'),
 
   academicEditor: Ember.computed.equal('inviteeRole', 'Academic Editor'),
@@ -117,5 +120,14 @@ export default DS.Model.extend({
     this.set('declineReason', null);
     this.set('reviewerSuggestions', null);
     this.set('pendingFeedback', false);
+  },
+
+  accept(data={}) {
+    return this.get('restless')
+    .put(`/api/invitations/${this.get('id')}/accept`, data)
+    .then((data) => {
+      this.store.pushPayload(data);
+      return this;
+    });
   }
 });

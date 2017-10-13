@@ -23,7 +23,7 @@
       </content>
       <content content-type="display-with-value" visible-with-parent-answer="false">
         <content content-type="display-children" custom-class="card-content-field-set">
-          <content content-type="text">
+          <content content-type="description">
             <text>Your competing interests statement will appear as: "The authors have declared that no competing interests exist."
             Please note that if your manuscript is accepted, this statement will be published.</text>
           </content>

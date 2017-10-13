@@ -14,8 +14,8 @@ FactoryGuy.define('card-content', {
       valueType: 'text',
       text: 'A short input question'
     },
-    text: {
-      contentType: 'text',
+    description: {
+      contentType: 'description',
       valueType: null,
       text: 'Here is a paragraph of unanswerable text'
     },

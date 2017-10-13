@@ -546,14 +546,20 @@ describe InvitationsController do
         end
       end
 
-      context 'when the user is invitee' do
-        before do
-          stub_sign_in FactoryGirl.create(:user)
-        end
+      context 'when the user is not invitee' do
+        let(:non_invitee_user) { FactoryGirl.create(:user) }
+        before { stub_sign_in non_invitee_user }
 
-        it 'renders status 403' do
+        it 'renders status 403 for unauthorized user' do
+          expect(non_invitee_user).to receive(:can?).with(:manage_invitations, task).and_return(false)
           do_request
           expect(response.status).to eq 403
+        end
+
+        it 'renders status 200 for authorized user' do
+          expect(non_invitee_user).to receive(:can?).with(:manage_invitations, task).and_return(true)
+          do_request
+          expect(response.status).to eq 200
         end
       end
     end

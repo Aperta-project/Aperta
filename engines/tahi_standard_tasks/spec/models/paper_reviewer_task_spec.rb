@@ -104,4 +104,17 @@ describe TahiStandardTasks::PaperReviewerTask do
       end
     end
   end
+
+  describe '#accept_allowed?' do
+    let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
+    it 'returns false when no invitee is present' do
+      expect(invitation).to receive(:invitee).and_return(nil)
+      expect(task.accept_allowed?(invitation)).to be false
+    end
+
+    it 'returns false when no invitee is present' do
+      expect(invitation).to receive(:invitee).and_return(double('User'))
+      expect(task.accept_allowed?(invitation)).to be true
+    end
+  end
 end

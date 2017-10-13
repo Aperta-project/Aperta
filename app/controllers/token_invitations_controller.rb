@@ -14,6 +14,7 @@ class TokenInvitationsController < ApplicationController
 
   def accept
     if invitation.invited? and current_user.email == invitation.email
+      invitation.actor = current_user
       invitation.accept!
       Activity.invitation_accepted!(invitation, user: current_user)
       flash[:notice] = thank_you_message

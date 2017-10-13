@@ -114,6 +114,13 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     return this.get('currentRound') && !this.get('closedState') && (this.get('invitation.invited') || this.get('invitation.accepted'));
   }),
 
+  displayAcceptOnBehalfButton: computed('invitation.{invited,reviewer}', 'closedState', 'currentRound', 'invitee', function() {
+    // similar to rescind button but only if its for a reviewer and if there's an invitee
+    return this.get('currentRound') && !this.get('closedState') && this.get('invitation.invited') && this.get('invitation.invitee.id') && this.get('invitation.reviewer');
+  }),
+
+  notAcceptedByInvitee: not('invitation.isAcceptedByInvitee'),
+
   destroyDisabled: or('disabled', 'invitation.isPrimary'),
 
   uiState: computed('invitation', 'activeInvitation', 'activeInvitationState', function() {
@@ -236,6 +243,11 @@ export default Component.extend(DragNDrop.DraggableMixin, {
       if (this.get('disabled')) { return; }
 
       this.get('sendInvitation').perform(invitation);
+    },
+
+    acceptInvitation(invitation) {
+      // pass in fname and lname for invitations w/o accounts
+      invitation.accept();
     }
   }
 });

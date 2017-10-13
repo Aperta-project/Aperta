@@ -25,7 +25,7 @@ let template = hbs`
   content=content}}`;
 
 let fakeTextContent = Ember.Object.extend({
-  contentType: 'text',
+  contentType: 'description',
   text: 'Child 1' ,
   answerForOwner() {
     return {value: 'foo'};

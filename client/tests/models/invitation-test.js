@@ -23,7 +23,7 @@ moduleForModel('invitation', 'Unit | Model | invitation', {
   }
 });
 
-test("rescind() uses restless to touch the rescind endpoint", function(assert) {
+test('rescind() and accept() use restless to touch endpoints', function(assert) {
   let fakeRestless = {
     put: sinon.stub()
   };
@@ -37,6 +37,12 @@ test("rescind() uses restless to touch the rescind endpoint", function(assert) {
   assert.spyCalledWith(fakeRestless.put,
     [`/api/invitations/${invitation.id}/rescind`],
     'Calls restless with rescind endpoint');
+
+  const data = { fname: 'foo', lname: 'bar'};
+  invitation.accept(data);
+  assert.spyCalledWith(fakeRestless.put,
+    [`/api/invitations/${invitation.id}/accept`, data],
+    'Calls restless with accept endpoint');
 });
 
 test('#declineFeedback sets declineReason and reviewerSuggestions to null,' +

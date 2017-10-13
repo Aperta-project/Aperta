@@ -22,15 +22,15 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
   // card-config
   cardSort: ['name:asc'],
-  sortedCards: computed.sort('cards', 'cardSort'),
-
+  publishedCards: computed.filterBy('cards', 'state', 'published'),
+  sortedCards: computed.sort('publishedCards', 'cardSort'),
   addableCards: computed.filterBy('sortedCards', 'addable', true),
   addableWorkFlowCards: computed.filterBy('sortedCards', 'workflow_only', true),
   addableNonWorkFlowCards: computed.setDiff('sortedCards', 'addableWorkFlowCards'),
 
   // pre-card-config
   taskTypeSort: ['title:asc'],
-  
+
   // TODO: get rid of task type filtering after last legacy card ruby class is deleted
   filteredTaskTypes: computed.filter('journalTaskTypes', function(taskType) {
     let title = taskType.get ? taskType.get('title') : '';
@@ -40,7 +40,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   authorTasks: computed.filterBy('filteredTaskTypes', 'roleHint', 'author'),
   unsortedAuthorColumn: computed.union('authorTasks', 'addableNonWorkFlowCards'),
   authorColumn: computed.sort('unsortedAuthorColumn', 'taskTypeSort'),
-  
+
   staffTasks: computed.setDiff('filteredTaskTypes', 'authorTasks'),
   unsortedStaffColumn: computed.union('staffTasks', 'addableWorkFlowCards'),
   staffColumn: computed.sort('unsortedStaffColumn', 'taskTypeSort'),

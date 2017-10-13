@@ -18,10 +18,12 @@ export default Ember.Controller.extend({
   hasPapers:         Ember.computed.notEmpty('papers'),
   hasActivePapers:   Ember.computed.notEmpty('activePapers'),
   hasInactivePapers: Ember.computed.notEmpty('inactivePapers'),
+  hasPreprintPostedPapers: Ember.computed.notEmpty('preprintPostedPapers'),
   activePageNumber:   1,
   inactivePageNumber: 1,
   activePapersVisible: true,
   inactivePapersVisible: true,
+  activePreprintPostedVisible: true,
   invitationsLoading: false,
   relatedAtSort: ['relatedAtDate:desc'],
   updatedAtSort: ['updatedAt:desc'],
@@ -36,10 +38,11 @@ export default Ember.Controller.extend({
                         }),
   activePapers:         Ember.computed.filterBy('papers', 'active', true),
   inactivePapers:       Ember.computed.filterBy('papers', 'active', false),
-
+  preprintPostedPapers: Ember.computed.filterBy('papers', 'isPreprintPosted', true),
   totalActivePaperCount: Ember.computed.alias('activePapers.length'),
 
   totalInactivePaperCount: Ember.computed.alias('inactivePapers.length'),
+  totalPreprintPostedPaperCount: Ember.computed.alias('preprintPostedPapers.length'),
   activeManuscriptsHeading: Ember.computed('totalActivePaperCount', function() {
     return 'Active ' +
             pluralizeString('Manuscript', this.get('totalActivePaperCount')) +
@@ -54,7 +57,11 @@ export default Ember.Controller.extend({
              ' (' + this.get('totalInactivePaperCount') + ')';
     }
   ),
-
+  preprintPostedHeading: Ember.computed('totalPreprintPostedPaperCount', function() {
+    const count = this.get('totalPreprintPostedPaperCount');
+    return pluralizeString('Preprint', count) +
+      ' (' + this.get('totalPreprintPostedPaperCount') + ')';
+  }),
   showNewManuscriptOverlay: false,
 
   hideInvitationsOverlay() {
@@ -78,6 +85,10 @@ export default Ember.Controller.extend({
 
     toggleInactiveContainer() {
       this.toggleProperty('inactivePapersVisible');
+    },
+
+    togglePreprintContainer() {
+      this.toggleProperty('activePreprintPostedVisible');
     },
 
     showInvitationsOverlay() {

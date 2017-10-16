@@ -12,7 +12,11 @@ module TahiStandardTasks
       @recipient_email = to_field || @paper.creator.email
       @subject = subject_field || "A decision has been registered on the manuscript, \"#{@paper.display_title}\""
 
-      mail(to: @recipient_email,
+      # for some weird reason mails only get sent to one recipient
+      # when all the email addresses are in a string.
+      # so we just put all the email addresses into an array manually
+      @mails = @recipient_email.split(',').map(&:strip)
+      mail(to: @mails,
            subject: @subject)
     end
   end

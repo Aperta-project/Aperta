@@ -83,13 +83,15 @@ shared_examples_for "snapshot serializes related answers as nested questions" do
         {
           name: "question_2",
           type: "question",
-          value: { id: 9002, title: "Question 2?", answer_type: "text", answer: nil, attachments: [] },
+          content_type: nil,
+          value: { repetition_id: nil, id: 9002, title: "Question 2?", answer_type: "text", answer: nil, attachments: [] },
           children: []
         },
         {
           name: "question_1",
           type: "question",
-          value: { id: 9001, title: "Question 1?", answer_type: "text", answer: nil, attachments: [] },
+          content_type: nil,
+          value: { repetition_id: nil, id: 9001, title: "Question 1?", answer_type: "text", answer: nil, attachments: [] },
           children: []
         }
       )

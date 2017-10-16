@@ -269,6 +269,7 @@ describe Typesetter::MetadataSerializer do
     end
 
     shared_examples_for :includes_custom_metadata do
+      # TODO: update this to handle Repetitions correctly
       it "ensure exported metadata includes custom card fields" do
         expected_metadata = { "my_custom_task--some_text" => 'This is my anwser',
                               "my_custom_task--question_1" => true,

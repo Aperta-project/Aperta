@@ -1,9 +1,10 @@
 require 'rails_helper'
 
+# TODO: write some Repetition specific tests in here
 describe Snapshot::CardContentSerializer do
   subject(:serializer) { described_class.new(card_content, owner) }
   let(:card_content) do
-    FactoryGirl.create(:card_content, ident: 'my-question', value_type: 'text', text: 'What up?')
+    FactoryGirl.create(:card_content, ident: 'my-question', content_type: 'short-input', value_type: 'text', text: 'What up?')
   end
   let(:owner) { FactoryGirl.create(:ad_hoc_task) }
 
@@ -12,11 +13,13 @@ describe Snapshot::CardContentSerializer do
       expect(serializer.as_json).to eq(
         name: 'my-question',
         type: 'question',
+        content_type: 'short-input',
         value: {
           id: card_content.id,
           title: 'What up?',
           answer_type: 'text',
           answer: nil,
+          repetition_id: nil,
           attachments: []
         },
         children: []
@@ -43,28 +46,38 @@ describe Snapshot::CardContentSerializer do
         expect(serializer.as_json).to eq(
           name: 'my-question',
           type: 'question',
+          content_type: 'short-input',
           value: {
             id: card_content.id,
             title: 'What up?',
             answer_type: 'text',
             answer: nil,
+            repetition_id: nil,
             attachments: []
           },
           children: [{
             name: '1st_question',
             type: 'question',
+            content_type: nil,
             value: {
               id: card_content.children.first.id,
-              title: '1st level child question', answer_type: 'text',
-              answer: nil, attachments: []
+              title: '1st level child question',
+              answer_type: 'text',
+              answer: nil,
+              repetition_id: nil,
+              attachments: []
             },
             children: [{
               name: '2nd_question',
               type: 'question',
+              content_type: nil,
               value: {
                 id: card_content.children.first.children.first.id,
-                title: '2nd level child question', answer_type: 'text',
-                answer: nil, attachments: []
+                title: '2nd level child question',
+                answer_type: 'text',
+                answer: nil,
+                repetition_id: nil,
+                attachments: []
               },
               children: []
             }]
@@ -84,11 +97,13 @@ describe Snapshot::CardContentSerializer do
       expect(serializer.as_json).to eq(
         name: 'my-question',
         type: 'question',
+        content_type: 'short-input',
         value: {
           id: card_content.id,
           title: 'What up?',
           answer_type: 'text',
           answer: 'Answer Value',
+          repetition_id: nil,
           attachments: []
         },
         children: []

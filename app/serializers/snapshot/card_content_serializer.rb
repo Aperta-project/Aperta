@@ -12,11 +12,11 @@ class Snapshot::CardContentSerializer
       type: 'question',
       content_type: @card_content.content_type,
       value: {
-        repetition: @repetition.try(:id),
         id: @card_content.id,
         title: @card_content.text,
         answer_type: @card_content.value_type,
         answer: @answer.try(:value),
+        repetition_id: @repetition.try(:id),
         attachments: serialized_attachments_json
       },
       children: serialized_children_json

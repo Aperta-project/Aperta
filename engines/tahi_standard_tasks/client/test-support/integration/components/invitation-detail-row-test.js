@@ -2,11 +2,16 @@ import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import { moduleForComponent, test } from 'ember-qunit';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 
 moduleForComponent('invitation-detail-row', 'Integration | Component | invitation detail row', {
   integration: true,
   beforeEach() {
     manualSetup(this.container);
+    var can = FakeCanService.create();
+    var task = make('task');
+    this.registry.register('service:can', can.allowPermission('manage_invitations', task).asService());
+    this.set('owner', task);
     this.set('update-date', new Date('January 01, 2016'));
     this.set('completed-date', new Date('March 01, 2016'));
     this.set('due-at'), new Date('February 25, 2017)');
@@ -28,6 +33,7 @@ moduleForComponent('invitation-detail-row', 'Integration | Component | invitatio
 
 let template = hbs`{{invitation-detail-row
                       invitation=invitation
+                      owner=owner
                       uiState='closed'}}`;
 
 test('displays invitation information if invitation.invited is true', function(assert){
@@ -93,6 +99,7 @@ test('displays invitation email when no invitee present', function(assert){
 
 let openTemplate = hbs`{{invitation-detail-row invitation=invitation
                                                currentRound=currentRound
+                                               owner=owner
                                                uiState=uiState}}`;
 
 test('the row is in the closed state, in the current round', function(assert) {
@@ -308,6 +315,7 @@ test('displays decline feedback when declined', function(assert){
   });
 
   const openTemplate = hbs`{{invitation-detail-row invitation=invitation
+                                                   owner=owner
                                                    uiState='show'}}`;
 
   this.render(openTemplate);
@@ -321,6 +329,7 @@ test('that dragging text does not trigger invite dragging when dragging is disab
   this.set('startedDragging', spy);
   this.set('invitationIsExpanded', true); // will disable dragging
   const openTemplate = hbs`{{invitation-detail-row invitation=invitation
+                                                   owner=owner
                                                    uiState='show'
                                                    invitationIsExpanded=invitationIsExpanded
                                                    startedDragging=(action startedDragging)}}`;

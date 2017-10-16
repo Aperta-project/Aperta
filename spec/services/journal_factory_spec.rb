@@ -488,7 +488,6 @@ describe JournalFactory do
               expect(permissions).to include(
                 Permission.find_by(action: :add_email_participants, applies_to: klass.name),
                 Permission.find_by(action: :manage, applies_to: klass.name),
-                Permission.find_by(action: :manage_invitations, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name),
                 Permission.find_by(action: :view, applies_to: klass.name),
                 Permission.find_by(action: :view_participants, applies_to: klass.name)
@@ -780,7 +779,6 @@ describe JournalFactory do
               expect(permissions).to include(
                 Permission.find_by(action: :add_email_participants, applies_to: klass.name),
                 Permission.find_by(action: :manage, applies_to: klass.name),
-                Permission.find_by(action: :manage_invitations, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name),
                 Permission.find_by(action: :view, applies_to: klass.name),
                 Permission.find_by(action: :view_participants, applies_to: klass.name)

@@ -1,7 +1,6 @@
 FactoryGirl.define do
   factory :card_content do
     ident { "#{Faker::Lorem.word}--#{Faker::Lorem.word}" }
-    content_type nil
     value_type "text"
     after(:build) do |c|
       c.card_version = build(:card_version, card_contents: [c]) unless c.card_version.present?
@@ -10,6 +9,17 @@ FactoryGirl.define do
     trait :root do
       parent_id nil
     end
+
+   trait :with_answer do
+     transient do
+       answer_value nil
+     end
+
+     after(:create) do |card_content, evaluator|
+       task = Task.find_by(card_version: card_content.card_version)
+       FactoryGirl.create(:answer, card_content: card_content, paper: task.try(:paper), owner: task, value: evaluator.answer_value)
+     end
+   end
 
     trait :with_child do
       after(:create) do |root_content|

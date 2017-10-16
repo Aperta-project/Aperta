@@ -36,7 +36,7 @@ module Typesetter
       question_answers = process_answers(tasks)
     end
 
-    # TODO: update this to handle Repetitions
+    # TODO: this probably needs to be updated for Repetitions
     def process_answers(tasks)
       question_answers = {}
       tasks.each do |task|

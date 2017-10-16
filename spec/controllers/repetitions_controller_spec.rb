@@ -8,8 +8,7 @@ describe RepetitionsController do
     let(:task) { repetition.task }
 
     subject(:do_request) do
-      get :index, format: "json",
-                  repetition: { task_id: task.id }
+      get :index, format: "json", task_id: task.id
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -25,7 +24,7 @@ describe RepetitionsController do
       it "returns repetitions for task" do
         do_request
         expect(res_body['repetitions'].size).to eq(1)
-        expect(res_body['repetitions'].first['id']).to eq(task.id)
+        expect(res_body['repetitions'].first['id']).to eq(repetition.id)
       end
     end
 

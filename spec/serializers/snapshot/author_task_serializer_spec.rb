@@ -18,13 +18,11 @@ describe Snapshot::AuthorTaskSerializer do
           {
             name: "authors--persons_agreed_to_be_named",
             type: "question",
-            content_type: nil,
             value: {
               id: CardContent.where(ident: "authors--persons_agreed_to_be_named").first.id,
               title: "Any persons named in the Acknowledgements section of the manuscript, or referred to as the source of a personal communication, have agreed to being so named.",
               answer_type: "boolean",
               answer: nil,
-              repetition_id: nil,
               attachments: []
             },
             children: []
@@ -32,13 +30,11 @@ describe Snapshot::AuthorTaskSerializer do
           {
             name: "authors--authors_confirm_icmje_criteria",
             type: "question",
-            content_type: nil,
             value: {
               id: CardContent.where(ident: "authors--authors_confirm_icmje_criteria").first.id,
               title: 'All authors have read, and confirm, that they meet, <a href="http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html" target="_blank">ICMJE</a> criteria for authorship.',
               answer_type: "boolean",
               answer: nil,
-              repetition_id: nil,
               attachments: []
             },
             children: []
@@ -46,13 +42,11 @@ describe Snapshot::AuthorTaskSerializer do
           {
             name: "authors--authors_agree_to_submission",
             type: "question",
-            content_type: nil,
             value: {
               id: CardContent.where(ident: "authors--authors_agree_to_submission").first.id,
               title: "All contributing authors are aware of and agree to the submission of this manuscript.",
               answer_type: "boolean",
               answer: nil,
-              repetition_id: nil,
               attachments: []
             },
             children: []
@@ -90,7 +84,6 @@ describe Snapshot::AuthorTaskSerializer do
           {
             name: "authors--persons_agreed_to_be_named",
             type: "question",
-            content_type: nil,
             value:
               {
                 id: CardContent.where(ident: "authors--persons_agreed_to_be_named").first.id,
@@ -98,7 +91,6 @@ describe Snapshot::AuthorTaskSerializer do
                   "Any persons named in the Acknowledgements section of the manuscript, or referred to as the source of a personal communication, have agreed to being so named.",
                 answer_type: "boolean",
                 answer: nil,
-                repetition_id: nil,
                 attachments: []
               },
             children: []
@@ -106,14 +98,12 @@ describe Snapshot::AuthorTaskSerializer do
           {
             name: "authors--authors_confirm_icmje_criteria",
             type: "question",
-            content_type: nil,
             value:
               {
                 id: CardContent.where(ident: "authors--authors_confirm_icmje_criteria").first.id,
                 title: 'All authors have read, and confirm, that they meet, <a href="http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html" target="_blank">ICMJE</a> criteria for authorship.',
                 answer_type: "boolean",
                 answer: nil,
-                repetition_id: nil,
                 attachments: []
               },
             children: []
@@ -121,7 +111,6 @@ describe Snapshot::AuthorTaskSerializer do
           {
             name: "authors--authors_agree_to_submission",
             type: "question",
-            content_type: nil,
             value:
               {
                 id: CardContent.where(ident: "authors--authors_agree_to_submission").first.id,
@@ -129,7 +118,6 @@ describe Snapshot::AuthorTaskSerializer do
                   "All contributing authors are aware of and agree to the submission of this manuscript.",
                 answer_type: "boolean",
                 answer: nil,
-                repetition_id: nil,
                 attachments: []
               },
             children: []

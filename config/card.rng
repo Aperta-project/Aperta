@@ -32,6 +32,55 @@
       </attribute>
     </element>
   </define>
+  <define name="allow-annotations">
+    <attribute name="allow-annotations">
+      <choice>
+        <value>true</value>
+        <value>false</value>
+      </choice>
+    </attribute>
+  </define>
+  <define name="required-field">
+    <attribute name="required-field">
+      <choice>
+        <value>true</value>
+        <value>false</value>
+      </choice>
+    </attribute>
+  </define>
+  <define name="default-answer-boolean">
+    <attribute name="default-answer-value">
+      <choice>
+        <value>true</value>
+        <value>false</value>
+      </choice>
+    </attribute>
+  </define>
+  <define name="default-answer-text">
+    <attribute name="default-answer-value"/>
+  </define>
+  <define name="html">
+    <interleave>
+      <zeroOrMore>
+        <ref name="any-element"/>
+      </zeroOrMore>
+      <text/>
+    </interleave>
+  </define>
+  <define name="any-attribute">
+    <attribute>
+      <anyName/>
+    </attribute>
+  </define>
+  <define name="any-element">
+    <element>
+      <anyName/>
+      <zeroOrMore>
+        <ref name="any-attribute"/>
+      </zeroOrMore>
+      <ref name="html"/>
+    </element>
+  </define>
   <define name="instructions-label-required-text">
     <interleave>
       <optional>
@@ -102,32 +151,18 @@
       </interleave>
     </element>
   </define>
-  <define name="allow-annotations">
-    <attribute name="allow-annotations">
-      <choice>
-        <value>true</value>
-        <value>false</value>
-      </choice>
-    </attribute>
-  </define>
-  <define name="required-field">
-    <attribute name="required-field">
-      <choice>
-        <value>true</value>
-        <value>false</value>
-      </choice>
-    </attribute>
-  </define>
-  <define name="default-answer-boolean">
-    <attribute name="default-answer-value">
-      <choice>
-        <value>true</value>
-        <value>false</value>
-      </choice>
-    </attribute>
-  </define>
-  <define name="default-answer-text">
-    <attribute name="default-answer-value"/>
+  <define name="input-attributes">
+    <interleave>
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <optional>
+        <ref name="required-field"/>
+      </optional>
+      <optional>
+        <ref name="allow-annotations"/>
+      </optional>
+    </interleave>
   </define>
   <!-- Inputs -->
   <define name="radio-input">
@@ -136,9 +171,7 @@
         <attribute name="content-type">
           <value>radio</value>
         </attribute>
-        <optional>
-          <attribute name="ident"/>
-        </optional>
+        <ref name="input-attributes"/>
         <attribute name="value-type">
           <choice>
             <value>text</value>
@@ -147,12 +180,6 @@
         </attribute>
         <optional>
           <ref name="default-answer-text"/>
-        </optional>
-        <optional>
-          <ref name="allow-annotations"/>
-        </optional>
-        <optional>
-          <ref name="required-field"/>
         </optional>
         <ref name="instructions-label-optional-text"/>
         <zeroOrMore>
@@ -170,20 +197,12 @@
         <attribute name="content-type">
           <value>check-box</value>
         </attribute>
-        <optional>
-          <attribute name="ident"/>
-        </optional>
+        <ref name="input-attributes"/>
         <attribute name="value-type">
           <value>boolean</value>
         </attribute>
         <optional>
           <ref name="default-answer-boolean"/>
-        </optional>
-        <optional>
-          <ref name="allow-annotations"/>
-        </optional>
-        <optional>
-          <ref name="required-field"/>
         </optional>
         <ref name="instructions-label-optional-text"/>
         <zeroOrMore>
@@ -198,9 +217,7 @@
         <attribute name="content-type">
           <value>file-uploader</value>
         </attribute>
-        <optional>
-          <attribute name="ident"/>
-        </optional>
+        <ref name="input-attributes"/>
         <attribute name="value-type">
           <choice>
             <value>attachment</value>
@@ -227,12 +244,6 @@
             </choice>
           </attribute>
         </optional>
-        <optional>
-          <ref name="allow-annotations"/>
-        </optional>
-        <optional>
-          <ref name="required-field"/>
-        </optional>
         <ref name="instructions-label-optional-text"/>
         <zeroOrMore>
           <ref name="file-validation"/>
@@ -249,15 +260,10 @@
         <attribute name="content-type">
           <value>date-picker</value>
         </attribute>
-        <optional>
-          <attribute name="ident"/>
-        </optional>
+        <ref name="input-attributes"/>
         <attribute name="value-type">
           <value>text</value>
         </attribute>
-        <optional>
-          <ref name="required-field"/>
-        </optional>
         <ref name="instructions-label-required-text"/>
       </interleave>
     </element>
@@ -268,9 +274,7 @@
         <attribute name="content-type">
           <value>dropdown</value>
         </attribute>
-        <optional>
-          <attribute name="ident"/>
-        </optional>
+        <ref name="input-attributes"/>
         <attribute name="value-type">
           <choice>
             <value>text</value>
@@ -279,12 +283,6 @@
         </attribute>
         <optional>
           <ref name="default-answer-text"/>
-        </optional>
-        <optional>
-          <ref name="allow-annotations"/>
-        </optional>
-        <optional>
-          <ref name="required-field"/>
         </optional>
         <ref name="instructions-label-required-text"/>
         <oneOrMore>
@@ -302,20 +300,12 @@
         <attribute name="content-type">
           <value>tech-check</value>
         </attribute>
-        <optional>
-          <attribute name="ident"/>
-        </optional>
+        <ref name="input-attributes"/>
         <attribute name="value-type">
           <value>boolean</value>
         </attribute>
         <optional>
           <ref name="default-answer-boolean"/>
-        </optional>
-        <optional>
-          <ref name="allow-annotations"/>
-        </optional>
-        <optional>
-          <ref name="required-field"/>
         </optional>
         <ref name="instructions-label-required-text"/>
         <zeroOrMore>
@@ -330,9 +320,7 @@
         <attribute name="content-type">
           <value>sendback-reason</value>
         </attribute>
-        <optional>
-          <attribute name="ident"/>
-        </optional>
+        <ref name="input-attributes"/>
         <attribute name="value-type">
           <value>boolean</value>
         </attribute>
@@ -352,9 +340,7 @@
             <value>paragraph-input</value>
           </choice>
         </attribute>
-        <optional>
-          <attribute name="ident"/>
-        </optional>
+        <ref name="input-attributes"/>
         <attribute name="value-type">
           <choice>
             <value>text</value>
@@ -366,12 +352,6 @@
         </optional>
         <optional>
           <ref name="default-answer-text"/>
-        </optional>
-        <optional>
-          <ref name="allow-annotations"/>
-        </optional>
-        <optional>
-          <ref name="required-field"/>
         </optional>
         <ref name="instructions-label-optional-text"/>
         <zeroOrMore>
@@ -485,28 +465,6 @@
         </optional>
       </interleave>
     </element>
-  </define>
-  <define name="html">
-    <interleave>
-      <zeroOrMore>
-        <ref name="any-element"/>
-      </zeroOrMore>
-      <text/>
-    </interleave>
-  </define>
-  <define name="any-element">
-    <element>
-      <anyName/>
-      <zeroOrMore>
-        <ref name="any-attribute"/>
-      </zeroOrMore>
-      <ref name="html"/>
-    </element>
-  </define>
-  <define name="any-attribute">
-    <attribute>
-      <anyName/>
-    </attribute>
   </define>
   <define name="content">
     <choice>

@@ -13,22 +13,31 @@
 file-type = xsd:string { pattern = "\.\w*" }
 
 possible-value = element possible-value {
-                     attribute label { text },
-                     attribute value { text }
-                 }
+  attribute label { text },
+  attribute value { text }
+}
 
 accepted-file-type = element possible-value {
-                         attribute label { text },
-                         attribute value { file-type }
-                     }
+  attribute label { text },
+  attribute value { file-type }
+}
+
+allow-annotations      = attribute allow-annotations     { "true" | "false" }
+required-field         = attribute required-field        { "true" | "false" }
+default-answer-boolean = attribute default-answer-value  { "true" | "false" }
+default-answer-text    = attribute default-answer-value  { text }
+
+html = any-element* & text
+any-attribute = attribute * { text }
+any-element = element * { any-attribute*, html }
 
 instructions-label-required-text =
-    element instruction-text { html }?
+  element instruction-text { html }?
   & element label { html }?
   & element text { html }
 
 instructions-label-optional-text =
-    element instruction-text { html }?
+  element instruction-text { html }?
   & element label { html }?
   & element text { html }?
 
@@ -46,19 +55,17 @@ string-validation =
     & element validator { text }
   }
 
-allow-annotations      = attribute allow-annotations      { "true" | "false" }
-required-field         = attribute required-field         { "true" | "false" }
-default-answer-boolean = attribute default-answer-value   { "true" | "false" }
-default-answer-text    = attribute default-answer-value   { text }
+input-attributes =
+  attribute ident { text }?
+  & required-field?
+  & allow-annotations?
 
 # Inputs
 radio-input = element content {
   attribute content-type { "radio" }
-  & attribute ident { text }?
+  & input-attributes
   & attribute value-type { "text" | "boolean" }
   & default-answer-text?
-  & allow-annotations?
-  & required-field?
   & instructions-label-optional-text
   & possible-value*
   & content*
@@ -66,24 +73,20 @@ radio-input = element content {
 
 check-box-input = element content {
   attribute content-type { "check-box" }
-  & attribute ident { text }?
+  & input-attributes
   & attribute value-type { "boolean" }
   & default-answer-boolean?
-  & allow-annotations?
-  & required-field?
   & instructions-label-optional-text
   & content*
 }
 
 file-uploader = element content {
   attribute content-type { "file-uploader" }
-  & attribute ident { text }?
+  & input-attributes
   & attribute value-type { "attachment" | "manuscript" | "sourcefile" }
   & attribute error-message { text }?
   & attribute allow-file-captions    { "true" | "false" }?
   & attribute allow-multiple-uploads { "true" | "false" }?
-  & allow-annotations?
-  & required-field?
   & instructions-label-optional-text
   & file-validation*
   & accepted-file-type*
@@ -91,19 +94,16 @@ file-uploader = element content {
 
 date-picker = element content {
   attribute content-type { "date-picker" }
-  & attribute ident { text }?
+  & input-attributes
   & attribute value-type { "text" }
-  & required-field?
   & instructions-label-required-text
 }
 
 dropdown-input = element content {
   attribute content-type { "dropdown" }
-  & attribute ident { text }?
+  & input-attributes
   & attribute value-type { "text" | "boolean" }
   & default-answer-text?
-  & allow-annotations?
-  & required-field?
   & instructions-label-required-text
   & possible-value+
   & content*
@@ -111,18 +111,16 @@ dropdown-input = element content {
 
 tech-check = element content {
   attribute content-type { "tech-check" }
-  & attribute ident { text }?
+  & input-attributes
   & attribute value-type { "boolean" }
   & default-answer-boolean?
-  & allow-annotations?
-  & required-field?
   & instructions-label-required-text
   & content*
 }
 
 sendback-reason = element content {
   attribute content-type { "sendback-reason" }
-  & attribute ident { text }?
+  & input-attributes
   & attribute value-type { "boolean" }
   & instructions-label-optional-text
   & content*
@@ -130,12 +128,10 @@ sendback-reason = element content {
 
 text-input = element content {
   attribute content-type { "short-input" | "paragraph-input" }
-  & attribute ident { text }?
+  & input-attributes
   & attribute value-type { "text" | "html" }
   & attribute editor-style { text }?
   & default-answer-text?
-  & allow-annotations?
-  & required-field?
   & instructions-label-optional-text
   & string-validation*
 }
@@ -184,10 +180,6 @@ error-message = element content {
   & attribute key { text }
   & element text { text }?
 }
-
-html = any-element* & text
-any-element = element * { any-attribute*, html }
-any-attribute = attribute * { text }
 
 content = (
   check-box-input

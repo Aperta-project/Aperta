@@ -458,6 +458,14 @@ class AuthorsTask(BaseTask):
     institution_input.send_keys(author['1_institution'] + Keys.ENTER)
     sec_institution_input.send_keys(author['2_institution'] + Keys.ENTER)
 
+    # check one of the boxes in Author Contributions, as this is required
+    self._wait_for_element(self._get(self._designed_chkbx))
+    author_contribution_chck = self._get(self._designed_chkbx)
+    author_contribution_chck.click()
+    if not author_contribution_chck.is_selected():
+      self.click_covered_element(author_contribution_chck)
+
+
     govt_choice = random.choice(['Yes', 'No'])
     logging.info('Selecting Gov\'t Choice {0}'.format(govt_choice))
     govt_div = self._get(self._govt_employee_div)

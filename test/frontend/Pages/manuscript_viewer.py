@@ -76,6 +76,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
     self._tb_more_withdraw_link = (By.ID, 'nav-withdraw-manuscript')
     self._tb_workflow_link = (By.ID, 'nav-workflow')
+    self._tb_correspondence_link = (By.ID, 'nav-correspondence')
     # Manage Collaborators Overlay
     self._add_collaborators_modal = (By.CLASS_NAME, 'show-collaborators-overlay')
     self._add_collaborators_modal_header = (By.CLASS_NAME, 'overlay-title-text')
@@ -761,7 +762,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       base_task.click_completion_button()
       self.click_covered_element(task)
       self._wait_on_lambda(lambda: self.is_task_open('Title And Abstract') == False)
-    elif task_name in ('Competing Interest', 'Data Availability', 'Early Article Posting',
+    elif task_name in ('Competing Interests', 'Data Availability', 'Early Article Posting',
                        'Ethics Statement', 'Reporting Guidelines'):
       # Complete Competing Interest data before mark close
       logging.info('Completing {0} Task'.format(task.text))
@@ -805,6 +806,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """Click workflow button"""
     self._wait_for_element(self._get(self._tb_workflow_link))
     self._get(self._tb_workflow_link).click()
+
+  def click_correspondence_link(self):
+    """Click correspondence history link"""
+    self._wait_for_element(self._get(self._tb_correspondence_link))
+    self._get(self._tb_correspondence_link).click()
 
   def click_question_mark(self):
     """Click on the question mark to open Infobox"""

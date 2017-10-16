@@ -34779,6 +34779,8 @@ letter_templates:
   - updated_at
   - scenario
   - ident
+  - cc
+  - bcc
   records: 
   - - '1'
     - Editor Decision - Reject After Review
@@ -34828,6 +34830,8 @@ letter_templates:
     - '2017-09-28 20:49:00.933202'
     - TahiStandardTasks::RegisterDecisionScenario
     - editor-decision-reject-after-review
+    - 
+    - 
   - - '2'
     - Editor Decision - Reject After Review CJs
     - reject
@@ -34880,6 +34884,8 @@ letter_templates:
     - '2017-09-28 20:49:00.941529'
     - TahiStandardTasks::RegisterDecisionScenario
     - editor-decision-reject-after-review-cjs
+    - 
+    - 
   - - '3'
     - Editor Decision - Reject After Review ONE
     - reject
@@ -34932,6 +34938,8 @@ letter_templates:
     - '2017-09-28 20:49:00.948619'
     - TahiStandardTasks::RegisterDecisionScenario
     - editor-decision-reject-after-review-one
+    - 
+    - 
   - - '4'
     - Reject After Review ONE
     - reject
@@ -34985,6 +34993,8 @@ letter_templates:
     - '2017-09-28 20:49:00.955793'
     - TahiStandardTasks::RegisterDecisionScenario
     - reject-after-review-one
+    - 
+    - 
   - - '5'
     - Reject After Revision and Re-review ONE
     - reject
@@ -35038,6 +35048,8 @@ letter_templates:
     - '2017-09-28 20:49:00.962881'
     - TahiStandardTasks::RegisterDecisionScenario
     - reject-after-revision-and-re-review-one
+    - 
+    - 
   - - '6'
     - RA Major Revision
     - major_revision
@@ -35097,6 +35109,8 @@ letter_templates:
     - '2017-09-28 20:49:00.970106'
     - TahiStandardTasks::RegisterDecisionScenario
     - ra-major-revision
+    - 
+    - 
   - - '7'
     - RA Minor Revision
     - minor_revision
@@ -35160,6 +35174,8 @@ letter_templates:
     - '2017-09-28 20:49:00.977543'
     - TahiStandardTasks::RegisterDecisionScenario
     - ra-minor-revision
+    - 
+    - 
   - - '8'
     - RA Accept
     - accept
@@ -35191,6 +35207,8 @@ letter_templates:
     - '2017-09-28 20:49:01.008183'
     - TahiStandardTasks::RegisterDecisionScenario
     - ra-accept
+    - 
+    - 
   - - '9'
     - Review Reminder - Before Due
     - 
@@ -35207,6 +35225,8 @@ letter_templates:
     - '2017-09-28 20:49:01.014853'
     - ReviewerReportScenario
     - review-reminder-before-due
+    - 
+    - 
   - - '10'
     - Review Reminder - First Late
     - 
@@ -35224,6 +35244,8 @@ letter_templates:
     - '2017-09-28 20:49:01.021057'
     - ReviewerReportScenario
     - review-reminder-first-late
+    - 
+    - 
   - - '11'
     - Review Reminder - Second Late
     - 
@@ -35241,6 +35263,8 @@ letter_templates:
     - '2017-09-28 20:49:01.028082'
     - ReviewerReportScenario
     - review-reminder-second-late
+    - 
+    - 
   - - '12'
     - Reviewer Appreciation
     - 
@@ -35257,6 +35281,8 @@ letter_templates:
     - '2017-09-28 20:49:01.035108'
     - ReviewerReportScenario
     - reviewer-appreciation
+    - 
+    - 
   - - '13'
     - Preprint Accept
     - 
@@ -35278,6 +35304,8 @@ letter_templates:
     - '2017-09-28 20:49:01.041835'
     - TahiStandardTasks::PreprintDecisionScenario
     - preprint-accept
+    - 
+    - 
   - - '14'
     - Preprint Reject
     - 
@@ -35299,6 +35327,8 @@ letter_templates:
     - '2017-09-28 20:49:01.047927'
     - TahiStandardTasks::PreprintDecisionScenario
     - preprint-reject
+    - 
+    - 
 
 ---
 manuscript_manager_templates:

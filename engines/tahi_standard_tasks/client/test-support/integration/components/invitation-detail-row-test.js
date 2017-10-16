@@ -251,6 +251,20 @@ test('the row is in the show state, invitation is accepted, there is no actor, a
   assert.textNotPresent('.invitation-item-status', 'Accepted by', 'Does not show actor name');
 });
 
+test('the row is in the show state, invitation is invited, and in current round, but no permission', function(assert) {
+  this.setProperties({
+    'invitation.state': 'invited',
+    currentRound: true,
+    uiState: 'show'
+  });
+
+  this.registry.register('service:can', FakeCanService.create().asService());
+
+  this.render(openTemplate);
+
+  assert.elementNotFound('.invitation-item-action-accept', 'Does not show Accept button');
+  assert.elementNotFound('.invitation-item-action-rescind', 'Does not show Rescind button');
+});
 
 test('grouped invitations are disabled when their primary has been invited or accepted', function(assert) {
   this.set('invitation', make('invitation', {

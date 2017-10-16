@@ -8,5 +8,7 @@ export default DS.Model.extend({
   body: DS.attr('string'),
   journalId: DS.attr('number'),
   mergeFields: DS.attr(),
-  scenario: DS.attr('string')
+  scenario: DS.attr('string'),
+  cc: DS.attr('string'),
+  bcc: DS.attr('string')
 });

@@ -5,15 +5,16 @@
     {{/if}}</p>
 {{/unless}}
 {{card-content/validation-errors errors=answer.readyIssuesArray}}
-<label for={{name}}>{{check-box
+{{check-box
   name=name
   id=name
   checked=answer.value
   disabled=disabled
   content=content
   answer=answer
-  action="valueChanged"}}{{{if textOnly content.text content.label}}}
-</label>
+  action="valueChanged"
+}}
+
 <div>{{card-content/validation-errors errors=answer.readyIssuesArray}}</div>
 {{card-content/display-children
   content=content

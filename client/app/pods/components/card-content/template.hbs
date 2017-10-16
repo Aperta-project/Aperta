@@ -5,7 +5,14 @@
   {{#if (and answer keepAnswerContainer)}}
     <div class="answer-container">
       <div class="answer">
-        {{partial "card-content-component"}}
+        {{#if textOnly}}
+          {{partial "card-content-component"}}
+        {{else}}
+          <label for={{name}}>
+            {{partial "card-content-component"}}
+            {{{content.label}}}
+          </label>
+        {{/if}}
       </div>
       <div class="additional-text">
         {{#if content.hasAdditionalText}}
@@ -19,5 +26,12 @@
       </div>
     </div>
   {{else}}
-    {{partial "card-content-component"}}
+    {{#if textOnly}}
+      {{partial "card-content-component"}}
+    {{else}}
+      <label for={{name}}>
+        {{partial "card-content-component"}}
+        {{{content.label}}}
+      </label>
+    {{/if}}
   {{/if}}

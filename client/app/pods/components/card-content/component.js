@@ -46,6 +46,14 @@ export default Ember.Component.extend({
     return findNearestProperty(this, 'scenario');
   }),
 
+  textOnly: Ember.computed('content.text', 'content.label', function() {
+    return this.get('content.text') && Ember.isEmpty(this.get('content.label'));
+  }),
+
+  name: Ember.computed(function() {
+    return Ember.guidFor(this);
+  }),
+
   init() {
     this._super(...arguments);
     Ember.assert(

@@ -1,14 +1,6 @@
 # Provides a template context for ReviewerReports
 class ReviewerReportContext < TemplateContext
   include ActionView::Helpers::SanitizeHelper
-  def self.complex_merge_fields
-    [{ name: :reviewer, context: UserContext },
-     { name: :answers, context: AnswerContext, many: true }]
-  end
-
-  def self.blacklisted_merge_fields
-    ActionView::Helpers::SanitizeHelper.public_instance_methods
-  end
 
   whitelist :state, :revision, :status, :datetime, :invitation_accepted?, :due_at
 

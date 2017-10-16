@@ -154,10 +154,13 @@ HERE
   end
 
   def submit
-    click_on "sidebar-submit-paper"
-    wait_for_ajax
-    click_on 'review-submission-submit-button'
-    wait_for_ajax
+    click_on "Submit"
+    SubmitPaperOverlay.new.tap do |overlay|
+      if blk
+        blk.call overlay
+        wait_for_ajax
+      end
+    end
   end
 
   def withdraw_paper

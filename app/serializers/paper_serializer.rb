@@ -38,8 +38,8 @@ class PaperSerializer < LitePaperSerializer
   end
 
   def preprint_eligible?
-    workflow = ManuscriptManagerTemplate.where(paper_type: paper_type).first
-    workflow.is_preprint_eligible if workflow
+    workflow = ManuscriptManagerTemplate.find_by(paper_type: paper_type, journal_id: journal_id)
+    workflow ? workflow.is_preprint_eligible : false
   end
 
   def versions_contain_pdf

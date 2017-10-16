@@ -64,7 +64,7 @@ module('Integration: Submitting Paper', {
 test('User can submit a paper', function(assert) {
   visit('/papers/' + paper.get('shortDoi'));
   click('#sidebar-submit-paper');
-  click('button#review-submission-submit-button');
+  click('button.button-submit-paper');
   andThen(function() {
     assert.ok(_.findWhere($.mockjax.mockedAjaxCalls(), {
       type: 'PUT',
@@ -76,7 +76,7 @@ test('User can submit a paper', function(assert) {
 test('Shows the feedback form after submitting', function(assert) {
   visit('/papers/' + paper.get('shortDoi'));
   click('#sidebar-submit-paper');
-  click('button#review-submission-submit-button');
+  click('button.button-submit-paper');
   andThen(function() {
     assert.elementFound('.feedback-form', 'The feedback form is present');
   });

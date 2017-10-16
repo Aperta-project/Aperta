@@ -189,7 +189,7 @@ feature 'Gradual Engagement', js: true do
           expect(paper.publishing_state).to eq('unsubmitted')
           visit "/papers/#{paper.id}"
           find('#sidebar-submit-paper').click
-          find('button#review-submission-submit-button').click
+          find('.submit-action-buttons .button-submit-paper').click
           expect(find('#initial-submit-message'))
           expect(paper.reload.publishing_state).to eq('initially_submitted')
         end
@@ -210,7 +210,7 @@ feature 'Gradual Engagement', js: true do
           expect(paper.publishing_state).to eq('invited_for_full_submission')
           visit "/papers/#{paper.id}"
           find('#sidebar-submit-paper').click
-          find('button#review-submission-submit-button').click
+          find('.submit-action-buttons .button-submit-paper').click
           expect(find('#full-submit-message'))
           expect(paper.reload.publishing_state).to eq('submitted')
           expect(page).not_to have_selector('#submission-process.show-process')
@@ -233,7 +233,7 @@ feature 'Gradual Engagement', js: true do
           expect(paper.publishing_state).to eq('in_revision')
           visit "/papers/#{paper.id}"
           find('#sidebar-submit-paper').click
-          find('button#review-submission-submit-button').click
+          find('.submit-action-buttons .button-submit-paper').click
           expect(find('#standard-submit-message'))
           expect(paper.reload.publishing_state).to eq('submitted')
         end
@@ -254,7 +254,7 @@ feature 'Gradual Engagement', js: true do
         expect(paper.publishing_state).to eq('unsubmitted')
         visit "/papers/#{paper.id}"
         find('#sidebar-submit-paper').click
-        find('button#review-submission-submit-button').click
+        find('.submit-action-buttons .button-submit-paper').click
         expect(find('#standard-submit-message'))
         expect(paper.reload.publishing_state).to eq('submitted')
       end

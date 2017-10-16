@@ -70,7 +70,6 @@ test('it renders the paper\'s authors', function(assert) {
 test('it reports validation errors on the task when attempting to complete', function(assert) {
   let testTask = createTask.bind(this)();
   this.set('testTask', testTask);
-
   this.render(template);
   this.$('.authors-task button.task-completed').click();
 
@@ -84,9 +83,7 @@ test('it reports validation errors on the task when attempting to complete', fun
 
 test('it does not allow the user to complete when there are validation errors', function(assert) {
   let testTask = createTask.bind(this)();
-
   this.set('testTask', testTask);
-
   this.render(template);
   this.$('.authors-task button.task-completed').click();
 
@@ -166,12 +163,8 @@ test('it requires validation on the user confirming author submission', function
 test('it requires its authors to be valid', function(assert){
   let testTask = createTaskWithInvalidAuthor.bind(this)();
   this.set('testTask', testTask);
-
-  let fake = this.container.lookup('service:can');
-  fake.allowPermission('edit', testTask);
-  fake.allowPermission('view', testTask);
-
   this.render(template);
+
   // Make sure required questions on the task are answered
   this.$('.authors-task input[name="authors--persons_agreed_to_be_named"]').click();
   this.$('.authors-task input[name="authors--authors_confirm_icmje_criteria"]').click();
@@ -192,11 +185,6 @@ test('it requires its authors to be valid', function(assert){
 test('it lets you complete the task when there are no validation errors', function(assert) {
   let testTask = createTask.bind(this)();
   this.set('testTask', testTask);
-
-  let fake = this.container.lookup('service:can');
-  fake.allowPermission('edit', testTask);
-  fake.allowPermission('view', testTask);
-
   $.mockjax({url: '/api/tasks/1', type: 'PUT', status: 204, responseText: '{}'});
   this.render(template);
 

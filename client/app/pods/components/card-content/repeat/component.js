@@ -90,9 +90,9 @@ export default Ember.Component.extend({
   },
 
   actions: {
-    addRepetition() {
+    addRepetition(repetition) {
       if(this.get('canAddRepetition')) {
-        this.buildRepetition();
+        this.buildRepetition(repetition);
       }
     },
 
@@ -101,5 +101,10 @@ export default Ember.Component.extend({
         repetition.cascadingDestroy();
       }
     },
+
+    reorderRepetition(repetition, position) {
+      repetition.set('position', position);
+      repetition.save();
+    }
   }
 });

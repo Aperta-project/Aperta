@@ -9,20 +9,22 @@ class RepetitionsController < ApplicationController
 
   def create
     requires_user_can(:edit, task)
-    respond_with Repetition.create(repetition_params)
+    repetition = Repetition.create(repetition_params)
+    render json: repetition_positions(first: repetition)
   end
 
   def update
     repetition = Repetition.find(params[:id])
     requires_user_can(:edit, repetition.task)
     repetition.update(repetition_params)
-    respond_with repetition
+    render json: repetition_positions(first: repetition)
   end
 
   def destroy
     repetition = Repetition.find(params[:id])
     requires_user_can(:edit, repetition.task)
-    respond_with repetition.destroy
+    repetition.destroy
+    render json: repetition_positions(first: repetition)
   end
 
   private
@@ -42,5 +44,13 @@ class RepetitionsController < ApplicationController
       :parent_id,
       :position
     )
+  end
+
+  # Return an array of sibling repetitions so that positions can be returned to
+  # the client.  Ember expects that when returning an array for a single object
+  # action (create / update / destroy), the first object must be the one that
+  # was modified.
+  def repetition_positions(first:)
+    [first] + first.siblings
   end
 end

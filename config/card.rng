@@ -32,519 +32,440 @@
       </attribute>
     </element>
   </define>
-  <!-- Inputs -->
-  <define name="radio-input">
-    <element name="content">
+  <define name="instructions-label-required-text">
+    <interleave>
       <optional>
-        <attribute name="ident"/>
-      </optional>
-      <attribute name="value-type">
-        <choice>
-          <value>text</value>
-          <value>boolean</value>
-        </choice>
-      </attribute>
-      <attribute name="content-type">
-        <value>radio</value>
-      </attribute>
-      <optional>
-        <attribute name="required-field">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
+        <element name="instruction-text">
+          <ref name="html"/>
+        </element>
       </optional>
       <optional>
-        <attribute name="default-answer-value"/>
-      </optional>
-      <optional>
-        <attribute name="allow-annotations">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
-      </optional>
-      <interleave>
-        <optional>
-          <element name="instruction-text">
-            <ref name="html"/>
-          </element>
-        </optional>
-        <optional>
-          <element name="text">
-            <ref name="html"/>
-          </element>
-        </optional>
-      </interleave>
-      <zeroOrMore>
-        <ref name="possible-value"/>
-      </zeroOrMore>
-      <zeroOrMore>
-        <ref name="content"/>
-      </zeroOrMore>
-    </element>
-  </define>
-  <define name="check-box-input">
-    <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <attribute name="content-type">
-        <value>check-box</value>
-      </attribute>
-      <optional>
-        <attribute name="required-field">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
-      </optional>
-      <optional>
-        <attribute name="default-answer-value">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
-      </optional>
-      <attribute name="value-type">
-        <value>boolean</value>
-      </attribute>
-      <optional>
-        <attribute name="allow-annotations">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
-      </optional>
-      <interleave>
-        <optional>
-          <element name="instruction-text">
-            <ref name="html"/>
-          </element>
-        </optional>
-        <interleave>
-          <optional>
-            <element name="label">
-              <text/>
-            </element>
-          </optional>
-          <optional>
-            <element name="text">
-              <ref name="html"/>
-            </element>
-          </optional>
-        </interleave>
-      </interleave>
-      <zeroOrMore>
-        <ref name="content"/>
-      </zeroOrMore>
-    </element>
-  </define>
-  <define name="file-uploader">
-    <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <optional>
-        <attribute name="error-message"/>
-      </optional>
-      <attribute name="content-type">
-        <value>file-uploader</value>
-      </attribute>
-      <attribute name="value-type">
-        <choice>
-          <value>attachment</value>
-          <value>manuscript</value>
-          <value>sourcefile</value>
-        </choice>
-      </attribute>
-      <optional>
-        <attribute name="required-field">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
-      </optional>
-      <optional>
-        <attribute name="allow-multiple-uploads">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
-      </optional>
-      <optional>
-        <attribute name="allow-file-captions">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
-      </optional>
-      <optional>
-        <attribute name="allow-annotations">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
-      </optional>
-      <interleave>
-        <optional>
-          <element name="instruction-text">
-            <ref name="html"/>
-          </element>
-        </optional>
-        <interleave>
-          <zeroOrMore>
-            <element name="validation">
-              <attribute name="validation-type">
-                <value>file-name</value>
-              </attribute>
-              <element name="error-message">
-                <text/>
-              </element>
-              <element name="validator">
-                <text/>
-              </element>
-            </element>
-          </zeroOrMore>
-          <optional>
-            <element name="label">
-              <text/>
-            </element>
-          </optional>
-          <optional>
-            <element name="text">
-              <ref name="html"/>
-            </element>
-          </optional>
-        </interleave>
-      </interleave>
-      <zeroOrMore>
-        <ref name="accepted-file-type"/>
-      </zeroOrMore>
-    </element>
-  </define>
-  <define name="date-picker">
-    <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <attribute name="value-type">
-        <value>text</value>
-      </attribute>
-      <attribute name="content-type">
-        <value>date-picker</value>
-      </attribute>
-      <optional>
-        <attribute name="required-field">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
+        <element name="label">
+          <ref name="html"/>
+        </element>
       </optional>
       <element name="text">
         <ref name="html"/>
       </element>
-    </element>
+    </interleave>
   </define>
-  <!-- for now duplicating radio-input for dropdown -->
-  <define name="dropdown-input">
-    <element name="content">
+  <define name="instructions-label-optional-text">
+    <interleave>
       <optional>
-        <attribute name="ident"/>
-      </optional>
-      <attribute name="value-type">
-        <choice>
-          <value>text</value>
-          <value>boolean</value>
-        </choice>
-      </attribute>
-      <attribute name="content-type">
-        <value>dropdown</value>
-      </attribute>
-      <optional>
-        <attribute name="required-field">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
+        <element name="instruction-text">
+          <ref name="html"/>
+        </element>
       </optional>
       <optional>
-        <attribute name="default-answer-value"/>
+        <element name="label">
+          <ref name="html"/>
+        </element>
       </optional>
       <optional>
-        <attribute name="allow-annotations">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
-      </optional>
-      <interleave>
-        <optional>
-          <element name="instruction-text">
-            <ref name="html"/>
-          </element>
-        </optional>
         <element name="text">
           <ref name="html"/>
         </element>
+      </optional>
+    </interleave>
+  </define>
+  <define name="file-validation">
+    <element name="validation">
+      <interleave>
+        <attribute name="validation-type">
+          <value>file-name</value>
+        </attribute>
+        <element name="error-message">
+          <text/>
+        </element>
+        <element name="validator">
+          <text/>
+        </element>
       </interleave>
-      <oneOrMore>
-        <ref name="possible-value"/>
-      </oneOrMore>
-      <zeroOrMore>
-        <ref name="content"/>
-      </zeroOrMore>
+    </element>
+  </define>
+  <define name="string-validation">
+    <element name="validation">
+      <interleave>
+        <attribute name="validation-type">
+          <choice>
+            <value>string-match</value>
+            <value>string-length-minimum</value>
+            <value>string-length-maximum</value>
+          </choice>
+        </attribute>
+        <element name="error-message">
+          <text/>
+        </element>
+        <element name="validator">
+          <text/>
+        </element>
+      </interleave>
+    </element>
+  </define>
+  <define name="allow-annotations">
+    <attribute name="allow-annotations">
+      <choice>
+        <value>true</value>
+        <value>false</value>
+      </choice>
+    </attribute>
+  </define>
+  <define name="required-field">
+    <attribute name="required-field">
+      <choice>
+        <value>true</value>
+        <value>false</value>
+      </choice>
+    </attribute>
+  </define>
+  <define name="default-answer-boolean">
+    <attribute name="default-answer-value">
+      <choice>
+        <value>true</value>
+        <value>false</value>
+      </choice>
+    </attribute>
+  </define>
+  <define name="default-answer-text">
+    <attribute name="default-answer-value"/>
+  </define>
+  <!-- Inputs -->
+  <define name="radio-input">
+    <element name="content">
+      <interleave>
+        <attribute name="content-type">
+          <value>radio</value>
+        </attribute>
+        <optional>
+          <attribute name="ident"/>
+        </optional>
+        <attribute name="value-type">
+          <choice>
+            <value>text</value>
+            <value>boolean</value>
+          </choice>
+        </attribute>
+        <optional>
+          <ref name="default-answer-text"/>
+        </optional>
+        <optional>
+          <ref name="allow-annotations"/>
+        </optional>
+        <optional>
+          <ref name="required-field"/>
+        </optional>
+        <ref name="instructions-label-optional-text"/>
+        <zeroOrMore>
+          <ref name="possible-value"/>
+        </zeroOrMore>
+        <zeroOrMore>
+          <ref name="content"/>
+        </zeroOrMore>
+      </interleave>
+    </element>
+  </define>
+  <define name="check-box-input">
+    <element name="content">
+      <interleave>
+        <attribute name="content-type">
+          <value>check-box</value>
+        </attribute>
+        <optional>
+          <attribute name="ident"/>
+        </optional>
+        <attribute name="value-type">
+          <value>boolean</value>
+        </attribute>
+        <optional>
+          <ref name="default-answer-boolean"/>
+        </optional>
+        <optional>
+          <ref name="allow-annotations"/>
+        </optional>
+        <optional>
+          <ref name="required-field"/>
+        </optional>
+        <ref name="instructions-label-optional-text"/>
+        <zeroOrMore>
+          <ref name="content"/>
+        </zeroOrMore>
+      </interleave>
+    </element>
+  </define>
+  <define name="file-uploader">
+    <element name="content">
+      <interleave>
+        <attribute name="content-type">
+          <value>file-uploader</value>
+        </attribute>
+        <optional>
+          <attribute name="ident"/>
+        </optional>
+        <attribute name="value-type">
+          <choice>
+            <value>attachment</value>
+            <value>manuscript</value>
+            <value>sourcefile</value>
+          </choice>
+        </attribute>
+        <optional>
+          <attribute name="error-message"/>
+        </optional>
+        <optional>
+          <attribute name="allow-file-captions">
+            <choice>
+              <value>true</value>
+              <value>false</value>
+            </choice>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="allow-multiple-uploads">
+            <choice>
+              <value>true</value>
+              <value>false</value>
+            </choice>
+          </attribute>
+        </optional>
+        <optional>
+          <ref name="allow-annotations"/>
+        </optional>
+        <optional>
+          <ref name="required-field"/>
+        </optional>
+        <ref name="instructions-label-optional-text"/>
+        <zeroOrMore>
+          <ref name="file-validation"/>
+        </zeroOrMore>
+        <zeroOrMore>
+          <ref name="accepted-file-type"/>
+        </zeroOrMore>
+      </interleave>
+    </element>
+  </define>
+  <define name="date-picker">
+    <element name="content">
+      <interleave>
+        <attribute name="content-type">
+          <value>date-picker</value>
+        </attribute>
+        <optional>
+          <attribute name="ident"/>
+        </optional>
+        <attribute name="value-type">
+          <value>text</value>
+        </attribute>
+        <optional>
+          <ref name="required-field"/>
+        </optional>
+        <ref name="instructions-label-required-text"/>
+      </interleave>
+    </element>
+  </define>
+  <define name="dropdown-input">
+    <element name="content">
+      <interleave>
+        <attribute name="content-type">
+          <value>dropdown</value>
+        </attribute>
+        <optional>
+          <attribute name="ident"/>
+        </optional>
+        <attribute name="value-type">
+          <choice>
+            <value>text</value>
+            <value>boolean</value>
+          </choice>
+        </attribute>
+        <optional>
+          <ref name="default-answer-text"/>
+        </optional>
+        <optional>
+          <ref name="allow-annotations"/>
+        </optional>
+        <optional>
+          <ref name="required-field"/>
+        </optional>
+        <ref name="instructions-label-required-text"/>
+        <oneOrMore>
+          <ref name="possible-value"/>
+        </oneOrMore>
+        <zeroOrMore>
+          <ref name="content"/>
+        </zeroOrMore>
+      </interleave>
     </element>
   </define>
   <define name="tech-check">
     <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <attribute name="content-type">
-        <value>tech-check</value>
-      </attribute>
-      <optional>
-        <attribute name="required-field">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
+      <interleave>
+        <attribute name="content-type">
+          <value>tech-check</value>
         </attribute>
-      </optional>
-      <optional>
-        <attribute name="default-answer-value">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
+        <optional>
+          <attribute name="ident"/>
+        </optional>
+        <attribute name="value-type">
+          <value>boolean</value>
         </attribute>
-      </optional>
-      <attribute name="value-type">
-        <value>boolean</value>
-      </attribute>
-      <optional>
-        <attribute name="allow-annotations">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
-      </optional>
-      <optional>
-        <interleave>
-          <optional>
-            <element name="instruction-text">
-              <ref name="html"/>
-            </element>
-          </optional>
-          <element name="text">
-            <ref name="html"/>
-          </element>
-        </interleave>
-      </optional>
-      <zeroOrMore>
-        <ref name="content"/>
-      </zeroOrMore>
+        <optional>
+          <ref name="default-answer-boolean"/>
+        </optional>
+        <optional>
+          <ref name="allow-annotations"/>
+        </optional>
+        <optional>
+          <ref name="required-field"/>
+        </optional>
+        <ref name="instructions-label-required-text"/>
+        <zeroOrMore>
+          <ref name="content"/>
+        </zeroOrMore>
+      </interleave>
     </element>
   </define>
   <define name="sendback-reason">
     <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <attribute name="content-type">
-        <value>sendback-reason</value>
-      </attribute>
-      <attribute name="value-type">
-        <value>boolean</value>
-      </attribute>
       <interleave>
+        <attribute name="content-type">
+          <value>sendback-reason</value>
+        </attribute>
         <optional>
-          <element name="label">
-            <text/>
-          </element>
+          <attribute name="ident"/>
         </optional>
-        <optional>
-          <element name="text">
-            <ref name="html"/>
-          </element>
-        </optional>
+        <attribute name="value-type">
+          <value>boolean</value>
+        </attribute>
+        <ref name="instructions-label-optional-text"/>
+        <zeroOrMore>
+          <ref name="content"/>
+        </zeroOrMore>
       </interleave>
-      <zeroOrMore>
-        <ref name="content"/>
-      </zeroOrMore>
     </element>
   </define>
   <define name="text-input">
     <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <attribute name="value-type">
-        <choice>
-          <value>text</value>
-          <value>html</value>
-        </choice>
-      </attribute>
-      <optional>
-        <attribute name="editor-style"/>
-      </optional>
-      <attribute name="content-type">
-        <choice>
-          <value>short-input</value>
-          <value>paragraph-input</value>
-        </choice>
-      </attribute>
-      <optional>
-        <attribute name="required-field">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
-      </optional>
-      <optional>
-        <attribute name="default-answer-value"/>
-      </optional>
-      <optional>
-        <attribute name="allow-annotations">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
-      </optional>
       <interleave>
+        <attribute name="content-type">
+          <choice>
+            <value>short-input</value>
+            <value>paragraph-input</value>
+          </choice>
+        </attribute>
         <optional>
-          <element name="instruction-text">
-            <ref name="html"/>
-          </element>
+          <attribute name="ident"/>
         </optional>
-        <interleave>
-          <optional>
-            <element name="text">
-              <ref name="html"/>
-            </element>
-          </optional>
-          <zeroOrMore>
-            <element name="validation">
-              <attribute name="validation-type">
-                <choice>
-                  <value>string-match</value>
-                  <value>string-length-minimum</value>
-                  <value>string-length-maximum</value>
-                </choice>
-              </attribute>
-              <element name="error-message">
-                <text/>
-              </element>
-              <element name="validator">
-                <text/>
-              </element>
-            </element>
-          </zeroOrMore>
-        </interleave>
+        <attribute name="value-type">
+          <choice>
+            <value>text</value>
+            <value>html</value>
+          </choice>
+        </attribute>
+        <optional>
+          <attribute name="editor-style"/>
+        </optional>
+        <optional>
+          <ref name="default-answer-text"/>
+        </optional>
+        <optional>
+          <ref name="allow-annotations"/>
+        </optional>
+        <optional>
+          <ref name="required-field"/>
+        </optional>
+        <ref name="instructions-label-optional-text"/>
+        <zeroOrMore>
+          <ref name="string-validation"/>
+        </zeroOrMore>
       </interleave>
     </element>
   </define>
   <!-- Contents -->
   <define name="description">
     <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <attribute name="content-type">
-        <value>description</value>
-      </attribute>
-      <element name="text">
-        <ref name="html"/>
-      </element>
-      <zeroOrMore>
-        <ref name="content"/>
-      </zeroOrMore>
+      <interleave>
+        <attribute name="content-type">
+          <value>description</value>
+        </attribute>
+        <optional>
+          <attribute name="ident"/>
+        </optional>
+        <element name="text">
+          <ref name="html"/>
+        </element>
+        <zeroOrMore>
+          <ref name="content"/>
+        </zeroOrMore>
+      </interleave>
     </element>
   </define>
   <define name="display-children-content">
     <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <optional>
-        <attribute name="child-tag">
-          <value>li</value>
+      <interleave>
+        <attribute name="content-type">
+          <value>display-children</value>
         </attribute>
-      </optional>
-      <optional>
-        <attribute name="custom-class"/>
-      </optional>
-      <optional>
-        <attribute name="custom-child-class"/>
-      </optional>
-      <optional>
-        <attribute name="wrapper-tag"/>
-      </optional>
-      <attribute name="content-type">
-        <value>display-children</value>
-      </attribute>
-      <zeroOrMore>
-        <ref name="content"/>
-      </zeroOrMore>
+        <optional>
+          <attribute name="ident"/>
+        </optional>
+        <optional>
+          <attribute name="child-tag">
+            <value>li</value>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="custom-class"/>
+        </optional>
+        <optional>
+          <attribute name="custom-child-class"/>
+        </optional>
+        <optional>
+          <attribute name="wrapper-tag"/>
+        </optional>
+        <zeroOrMore>
+          <ref name="content"/>
+        </zeroOrMore>
+      </interleave>
     </element>
   </define>
   <define name="display-with-value-content">
     <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <attribute name="content-type">
-        <value>display-with-value</value>
-      </attribute>
-      <attribute name="visible-with-parent-answer"/>
-      <zeroOrMore>
-        <ref name="content"/>
-      </zeroOrMore>
+      <interleave>
+        <attribute name="content-type">
+          <value>display-with-value</value>
+        </attribute>
+        <optional>
+          <attribute name="ident"/>
+        </optional>
+        <attribute name="visible-with-parent-answer"/>
+        <zeroOrMore>
+          <ref name="content"/>
+        </zeroOrMore>
+      </interleave>
     </element>
   </define>
   <define name="export-paper">
     <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <attribute name="content-type">
-        <value>export-paper</value>
-      </attribute>
       <interleave>
-        <element name="label">
-          <text/>
-        </element>
+        <attribute name="content-type">
+          <value>export-paper</value>
+        </attribute>
         <optional>
-          <element name="text">
-            <ref name="html"/>
-          </element>
+          <attribute name="ident"/>
         </optional>
+        <ref name="instructions-label-optional-text"/>
       </interleave>
     </element>
   </define>
   <define name="if">
     <element name="content">
-      <attribute name="content-type">
-        <value>if</value>
-      </attribute>
-      <attribute name="condition"/>
-      <ref name="content"/>
+      <interleave>
+        <attribute name="content-type">
+          <value>if</value>
+        </attribute>
+        <attribute name="condition"/>
+        <ref name="content"/>
+      </interleave>
       <optional>
         <ref name="content"/>
       </optional>
@@ -552,15 +473,17 @@
   </define>
   <define name="error-message">
     <element name="content">
-      <attribute name="content-type">
-        <value>error-message</value>
-      </attribute>
-      <attribute name="key"/>
-      <optional>
-        <element name="text">
-          <text/>
-        </element>
-      </optional>
+      <interleave>
+        <attribute name="content-type">
+          <value>error-message</value>
+        </attribute>
+        <attribute name="key"/>
+        <optional>
+          <element name="text">
+            <text/>
+          </element>
+        </optional>
+      </interleave>
     </element>
   </define>
   <define name="html">
@@ -587,37 +510,39 @@
   </define>
   <define name="content">
     <choice>
-      <ref name="radio-input"/>
-      <ref name="text-input"/>
+      <ref name="check-box-input"/>
+      <ref name="date-picker"/>
       <ref name="description"/>
       <ref name="display-children-content"/>
       <ref name="display-with-value-content"/>
-      <ref name="export-paper"/>
-      <ref name="check-box-input"/>
-      <ref name="file-uploader"/>
       <ref name="dropdown-input"/>
-      <ref name="date-picker"/>
-      <ref name="tech-check"/>
-      <ref name="sendback-reason"/>
-      <ref name="if"/>
       <ref name="error-message"/>
+      <ref name="export-paper"/>
+      <ref name="file-uploader"/>
+      <ref name="if"/>
+      <ref name="radio-input"/>
+      <ref name="sendback-reason"/>
+      <ref name="tech-check"/>
+      <ref name="text-input"/>
     </choice>
   </define>
   <start>
     <element name="card">
-      <attribute name="required-for-submission">
-        <choice>
-          <value>true</value>
-          <value>false</value>
-        </choice>
-      </attribute>
-      <attribute name="workflow-display-only">
-        <choice>
-          <value>true</value>
-          <value>false</value>
-        </choice>
-      </attribute>
-      <ref name="content"/>
+      <interleave>
+        <attribute name="required-for-submission">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+        <attribute name="workflow-display-only">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+        <ref name="content"/>
+      </interleave>
     </element>
   </start>
 </grammar>

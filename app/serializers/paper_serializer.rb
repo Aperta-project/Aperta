@@ -1,7 +1,8 @@
 class PaperSerializer < LitePaperSerializer
   attributes :abstract, :body, :current_user_roles, :doi, :gradual_engagement,
              :legends_allowed, :links, :manually_similarity_checked,
-             :paper_type, :short_title, :submitted_at, :versions_contain_pdf
+             :paper_type, :short_title, :submitted_at, :versions_contain_pdf,
+             :preprint_eligible?
 
   %i(supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
@@ -34,6 +35,11 @@ class PaperSerializer < LitePaperSerializer
 
   def paper_task_types
     paper.journal.journal_task_types
+  end
+
+  def preprint_eligible?
+    workflow = ManuscriptManagerTemplate.where(paper_type: paper_type).first
+    workflow.is_preprint_eligible
   end
 
   def versions_contain_pdf

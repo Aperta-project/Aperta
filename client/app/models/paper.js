@@ -91,6 +91,7 @@ export default DS.Model.extend({
   currentUserRoles: attr(),
   manuallySimilarityChecked: attr('boolean'),
   preprintOptOut: attr('boolean'),
+  preprintEligible: attr('boolean'),
 
   reviewDueAt: attr('date'),
   reviewOriginallyDueAt: attr('date'),

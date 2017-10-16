@@ -22,7 +22,7 @@
     <div id="submission-state-information">
       {{#if (and paper.isReadyForSubmission (can 'submit' paper))}}
         <div class="ready-to-submit {{paper.engagementState}}">Your manuscript is ready for <span class="text-capitalize">{{paper.engagementState}}</span> Submission.</div>
-        {{#if (feature-flag "PREPRINT")}}
+        {{#if (and paper.preprintEligible (feature-flag "PREPRINT"))}}
           {{#link-to 'paper.submit'}}
             <button id="sidebar-submit-paper"
                     class="button-primary button-pre-submit-paper button--green">

@@ -167,6 +167,8 @@ export-paper = element content {
   & instructions-label-optional-text
 }
 
+# The IF component requires the comma separator, rather than interleave,
+# to distinguish the required THEN content from the optional ELSE content.
 if = element content {
   (attribute content-type { "if" }
    & attribute condition { text }

@@ -344,6 +344,47 @@ describe XmlCardLoader do
         end
       end
 
+      context 'if-then' do
+        let(:text) { Faker::Lorem.sentence }
+        let(:content1) do
+          <<-XML
+            <content content-type="if" condition="isEditable">
+              <content content-type="paragraph-input" value-type="html">
+                <text>This is the THEN branch of an IF condition.</text>
+              </content>
+            </content>
+          XML
+        end
+
+        it 'sets the default answer value if given' do
+          card = xml_card_loader.load(xml)
+          card.save
+          expect(root_content.children.size).to eq(1)
+        end
+      end
+
+      context 'if-then-else' do
+        let(:text) { Faker::Lorem.sentence }
+        let(:content1) do
+          <<-XML
+            <content content-type="if" condition="isEditable">
+              <content content-type="paragraph-input" value-type="html">
+                <text>This is the THEN branch of an IF condition.</text>
+              </content>
+              <content content-type="short-input" value-type="text">
+                <text>This is the ELSE branch of an IF condition.</text>
+              </content>
+            </content>
+          XML
+        end
+
+        it 'sets the default answer value if given' do
+          card = xml_card_loader.load(xml)
+          card.save
+          expect(root_content.children.size).to eq(2)
+        end
+      end
+
       context 'dropdown' do
         let(:content1) do
           <<-XML

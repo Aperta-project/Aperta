@@ -438,16 +438,14 @@
       </interleave>
     </element>
   </define>
-  <!-- IF requires comma, not interleave &, to distinguish required THEN content from optional ELSE content. -->
+  <!-- IF requires comma, not interleave '&', to distinguish required THEN content from optional ELSE content. -->
   <define name="if">
     <element name="content">
-      <interleave>
-        <attribute name="content-type">
-          <value>if</value>
-        </attribute>
-        <attribute name="condition"/>
-        <ref name="content"/>
-      </interleave>
+      <attribute name="content-type">
+        <value>if</value>
+      </attribute>
+      <attribute name="condition"/>
+      <ref name="content"/>
       <optional>
         <ref name="content"/>
       </optional>

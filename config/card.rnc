@@ -170,10 +170,9 @@ export-paper = element content {
 
 # IF requires comma, not interleave '&', to distinguish required THEN content from optional ELSE content.
 if = element content {
-  (attribute content-type { "if" }
-   & attribute condition { text }
-   & content
-  ),
+  attribute content-type { "if" },
+  attribute condition { text },
+  content,
   content?
 }
 

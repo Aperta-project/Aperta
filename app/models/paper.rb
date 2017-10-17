@@ -376,6 +376,9 @@ class Paper < ActiveRecord::Base
       alert_duplicate_file(attachment, uploaded_by)
       # No need to process attachment, mark the paper record as "done"
       update(processing: false)
+    elsif attachment.file_type.casecmp('pdf') == 0
+      # No processing required for PDFs
+      update(processing: false)
     end
   end
 

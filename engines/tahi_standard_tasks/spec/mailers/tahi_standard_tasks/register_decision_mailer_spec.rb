@@ -43,5 +43,27 @@ describe TahiStandardTasks::RegisterDecisionMailer do
         end
       end
     end
+
+    context 'when mailing multiple recipients' do
+      describe 'emails are separated by commas' do
+        emails = 'john@example.com, mary@example.com, jane@example.com'
+        let(:email_to_multiple_recipients) do
+          described_class.notify_author_email(to_field: emails, subject_field: 'Subject', decision_id: decision.id)
+        end
+        it 'sends to all the recipients' do
+          expect(email_to_multiple_recipients.to).to eq(['john@example.com', 'mary@example.com', 'jane@example.com'])
+        end
+      end
+
+      describe 'emails are separated by semicolons' do
+        emails = 'jack@yahoo.com;mary@gmail.com'
+        let(:email_to_multiple_recipients) do
+          described_class.notify_author_email(to_field: emails, subject_field: 'Subject', decision_id: decision.id)
+        end
+        it 'sends to all recipients' do
+          expect(email_to_multiple_recipients.to).to eq(['jack@yahoo.com', 'mary@gmail.com'])
+        end
+      end
+    end
   end
 end

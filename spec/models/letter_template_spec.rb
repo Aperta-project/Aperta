@@ -43,6 +43,18 @@ describe LetterTemplate do
         expect(letter_template.errors[attr_key]).to include('This field is required')
       end
     end
+
+    it 'simplifies addresses containing leading friendly names' do
+      letter_template = LetterTemplate.new(cc: '"John Q. Public, the third" <jqp@example.com>, John Smith <smith@example.com>')
+      letter_template.valid?
+      expect(letter_template.cc).to eq('jqp@example.com,smith@example.com')
+    end
+
+    it 'disallows invalid email addresses' do
+      letter_template = LetterTemplate.new(bcc: 'invalid@c.')
+      letter_template.valid?
+      expect(letter_template.errors[:bcc]).to include("\"#{letter_template.bcc}\" is an invalid email address")
+    end
   end
 
   describe "#render" do

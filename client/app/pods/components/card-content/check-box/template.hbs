@@ -1,23 +1,31 @@
-{{#unless textOnly}}
-<p class="content-text">{{#if content.text}}{{{content.text}}}{{/if}}
-    {{#if content.isRequired}}
-      <span class="required-field">*</span>
-    {{/if}}</p>
-{{/unless}}
-{{card-content/validation-errors errors=answer.readyIssuesArray}}
-{{check-box
-  name=name
-  id=name
-  checked=answer.value
-  disabled=disabled
-  content=content
-  answer=answer
-  action="valueChanged"
-}}
+<p class="content-text">
+  {{{content.text}}}
+  {{#if content.isRequired}}
+    <span class="required-field">*</span>
+  {{/if}}
+</p>
 
-<div>{{card-content/validation-errors errors=answer.readyIssuesArray}}</div>
+{{card-content/validation-errors errors=answer.readyIssuesArray}}
+
+<div class="checkbox">
+  {{check-box
+    name=name
+    id=name
+    checked=answer.value
+    disabled=disabled
+    content=content
+    answer=answer
+    action="valueChanged"
+  }}
+</div>
+
+<div>
+  {{card-content/validation-errors errors=answer.readyIssuesArray}}
+</div>
+
 {{card-content/display-children
   content=content
   owner=owner
   disabled=disabled
-  preview=preview}}
+  preview=preview
+}}

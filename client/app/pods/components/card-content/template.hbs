@@ -5,33 +5,34 @@
   {{#if (and answer keepAnswerContainer)}}
     <div class="answer-container">
       <div class="answer">
-        {{#if textOnly}}
-          {{partial "card-content-component"}}
-        {{else}}
+        {{#if hasLabel}}
           <label for={{name}}>
-            {{partial "card-content-component"}}
             {{{content.label}}}
+            {{partial "card-content-component"}}
           </label>
+        {{else}}
+          {{partial "card-content-component"}}
         {{/if}}
       </div>
       <div class="additional-text">
         {{#if content.hasAdditionalText}}
           {{card-content/tabbed-textarea
-          annotationChanged=(action 'updateAnnotation')
-          showAnnotation=content.allowAnnotations
-          annotation=answer.annotation
-          instructionText=content.instructionText
-          disabled=disabled}}
+            annotationChanged=(action 'updateAnnotation')
+            showAnnotation=content.allowAnnotations
+            annotation=answer.annotation
+            instructionText=content.instructionText
+            disabled=disabled
+          }}
         {{/if}}
       </div>
     </div>
   {{else}}
-    {{#if textOnly}}
-      {{partial "card-content-component"}}
-    {{else}}
+    {{#if hasLabel}}
       <label for={{name}}>
-        {{partial "card-content-component"}}
         {{{content.label}}}
+        {{partial "card-content-component"}}
       </label>
+    {{else}}
+      {{partial "card-content-component"}}
     {{/if}}
   {{/if}}

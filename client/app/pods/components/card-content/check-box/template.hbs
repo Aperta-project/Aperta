@@ -1,9 +1,11 @@
-<p class="content-text">
-  {{{content.text}}}
-  {{#if content.isRequired}}
-    <span class="required-field">*</span>
-  {{/if}}
-</p>
+{{#if content.text}}
+  <p class="content-text">
+    {{{content.text}}}
+    {{#if content.isRequired}}
+      <span class="required-field">*</span>
+    {{/if}}
+  </p>
+{{/if}}
 
 {{card-content/validation-errors errors=answer.readyIssuesArray}}
 

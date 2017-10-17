@@ -123,8 +123,8 @@ class AuthorsTask(BaseTask):
         By.CSS_SELECTOR,
         'div.author-contributions div.flex-group + div.flex-group div.flex-element label')
     self._gdesigned_chkbx = (
-        By.XPATH,
-        ".//input[@name='author--contributions--conceptualization']/following-sibling::span")
+        By.CSS_SELECTOR,
+        "input[name='group-author--contributions--conceptualization']")
     self._gauthor_contrib_lbl = (By.CSS_SELECTOR, 'fieldset.author-contributions legend.required')
     self._gauthor_contrib_heading_link = (By.CSS_SELECTOR,
                                           'fieldset.author-contributions legend.required > a')
@@ -513,6 +513,13 @@ class AuthorsTask(BaseTask):
     middle_input.send_keys(group_author['middle'] + Keys.ENTER)
     last_input.send_keys(group_author['last'] + Keys.ENTER)
     email_input.send_keys(group_author['email'] + Keys.ENTER)
+
+    # check one of the boxes in Author Contributions, as this is required
+    self._wait_for_element(self._get(self._gdesigned_chkbx))
+    group_author_contribution_chck = self._get(self._gdesigned_chkbx)
+    group_author_contribution_chck.click()
+    if not group_author_contribution_chck.is_selected():
+      self.click_covered_element(group_author_contribution_chck)
 
     govt_choice = random.choice(['Yes', 'No'])
     logging.info('Selecting Gov\'t Choice {0}'.format(govt_choice))

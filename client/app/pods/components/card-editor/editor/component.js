@@ -59,7 +59,7 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
       yield card.archive();
       this.set('errors', []);
       let journalID = yield card.get('journal.id');
-      this.get('routing').transitionTo('admin.journals.cards', journalID);
+      this.get('routing').transitionTo('admin.journals.cards', [journalID]);
     } catch (e) {
       this.set('errors', e.errors);
     }
@@ -72,7 +72,7 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
       let journalID = yield card.get('journal.id');
       yield card.destroyRecord();
       this.set('errors', []);
-      this.get('routing').transitionTo('admin.journals.cards', journalID);
+      this.get('routing').transitionTo('admin.journals.cards', [journalID]);
     } catch (e) {
       this.set('errors', e.errors);
     }

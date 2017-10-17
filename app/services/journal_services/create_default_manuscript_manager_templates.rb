@@ -8,7 +8,7 @@ module JournalServices
                               phase_content: [
                                 TahiStandardTasks::TitleAndAbstractTask,
                                 TahiStandardTasks::FigureTask,
-                                TahiStandardTasks::EarlyPostingTask,
+                                CustomCard::Configurations::EarlyVersion,
                                 TahiStandardTasks::SupportingInformationTask,
                                 TahiStandardTasks::AuthorsTask
                               ])

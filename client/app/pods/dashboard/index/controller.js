@@ -58,9 +58,7 @@ export default Ember.Controller.extend({
     }
   ),
   preprintPostedHeading: Ember.computed('totalPreprintPostedPaperCount', function() {
-    const count = this.get('totalPreprintPostedPaperCount');
-    return pluralizeString('Preprint', count) +
-      ' (' + this.get('totalPreprintPostedPaperCount') + ')';
+    return `Preprints (${this.get('totalPreprintPostedPaperCount')})`;
   }),
   showNewManuscriptOverlay: false,
 

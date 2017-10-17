@@ -318,11 +318,11 @@ class Activity < ActiveRecord::Base
 
   def self.user_assigned_to_task(task, user:, last_assigned_user:)
     assigned_user = task.assigned_user || last_assigned_user
-    return unless assigned_user # if user was never assigned to the task don't log
+    return unless assigned_user # if user was never assigned to the task don't log any event
     if task.assigned_user
       user_assigned_to_task_created!(task, user: user, assigned_user: assigned_user)
     else
-      user_assigned_to_task_removed!(task, user: user, assigned_user: assigned_user)
+      user_assigned_to_task_removed!(task, user: user, assigned_user: last_assigned_user)
     end
   end
 
@@ -331,18 +331,18 @@ class Activity < ActiveRecord::Base
     create(
       feed_name: "workflow",
       activity_key: "task.user_assigned",
-      subject: task,
+      subject: task.paper,
       user: user,
       message: msg
     )
   end
 
   def self.user_assigned_to_task_removed!(task, user:, assigned_user:)
-    msg = "#{user.full_name} removed #{assigned_user.full_name} from task #{task.title}"
+    msg = "#{user.full_name} removed assigned user #{assigned_user.full_name} from task #{task.title}"
     create(
       feed_name: "workflow",
       activity_key: "task.assigned_user_removed",
-      subject: task,
+      subject: task.paper,
       user: user,
       message: msg
     )

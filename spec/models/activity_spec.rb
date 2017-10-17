@@ -506,7 +506,7 @@ describe Activity do
           expect(Activity.last).to have_attributes(
             feed_name: "workflow",
             activity_key: "task.user_assigned",
-            subject: task,
+            subject: task.paper,
             user_id: user.id,
             message: "#{user.full_name} assigned #{assigned_user.full_name} to task #{task.title}"
           )
@@ -522,9 +522,9 @@ describe Activity do
           expect(Activity.last).to have_attributes(
             feed_name: "workflow",
             activity_key: "task.assigned_user_removed",
-            subject: task,
+            subject: task.paper,
             user_id: user.id,
-            message: "#{user.full_name} removed #{last_assigned_user.full_name} from task #{task.title}"
+            message: "#{user.full_name} removed assigned user #{last_assigned_user.full_name} from task #{task.title}"
           )
         end
       end

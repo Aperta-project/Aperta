@@ -25,6 +25,7 @@ class ReviewerReportContext < TemplateContext
 
   def rendered_answer_idents
     [
+      'front_matter_reviewer_report--suitable--comment',
       'front_matter_reviewer_report--includes_unpublished_data--explanation',
       'reviewer_report--comments_for_author'
     ]

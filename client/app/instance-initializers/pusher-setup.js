@@ -5,7 +5,6 @@ export default {
   name: 'pusher-setup',
   after: 'current-user',
   initialize(instance) {
-    // let currentUser = instance.lookup('service:currentUser');
     let pusherService = instance.lookup('service:pusher');
     pusherService.setup(
       ENV.APP.PUSHER_OPTS.key,

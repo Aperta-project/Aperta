@@ -167,11 +167,8 @@
   </define>
   <!-- Inputs -->
   <define name="radio-input">
-    <element name="content">
+    <element name="radio-input">
       <interleave>
-        <attribute name="content-type">
-          <value>radio</value>
-        </attribute>
         <ref name="input-attributes"/>
         <attribute name="value-type">
           <choice>
@@ -381,11 +378,8 @@
     </element>
   </define>
   <define name="display-children-content">
-    <element name="content">
+    <element name="display-children">
       <interleave>
-        <attribute name="content-type">
-          <value>display-children</value>
-        </attribute>
         <optional>
           <attribute name="ident"/>
         </optional>

@@ -62,9 +62,8 @@ input-attributes =
   & allow-annotations?
 
 # Inputs
-radio-input = element content {
-  attribute content-type { "radio" }
-  & input-attributes
+radio-input = element radio-input {
+  input-attributes
   & attribute value-type { "text" | "boolean" }
   & default-answer-text?
   & instructions-label-optional-text
@@ -145,9 +144,8 @@ description = element content {
   & content*
 }
 
-display-children-content = element content {
-  attribute content-type { "display-children" }
-  & attribute ident { text }?
+display-children-content = element display-children {
+  attribute ident { text }?
   & attribute child-tag { 'li' }?
   & attribute custom-class { text }?
   & attribute custom-child-class { text }?

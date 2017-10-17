@@ -7,11 +7,9 @@
   </td>
   <td class="paper-tracker-title-column">
     {{#tool-tip title="Go to manuscript"}}
-      {{#if paper}}
-        {{#link-to "paper.index"paper.shortDoi}}
-          {{{paper.title}}}
-        {{/link-to}}
-      {{/if}}
+      {{#link-to "paper.index"paper.shortDoi}}
+        {{{paper.title}}}
+      {{/link-to}}
     {{/tool-tip}}
   </td>
   <td class="paper-tracker-paper-id-column">

@@ -7,20 +7,22 @@
   </p>
 {{/if}}
 {{card-content/validation-errors errors=answer.readyIssuesArray}}
-<label for={{name}}>
-  {{check-box
-    name=name
-    id=name
-    checked=answer.value
-    disabled=disabled
-    content=content
-    answer=answer
-    action="valueChanged"}}
-  <span>{{{if (or showTextAndLabel labelOnly) content.label content.text }}}</span>
-  {{#if (and (not showTextAndLabel) content.isRequired)}}
-    <span class="required-field">*</span>
-  {{/if}}
-</label>
+<div class="checkbox">
+  <label for={{name}}>
+    {{check-box
+      name=name
+      id=name
+      checked=answer.value
+      disabled=disabled
+      content=content
+      answer=answer
+      action="valueChanged"}}
+    <span>{{{if (or showTextAndLabel labelOnly) content.label content.text }}}</span>
+    {{#if (and (not showTextAndLabel) content.isRequired)}}
+      <span class="required-field">*</span>
+    {{/if}}
+  </label>
+</div>
 <div>
   {{card-content/validation-errors errors=answer.readyIssuesArray}}
 </div>

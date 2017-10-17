@@ -35,8 +35,9 @@ moduleForAcceptance('Integration: PaperIndex', {
     records = paperWithTask('FigureTask', {
       id: figureTaskId
     });
-    (currentPaper = records[0]),
-      (figureTask = records[1]),
+
+    [currentPaper, figureTask] = records;
+
     nestedQuestion = Factory.createRecord('NestedQuestion', {
       ident: 'figures--complies'
     });

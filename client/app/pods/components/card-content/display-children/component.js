@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
-  classNames: ['card-content-display-children'],
+  classNames: ['card-content', 'card-content-display-children'],
   tagName: '',
 
   init() {
@@ -13,7 +13,8 @@ export default Ember.Component.extend({
       classNames.push(customClass);
       this.set('classNames', classNames);
     }
-    this.set('tagName', this.getWithDefault('wrapperTag', ''));
+    let defaultTag = customClass ? 'div' : '';
+    this.set('tagName', this.getWithDefault('wrapperTag', defaultTag));
   },
 
   customChildClass: Ember.computed.readOnly('content.customChildClass'),

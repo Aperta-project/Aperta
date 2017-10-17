@@ -29,7 +29,8 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    this.get('countries').fetch();
+    let countries = this.get('countries');
+    countries.get('fetch').perform();
 
     if(this.get('isNewAuthor')) {
       this.initNewAuthorQuestions().then(() => {

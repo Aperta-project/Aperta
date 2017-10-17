@@ -156,10 +156,6 @@ FactoryGirl.define do
       title "Production Metadata"
     end
 
-    factory :publishing_related_questions_task, class: 'TahiStandardTasks::PublishingRelatedQuestionsTask' do
-      title 'Additional Information'
-    end
-
     factory :reporting_guidelines_task, class: 'TahiStandardTasks::ReportingGuidelinesTask' do
       title "Reporting Guidelines"
     end

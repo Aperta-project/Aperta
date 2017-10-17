@@ -446,6 +446,15 @@ class AuthorsTask(BaseTask):
     email_input.send_keys(author['email'] + Keys.ENTER)
     title_input.send_keys(author['title'] + Keys.ENTER)
     department_input.send_keys(author['department'] + Keys.ENTER)
+    # APERTA-10056
+    institution_input.send_keys('College of Saint Benedict and Saint John\'s University' + Keys.ENTER)
+    self.set_timeout(3)
+    error_msg = self.check_for_flash_error()
+    if not error_msg:
+      pass
+    else:
+      raise AssertionError('Error message fired for institution with quote in name: {0}'.format(error_msg))
+    institution_input.clear()
     institution_input.send_keys(author['1_institution'] + Keys.ENTER)
     sec_institution_input.send_keys(author['2_institution'] + Keys.ENTER)
 

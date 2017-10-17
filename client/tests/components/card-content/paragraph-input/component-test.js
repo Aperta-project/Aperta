@@ -47,7 +47,7 @@ test(`it displays workingValue when answer.value is not present`, function(asser
 });
 test('it displays error messages if present', function(assert){
   let errorsArr = ['Oh Noes', 'You fool!'];
-  this.set('answer', Ember.Object.create({readyIssuesArray: errorsArr, hasErrors: true}));
+  this.set('answer', Ember.Object.create({readyIssuesArray: errorsArr, shouldShowErrors: true}));
   this.render(template);
   assert.equal(this.$('.validation-error').length, 2, 'Two errors are present');
   assert.equal(this.$('.validation-error').eq(0).text(), errorsArr[0], 'First error text matches');

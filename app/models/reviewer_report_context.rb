@@ -1,4 +1,3 @@
-# Provides a template context for ReviewerReports
 class ReviewerReportContext < TemplateContext
   include ActionView::Helpers::SanitizeHelper
 

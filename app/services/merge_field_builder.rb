@@ -18,25 +18,21 @@ class MergeFieldBuilder
 
   def self.complex_merge_fields
     @complex_merge_fields ||= Hash.new { [] }.tap do |hash|
-      hash[ReviewerReportScenario] = [
-        { name: :review,     context: ReviewerReportContext },
-        { name: :reviewer,   context: UserContext },
-        { name: :journal,    context: JournalContext },
-        { name: :manuscript, context: PaperContext }
-      ]
-      hash[TahiStandardTasks::PaperReviewerScenario] = [
-        { name: :invitation, context: InvitationContext },
-        { name: :journal,    context: JournalContext },
-        { name: :manuscript, context: PaperContext }
-      ]
-      hash[TahiStandardTasks::PreprintDecisionScenario] = [
+      hash[PaperScenario] = [
         { name: :manuscript, context: PaperContext },
         { name: :journal,    context: JournalContext }
       ]
-      hash[TahiStandardTasks::RegisterDecisionScenario] = [
-        { name: :manuscript, context: PaperContext },
-        { name: :journal,    context: JournalContext },
-        { name: :reviews,    context: ReviewerReportContext, many: true }
+      hash[InvitationScenario] = hash[PaperScenario] + [
+        { name: :invitation, context: InvitationContext }
+      ]
+      hash[ReviewerReportScenario] = hash[PaperScenario] + [
+        { name: :review,   context: ReviewerReportContext },
+        { name: :reviewer, context: UserContext }
+      ]
+      hash[TahiStandardTasks::PaperReviewerScenario] = hash[InvitationScenario]
+      hash[TahiStandardTasks::PreprintDecisionScenario] = hash[PaperScenario]
+      hash[TahiStandardTasks::RegisterDecisionScenario] = hash[PaperScenario] + [
+        { name: :reviews, context: ReviewerReportContext, many: true }
       ]
       hash[PaperContext] = [
         { name: :editor,                context: UserContext },

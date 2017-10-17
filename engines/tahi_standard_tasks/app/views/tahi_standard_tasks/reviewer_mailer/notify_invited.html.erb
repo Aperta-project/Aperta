@@ -11,6 +11,6 @@
 } %>
 
 <%= render partial: 'email/button', locals: {
-  href: confirm_decline_invitation_url({ token: @invitation.token }),
+  href: voucher_invitation_url({ id: @invitation.token }).gsub('_', '-').gsub('api/', ''),
   text: 'Decline'
 } %>

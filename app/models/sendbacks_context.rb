@@ -33,14 +33,18 @@ class SendbacksContext < TemplateContext
       parent = CardContent.find content.parent_id
 
       if (parent.content_type == 'sendback-reason') && (content.content_type == 'paragraph-input')
-        children = parent.children
-        selection = children.all? { |child| child.answers[0].value }
+        targets = parent.children.to_ary
+        # Dont check the display reason editor value. This should be replaced
+        # once we have a tag system for better identifying answers
+        targets.delete_at 1
+        selection = targets.all? { |child| child.answers[0].try(:value) }
       else
         selection = false
       end
       selection
     end
 
+    reasons.sort_by!(&:card_content_id)
     reasons.map { |reason| AnswerContext.new(reason) }
   end
 

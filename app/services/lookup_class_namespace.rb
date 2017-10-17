@@ -24,7 +24,6 @@ class LookupClassNamespace
     "PaperEditorTask"                =>     "TahiStandardTasks::PaperEditorTask",
     "PaperReviewerTask"              =>     "TahiStandardTasks::PaperReviewerTask",
     "ProductionMetadataTask"         =>     "TahiStandardTasks::ProductionMetadataTask",
-    "PublishingRelatedQuestionsTask" =>     "TahiStandardTasks::PublishingRelatedQuestionsTask",
     "RegisterDecisionTask"           =>     "TahiStandardTasks::RegisterDecisionTask",
     "RelatedArticlesTask"            =>     "TahiStandardTasks::RelatedArticlesTask",
     "ReviewerRecommendationsTask"    =>     "TahiStandardTasks::ReviewerRecommendationsTask",

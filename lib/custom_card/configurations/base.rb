@@ -74,7 +74,6 @@ module CustomCard
         file_path = Rails.root.join("lib/custom_card/configurations/xml_content/#{xml_content_name}")
 
         return File.read(file_path) if File.exist?(file_path)
-        raise NotImplementedError
       end
     end
   end

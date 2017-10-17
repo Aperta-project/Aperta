@@ -31,7 +31,7 @@ feature 'Viewing Versions:', js: true do
     scenario 'the user views an old version of the paper.', selenium: true do
       page = PaperPage.new
       page.view_versions
-
+      wait_for_ajax
       page.select_viewing_version(version_1)
 
       expect(page.versioned_body).to have_content('OK second body')
@@ -44,6 +44,7 @@ feature 'Viewing Versions:', js: true do
     scenario 'the user views an old version of the paper.', selenium: true do
       page = PaperPage.new
       page.view_versions
+      wait_for_ajax
       page.select_viewing_version(version_0)
 
       page.select_comparison_version(version_1)
@@ -56,6 +57,7 @@ feature 'Viewing Versions:', js: true do
       SnapshotService.new(paper).snapshot!(task)
       page = PaperPage.new
       page.view_versions
+      wait_for_ajax
       page.select_viewing_version(version_0)
 
       page.view_card('Figures', VersionedMetadataOverlay) do |overlay|
@@ -79,6 +81,7 @@ feature 'Viewing Versions:', js: true do
 
       page = PaperPage.new
       page.view_versions
+      wait_for_ajax
       page.select_viewing_version(version_0)
       page.select_comparison_version(version_1)
 

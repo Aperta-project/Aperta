@@ -12,7 +12,7 @@ export default Ember.Component.extend({
     let customClass = this.get('customClass');
     let defaultTag = customClass ? 'div' : '';
     this.set('tagName', this.getWithDefault('wrapperTag', defaultTag));
-    if (this.get('tagName') === '') {
+    if (Ember.isEmpty(this.get('tagName'))) {
       // We can't have classNameBindings on tagless view wrappers
       this.set('classNameBindings', []);
     }

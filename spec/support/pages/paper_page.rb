@@ -153,7 +153,7 @@ HERE
     page.execute_script code
   end
 
-  def submit
+  def submit(&blk)
     click_on "Submit"
     SubmitPaperOverlay.new.tap do |overlay|
       if blk

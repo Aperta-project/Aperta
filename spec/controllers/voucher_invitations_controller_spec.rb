@@ -39,12 +39,13 @@ describe VoucherInvitationsController do
   describe '#update' do
     context 'with a declined voucher invitation' do
       subject do
-        put :update, format: :json, id: invited_invitation.id, voucher_invitation: { status: 'declined' }
+        put :update, format: :json, id: invited_invitation.id, voucher_invitation: { state: 'declined' }
       end
 
       it 'should decline the invitation' do
         subject
-        expect(invitation.declined?).to be true
+        invited_invitation.reload
+        expect(invited_invitation.declined?).to be true
       end
     end
   end

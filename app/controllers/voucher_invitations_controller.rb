@@ -15,11 +15,14 @@ class VoucherInvitationsController < ApplicationController
 
   def update
     @invitation = Invitation.find(params[:id])
-    return unless voucher_invitation_declined?
-    @invitation.update! decline_reason: voucher_invitation_decline_reason
-    @invitation.decline!
-    Activity.invitation_declined!(@invitation, user: nil)
-    respond_with @invitation, root: 'voucher-invitation', serializer: ::VoucherInvitationsSerializer, status: :ok
+    if voucher_invitation_declined?
+      @invitation.update! decline_reason: voucher_invitation_decline_reason
+      @invitation.decline!
+      Activity.invitation_declined!(@invitation, user: nil)
+      render json: @invitation, root: 'voucher-invitation', serializer: ::VoucherInvitationsSerializer
+    else
+      head :not_found
+    end
   end
 
   private

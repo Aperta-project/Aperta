@@ -241,3 +241,63 @@ test(`it adds a repetition between two other repetitions`, function(assert) {
     });
   });
 });
+
+test(`it eagerly creates an answer for a required question`, function(assert) {
+  $.mockjax({url: '/api/repetitions', type: 'POST', status: 201, responseText: '{}'});
+  $.mockjax({url: '/api/answers', type: 'POST', status: 201, responseText: '{}'});
+
+  let content = FactoryGuy.make('card-content', {
+    contentType: 'repeat',
+    min: 1,
+    itemName: 'thing',
+    repetitions: [],
+    unsortedChildren: [
+      FactoryGuy.make('card-content', {
+        contentType: 'short-input',
+        text: 'Can you answer my simple question?',
+        requiredField: true,
+      })
+    ]
+  });
+
+  this.set('content', content);
+  this.set('disabled', false);
+  this.set('owner', Ember.Object.create());
+  this.set('repetition', null);
+  this.render(template);
+
+  return wait().then(() => {
+    assert.mockjaxRequestMade('/api/answers', 'POST', 'requiredField answer eagerly created');
+  });
+});
+
+test(`it sets the default answer when a question is added`, function(assert) {
+  $.mockjax({url: '/api/repetitions', type: 'POST', status: 201, responseText: '{}'});
+
+  let content = FactoryGuy.make('card-content', {
+    contentType: 'repeat',
+    min: 1,
+    itemName: 'thing',
+    repetitions: [],
+    unsortedChildren: [
+      FactoryGuy.make('card-content', {
+        contentType: 'short-input',
+        text: 'Can you answer my simple question?',
+        defaultAnswerValue: 'bananas',
+      })
+    ]
+  });
+
+  let store = this.container.lookup('service:store');
+
+  this.set('content', content);
+  this.set('disabled', false);
+  this.set('owner', Ember.Object.create());
+  this.set('repetition', null);
+  this.render(template);
+
+  return wait().then(() => {
+    let answer = store.peekAll('answer').get('firstObject');
+    assert.equal(answer.get('value'), 'bananas', 'should have a simple default value');
+  });
+});

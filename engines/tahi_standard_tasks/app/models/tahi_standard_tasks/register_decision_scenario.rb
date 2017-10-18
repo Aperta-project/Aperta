@@ -6,7 +6,7 @@ module TahiStandardTasks
         ReviewerReportContext.new(rr)
       end
       reviews_with_num, reviews_without_num = @reviews.partition(&:reviewer_number)
-      @reviews = reviews_with_num.sort_by(&:reviewer_number) + reviews_without_num.sort_by { |r| r.submitted_at || r.created_at }
+      @reviews = reviews_with_num.sort_by(&:reviewer_number) + reviews_without_num.sort_by { |r| r.submitted_at || 0 }
     end
   end
 end

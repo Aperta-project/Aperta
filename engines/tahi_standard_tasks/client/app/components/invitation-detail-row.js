@@ -15,6 +15,19 @@ const {
  */
 
 export default Component.extend(DragNDrop.DraggableMixin, {
+  can: Ember.inject.service('can'),
+
+  canManageInvitationsTask: concurrencyTask(function * () {
+    let perm = yield this.get('can').can('manage_invitations', this.get('owner'));
+    this.set('canManageInvitations', perm);
+  }),
+
+  init() {
+    this._super(...arguments);
+    this.get('canManageInvitationsTask').perform();
+  },
+
+  canManageInvitations: false,
   classNameBindings: [
     ':invitation-item',
     'invitationStateClass',
@@ -100,24 +113,19 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   invitee: reads('invitation.invitee'),
   invitationBodyStateBeforeEdit: null,
 
-  displayEditButton: computed('invitation.pending', 'closedState', 'currentRound', function() {
-    return this.get('invitation.pending') && !this.get('closedState') && this.get('currentRound');
-  }),
+  notClosedState: not('closedState'),
+
+  displayEditButton: and('invitation.pending', 'notClosedState', 'currentRound'),
 
   displaySendButton: and('invitation.pending', 'currentRound'),
 
-  displayDestroyButton: computed('invitation.pending', 'closedState', 'currentRound', function() {
-    return this.get('invitation.pending') && !this.get('closedState') && this.get('currentRound');
-  }),
+  displayDestroyButton: and('invitation.pending', 'notClosedState', 'currentRound'),
 
-  displayRescindButton: computed('invitation.{invited,accepted}', 'closedState', 'currentRound', function() {
-    return this.get('currentRound') && !this.get('closedState') && (this.get('invitation.invited') || this.get('invitation.accepted'));
+  displayRescindButton: computed('invitation.{invited,accepted}', 'closedState', 'currentRound','canManageInvitations', function() {
+    return this.get('notClosedState') && this.get('currentRound') && this.get('canManageInvitations') && (this.get('invitation.invited') || this.get('invitation.accepted'));
   }),
-
-  displayAcceptOnBehalfButton: computed('invitation.{invited,reviewer}', 'closedState', 'currentRound', 'invitee', function() {
-    // similar to rescind button but only if its for a reviewer and if there's an invitee
-    return this.get('currentRound') && !this.get('closedState') && this.get('invitation.invited') && this.get('invitation.invitee.id') && this.get('invitation.reviewer');
-  }),
+  // similar to rescind button but only if its for a reviewer and if there's an invitee
+  displayAcceptOnBehalfButton: and('invitation.{invited,reviewer}', 'notClosedState', 'currentRound', 'invitee.id', 'canManageInvitations'),
 
   notAcceptedByInvitee: not('invitation.isAcceptedByInvitee'),
 

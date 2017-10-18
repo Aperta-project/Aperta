@@ -76,13 +76,13 @@
           {{/tool-tip}}
         </span>
       {{/if}}
-      {{#if (and displayAcceptOnBehalfButton (can 'manage_invitations' owner))}}
+      {{#if displayAcceptOnBehalfButton}}
         <span class="invitation-item-action invitation-item-action-accept" {{action "acceptInvitation" invitation bubbles=false}}>
           {{fa-icon icon="check-circle-o"}}
           Accept invitation for reviewer
         </span>
       {{/if}}
-      {{#if (and displayRescindButton (can 'manage_invitations' owner))}}
+      {{#if displayRescindButton}}
         <span class="invitation-item-action invitation-item-action-rescind {{if invitationsInFlight "invitation-item-action--disabled"}}"
               {{action "rescindInvitation" invitation bubbles=false}}>
           <span class="fa fa-ban invite-rescind"></span>

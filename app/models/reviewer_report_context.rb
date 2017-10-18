@@ -23,6 +23,10 @@ class ReviewerReportContext < TemplateContext
     reviewer_report.due_at.to_s(:due_with_hours)
   end
 
+  def submitted_at
+    reviewer_report.submitted_at
+  end
+
   def rendered_answer_idents
     [
       'front_matter_reviewer_report--includes_unpublished_data--explanation',

@@ -34,7 +34,7 @@ namespace :db do
 
   desc "Test migrations against all known environments"
   task test_migrations: :environment do
-    %w[prod stage rc].each do |env|
+    %w[prod stage rc ci].each do |env|
       rake_reenable_and_invoke('db:import_remote', env)
       rake_reenable_and_invoke('db:migrate')
     end

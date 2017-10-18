@@ -167,19 +167,11 @@
     <label class="correspondence-label">Contents</label>
     <div class="form-group">
       {{rich-text-editor
-        name=ident
-        data-editor=ident
-        value='fcvgbh'
-        onContentsChanged=(action "saveContentsBody")
-        class=inputClassNames
-        hideError=hideError
-      }}
-
-      {{rich-text-editor
         editorStyle='basic'
         ident='correspondence-body'
         value='model.body'
         name="correspondence-body"
+        class="correspondence-body"
         onContentsChanged=(action 'saveContentsBody')
         disabled=false
         errorMessages=validationErrors.body

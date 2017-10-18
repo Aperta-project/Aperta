@@ -91,21 +91,6 @@ test(`'Add Correspondence' opens a form overlay`, (assert) => {
   });
 });
 
-test(`'Add Correspondence' form`, (assert) => {
-  visit('/papers/' + paper.get('shortDoi') + '/correspondence/new');
-  return andThen(() => {
-    assert.textPresent('.inset-form-control-text', 'Date sent');
-    assert.textPresent('.inset-form-control-text', 'Time sent');
-    assert.textPresent('.inset-form-control-text', 'Description');
-    assert.textPresent('.inset-form-control-text', 'From');
-    assert.textPresent('.inset-form-control-text', 'To');
-    assert.textPresent('.inset-form-control-text', 'Subject');
-    assert.textPresent('.inset-form-control-text', 'CC');
-    assert.textPresent('.inset-form-control-text', 'BCC');
-    assert.textPresent('.inset-form-control-text', 'Contents');
-  });
-});
-
 test('Date and Time [format] are properly validated', (assert) => {
 
   // Context: Absent Date && Absent Time
@@ -159,7 +144,7 @@ test('Invalid Records are not on list when process is aborted', (assert) => {
   andThen(() => {
     // Validation failed so the form should remain on the same page
     assert.equal(currentURL(), '/papers/' + paper.get('shortDoi') + '/correspondence/new');
-    click('.overlay-close');
+    click('.button-link');
 
     andThen(() => {
       // When the form is closed, the filled record should not be on the list

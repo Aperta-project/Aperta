@@ -34733,20 +34733,19 @@ letter_templates:
           {%- if review.status == 'completed' -%}
             ----------<br/>
             <p>Reviewer {{ review.reviewer_number }} {{ review.reviewer_name }}</p>
-            {%- for answer in review.answers -%}
-              {%- if review.rendered_answer_idents contains answer.ident -%}
-              <p>
-                {{ answer.value }}
-              </p>
-              {%- endif -%}
+            {%- for answer in review.rendered_answers -%}
+            <p>
+              {{ answer.value }}
+            </p>
             {%- endfor -%}
+
           {% endif %}
         {% endfor %}
       {% endif %}
 
     - '1'
     - '2016-07-28 18:22:30.390577'
-    - '2017-09-28 20:49:00.933202'
+    - '2017-10-18 18:24:31.279905'
     - TahiStandardTasks::RegisterDecisionScenario
     - editor-decision-reject-after-review
     - 
@@ -34787,20 +34786,19 @@ letter_templates:
           {%- if review.status == 'completed' -%}
             ----------<br/>
             <p>Reviewer {{ review.reviewer_number }} {{ review.reviewer_name }}</p>
-            {%- for answer in review.answers -%}
-              {%- if review.rendered_answer_idents contains answer.ident -%}
-              <p>
-                {{ answer.value }}
-              </p>
-              {%- endif -%}
+            {%- for answer in review.rendered_answers -%}
+            <p>
+              {{ answer.value }}
+            </p>
             {%- endfor -%}
+
           {% endif %}
         {% endfor %}
       {% endif %}
 
     - '1'
     - '2016-07-28 18:22:30.395609'
-    - '2017-09-28 20:49:00.941529'
+    - '2017-10-18 18:24:31.288545'
     - TahiStandardTasks::RegisterDecisionScenario
     - editor-decision-reject-after-review-cjs
     - 
@@ -34841,20 +34839,19 @@ letter_templates:
           {%- if review.status == 'completed' -%}
             ----------<br/>
             <p>Reviewer {{ review.reviewer_number }} {{ review.reviewer_name }}</p>
-            {%- for answer in review.answers -%}
-              {%- if review.rendered_answer_idents contains answer.ident -%}
-              <p>
-                {{ answer.value }}
-              </p>
-              {%- endif -%}
+            {%- for answer in review.rendered_answers -%}
+            <p>
+              {{ answer.value }}
+            </p>
             {%- endfor -%}
+
           {% endif %}
         {% endfor %}
       {% endif %}
 
     - '1'
     - '2016-07-28 18:22:30.399636'
-    - '2017-09-28 20:49:00.948619'
+    - '2017-10-18 18:24:31.292039'
     - TahiStandardTasks::RegisterDecisionScenario
     - editor-decision-reject-after-review-one
     - 
@@ -34896,20 +34893,19 @@ letter_templates:
           {%- if review.status == 'completed' -%}
             ----------<br/>
             <p>Reviewer {{ review.reviewer_number }} {{ review.reviewer_name }}</p>
-            {%- for answer in review.answers -%}
-              {%- if review.rendered_answer_idents contains answer.ident -%}
-              <p>
-                {{ answer.value }}
-              </p>
-              {%- endif -%}
+            {%- for answer in review.rendered_answers -%}
+            <p>
+              {{ answer.value }}
+            </p>
             {%- endfor -%}
+
           {% endif %}
         {% endfor %}
       {% endif %}
 
     - '1'
     - '2016-07-28 18:22:30.403331'
-    - '2017-09-28 20:49:00.955793'
+    - '2017-10-18 18:24:31.295867'
     - TahiStandardTasks::RegisterDecisionScenario
     - reject-after-review-one
     - 
@@ -34951,20 +34947,19 @@ letter_templates:
           {%- if review.status == 'completed' -%}
             ----------<br/>
             <p>Reviewer {{ review.reviewer_number }} {{ review.reviewer_name }}</p>
-            {%- for answer in review.answers -%}
-              {%- if review.rendered_answer_idents contains answer.ident -%}
-              <p>
-                {{ answer.value }}
-              </p>
-              {%- endif -%}
+            {%- for answer in review.rendered_answers -%}
+            <p>
+              {{ answer.value }}
+            </p>
             {%- endfor -%}
+
           {% endif %}
         {% endfor %}
       {% endif %}
 
     - '1'
     - '2016-07-28 18:22:30.407003'
-    - '2017-09-28 20:49:00.962881'
+    - '2017-10-18 18:24:31.299498'
     - TahiStandardTasks::RegisterDecisionScenario
     - reject-after-revision-and-re-review-one
     - 
@@ -35012,20 +35007,19 @@ letter_templates:
           {%- if review.status == 'completed' -%}
             ----------<br/>
             <p>Reviewer {{ review.reviewer_number }} {{ review.reviewer_name }}</p>
-            {%- for answer in review.answers -%}
-              {%- if review.rendered_answer_idents contains answer.ident -%}
-              <p>
-                {{ answer.value }}
-              </p>
-              {%- endif -%}
+            {%- for answer in review.rendered_answers -%}
+            <p>
+              {{ answer.value }}
+            </p>
             {%- endfor -%}
+
           {% endif %}
         {% endfor %}
       {% endif %}
 
     - '1'
     - '2016-07-28 18:22:30.410529'
-    - '2017-09-28 20:49:00.970106'
+    - '2017-10-18 18:24:31.302789'
     - TahiStandardTasks::RegisterDecisionScenario
     - ra-major-revision
     - 
@@ -35077,20 +35071,19 @@ letter_templates:
           {%- if review.status == 'completed' -%}
             ----------<br/>
             <p>Reviewer {{ review.reviewer_number }} {{ review.reviewer_name }}</p>
-            {%- for answer in review.answers -%}
-              {%- if review.rendered_answer_idents contains answer.ident -%}
-              <p>
-                {{ answer.value }}
-              </p>
-              {%- endif -%}
+            {%- for answer in review.rendered_answers -%}
+            <p>
+              {{ answer.value }}
+            </p>
             {%- endfor -%}
+
           {% endif %}
         {% endfor %}
       {% endif %}
 
     - '1'
     - '2016-07-28 18:22:30.413472'
-    - '2017-09-28 20:49:00.977543'
+    - '2017-10-18 18:24:31.306053'
     - TahiStandardTasks::RegisterDecisionScenario
     - ra-minor-revision
     - 

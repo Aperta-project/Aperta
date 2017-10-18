@@ -6,7 +6,19 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   close: null,
   doneUploading: false,
   isUploading: false,
+  content: '',
   restless: Ember.inject.service(),
+
+  currentTime: Ember.computed('model', function() {
+    let start = moment();
+    // rounding up the minutes to the nearest hour down
+    if (start.minutes() < 30) {
+      start.minutes(0);
+    } else {
+      start.minutes(30);
+    }
+    return start.format('H:mm');
+  }),
 
   prepareModelDate() {
     let date = this.get('dateSent');
@@ -61,6 +73,11 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   },
 
   actions: {
+    saveContentsBody(contents) {
+      this.set('content', contents);
+      // console.log('yayy');
+    },
+
     removeAttachment() {
       this.setProperties({
         doneUploading: false,

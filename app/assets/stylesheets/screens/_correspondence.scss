@@ -50,6 +50,21 @@
   }
 }
 
+.correspondence-label {
+  &:after {
+    content: '*';
+    position: relative;
+    color: $aperta-red;
+    font-size: 20px;
+  }
+
+  .inset-form-control-input {
+    height: auto;
+    padding-top: 26px;
+
+  }
+}
+
 .correspondence-attachment-link {
   .attachment-item {
     display: inline;

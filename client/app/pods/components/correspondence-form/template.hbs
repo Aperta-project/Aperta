@@ -5,42 +5,43 @@
       Aperta. <strong>Note: this will NOT send an email</strong></p>
   </div>
 </div>
+
 <div class="row">
   <div class="col-sm-6 col-md-3">
-    <div class="inset-form-control required">
+    <label class="correspondence-label">Date sent</label>
+    <div class="inset-form-control">
       <div class="inset-form-control-text">
-        <label>Date sent</label>
         {{error-message message=validationErrors.dateSent
                         displayIcon=true
                         displayText=false}}
       </div>
+
       {{date-picker name='correspondence-date-sent'
                     value=dateSent
                     date=dateSent
-                    class="correspondence-date-sent inset-form-control-input"
-                    placeholder="Select date"}}
+                    class="correspondence-date-sent inset-form-control-input"}}
     </div>
   </div>
   <div class="col-sm-6 col-md-3">
-    <div class="inset-form-control required">
+    <label>Time sent</label>
+    <div class="inset-form-control">
       <div class="inset-form-control-text">
-        <label>Time sent</label>
         {{error-message message=validationErrors.timeSent
                         displayIcon=true
                         displayText=false}}
       </div>
-      {{time-picker class="timepicker inset-form-control-input correspondence-time-sent"
+
+      {{time-picker class="inset-form-control-input correspondence-time-sent"
                     name='correspondence-time-sent'
-                    value=timeSent
-                    placeholder="Select time..."}}
+                    value=currentTime}}
     </div>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
-    <div class="inset-form-control required">
+    <label class="correspondence-label">Description</label>
+    <div class="inset-form-control">
       <div class="inset-form-control-text">
-        <label>Description</label>
         {{error-message message=validationErrors.description
                         displayIcon=true
                         displayText=false}}
@@ -48,16 +49,15 @@
       {{input type="text"
               name='correspondence-description'
               value=model.description
-              class="correspondence-description inset-form-control-input"
-              placeholder="Enter a brief description of the purpose of the correspondence..."}}
+              class="correspondence-description inset-form-control-input"}}
     </div>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
-    <div class="inset-form-control required">
+    <label class="correspondence-label">From</label>
+    <div class="inset-form-control">
       <div class="inset-form-control-text">
-        <label>From</label>
         {{error-message message=validationErrors.sender
                         displayIcon=true
                         displayText=false}}
@@ -65,16 +65,15 @@
       {{input type="text"
               name='correspondence-from'
               value=model.sender
-              class="correspondence-from inset-form-control-input"
-              placeholder="Sender's name and/or email address..."}}
+              class="correspondence-from inset-form-control-input"}}
     </div>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
-    <div class="inset-form-control required">
+    <label class="correspondence-label">To</label>
+    <div class="inset-form-control">
       <div class="inset-form-control-text">
-        <label>To</label>
         {{error-message message=validationErrors.recipients
                         displayIcon=true
                         displayText=false}}
@@ -82,16 +81,15 @@
       {{input type="text"
               name='correspondence-to'
               value=model.recipients
-              class="correspondence-to inset-form-control-input"
-              placeholder="Recipient names and/or email address(es)..."}}
+              class="correspondence-to inset-form-control-input"}}
     </div>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
+    <label>Subject</label>
     <div class="inset-form-control">
       <div class="inset-form-control-text">
-        <label>Subject</label>
         {{error-message message=validationErrors.subject
                         displayIcon=true
                         displayText=false}}
@@ -99,16 +97,15 @@
       {{input type="text"
               name='correspondence-subject'
               value=model.subject
-              class="correspondence-subject inset-form-control-input"
-              placeholder="Enter or copy-paste the subject..."}}
+              class="correspondence-subject inset-form-control-input"}}
     </div>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
+    <label>CC</label>
     <div class="inset-form-control">
       <div class="inset-form-control-text">
-        <label>CC</label>
         {{error-message message=validationErrors.cc
                         displayIcon=true
                         displayText=false}}
@@ -116,16 +113,15 @@
       {{input type="text"
               name='correspondence-cc'
               value=model.cc
-              class="correspondence-cc inset-form-control-input"
-              placeholder="Recipient names and/or email address(es)..."}}
+              class="correspondence-cc inset-form-control-input"}}
     </div>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
+    <label>BCC</label>
     <div class="inset-form-control">
       <div class="inset-form-control-text">
-        <label>BCC</label>
         {{error-message message=validationErrors.bcc
                         displayIcon=true
                         displayText=false}}
@@ -133,8 +129,7 @@
       {{input type="text"
               name='correspondence-bcc'
               value=model.bcc
-              class="correspondence-bcc inset-form-control-input"
-              placeholder="Recipient names and/or email address(es)..."}}
+              class="correspondence-bcc inset-form-control-input"}}
     </div>
   </div>
 </div>
@@ -169,20 +164,26 @@
 </div>
 <div class="row">
   <div class="col-sm-12">
-    <div class="inset-form-control required">
-      <div class="inset-form-control-text">
-        <label>Contents</label>
-        {{error-message message=validationErrors.body
-                        displayIcon=true
-                        displayText=false}}
-      </div>
-      {{#expanding-textarea}}
-      {{textarea class="inset-form-control-textarea correspondence-body"
-                 name="correspondence-body"
-                 value=model.body
-                 placeholder="Enter or copy-paste the contents of the correspondence."
-                 autofocus="autofocus"}}
-      {{/expanding-textarea}}
+    <label class="correspondence-label">Contents</label>
+    <div class="form-group">
+      {{rich-text-editor
+        name=ident
+        data-editor=ident
+        value='fcvgbh'
+        onContentsChanged=(action "saveContentsBody")
+        class=inputClassNames
+        hideError=hideError
+      }}
+
+      {{rich-text-editor
+        editorStyle='basic'
+        ident='correspondence-body'
+        value='model.body'
+        name="correspondence-body"
+        onContentsChanged=(action 'saveContentsBody')
+        disabled=false
+        errorMessages=validationErrors.body
+      }}
     </div>
   </div>
 </div>

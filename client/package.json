@@ -22,7 +22,7 @@
   "dependencies": {
     "active-model-adapter": "2.0.3",
     "autosize": "^4.0.0",
-    "bower": "^1.7.7",
+    "bower": "1.8.2",
     "broccoli-asset-rev": "^2.4.2",
     "broccoli-funnel": "^1.1.0",
     "broccoli-merge-trees": "0.2.1",
@@ -40,15 +40,15 @@
     "ember-cli-inject-live-reload": "^1.4.0",
     "ember-cli-moment-shim": "3.3.3",
     "ember-cli-page-object": "^1.6.0",
+    "ember-cli-qunit": "^2.1.0",
     "ember-cli-rails-addon": "0.7.1",
     "ember-cli-release": "^0.2.9",
+    "ember-cli-sri": "^2.1.0",
     "ember-cli-test-loader": "^1.1.0",
     "ember-cli-textarea-autosize": "1.0.1",
     "ember-cli-tinymce": "0.1.6",
-    "ember-click-outside": "^0.1.6",
     "ember-cli-uglify": "1.2.0",
-    "ember-cli-sri": "^2.1.0",
-    "ember-cli-qunit": "^2.1.0",
+    "ember-click-outside": "^0.1.6",
     "ember-composable-helpers": "^1.1.2",
     "ember-concurrency": "^0.8.5",
     "ember-data": "2.8.1",
@@ -77,8 +77,7 @@
     "liquid-fire": "0.25.0",
     "loader.js": "^4.0.1",
     "npm-install-retry": "^1.0.2",
-    "yuidocjs": "^0.10.2",
-    "ember-cli-sri": "^2.1.0"
+    "yuidocjs": "^0.10.2"
   },
   "ember-addon": {
     "paths": [

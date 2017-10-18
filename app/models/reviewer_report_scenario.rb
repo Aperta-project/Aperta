@@ -1,24 +1,19 @@
-# Provides a template context for ReviewerReport
-class ReviewerReportScenario < TemplateContext
+class ReviewerReportScenario < PaperScenario
   def review
-    ReviewerReportContext.new(reviewer_report)
+    ReviewerReportContext.new(review_object)
   end
 
   def reviewer
-    UserContext.new(reviewer_report.user)
-  end
-
-  def journal
-    JournalContext.new(reviewer_report.paper.journal)
-  end
-
-  def manuscript
-    PaperContext.new(reviewer_report.paper)
+    UserContext.new(review_object.user)
   end
 
   private
 
-  def reviewer_report
+  def review_object
     @object
+  end
+
+  def manuscript_object
+    review_object.paper
   end
 end

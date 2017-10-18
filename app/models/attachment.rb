@@ -121,7 +121,7 @@ class Attachment < ActiveRecord::Base
       self.file_hash = Digest::SHA256.hexdigest(file.file.read)
       self.s3_dir = file.generate_new_store_dir
       self.title = build_title
-      self.file_type = get_file_type(url)
+      self.file_type = self.class.file_type(url)
 
       # Using save! instead of update_attributes because the above are not the
       # only attributes that have been updated. We want to persist all changes
@@ -262,6 +262,10 @@ class Attachment < ActiveRecord::Base
     AttachmentUploader.image?(file_path)
   end
 
+  def self.file_type(url)
+    Pathname.new(URI.parse(url).path).extname.delete('.').downcase rescue nil
+  end
+
   protected
 
   def build_title
@@ -269,10 +273,6 @@ class Attachment < ActiveRecord::Base
   end
 
   private
-
-  def get_file_type(url)
-    Pathname.new(URI.parse(url).path).extname.delete('.')
-  end
 
   def set_paper
     if owner_type == 'Paper'

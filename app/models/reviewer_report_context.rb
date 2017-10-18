@@ -31,6 +31,11 @@ class ReviewerReportContext < TemplateContext
     ]
   end
 
+  def rendered_answers
+    rendered_answer_idents.map { |ident| answers.find { |answer| answer.ident == ident } }
+      .compact
+  end
+
   private
 
   def reviewer_report

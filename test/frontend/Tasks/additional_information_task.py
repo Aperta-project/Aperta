@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import logging
 import random
@@ -24,13 +24,12 @@ class AITask(BaseTask):
 
     # Locators - Instance members
     self._questions = (By.CSS_SELECTOR, 'li.question')
-    self._question1_child = (
-        By.NAME, 'publishing_related_questions--published_elsewhere--taken_from_manuscripts')
     self._question1_file_input = (By.CLASS_NAME, 'add-new-attachment')
     self._question1_upload_button = (By.CSS_SELECTOR, 'div.fileinput-button')
     self._uploaded_file = (By.CSS_SELECTOR, 'div.attachment-item')
     self._uploaded_file_link = (By.CSS_SELECTOR, 'a.file-link')
     self._uploaded_file_description = (By.NAME, 'attachment-caption')
+    self._q1_data_editor = 'publishing_related_questions--published_elsewhere--taken_from_manuscripts'
     #2
     self._q2_title_input = (
         By.NAME, 'publishing_related_questions--submitted_in_conjunction--corresponding_title')
@@ -39,25 +38,19 @@ class AITask(BaseTask):
     self._q2_journal_input = (
         By.NAME, 'publishing_related_questions--submitted_in_conjunction--corresponding_journal')
     self._q2_handle_together_cb = (
-        By.NAME, 'publishing_related_questions--submitted_in_conjunction--handled_together')
+         By.ID, 'check-box-publishing_related_questions--submitted_in_conjunction--handled_together')
+    self._q2_data_editor = 'publishing_related_questions--submitted_in_conjunction--corresponding_title'
    #3
     self._q3_previous_interactions_cb = (
-        By.NAME, 'publishing_related_questions--previous_interactions_with_this_manuscript')
-    self._q3_previous_interactions_input = (
-        By.NAME, 'publishing_related_questions--previous_interactions_with_this_manuscript--submission_details')
+        By.ID, 'check-box-publishing_related_questions--previous_interactions_with_this_manuscript')
     self._q3_presubmission_cb = (
-        By.NAME, 'publishing_related_questions--presubmission_inquiry')
-    self._q3_presubmission_input = (
-        By.NAME, 'publishing_related_questions--presubmission_inquiry--submission_details')
+        By.ID, 'check-box-publishing_related_questions--presubmission_inquiry')
     self._q3_other_journal_cb = (
-        By.NAME, 'publishing_related_questions--other_journal_submission')
-    self._q3_other_journal_input = (
-        By.NAME, 'publishing_related_questions--other_journal_submission--submission_details')
+        By.ID, 'check-box-publishing_related_questions--other_journal_submission')
     self._q3_previous_editor_cb = (
-        By.NAME, 'publishing_related_questions--author_was_previous_journal_editor')
-    #4
-    self._q4_collection_name_input = (
-      By.NAME, 'publishing_related_questions--intended_collection')
+        By.ID, 'check-box-publishing_related_questions--author_was_previous_journal_editor')
+    #5
+    self._q5_data_editor = 'publishing_related_questions--short_title'
     # Version difference
     self._diff_removed = (By.CSS_SELECTOR, 'span.ember-view.text-diff .removed')
     self._diff_added = (By.CSS_SELECTOR, 'span.ember-view.text-diff .added')
@@ -80,15 +73,13 @@ class AITask(BaseTask):
     question_3 = questions[2]
     question_4 = questions[3]
 
-    q1ans = data['q1'] #random.choice(q1_answers)
+    q1ans = data['q1']
     logging.debug('The answer to question 1 is {0}'.format(q1ans))
     if q1ans == 'Yes':
-      # wait for the element to be attached to the DOM
-      self._wait_for_element(questions[0].find_elements_by_tag_name('input')[0])
+      self._wait_for_element(questions[0].find_element_by_tag_name('input'))
       questions[0].find_elements_by_tag_name('input')[0].click()
-      q1ans_text = self._get(self._question1_child)
-      q1ans_text.clear()
-      q1ans_text.send_keys(data['q1_child_answer'])
+      self.send_text_to_tiny_mce(data['q1_child_answer'], self._q1_data_editor)
+
       # Handles specifying an upload file
       q1_file_name = data['q1_child_file'][0]
       q1_file_description = data['q1_child_file'][1]
@@ -98,6 +89,7 @@ class AITask(BaseTask):
         logging.info(uploaded_file_name)
         self._wait_for_element(self._get(self._uploaded_file_link))
         time.sleep(.5)
+
         if q1_file_description:
           description_text_field = self._get(self._uploaded_file_description)
           description_text_field.send_keys(q1_file_description)
@@ -106,81 +98,71 @@ class AITask(BaseTask):
       self._wait_for_element(questions[0].find_elements_by_tag_name('input')[1])
       questions[0].find_elements_by_tag_name('input')[1].click()
 
+    # Question #2
     self.scroll_element_into_view_below_toolbar(question_1)
     q2ans = data['q2']
     logging.debug('The answer to question 2 is {0}'.format(q2ans))
     if q2ans == 'Yes':
       # wait for the element to be attached to the DOM
-      self._wait_for_element(questions[1].find_element_by_tag_name('input'))
+      self._wait_for_element(questions[1].find_element_by_tag_name('input')) # radio button
       questions[1].find_element_by_tag_name('input').click()
-      self._wait_for_element(self._get(self._q2_title_input))
-      q2titleinput = self._get(self._q2_title_input)
-      q2titleinput.send_keys(data['q2_child1_answer'])
-      q2corrauthinput = self._get(self._q2_corresponding_author_input)
-      q2corrauthinput.send_keys(data['q2_child2_answer'])
-      q2journalinput = self._get(self._q2_journal_input)
-      q2journalinput.send_keys(data['q2_child3_answer'])
+      self.send_text_to_tiny_mce(data['q2_child1_answer'], self._q2_data_editor)
+
+      # there are no specific attributes for simple text field, using relative locator
+      # having tag name 'input' and class 'form-control'
+      self._wait_for_element(question_2.find_element_by_css_selector('input.form-control'))
+
+      input_fields = question_2.find_elements_by_css_selector('input.form-control')
+      if data['q2_child2_answer']:
+        self.send_content_to_text_field(input_fields[0], data['q2_child2_answer'])
+      if data['q2_child3_answer']:
+        self.send_content_to_text_field(input_fields[1], data['q2_child3_answer'])
+
+      # question 2 -> child 4: check box
+      q2_handle_together = self._get(self._q2_handle_together_cb)
       q2c4ans = data['q2_child4_answer']
       logging.debug('The answer to question 2, child 4 is {0}'.format(q2c4ans))
-      if q2c4ans == '1':
-        q2handletogether = self._get(self._q2_handle_together_cb)
-        q2handletogether.click()
+      self.select_new_checkbox_value(q2_handle_together, q2c4ans)
+
     else:
       self._wait_for_element(questions[1].find_elements_by_tag_name('input')[1])
       questions[1].find_elements_by_tag_name('input')[1].click()
 
+    # Question #3
     self.scroll_element_into_view_below_toolbar(question_2)
     q3ans = data['q3']
     logging.info('The answers to question 3 are {0}'.format(q3ans))
     if q3ans != [0, 0, 0, 0]:
-      # wait for the element to be attached to the DOM
-      time.sleep(2)
-      checkboxes = questions[2].find_elements_by_tag_name('input')
-      q3_inputs = []
-      q3_inputs.append(self._q3_previous_interactions_input)
-      q3_inputs.append(self._q3_presubmission_input)
-      q3_inputs.append(self._q3_other_journal_input)
+      # check boxes parents to find input field
+      checkboxes_parents = question_3.find_elements_by_css_selector('.card-content-check-box')
+      # check boxes
+      checkboxes = question_3.find_elements_by_css_selector('.card-content-check-box .checkbox input')
       self.set_timeout(5)
       for order, cbx in enumerate(q3ans):
-        if (cbx == 1 and (not checkboxes[order].is_selected())\
-                or (cbx == 0 and checkboxes[order].is_selected())):
-          #time.sleep(2)
+        self.select_new_checkbox_value(checkboxes[order], cbx)
+        if order != 3 and (cbx == 1) and 'q3_child_answer' in data:
+          self._wait_for_element(checkboxes_parents[order].find_element_by_css_selector('input.form-control'))
           try:
-            checkboxes[order].click()
-            #time.sleep(2)
-          except WebDriverException:
-            self.click_covered_element(checkboxes[order])
-          time.sleep(2)
-          if order!=3 and (cbx == 1) and 'q3_child_answer' in data:
-            self._wait_for_element(self._get(q3_inputs[order]))
-            try:
-              q3cans = data['q3_child_answer'][order]
-              collection_name = self._get(q3_inputs[order])
-              collection_name.clear()
-              collection_name.send_keys(q3cans)
-            except IndexError:
-              continue
+            self.send_content_to_text_field(
+                    checkboxes_parents[order].find_element_by_css_selector('input.form-control'),
+                    data['q3_child_answer'][order])
+          except IndexError:
+            continue
       self.restore_timeout()
     self.scroll_element_into_view_below_toolbar(question_3)
+
+    # Question #4
     q4ans = data['q4']
     logging.debug('The answers to question 4 is {0}'.format(q4ans))
     if q4ans:
-        collection_name = self._get(self._q4_collection_name_input)
-        collection_name.clear()
-        collection_name.send_keys(q4ans)
+      self.send_content_to_text_field(question_4.find_element_by_css_selector('input.form-control'), q4ans)
 
+    # Question #5
     self.scroll_element_into_view_below_toolbar(question_4)
     q5ans = data['q5']
     logging.debug('The answers to question 5 is {0}'.format(q5ans))
     if q5ans:
-      time.sleep(1)
-      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
-          self.get_rich_text_editor_instance('publishing_related_questions--short_title')
-      logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
-      self.tmce_clear_rich_text(tinymce_editor_instance_iframe)
-      self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q5ans)
-      # Gratuitous verification
-      q5_answer = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
+      q5_answer = self.send_text_to_tiny_mce(q5ans, self._q5_data_editor)
       logging.info('Add\'l Info Q5 answer is: {0}'.format(q5_answer))
 
     manuscript_id = self._get(self._paper_sidebar_state_information)
@@ -198,8 +180,7 @@ class AITask(BaseTask):
      data = {}
      q1_answers = ('Yes', 'No')
      q1_child_answer = 'Figure 1.2 - contains new data points'
-     #q1_child_file = "os.path.join(os.getcwd(), 'frontend/assets/imgs/plos.gif'"
-     q1_child_file = ('frontend/assets/imgs/plos.gif', '')  # file name, description
+     q1_child_file = ('frontend/assets/imgs/plos.gif', 'Picture')  # file name, description
      q2_answers = ('Yes', 'No')
      q2_child1_answer = 'Submission Title'
      q2_child2_answer = 'Corresponding Author Name'
@@ -267,9 +248,46 @@ class AITask(BaseTask):
     :return: True if task is ready to edit and False if it is not
     """
     questions = self._gets(self._questions)
-    div_list = questions[4].find_elements_by_xpath("div/div")
-    # if the task is editable it should be 2 <div>s under the last question,
-    # where the last one is for TinyMCE (rich-text-editor-container)
-    # if the task is completed, only 1
-    return len(div_list) == 2
+    self._wait_for_element(questions[0].find_element_by_tag_name('input'))
+    first_input = questions[0].find_element_by_tag_name('input')
+    return first_input.is_enabled()
 
+  def send_text_to_tiny_mce(self,text2send, name=None):
+    """
+    Sending content to tinyMCE editor
+    :param name: the data-editor value of the div.rich-text-editor element you wish to interact with
+    :param text2send: text to send
+    :return: text entered to tinyMCE editor
+    """
+    tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+      self.get_rich_text_editor_instance(name)
+    logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
+    self.tmce_clear_rich_text(tinymce_editor_instance_iframe)
+    self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=text2send)
+    # Gratuitous verification
+    verified_answer = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
+    return verified_answer
+
+  def send_content_to_text_field(self, input_field, text2send):
+    """
+    Sending content to text field
+    :param nainput_field: text field, webElement
+    :param text2send: text to send
+    :return: None
+    """
+    self._wait_for_element(input_field)
+    input_field.clear()
+    input_field.send_keys(text2send)
+
+  def select_new_checkbox_value(self, checkbox_element, new_value):
+    """
+    This method clicks on checkbox if new value is different from the old one
+    :param checkbox_element: check box webElement
+    :param new_value: new value for checkbox: 0, 1, '0', '1'
+    :return: None
+    """
+    if (int(new_value) != checkbox_element.is_selected()):
+      try:
+        checkbox_element.click()
+      except WebDriverException:
+        self.click_covered_element(checkbox_element)

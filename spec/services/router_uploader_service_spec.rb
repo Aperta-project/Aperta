@@ -19,7 +19,7 @@ describe RouterUploaderService do
 
   describe '#aperta_id' do
     it 'returns a 7 digit string padded with zeros' do
-      expect(@service.aperta_id).to be == "000000#{paper.id}"
+      expect(@service.aperta_id).to be == paper.id.to_s.rjust(7, '0')
     end
   end
 end

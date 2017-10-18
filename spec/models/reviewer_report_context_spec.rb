@@ -49,5 +49,11 @@ describe ReviewerReportContext do
         check_render("{{ reviewer_name }}", '')
       end
     end
+
+    context 'submitted at' do
+      it 'returns submitted at date' do
+        expect(context.submitted_at).to eq(reviewer_report.submitted_at)
+      end
+    end
   end
 end

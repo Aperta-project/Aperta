@@ -5,7 +5,7 @@ module TahiStandardTasks
       @reviews = []
       reviews_with_num = []
       reviews_without_num = []
-      manuscript_object.draft_decision.reviewer_reports.each do |rr|
+      manuscript_object.draft_decision.reviewer_reports.where(state: 'submitted').each do |rr|
         context = ReviewerReportContext.new(rr)
         context.reviewer_number.present? ? reviews_with_num << context : reviews_without_num << context
       end

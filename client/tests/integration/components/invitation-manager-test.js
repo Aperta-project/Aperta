@@ -3,6 +3,7 @@ import page from 'tahi/tests/pages/invitation-manager';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import { moduleForComponent, test } from 'ember-qunit';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 
 moduleForComponent('invitation-manager', 'Integration | Component | invitation manager', {
   integration: true,
@@ -11,6 +12,8 @@ moduleForComponent('invitation-manager', 'Integration | Component | invitation m
     manualSetup(this.container);
     page.setContext(this);
     this.task = make('paper-reviewer-task', 'withInvitations');
+    var can = FakeCanService.create();
+    this.registry.register('service:can', can.allowPermission('manage_invitations', this.task).asService());
     this.render(hbs`{{invitation-manager task=task}}`);
   },
   afterEach() {

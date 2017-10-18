@@ -13,14 +13,6 @@ class TemplateContext < Liquid::Drop
     MergeFieldBuilder.merge_fields(self)
   end
 
-  def self.complex_merge_fields
-    []
-  end
-
-  def self.blacklisted_merge_fields
-    []
-  end
-
   def self.whitelist(*args)
     args.each do |method|
       delegate method, to: :@object

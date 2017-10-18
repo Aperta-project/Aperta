@@ -77,12 +77,15 @@ export default Ember.Component.extend({
   pastePostprocess(editor, fragment) {
     function deleteEmptyParagraph(elem) {
       if (elem.nodeName === 'P' && /^\s*$/.test(elem.innerText)) {
-        elem.remove();
+        $(elem).remove();
       } else {
         Array.from(elem.children).forEach(deleteEmptyParagraph);
       }
     }
+
     deleteEmptyParagraph(fragment.node);
+
+    if(Ember.isBlank(this.get('value'))) this.set('value', fragment.node.innerHTML);
   },
 
   postRender() {
@@ -101,7 +104,7 @@ export default Ember.Component.extend({
     options['autoresize_max_height'] = 500;
     options['autoresize_bottom_margin'] = 1;
     options['autoresize_on_init'] = true;
-    options['paste_postprocess'] = this.pastePostprocess;
+    options['paste_postprocess'] = this.pastePostprocess.bind(this);
 
     if (ENV.environment === 'development') {
       options['toolbar'] += ' code';
@@ -114,5 +117,20 @@ export default Ember.Component.extend({
     let style = this.get('editorStyle') || 'expanded';
     let options = Object.assign({}, configs[style]);
     return this.configureCommon(options);
-  })
+  }),
+
+  // newValueCheck makes sure a model change has really occurred before triggering a save.
+  // TinyMCE fires ValueChanged when any input event happens inside of the editor. This
+  // will cut down on needlessly replaying the same data to rails.
+  newValueCheck(editorValue) {
+    const modelValue = this.get('value');
+
+    // This will be true for TinyMCE editors that have focus when meta keys are pressed, and on mouse clicks.
+    if (modelValue === editorValue) return;
+
+    // This will be true for TinyMCE on the first click into a blank editor.
+    if (Ember.isBlank(modelValue) && Ember.isBlank(editorValue)) return;
+
+    this.get('onNewValue')(editorValue);
+  }
 });

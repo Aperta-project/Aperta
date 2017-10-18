@@ -68,6 +68,40 @@
               </div>
 
               <div class="form-group">
+                <label for="cc" class="text-bold">CC </label>
+                <div class="{{if ccErrorPresent 'error'}}">
+                  {{input class="form-control template-cc" value=template.cc key-down="handleInputChange"}}
+                  {{#if ccErrorPresent}}
+                    <div class="error">
+                      <span>{{fa-icon 'warning'}} Please correct the following syntax errors.</span>
+                      <ul>
+                        {{#each ccErrors as |error|}}
+                          <li>{{error}}</li>
+                        {{/each}}
+                      </ul>
+                    </div>
+                  {{/if}}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="bcc" class="text-bold">BCC </label>
+                <div class="{{if bccErrorPresent 'error'}}">
+                  {{input class="form-control template-bcc" value=template.bcc key-down="handleInputChange"}}
+                  {{#if bccErrorPresent}}
+                    <div class="error">
+                      <span>{{fa-icon 'warning'}} Please correct the following syntax errors.</span>
+                      <ul>
+                        {{#each bccErrors as |error|}}
+                          <li>{{error}}</li>
+                        {{/each}}
+                      </ul>
+                    </div>
+                  {{/if}}
+                </div>
+              </div>
+
+              <div class="form-group">
                 <label for="body" class="text-bold required-field-label">Body </label>
                 <div class="{{if (or bodyErrorPresent bodyEmpty) 'error'}}">
                   {{textarea class="form-control template-body" value=template.body key-down="handleInputChange" focus-out="checkBody"}}

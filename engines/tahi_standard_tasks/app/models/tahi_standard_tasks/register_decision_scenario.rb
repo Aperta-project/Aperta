@@ -1,12 +1,6 @@
 module TahiStandardTasks
   # Provides a template context for RegisterDecisionTasks
   class RegisterDecisionScenario < TemplateContext
-    def self.complex_merge_fields
-      [{ name: :manuscript, context: PaperContext },
-       { name: :journal, context: JournalContext },
-       { name: :reviews, context: ReviewerReportContext, many: true }]
-    end
-
     def manuscript
       @manuscript ||= PaperContext.new(paper)
     end

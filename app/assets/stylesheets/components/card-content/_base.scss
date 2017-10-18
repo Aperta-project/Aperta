@@ -11,3 +11,11 @@
 @import 'tech-check.scss';
 @import 'sendback-reason.scss';
 @import 'display-children';
+
+
+// These are base rules for all card content types
+.card-content {
+    .question-text, .content-text {
+        font-size: 20px;
+    }
+}

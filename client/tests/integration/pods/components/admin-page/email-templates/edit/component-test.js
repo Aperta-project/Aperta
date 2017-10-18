@@ -49,6 +49,8 @@ test('it displays a success message if save succeeds and disables save button', 
   assert.expect(2);
 
   let template = FactoryGuy.make('letter-template', { subject: 'foo', body: 'bar'});
+  // Saving letter templates now triggers a reload, so we need to noop that for tests
+  template.reload = function() {};
 
   let saveStub = sinon.stub(template, 'save');
   saveStub.returns(Ember.RSVP.Promise.resolve());

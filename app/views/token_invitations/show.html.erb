@@ -1,8 +1,12 @@
 <%= render layout: 'container' do %>
+  <div>
+    <img class="journal-logo" src="<%= @invitation.paper.journal.logo_url %>">
+  </div>
   <div class="pending-invitation">
     <h2 class='invitation-metadata'><%= @invitation.invitee_role %> Invitation |
+      <span class="normal-font-weight"><%= @invitation.paper.paper_type.capitalize %> Article</span> |
       <span class="date"><%= @invitation.created_at.strftime('%b %d, %Y') %></span></h2>
-    <h3 class="dashboard-paper-title"><img src='/images/manuscript-icon.svg' /> <%= @paper.title.html_safe %></h3>
+    <h3 class="paper-title"><%= @paper.title.html_safe %></h3>
       <% if @invitation.information %>
         <h4>Authors</h4>
         <p class="preserve-line-breaks"><%= @invitation.information %></p>
@@ -12,7 +16,11 @@
         <p><%= @paper.abstract.html_safe %></p>
       <% end %>
     <%= form_for @invitation, url: decline_token_invitation_path(@invitation.token), method: 'post'  do |f| %>
-      <%= link_to "Accept Reviewer Invitation", root_path, class: 'button-primary button--green' %>
+      <% if @invitation.invitee_role == 'Reviewer' %>
+        <%= link_to "Accept Reviewer Invitation", root_path, class: 'button-primary button--green' %>
+      <% else %>
+        <%= link_to "Accept Editor Invitation", invitation_accept_url({ token: @invitation.token }), class: 'button-primary button--green' %>
+      <% end %>
       <%= f.submit value: 'Decline', class: 'button-secondary button--green decline-button' %>
     <% end %>
   </div>

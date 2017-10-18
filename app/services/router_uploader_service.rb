@@ -44,10 +44,14 @@ class RouterUploaderService
     end
   end
 
+  def aperta_id
+    @paper.id.to_s.rjust(7, '0')
+  end
+
   def router_payload
     {
       metadata_filename: 'metadata.json',
-      aperta_id: @paper.short_doi,
+      aperta_id: aperta_id,
       files: @filenames.join(','),
       destination: @destination.first,
       journal_code: @paper.journal.doi_journal_abbrev,

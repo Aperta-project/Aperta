@@ -50,9 +50,13 @@ describe ReviewerReportContext do
       end
     end
 
-    context 'submitted at' do
+    context 'dates' do
       it 'returns submitted at date' do
         expect(context.submitted_at).to eq(reviewer_report.submitted_at)
+      end
+
+      it 'returns created at date' do
+        expect(context.created_at).to eq(reviewer_report.created_at)
       end
     end
   end

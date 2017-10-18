@@ -27,6 +27,10 @@ class ReviewerReportContext < TemplateContext
     reviewer_report.submitted_at
   end
 
+  def created_at
+    reviewer_report.created_at
+  end
+
   def rendered_answer_idents
     [
       'front_matter_reviewer_report--includes_unpublished_data--explanation',

@@ -10,16 +10,15 @@
   <div class="col-sm-6 col-md-3">
     <label class="correspondence-label">Date sent</label>
     <div class="inset-form-control">
-      <div class="inset-form-control-text">
-        {{error-message message=validationErrors.dateSent
-                        displayIcon=true
-                        displayText=false}}
-      </div>
-
       {{date-picker name='correspondence-date-sent'
                     value=dateSent
                     date=dateSent
                     class="correspondence-date-sent inset-form-control-input"}}
+    </div>
+    <div class="inset-form-control-text">
+      {{error-message message=validationErrors.dateSent
+                      displayIcon=true
+                      displayText=false}}
     </div>
   </div>
   <div class="col-sm-6 col-md-3">
@@ -164,8 +163,10 @@
 </div>
 <div class="row">
   <div class="col-sm-12">
-    <label class="correspondence-label">Contents</label>
     <div class="form-group">
+      <label class="correspondence-label">
+        Contents
+      </label>
       {{rich-text-editor
         editorStyle='basic'
         ident='correspondence-body'

@@ -6,7 +6,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   close: null,
   doneUploading: false,
   isUploading: false,
-  content: '',
+  contents: '',
   restless: Ember.inject.service(),
 
   currentTime: Ember.computed('model', function() {
@@ -23,7 +23,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   prepareModelDate() {
     let date = this.get('dateSent');
     let time = this.get('timeSent');
-    let m = moment.utc(date + ' ' + time, 'MM/DD/YYYY hh:mm a');
+    let m = moment.utc(date + ' ' + time, 'MM/DD/YYYY H:m');
     this.get('model').set('date', m.local().toJSON());
   },
 
@@ -38,10 +38,10 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   },
 
   validateTime() {
-    let timeIsValid = moment(this.get('timeSent'), 'hh:mm a').isValid();
+    let timeIsValid = moment(this.get('timeSent'), 'H:m').isValid();
 
     if (!timeIsValid) {
-      this.set('validationErrors.timeSent', 'Invalid Time. Format hh:mm a');
+      this.set('validationErrors.timeSent', 'Invalid Time. Format H:m');
     }
 
     return timeIsValid;
@@ -74,8 +74,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
   actions: {
     saveContentsBody(contents) {
-      this.set('content', contents);
-      // console.log('yayy');
+      this.set('model.body', contents);
     },
 
     removeAttachment() {

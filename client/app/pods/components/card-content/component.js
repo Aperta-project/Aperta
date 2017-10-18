@@ -46,7 +46,14 @@ export default Ember.Component.extend({
     return findNearestProperty(this, 'scenario');
   }),
 
-  hasLabel: Ember.computed('content.label', function() {
+  buttonTypes: ['export-paper', 'file-uploader'],
+  isButton: Ember.computed('content.contentType', function () {
+    let contentType = this.get('content.contentType');
+    return this.buttonTypes.includes(contentType);
+  }),
+
+  hasLabel: Ember.computed('content.label', 'isButton', function() {
+    if (this.get('isButton')) return false;
     return !Ember.isEmpty(this.get('content.label'));
   }),
 

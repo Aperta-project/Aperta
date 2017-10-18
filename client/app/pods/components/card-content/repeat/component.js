@@ -73,7 +73,7 @@ export default Ember.Component.extend({
   }),
 
   buildRepetition(previousRepetition) {
-    let position = previousRepetition ? previousRepetition.get('position') + 1 : 0;
+    let position = previousRepetition ? previousRepetition.get('position') + 1 : this.get('repetitions.length');
     let repetition = this.get('store').createRecord('repetition', {
       cardContent: this.get('content'),
       parent: this.get('repetition'),

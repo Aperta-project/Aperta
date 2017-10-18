@@ -28,8 +28,8 @@
       {{/each}}
     {{/if}}
   </div>
-  <a class="add {{unless canAddRepetition "disabled"}}" {{action "addRepetition" rep}} href="#">&#43; {{addLabelText}}</a>
+  <a class="add-repetition {{unless canAddRepetition "disabled"}}" {{action "addRepetition" rep}} href="#">&#43; {{addLabelText}}</a>
   <a {{action "reorderRepetition" rep 0}} href="#">Move to top</a>
 {{else}}
-  <a class="add {{unless canAddRepetition "disabled"}}" {{action "addRepetition"}} href="#">&#43; {{addLabelText}}</a>
+  <a class="add-repetition {{unless canAddRepetition "disabled"}}" {{action "addRepetition"}} href="#">&#43; {{addLabelText}}</a>
 {{/each}}

@@ -6,10 +6,9 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   close: null,
   doneUploading: false,
   isUploading: false,
-  contents: '',
   restless: Ember.inject.service(),
 
-  currentTime: Ember.computed('model', function() {
+  timeSent: Ember.computed('model', function() {
     let start = moment();
     // rounding up the minutes to the nearest hour down
     if (start.minutes() < 30) {

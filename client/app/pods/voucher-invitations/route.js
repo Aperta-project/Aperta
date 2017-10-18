@@ -7,6 +7,9 @@ export default Ember.Route.extend({
   setupController(controller, model) {
     this._super(...arguments);
 
+    model.setDeclined();
+    model.set('pendingFeedback', true);
+
     controller.set('invitations', [model]);
   },
 

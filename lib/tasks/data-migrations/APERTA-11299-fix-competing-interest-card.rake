@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/BlockLength
 namespace :data do
   namespace :migrate do
     desc <<-DESC

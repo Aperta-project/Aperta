@@ -92,8 +92,14 @@ class InvitationsController < ApplicationController
   def accept
     requires_user_can(:manage_invitations, invitation.task) unless invitation.invitee == current_user
     invitation.actor = current_user
-    invitation.accept!
-    Activity.invitation_accepted!(invitation, user: current_user)
+    invitee = invitation.invitee || User.create(invitation_accept_params)
+    if invitee.valid?
+      invitation.accept!
+      Activity.invitation_accepted!(invitation, user: current_user)
+    else
+      invitation.errros.add(:invitee, 'User creation error')
+      raise ActiveRecord::RecordInvalid, invitation
+    end
     render json: invitation
   end
 
@@ -151,6 +157,10 @@ class InvitationsController < ApplicationController
     params
       .require(:invitation)
       .permit(:id, :body, :email)
+  end
+
+  def invitation_accept_params
+    params.permit(:first_name, :last_name).merge(email: invitation.email)
   end
 
   def task

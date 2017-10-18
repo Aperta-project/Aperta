@@ -9,10 +9,26 @@ describe JIRAIntegrationService do
   end
 
   describe '#build_payload' do
+    let(:params) { { remarks: 'talks' } }
     it 'should return a properly formatted hash' do
-      payload = subject.build_payload('tim', 'talks')
+      payload = subject.build_payload('tim', params)
       expect(payload.dig(:fields, :summary)).to match(/tim/)
       expect(payload.dig(:fields, :description)).to eq('talks')
+    end
+
+    context 'with attachments' do
+      let(:params) do
+        {
+          remarks: 'talks',
+          screenshots: [
+            { url: 'http://example.com/file?name=awesomeness.gif', name: 'Awesomeness' }
+          ]
+        }
+      end
+      it 'should attach the links to the attachments' do
+        payload = subject.build_payload('tim', params)
+        expect(payload.dig(:fields, :description)).to match(/awesomeness\.gif/)
+      end
     end
   end
 end

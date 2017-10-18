@@ -1,4 +1,3 @@
-# Provides a template context for Answers
 class AnswerContext < TemplateContext
   whitelist :value_type, :string_value, :value
 

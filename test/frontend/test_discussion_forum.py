@@ -293,7 +293,6 @@ class DiscussionForumTest(CommonTest):
     logging.info(u'Logging in as user Collaborator 2: {0}'.format(collaborator_2))
     dashboard_page = self.cas_login(email=collaborator_2['email'])
     dashboard_page.page_ready()
-    dashboard_page.click_view_invitations()
     # go to article id short_doi
     dashboard_page.go_to_manuscript(short_doi)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -351,26 +350,27 @@ class DiscussionForumTest(CommonTest):
     assert msg_2 in ui_msg_2, 'Sent message {0} is not in the front end: {1}'\
         .format(msg_2, ui_msg_2)
 
-    manuscript_title = manuscript_page.get_paper_title_from_page()
-    manuscript_page.logout()
+    if web_page == 'manuscript viewer':
+      manuscript_title = manuscript_page.get_paper_title_from_page()
+      manuscript_page.logout()
 
-    # APERTA-9117
-    dashboard_page = self.cas_login(email=reviewer_login['email'])
-    dashboard_page.page_ready()
-    dashboard_page.click_view_invitations()
-    dashboard_page.accept_invitation(title=manuscript_title)
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer.page_ready()
-    paper_viewer.click_discussion_link()
-    paper_viewer.set_timeout(5)
-    try:
-      paper_viewer._get(paper_viewer._first_discussion_lnk)
-      raise AssertionError('Discussion found when reviewer should not have access.')
-    except ElementDoesNotExistAssertionError as e:
-      # We should get this failure.
-      logging.info(e)
-    finally:
-      paper_viewer.restore_timeout()
+      # APERTA-9117
+      dashboard_page = self.cas_login(email=reviewer_login['email'])
+      dashboard_page.page_ready()
+      dashboard_page.click_view_invitations()
+      dashboard_page.accept_invitation(title=manuscript_title)
+      paper_viewer = ManuscriptViewerPage(self.getDriver())
+      paper_viewer.page_ready()
+      paper_viewer.click_discussion_link()
+      paper_viewer.set_timeout(5)
+      try:
+        paper_viewer._get(paper_viewer._first_discussion_lnk)
+        raise AssertionError('Discussion found when reviewer should not have access.')
+      except ElementDoesNotExistAssertionError as e:
+        # We should get this failure.
+        logging.info(e)
+      finally:
+        paper_viewer.restore_timeout()
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

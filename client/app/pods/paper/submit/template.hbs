@@ -50,7 +50,7 @@
               <td>
                 <dl>
                   <dt>Would you like to post this paper as a preprint?</dt>
-                  <dd>{{#if preprintOptOut}}<b>No</b> -- I don't want to post to preprint.{{else}}<b>Yes</b> -- I want to post this paper to the preprint server.{{/if}}</dd>
+                  <dd>{{#if preprintOptOut}}<b>No</b>, I don't want to post a preprint.{{else}}<b>Yes</b>, I want to post a preprint.{{/if}}</dd>
                 </dl>
               </td>
             </tr>
@@ -73,7 +73,7 @@
               <td>
                 <p>
                   {{#each paper.authors as |author|}}
-                    <span>{{author.firstName}} {{if author.middleInitial author.middleInitial ''}} {{author.lastName}}{{#unless (eq author paper.authors.lastObject)}}<br/>{{/unless}}</span>
+                    <span>{{author.firstName}} {{if author.middleInitial author.middleInitial ''}} {{author.lastName}}{{#if author.affiliation}},&nbsp;&nbsp;{{author.affiliation}}{{/if}}{{#unless (eq author paper.authors.lastObject)}}<br/>{{/unless}}</span>
                   {{/each}}
                 </p>
               </td>

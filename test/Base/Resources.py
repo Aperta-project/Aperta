@@ -1914,6 +1914,17 @@ pp_optin_mmt = {'name'              : 'Preprint Eligible',
                 'preprint_eligible' : True
                 }
 
+pp_card_mmt = {'name'              : 'Preprint Elgible',
+                'user_tasks'        : ['Upload Manuscript'],
+                'staff_tasks'       : ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                       'Invite Academic Editor', 'Invite Reviewers', 'Preprint Posting',
+                                       'Production Metadata', 'Register Decision',
+                                       'Related Articles', 'Revision Tech Check', 'Send to Apex',
+                                       'Similarity Check', 'Title And Abstract'],
+                'uses_resrev_report': True,
+                'preprint_eligible' : False
+                }
+
 # The following MMT definitions are seed data for our demo environment only
 bio_essay = {'name':               'Essay',
              'user_tasks':         ['Competing Interests', 'Cover Letter', 'Upload Manuscript', 'Authors',

@@ -73,6 +73,7 @@ class WorkflowPage(AuthenticatedPage):
     self._invite_ae_card = (By.CSS_SELECTOR, 'div.paper-editor-task > a')
     self._invite_reviewers_card = (By.CSS_SELECTOR, 'div.paper-reviewer-task > a')
     self._new_taxon_card = (By.CSS_SELECTOR, 'div.taxon-task > a')
+    self._preprint_posting_card= (By.XPATH, "//a[.//span[contains(text(),'Preprint Posting')]]")
     self._production_metadata_card = (By.CSS_SELECTOR, 'div.production-metadata-task > a')
     self._register_decision_card = (By.CSS_SELECTOR, 'div.register-decision-task > a')
     self._related_articles_card = (By.CSS_SELECTOR, 'div.related-articles-task > a')
@@ -110,6 +111,10 @@ class WorkflowPage(AuthenticatedPage):
   def click_initial_decision_card(self):
     """Open the Initial Decision Card from the workflow page"""
     self._get(self._initial_decision_card).click()
+
+  def click_preprint_posting_card(self):
+    """Open the Preprint Posting Card from the workflow page"""
+    self._get(self._preprint_posting_card).click()
 
   def click_supporting_information_card(self):
     """Open the Supporting Information Card from the workflow page"""
@@ -353,6 +358,7 @@ class WorkflowPage(AuthenticatedPage):
     :return: None
     """
     self.click_add_new_card()
+    time.sleep(2)
     card_types = self._gets(self._card_types)
     for card in card_types:
       if card.text == card_title:

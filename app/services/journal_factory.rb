@@ -954,12 +954,10 @@ class JournalFactory
           {%- if review.status == 'completed' -%}
             ----------<br/>
             <p>Reviewer {{ review.reviewer_number }} {{ review.reviewer_name }}</p>
-            {%- for answer in review.answers -%}
-              {%- if review.rendered_answer_idents contains answer.ident -%}
-              <p>
-                {{ answer.value }}
-              </p>
-              {%- endif -%}
+            {%- for answer in review.rendered_answers -%}
+            <p>
+              {{ answer.value }}
+            </p>
             {%- endfor -%}
           {% endif %}
         {% endfor %}

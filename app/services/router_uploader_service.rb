@@ -45,7 +45,7 @@ class RouterUploaderService
   end
 
   def aperta_id
-    @paper.id.to_s.rjust(7, '0')
+    "aperta.#{@paper.id.to_s.rjust(7, '0')}"
   end
 
   def router_payload

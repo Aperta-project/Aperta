@@ -18,8 +18,9 @@ describe RouterUploaderService do
   end
 
   describe '#aperta_id' do
-    it 'returns a 7 digit string padded with zeros' do
-      expect(@service.aperta_id).to be == paper.id.to_s.rjust(7, '0')
+    it 'returns the word aperta concatenated with a 7 digit string padded with zeros' do
+      allow(paper).to receive(:id) { '1111' }
+      expect(@service.aperta_id).to be == 'aperta.0001111'
     end
   end
 end

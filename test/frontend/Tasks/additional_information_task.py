@@ -78,7 +78,11 @@ class AITask(BaseTask):
     if q1ans == 'Yes':
       self._wait_for_element(questions[0].find_element_by_tag_name('input'))
       questions[0].find_elements_by_tag_name('input')[0].click()
-      self.send_text_to_tiny_mce(data['q1_child_answer'], self._q1_data_editor)
+
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+        self.get_rich_text_editor_instance(self._q1_data_editor)
+      self.tmce_clear_rich_text(tinymce_editor_instance_iframe)
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, data['q1_child_answer'])
 
       # Handles specifying an upload file
       q1_file_name = data['q1_child_file'][0]
@@ -103,10 +107,13 @@ class AITask(BaseTask):
     q2ans = data['q2']
     logging.debug('The answer to question 2 is {0}'.format(q2ans))
     if q2ans == 'Yes':
-      # wait for the element to be attached to the DOM
       self._wait_for_element(questions[1].find_element_by_tag_name('input')) # radio button
       questions[1].find_element_by_tag_name('input').click()
-      self.send_text_to_tiny_mce(data['q2_child1_answer'], self._q2_data_editor)
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+        self.get_rich_text_editor_instance(self._q2_data_editor)
+      logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
+      self.tmce_clear_rich_text(tinymce_editor_instance_iframe)
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, data['q2_child1_answer'])
 
       # there are no specific attributes for simple text field, using relative locator
       # having tag name 'input' and class 'form-control'
@@ -162,8 +169,11 @@ class AITask(BaseTask):
     q5ans = data['q5']
     logging.debug('The answers to question 5 is {0}'.format(q5ans))
     if q5ans:
-      q5_answer = self.send_text_to_tiny_mce(q5ans, self._q5_data_editor)
-      logging.info('Add\'l Info Q5 answer is: {0}'.format(q5_answer))
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+        self.get_rich_text_editor_instance(self._q5_data_editor)
+      self.tmce_clear_rich_text(tinymce_editor_instance_iframe)
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, q5ans)
+      logging.info('Add\'l Info Q5 answer is: {0}'.format(q5ans))
 
     manuscript_id = self._get(self._paper_sidebar_state_information)
     self.scroll_element_into_view_below_toolbar(manuscript_id)
@@ -251,22 +261,6 @@ class AITask(BaseTask):
     self._wait_for_element(questions[0].find_element_by_tag_name('input'))
     first_input = questions[0].find_element_by_tag_name('input')
     return first_input.is_enabled()
-
-  def send_text_to_tiny_mce(self,text2send, name=None):
-    """
-    Sending content to tinyMCE editor
-    :param name: the data-editor value of the div.rich-text-editor element you wish to interact with
-    :param text2send: text to send
-    :return: text entered to tinyMCE editor
-    """
-    tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
-      self.get_rich_text_editor_instance(name)
-    logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
-    self.tmce_clear_rich_text(tinymce_editor_instance_iframe)
-    self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=text2send)
-    # Gratuitous verification
-    verified_answer = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
-    return verified_answer
 
   def send_content_to_text_field(self, input_field, text2send):
     """

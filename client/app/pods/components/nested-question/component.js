@@ -102,7 +102,22 @@ export default Component.extend({
     if(answer.get('owner.isNew')){
       // no-op
     } else if(answer.get('wasAnswered')){
-      return answer.save();
+      // Handle the edge case where an answer was deleted in the UI, and two inputs get posted
+      // before Ember sets the answer ID. This would create two answer records associated with
+      // the nested question, and cause unexpected data changes in the view.
+      if (answer.get('isSaving')) {
+        answer.set('cachedSave', answer.get('value'));
+      } else {
+        return answer.save().then((session) => {
+          let cachedSave = answer.get('cachedSave');
+          if (cachedSave) {
+            session.set('data.value', cachedSave);
+            answer.set('value', cachedSave);
+            answer.set('cachedSave', null);
+            answer.save();
+          }
+        });
+      }
     } else {
       return answer.destroyRecord().then(() => this.resetAnswer());
     }

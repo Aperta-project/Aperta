@@ -2,14 +2,12 @@ import Ember from 'ember';
 import { test } from 'qunit';
 import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 import setupMockServer from 'tahi/tests/helpers/mock-server';
-import { make } from 'ember-data-factory-guy';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import { make, mockFindRecord, mockFindAll } from 'ember-data-factory-guy';
+import * as TestHelper from 'ember-data-factory-guy';
 import page from 'tahi/tests/pages/ad-hoc-task';
 import Factory from 'tahi/tests/helpers/factory';
 
 let server = null;
-
-const { mockFind } = TestHelper;
 
 const paperTaskURL = function paperTaskURL(paper, task) {
   return '/papers/' + paper.get('shortDoi') + '/tasks/' + task.get('id');
@@ -18,7 +16,6 @@ const paperTaskURL = function paperTaskURL(paper, task) {
 moduleForAcceptance('Integration: AdHoc Card', {
   afterEach() {
     server.restore();
-    Ember.run(function() { TestHelper.teardown(); });
   },
 
   beforeEach() {
@@ -47,8 +44,8 @@ moduleForAcceptance('Integration: AdHoc Card', {
       responseText: []
     });
     let journal = make('journal');
-    mockFind('journal').returns({ model: journal});
-    TestHelper.mockFindAll('journal').returns({models: [journal]});
+    mockFindRecord('journal').returns({ model: journal});
+    mockFindAll('journal').returns({models: [journal]});
   }
 });
 
@@ -58,7 +55,7 @@ test('Changing the title on an AdHoc Task', function(assert) {
   Factory.createPermission('AdHocTask', task.id, ['edit', 'view', 'manage']);
 
   TestHelper.mockPaperQuery(paper);
-  mockFind('task').returns({ model: task });
+  mockFindRecord('task').returns({ json: {task: {type: 'ad-hoc-task', id: task.id}} });
   visit(paperTaskURL(paper, task));
 
   page.setTitle('Shazam!');
@@ -76,7 +73,7 @@ test('AdHoc Task text block', function(assert) {
   Factory.createPermission('AdHocTask', task.id, ['edit', 'view', 'manage']);
 
   TestHelper.mockPaperQuery(paper);
-  mockFind('task').returns({ model: task });
+  mockFindRecord('task').returns({ json: {task: {type: 'ad-hoc-task', id: task.id}} });
 
   visit(paperTaskURL(paper, task));
 
@@ -101,7 +98,7 @@ test('AdHoc Task list block', function(assert) {
   Factory.createPermission('AdHocTask', task.id, ['edit', 'view', 'manage']);
 
   TestHelper.mockPaperQuery(paper);
-  mockFind('task').returns({ model: task });
+  mockFindRecord('task').returns({ json: {task: {type: 'ad-hoc-task', id: task.id}} });
 
   visit(paperTaskURL(paper, task));
 
@@ -129,7 +126,7 @@ test('AdHoc Task email block', function(assert) {
   Factory.createPermission('AdHocTask', task.id, ['edit', 'view', 'add_email_participants', 'manage']);
 
   TestHelper.mockPaperQuery(paper);
-  mockFind('task').returns({ model: task });
+  mockFindRecord('task').returns({ json: {task: {type: 'ad-hoc-task', id: task.id}} });
 
   $.mockjax({type: 'PUT',
     url: /\/api\/tasks\/\d+\/send_message/,

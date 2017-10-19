@@ -2,6 +2,7 @@ import Ember from 'ember';
 import { task } from 'ember-concurrency';
 
 export default Ember.Component.extend({
+  classNames: ['card-content', 'card-content-export-paper'],
   owner: null, //owner
   content: null, //card content
   disabled: false,

@@ -1,5 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import Ember from 'ember';
 import { manualSetup, make, mockUpdate } from 'ember-data-factory-guy';
 import Factory from 'tahi/tests/helpers/factory';
 import FakeCanService from 'tahi/tests/helpers/fake-can-service';
@@ -29,7 +30,7 @@ moduleForComponent(
     manualSetup(this.container);
     $.mockjax.clear();
 
-    this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+    this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
     this.registry.register('service:can', FakeCanService);
 
     emberContainer = this.container;

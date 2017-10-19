@@ -219,8 +219,9 @@ test('remove link is not rendered if canRemoveSingleUser is set to false', funct
 });
 
 test('remove link is not rendered if there are not currentParticipants but canRemoveSingleUser is true', function(assert) {
+  this.set('currentParticipants', []);
   this.render(hbs`
-   {{participant-selector currentParticipants=[]
+   {{participant-selector currentParticipants=currentParticipants
                           url="url"
                           displayEmails=false
                           searching=searchingParticipant
@@ -237,7 +238,8 @@ test('remove link is not rendered if there are not currentParticipants but canRe
   assert.ok(!remove.length, 'remove is not available because there are not participants');
 });
 
-moduleFor('component:participant-selector', 'Unit | Component | participant selector');
+
+moduleFor('component:participant-selector', 'Unit | Component | participant selector', {integration: true});
 
 test('participantUrl defaults to the filtered users endpoint for the given paperId', function(assert) {
   assert.equal(

@@ -16,9 +16,10 @@ class JIRAIntegrationService
       }
     }.freeze
 
-    def create_issue(user_full_name, remarks)
+    def create_issue(user_full_name, feedback_params)
+      feedback_params.deep_symbolize_keys!
       session_token = authenticate!
-      payload = build_payload(user_full_name, remarks)
+      payload = build_payload(user_full_name, feedback_params)
       faraday_connection.post do |req|
         req.url TahiEnv.jira_create_issue_url
         req.body = payload.to_json
@@ -44,12 +45,26 @@ class JIRAIntegrationService
       auth_response_body[:session]
     end
 
-    def build_payload(user_full_name, remarks)
+    def build_payload(user_full_name, feedback_params)
+      description = feedback_params[:remarks]
+      description += "\n\nAttachments:\n#{attachment_urls(feedback_params)}" if attachments_exist?(feedback_params)
       CREATE_ISSUE_FIELDS.deep_merge(fields:
       {
         "summary": "Aperta Feedback from #{user_full_name}.",
-        "description": remarks
+        "description": description
       })
+    end
+
+    def attachment_urls(feedback_params)
+      result = ''
+      feedback_params.dig(:screenshots).each do |screenshot|
+        result = screenshot[:url] + "\n"
+      end
+      result
+    end
+
+    def attachments_exist?(feedback_params)
+      feedback_params.key?(:screenshots)
     end
 
     def faraday_connection

@@ -2,9 +2,8 @@ import Ember from 'ember';
 import { test } from 'ember-qunit';
 import startApp from 'tahi/tests/helpers/start-app';
 import setupMockServer from '../helpers/mock-server';
-import { paperWithParticipant } from '../helpers/setups';
 import Factory from '../helpers/factory';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 
 let App = null;
 let server = null;
@@ -34,7 +33,7 @@ let PTSortQuery = {
   }]
 };
 
-module('Integration: Paper Tracker', {
+moduleForAcceptance('Integration: Paper Tracker', {
   afterEach: function() {
     server.restore();
     Ember.run(function() {

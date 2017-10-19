@@ -44,7 +44,7 @@ test(
         }
       },
       children: [
-        FactoryGuy.make('card-content', 'short-input', { text: 'Child 1' })
+        FactoryGuy.make('card-content', 'shortInput', { text: 'Child 1' })
       ]
     });
     this.set('content', content);
@@ -197,24 +197,25 @@ test(
     let owner = FactoryGuy.make('custom-card-task');
 
     let contentRoot = owner.get('cardVersion.contentRoot');
-    let displayWithValueContent = FactoryGuy.make('card-content', { visibleWithParentAnswer: "banana" });
-    let childContent = FactoryGuy.make('card-content', { text: "what color is the sky?" });
+    let displayWithValueContent = FactoryGuy.make('card-content', { visibleWithParentAnswer: 'banana' });
+    let childContent = FactoryGuy.make('card-content', { text: 'what color is the sky?' });
 
-    contentRoot.set('unsortedChildren', [displayWithValueContent]);
-    displayWithValueContent.set('unsortedChildren', [childContent]);
+    Ember.run(() => { // setting unsorted children needs a run loop
+      contentRoot.set('unsortedChildren', [displayWithValueContent]);
+      displayWithValueContent.set('unsortedChildren', [childContent]);
 
-    let parentAnswer = FactoryGuy.make('answer', { owner: owner, cardContent: contentRoot, value: "banana" });
-    let childAnswer = FactoryGuy.make('answer', { owner: owner, cardContent: childContent, value: "THE CORRECT ANSWER" });
-    const destroyRecord = sinon.spy();
-    childAnswer.set('destroyRecord', destroyRecord);
+      let parentAnswer = FactoryGuy.make('answer', { owner: owner, cardContent: contentRoot, value: 'banana' });
+      let childAnswer = FactoryGuy.make('answer', { owner: owner, cardContent: childContent, value: 'THE CORRECT ANSWER' });
+      const destroyRecord = sinon.spy();
+      childAnswer.set('destroyRecord', destroyRecord);
 
-    this.set('owner', owner);
-    this.set('content', displayWithValueContent);
-    this.render(template);
-
-    assert.textPresent('.removing-answers-test', 'what color is the sky?');
-    parentAnswer.set('value', 'pineapple');
-    assert.textNotPresent('.removing-answers-test', 'actual text');
-    assert.ok(destroyRecord.called, 'destroyRecord was called');
+      this.set('owner', owner);
+      this.set('content', displayWithValueContent);
+      this.render(template);
+      assert.textPresent('.removing-answers-test', 'what color is the sky?');
+      parentAnswer.set('value', 'pineapple');
+      assert.textNotPresent('.removing-answers-test', 'actual text');
+      assert.ok(destroyRecord.called, 'destroyRecord was called');
+    });
   }
 );

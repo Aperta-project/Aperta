@@ -37,7 +37,6 @@ export default DS.Model.extend({
   figures: hasMany('figure', { inverse: 'paper' }),
   groupAuthors: hasMany('group-author', { async: false }),
   journal: belongsTo('journal'),
-  manuscriptPageTasks: hasMany('task', { polymorphic: true }),
 
   file: belongsTo('manuscript-attachment', { async: false}),
   sourcefile: belongsTo('sourcefile-attachment', { async: false}),

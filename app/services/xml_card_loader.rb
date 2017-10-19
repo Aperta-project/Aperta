@@ -86,13 +86,6 @@ class XmlCardLoader
     end
   end
 
-  def build_card_content_validations(content)
-    content.child_elements('validation').map do |validation|
-      attributes = card_content_validation_attributes(validation)
-      CardContentValidation.new(attributes)
-    end
-  end
-
   def card_version_attributes
     {
       version:

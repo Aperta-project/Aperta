@@ -13,7 +13,7 @@ moduleForComponent('nested-question-textarea', 'Integration | Component | nested
   beforeEach() {
     registerCustomAssertions();
     manualSetup(this.container);
-    this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+    this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
     this.registry.register('service:can', FakeCanService);
 
     this.getAnswers = function() {
@@ -36,7 +36,7 @@ test('saves on change events', function(assert) {
   this.set('task', task);
 
   this.render(hbs`{{nested-question-textarea ident="foo" owner=task}}`);
-  $.mockjax({url: url, type: 'POST', status: 204, responseText: '{}'});
+  $.mockjax({url: url, type: 'POST', status: 201, responseText: {nested_question_answer: {id: '1'}}});
   setRichText('foo', 'new comment');
 
   return wait().then(() => {

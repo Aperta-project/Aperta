@@ -2,7 +2,9 @@
 class TemplateContext < Liquid::Drop
   def self.scenarios
     [
+      PaperScenario,
       ReviewerReportScenario,
+      InvitationScenario,
       TahiStandardTasks::PaperReviewerScenario,
       TahiStandardTasks::PreprintDecisionScenario,
       TahiStandardTasks::RegisterDecisionScenario

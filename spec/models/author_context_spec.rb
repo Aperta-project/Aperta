@@ -19,6 +19,14 @@ describe AuthorContext do
       check_render("{{ first_name }}", author.first_name)
     end
 
+    it 'renders a last name' do
+      check_render("{{ last_name }}", author.last_name)
+    end
+
+    it 'renders an email' do
+      check_render("{{ email }}", author.email)
+    end
+
     it 'renders an author initial' do
       check_render("{{ author_initial }}", author.author_initial)
     end

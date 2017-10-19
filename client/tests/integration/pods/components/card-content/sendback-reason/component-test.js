@@ -15,7 +15,7 @@ moduleForComponent('card-content/sendback-reason', 'Integration | Component | ca
     this.set('owner', make('custom-card-task'));
     this.set('content', Ember.Object.create({ ident: 'test' }));
     this.set('answer', Ember.Object.create({ value: null }));
-    this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+    this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
   }
 });
 

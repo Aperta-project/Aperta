@@ -11,20 +11,17 @@ export default DS.Store.extend({
 
   getPolymorphic(modelName, id) {
     var task = null;
-    if (modelName === 'task' && (task = this.findTask(id))) {
+    if (modelName === 'task' && (task = this.peekTask(id))) {
       return task;
     } else {
       return this.peekRecord(modelName, id);
     }
   },
 
-  findTask(id) {
-    let matchingTask = this.allTaskClasses().find(function(tm) {
-      return tm.idToRecord[id];
-    });
-    if (matchingTask) {
-      return this.peekRecord(matchingTask.type.modelName, id);
-    }
+  peekTask(id) {
+    return this.allTaskClasses().map((name) => {
+      return this.peekRecord(name, id);
+    }).compact().get('firstObject');
   },
 
   findOrPush(type, modelData) {
@@ -51,15 +48,9 @@ export default DS.Store.extend({
   },
 
   allTaskClasses() {
-    return Object.keys(this.typeMaps).reduce((function(_this) {
-      return function(memo, key) {
-        let typeMap = _this.typeMaps[key];
-        if (typeMap.type.toString().match(/:.+task:/)) {
-          memo.addObject(typeMap);
-        }
-        return memo;
-      };
-    })(this), []);
+    return Object.keys(this._identityMap._map).filter((k) => {
+      return k.match(/-task/);
+    });
   },
 
   // These are helper methods to get an answer from the already fetched, stored,

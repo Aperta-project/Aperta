@@ -21,7 +21,7 @@ export default Ember.Controller.extend(PaperBase, Discussions,  {
   downloadsVisible: false,
 
   generateTaskVersionURL(task) {
-    return this.get('routing.router.router').generate(
+    return this.get('routing.router._routerMicrolib').generate(
       'paper.task.version',
       task.get('paper'),
       task.get('id'),
@@ -35,7 +35,7 @@ export default Ember.Controller.extend(PaperBase, Discussions,  {
   },
 
   generatePaperVersionURL(paper) {
-    return this.get('routing.router.router').generate(
+    return this.get('routing.router._routerMicrolib').generate(
       'paper.versions',
       paper,
       {
@@ -49,7 +49,7 @@ export default Ember.Controller.extend(PaperBase, Discussions,  {
 
   actions: {
     viewCard(task) {
-      const r = this.get('routing.router.router');
+      const r = this.get('routing.router._routerMicrolib');
       const newURL = this.generateTaskVersionURL(task);
       const previousURL = this.generatePaperVersionURL(task.get('paper'));
 
@@ -63,7 +63,7 @@ export default Ember.Controller.extend(PaperBase, Discussions,  {
     },
 
     hideTaskOverlay() {
-      this.get('routing.router.router')
+      this.get('routing.router._routerMicrolib')
           .updateURL(this.get('previousURL'));
 
       this.set('showTaskOverlay', false);

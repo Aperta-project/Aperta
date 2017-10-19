@@ -1,25 +1,16 @@
 import Ember from 'ember';
-import { module, test } from 'qunit';
-import startApp from 'tahi/tests/helpers/start-app';
+import { test } from 'qunit';
 import { make } from 'ember-data-factory-guy';
 import Factory from '../helpers/factory';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
+import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 
-const { mockCreate, mockFind } = TestHelper;
+const { mockCreate, mockFindRecord } = TestHelper;
 
-let App = null;
 let paper, topic;
 
-module('Integration: Discussions', {
-  afterEach() {
-    Ember.run(function() { TestHelper.teardown(); });
-    Ember.run(App, 'destroy');
-  },
-
+moduleForAcceptance('Integration: Discussions', {
   beforeEach() {
-    App = startApp();
-    TestHelper.setup(App);
-
     paper = make('paper_with_discussion', { phases: [], tasks: [] });
     topic = make(
       'topic_with_replies',
@@ -50,12 +41,12 @@ module('Integration: Discussions', {
     $.mockjax({url: /\/api\/papers\/\d+\/manuscript_manager/, status: 204});
     $.mockjax({url: /\/api\/journals/, type: 'GET', status: 200, responseText: { journals: [] }});
 
-    mockFind('paper').returns({ model: paper });
+    mockFindRecord('paper').returns({ model: paper });
     TestHelper.mockFindAll('discussion-topic', 1);
 
     Factory.createPermission('Paper', paper.id, ['manage_workflow', 'start_discussion']);
 
-    const restless = App.__container__.lookup('service:restless');
+    const restless = this.application.__container__.lookup('service:restless');
     restless['delete'] = function() {
       return Ember.RSVP.resolve({});
     };
@@ -64,7 +55,7 @@ module('Integration: Discussions', {
 
 test('can see a list of topics', function(assert) {
   Ember.run(function() {
-    mockFind('discussion-topic').returns({ model: topic });
+    mockFindRecord('discussion-topic').returns({ model: topic });
 
     visit('/papers/' + paper.id + '/workflow/discussions/');
 
@@ -77,7 +68,7 @@ test('can see a list of topics', function(assert) {
 
 test('can see a list of topics for /discussions', function(assert) {
   Ember.run(function() {
-    mockFind('discussion-topic').returns({ model: topic });
+    mockFindRecord('discussion-topic').returns({ model: topic });
 
     visit('/discussions/' + paper.id);
 
@@ -90,7 +81,7 @@ test('can see a list of topics for /discussions', function(assert) {
 
 test('cannot create discussion without title', function(assert) {
   Ember.run(function() {
-    mockFind('discussion-topic').returns({ model: topic });
+    mockFindRecord('discussion-topic').returns({ model: topic });
     visit('/papers/' + paper.id + '/workflow/discussions/new');
     click('#create-topic-button');
 
@@ -103,7 +94,7 @@ test('cannot create discussion without title', function(assert) {
 
 test('cannot create discussion without title for /discussions', function(assert) {
   Ember.run(function() {
-    mockFind('discussion-topic').returns({ model: topic });
+    mockFindRecord('discussion-topic').returns({ model: topic });
 
     visit('/discussions/' + paper.id + '/new');
     click('#create-topic-button');
@@ -119,7 +110,7 @@ test('can see a non-editable topic with view permissions', function(assert) {
   Factory.createPermission('DiscussionTopic', 1, ['view']);
 
   Ember.run(function() {
-    mockFind('discussion-topic').returns({ model: topic });
+    mockFindRecord('discussion-topic').returns({ model: topic });
     visit('/papers/' + paper.id + '/workflow/discussions/' + topic.get('id'));
 
     andThen(function() {
@@ -133,7 +124,7 @@ test('can see a non-editable topic with view permissions for /discussions', func
   Factory.createPermission('DiscussionTopic', 1, ['view']);
 
   Ember.run(function() {
-    mockFind('discussion-topic').returns({ model: topic });
+    mockFindRecord('discussion-topic').returns({ model: topic });
 
     visit('/discussions/' + paper.id + '/' + topic.get('id'));
     andThen(function() {
@@ -149,8 +140,8 @@ test('can reply to a topic with view permissions', function(assert) {
   const topicScreen = '/papers/' + paper.id + '/workflow/discussions/' + topic.get('id');
 
   Factory.createPermission('DiscussionTopic', 1, ['view']);
-  mockFind('discussion-topic').returns({ model: topic });
-  mockCreate('discussion-reply').returns({ body: replyText });
+  mockFindRecord('discussion-topic').returns({ model: topic });
+  mockCreate('discussion-reply');
 
   visit(topicScreen).then(function() {
     triggerEvent(find('.new-comment-field'), 'focus').then(function() {
@@ -170,8 +161,8 @@ test('can reply to a topic with view permissions for /discussions', function(ass
   const topicScreen = '/discussions/' + paper.id + '/' + topic.get('id');
 
   Factory.createPermission('DiscussionTopic', 1, ['view']);
-  mockFind('discussion-topic').returns({ model: topic });
-  mockCreate('discussion-reply').returns({ body: replyText });
+  mockFindRecord('discussion-topic').returns({ model: topic });
+  mockCreate('discussion-reply');
 
   visit(topicScreen).then(function() {
     triggerEvent(find('.new-comment-field'), 'focus').then(function() {
@@ -191,7 +182,7 @@ test('reply is cached if unsaved', function(assert) {
   const replyText = 'test';
 
   Factory.createPermission('DiscussionTopic', 1, ['view']);
-  mockFind('discussion-topic').returns({ model: topic });
+  mockFindRecord('discussion-topic').returns({ model: topic });
 
   visit(topicScreen).then(function() {
     find('.new-comment-field').val(replyText).trigger('keyup');
@@ -210,7 +201,7 @@ test('reply is cached if unsaved for /discussions', function(assert) {
   const replyText = 'test';
 
   Factory.createPermission('DiscussionTopic', 1, ['view']);
-  mockFind('discussion-topic').returns({ model: topic });
+  mockFindRecord('discussion-topic').returns({ model: topic });
 
   visit(topicScreen).then(function() {
     find('.new-comment-field').val(replyText).trigger('keyup');
@@ -228,7 +219,7 @@ test('comment body line returns converted to break tags', function(assert) {
   Factory.createPermission('DiscussionTopic', 1, ['view']);
 
   Ember.run(function() {
-    mockFind('discussion-topic').returns({ model: topic });
+    mockFindRecord('discussion-topic').returns({ model: topic });
     visit('/papers/' + paper.id + '/workflow/discussions/' + topic.get('id'));
 
     andThen(function() {
@@ -242,7 +233,7 @@ test('comment body line returns converted to break tags for /discussions', funct
   Factory.createPermission('DiscussionTopic', 1, ['view']);
 
   Ember.run(function() {
-    mockFind('discussion-topic').returns({ model: topic });
+    mockFindRecord('discussion-topic').returns({ model: topic });
     visit('/discussions/' + paper.id + '/' + topic.get('id'));
 
     andThen(function() {
@@ -257,7 +248,7 @@ test('can see an editable topic with edit permissions', function(assert) {
   Factory.createPermission('DiscussionTopic', 1, ['view', 'edit']);
 
   Ember.run(function() {
-    mockFind('discussion-topic').returns({ model: topic });
+    mockFindRecord('discussion-topic').returns({ model: topic });
     visit('/papers/' + paper.id + '/workflow/discussions/' + topic.get('id'));
 
     andThen(function() {
@@ -271,7 +262,7 @@ test('can see an editable topic with edit permissions for /discussions', functio
   Factory.createPermission('DiscussionTopic', 1, ['view', 'edit']);
 
   Ember.run(function() {
-    mockFind('discussion-topic').returns({ model: topic });
+    mockFindRecord('discussion-topic').returns({ model: topic });
     visit('/discussions/' + paper.id + '/' + topic.get('id'));
 
     andThen(function() {
@@ -285,7 +276,7 @@ test('cannot persist empty title', function(assert) {
   Factory.createPermission('DiscussionTopic', 1, ['view', 'edit']);
 
   Ember.run(function() {
-    mockFind('discussion-topic').returns({ model: topic });
+    mockFindRecord('discussion-topic').returns({ model: topic });
     visit('/papers/' + paper.id + '/workflow/discussions/' + topic.get('id'));
 
     andThen(function() {
@@ -306,7 +297,7 @@ test('cannot persist empty title for /discussions', function(assert) {
   Factory.createPermission('DiscussionTopic', 1, ['view', 'edit']);
 
   Ember.run(function() {
-    mockFind('discussion-topic').returns({ model: topic });
+    mockFindRecord('discussion-topic').returns({ model: topic });
     visit('/discussions/' + paper.id + '/' + topic.get('id'));
 
     andThen(function() {
@@ -325,7 +316,7 @@ test('cannot persist empty title for /discussions', function(assert) {
 
 test('pops out discussions', function(assert){
   Ember.run(function() {
-    mockFind('discussion-topic').returns({ model: topic });
+    mockFindRecord('discussion-topic').returns({ model: topic });
 
     visit('/papers/' + paper.id + '/workflow/discussions/');
 

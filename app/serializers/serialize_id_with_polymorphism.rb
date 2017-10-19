@@ -9,7 +9,6 @@ module SerializeIdWithPolymorphism
                 else
                   raise "The task type: '#{item.type}' is not qualified."
                 end
-
-    { id: item.id, type: task_type }
+    { id: item.id, type: task_type.underscore.dasherize }
   end
 end

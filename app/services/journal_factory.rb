@@ -133,7 +133,6 @@ class JournalFactory
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:manage, applies_to: klass)
-        role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
         role.ensure_permission_exists(:manage_scheduled_events, applies_to: klass)
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
@@ -219,6 +218,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
+      role.ensure_permission_exists(:manage_paper_authors, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
       role.ensure_permission_exists(:perform_similarity_check, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
@@ -278,6 +278,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
+      role.ensure_permission_exists(:manage_paper_authors, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
       role.ensure_permission_exists(:perform_similarity_check, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
@@ -351,7 +352,6 @@ class JournalFactory
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:manage, applies_to: klass)
-        role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
@@ -450,6 +450,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
+      role.ensure_permission_exists(:manage_paper_authors, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
       role.ensure_permission_exists(:perform_similarity_check, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
@@ -956,12 +957,10 @@ class JournalFactory
           {%- if review.status == 'completed' -%}
             ----------<br/>
             <p>Reviewer {{ review.reviewer_number }} {{ review.reviewer_name }}</p>
-            {%- for answer in review.answers -%}
-              {%- if review.rendered_answer_idents contains answer.ident -%}
-              <p>
-                {{ answer.value }}
-              </p>
-              {%- endif -%}
+            {%- for answer in review.rendered_answers -%}
+            <p>
+              {{ answer.value }}
+            </p>
             {%- endfor -%}
           {% endif %}
         {% endfor %}

@@ -1,4 +1,3 @@
-# Provides a template context for ReviewerReports
 class ReviewerReportContext < TemplateContext
   include ActionView::Helpers::SanitizeHelper
 
@@ -26,9 +25,15 @@ class ReviewerReportContext < TemplateContext
 
   def rendered_answer_idents
     [
+      'front_matter_reviewer_report--suitable--comment',
       'front_matter_reviewer_report--includes_unpublished_data--explanation',
       'reviewer_report--comments_for_author'
     ]
+  end
+
+  def rendered_answers
+    rendered_answer_idents.map { |ident| answers.find { |answer| answer.ident == ident } }
+      .compact
   end
 
   private

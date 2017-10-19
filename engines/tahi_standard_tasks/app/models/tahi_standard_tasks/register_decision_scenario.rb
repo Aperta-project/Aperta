@@ -1,26 +1,11 @@
 module TahiStandardTasks
-  # Provides a template context for RegisterDecisionTasks
-  class RegisterDecisionScenario < TemplateContext
-    def manuscript
-      @manuscript ||= PaperContext.new(paper)
-    end
-
-    def journal
-      @journal ||= JournalContext.new(paper.journal)
-    end
-
+  class RegisterDecisionScenario < PaperScenario
     def reviews
-      return unless paper.draft_decision
-      @reviews ||= paper.draft_decision.reviewer_reports.map do |rr|
+      return unless manuscript_object.draft_decision
+      @reviews ||= manuscript_object.draft_decision.reviewer_reports.map do |rr|
         ReviewerReportContext.new(rr)
       end
       @reviews.sort_by(&:reviewer_number)
-    end
-
-    private
-
-    def paper
-      @object
     end
   end
 end

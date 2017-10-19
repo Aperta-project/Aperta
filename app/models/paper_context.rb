@@ -1,4 +1,3 @@
-# Provides a template context for Papers
 class PaperContext < TemplateContext
   include UrlBuilder
 

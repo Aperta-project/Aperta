@@ -31,39 +31,30 @@ valueChanged=(action actionStub)
 test(`it displays content.text as unescaped html in a <p> if a label is also present`, function(
   assert
 ) {
-  this.set(
-    'content',
-    this.labelAndText
-  );
-
+  this.set('content', this.labelAndText);
   this.render(template);
   assert.elementFound('.content-text b.foo');
 });
 
-test(`it uses the content.text as the label if a label is not present`, function(
+test(`it shows the label if present`, function(
   assert
 ) {
-  this.set('content', this.textOnly);
-
+  this.set('content', this.labelAndText);
   this.render(template);
-  assert.elementFound('label b.foo');
+  assert.elementFound('label');
 });
 
-test(`it uses the content.text as the label if a label is not present`, function(
+test(`it shows no label unless present`, function(
   assert
 ) {
   this.set('content', this.textOnly);
-
   this.render(template);
-  assert.elementFound('label b.foo');
-  assert.elementNotFound('.content-text', 'does not render an empty .content-text div when no content label');
+  assert.elementNotFound('label b.foo');
+  assert.elementFound('.content-text', 'does not render an empty .content-text div when no content label');
 });
 
 test(`it displays content.label as unescaped html`, function(assert) {
-  this.set(
-    'content',
-    Ember.Object.create({ label: '<b class="foo">Foo</b>' })
-  );
+  this.set('content', Ember.Object.create({ label: '<b class="foo">Foo</b>' }));
   this.render(template);
   assert.elementFound('label b.foo');
   assert.elementNotFound('.content-text', 'does not render an empty .content-text div when no content text');
@@ -87,12 +78,13 @@ test(`the label is for the input`, function(assert) {
   assert.equal(this.$('label').attr('for'), this.$('input').attr('name'));
 });
 
-test('includes the ident in the name and id if present', function(assert) {
+test('includes the ident in the name and an id is present', function(assert) {
   this.set('content', Ember.Object.create({ ident: 'test' }));
   this.render(template);
   assert.equal(this.$('input').attr('name'), 'check-box-test');
-  assert.equal(this.$('input').attr('id'), 'check-box-test');
+  assert.elementFound(this.$('input[id]'));
 });
+
 test(`it disables the input if disabled=true`, function(assert) {
   this.set('disabled', true);
   this.render(template);

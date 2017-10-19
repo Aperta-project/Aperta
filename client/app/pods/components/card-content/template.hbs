@@ -5,6 +5,12 @@
   {{#if (and answer keepAnswerContainer)}}
     <div class="answer-container">
       <div class="answer">
+        {{{content.text}}}
+
+        {{#if content.isRequired}}
+          <span class="required-field">*</span>
+        {{/if}}
+
         {{#if hasLabel}}
           <label for={{name}}>
             {{{content.label}}}
@@ -27,6 +33,12 @@
       </div>
     </div>
   {{else}}
+    {{{content.text}}}
+
+    {{#if content.isRequired}}
+      <span class="required-field">*</span>
+    {{/if}}
+
     {{#if hasLabel}}
       <label for={{name}}>
         {{{content.label}}}

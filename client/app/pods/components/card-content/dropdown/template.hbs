@@ -1,7 +1,3 @@
-<label class="content-text">{{{content.text}}}
-  {{#if content.isRequired}}
-    <span class="required-field">*</span>
-  {{/if}}</label>
 {{#power-select
     options=content.possibleValues
     selected=selectedValue
@@ -13,9 +9,14 @@
     as |val|}}
   {{val.label}}
 {{/power-select}}
-<p>{{card-content/validation-errors content=content errors=answer.readyIssuesArray}}</p>
+
+<p>
+  {{card-content/validation-errors content=content errors=answer.readyIssuesArray}}
+</p>
+
 {{card-content/display-children
   content=content
   owner=owner
   disabled=disabled
-  preview=preview}}
+  preview=preview
+}}

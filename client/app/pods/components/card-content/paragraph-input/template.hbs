@@ -1,11 +1,7 @@
-<label class="content-text" for="{{content.ident}}">{{{content.text}}}
-  {{#if content.isRequired}}
-    <span class="required-field">*</span>
-  {{/if}}</label>
-
 {{#if isRichText}}
   {{rich-text-editor
     editorStyle=content.editorStyle
+    id=name
     name=content.ident
     data-editor=content.ident
     value=answerValue
@@ -20,12 +16,12 @@
 {{else}}
   {{textarea
       value=(readonly answerValue)
+      id=name
       class="form-control"
       change=(action "valueChanged")
       input=(action "valueChanged")
       focusOut=(action "validate")
       disabled=disabled
-      id=content.ident
   }}
   {{card-content/validation-errors errors=answer.readyIssuesArray}}
 {{/if}}

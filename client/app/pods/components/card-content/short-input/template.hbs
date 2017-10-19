@@ -1,9 +1,5 @@
-<label class="content-text">{{{content.text}}}
-  {{#if content.isRequired}}
-  <span class="required-field">*</span>
-  {{/if}}</label>
-
 {{input
+  id=name
   value=(readonly answer.value)
   class="form-control"
   change=(action "valueChanged")

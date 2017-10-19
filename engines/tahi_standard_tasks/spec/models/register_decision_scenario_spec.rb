@@ -21,13 +21,14 @@ describe TahiStandardTasks::RegisterDecisionScenario do
     )
   end
   let(:decision) { FactoryGirl.create(:decision, :pending) }
+
   let(:reviewer1) { FactoryGirl.create(:user) }
   let(:reviewer2) { FactoryGirl.create(:user) }
   let(:reviewer3) { FactoryGirl.create(:user) }
   let(:reviewer4) { FactoryGirl.create(:user) }
   let(:reviewer5) { FactoryGirl.create(:user) }
 
-  let(:review_date) { DateTime.current }
+  let(:review_date) { Date.current }
 
   let(:reviewer_report1) { FactoryGirl.build(:reviewer_report, task: reviewer_report_task, user: reviewer1) }
   let(:reviewer_report2) { FactoryGirl.build(:reviewer_report, task: reviewer_report_task2, user: reviewer2) }
@@ -68,7 +69,7 @@ describe TahiStandardTasks::RegisterDecisionScenario do
     end
 
     it "renders the reviews sorted by reviewer number" do
-      paper.draft_decision.reviewer_reports = [reviewer_report1, reviewer_report3, reviewer_report2, reviewer_report5, reviewer_report4]
+      paper.stub_chain(:draft_decision, :reviewer_reports, :submitted).and_return([reviewer_report1, reviewer_report3, reviewer_report2, reviewer_report5, reviewer_report4])
       template = "{%- for review in reviews -%} Review by {{review.reviewer.first_name}} Number: {{review.reviewer_number}}--{%- endfor -%}"
       expect(LetterTemplate.new(body: template).render(context).body)
         .to eq("Review by #{reviewer1.first_name} Number: 1--Review by #{reviewer2.first_name} Number: 2--Review by #{reviewer3.first_name}" \

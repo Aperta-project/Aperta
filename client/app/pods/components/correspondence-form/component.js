@@ -30,7 +30,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     let dateIsValid = moment(this.get('dateSent'), 'MM/DD/YYYY').isValid();
 
     if (!dateIsValid) {
-      this.set('validationErrors.dateSent', 'Invalid Date. Format MM/DD/YYYY');
+      this.set('validationErrors.dateSent', 'Invalid Date.');
     }
 
     return dateIsValid;
@@ -40,7 +40,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     let timeIsValid = moment(this.get('timeSent'), 'H:m').isValid();
 
     if (!timeIsValid) {
-      this.set('validationErrors.timeSent', 'Invalid Time. Format H:m');
+      this.set('validationErrors.timeSent', 'Invalid Time.');
     }
 
     return timeIsValid;
@@ -55,7 +55,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       if (mandatoryFieldValue === '' ||
           mandatoryFieldValue === null ||
           mandatoryFieldValue === undefined) {
-        this.set('validationErrors.' + mandatoryFields[i], 'cannot be blank');
+        this.set('validationErrors.' + mandatoryFields[i], 'This field is required.');
         isValid = false;
       }
     }

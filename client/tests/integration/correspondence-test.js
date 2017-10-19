@@ -105,8 +105,8 @@ test('Date and Time [format] are properly validated', (assert) => {
   click('.correspondence-submit');
 
   andThen(() => {
-    assert.equal($($('.inset-form-control .fa-exclamation-triangle').get(0)).attr('title'), 'Invalid Date. Format MM/DD/YYYY');
-    assert.equal($($('.inset-form-control .fa-exclamation-triangle').get(1)).attr('title'), 'Invalid Time. Format hh:mm a');
+    assert.equal($($('.correspondence-error .fa-exclamation-triangle').get(0)).attr('title'), 'Invalid Date.');
+    assert.equal($($('.correspondence-error .fa-exclamation-triangle').get(1)).attr('title'), '');
   });
 
   // Context: Incorrect Date && Incorrect Time
@@ -123,8 +123,8 @@ test('Date and Time [format] are properly validated', (assert) => {
   click('.correspondence-submit');
 
   andThen(() => {
-    assert.equal($($('.inset-form-control .fa-exclamation-triangle').get(0)).attr('title'), 'Invalid Date. Format MM/DD/YYYY');
-    assert.equal($($('.inset-form-control .fa-exclamation-triangle').get(1)).attr('title'), 'Invalid Time. Format hh:mm a');
+    assert.equal($($('.correspondence-error .fa-exclamation-triangle').get(0)).attr('title'), 'Invalid Date.');
+    assert.equal($($('.correspondence-error .fa-exclamation-triangle').get(1)).attr('title'), 'Invalid Time.');
   });
 });
 

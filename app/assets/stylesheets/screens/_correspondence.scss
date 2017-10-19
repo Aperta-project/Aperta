@@ -50,6 +50,21 @@
   }
 }
 
+.correspondence-error {
+  // there's a general "margin-left:15px for error-message in _inset-field.scss"
+  // which doesn't work well with the layout of the correspondence overlay
+  margin-left: auto;
+}
+
+.correspondence-input {
+  padding-top: 5px !important;
+  height: auto !important;
+}
+
+#correspondence-label-time {
+  top: 8px;
+}
+
 .correspondence-label {
   &:after {
     content: '*';

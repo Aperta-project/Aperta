@@ -9,127 +9,135 @@
 <div class="row">
   <div class="col-sm-6 col-md-3">
     <label class="correspondence-label">Date sent</label>
-    <div class="inset-form-control">
+    <div>
       {{date-picker name='correspondence-date-sent'
                     value=dateSent
                     date=dateSent
-                    class="correspondence-date-sent inset-form-control-input"}}
+                    placeholder="Select date..."
+                    class="correspondence-date-sent inset-form-control-input correspondence-input"}}
     </div>
-    <div class="inset-form-control-text">
+    <span>
       {{error-message message=validationErrors.dateSent
+                      class="correspondence-error"
                       displayIcon=true
-                      displayText=false}}
-    </div>
+                      displayText=true}}
+    </span>
   </div>
-  <div class="col-sm-6 col-md-3">
+  <div class="col-sm-6 col-md-3" id="correspondence-label-time">
     <label>Time sent</label>
-    <div class="inset-form-control">
-      <div class="inset-form-control-text">
-        {{error-message message=validationErrors.timeSent
-                        displayIcon=true
-                        displayText=false}}
-      </div>
-
-      {{time-picker class="inset-form-control-input correspondence-time-sent"
+    <div>
+      {{time-picker class="inset-form-control-input correspondence-time-sent correspondence-input"
                     name='correspondence-time-sent'
-                    value=currentTime}}
+                    value=timeSent}}
     </div>
+    <span>
+      {{error-message message=validationErrors.timeSent
+                      class="correspondence-error"
+                      displayIcon=true
+                      displayText=true}}
+    </span>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
     <label class="correspondence-label">Description</label>
-    <div class="inset-form-control">
-      <div class="inset-form-control-text">
-        {{error-message message=validationErrors.description
-                        displayIcon=true
-                        displayText=false}}
-      </div>
+    <div>
       {{input type="text"
               name='correspondence-description'
               value=model.description
-              class="correspondence-description inset-form-control-input"}}
+              class="correspondence-description inset-form-control-input correspondence-input"}}
     </div>
+    <span>
+      {{error-message message=validationErrors.description
+                      class="correspondence-error"
+                      displayIcon=true
+                      displayText=true}}
+    </span>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
     <label class="correspondence-label">From</label>
-    <div class="inset-form-control">
-      <div class="inset-form-control-text">
-        {{error-message message=validationErrors.sender
-                        displayIcon=true
-                        displayText=false}}
-      </div>
+    <div>
       {{input type="text"
               name='correspondence-from'
               value=model.sender
-              class="correspondence-from inset-form-control-input"}}
+              class="correspondence-from inset-form-control-input correspondence-input"}}
     </div>
+    <span>
+      {{error-message message=validationErrors.sender
+                      class="correspondence-error"
+                      displayIcon=true
+                      displayText=true}}
+    </span>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
     <label class="correspondence-label">To</label>
-    <div class="inset-form-control">
-      <div class="inset-form-control-text">
-        {{error-message message=validationErrors.recipients
-                        displayIcon=true
-                        displayText=false}}
-      </div>
+    <div>
       {{input type="text"
               name='correspondence-to'
               value=model.recipients
-              class="correspondence-to inset-form-control-input"}}
+              class="correspondence-to inset-form-control-input correspondence-input"}}
     </div>
+    <span>
+      {{error-message message=validationErrors.recipients
+                      class="correspondence-error"
+                      displayIcon=true
+                      displayText=true}}
+    </span>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
     <label>Subject</label>
-    <div class="inset-form-control">
-      <div class="inset-form-control-text">
-        {{error-message message=validationErrors.subject
-                        displayIcon=true
-                        displayText=false}}
-      </div>
+    <div>
       {{input type="text"
               name='correspondence-subject'
               value=model.subject
-              class="correspondence-subject inset-form-control-input"}}
+              class="correspondence-subject inset-form-control-input correspondence-input"}}
     </div>
+    <span>
+      {{error-message message=validationErrors.subject
+                      class="correspondence-error"
+                      displayIcon=true
+                      displayText=true}}
+    </span>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
     <label>CC</label>
-    <div class="inset-form-control">
-      <div class="inset-form-control-text">
-        {{error-message message=validationErrors.cc
-                        displayIcon=true
-                        displayText=false}}
-      </div>
+    <div>
       {{input type="text"
               name='correspondence-cc'
               value=model.cc
-              class="correspondence-cc inset-form-control-input"}}
+              class="correspondence-cc inset-form-control-input correspondence-input"}}
     </div>
+    <span>
+      {{error-message message=validationErrors.cc
+                      class="correspondence-error"
+                      displayIcon=true
+                      displayText=true}}
+    </span>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
     <label>BCC</label>
     <div class="inset-form-control">
-      <div class="inset-form-control-text">
-        {{error-message message=validationErrors.bcc
-                        displayIcon=true
-                        displayText=false}}
-      </div>
       {{input type="text"
               name='correspondence-bcc'
               value=model.bcc
-              class="correspondence-bcc inset-form-control-input"}}
+              class="correspondence-bcc inset-form-control-input correspondence-input"}}
     </div>
+    <span>
+      {{error-message message=validationErrors.bcc
+                      class="correspondence-error"
+                      displayIcon=true
+                      displayText=true}}
+    </span>
   </div>
 </div>
 <div class="row">
@@ -175,8 +183,12 @@
         class="correspondence-body"
         onContentsChanged=(action 'saveContentsBody')
         disabled=false
-        errorMessages=validationErrors.body
       }}
+
+      {{error-message message=validationErrors.body
+                          class="correspondence-error"
+                          displayIcon=true
+                          displayText=true}}
     </div>
   </div>
 </div>

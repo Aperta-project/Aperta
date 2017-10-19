@@ -20,7 +20,6 @@ feature "Inviting a new reviewer", js: true do
     task.add_participant(editor)
 
     login_as(editor, scope: :user)
-    visit "/"
   end
 
   scenario "Inviting a reviewer not currently in the system" do

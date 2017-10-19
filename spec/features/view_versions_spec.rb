@@ -59,12 +59,12 @@ xfeature 'Viewing Versions:', js: true do
       page.view_versions
       page.select_viewing_version(version_0)
 
-      page.view_card('Figures', VersionedMetadataOverlay) do |overlay|
+      page.view_card('Figures', VersionedMetadataOverlay, false) do |overlay|
         overlay.expect_version('R0.0')
       end
       page.select_viewing_version(version_1)
 
-      page.view_card('Figures', VersionedMetadataOverlay) do |overlay|
+      page.view_card('Figures', VersionedMetadataOverlay, false) do |overlay|
         overlay.expect_version('(draft)')
       end
     end
@@ -83,7 +83,7 @@ xfeature 'Viewing Versions:', js: true do
       page.select_viewing_version(version_0)
       page.select_comparison_version(version_1)
 
-      page.view_card('Figures', VersionedMetadataOverlay) do |overlay|
+      page.view_card('Figures', VersionedMetadataOverlay, false) do |overlay|
         overlay.expect_versions('R0.0', '(draft)')
       end
     end

@@ -1,5 +1,5 @@
 import { test } from 'ember-qunit';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 import Factory from '../helpers/factory';
 import setupMockServer from '../helpers/mock-server';
 import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';

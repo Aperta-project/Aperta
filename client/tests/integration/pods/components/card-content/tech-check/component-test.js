@@ -108,7 +108,7 @@ test(`toggling to 'Pass' will clear any existing sendbacks`, function(assert) {
   // check the box for the sendback
   make('answer', { owner: owner, value: true, cardContent: sendbackCheck });
 
-  this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+  this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
   $.mockjax({url: '/api/answers/1', type: 'PUT', status: 201, responseText: '{}'});
 
   this.set('owner', owner);

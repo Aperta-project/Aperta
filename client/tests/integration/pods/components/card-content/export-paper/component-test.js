@@ -15,7 +15,7 @@ moduleForComponent(
       manualSetup(this.container);
       registerCustomAssertions();
       this.registry.register(
-        'pusher:main',
+        'service:pusher',
         Ember.Object.extend({ socketId: 'foo' })
       );
     }
@@ -46,7 +46,7 @@ test('looks properly disabled when disabled is true', function(assert) {
 test('pushing the button saves a new apex delivery using the text of the card content', function(
   assert
 ) {
-  $.mockjax({ url: '/api/export_deliveries', type: 'POST', status: 204 });
+  $.mockjax({ url: '/api/export_deliveries', type: 'POST', status: 201, responseText: {export_delivery: {id: '1'}} });
   let task = make('custom-card-task');
   this.set('task', task);
   this.set('content', { text: 'foo' });

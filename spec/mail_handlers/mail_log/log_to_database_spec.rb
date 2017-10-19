@@ -26,7 +26,7 @@ module MailLog::LogToDatabase
         expect(email_log.body).to eq 'This is a test email\'s body'
         expect(email_log.raw_source).to eq mail.to_s
         expect(email_log.status).to eq 'pending'
-        expect(email_log.sent_at).to be nil
+        expect(email_log.sent_at).not_to eq nil
         expect(email_log.errored_at).to be nil
         expect(email_log.journal).to be nil
         expect(email_log.paper).to be nil
@@ -171,7 +171,7 @@ module MailLog::LogToDatabase
       end
 
       let!(:email_log) do
-        Correspondence.create!(message_id: 'abc123', status: 'pending')
+        Correspondence.create!(message_id: 'abc123', status: 'pending', sent_at: DateTime.now.in_time_zone)
       end
 
       it 'marks the logged email record as sent' do
@@ -200,7 +200,7 @@ module MailLog::LogToDatabase
       end
 
       let!(:email_log) do
-        Correspondence.create!(message_id: 'abc123', status: 'sent')
+        Correspondence.create!(message_id: 'abc123', status: 'sent', sent_at: DateTime.now.in_time_zone)
       end
 
       it 'yields the given block' do

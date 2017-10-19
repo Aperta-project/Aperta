@@ -9,7 +9,7 @@
 <div class="row">
   <div class="col-sm-6 col-md-3">
     <label class="correspondence-label">Date sent</label>
-    <div>
+    <div class="{{if validationErrors.dateSent "error"}}">
       {{date-picker name='correspondence-date-sent'
                     value=dateSent
                     date=dateSent
@@ -25,7 +25,7 @@
   </div>
   <div class="col-sm-6 col-md-3" id="correspondence-label-time">
     <label>Time sent</label>
-    <div>
+    <div class="{{if validationErrors.timeSent "error"}}">
       {{time-picker class="inset-form-control-input correspondence-time-sent correspondence-input"
                     name='correspondence-time-sent'
                     value=timeSent}}
@@ -41,7 +41,7 @@
 <div class="row">
   <div class="col-sm-12">
     <label class="correspondence-label">Description</label>
-    <div>
+    <div class="{{if validationErrors.description "error"}}">
       {{input type="text"
               name='correspondence-description'
               value=model.description
@@ -58,7 +58,7 @@
 <div class="row">
   <div class="col-sm-12">
     <label class="correspondence-label">From</label>
-    <div>
+    <div class="{{if validationErrors.sender "error"}}">
       {{input type="text"
               name='correspondence-from'
               value=model.sender
@@ -75,7 +75,7 @@
 <div class="row">
   <div class="col-sm-12">
     <label class="correspondence-label">To</label>
-    <div>
+    <div class="{{if validationErrors.recipients "error"}}">
       {{input type="text"
               name='correspondence-to'
               value=model.recipients
@@ -175,16 +175,17 @@
       <label class="correspondence-label">
         Contents
       </label>
-      {{rich-text-editor
-        editorStyle='basic'
-        ident='correspondence-body'
-        value=model.body
-        name="correspondence-body"
-        class="correspondence-body"
-        onContentsChanged=(action 'saveContentsBody')
-        disabled=false
-      }}
-
+      <div class="{{if validationErrors.body "error"}}">
+        {{rich-text-editor
+          editorStyle='basic'
+          ident='correspondence-body'
+          value=model.body
+          name="correspondence-body"
+          class="correspondence-body input"
+          onContentsChanged=(action 'saveContentsBody')
+          disabled=false
+        }}
+      </div>
       {{error-message message=validationErrors.body
                           class="correspondence-error"
                           displayIcon=true

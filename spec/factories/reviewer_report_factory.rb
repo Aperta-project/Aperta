@@ -7,7 +7,6 @@ FactoryGirl.define do
     card_version
     association :task, factory: :reviewer_report_task
     association :due_datetime, :in_5_days
-    state 'submitted'
     submitted_at Date.current
   end
 end

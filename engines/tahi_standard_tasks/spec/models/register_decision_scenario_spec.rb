@@ -30,11 +30,11 @@ describe TahiStandardTasks::RegisterDecisionScenario do
 
   let(:review_date) { Date.current }
 
-  let(:reviewer_report1) { FactoryGirl.build(:reviewer_report, task: reviewer_report_task, user: reviewer1) }
-  let(:reviewer_report2) { FactoryGirl.build(:reviewer_report, task: reviewer_report_task2, user: reviewer2) }
-  let(:reviewer_report3) { FactoryGirl.build(:reviewer_report, task: reviewer_report_task3, user: reviewer3) }
-  let(:reviewer_report4) { FactoryGirl.build(:reviewer_report, task: reviewer_report_task4, user: reviewer4, submitted_at: review_date - 1.day) }
-  let(:reviewer_report5) { FactoryGirl.build(:reviewer_report, task: reviewer_report_task5, user: reviewer5, submitted_at: review_date) }
+  let(:reviewer_report1) { FactoryGirl.build(:reviewer_report, task: reviewer_report_task, user: reviewer1, state: 'submitted') }
+  let(:reviewer_report2) { FactoryGirl.build(:reviewer_report, task: reviewer_report_task2, user: reviewer2, state: 'submitted') }
+  let(:reviewer_report3) { FactoryGirl.build(:reviewer_report, task: reviewer_report_task3, user: reviewer3, state: 'submitted') }
+  let(:reviewer_report4) { FactoryGirl.build(:reviewer_report, task: reviewer_report_task4, user: reviewer4, state: 'submitted', submitted_at: review_date - 1.day) }
+  let(:reviewer_report5) { FactoryGirl.build(:reviewer_report, task: reviewer_report_task5, user: reviewer5, state: 'submitted', submitted_at: review_date) }
 
   let(:answer_1) { FactoryGirl.create(:answer) }
   let(:answer_2) { FactoryGirl.create(:answer) }

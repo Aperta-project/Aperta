@@ -77,10 +77,10 @@ var template = hbs`
       authorIsPaperCreator=true
   }}`;
 
-test("component shows coauthor controls when user is considered an admin user", function(assert){
+test('component shows coauthor controls when user is considered an paper-manager user', function(assert){
   // Administrator
   Ember.run(() => {
-    const can = FakeCanService.create().allowPermission('administer', journal);
+    const can = FakeCanService.create().allowPermission('manage_paper_authors', this.get('author.paper'));
     this.register('service:can', can.asService());
   });
 
@@ -88,10 +88,10 @@ test("component shows coauthor controls when user is considered an admin user", 
   assert.elementFound('[data-test-selector="coauthor-radio-controls"]');
 });
 
-test("component hides coauthor controls when user is considered an non-admin user", function(assert){
+test('component hides coauthor controls when user is considered an non-paper-manager user', function(assert){
   // Administrator
   Ember.run(() => {
-    const can = FakeCanService.create().rejectPermission('administer', journal);
+    const can = FakeCanService.create().rejectPermission('manage_paper_authors', this.get('author.paper'));
     this.register('service:can', can.asService());
   });
 
@@ -102,7 +102,7 @@ test("component hides coauthor controls when user is considered an non-admin use
 test('component hides coauthor controls if the setting is disabled', function(assert){
   // Administrator
   Ember.run(() => {
-    const can = FakeCanService.create().allowPermission('administer', journal);
+    const can = FakeCanService.create().allowPermission('manage_paper_authors', this.get('author.paper'));
     this.register('service:can', can.asService());
   });
   template = hbs`

@@ -100,7 +100,7 @@ test("component does not display the orcid-connect component when the author doe
   assert.elementNotFound(".orcid-wrapper");
 });
 
-test("component shows coauthor controls when user is considered an admin user", function(assert){
+test('component shows coauthor controls when user is considered a paper-manager user', function(assert){
   template = hbs`
   {{author-form
       author=model.object
@@ -123,7 +123,7 @@ test("component shows coauthor controls when user is considered an admin user", 
   assert.elementFound('[data-test-selector="coauthor-radio-controls"]');
 });
 
-test("component hides coauthor controls when user is considered an non-admin user", function(assert){
+test('component hides coauthor controls when user is considered an non-paper-manager user', function(assert){
   template = hbs`
   {{author-form
       author=model.object

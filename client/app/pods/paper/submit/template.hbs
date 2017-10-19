@@ -1,4 +1,3 @@
-{{flash-messages}}
 {{#if paperSubmitted}}
   {{#overlay-fullscreen visible=showFeedbackOverlay
                         outAnimationComplete=(action "hideFeedbackOverlay")
@@ -37,6 +36,7 @@
                   </button>
                 {{/link-to}}
               </td>
+              <td>{{flash-messages}}</td>
               <td>
                 <button id="review-submission-submit-button" name="task_completed" class="task-completed task-not-completed button-primary button--green pull-right" {{action "submit"}}>
                   Submit

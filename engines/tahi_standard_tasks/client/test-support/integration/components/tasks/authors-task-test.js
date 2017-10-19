@@ -3,23 +3,25 @@ import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import Factory from '../../../helpers/factory';
 import wait from 'ember-test-helpers/wait';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 
 moduleForComponent(
   'authors-task',
   'Integration | Components | Tasks | Authors', {
   integration: true,
+
   beforeEach() {
     manualSetup(this.container);
     this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
-    Factory.createPermission('authorsTask', 1, ['edit', 'view']);
+    this.registry.register('service:can', FakeCanService);
 
     // For any answers that will be sent to the server
     $.mockjax({url: /api\/nested_questions\/\d+\/answers/, status: 204});
     $.mockjax({url: /api\/journals/, status: 200, responseText: {
       journals: []
-    }
-    });
+    }});
   },
+
   afterEach() {
     $.mockjax.clear();
   }
@@ -30,23 +32,31 @@ let createTask = function() {
     id: 1,
     paper: { authors: [] }
   });
+
+  let fake = this.container.lookup('service:can');
+  fake.allowPermission('edit', task);
+  fake.allowPermission('view', task);
   return task;
-}
+};
 
 let createTaskWithInvalidAuthor = function() {
   let task = make('authors-task', {
     id: 1,
     paper: { authors: [make('author')] }
   });
+
+  let fake = this.container.lookup('service:can');
+  fake.allowPermission('edit', task);
+  fake.allowPermission('view', task);
   return task;
-}
+};
 
 
 let template = hbs`{{authors-task task=testTask}}`;
 let errorSelector = '.authors-task .error-message:not(.error-message--hidden)'
 
 test('it renders the paper\'s authors', function(assert) {
-  let testTask = createTask();
+  let testTask = createTask.bind(this)();
   this.set('testTask', testTask);
   this.render(template);
 
@@ -58,7 +68,7 @@ test('it renders the paper\'s authors', function(assert) {
 });
 
 test('it reports validation errors on the task when attempting to complete', function(assert) {
-  let testTask = createTask();
+  let testTask = createTask.bind(this)();
   this.set('testTask', testTask);
   this.render(template);
   this.$('.authors-task button.task-completed').click();
@@ -72,7 +82,7 @@ test('it reports validation errors on the task when attempting to complete', fun
 });
 
 test('it does not allow the user to complete when there are validation errors', function(assert) {
-  let testTask = createTask();
+  let testTask = createTask.bind(this)();
   this.set('testTask', testTask);
   this.render(template);
   this.$('.authors-task button.task-completed').click();
@@ -85,7 +95,7 @@ test('it does not allow the user to complete when there are validation errors', 
 });
 
 test('it requires validation on the user confirming authors agree to being named', function(assert) {
-  let testTask = createTask();
+  let testTask = createTask.bind(this)();
   this.set('testTask', testTask);
   this.render(template);
 
@@ -107,7 +117,7 @@ test('it requires validation on the user confirming authors agree to being named
 });
 
 test('it requires validation on the user confirming ICMJE criteria', function(assert) {
-  let testTask = createTask();
+  let testTask = createTask.bind(this)();
   this.set('testTask', testTask);
   this.render(template);
 
@@ -129,7 +139,7 @@ test('it requires validation on the user confirming ICMJE criteria', function(as
 });
 
 test('it requires validation on the user confirming author submission', function(assert) {
-  let testTask = createTask();
+  let testTask = createTask.bind(this)();
   this.set('testTask', testTask);
   this.render(template);
 
@@ -151,7 +161,7 @@ test('it requires validation on the user confirming author submission', function
 });
 
 test('it requires its authors to be valid', function(assert){
-  let testTask = createTaskWithInvalidAuthor();
+  let testTask = createTaskWithInvalidAuthor.bind(this)();
   this.set('testTask', testTask);
   this.render(template);
 
@@ -173,9 +183,8 @@ test('it requires its authors to be valid', function(assert){
 });
 
 test('it lets you complete the task when there are no validation errors', function(assert) {
-  let testTask = createTask();
+  let testTask = createTask.bind(this)();
   this.set('testTask', testTask);
-
   $.mockjax({url: '/api/tasks/1', type: 'PUT', status: 204, responseText: '{}'});
   this.render(template);
 
@@ -196,7 +205,7 @@ test('it lets you complete the task when there are no validation errors', functi
 });
 
 test('it lets you uncomplete the task when it and its authors have validation errors', function(assert) {
-  let testTask = createTaskWithInvalidAuthor();
+  let testTask = createTaskWithInvalidAuthor.bind(this)();
   this.set('testTask', testTask);
 
   Ember.run(() => {
@@ -204,7 +213,7 @@ test('it lets you uncomplete the task when it and its authors have validation er
   });
 
   $.mockjax({url: '/api/tasks/1', type: 'PUT', status: 204, responseText: '{}'});
-  
+
   this.render(template);
 
   assert.equal(testTask.get('completed'), true, 'task was initially completed');

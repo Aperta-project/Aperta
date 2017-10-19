@@ -80,7 +80,7 @@ template = hbs`
   }}`;
 
 test("component displays the orcid-connect component when the author has an orcidAccount", function(assert){
-  const can = FakeCanService.create().allowPermission('administer', journal);
+  const can = FakeCanService.create().allowPermission('manage_paper_authors', this.get('author.paper'));
   this.register('service:can', can.asService());
   let orcidAccount = FactoryGuy.make('orcid-account');
   Ember.run( () => {
@@ -91,7 +91,7 @@ test("component displays the orcid-connect component when the author has an orci
 });
 
 test("component does not display the orcid-connect component when the author does not have an orcidAccount", function(assert){
-  const can = FakeCanService.create().allowPermission('administer', journal);
+  const can = FakeCanService.create().allowPermission('manage_paper_authors', this.get('author.paper'));
   this.register('service:can', can.asService());
   Ember.run( () => {
     this.get("author.user").set("orcidAccount", null);
@@ -115,7 +115,7 @@ test("component shows coauthor controls when user is considered an admin user", 
   }}`;
 
   Ember.run(() => {
-    const can = FakeCanService.create().allowPermission('administer', journal);
+    const can = FakeCanService.create().allowPermission('manage_paper_authors', this.get('author.paper'));
     this.register('service:can', can.asService());
   });
 
@@ -137,7 +137,7 @@ test("component hides coauthor controls when user is considered an non-admin use
       authorIsPaperCreator=false
   }}`;
   Ember.run(() => {
-    const can = FakeCanService.create().rejectPermission('administer', journal);
+    const can = FakeCanService.create().rejectPermission('manage_paper_authors', this.get('author.paper'));
     this.register('service:can', can.asService());
   });
 
@@ -160,7 +160,7 @@ test('component hides coauthor controls if the setting is disabled', function(as
   }}`;
 
   Ember.run(() => {
-    const can = FakeCanService.create().allowPermission('administer', journal);
+    const can = FakeCanService.create().allowPermission('manage_paper_authors', this.get('author.paper'));
     this.register('service:can', can.asService());
   });
 

@@ -42,11 +42,11 @@ export default Component.extend({
   },
 
   initializeCoauthorshipControls() {
-    this.get('author.paper.journal').then( (journal) => {
-      this.get('can').can('administer', journal).then( (value) => {
-        Ember.run( () => {
-          this.set('canChangeCoauthorStatus', value);
-        });
+    const paper = this.get('author.paper');
+
+    this.get('can').can('manage_paper_authors', paper).then( (value) => {
+      Ember.run( () => {
+        this.set('canChangeCoauthorStatus', value);
       });
     });
   },

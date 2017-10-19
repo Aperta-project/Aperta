@@ -93,6 +93,42 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     expect(answers.reload.first.value).to eq('<p>I have no competing interests with this work.</p>')
   end
 
+  scenario 'All answers that should be rendered in a decision letter are rendered' do
+    create_reviewer_invitation(paper)
+    create_reviewer_report_task
+
+    # seed the Upload Manuscript card so that it can be created after a decision has been registered
+    ctt = CardTaskType.find_by(task_class: "TahiStandardTasks::UploadManuscriptTask")
+    FactoryGirl.create(:card, :versioned, card_task_type: ctt)
+
+    # Revision 0
+    Page.view_paper paper
+
+    t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
+
+    wait_for_editors # Wait for rich-text editors to instantiate
+
+    t.fill_in_report ({ "front_matter_reviewer_report--suitable--comment" => "test",
+                        "front_matter_reviewer_report--includes_unpublished_data--explanation" => "test" })
+
+    # no history yet, since we only have the current round of review
+    t.ensure_no_review_history
+
+    t.submit_report
+    t.confirm_submit_report
+
+    register_paper_decision(paper, "minor_revision")
+    answers = ReviewerReport.first.answers
+    idents = ReviewerReportContext.new(answers.first).rendered_answer_idents
+      .select { |i| i.match(/front_matter/) }
+
+    expect(idents.length).to eq(2)
+    idents.each do |i|
+      answer = answers.select { |a| a.card_content.ident == i }.first
+      expect(answer.value).to eq('<p>test</p>')
+    end
+  end
+
   scenario 'A reviewer can see their previous rounds of review' do
     create_reviewer_invitation(paper)
     create_reviewer_report_task

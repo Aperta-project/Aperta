@@ -33,6 +33,9 @@ class TasksController < ApplicationController
   def update
     requires_user_can :edit, task
 
+    # If user is going to be removed get it to log Activity event
+    last_assigned_user = task.assigned_user
+
     if task.completed?
       # If the task is already completed, all the user can do is uncomplete it
       # or assign an user.
@@ -54,7 +57,7 @@ class TasksController < ApplicationController
 
     task.save!
     task.after_update
-    Activity.task_updated! task, user: current_user
+    Activity.task_updated! task, user: current_user, last_assigned_user: last_assigned_user
 
     render task.update_responder.new(task, view_context).response
   end

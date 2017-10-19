@@ -5,11 +5,15 @@ import MockDataTransfer from 'tahi/tests/helpers/data-transfer';
 import startApp from 'tahi/tests/helpers/start-app';
 import Ember from 'ember';
 import DragNDrop from 'tahi/services/drag-n-drop';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 
 let App;
 moduleForComponent('invitation-group', 'Integration | Component | invitation group', {
   integration: true,
   setup: function() {
+    var can = FakeCanService.create();
+    var task = make('task');
+    this.registry.register('service:can', can.allowPermission('manage_invitations', task).asService());
     //since we're starting the full app we don't need to manually set up factoryguy
     App = startApp();
   },
@@ -19,6 +23,7 @@ moduleForComponent('invitation-group', 'Integration | Component | invitation gro
 });
 
 let template = hbs`{{invitation-group
+  owner=task
   invitations=invitations
   setRowState=(action noop)
   composedInvitation=null

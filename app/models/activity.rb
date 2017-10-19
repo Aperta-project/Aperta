@@ -266,7 +266,7 @@ class Activity < ActiveRecord::Base
     )
   end
 
-  def self.task_updated!(task, user:)
+  def self.task_updated!(task, user:, last_assigned_user:)
     feed_name = task.submission_task? ? 'manuscript' : 'workflow'
     activity = new(feed_name: feed_name, subject: task.paper, user: user)
     if task.newly_complete?
@@ -280,6 +280,7 @@ class Activity < ActiveRecord::Base
         message: "#{task.title} card was marked as incomplete"
       )
     end
+    user_assigned_to_task(task, user: user, last_assigned_user: last_assigned_user)
     activity
   end
 
@@ -310,6 +311,40 @@ class Activity < ActiveRecord::Base
       activity_key: 'reminder.sent',
       subject: reminder.due_datetime.due.paper,
       message: "#{reminder.name} was sent for #{task_klass}[#{task_id}]"
+    )
+  end
+
+  private_class_method
+
+  def self.user_assigned_to_task(task, user:, last_assigned_user:)
+    assigned_user = task.assigned_user || last_assigned_user
+    return unless assigned_user # if user was never assigned to the task don't log any event
+    if task.assigned_user
+      user_assigned_to_task_created!(task, user: user, assigned_user: assigned_user)
+    else
+      user_assigned_to_task_removed!(task, user: user, assigned_user: last_assigned_user)
+    end
+  end
+
+  def self.user_assigned_to_task_created!(task, user:, assigned_user:)
+    msg = "#{user.full_name} assigned #{assigned_user.full_name} to task #{task.title}"
+    create(
+      feed_name: "workflow",
+      activity_key: "task.user_assigned",
+      subject: task.paper,
+      user: user,
+      message: msg
+    )
+  end
+
+  def self.user_assigned_to_task_removed!(task, user:, assigned_user:)
+    msg = "#{user.full_name} removed assigned user #{assigned_user.full_name} from task #{task.title}"
+    create(
+      feed_name: "workflow",
+      activity_key: "task.assigned_user_removed",
+      subject: task.paper,
+      user: user,
+      message: msg
     )
   end
 end

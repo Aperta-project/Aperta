@@ -488,7 +488,6 @@ describe JournalFactory do
               expect(permissions).to include(
                 Permission.find_by(action: :add_email_participants, applies_to: klass.name),
                 Permission.find_by(action: :manage, applies_to: klass.name),
-                Permission.find_by(action: :manage_invitations, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name),
                 Permission.find_by(action: :view, applies_to: klass.name),
                 Permission.find_by(action: :view_participants, applies_to: klass.name)
@@ -780,7 +779,6 @@ describe JournalFactory do
               expect(permissions).to include(
                 Permission.find_by(action: :add_email_participants, applies_to: klass.name),
                 Permission.find_by(action: :manage, applies_to: klass.name),
-                Permission.find_by(action: :manage_invitations, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name),
                 Permission.find_by(action: :view, applies_to: klass.name),
                 Permission.find_by(action: :view_participants, applies_to: klass.name)
@@ -880,6 +878,7 @@ describe JournalFactory do
               'edit_authors',
               'edit_related_articles',
               'manage_collaborators',
+              'manage_paper_authors',
               'manage_workflow',
               'perform_similarity_check',
               'register_decision',
@@ -1024,10 +1023,6 @@ describe JournalFactory do
             end
           end
 
-          it 'has no additional paper permissions' do
-            expect(permissions_on_paper.map(&:action) - paper_actions).to eq([])
-          end
-
           it ':reactivate' do
             expect(journal.staff_admin_role.permissions).to include(
               permissions_on_paper_with_withdrawn_state
@@ -1112,6 +1107,7 @@ describe JournalFactory do
               'edit_authors',
               'edit_related_articles',
               'manage_collaborators',
+              'manage_paper_authors',
               'manage_workflow',
               'perform_similarity_check',
               'register_decision',
@@ -1356,6 +1352,7 @@ describe JournalFactory do
               'edit',
               'edit_authors',
               'manage_collaborators',
+              'manage_paper_authors',
               'manage_workflow',
               'register_decision',
               'search_academic_editors',

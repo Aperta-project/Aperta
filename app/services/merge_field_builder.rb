@@ -16,6 +16,7 @@ class MergeFieldBuilder
     merge_field
   end
 
+  # rubocop:disable Metrics/MethodLength
   def self.complex_merge_fields
     @complex_merge_fields ||= Hash.new { [] }.tap do |hash|
       hash[PaperScenario] = [
@@ -39,7 +40,7 @@ class MergeFieldBuilder
         { name: :academic_editors,      context: UserContext,   many: true },
         { name: :handling_editors,      context: UserContext,   many: true },
         { name: :authors,               context: AuthorContext, many: true },
-        { name: :corresponding_authors, context: UserContext,   many: true }
+        { name: :corresponding_authors, context: AuthorContext, many: true }
       ]
       hash[ReviewerReportContext] = [
         { name: :reviewer, context: UserContext },

@@ -15,6 +15,7 @@ moduleForComponent(
       //startApp is only here to give us access to the
       //async test helpers (fillIn, click, etc) that
       //we're used to having in the full-app acceptance tests
+      this.registry.register('service:can', FakeCanService.create().allowPermission('manage_invitations', newTask).asService());
       app = startApp();
       decision = Ember.Object.create({id: 2, draft: true, invitations: []});
     },

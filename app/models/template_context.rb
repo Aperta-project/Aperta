@@ -1,14 +1,14 @@
 # Provides a base template context
 class TemplateContext < Liquid::Drop
   def self.scenarios
-    [
-      PaperScenario,
-      ReviewerReportScenario,
-      InvitationScenario,
-      TahiStandardTasks::PaperReviewerScenario,
-      TahiStandardTasks::PreprintDecisionScenario,
-      TahiStandardTasks::RegisterDecisionScenario
-    ]
+    {
+      'Manuscript'         => PaperScenario,
+      'Review'             => ReviewerReportScenario,
+      'Invitation'         => InvitationScenario,
+      'Decision'           => TahiStandardTasks::RegisterDecisionScenario,
+      'Prepreint Decision' => TahiStandardTasks::PreprintDecisionScenario,
+      'Paper Reviewer'     => TahiStandardTasks::PaperReviewerScenario
+    }
   end
 
   def self.merge_fields

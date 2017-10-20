@@ -10,8 +10,7 @@ class CorrespondenceController < ApplicationController
 
   def create
     correspondence = @paper.correspondence.build correspondence_params
-    correspondence.sent_at = params.dig(:correspondence, :date)
-
+    correspondence.sent_at = params.dig(:correspondence, :sent_at)
     if correspondence.save
       render json: correspondence, status: :ok
     else
@@ -32,6 +31,7 @@ class CorrespondenceController < ApplicationController
       :bcc,
       :sender,
       :recipients,
+      :sent_at,
       :description,
       :subject,
       :body,

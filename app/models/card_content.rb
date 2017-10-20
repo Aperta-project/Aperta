@@ -52,6 +52,7 @@ class CardContent < ActiveRecord::Base
       'paragraph-input': ['text', 'html'],
       'radio': ['boolean', 'text'],
       'tech-check': ['boolean'],
+      'tech-check-email': [nil],
       'date-picker': ['text'],
       'sendback-reason': ['boolean'] }.freeze.with_indifferent_access
   # Although we want to validate the various combinations of content types
@@ -105,8 +106,7 @@ class CardContent < ActiveRecord::Base
       'custom-class' => custom_class,
       'custom-child-class' => custom_child_class,
       'wrapper-tag' => wrapper_tag,
-      'visible-with-parent-answer' => visible_with_parent_answer,
-      'default-answer-value' => default_answer_value
+      'visible-with-parent-answer' => visible_with_parent_answer
     }.merge(additional_content_attrs).compact
   end
 
@@ -162,6 +162,8 @@ class CardContent < ActiveRecord::Base
       render_tag(xml, 'instruction-text', instruction_text)
       render_raw(xml, 'text', text)
       render_tag(xml, 'label', label)
+      render_tag(xml, 'default-answer-value', default_answer_value)
+
       preload_descendants if @quick_children.nil?
       card_content_validations.each do |ccv|
         # Do not serialize the required-field validation, it is handled via the

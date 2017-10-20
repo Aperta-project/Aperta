@@ -559,9 +559,33 @@ class JournalFactory
     seed_reviewer_report
     seed_preprint_decision
     seed_paper_submit
+    seed_preprint_sendbacks
   end
 
   # rubocop:disable Style/GuardClause
+  def seed_preprint_sendbacks
+    ident = 'preprint-sendbacks'
+    unless LetterTemplate.exists?(journal: @journal, ident: ident)
+      LetterTemplate.where(name: 'Sendback Reasons', journal: @journal).first_or_initialize.tap do |lt|
+        lt.ident = ident
+        lt.scenario = 'SendbacksContext'
+        lt.subject = 'Manuscript Sendback Reasons'
+        lt.to = '{{author.email}}'
+        lt.body = <<-TEXT.strip_heredoc
+        {{intro}}
+        <ol>
+          {% for reason in sendback_reasons %}
+            <li>{{reason.value}}</li>
+          {% endfor %}
+        </ol>
+        {{footer}}
+        TEXT
+
+        lt.save!
+      end
+    end
+  end
+
   def seed_register_decision_reject
     ident = 'editor-decision-reject-after-review'
     unless LetterTemplate.exists?(journal: @journal, ident: ident)

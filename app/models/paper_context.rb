@@ -27,4 +27,16 @@ class PaperContext < TemplateContext
   def url
     url_for(:paper, id: @object.id).sub("api/", "")
   end
+
+  def creator
+    UserContext.new(@object.creator)
+  end
+
+  def preprint_opted_in
+    FeatureFlag[:PREPRINT] && !@object.preprint_opt_out?
+  end
+
+  def preprint_opted_out
+    FeatureFlag[:PREPRINT] && @object.preprint_opt_out?
+  end
 end

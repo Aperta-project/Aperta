@@ -50,15 +50,17 @@
     </attribute>
   </define>
   <define name="default-answer-boolean">
-    <attribute name="default-answer-value">
+    <element name="default-answer-value">
       <choice>
         <value>true</value>
         <value>false</value>
       </choice>
-    </attribute>
+    </element>
   </define>
   <define name="default-answer-text">
-    <attribute name="default-answer-value"/>
+    <element name="default-answer-value">
+      <text/>
+    </element>
   </define>
   <define name="html">
     <interleave>

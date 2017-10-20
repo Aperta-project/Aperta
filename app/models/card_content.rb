@@ -158,7 +158,8 @@ class CardContent < ActiveRecord::Base
 
   # rubocop:disable Metrics/AbcSize
   def to_xml(options = {})
-    tag_name = content_type.underscore.camelize
+    tag_name = content_type
+    binding.pry
     setup_builder(options).tag!(tag_name, content_attrs) do |xml|
       render_tag(xml, 'instruction-text', instruction_text)
       render_raw(xml, 'text', text)

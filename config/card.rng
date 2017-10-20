@@ -253,11 +253,8 @@
     </element>
   </define>
   <define name="date-picker">
-    <element name="content">
+    <element name="date-picker">
       <interleave>
-        <attribute name="content-type">
-          <value>date-picker</value>
-        </attribute>
         <ref name="input-attributes"/>
         <attribute name="value-type">
           <value>text</value>

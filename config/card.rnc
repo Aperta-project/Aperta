@@ -92,9 +92,8 @@ file-uploader = element content {
   & accepted-file-type*
 }
 
-date-picker = element content {
-  attribute content-type { "date-picker" }
-  & input-attributes
+date-picker = element date-picker {
+  input-attributes
   & attribute value-type { "text" }
   & instructions-label-required-text
 }

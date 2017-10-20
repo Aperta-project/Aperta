@@ -68,15 +68,16 @@ class XmlCardLoader
   end
 
   def build_card_content(content, card_version)
+    binding.pry
     attributes = card_content_attributes(content, card_version)
-    if attributes[:content_type].blank?
-      attributes[:content_type] = content.element_name.underscore.dasherize
-    end
+    # if attributes[:content_type].blank?
+    #   attributes[:content_type] = content.element_name.underscore.dasherize
+    # end
 
 
     # TODO; Once APERTA-11091 is done, this can be removed
     allowed_attributes = CardContent.attribute_names.map(&:to_sym) + [:card_version]
-    attributes = attributes.delete_if { |key, value| value.nil? && !allowed_attributes.member?(key) }
+    # attributes = attributes.delete_if { |key, value| value.nil? && !allowed_attributes.member?(key) }
 
     CardContent.new(attributes).tap do |root|
       # assign any validations
@@ -123,7 +124,7 @@ class XmlCardLoader
       custom_class: content.attr_value('custom-class'),
       custom_child_class: content.attr_value('custom-child-class'),
       wrapper_tag: content.attr_value('wrapper-tag'),
-      content_type: content.attr_value('content-type'),
+      content_type: content.get_content_type,
       default_answer_value: content.attr_value('default-answer-value'),
       error_message: content.attr_value('error-message'),
       ident: content.attr_value('ident'),

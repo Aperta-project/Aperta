@@ -8,6 +8,12 @@ class XmlElementDataExtractor
     @el = el
   end
 
+  def get_content_type
+    binding.pry
+    keys = CardContent::VALUE_TYPES_FOR_CONTENT.keys << 'display-children'
+    return element_name if keys.include?(element_name)
+  end
+
   def element_name
     @el.name
   end

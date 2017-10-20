@@ -1,5 +1,4 @@
 {{input
-  id=name
   value=(readonly answer.value)
   class="form-control"
   change=(action "valueChanged")
@@ -8,7 +7,8 @@
   focusIn=(action "maybeHideError")
   disabled=disabled
   required=content.isRequired
-  content=content}}
+  content=content
+}}
 
 {{#unless hideError}}
   {{card-content/validation-errors errors=answer.readyIssuesArray}}

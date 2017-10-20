@@ -5,14 +5,17 @@
   {{#if (and answer keepAnswerContainer)}}
     <div class="answer-container">
       <div class="answer">
-        {{{content.text}}}
-
-        {{#if content.isRequired}}
-          <span class="required-field">*</span>
+        {{#if content.text}}
+          <p class="content-text">
+            {{{content.text}}}
+            {{#if content.isRequired}}
+              <span class="required-field">*</span>
+            {{/if}}
+          </p>
         {{/if}}
 
         {{#if hasLabel}}
-          <label for={{name}}>
+          <label class="content-label">
             {{{content.label}}}
             {{partial "card-content-component"}}
           </label>
@@ -33,14 +36,17 @@
       </div>
     </div>
   {{else}}
-    {{{content.text}}}
-
-    {{#if content.isRequired}}
-      <span class="required-field">*</span>
+    {{#if content.text}}
+      <p class="content-text">
+        {{{content.text}}}
+        {{#if content.isRequired}}
+          <span class="required-field">*</span>
+        {{/if}}
+      </p>
     {{/if}}
 
     {{#if hasLabel}}
-      <label for={{name}}>
+      <label class="content-label">
         {{{content.label}}}
         {{partial "card-content-component"}}
       </label>

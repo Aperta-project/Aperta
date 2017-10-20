@@ -6,10 +6,13 @@
           selection=answer.value
           value=opt.value
           disabled=disabled
-          id=name
           content=content
-          action=(action "valueChanged")}}
-        <span class="card-content-radio-label">{{{opt.label}}}</span>
+          action=(action "valueChanged")
+        }}
+
+        <span class="card-content-radio-label">
+          {{{opt.label}}}
+        </span>
       </label>
     {{/each}}
   {{else }}
@@ -17,27 +20,33 @@
       {{radio-button
         selection=answer.value
         value=true
-        id=name
         disabled=disabled
         content=content
-        action=(action "valueChanged")}}
+        action=(action "valueChanged")
+      }}
+
       <span class="card-content-radio-label">Yes</span>
     </label>
+
     <label  for="{{guid-id this '1'}}" class="option">
       {{radio-button
         selection=answer.value
         value=false
-        id=name
         disabled=disabled
         content=content
-        action=(action "valueChanged")}}
+        action=(action "valueChanged")
+      }}
+
       <span class="card-content-radio-label">No</span>
     </label>
   {{/if}}
 </div>
-<div>{{card-content/validation-errors errors=answer.readyIssuesArray}}</div>
+
+{{card-content/validation-errors errors=answer.readyIssuesArray}}
+
 {{card-content/display-children
   content=content
   owner=owner
   disabled=disabled
-  preview=preview}}
+  preview=preview
+}}

@@ -1,7 +1,6 @@
 {{#if isRichText}}
   {{rich-text-editor
     editorStyle=content.editorStyle
-    id=name
     name=content.ident
     data-editor=content.ident
     value=answerValue
@@ -15,14 +14,14 @@
   }}
 {{else}}
   {{textarea
-      value=(readonly answerValue)
-      id=name
-      class="form-control"
-      change=(action "valueChanged")
-      input=(action "valueChanged")
-      focusOut=(action "validate")
-      disabled=disabled
+    value=(readonly answerValue)
+    class="form-control"
+    change=(action "valueChanged")
+    input=(action "valueChanged")
+    focusOut=(action "validate")
+    disabled=disabled
   }}
+
   {{card-content/validation-errors errors=answer.readyIssuesArray}}
 {{/if}}
 

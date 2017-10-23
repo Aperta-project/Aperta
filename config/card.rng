@@ -82,7 +82,7 @@
       <ref name="html"/>
     </element>
   </define>
-  <define name="instructions-label-required-text">
+  <define name="instructions-optional-text">
     <interleave>
       <optional>
         <element name="instruction-text">
@@ -90,7 +90,16 @@
         </element>
       </optional>
       <optional>
-        <element name="label">
+        <element name="text">
+          <ref name="html"/>
+        </element>
+      </optional>
+    </interleave>
+  </define>
+  <define name="instructions-required-text">
+    <interleave>
+      <optional>
+        <element name="instruction-text">
           <ref name="html"/>
         </element>
       </optional>
@@ -99,20 +108,21 @@
       </element>
     </interleave>
   </define>
-  <define name="instructions-label-optional-text">
+  <define name="instructions-label-required-text">
     <interleave>
-      <optional>
-        <element name="instruction-text">
-          <ref name="html"/>
-        </element>
-      </optional>
+      <ref name="instructions-required-text"/>
       <optional>
         <element name="label">
           <ref name="html"/>
         </element>
       </optional>
+    </interleave>
+  </define>
+  <define name="instructions-label-optional-text">
+    <interleave>
+      <ref name="instructions-optional-text"/>
       <optional>
-        <element name="text">
+        <element name="label">
           <ref name="html"/>
         </element>
       </optional>
@@ -308,7 +318,7 @@
         <optional>
           <ref name="default-answer-boolean"/>
         </optional>
-        <ref name="instructions-label-required-text"/>
+        <ref name="instructions-required-text"/>
         <zeroOrMore>
           <ref name="content"/>
         </zeroOrMore>
@@ -325,7 +335,7 @@
         <attribute name="value-type">
           <value>boolean</value>
         </attribute>
-        <ref name="instructions-label-optional-text"/>
+        <ref name="instructions-optional-text"/>
         <zeroOrMore>
           <ref name="content"/>
         </zeroOrMore>

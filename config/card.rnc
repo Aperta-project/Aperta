@@ -32,15 +32,21 @@ html = any-element* & text
 any-attribute = attribute * { text }
 any-element = element * { any-attribute*, html }
 
-instructions-label-required-text =
+instructions-optional-text =
   element instruction-text { html }?
-  & element label { html }?
+  & element text { html }?
+
+instructions-required-text =
+  element instruction-text { html }?
   & element text { html }
 
-instructions-label-optional-text =
-  element instruction-text { html }?
+instructions-label-required-text =
+  instructions-required-text
   & element label { html }?
-  & element text { html }?
+
+instructions-label-optional-text =
+  instructions-optional-text
+  & element label { html }?
 
 file-validation =
   element validation {
@@ -115,7 +121,7 @@ tech-check = element content {
   & input-attributes
   & attribute value-type { "boolean" }
   & default-answer-boolean?
-  & instructions-label-required-text
+  & instructions-required-text
   & content*
 }
 
@@ -123,7 +129,7 @@ sendback-reason = element content {
   attribute content-type { "sendback-reason" }
   & input-attributes
   & attribute value-type { "boolean" }
-  & instructions-label-optional-text
+  & instructions-optional-text
   & content*
 }
 

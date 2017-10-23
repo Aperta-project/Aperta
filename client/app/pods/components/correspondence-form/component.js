@@ -10,7 +10,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
   timeSent: Ember.computed('model', function() {
     let start = moment();
-    // rounding up the minutes to the nearest hour down
+    // rounding down the minutes to the nearest half-hour
     if (start.minutes() < 30) {
       start.minutes(0);
     } else {

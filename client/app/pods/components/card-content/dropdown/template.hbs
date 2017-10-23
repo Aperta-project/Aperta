@@ -1,14 +1,36 @@
-{{#power-select
-    options=content.possibleValues
-    selected=selectedValue
-    onchange=(action "valueChanged")
-    searchEnabled=false
-    disabled=disabled
-    content=content
-    required=content.isRequired
-    as |val|}}
-  {{val.label}}
-{{/power-select}}
+{{#if content.label}}
+  <label class="content-label" {{action "toggleDropdown"}}>
+    {{{content.label}}}
+
+    {{#power-select
+        options=content.possibleValues
+        selected=selectedValue
+        onchange=(action "valueChanged")
+        onfocus=(action "handleFocus")
+        searchEnabled=false
+        disabled=disabled
+        ariaLabel=content.label
+        content=content
+        required=content.isRequired
+        as |val|}}
+      {{val.label}}
+    {{/power-select}}
+  </label>
+{{else}}
+  {{#power-select
+      options=content.possibleValues
+      selected=selectedValue
+      onchange=(action "valueChanged")
+      onfocus=(action "handleFocus")
+      ariaLabel=content.label
+      searchEnabled=false
+      disabled=disabled
+      content=content
+      required=content.isRequired
+      as |val|}}
+    {{val.label}}
+  {{/power-select}}
+{{/if}}
 
 {{card-content/validation-errors content=content errors=answer.readyIssuesArray}}
 

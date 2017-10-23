@@ -32,6 +32,14 @@ export default Ember.Component.extend({
   },
 
   actions: {
+    handleFocus(select) {
+      select.actions.open();
+    },
+
+    toggleDropdown() {
+      this.$('.ember-power-select-trigger').focus();
+    },
+
     valueChanged(newVal) {
       let action = this.get('valueChanged');
       if (action) {

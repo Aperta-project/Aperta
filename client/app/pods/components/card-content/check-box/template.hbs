@@ -1,12 +1,22 @@
 <div class="checkbox">
-  {{check-box
-    name=name
-    checked=answer.value
-    disabled=disabled
-    content=content
-    answer=answer
-    action="valueChanged"
-  }}
+  <label>
+    {{check-box
+      name=name
+      checked=answer.value
+      disabled=disabled
+      content=content
+      answer=answer
+      action="valueChanged"
+    }}
+
+    {{#if content.label}}
+      <span>{{{content.label}}}</span>
+    {{/if}}
+
+    {{#if content.isRequired}}
+      <span class="required-field">*</span>
+    {{/if}}
+  </label>
 </div>
 
 {{card-content/validation-errors errors=answer.readyIssuesArray}}

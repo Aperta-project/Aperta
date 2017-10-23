@@ -14,7 +14,7 @@
           </p>
         {{/if}}
 
-        {{#if hasLabel}}
+        {{#if isLabeled}}
           <label class="content-label">
             {{{content.label}}}
             {{partial "card-content-component"}}
@@ -45,7 +45,7 @@
       </p>
     {{/if}}
 
-    {{#if hasLabel}}
+    {{#if isLabeled}}
       <label class="content-label">
         {{{content.label}}}
         {{partial "card-content-component"}}

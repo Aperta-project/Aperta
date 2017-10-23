@@ -36,6 +36,7 @@ class MergeFieldBuilder
         { name: :reviews, context: ReviewerReportContext, many: true }
       ]
       hash[PaperContext] = [
+        { name: :creator,               context: UserContext },
         { name: :editor,                context: UserContext },
         { name: :academic_editors,      context: UserContext,   many: true },
         { name: :handling_editors,      context: UserContext,   many: true },

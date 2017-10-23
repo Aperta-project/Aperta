@@ -930,11 +930,11 @@ class JournalFactory
         lt.ident = ident
         lt.scenario = 'PaperScenario'
         lt.subject = "Thank you for submitting your manuscript to {{ journal.name }}"
-        lt.to = '{creator.email}'
+        lt.to = '{{ manuscript.creator.full_name }}'
         lt.body = <<-TEXT.strip_heredoc
           <h1>Thank you for submitting your manuscript, {{ manuscript.title }}, to {{ journal.name }}. Our staff will be in touch with next steps.</h1>
           <br/>
-          <p>Dear {{ creator.full_name }},</p>
+          <p>Dear {{ manuscript.creator.full_name }},</p>
           <br/>Preprint Accept
           <p>Thank you for your submission to {{ journal.name }}, which will now be assessed by the editors to determine whether your manuscript meets the criteria for peer review. We may seek advice from an Academic Editor with relevant expertise.</p>
           <br/>

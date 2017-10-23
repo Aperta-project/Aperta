@@ -1,7 +1,7 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  cardContent: DS.belongsTo('card-content'),
+  cardContent: DS.belongsTo('card-content', { async: false }),
   task: DS.belongsTo('task'),
   answers: DS.hasMany('answer', { async: false }),
   unsortedChildren: DS.hasMany('repetition', { inverse: 'parent', async: false }),

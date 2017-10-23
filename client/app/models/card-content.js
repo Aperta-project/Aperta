@@ -105,12 +105,15 @@ export default DS.Model.extend({
     return this.get('isRequired') === true ? 'true' : 'false';
   }),
 
-  createAnswerForOwner(owner){
-    return this.get('store').createRecord('answer', {
+  createAnswerForOwner(owner, repetition){
+    let answer = this.get('store').createRecord('answer', {
       owner: owner,
       cardContent: this,
+      repetition: repetition,
       value: this.get('defaultAnswerValue'),
     });
+
+    return answer;
   },
 
   answerForOwner(owner, repetition) {
@@ -124,8 +127,7 @@ export default DS.Model.extend({
     if(repetition) {
       let answer = this.get('answers').filterBy('owner', owner).findBy('repetition', repetition);
       if(!answer) {
-        answer = this.createAnswerForOwner(owner);
-        answer.set('repetition', repetition);
+        answer = this.createAnswerForOwner(owner, repetition);
       }
       return answer;
     } else {

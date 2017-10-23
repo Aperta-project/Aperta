@@ -62,9 +62,14 @@ export default Ember.Component.extend({
   answer: Ember.computed('content', 'owner', 'repetition', function() {
     let answer = this.get('content').answerForOwner(this.get('owner'), this.get('repetition'));
 
-    if(!this.get('preview') && this.get('content.requiredField') && answer && answer.get('isNew')) {
-      // Card Validations expects that requiredField questions already have an associated Answer saved on the
-      // server. This means we can't allow the Answer to be lazily created like most Answers.
+    if(!this.get('preview') && (this.get('content.requiredField') || this.get('content.defaultAnswerValue')) && answer && answer.get('isNew')) {
+      // Card Validations expects that requiredField questions already have an
+      // associated Answer saved on the server. This means we can't allow the
+      // Answer to be lazily created like most Answers.
+      //
+      // This is similar for content with a default value. We want to initially
+      // save the record, or we won't have an answer saved for something the
+      // user never changes from the default.
       answer.save().then(a => {
         a.initiallyHideErrors();
       });

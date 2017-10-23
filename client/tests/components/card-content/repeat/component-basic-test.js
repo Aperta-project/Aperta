@@ -230,6 +230,7 @@ test(`it eagerly creates an answer for a required question`, function(assert) {
 
 test(`it sets the default answer when a question is added`, function(assert) {
   $.mockjax({url: '/api/repetitions', type: 'POST', status: 201, responseText: '{}'});
+  $.mockjax({url: '/api/answers', type: 'POST', status: 201, responseText: '{}'});
 
   let content = FactoryGuy.make('card-content', {
     contentType: 'repeat',

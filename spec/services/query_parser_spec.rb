@@ -291,6 +291,13 @@ describe QueryParser do
           "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."role_id" IN (#{role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper' AND "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{role.id}) AND "assignments"."assigned_to_type" = 'Paper')
         SQL
       end
+
+      it "parses REVIEWER IS" do
+        parse = QueryParser.new(current_user: user).parse "REVIEWER IS #{user_query}"
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "reviewer_reports_1"."user_id" IN (#{user.id})
+        SQL
+      end
     end
 
     describe 'people queries' do

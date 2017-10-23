@@ -68,6 +68,14 @@ class QueryParser < QueryLanguageParser
       .and(table['assigned_to_type'].eq('Paper'))
   end
 
+  add_simple_expression('REVIEWER IS') do |user_query|
+    user_ids = get_user_ids(user_query)
+
+    task_table = join Task
+    report_table = join ReviewerReport, "task_id", task_table.table_alias + ".id"
+    report_table[:user_id].in(user_ids)
+  end
+
   add_two_part_expression('USER', 'HAS ANY ROLE') do |user_query, _|
     user_ids = get_user_ids(user_query)
 

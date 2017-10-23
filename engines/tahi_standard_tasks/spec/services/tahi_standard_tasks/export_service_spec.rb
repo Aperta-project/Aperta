@@ -123,4 +123,10 @@ describe TahiStandardTasks::ExportService do
       end
     end
   end
+  describe '#aperta_id' do
+    it 'returns the word aperta concatenated with a 7 digit string padded with zeros' do
+      allow(paper).to receive(:id) { '1111' }
+      expect(service.aperta_id).to be == 'aperta.0001111'
+    end
+  end
 end

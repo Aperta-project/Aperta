@@ -199,49 +199,6 @@ test(`it only allows repetitions to be deleted when min number is reached`, func
   });
 });
 
-
-test(`it adds a repetition between two other repetitions`, function(assert) {
-  let store = this.container.lookup('service:store');
-
-  let repetitionIdSeed = 110;
-  $.mockjax({url: '/api/repetitions', type: 'POST', status: 201, response: function() {
-    this.responseText = {
-      repetition: { id: repetitionIdSeed++ },
-    };
-  }});
-
-  let content = FactoryGuy.make('card-content', {
-    contentType: 'repeat',
-    min: 2,
-    max: null,
-    itemName: 'thing',
-    repetitions: [],
-    unsortedChildren: [
-      FactoryGuy.make('card-content', {
-        contentType: 'short-input',
-        text: 'Can you answer my simple question?'
-      })
-    ]
-  });
-
-  this.set('content', content);
-  this.set('disabled', false);
-  this.set('owner', Ember.Object.create());
-  this.set('repetition', null);
-  this.render(template);
-
-  return wait().then(() => {
-    assert.nElementsFound('.repeated-block', 2, 'found initial repetitions');
-    this.$('.add-repetition:first').click()
-
-    return wait().then(() => {
-      assert.nElementsFound('.repeated-block', 3, 'new repetition was added');
-      assert.equal(store.peekRecord('repetition', 110).get('position'), 0, 'the initial repetition created should be first in the list');
-      assert.equal(store.peekRecord('repetition', 112).get('position'), 1, 'the newly created repetition should be second in the list');
-    });
-  });
-});
-
 test(`it eagerly creates an answer for a required question`, function(assert) {
   $.mockjax({url: '/api/repetitions', type: 'POST', status: 201, responseText: '{}'});
   $.mockjax({url: '/api/answers', type: 'POST', status: 201, responseText: '{}'});

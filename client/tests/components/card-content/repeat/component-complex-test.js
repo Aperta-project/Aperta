@@ -67,7 +67,7 @@ test(`it adds a repetition between two other repetitions`, function(assert) {
 
   return wait().then(() => {
     assert.nElementsFound('.repeated-block', 2, 'found initial repetitions');
-    this.$('.add-repetition:first').click()
+    this.$('.add-repetition:first').click();
 
     return wait().then(() => {
       assert.nElementsFound('.repeated-block', 3, 'new repetition was added');
@@ -131,12 +131,12 @@ test(`it destroys answers within a repetition if hidden`, function(assert) {
   $.mockjax({url: '/api/repetitions', type: 'POST', status: 201, response: function() {
     this.responseText = {
       repetition: { id: newRepetitionId++ }
-    }
+    };
   }});
   $.mockjax({url: '/api/answers', type: 'POST', status: 201, response: function() {
     this.responseText = {
       answer: { id: newAnswerId++ }
-    }
+    };
   }});
   $.mockjax({url: '/api/answers/*', type: 'DELETE', status: 204});
   $.mockjax({url: '/api/repetitions/*', type: 'DELETE', status: 204});
@@ -251,7 +251,7 @@ test(`it destroys answers within a repetition if hidden`, function(assert) {
 
     // verify that all answers are associated with the correct repetition
     return wait().then(() => {
-      let answers = store.peekAll('answer').sortBy("id");
+      let answers = store.peekAll('answer').sortBy('id');
       let answerA = getAnswer(answers, firstOuterRep.get('id'), '1004');
       let answerB = getAnswer(answers, firstInnerRep.get('id'), '1006');
       let answerC = getAnswer(answers, secondOuterRep.get('id'), '1004');

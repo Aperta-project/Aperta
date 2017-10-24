@@ -7,7 +7,7 @@ describe ReviewerReportContext do
 
   let(:reviewer) { FactoryGirl.create(:user) }
   let(:task) { FactoryGirl.create(:reviewer_report_task, completed: true) }
-  let(:reviewer_report) { FactoryGirl.build(:reviewer_report, task: task) }
+  let(:reviewer_report) { FactoryGirl.build(:reviewer_report, task: task, submitted_at: Date.current) }
   let(:reviewer_number) { 33 }
   let(:answer_1) { FactoryGirl.create(:answer) }
   let(:answer_2) { FactoryGirl.create(:answer) }
@@ -47,6 +47,12 @@ describe ReviewerReportContext do
 
       it 'renders nothing without ident card' do
         check_render("{{ reviewer_name }}", '')
+      end
+    end
+
+    context 'submitted date' do
+      it 'returns submitted at date' do
+        expect(context.submitted_at).to eq(reviewer_report.submitted_at)
       end
     end
   end

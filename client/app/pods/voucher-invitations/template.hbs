@@ -4,8 +4,14 @@
                       overlayClass="voucher-invitations-overlay"
                       enableClose=false
                       as |overlay|}}
-    {{invitations-x invitations=invitations
-                    loading=invitationsLoading
-                    accept=(action "acceptVoucherInvitation")
-                    decline=(action "declineVoucherInvitation")}}
+    {{#if declineDone}}
+      <div class='message declined'>
+        <h1>Thank You!</h1>
+      </div>
+    {{else}}
+      {{invitations-x invitations=invitations
+                      loading=invitationsLoading
+                      accept=(action "acceptVoucherInvitation")
+                      decline=(action "declineVoucherInvitation")}}
+    {{/if}}
 {{/overlay-fullscreen}}

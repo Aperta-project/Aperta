@@ -1,5 +1,5 @@
 class VoucherInvitationsSerializer < InvitationSerializer
-  attributes :information, :journal_logo_url, :paper_title, :paper_abstract
+  attributes :journal_logo_url, :paper_title, :paper_abstract, :token
 
   def journal_logo_url
     task.paper.journal.logo_url

@@ -14,7 +14,7 @@ class VoucherInvitationsController < ApplicationController
   end
 
   def update
-    @invitation = Invitation.find(params[:id])
+    @invitation = Invitation.find_by(token: voucher_token)
     if voucher_invitation_declined?
       @invitation.update! decline_reason: voucher_invitation_decline_reason
       @invitation.decline!
@@ -35,16 +35,8 @@ class VoucherInvitationsController < ApplicationController
     params[:id]
   end
 
-  def compiled_model
-    {
-      'voucher-invitation': {
-        id: @invitation.id,
-        invitation: @invitation,
-        paper_title: @invitation.task.paper.title,
-        paper_abstract: @invitation.task.paper.abstract,
-        journal_logo_url: @invitation.task.paper.journal.logo_url
-      }
-    }
+  def voucher_token
+    voucher_invitation_params.dig(:token)
   end
 
   def voucher_invitation_params

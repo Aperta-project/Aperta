@@ -39,7 +39,7 @@ describe VoucherInvitationsController do
   describe '#update' do
     context 'with a declined voucher invitation' do
       subject do
-        put :update, format: :json, id: invited_invitation.id, voucher_invitation: { state: 'declined' }
+        put :update, format: :json, id: invited_invitation.id, voucher_invitation: { state: 'declined', token: invited_invitation.token }
       end
 
       it 'should decline the invitation' do

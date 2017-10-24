@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default {
   name: 'flashMessages',
 
-  initialize(registry, application) {
+  initialize(application) {
     application.inject('route', 'flash', 'service:flash');
     application.inject('controller', 'flash', 'service:flash');
     application.inject('component:flashMessages', 'flash', 'service:flash');

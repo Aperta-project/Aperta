@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import ENV from 'tahi/config/environment';
-import { Controller } from 'ember-pusher/controller';
 
-export function initialize(registry, application) {
+export function initialize() {
+
   ENV.APP.PUSHER_OPTS = {
     key: window.eventStreamConfig.key,
     connection: {
@@ -19,19 +19,11 @@ export function initialize(registry, application) {
       wsPort: window.eventStreamConfig.port,
       wssPort: window.eventStreamConfig.port
     };
-
-    connection = Ember.merge(connection, websocket);
+    ENV.APP.PUSHER_OPTS.connection = Ember.merge(connection, websocket);
   }
-
-  Ember.assert(
-    'Pusher library is required',
-    typeof window.Pusher !== 'undefined'
-  );
-
-  application.register('pusher:main', Controller);
 }
 
 export default {
-  name: 'pusher',
+  name: 'ember-pusher-options',
   initialize: initialize
 };

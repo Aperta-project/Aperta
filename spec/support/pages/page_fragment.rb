@@ -90,7 +90,7 @@ class PageFragment
     yield if block_given?
   end
 
-  def view_card(card_name, overlay_class = nil, &block)
+  def view_card(card_name, overlay_class = nil, wait = true, &block)
     find('.card-title', text: card_name).click
 
     overlay_class ||= begin
@@ -102,7 +102,7 @@ class PageFragment
     if block_given?
       retry_stale_element do
         block.call overlay
-        wait_for_ajax
+        wait_for_ajax if wait
       end
       expect(session).to have_no_css("#delayedSave", visible: false)
       expect(overlay).to have_no_application_error

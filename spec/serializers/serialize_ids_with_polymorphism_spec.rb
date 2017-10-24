@@ -9,7 +9,7 @@ describe SerializeIdsWithPolymorphism do
       let(:task_type) { "UploadManuscriptTask" }
 
       it "returns the task name" do
-        expect(result).to eq [{ id: task[0].id, type: task_type }]
+        expect(result).to eq [{ id: task[0].id, type: task_type.underscore.dasherize }]
       end
     end
 
@@ -17,7 +17,7 @@ describe SerializeIdsWithPolymorphism do
       let(:task_type) { "TahiStandardTasks::FigureTask" }
 
       it "returns the last part of the task type" do
-        expect(result).to eq([{ id: task[0].id, type: "FigureTask" }])
+        expect(result).to eq([{ id: task[0].id, type: "figure-task" }])
       end
     end
 
@@ -25,7 +25,7 @@ describe SerializeIdsWithPolymorphism do
       let(:task_type) { "Tahi::StandardTasks::FigureTask" }
 
       it "returns the last part of the task type" do
-        expect(result).to eq([{ id: task[0].id, type: "FigureTask" }])
+        expect(result).to eq([{ id: task[0].id, type: "figure-task" }])
       end
     end
 
@@ -33,7 +33,7 @@ describe SerializeIdsWithPolymorphism do
       let(:task_type) { "Tahi::Standard::Tasks::FigureTask" }
 
       it "returns the last part of the task type" do
-        expect(result).to eq([{ id: task[0].id, type: "FigureTask" }])
+        expect(result).to eq([{ id: task[0].id, type: "figure-task" }])
       end
     end
 

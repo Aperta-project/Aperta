@@ -41,7 +41,7 @@ describe AuthorsController do
   describe "when the current user can edit_authors on the paper" do
     before do
       allow(user).to receive(:can?).with(:edit_authors, paper).and_return(true)
-      allow(user).to receive(:can?).with(:administer, paper.journal).and_return(false)
+      allow(user).to receive(:can?).with(:manage_paper_authors, paper).and_return(false)
     end
 
     it 'a POST request creates a new author' do
@@ -67,7 +67,7 @@ describe AuthorsController do
   describe "duplicate emails per paper are not allowed" do
     before do
       allow(user).to receive(:can?).with(:edit_authors, paper).and_return(true)
-      allow(user).to receive(:can?).with(:administer, paper.journal).and_return(false)
+      allow(user).to receive(:can?).with(:manage_paper_authors, paper).and_return(false)
     end
 
     it 'duplicate author emails on a paper are not allowed' do
@@ -83,7 +83,7 @@ describe AuthorsController do
   describe "when the current user can NOT edit_authors on the paper" do
     before do
       allow(user).to receive(:can?).with(:edit_authors, paper).and_return(false)
-      allow(user).to receive(:can?).with(:administer, paper.journal).and_return(false)
+      allow(user).to receive(:can?).with(:manage_paper_authors, paper).and_return(false)
     end
 
     it 'a POST request does not create a new author' do
@@ -133,7 +133,7 @@ describe AuthorsController do
     context 'administrator user' do
       it 'a PUT request from an administrator allows updating coauthor status' do
         allow(user).to receive(:can?).with(:edit_authors, paper).and_return(true)
-        allow(user).to receive(:can?).with(:administer, paper.journal).and_return(true)
+        allow(user).to receive(:can?).with(:manage_paper_authors, paper).and_return(true)
 
         old_time = author.co_author_state_modified_at
 
@@ -149,7 +149,7 @@ describe AuthorsController do
 
       it 'a PUT request from an non-administrator skips updating coauthor status' do
         allow(user).to receive(:can?).with(:edit_authors, author.paper).and_return(true)
-        allow(user).to receive(:can?).with(:administer, author.paper.journal).and_return(false)
+        allow(user).to receive(:can?).with(:manage_paper_authors, paper).and_return(false)
 
         old_time = author.co_author_state_modified_at
 

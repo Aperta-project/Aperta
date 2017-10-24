@@ -6,6 +6,10 @@
   </div>
 </div>
 
+<p>
+  Fields marked with an <i class="correspondence-asterisk-field">*</i> are required.
+</p>
+
 <div class="row">
   <div class="col-sm-6 col-md-3">
     <label class="correspondence-label">Date sent</label>
@@ -14,7 +18,7 @@
                     value=dateSent
                     date=dateSent
                     placeholder="Select date..."
-                    class="correspondence-date-sent inset-form-control-input correspondence-input"}}
+                    class="correspondence-date-sent correspondence-input"}}
     </div>
     <span>
       {{error-message message=validationErrors.dateSent
@@ -26,7 +30,7 @@
   <div class="col-sm-6 col-md-3" id="correspondence-label-time">
     <label>Time sent</label>
     <div class="{{if validationErrors.timeSent "error"}}">
-      {{time-picker class="inset-form-control-input correspondence-time-sent correspondence-input"
+      {{time-picker class="correspondence-time-sent correspondence-input"
                     name='correspondence-time-sent'
                     value=timeSent}}
     </div>
@@ -45,7 +49,7 @@
       {{input type="text"
               name='correspondence-description'
               value=model.description
-              class="correspondence-description inset-form-control-input correspondence-input"}}
+              class="correspondence-description correspondence-input"}}
     </div>
     <span>
       {{error-message message=validationErrors.description
@@ -62,7 +66,7 @@
       {{input type="text"
               name='correspondence-from'
               value=model.sender
-              class="correspondence-from inset-form-control-input correspondence-input"}}
+              class="correspondence-from correspondence-input"}}
     </div>
     <span>
       {{error-message message=validationErrors.sender
@@ -79,7 +83,7 @@
       {{input type="text"
               name='correspondence-to'
               value=model.recipients
-              class="correspondence-to inset-form-control-input correspondence-input"}}
+              class="correspondence-to correspondence-input"}}
     </div>
     <span>
       {{error-message message=validationErrors.recipients
@@ -96,7 +100,7 @@
       {{input type="text"
               name='correspondence-subject'
               value=model.subject
-              class="correspondence-subject inset-form-control-input correspondence-input"}}
+              class="correspondence-subject correspondence-input"}}
     </div>
     <span>
       {{error-message message=validationErrors.subject
@@ -113,7 +117,7 @@
       {{input type="text"
               name='correspondence-cc'
               value=model.cc
-              class="correspondence-cc inset-form-control-input correspondence-input"}}
+              class="correspondence-cc correspondence-input"}}
     </div>
     <span>
       {{error-message message=validationErrors.cc
@@ -130,7 +134,7 @@
       {{input type="text"
               name='correspondence-bcc'
               value=model.bcc
-              class="correspondence-bcc inset-form-control-input correspondence-input"}}
+              class="correspondence-bcc correspondence-input"}}
     </div>
     <span>
       {{error-message message=validationErrors.bcc

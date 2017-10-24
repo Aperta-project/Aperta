@@ -50,6 +50,11 @@
   }
 }
 
+.correspondence-asterisk-field {
+  font-size: 18px;
+  color: $aperta-red;
+}
+
 .correspondence-error {
   // there's a general "margin-left:15px for error-message in _inset-field.scss"
   // which doesn't work well with the layout of the correspondence overlay
@@ -57,8 +62,11 @@
 }
 
 .correspondence-input {
-  padding-top: 5px !important;
-  height: auto !important;
+  @extend .form-control;
+  padding-top: 5px;
+  height: auto;
+  @include placeholder { color: $aperta-grey-light; };
+  margin-bottom: 5px;
 }
 
 #correspondence-label-time {

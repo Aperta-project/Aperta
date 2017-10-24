@@ -24,9 +24,7 @@ feature "Submitting a paper", js: true do
     click_link paper.title
     paper_page = PaperPage.new
 
-    paper_page.submit do |submission_overlay|
-      submission_overlay.submit
-    end
+    paper_page.submit(&:submit)
 
     snapshot = Snapshot.where(source: competing_interests_task).first
     expect(snapshot).to be

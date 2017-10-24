@@ -206,17 +206,16 @@ describe XmlCardLoader do
             <content ident='doesntmatter' value-type='boolean' content-type='tech-check'>
               <text>You shall not PASS!</text>
               <content content-type="sendback-reason" value-type="boolean">
-                <content content-type="display-children">
-                  <content ident="first-tech-check-box" value-type="boolean" content-type="check-box" default-answer-value="false">
-                    <text>Because REASONS!</text>
-                    <content ident='potato' value-type='text' content-type="paragraph-input" default-answer-value="I told you, Mr. Balrog!  You shall not PASS!">
-                    </content>
-                  </content>
-                  <content ident='second-tech-check-box' value-type='boolean' content-type="check-box" default-answer-value="false">
-                    <text>Because more REASONS!</text>
-                    <content ident='potatoe' value-type='text' content-type="paragraph-input" default-answer-value="I really mean it!  You shall not PASS!">
-                    </content>
-                  </content>
+                <content ident="first-tech-check-box" value-type="boolean" content-type="check-box">
+                  <default-answer-value>false</default-answer-value>
+                  <text>Because REASONS!</text>
+                </content>
+                <content ident='second-tech-check-box' value-type='boolean' content-type="check-box">
+                  <default-answer-value>false</default-answer-value>
+                  <text>Because more REASONS!</text>
+                </content>
+                <content ident='potatoe' value-type='text' content-type="paragraph-input">
+                  <default-answer-value>I really mean it!  You shall not PASS!</default-answer-value>
                 </content>
               </content>
             </content>
@@ -235,7 +234,8 @@ describe XmlCardLoader do
       context 'radio' do
         let(:content1) do
           <<-XML
-            <content ident='foo' value-type='text' content-type='radio' default-answer-value="1" required-field="false">
+            <content ident='foo' value-type='text' content-type='radio' required-field="false">
+              <default-answer-value>1</default-answer-value>
               <text>Question!</text>
               <possible-value label="one" value="1"/>
             </content>
@@ -325,7 +325,8 @@ describe XmlCardLoader do
         let(:text) { Faker::Lorem.sentence }
         let(:content1) do
           <<-XML
-            <content content-type='short-input' value-type='text' default-answer-value="foo" required-field="false">
+            <content content-type='short-input' value-type='text' required-field="false">
+              <default-answer-value>foo</default-answer-value>
               <text>#{text}</text>
             </content>
           XML

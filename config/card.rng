@@ -50,15 +50,17 @@
     </attribute>
   </define>
   <define name="default-answer-boolean">
-    <attribute name="default-answer-value">
+    <element name="default-answer-value">
       <choice>
         <value>true</value>
         <value>false</value>
       </choice>
-    </attribute>
+    </element>
   </define>
   <define name="default-answer-text">
-    <attribute name="default-answer-value"/>
+    <element name="default-answer-value">
+      <text/>
+    </element>
   </define>
   <define name="html">
     <interleave>
@@ -325,6 +327,19 @@
       </interleave>
     </element>
   </define>
+  <define name="tech-check-email">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <value>tech-check-email</value>
+      </attribute>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
   <define name="sendback-reason">
     <element name="content">
       <interleave>
@@ -490,6 +505,7 @@
       <ref name="if"/>
       <ref name="radio-input"/>
       <ref name="sendback-reason"/>
+      <ref name="tech-check-email"/>
       <ref name="tech-check"/>
       <ref name="text-input"/>
     </choice>

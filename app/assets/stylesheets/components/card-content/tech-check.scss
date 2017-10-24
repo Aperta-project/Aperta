@@ -7,3 +7,27 @@
     }
   }
 }
+
+.card-content-tech-check-email {
+  .button-primary {
+    margin-top: 30px;
+  }
+
+  .email-preview {
+    margin-top: 20px;
+  }
+  .preview-content {
+    margin-top: 20px;
+    background: #eee;
+    border-top: 2px solid #aaa;
+    padding: 15px 20px;
+
+    div, li {
+      padding-top: 10px;
+    }
+
+    ol {
+      padding-left: 15px;
+    }
+  }
+}

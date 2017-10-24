@@ -1,11 +1,3 @@
-{{#if showDescription}}
-  <p class="description">
-    {{#if (or showDescription (or preview (not disabled)))}}
-      {{{description}}}
-    {{/if}}
-  </p>
-{{/if}}
-
 {{#each attachments as |attachment|}}
   {{#if attachment.readyIssuesArray.length}}
     {{card-content/validation-errors errors=attachment.readyIssuesArray}}

@@ -35,6 +35,10 @@ class MergeFieldBuilder
       hash[TahiStandardTasks::RegisterDecisionScenario] = hash[PaperScenario] + [
         { name: :reviews, context: ReviewerReportContext, many: true }
       ]
+      hash[SendbacksContext] = hash[PaperScenario] + [
+        { name: :author,           context: UserContext },
+        { name: :sendback_reasons, context: AnswerContext, many: true }
+      ]
       hash[PaperContext] = [
         { name: :editor,                context: UserContext },
         { name: :academic_editors,      context: UserContext,   many: true },

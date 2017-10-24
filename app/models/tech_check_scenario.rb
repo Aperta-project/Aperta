@@ -1,13 +1,5 @@
 # Provides a template context for the Sendback Reasons Letter Template
-class TechCheckScenario < TemplateContext
-  def manuscript
-    @manuscript ||= PaperContext.new(task.paper)
-  end
-
-  def journal
-    @journal ||= JournalContext.new(task.journal)
-  end
-
+class TechCheckScenario < PaperScenario
   def intro
     task.answer_for('tech-check-email--email-intro').value
   end
@@ -42,6 +34,10 @@ class TechCheckScenario < TemplateContext
   end
 
   private
+
+  def manuscript_object
+    task.paper
+  end
 
   def task
     @object

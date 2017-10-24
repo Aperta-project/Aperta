@@ -459,7 +459,7 @@ describe Activity do
 
   describe "#task_updated!" do
     context "a submission task" do
-      subject(:activity) { Activity.task_updated!(task, user: user) }
+      subject(:activity) { Activity.task_updated!(task, user: user, last_assigned_user: nil) }
       let(:task) { FactoryGirl.create(:metadata_task) }
 
       context "was completed" do
@@ -490,10 +490,48 @@ describe Activity do
             message: "#{task.title} card was marked as incomplete"
         )}
       end
+
+      context 'User assignment is never done' do
+        let!(:task) { FactoryGirl.create(:metadata_task) }
+        it 'Does not log any event' do
+          expect { Activity.task_updated!(task, user: user, last_assigned_user: nil) }.not_to change { Activity.count }
+        end
+      end
+
+      context 'An user is assigned to a task for the first time' do
+        let!(:task) { FactoryGirl.create(:metadata_task, assigned_user: assigned_user) }
+        let(:assigned_user) { FactoryGirl.create(:user) }
+        let!(:activity) { Activity.task_updated!(task, user: user, last_assigned_user: nil) }
+        it 'logs an user assignment event' do
+          expect(Activity.last).to have_attributes(
+            feed_name: "workflow",
+            activity_key: "task.user_assigned",
+            subject: task.paper,
+            user_id: user.id,
+            message: "#{user.full_name} assigned #{assigned_user.full_name} to task #{task.title}"
+          )
+        end
+      end
+
+      context 'Assigned user is going to be removed from the task' do
+        let!(:task) { FactoryGirl.create(:metadata_task, assigned_user: nil) }
+        let(:last_assigned_user) { FactoryGirl.build_stubbed(:user) }
+        let!(:activity) { Activity.task_updated!(task, user: user, last_assigned_user: last_assigned_user) }
+
+        it 'logs an user revoking event' do
+          expect(Activity.last).to have_attributes(
+            feed_name: "workflow",
+            activity_key: "task.assigned_user_removed",
+            subject: task.paper,
+            user_id: user.id,
+            message: "#{user.full_name} removed assigned user #{last_assigned_user.full_name} from task #{task.title}"
+          )
+        end
+      end
     end
 
     context "a submission task" do
-      subject(:activity) { Activity.task_updated!(task, user: user) }
+      subject(:activity) { Activity.task_updated!(task, user: user, last_assigned_user: nil) }
       let(:task) { FactoryGirl.create(:ad_hoc_task) }
 
       context "was completed" do

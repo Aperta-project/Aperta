@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
-  classNames: ['card-content-check-box', 'checkbox'],
+  classNames: ['card-content', 'card-content-check-box'],
 
   propTypes: {
     content: PropTypes.EmberObject.isRequired,
@@ -14,8 +14,12 @@ export default Ember.Component.extend({
   // the text used for version diffing (content.label will not show
   // in the diffing view as the question text).  Eventually, we'll
   // do a real fix for this in APERTA-11249 and/or APERTA-11224
-  textOnly: Ember.computed('content.text', 'content.label', function() {
-    return this.get('content.text') && Ember.isEmpty(this.get('content.label'));
+  showTextAndLabel: Ember.computed('content.{text,label}', function() {
+    return Ember.isPresent(this.get('content.label')) && Ember.isPresent(this.get('content.text'));
+  }),
+
+  labelOnly: Ember.computed('content.{text,label}', function() {
+    return Ember.isPresent(this.get('content.label')) && Ember.isEmpty(this.get('content.text'));
   }),
 
   name: Ember.computed('content.ident', function() {

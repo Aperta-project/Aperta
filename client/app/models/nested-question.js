@@ -15,7 +15,7 @@ export default DS.Model.extend({
 
   text: DS.attr('string'),
   children: DS.hasMany('nested-question', { async: false, inverse: 'parent' }),
-  parent: DS.belongsTo('nested-question', { async: false }),
+  parent: DS.belongsTo('nested-question', { async: false, inverse: 'children' }),
   answers: DS.hasMany('nested-question-answer', {
     async: false , inverse: 'nestedQuestion'
   }),

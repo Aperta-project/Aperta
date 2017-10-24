@@ -133,7 +133,6 @@ class JournalFactory
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:manage, applies_to: klass)
-        role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
         role.ensure_permission_exists(:manage_scheduled_events, applies_to: klass)
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
@@ -219,6 +218,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
+      role.ensure_permission_exists(:manage_paper_authors, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
       role.ensure_permission_exists(:perform_similarity_check, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
@@ -278,6 +278,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
+      role.ensure_permission_exists(:manage_paper_authors, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
       role.ensure_permission_exists(:perform_similarity_check, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
@@ -351,7 +352,6 @@ class JournalFactory
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:manage, applies_to: klass)
-        role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
@@ -450,6 +450,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
+      role.ensure_permission_exists(:manage_paper_authors, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
       role.ensure_permission_exists(:perform_similarity_check, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
@@ -557,9 +558,33 @@ class JournalFactory
     seed_register_decision_revise_or_accept
     seed_reviewer_report
     seed_preprint_decision
+    seed_preprint_sendbacks
   end
 
   # rubocop:disable Style/GuardClause
+  def seed_preprint_sendbacks
+    ident = 'preprint-sendbacks'
+    unless LetterTemplate.exists?(journal: @journal, ident: ident)
+      LetterTemplate.where(name: 'Sendback Reasons', journal: @journal).first_or_initialize.tap do |lt|
+        lt.ident = ident
+        lt.scenario = 'SendbacksContext'
+        lt.subject = 'Manuscript Sendback Reasons'
+        lt.to = '{{author.email}}'
+        lt.body = <<-TEXT.strip_heredoc
+        {{intro}}
+        <ol>
+          {% for reason in sendback_reasons %}
+            <li>{{reason.value}}</li>
+          {% endfor %}
+        </ol>
+        {{footer}}
+        TEXT
+
+        lt.save!
+      end
+    end
+  end
+
   def seed_register_decision_reject
     ident = 'editor-decision-reject-after-review'
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
@@ -956,12 +981,10 @@ class JournalFactory
           {%- if review.status == 'completed' -%}
             ----------<br/>
             <p>Reviewer {{ review.reviewer_number }} {{ review.reviewer_name }}</p>
-            {%- for answer in review.answers -%}
-              {%- if review.rendered_answer_idents contains answer.ident -%}
-              <p>
-                {{ answer.value }}
-              </p>
-              {%- endif -%}
+            {%- for answer in review.rendered_answers -%}
+            <p>
+              {{ answer.value }}
+            </p>
             {%- endfor -%}
           {% endif %}
         {% endfor %}

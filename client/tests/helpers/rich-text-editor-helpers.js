@@ -23,6 +23,15 @@ export function pasteText(name, text) {
   editor.target.triggerSave();
 }
 
+// This isn't strictly needed yet, but there are a number of "paste from Word"
+// tickets queued up, and this will make a good helper method. It clones a
+// unit test method used in the TinyMCE library itself.
+export function setContentFromClipboard(name, content) {
+  let editor = findEditor(name);
+  editor.setContent('');
+  editor.execCommand('mceInsertClipboardContent', false, {content: content});
+}
+
 export function editorFireEvent(editorName, eventName) {
   let editor = findEditor(editorName);
   editor.fire(eventName);

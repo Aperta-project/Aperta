@@ -19,12 +19,15 @@ export default DS.Model.extend({
   inviteeRole: DS.attr('string'),
   position: DS.attr('number'),
   primary: DS.belongsTo('invitation', { inverse: 'alternates', async: false }),
-  alternates: DS.hasMany('invitation'),
+  alternates: DS.hasMany('invitation', { inverse: 'primary' }),
   reviewerSuggestions: DS.attr('string'),
   state: DS.attr('string'),
   task: DS.belongsTo('task', { polymorphic: true }),
   decision: DS.belongsTo('decision', {async: false}),
   title: DS.attr('string'),
+  htmlSafeTitle: Ember.computed('title', function () {
+    return Ember.String.htmlSafe(this.get('title'));
+  }),
   reviewerReport: DS.belongsTo('reviewer_report'),
   paperShortDoi: DS.attr('string'),
   journalName: DS.attr('string'),

@@ -30,6 +30,7 @@ module CustomCard
 
     def generate_custom_card_configuration
       template "configuration.template", "lib/custom_card/configurations/#{klass_name.underscore}.rb"
+      template "xml.template", "lib/custom_card/configurations/xml_content/#{klass_name.underscore}.xml"
     end
 
     def generate_custom_card_migration

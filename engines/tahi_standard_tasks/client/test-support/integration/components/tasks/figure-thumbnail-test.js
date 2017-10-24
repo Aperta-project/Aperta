@@ -2,6 +2,7 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import registerCustomAssertions from '../../../helpers/custom-assertions';
+import Ember from 'ember';
 
 moduleForComponent(
   'figure-task',
@@ -10,6 +11,10 @@ moduleForComponent(
     beforeEach() {
       registerCustomAssertions();
       manualSetup(this.container);
+      this.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
+    },
+    afterEach() {
+      $.mockjax.clear();
     }
   }
 );
@@ -50,6 +55,7 @@ test('it renders an error state', function(assert) {
 test('it allows the user to cancel', function(assert) {
   this.set('destroyFigure', function(){});
   this.set('figure', make('figure', {status: 'processing'}));
+  $.mockjax({url: '/api/figures/1/cancel', type: 'PUT', status: 204});
   this.render(template);
 
   this.$('.upload-cancel-link').click();

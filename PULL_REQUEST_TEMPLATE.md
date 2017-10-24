@@ -39,6 +39,7 @@ Were there major UI changes? Add a screenshot here -- and please let the QA team
 - [ ] If I made any UI changes, I've let QA know.
 - [ ] If I changed the database schema, I enforced database constraints.
 - [ ] If I created a migration, I updated the base data.yml seeds file. [instructions](https://developer.plos.org/confluence/display/TAHI/Seeds+maintenance)
+- [ ] If I modified `app/services/journal_factory.rb`, I updated the base data.yml seeds file. [instructions](https://developer.plos.org/confluence/display/TAHI/Seeds+maintenance)
 - [ ] I have ensured that the Heroku Review App has successfully deployed and is ready for PO UAT.
 
 If I modified any environment variables:

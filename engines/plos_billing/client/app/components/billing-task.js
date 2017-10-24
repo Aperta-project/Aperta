@@ -17,7 +17,9 @@ export default TaskComponent.extend({
 
   init() {
     this._super(...arguments);
-    this.get('countries').fetch();
+    let countries = this.get('countries');
+    countries.get('fetch').perform();
+
     this.get('institutionalAccounts').fetch();
   },
 

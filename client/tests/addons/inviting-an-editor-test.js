@@ -3,20 +3,14 @@ import { module, test } from 'qunit';
 import startApp from 'tahi/tests/helpers/start-app';
 import FactoryGuy from 'ember-data-factory-guy';
 import Factory from '../helpers/factory';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
+import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 
 let App, paper, phase, task, inviteeEmail;
 
-module('Integration: Inviting an editor', {
-  afterEach() {
-    Ember.run(function() { TestHelper.teardown(); });
-    Ember.run(App, 'destroy');
-  },
-
+moduleForAcceptance('Integration: Inviting an editor', {
+  
   beforeEach() {
-    App = startApp();
-    TestHelper.setup(App);
-
     $.mockjax({url: '/api/admin/journals/authorization', status: 204});
     $.mockjax({url: '/api/formats', status: 200, responseText: {
       import_formats: [],
@@ -51,7 +45,7 @@ module('Integration: Inviting an editor', {
 
 test('disables the Compose Invite button until a user is selected', function(assert) {
   Ember.run(function(){
-    TestHelper.mockFind('task').returns({ model: task });
+    TestHelper.mockFindRecord('paper-editor-task').returns({ model: task });
     visit(`/papers/${paper.get('shortDoi')}/workflow`);
     click('.card-title:contains("Invite Editor")');
 
@@ -81,7 +75,7 @@ test('can delete a pending invitation', function(assert) {
   Ember.run(function() {
     let invitation = FactoryGuy.make('invitation', {email: 'foo@bar.com', state: 'pending'});
     task.set('invitations', [invitation]);
-    TestHelper.mockFind('task').returns({model: task});
+    TestHelper.mockFindRecord('paper-editor-task').returns({model: task});
     TestHelper.mockDelete('invitation', invitation.id);
 
     visit(`/papers/${paper.get('shortDoi')}/workflow`);
@@ -105,7 +99,7 @@ test('can not delete an invited invitation', function(assert) {
   Ember.run(function() {
     let invitation = FactoryGuy.make('invitation', {email: 'foo@bar.com', state: 'invited'});
     task.set('invitations', [invitation]);
-    TestHelper.mockFind('task').returns({model: task});
+    TestHelper.mockFindRecord('paper-editor-task').returns({model: task});
 
     visit(`/papers/${paper.get('shortDoi')}/workflow`);
     click(".card-title:contains('Invite Editor')");

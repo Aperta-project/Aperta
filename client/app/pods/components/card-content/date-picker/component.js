@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
-  classNames: ['card-content-date-picker'],
+  classNames: ['card-content', 'card-content-date-picker'],
 
   propTypes: {
     content: PropTypes.EmberObject.isRequired,

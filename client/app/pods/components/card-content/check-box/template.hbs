@@ -1,20 +1,31 @@
-{{#unless textOnly}}
-<p class="content-text">{{#if content.text}}{{{content.text}}}{{/if}}
+{{#if showTextAndLabel}}
+  <p class="content-text">
+    {{{content.text}}}
     {{#if content.isRequired}}
       <span class="required-field">*</span>
-    {{/if}}</p>
-{{/unless}}
+    {{/if}}
+  </p>
+{{/if}}
 {{card-content/validation-errors errors=answer.readyIssuesArray}}
-<label for={{name}}>{{check-box
-  name=name
-  id=name
-  checked=answer.value
-  disabled=disabled
-  content=content
-  answer=answer
-  action="valueChanged"}}{{{if textOnly content.text content.label}}}
-</label>
-<div>{{card-content/validation-errors errors=answer.readyIssuesArray}}</div>
+<div class="checkbox">
+  <label for={{name}}>
+    {{check-box
+      name=name
+      id=name
+      checked=answer.value
+      disabled=disabled
+      content=content
+      answer=answer
+      action="valueChanged"}}
+    <span>{{{if (or showTextAndLabel labelOnly) content.label content.text }}}</span>
+    {{#if (and (not showTextAndLabel) content.isRequired)}}
+      <span class="required-field">*</span>
+    {{/if}}
+  </label>
+</div>
+<div>
+  {{card-content/validation-errors errors=answer.readyIssuesArray}}
+</div>
 {{card-content/display-children
   content=content
   owner=owner

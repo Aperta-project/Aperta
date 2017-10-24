@@ -1,5 +1,5 @@
 # Provides a template context for the Sendback Reasons Letter Template
-class SendbacksContext < TemplateContext
+class TechCheckScenario < TemplateContext
   def manuscript
     @manuscript ||= PaperContext.new(task.paper)
   end

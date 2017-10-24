@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe SendbacksContext do
-  subject(:context) { SendbacksContext.new(task) }
+describe TechCheckScenario do
+  subject(:context) { TechCheckScenario.new(task) }
   let(:paper) { FactoryGirl.create(:paper, journal: FactoryGirl.create(:journal)) }
   let(:task) { FactoryGirl.create(:initial_tech_check_task, paper: paper) }
 

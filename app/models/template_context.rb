@@ -8,7 +8,7 @@ class TemplateContext < Liquid::Drop
       TahiStandardTasks::PaperReviewerScenario,
       TahiStandardTasks::PreprintDecisionScenario,
       TahiStandardTasks::RegisterDecisionScenario,
-      SendbacksContext
+      TechCheckScenario
     ]
   end
 

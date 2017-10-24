@@ -50,5 +50,32 @@ FactoryGirl.define do
         <p>Dear {{ reviewer.first_name }} {{ reviewer.last_name }}.</p><p>Kind regards,<br /> {{ journal.name }}</p>
       LETTER
     end
+
+    trait(:thanks_submitting) do
+      scenario 'PaperScenario'
+      ident 'thanks-submitting-email'
+      name 'Thanks Submitting'
+      subject 'Thank you for submitting to {{ journal.name }}'
+      body <<-TEXT.strip_heredoc
+          <h1>Thank you for submitting your manuscript, {{ manuscript.title }}, to {{ journal.name }}. Our staff will be in touch with next steps.</h1>
+          <br/>
+          <p>Dear {{ manuscript.creator.full_name }},</p>
+          <br/>Preprint Accept
+          <p>Thank you for your submission to {{ journal.name }}, which will now be assessed by the editors to determine whether your manuscript meets the criteria for peer review. We may seek advice from an Academic Editor with relevant expertise.</p>
+          <br/>
+          <p>If our initial evaluation is positive, we will contact you to request statements relating to ethical approval, funding, data and competing interests ahead of initiating peer review. This additional information is required to satisfy PLOS’ policies and will be made available to editors and reviewers. If you anticipate that you will be unavailable during the next week or two, please provide us with an additional person of contact by return email.</p>
+          <br/>
+          {% if manuscript.preprint_opted_in %}
+            <p>Preprint Submission:</p>
+            <p>Thank you for choosing to share your manuscript as a preprint. Our staff will review your submission and contact you if your article complies with our preprint policy. Please refer to the editorial staff of your journal to discuss any concerns.</p>
+          {% endif %}
+          {% if manuscript.preprint_opted_out %}
+            <p>Preprint Submission:</p>
+            <p>You choose not to share your manuscript as a preprint. If you wish to revisit that decision please contact the editorial staff of your journal.</p>
+            <p>Read more about preprints benefits:</p>
+            <p><a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005473">Ten simple rules to consider regarding preprint submission</p>
+          {% endif %}
+        TEXT
+    end
   end
 end

@@ -35,6 +35,45 @@ describe PaperContext do
       check_render("{{ paper_type }}", paper.paper_type)
     end
 
+    context 'with Preprint Enabled' do
+      let!(:preprint_flag) { FactoryGirl.create :feature_flag, name: "PREPRINT", active: true }
+
+      context 'with preprint opt-in' do
+        it 'renders opt-in block' do
+          check_render("{% if preprint_opted_in %}opt-in{% endif %}", "opt-in")
+        end
+      end
+
+      context 'with preprint opt-out' do
+        it 'renders opt-out block' do
+          paper.preprint_opt_out = true
+          paper.save
+          check_render("{% if preprint_opted_out %}opt-out{% endif %}", "opt-out")
+        end
+      end
+    end
+
+    context 'with a creator' do
+      let(:paper) do
+        FactoryGirl.create :paper, :with_creator, journal: journal
+      end
+
+      it 'renders creator first name' do
+        check_render("{{ creator.first_name }}",
+                     paper.creator.first_name)
+      end
+
+      it 'renders creator last name' do
+        check_render("{{ creator.last_name }}",
+                     paper.creator.last_name)
+      end
+
+      it 'renders creator full name' do
+        check_render("{{ creator.full_name }}",
+                     paper.creator.full_name)
+      end
+    end
+
     context 'with authors' do
       let(:author_1) do
         FactoryGirl.create(:author, email: 'a1@example.com')

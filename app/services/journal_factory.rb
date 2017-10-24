@@ -953,8 +953,8 @@ class JournalFactory
       LetterTemplate.where(name: 'Thanks Submitting', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
         lt.scenario = 'PaperScenario'
-        lt.subject = "Thank you for submitting your manuscript to {{ journal.name }}"
-        lt.to = '{{ manuscript.creator.full_name }}'
+        lt.subject = "Thank you for submitting to {{ journal.name }}"
+        lt.to = '{{ manuscript.creator.email }}'
         lt.body = <<-TEXT.strip_heredoc
           <h1>Thank you for submitting your manuscript, {{ manuscript.title }}, to {{ journal.name }}. Our staff will be in touch with next steps.</h1>
           <br/>

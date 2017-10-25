@@ -118,7 +118,7 @@ class TokenInvitationsController < ApplicationController
   end
 
   def ensure_user!
-    if invitation.invitee_id or use_authentication?
+    if invitation.invitee.try(:ned_id) or use_authentication?
       if TahiEnv.cas_enabled?
         redirect_to omniauth_authorize_path(:user, 'cas', url: akita_invitation_accept_url)
       else

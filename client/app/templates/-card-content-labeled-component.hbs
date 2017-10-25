@@ -1,3 +1,4 @@
+{{! Both label and text}}
 {{#if (and hasText hasLabel)}}
   <p class="content-text">
     {{{content.text}}}
@@ -13,6 +14,7 @@
   {{else}}
     {{partial "card-content-component"}}
   {{/if}}
+{{! Text no label}}
 {{else if hasText}}
   <p class="content-text">
     {{{content.text}}}
@@ -21,6 +23,7 @@
     {{/if}}
   </p>
   {{partial "card-content-component"}}
+{{! Label no text}}
 {{else if (and canBeLabeled hasLabel)}}
   <label class="content-label">
     {{{content.label}}}
@@ -29,6 +32,7 @@
     {{/if}}
     {{partial "card-content-component"}}
   </label>
+{{! Neither label nor text}}
 {{else}}
   {{#if content.isRequired}}
     <p class="content-text">

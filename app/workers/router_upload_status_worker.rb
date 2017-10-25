@@ -12,16 +12,16 @@ class RouterUploadStatusWorker
 
   def perform(export_delivery_id)
     export_delivery = TahiStandardTasks::ExportDelivery.find(export_delivery_id)
-    service = RouterService.new(export_delivery)
+    service = TahiStandardTasks::ExportService.new export_delivery: export_delivery
     result = service.export_status
 
     case result[:job_status]
     when "PENDING"
-      raise ExportService::StatusError, "Job pending"
+      raise TahiStandardTasks::ExportService::StatusError, "Job pending"
     when "SUCCESS"
       export_delivery.delivery_succeeded!
       # check for published status (for preprints only)
-      RouterPublishStatusWorker.perform_in(3600.seconds, export_delivery.id) if export_delivery.destination == 'preprint'
+      RouterPublishStatusWorker.perform_in(1.second, export_delivery.id) if export_delivery.destination == 'preprint'
     else
       export_delivery.delivery_failed!(result[:job_status_description])
     end

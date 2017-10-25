@@ -53,6 +53,7 @@ class Paper < ActiveRecord::Base
   has_many :related_articles, dependent: :destroy
   has_many :withdrawals, dependent: :destroy
   has_many :correspondence
+  has_many :export_deliveries
 
   has_many :authors,
            -> { order 'author_list_items.position ASC' },
@@ -638,6 +639,10 @@ class Paper < ActiveRecord::Base
   def preprint_doi_suffix
     return nil unless preprint_doi_article_number
     "aarx." + preprint_doi_article_number
+  end
+
+  def preprint_published?
+    export_deliveries.where(state: 'preprint_published').any?
   end
 
   def front_matter?

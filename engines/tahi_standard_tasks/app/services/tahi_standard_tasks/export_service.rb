@@ -53,6 +53,19 @@ module TahiStandardTasks
       end
     end
 
+    def export_status
+      if export_delivery.service_id.present?
+        response = router_status_connection.get("/api/deliveries/" + export_delivery.service_id)
+        { job_status: response.body["job_status"],
+          job_status_description: response.body["job_status_details"],
+          published_on_prod: response.body["published_on_prod"] }
+      else
+        { job_status: "UNKNOWN",
+          job_status_description: "No service job ID provided",
+          publish_on_prod: nil }
+      end
+    end
+
     private
 
     def needs_preprint_doi?
@@ -66,6 +79,9 @@ module TahiStandardTasks
       # for router exports, there is an async status polling of the router service
       # that needs to complete first (see RouterUploadStatusWorker)
       export_delivery.delivery_succeeded! if destination == 'apex'
+    rescue Faraday::ClientError => e
+      response_body = JSON.parse e.response[:body]
+      export_delivery.delivery_failed!(response_body['message'])
     rescue StandardError => e
       export_delivery.delivery_failed!(e.message)
       raise
@@ -95,19 +111,6 @@ module TahiStandardTasks
       ).upload
     end
 
-    def export_status
-      if export_delivery.service_id.present?
-        response = router_status_connection.get("/api/deliveries/" + export_delivery.service_id)
-        { job_status: response.body["job_status"],
-          job_status_description: response.body["job_status_details"],
-          published_on_prod: response.body["published_on_prod"] }
-      else
-        { job_status: "UNKNOWN",
-          job_status_description: "No service job ID provided",
-          publish_on_prod: nil }
-      end
-    end
-
     def upload_to_router
       # execute initial article router service POST request
       response = router_upload_connection.post("/api/deliveries") do |request|
@@ -125,7 +128,7 @@ module TahiStandardTasks
         metadata_filename: 'metadata.json',
         aperta_id: aperta_id,
         files: packager.manifest.file_list.join(','),
-        destination: destination.first,
+        destination: export_delivery.destination,
         journal_code: paper.journal.doi_journal_abbrev,
         # The archive_filename is not a string but the file itself.
         archive_filename: Faraday::UploadIO.new(packager.zip_file, '')

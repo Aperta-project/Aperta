@@ -1,7 +1,7 @@
 <div>
   {{#if isText}}
     {{#each content.possibleValues as |opt index|}}
-      <label for="{{guid-id this index}}" class="option">
+      <label class="option">
         {{radio-button
           selection=answer.value
           value=opt.value
@@ -16,7 +16,7 @@
       </label>
     {{/each}}
   {{else }}
-    <label for="{{guid-id this '0'}}" class="option">
+    <label class="option">
       {{radio-button
         selection=answer.value
         value=true
@@ -28,7 +28,7 @@
       <span class="card-content-radio-label">Yes</span>
     </label>
 
-    <label  for="{{guid-id this '1'}}" class="option">
+    <label class="option">
       {{radio-button
         selection=answer.value
         value=false

@@ -2,11 +2,38 @@ module Attributable
   extend ActiveSupport::Concern
 
   CONTENT_ATTRIBUTES = {
-    boolean: %w[allow_annotations allow_file_captions allow_multiple_uploads required_field],
-    json:    %w[possible_values],
-    string:  %w[child_tag condition custom_class custom_child_class default_answer_value
-                editor_style error_message instruction_text key label text value_type
-                visible_with_parent_answer wrapper_tag]
+    boolean: %w[
+      allow_annotations
+      allow_file_captions
+      allow_multiple_uploads
+      required_field
+    ],
+    json: %w[
+      possible_values
+    ],
+    integer: %w[
+      min
+      max
+    ],
+    string: %w[
+      child_tag
+      condition
+      custom_child_class
+      custom_class
+      default_answer_value
+      editor_style
+      error_message
+      instruction_text
+      item_name
+      key
+      label
+      max
+      min
+      text
+      value_type
+      visible_with_parent_answer
+      wrapper_tag
+    ]
   }.freeze
 
   included do

@@ -132,7 +132,10 @@ class XmlCardLoader
       condition: content.attr_value('condition'),
       value_type: content.attr_value('value-type'),
       visible_with_parent_answer: content.attr_value('visible-with-parent-answer'),
-      key: content.attr_value('key')
+      key: content.attr_value('key'),
+      min: content.attr_value('min'),
+      max: content.attr_value('max'),
+      item_name: content.attr_value('item-name')
     }
   end
   # rubocop:enable MethodLength, AbcSize

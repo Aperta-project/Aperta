@@ -14,10 +14,12 @@ class ReviewerReportsController < ApplicationController
 
   def update
     requires_user_can :edit, reviewer_report.task
-
     if FeatureFlag[:REVIEW_DUE_DATE]
-      requires_user_can :edit_due_date, reviewer_report.task
-      reviewer_report.due_datetime.update_attributes reviewer_report_params.slice(:due_at)
+      due_at_date = reviewer_report_params.slice(:due_at)
+      if due_at_date.present? && due_at_date['due_at'].to_datetime != reviewer_report.due_at
+        requires_user_can :edit_due_date, reviewer_report.task
+        reviewer_report.due_datetime.update_attributes due_at_date
+      end
       reviewer_report.schedule_events if FeatureFlag[:REVIEW_DUE_AT]
     end
     reviewer_report.submit! if reviewer_report_params[:submitted].present?

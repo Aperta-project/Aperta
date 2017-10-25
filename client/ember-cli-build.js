@@ -25,7 +25,7 @@ module.exports = function(defaults) {
       enabled: EmberApp.env() === 'production'
     },
     fingerprint: {
-      exclude: ['skins/lightgray/fonts', 'skins/lightgray', 'plugins/codesample/css']
+      exclude: ['skins', 'plugins']
     }
   };
 
@@ -78,28 +78,22 @@ module.exports = function(defaults) {
   // TinyMCE
   app.import(app.bowerDirectory + '/tinymce/plugins/codesample/css/prism.css');
 
-  app.import(app.bowerDirectory + '/tinymce/tinymce.min.js');
-  app.import(app.bowerDirectory + '/tinymce/themes/modern/theme.min.js');
-  app.import(app.bowerDirectory + '/tinymce/plugins/code/plugin.min.js');
-  app.import(app.bowerDirectory + '/tinymce/plugins/codesample/plugin.min.js');
-  app.import(app.bowerDirectory + '/tinymce/plugins/paste/plugin.min.js');
-  app.import(app.bowerDirectory + '/tinymce/plugins/table/plugin.min.js');
-  app.import(app.bowerDirectory + '/tinymce/plugins/link/plugin.min.js');
-  app.import(app.bowerDirectory + '/tinymce/plugins/autoresize/plugin.min.js');
+  app.import('node_modules/tinymce/tinymce.js');
+  app.import('node_modules/tinymce/themes/modern/theme.js');
+  app.import('node_modules/tinymce/plugins/code/plugin.js');
+  app.import('node_modules/tinymce/plugins/codesample/plugin.js');
+  app.import('node_modules/tinymce/plugins/paste/plugin.js');
+  app.import('node_modules/tinymce/plugins/table/plugin.js');
+  app.import('node_modules/tinymce/plugins/link/plugin.js');
+  app.import('node_modules/tinymce/plugins/autoresize/plugin.js');
 
-  var tinymceFonts = new Funnel(app.bowerDirectory + '/tinymce/skins/lightgray/fonts', {
+  var tinymceSkins = new Funnel('node_modules/tinymce/skins/lightgray', {
     srcDir: '/',
-    include: ['*.woff', '*.ttf'],
-    destDir: '/assets/skins/lightgray/fonts'
-  });
-
-  var tinymceCSS = new Funnel(app.bowerDirectory + '/tinymce/skins/lightgray/', {
-    srcDir: '/',
-    include: ['*.css'],
+    include: ['fonts/*.woff', 'fonts/*.ttf', '*.css'],
     destDir: '/assets/skins/lightgray'
   });
 
-  var prism = new Funnel(app.bowerDirectory + '/tinymce/plugins/codesample/css', {
+  var prism = new Funnel('node_modules/tinymce/plugins/codesample/css', {
     srcDir: '/',
     include: ['*.css'],
     destDir: '/assets/plugins/codesample/css'
@@ -109,5 +103,5 @@ module.exports = function(defaults) {
     app.import('vendor/pusher-test-stub.js', { type: 'test' });
   }
 
-  return app.toTree([select2Assets, tinymceFonts, tinymceCSS, prism]);
+  return app.toTree([select2Assets, tinymceSkins, prism]);
 };

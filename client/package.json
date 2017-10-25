@@ -86,6 +86,7 @@
     "loader.js": "^4.2.3",
     "npm-install-retry": "^1.0.2",
     "pusher-js": "^4.1.0",
+    "tinymce": "4.4.3",
     "yuidocjs": "^0.10.2"
   },
   "ember-addon": {

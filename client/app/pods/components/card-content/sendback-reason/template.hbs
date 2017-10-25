@@ -5,14 +5,17 @@
     owner=owner
     answerChanged=answerChanged
     hasAnswerContainer=false
-    preview=preview}}
+    preview=preview
+  }}
+
   {{#if checkboxAnswer.value}}
     {{#card-content
       content=pencil
       disabled=disabled
       owner=owner
       hasAnswerContainer=false
-      preview=preview as |cc|}}
+      preview=preview as |cc|
+    }}
       <i class="fa fa-pencil" {{action 'toggleAnswer' cc.answer}}></i>
     {{/card-content}}
   {{/if}}

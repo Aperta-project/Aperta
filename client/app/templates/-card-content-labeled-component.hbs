@@ -7,7 +7,7 @@
     <label class="content-label">
       {{{content.label}}}
       {{#if content.isRequired}}
-        <span class="required-field">*</span>
+        <span class="required-field"><i class="fa fa-asterisk"></i></span>
       {{/if}}
       {{partial "card-content-component"}}
     </label>
@@ -19,7 +19,7 @@
   <p class="content-text">
     {{{content.text}}}
     {{#if content.isRequired}}
-      <span class="required-field">*</span>
+      <span class="required-field"><i class="fa fa-asterisk"></i></span>
     {{/if}}
   </p>
   {{partial "card-content-component"}}
@@ -28,16 +28,16 @@
   <label class="content-label">
     {{{content.label}}}
     {{#if content.isRequired}}
-      <span class="required-field">*</span>
+      <span class="required-field"><i class="fa fa-asterisk"></i></span>
     {{/if}}
     {{partial "card-content-component"}}
   </label>
-{{! Neither label nor text}}
+{{! Neither label nor text, but required}}
 {{else}}
-  {{#if content.isRequired}}
-    <p class="content-text">
+  {{#if (and content.isRequired (not hasLabel) (not hasText))}}
+    <p class="content-label">
       This field is required.
-      <span class="required-field">*</span>
+      <span class="required-field"><i class="fa fa-asterisk"></i></span>
     </p>
   {{/if}}
   {{partial "card-content-component"}}

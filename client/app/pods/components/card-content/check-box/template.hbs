@@ -1,5 +1,5 @@
 <div class="checkbox">
-  <label>
+  <label class='content-label'>
     {{check-box
       name=name
       checked=answer.value
@@ -14,7 +14,7 @@
     {{/if}}
 
     {{#if content.isRequired}}
-      <span class="required-field">*</span>
+      <span class="required-field"><i class="fa fa-asterisk"></i></span>
     {{/if}}
   </label>
 </div>

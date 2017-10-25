@@ -14,8 +14,11 @@
 
 
 // These are base rules for all card content types
-.card-content {
-    .question-text, .content-text {
-        font-size: 20px;
+.card-content,
+.card-editor-preview {
+  .question-text,
+  .content-text {
+    margin: 20px 0;
+    font-size: 14px;
     }
 }

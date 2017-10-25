@@ -22,7 +22,8 @@ export default Ember.Component.extend({
     owner: PropTypes.EmberObject.isRequired,
     preview: PropTypes.bool.isRequired,
     hasAnswerContainer: PropTypes.bool,
-    answerChanged: PropTypes.any
+    answerChanged: PropTypes.any,
+    repetition: PropTypes.oneOfType([PropTypes.null, PropTypes.EmberObject]).isRequired
   },
 
   keepAnswerContainer: Ember.computed('content', function(){

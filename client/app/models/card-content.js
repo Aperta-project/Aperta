@@ -11,6 +11,7 @@ export default DS.Model.extend({
     inverse: 'unsortedChildren'
   }),
   answers: DS.hasMany('answer', { async: false }),
+  repetitions: DS.hasMany('repetitions', { async: false }),
 
   allowMultipleUploads: DS.attr('boolean'),
   allowFileCaptions: DS.attr('boolean'),
@@ -35,6 +36,9 @@ export default DS.Model.extend({
   answerable: Ember.computed.notEmpty('valueType'),
   errorMessage: DS.attr('string'),
   key: DS.attr('string'),
+  min: DS.attr('number'),
+  max: DS.attr('number'),
+  itemName: DS.attr('string'),
 
 
   // The unusual nature of the sendback component (being reliant on other card-content within the context
@@ -59,9 +63,40 @@ export default DS.Model.extend({
   childrenSort: ['order:asc'],
   children: Ember.computed.sort('unsortedChildren', 'childrenSort'),
 
-  visitDescendants: function(f) {
-    f(this);
-    this.get('children').forEach((child) => child.visitDescendants(f));
+  visitDescendants(task, parentRepetition, f) {
+    let repetitions = this.get('repetitions').filterBy('parent', parentRepetition).filterBy('task.id', task.get('id'));
+    if(repetitions.length) {
+      // we're a repeater, so now start using our repetitions.
+    } else {
+      // we're not a repeater, so we inherit a repetition from somewhere higher in the card content heirarchy.
+      repetitions = [parentRepetition];
+    }
+
+    if(repetitions.length) {
+      // traverse the card content for each repetition
+      repetitions.forEach((repetition) => {
+        this.get('children').forEach((child) => child.visitDescendants(task, repetition, f));
+        f(this, repetition);
+      });
+    } else {
+      // we're not inside a repetition, so just traverse the tree like normal
+      this.get('children').forEach((child) => child.visitDescendants(task, null, f));
+      f(this, null);
+    }
+  },
+
+  destroyDescendants(owner, parentRepetition) {
+    this.visitDescendants(owner, parentRepetition, (childCC, repetition) => {
+      if(repetition) {
+        childCC.get('answers').filterBy('owner', owner).filterBy('repetition', repetition).invoke('destroyRecord');
+
+        if(childCC.get('repetitions').includes(repetition)) {
+          repetition.destroyRecord();
+        }
+      } else {
+        childCC.get('answers').filterBy('owner', owner).invoke('destroyRecord');
+      }
+    });
   },
 
   isRequired: Ember.computed.equal('requiredField', true),

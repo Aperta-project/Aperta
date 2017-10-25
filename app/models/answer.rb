@@ -8,6 +8,7 @@ class Answer < ActiveRecord::Base
   belongs_to :card_content
   belongs_to :owner, polymorphic: true
   belongs_to :paper
+  belongs_to :repetition, inverse_of: :answers
 
   has_many :attachments, -> { order('id ASC') },
                               dependent: :destroy,

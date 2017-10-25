@@ -32,23 +32,19 @@ xfeature 'Viewing Versions:', js: true do
     scenario 'the user views an old version of the paper.', selenium: true do
       page = PaperPage.new
       page.view_versions
-
+      expect(page).to have_css("div.ember-power-select-trigger")
       page.select_viewing_version(version_1)
-
       expect(page.versioned_body).to have_content('OK second body')
-
       page.select_viewing_version(version_0)
-
       expect(page.versioned_body).to have_content('OK first body')
     end
 
     scenario 'the user views an old version of the paper.', selenium: true do
       page = PaperPage.new
       page.view_versions
+      expect(page).to have_css("div.ember-power-select-trigger")
       page.select_viewing_version(version_0)
-
       page.select_comparison_version(version_1)
-
       expect(page.find('#paper-body .added')).to have_content 'first'
       expect(page.find('#paper-body .removed')).to have_content 'second'
     end
@@ -57,13 +53,12 @@ xfeature 'Viewing Versions:', js: true do
       SnapshotService.new(paper).snapshot!(task)
       page = PaperPage.new
       page.view_versions
+      expect(page).to have_css("div.ember-power-select-trigger")
       page.select_viewing_version(version_0)
-
       page.view_card('Figures', VersionedMetadataOverlay, false) do |overlay|
         overlay.expect_version('R0.0')
       end
       page.select_viewing_version(version_1)
-
       page.view_card('Figures', VersionedMetadataOverlay, false) do |overlay|
         overlay.expect_version('(draft)')
       end
@@ -80,9 +75,9 @@ xfeature 'Viewing Versions:', js: true do
 
       page = PaperPage.new
       page.view_versions
+      expect(page).to have_css("div.ember-power-select-trigger")
       page.select_viewing_version(version_0)
       page.select_comparison_version(version_1)
-
       page.view_card('Figures', VersionedMetadataOverlay, false) do |overlay|
         overlay.expect_versions('R0.0', '(draft)')
       end

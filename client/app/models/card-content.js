@@ -111,6 +111,7 @@ export default DS.Model.extend({
       owner: owner,
       cardContent: this,
       repetition: repetition,
+      value: this.get('defaultAnswerValue'),
     });
 
     return answer;

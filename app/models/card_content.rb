@@ -47,7 +47,8 @@ class CardContent < ActiveRecord::Base
   # can either be boolean or text.
   # Content types that don't store answers ('display-children, etc') are omitted from this check
   VALUE_TYPES_FOR_CONTENT =
-    { 'dropdown': ['text', 'boolean'],
+    {
+      'dropdown': ['text', 'boolean'],
       'short-input': ['text'],
       'check-box': ['boolean'],
       'file-uploader': ['attachment', 'manuscript', 'sourcefile'],
@@ -56,7 +57,10 @@ class CardContent < ActiveRecord::Base
       'tech-check': ['boolean'],
       'tech-check-email': [nil],
       'date-picker': ['text'],
-      'sendback-reason': ['boolean'] }.freeze.with_indifferent_access
+      'sendback-reason': ['boolean'],
+      'repeat': [nil]
+    }.freeze.with_indifferent_access
+
   # Although we want to validate the various combinations of content types
   # and value types, many of the CardContent records that have been created
   # via the CardLoader don't have a content_type set at all, so we'll skip
@@ -147,10 +151,15 @@ class CardContent < ActiveRecord::Base
       {
         'required-field' => required_field
       }
-
     when 'error-message'
       {
         'key' => key
+      }
+    when 'repeat'
+      {
+        'min' => min,
+        'max' => max,
+        'item-name' => item_name
       }
     else
       {}

@@ -111,9 +111,21 @@ export default DS.Model.extend({
       owner: owner,
       cardContent: this,
       repetition: repetition,
+      value: this.parsedDefaultAnswerValue(),
     });
 
     return answer;
+  },
+
+  parsedDefaultAnswerValue() {
+    let defaultAnswerValue = this.get('defaultAnswerValue');
+    if(!defaultAnswerValue) { return; }
+
+    if(this.get('valueType') === 'text')  {
+      return defaultAnswerValue;
+    } else {
+      return JSON.parse(defaultAnswerValue);
+    }
   },
 
   answerForOwner(owner, repetition) {

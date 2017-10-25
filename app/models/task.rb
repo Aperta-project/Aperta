@@ -160,7 +160,6 @@ class Task < ActiveRecord::Base
   # individual task is added to the workflow.  Remember to call super when
   # subclassing
   def task_added_to_paper(_paper)
-    card_version.try(:create_default_answers, self)
   end
 
   def journal_task_type

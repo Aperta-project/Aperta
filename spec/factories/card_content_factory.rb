@@ -14,6 +14,17 @@ FactoryGirl.define do
       value_type nil
     end
 
+    trait :with_answer do
+      transient do
+        answer_value nil
+      end
+
+      after(:create) do |card_content, evaluator|
+        task = Task.find_by(card_version: card_content.card_version)
+        FactoryGirl.create(:answer, card_content: card_content, paper: task.try(:paper), owner: task, value: evaluator.answer_value)
+      end
+    end
+
     trait :with_child do
       after(:create) do |root_content|
         FactoryGirl.create(:card_content).move_to_child_of(root_content)

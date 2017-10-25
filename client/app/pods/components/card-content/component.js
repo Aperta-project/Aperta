@@ -74,13 +74,17 @@ export default Ember.Component.extend({
     // Card Validations expects that requiredField questions already have an
     // associated Answer saved on the server. This means we can't allow the
     // Answer to be lazily created like most Answers.
+    //
+    // This is similar for content with a default value. We want to initially
+    // save the record, or we won't have an answer saved for something the
+    // user never changes from the default.
     if(this.get('preview')) {
       return false;
     }
     if(!(answer && answer.get('isNew'))) {
       return false;
     }
-    return this.get('content.requiredField');
+    return this.get('content.requiredField') || this.get('content.defaultAnswerValue');
   },
 
   _debouncedSave: concurrencyTask(function*() {

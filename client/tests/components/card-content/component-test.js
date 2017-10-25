@@ -21,7 +21,6 @@ moduleForComponent('custom-card-task', 'Integration | Components | Card Content'
 });
 
 test('it creates an answer for card-content', function(assert) {
-
   // add a single piece of answerable card content to work with
   let cardContent = FactoryGuy.make('card-content', 'shortInput');
   this.set('task.cardVersion.contentRoot', cardContent);
@@ -41,7 +40,6 @@ test('it creates an answer for card-content', function(assert) {
 });
 
 test('it does not create an answer for non answerables', function(assert) {
-
   // add a single piece of non-answerable card content to work with
   let cardContent = FactoryGuy.make('card-content', 'description');
   this.set('task.cardVersion.contentRoot', cardContent);
@@ -51,3 +49,26 @@ test('it does not create an answer for non answerables', function(assert) {
   `);
   assert.equal(this.get('task.cardVersion.contentRoot.answers.length'), 0, 'there are no answers for a paragraph tag');
 });
+
+test('it renders text for card-content', function(assert) {
+  // add a single piece of non-answerable card content to work with
+  let cardContent = FactoryGuy.make('card-content', 'shortInput');
+  this.set('task.cardVersion.contentRoot', cardContent);
+
+  this.render(hbs`
+    {{custom-card-task task=task preview=false}}
+  `);
+  assert.textPresent('.content-text', 'A short input question');
+});
+
+test('it renders a label for card-content', function(assert) {
+  // add a single piece of non-answerable card content to work with
+  let cardContent = FactoryGuy.make('card-content', 'shortInput');
+  this.set('task.cardVersion.contentRoot', cardContent);
+
+  this.render(hbs`
+    {{custom-card-task task=task preview=false}}
+  `);
+  assert.textPresent('.content-label', 'Label');
+});
+

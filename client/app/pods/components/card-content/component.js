@@ -59,8 +59,9 @@ export default Ember.Component.extend({
     return this.get('unlabeled') ? false : this.get('hasLabel');
   }),
 
-  name: Ember.computed(function() {
-    return Ember.guidFor(this);
+  name: Ember.computed('content.ident', function() {
+    let ident = this.get('content.ident');
+    return Ember.isEmpty(ident) ? Ember.guidFor(this) : ident;
   }),
 
   init() {

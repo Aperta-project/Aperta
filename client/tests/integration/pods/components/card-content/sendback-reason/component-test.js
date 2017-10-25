@@ -51,11 +51,11 @@ test('it shows its text if provided', function(assert) {
   // Handle any actions with this.on('myAction', function(val) { ... });
   this.set('sendback', sendback);
 
-  this.render(hbs`{{card-content/sendback-reason 
-  content=sendback 
-  answer=answer 
-  disabled=disabled 
-  owner=owner 
+  this.render(hbs`{{card-content/sendback-reason
+  content=sendback
+  answer=answer
+  disabled=disabled
+  owner=owner
   valueChanged=(action actionStub)}}`);
 
   assert.equal(this.$('.content-text').text().trim(), 'lalalala');
@@ -68,11 +68,11 @@ test('it shows its label if provided', function(assert) {
   // Handle any actions with this.on('myAction', function(val) { ... });
   this.set('sendback', sendback);
 
-  this.render(hbs`{{card-content/sendback-reason 
-  content=sendback 
-  answer=answer 
-  disabled=disabled 
-  owner=owner 
+  this.render(hbs`{{card-content/sendback-reason
+  content=sendback
+  answer=answer
+  disabled=disabled
+  owner=owner
   valueChanged=(action actionStub)}}`);
 
   assert.equal(this.$('label').first().text().trim(), 'See me!');
@@ -86,14 +86,14 @@ test('it displays the pencil if sendback reason is checked', function(assert) {
   // Handle any actions with this.on('myAction', function(val) { ... });
   this.set('sendback', sendback);
 
-  this.render(hbs`{{card-content/sendback-reason 
-  content=sendback 
-  answer=answer 
-  disabled=disabled 
-  owner=owner 
+  this.render(hbs`{{card-content/sendback-reason
+  content=sendback
+  answer=answer
+  disabled=disabled
+  owner=owner
   valueChanged=(action actionStub)}}`);
 
-  this.$('#check-box-reason').click();
+  this.$('input[type=checkbox]').click();
   assert.elementFound('.fa-pencil');
 
 });
@@ -105,11 +105,11 @@ test('it hides the pencil if sendback reason is unchecked', function(assert) {
   // Handle any actions with this.on('myAction', function(val) { ... });
   this.set('sendback', sendback);
 
-  this.render(hbs`{{card-content/sendback-reason 
-  content=sendback 
-  answer=answer 
-  disabled=disabled 
-  owner=owner 
+  this.render(hbs`{{card-content/sendback-reason
+  content=sendback
+  answer=answer
+  disabled=disabled
+  owner=owner
   valueChanged=(action actionStub)}}`);
 
   assert.elementNotFound('.fa-pencil');
@@ -123,15 +123,15 @@ test('it displays the textrea if sendback reason is checked', function(assert) {
   // Handle any actions with this.on('myAction', function(val) { ... });
   this.set('sendback', sendback);
 
-  this.render(hbs`{{card-content/sendback-reason 
-  content=sendback 
-  answer=answer 
+  this.render(hbs`{{card-content/sendback-reason
+  content=sendback
+  answer=answer
   disabled=disabled
   preview=true
-  owner=owner 
+  owner=owner
   valueChanged=(action actionStub)}}`);
 
-  this.$('#check-box-reason').click();
+  this.$('input[type=checkbox]').click();
 
   this.$('.fa-pencil').click();
   assert.elementFound('.card-content-paragraph-input');
@@ -144,12 +144,12 @@ test('it hides the textrea if sendback reason is checked but the pencil has not 
   // Handle any actions with this.on('myAction', function(val) { ... });
   this.set('sendback', sendback);
 
-  this.render(hbs`{{card-content/sendback-reason 
-  content=sendback 
-  answer=answer 
+  this.render(hbs`{{card-content/sendback-reason
+  content=sendback
+  answer=answer
   disabled=disabled
   preview=true
-  owner=owner 
+  owner=owner
   valueChanged=(action actionStub)}}`);
 
   this.$('#check-box-reason').click();

@@ -1,0 +1,40 @@
+{{#if (and hasText hasLabel)}}
+  <p class="content-text">
+    {{{content.text}}}
+  </p>
+  {{#if canBeLabeled}}
+    <label class="content-label">
+      {{{content.label}}}
+      {{#if content.isRequired}}
+        <span class="required-field">*</span>
+      {{/if}}
+      {{partial "card-content-component"}}
+    </label>
+  {{else}}
+    {{partial "card-content-component"}}
+  {{/if}}
+{{else if hasText}}
+  <p class="content-text">
+    {{{content.text}}}
+    {{#if content.isRequired}}
+      <span class="required-field">*</span>
+    {{/if}}
+  </p>
+  {{partial "card-content-component"}}
+{{else if (and canBeLabeled hasLabel)}}
+  <label class="content-label">
+    {{{content.label}}}
+    {{#if content.isRequired}}
+      <span class="required-field">*</span>
+    {{/if}}
+    {{partial "card-content-component"}}
+  </label>
+{{else}}
+  {{#if content.isRequired}}
+    <p class="content-text">
+      This field is required.
+      <span class="required-field">*</span>
+    </p>
+  {{/if}}
+  {{partial "card-content-component"}}
+{{/if}}

@@ -1,6 +1,9 @@
 {{#if content.label}}
   <label class="content-label" {{action "toggleDropdown"}}>
     {{{content.label}}}
+    {{#if content.isRequired}}
+      <span class="required-field">*</span>
+    {{/if}}
 
     {{#power-select
         options=content.possibleValues

@@ -5,24 +5,9 @@
   {{#if (and answer keepAnswerContainer)}}
     <div class="answer-container">
       <div class="answer">
-        {{#if content.text}}
-          <p class="content-text">
-            {{{content.text}}}
-            {{#if content.isRequired}}
-              <span class="required-field">*</span>
-            {{/if}}
-          </p>
-        {{/if}}
-
-        {{#if content.isLabeled}}
-          <label class="content-label">
-            {{{content.label}}}
-            {{partial "card-content-component"}}
-          </label>
-        {{else}}
-          {{partial "card-content-component"}}
-        {{/if}}
+        {{partial "card-content-label"}}
       </div>
+
       <div class="additional-text">
         {{#if content.hasAdditionalText}}
           {{card-content/tabbed-textarea
@@ -36,21 +21,5 @@
       </div>
     </div>
   {{else}}
-    {{#if content.text}}
-      <p class="content-text">
-        {{{content.text}}}
-        {{#if content.isRequired}}
-          <span class="required-field">*</span>
-        {{/if}}
-      </p>
-    {{/if}}
-
-    {{#if isLabeled}}
-      <label class="content-label">
-        {{{content.label}}}
-        {{partial "card-content-component"}}
-      </label>
-    {{else}}
-      {{partial "card-content-component"}}
-    {{/if}}
+    {{partial "card-content-label"}}
   {{/if}}

@@ -6,8 +6,7 @@ export default Ember.Component.extend(ValidateTextInput, {
   classNames: ['card-content', 'card-content-short-input'],
   attributeBindings: ['isRequired:required', 'aria-required'],
   'aria-required': Ember.computed.reads('isRequiredString'),
-  hasErrors: Ember.computed.notEmpty('answer.readyIssuesArray.[]'),
-  classNameBindings: ['hasErrors:has-error'],
+  classNameBindings: ['answer.shouldShowErrors:has-error'],
 
   propTypes: {
     answer: PropTypes.EmberObject.isRequired,

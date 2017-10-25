@@ -61,13 +61,28 @@ export default Ember.Component.extend({
 
   answer: Ember.computed('content', 'owner', 'repetition', function() {
     let answer = this.get('content').answerForOwner(this.get('owner'), this.get('repetition'));
-    // if in preview mode set default values on components
-    // that are answerable
-    if(this.get('preview') && answer) {
-      answer.set('value', this.get('content.defaultAnswerValue'));
+
+    if(this.shouldEagerlySave(answer)) {
+      answer.save().then(a => {
+        a.initiallyHideErrors();
+      });
     }
+
     return answer;
   }),
+
+  shouldEagerlySave: function(answer) {
+    // Card Validations expects that requiredField questions already have an
+    // associated Answer saved on the server. This means we can't allow the
+    // Answer to be lazily created like most Answers.
+    if(this.get('preview')) {
+      return false;
+    }
+    if(!(answer && answer.get('isNew'))) {
+      return false;
+    }
+    return this.get('content.requiredField');
+  },
 
   _debouncedSave: concurrencyTask(function*() {
     yield timeout(this.get('debouncePeriod'));

@@ -40,7 +40,7 @@
     </label>
   {{/if}}
 </div>
-<div>{{card-content/validation-errors errors=answer.readyIssuesArray}}</div>
+<div>{{card-content/validation-errors hideErrors=answer.hideErrors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}</div>
 {{card-content/display-children
   content=content
   owner=owner

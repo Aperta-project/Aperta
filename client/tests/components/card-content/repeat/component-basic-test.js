@@ -214,6 +214,35 @@ test(`it only allows repetitions to be deleted when min number is reached`, func
   });
 });
 
+test(`it eagerly creates an answer for a required question`, function(assert) {
+  $.mockjax({url: '/api/repetitions', type: 'POST', status: 201, responseText: {repetition: { id: 1 }}});
+  $.mockjax({url: '/api/answers', type: 'POST', status: 201, responseText: {answer: {id: 1}}});
+
+  let content = make('card-content', {
+    contentType: 'repeat',
+    min: 1,
+    itemName: 'thing',
+    repetitions: [],
+    unsortedChildren: [
+      make('card-content', {
+        contentType: 'short-input',
+        text: 'Can you answer my simple question?',
+        requiredField: true,
+      })
+    ]
+  });
+
+  this.set('content', content);
+  this.set('disabled', false);
+  this.set('owner', Ember.Object.create());
+  this.set('repetition', null);
+  this.render(template);
+
+  return wait().then(() => {
+    assert.mockjaxRequestMade('/api/answers', 'POST', 'requiredField answer eagerly created');
+  });
+});
+
 test(`it only shows repetitions that are owned by a specific task `, function(assert) {
   $.mockjax({url: '/api/repetitions', type: 'POST', status: 201, responseText: {repetition: { id: 1 }}});
   $.mockjax({url: '/api/answers', type: 'POST', status: 201, responseText: {answer: {id: 1}}});

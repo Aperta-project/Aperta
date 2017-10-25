@@ -14,6 +14,24 @@ class ReviewerReportsController < ApplicationController
 
   def update
     requires_user_can :edit, reviewer_report.task
+    update_review_date
+    reviewer_report.submit! if reviewer_report_params[:submitted].present?
+
+    # return the updated report if the due date changed
+    render_report
+  end
+
+  private
+
+  def render_report
+    if reviewer_report_params.slice(:due_at).empty?
+      respond_with reviewer_report
+    else
+      render json: reviewer_report
+    end
+  end
+
+  def update_review_date
     if FeatureFlag[:REVIEW_DUE_DATE]
       due_at_date = reviewer_report_params.slice(:due_at)
       if due_at_date.present? && due_at_date['due_at'].to_datetime != reviewer_report.due_at
@@ -22,17 +40,7 @@ class ReviewerReportsController < ApplicationController
       end
       reviewer_report.schedule_events if FeatureFlag[:REVIEW_DUE_AT]
     end
-    reviewer_report.submit! if reviewer_report_params[:submitted].present?
-
-    # return the updated report if the due date changed
-    if reviewer_report_params.slice(:due_at).empty?
-      respond_with reviewer_report
-    else
-      render json: reviewer_report
-    end
   end
-
-  private
 
   def reviewer_report
     @reviewer_report ||= ReviewerReport.find(params[:id])

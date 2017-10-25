@@ -50,8 +50,8 @@ class ScheduledEventFactory
 
   def update_scheduled_events
     template.each do |entry|
-      event = due_datetime.scheduled_events.where(name: entry[:name]).first
-      reschedule event, entry
+      event = due_datetime.scheduled_events.where(name: entry[:name]).where.not(state: 'canceled').first
+      reschedule event, entry if event.present?
     end
   end
 end

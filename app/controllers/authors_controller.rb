@@ -22,7 +22,7 @@ class AuthorsController < ApplicationController
     requires_user_can :edit_authors, author.paper
     author.update!(author_params)
 
-    if current_user.can? :administer, author.paper.journal
+    if current_user.can? :manage_paper_authors, author.paper
       author.update_coauthor_state(author_coauthor_state, current_user.id)
     end
 

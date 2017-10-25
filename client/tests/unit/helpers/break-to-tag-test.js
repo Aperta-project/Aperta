@@ -1,3 +1,4 @@
+import { module, test } from 'ember-qunit';
 import { breakToTag } from 'tahi/helpers/break-to-tag';
 
 module('Unit | Helper | break-to-tag');

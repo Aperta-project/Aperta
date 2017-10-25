@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import Ember from 'ember';
 
 moduleFor('route:application', 'Unit | Route | application', {
-  needs: ['service:full-story']
+  integration: true
 });
 
 test('signOut ends the user\'s full story session', function(assert) {

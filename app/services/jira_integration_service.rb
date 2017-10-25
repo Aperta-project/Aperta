@@ -58,7 +58,7 @@ class JIRAIntegrationService
     def attachment_urls(feedback_params)
       result = ''
       feedback_params.dig(:screenshots).each do |screenshot|
-        result = screenshot[:url] + "\n"
+        result += screenshot[:url] + "\n"
       end
       result
     end

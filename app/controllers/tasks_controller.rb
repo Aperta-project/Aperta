@@ -2,7 +2,6 @@ class TasksController < ApplicationController
   before_action :authenticate_user!
 
   before_action :unmunge_empty_arrays, only: [:update]
-
   respond_to :json
 
   ## /paper/tasks/
@@ -33,6 +32,9 @@ class TasksController < ApplicationController
   def update
     requires_user_can :edit, task
 
+    # If user is going to be removed get it to log Activity event
+    last_assigned_user = task.assigned_user
+
     if task.completed?
       # If the task is already completed, all the user can do is uncomplete it
       # or assign an user.
@@ -54,7 +56,7 @@ class TasksController < ApplicationController
 
     task.save!
     task.after_update
-    Activity.task_updated! task, user: current_user
+    Activity.task_updated! task, user: current_user, last_assigned_user: last_assigned_user
 
     render task.update_responder.new(task, view_context).response
   end
@@ -85,6 +87,28 @@ class TasksController < ApplicationController
     head :no_content
   end
 
+  def sendback_preview
+    @task = Task.find(params[:id])
+    @letter_template = render_sendback_template(@task)
+    render json:  {
+      to: @letter_template.to,
+      subject: @letter_template.subject,
+      body: @letter_template.body
+    }
+  end
+
+  def sendback_email
+    @task = Task.find(params[:id])
+    @letter_template = render_sendback_template(@task)
+    GenericMailer.delay.send_email(
+      subject: @letter_template.subject,
+      body: @letter_template.body,
+      to: @letter_template.to,
+      task: @task
+    )
+    head :no_content
+  end
+
   def nested_questions
     requires_user_can :view, task
     # Exclude the root node
@@ -106,6 +130,13 @@ class TasksController < ApplicationController
   end
 
   private
+
+  def render_sendback_template(task_obj)
+    paper = task_obj.paper
+    journal = paper.journal
+    letter_template = journal.letter_templates.find_by(name: 'Sendback Reasons')
+    letter_template.render(SendbacksContext.new(task_obj), check_blanks: false)
+  end
 
   def paper
     paper_id = params[:paper_id] || params.dig(:task, :paper_id)

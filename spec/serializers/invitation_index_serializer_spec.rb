@@ -21,7 +21,7 @@ describe InvitationIndexSerializer, serializer_test: true do
       information: invitation.information,
       invitee_id: invitation.invitee_id,
       invitee_role: invitation.invitee_role,
-      task: { id: invitation.task.id, type: invitation.task.type }
+      task: { id: invitation.task.id, type: invitation.task.type.underscore.dasherize }
     )
 
     expect(invitation_content.fetch(:created_at)).to be

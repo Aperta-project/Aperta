@@ -18,7 +18,7 @@ moduleFor('controller:paper/workflow', 'Unit | Controller | paper workflow', {
     });
 
     this.registry.register(
-      'pusher:main',
+      'service:pusher',
       Ember.Object.extend({ socketId: 'foo' })
     );
 
@@ -48,7 +48,7 @@ test('addTaskType will save a new task based on a PaperTaskType', function(
   manualSetup(this.container);
   this.subject()
     .get('addTaskType')
-    .perform(make('phase'), [make('paper-task-type', { type: 'AdHocTask' })]);
+    .perform(make('phase'), [make('paper-task-type', { type: 'AdHocTask', kind: 'AdHocTask' })]);
   return wait().then(() => {
     assert.ok(
       $.mockjax.mockedAjaxCalls().find(c => {

@@ -1,5 +1,5 @@
 import { paperDownloadPath } from 'tahi/utils/api-path-helpers';
-import { module, test } from 'qunit';
+import { module, test } from 'ember-qunit';
 
 module('Unit | Utility | api path helpers');
 

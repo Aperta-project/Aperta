@@ -11,6 +11,13 @@ FactoryGuy.define('paper', {
     currentUserRoles: ['Creator']
   },
 
+  traits: {
+    with_journal: {
+      journal: FactoryGuy.belongsTo('journal')
+    },
+  },
+  
+
   paper_with_discussion: {
     title: '',
     shortTitle: '',

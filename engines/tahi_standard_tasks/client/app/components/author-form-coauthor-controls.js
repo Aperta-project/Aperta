@@ -5,7 +5,7 @@ const {
   Component
 } = Ember;
 
-export default Component.extend(PropTypes, {
+export default Component.extend({
   
   author: PropTypes.EmberObject,
   disabled: PropTypes.bool,

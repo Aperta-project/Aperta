@@ -17,7 +17,7 @@ import Ember from 'ember';
 moduleForComponent('nested-question', 'Integration | Component | nested question', {
   integration: true,
   beforeEach() { registerCustomAssertions();
-    this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+    this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
     manualSetup(this.container);
   },
   afterEach() {
@@ -150,7 +150,7 @@ test(
   return wait().then(() => {
     assert.mockjaxRequestMade('/api/nested_questions/1/answers/1', 'DELETE', 'it deletes the answer');
     assert.textPresent('.answer-is-new', 'true');
-    $.mockjax({url: '/api/nested_questions/1/answers', type: 'POST', status: 204, responseText: '{}'});
+    $.mockjax({url: '/api/nested_questions/1/answers', type: 'POST', status: 201, responseText: {nested_question_answer: {id: 3}}});
     this.$('.answer-value').val('new answer').change();
   }).then(wait).then(() => {
     assert.mockjaxRequestMade('/api/nested_questions/1/answers', 'POST', 'it saves the new answer');

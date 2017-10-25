@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import ENV from 'tahi/config/environment';
+import EmberPusher from 'ember-pusher';
 
 const { getOwner } = Ember;
 
@@ -16,13 +17,15 @@ const debug = function(description, obj) {
 };
 
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(EmberPusher.Bindings, {
   restless: Ember.inject.service(),
   notifications: Ember.inject.service(),
+  pusher: Ember.inject.service(),
   fullStory: Ember.inject.service(),
 
   beforeModel() {
     Ember.assert('Application name is required for proper display', window.appName);
+    this.wirePusher();
     this.store.findAll('journal').then( (journals) => {
       let controller = this.controllerFor('application');
       controller.set('journals', journals);
@@ -30,20 +33,23 @@ export default Ember.Route.extend({
     });
   },
 
-  setupController(controller, model) {
-    controller.set('model', model);
+  wirePusher() {
     if (this.currentUser) {
       // subscribe to user and system channels
-      const userChannelName = `private-user@${ this.currentUser.get('id') }`;
-      const pusher = this.get('pusher');
-
+      let pusher = this.get('pusher');
+      let userChannelName = `private-user@${ this.currentUser.get('id') }`;
       pusher.wire(this, 'system', ['destroyed']);
       pusher.wire(
         this,
         userChannelName,
         ['created', 'updated', 'destroyed', 'flashMessage']
       );
+    }
+  },
 
+  setupController(controller, model) {
+    controller.set('model', model);
+    if (this.currentUser) {
       this.get('restless').authorize(
         controller,
         '/api/admin/journals/authorization',

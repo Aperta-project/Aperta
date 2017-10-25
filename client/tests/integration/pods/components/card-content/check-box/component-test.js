@@ -102,7 +102,7 @@ test(`it disables the input if disabled=true`, function(assert) {
 test(`it is checked if the answer is truthy`, function(assert) {
   this.set('answer', Ember.Object.create({ value: true }));
   this.render(template);
-  assert.elementFound('input[checked]');
+  assert.elementFound('.card-content-check-box input:checked');
 });
 
 test(`it sends 'valueChanged' on change`, function(assert) {

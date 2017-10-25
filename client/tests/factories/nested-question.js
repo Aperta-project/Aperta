@@ -1,4 +1,5 @@
 import FactoryGuy from 'ember-data-factory-guy';
+import Ember from 'ember';
 
 FactoryGuy.define('nested-question', {
   default: {
@@ -33,12 +34,14 @@ export function createQuestionWithAnswer(owner, identOrAttrs, answerValue){
   }
 
   let question = owner.get('nestedQuestions').findBy('ident', ident);
-  if(!question){
-    question = FactoryGuy.make('nested-question', questionAttrs);
-    owner.get('nestedQuestions').addObject(question);
-  }
+  Ember.run(() => {
+    if(!question){
+      question = FactoryGuy.make('nested-question', questionAttrs);
+      owner.get('nestedQuestions').addObject(question);
+    }
 
-  question.set('answers', answers);
+    question.set('answers', answers);
+  });
   return question;
 }
 
@@ -46,13 +49,15 @@ export function createQuestion(owner, ident, text){
   let questionText = (text || `This is the question text for ${ident}`);
 
   let question = owner.get('nestedQuestions').findBy('ident', ident);
-  if(!question) {
-    question = FactoryGuy.make('nested-question', {ident: ident, owner: owner, text: text});
+  Ember.run(() => {
+    if(!question) {
+      question = FactoryGuy.make('nested-question', {ident: ident, owner: owner, text: text});
+      owner.get('nestedQuestions').addObject(question);
+    }
+
+    question.set('text', questionText);
+
     owner.get('nestedQuestions').addObject(question);
-  }
-
-  question.set('text', questionText);
-
-  owner.get('nestedQuestions').addObject(question);
+  });
   return question;
 }

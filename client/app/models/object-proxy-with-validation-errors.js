@@ -4,10 +4,9 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 const {
   assert,
   isEmpty,
-  Object
 } = Ember;
 
-const ObjectProxy = Object.extend(ValidationErrorsMixin, {
+const ObjectProxy = Ember.Object.extend(ValidationErrorsMixin, {
   errorsPresent: false,
   validations: null,
   questionValidations: null,

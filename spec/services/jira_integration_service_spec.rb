@@ -16,7 +16,7 @@ describe JIRAIntegrationService do
       expect(payload.dig(:fields, :description)).to eq('talks')
     end
 
-    context 'with attachments' do
+    context 'with one attachment' do
       let(:params) do
         {
           remarks: 'talks',
@@ -25,9 +25,27 @@ describe JIRAIntegrationService do
           ]
         }
       end
-      it 'should attach the links to the attachments' do
+      it 'should attach a link to the attachment' do
         payload = subject.build_payload('tim', params)
         expect(payload.dig(:fields, :description)).to match(/awesomeness\.gif/)
+      end
+    end
+
+    context 'with multiple attachments' do
+      let(:params_with_multiple_attachments) do
+        {
+          remarks: 'talks',
+          screenshots: [
+            { url: 'http://example.com/file?name=awesomeness.gif', name: 'Awesomeness' },
+            { url: 'http://example.com/file?name=ssenemosewa.gif', name: 'ssenemosewA' }
+          ]
+        }
+      end
+
+      it 'should attach the links to the attachments' do
+        payload = subject.build_payload('tim', params_with_multiple_attachments)
+        expect(payload.dig(:fields, :description)).to match(/awesomeness\.gif/)
+        expect(payload.dig(:fields, :description)).to match(/ssenemosewa\.gif/)
       end
     end
   end

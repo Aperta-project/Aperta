@@ -9,9 +9,9 @@ moduleForComponent('task-disclosure', 'Integration | Component | task disclosure
   beforeEach() {
     manualSetup(this.container);
 
-    let task  = FactoryGuy.make('task', {
+    let task  = FactoryGuy.make('custom-card-task', {
       title: 'Cat',
-      type: 'TabbyCat',
+      viewable: true
     });
 
     this.set('task', task);
@@ -33,9 +33,9 @@ test('it renders', function(assert) {
     'displays a title'
   );
 
-  assert.elementNotFound('.task-disclosure-heading.disabled', 'the card is not disabled');
+  assert.elementNotFound('.task-disclosure-heading.disabled', 'the card is not disabled when the task is viewable');
 
-  assert.ok(this.$('.task-disclosure').hasClass('task-type-tabby-cat'));
+  assert.ok(this.$('.task-disclosure').hasClass('task-type-custom-card-task'), 'assigns a custom class');
 });
 
 test('it toggles body display', function(assert) {

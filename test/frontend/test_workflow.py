@@ -44,9 +44,7 @@ class ApertaWorkflowTest(CommonTest):
     workflow_user = random.choice(workflow_users)
     logging.info('Logging in as {0}'.format(workflow_user['name']))
     dashboard_page = self.cas_login(workflow_user['email'])
-    # We have to ensure there *is* a first manuscript on a users dashboard
-    manuscript_count = dashboard_page.validate_manuscript_section_main_title(workflow_user)[0]
-    logging.info(manuscript_count)
+    dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     self.create_article(title='Created Document for Workflow test', journal='PLOS Wombat',
                         type_='Research', random_bit=True)

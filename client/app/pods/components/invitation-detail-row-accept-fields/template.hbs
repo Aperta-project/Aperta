@@ -1,0 +1,39 @@
+{{#liquid-if displayAcceptFields}}
+  <div class="row">
+    <div class="col-sm-3">
+      <label for="{{concat elementId '-fname'}}">
+        <b>First Name</b>
+      </label>
+    </div>
+    <div class="col-sm-3">
+      <label for="{{concat elementId '-lname'}}">
+        <b>Last Name</b>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3">
+      {{input
+        id=(concat elementId '-fname')
+        class="form-control"
+        value=stubInvitee.firstName}}
+      {{error-message message=validationErrors.firstName displayIcon=true}}
+    </div>
+    <div class="col-sm-3">
+      {{input
+        id=(concat elementId '-lname')
+        class="form-control"
+        value=stubInvitee.lastName}}
+      {{error-message message=validationErrors.lastName displayIcon=true}}
+    </div>
+    <div class="col-sm-1">
+      <button class="button-link button--green cancel" {{action "cancelAccept"}}>cancel</button>
+    </div>
+    <div class="col-sm-1">
+      <button class="button-secondary button--green invitation-save-button"
+              {{action "confirmAccept"}}>
+        Save
+      </button>
+    </div>
+  </div>
+{{/liquid-if}}

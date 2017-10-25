@@ -114,6 +114,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def auto_generate_username
+    # 1 in 16M chance of collision, will trigger validation error
+    self.username = [first_name[0], last_name, SecureRandom.hex(6)].join('_')
+  end
+
   def journal_admin?(journal)
     administered_journals.include? journal
   end

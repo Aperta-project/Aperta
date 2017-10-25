@@ -10,6 +10,10 @@ FactoryGirl.define do
       parent_id nil
     end
 
+    trait :unanswerable do
+      value_type nil
+    end
+
     trait :with_child do
       after(:create) do |root_content|
         FactoryGirl.create(:card_content).move_to_child_of(root_content)

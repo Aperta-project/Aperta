@@ -64,11 +64,10 @@ export default Ember.Component.extend({
     // that are answerable
     if(this.get('preview') && answer) {
       let defaultAnswerValue = this.get('content.defaultAnswerValue');
-      if (this.get('content.valueType') === 'boolean' && defaultAnswerValue)  {
-        answer.set('value', JSON.parse(defaultAnswerValue));
-      } else {
-        answer.set('value', this.get('content.defaultAnswerValue'));
+      if (defaultAnswerValue && this.get('content.valueType') === 'boolean')  {
+        defaultAnswerValue = JSON.parse(defaultAnswerValue);
       }
+      answer.set('value', defaultAnswerValue);
     }
     return answer;
   }),

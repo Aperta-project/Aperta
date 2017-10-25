@@ -63,7 +63,12 @@ export default Ember.Component.extend({
     // if in preview mode set default values on components
     // that are answerable
     if(this.get('preview') && answer) {
-      answer.set('value', this.get('content.defaultAnswerValue'));
+      let defaultAnswerValue = this.get('content.defaultAnswerValue');
+      if (this.get('content.valueType') === 'boolean' && defaultAnswerValue)  {
+        answer.set('value', JSON.parse(defaultAnswerValue));
+      } else {
+        answer.set('value', this.get('content.defaultAnswerValue'));
+      }
     }
     return answer;
   }),

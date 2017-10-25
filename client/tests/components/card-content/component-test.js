@@ -51,3 +51,26 @@ test('it does not create an answer for non answerables', function(assert) {
   `);
   assert.equal(this.get('task.cardVersion.contentRoot.answers.length'), 0, 'there are no answers for a paragraph tag');
 });
+
+test('When having "false" as the content.defaultAnswerValue it casts it to boolean', function(assert) {
+  let cardContent = FactoryGuy.make('card-content', 'checkBox');
+  this.set('content', cardContent);
+  this.set('owner', Ember.Object.create());
+  this.set('preview', true);
+
+  this.render(hbs` {{card-content content=content owner=owner preview=preview }}`);
+  assert.equal(this.$('.checkbox input').is(':checked'), false);
+});
+
+test('When having "true" as the content.defaultAnswerValue it casts it to boolean', function(assert) {
+  let cardContent = FactoryGuy.make('card-content', 'checkBox');
+  Ember.run(() => {
+    cardContent.set('defaultAnswerValue', 'true');
+  });
+  this.set('content', cardContent);
+  this.set('owner', Ember.Object.create());
+  this.set('preview', true);
+
+  this.render(hbs `{{card-content content=content owner=owner preview=preview }}`);
+  assert.equal(this.$('.checkbox input').is(':checked'), true);
+});

@@ -30,6 +30,11 @@ let template = hbs`{{card-content/repeat
   preview=false
 }}`;
 
+let setValue = ($input, newVal) => {
+  return $input.val(newVal).trigger('input').trigger('blur');
+};
+
+
 test(`it builds the minimum number of repetitions that were specified`, function(assert) {
   let repetitionIdSeed = 110;
   $.mockjax({url: '/api/repetitions', type: 'POST', status: 201, response: function() {
@@ -59,6 +64,45 @@ test(`it builds the minimum number of repetitions that were specified`, function
 
   return wait().then(() => {
     assert.nElementsFound('.card-content-repeat input', 2, 'found input');
+  });
+});
+
+test(`it saves an answer for the repetition`, function(assert) {
+  let newRepetitionId = 99;
+
+  $.mockjax({url: '/api/repetitions', type: 'POST', status: 201, responseText: { repetition: { id: newRepetitionId }}});
+  $.mockjax({url: '/api/answers', type: 'POST', status: 201, responseText: { answer: { id: 219, repetition_id: newRepetitionId }}});
+
+  let content = make('card-content', {
+    contentType: 'repeat',
+    min: 1,
+    itemName: 'thing',
+    repetitions: [],
+    unsortedChildren: [
+      make('card-content', {
+        contentType: 'short-input',
+        text: 'Can you answer my simple question?'
+      })
+    ]
+  });
+
+  let store = this.container.lookup('service:store');
+
+  this.set('content', content);
+  this.set('disabled', false);
+  this.set('owner', Ember.Object.create());
+  this.set('repetition', null);
+  this.render(template);
+
+  return wait().then(() => {
+    assert.nElementsFound('.card-content-repeat input', 1, 'found input');
+    assert.equal(store.peekAll('answer').get('firstObject.value'), undefined, 'the initial answer is built but left blank');
+    setValue(this.$('.card-content-repeat input'), 'best answer');
+    return wait().then(() => {
+      let answer = store.peekAll('answer').get('firstObject');
+      assert.equal(answer.get('value'), 'best answer', 'the answer now has a value');
+      assert.equal(answer.get('repetition.id'), newRepetitionId, 'the answer belongs to the repetition');
+    });
   });
 });
 

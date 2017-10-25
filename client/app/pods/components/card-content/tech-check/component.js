@@ -14,7 +14,7 @@ export default Ember.Component.extend({
   clearSendbacks() {
     let sendbackAnswers = this.get('content.children').map(sendbackContent => {
       let checkbox = sendbackContent.get('children.firstObject');
-      return checkbox.answerForOwner(this.get('owner'));
+      return checkbox.answerForOwner(this.get('owner'), this.get('repetition'));
     });
 
     sendbackAnswers.setEach('value', false);

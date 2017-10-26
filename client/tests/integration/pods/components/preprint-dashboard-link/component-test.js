@@ -11,7 +11,10 @@ moduleForComponent(
     beforeEach() {
       registerCustomAssertions();
       manualSetup(this.container);
-      let paper = make('paper', {roles: ['Author'], aarxDoi: '1111111'});
+      let attrs = { roles: ['Author'],
+        aarxDoi: '1111111',
+        aarxLink: 'http://a-link.co' };
+      let paper = make('paper', attrs);
       this.set('paper', paper);
     }
   }
@@ -22,4 +25,5 @@ test('displaying preprint publication', function(assert) {
   this.render(hbs`{{preprint-dashboard-link model=paper type='active'}}`);
   assert.textPresent('.dashboard-manuscript-id', '| ID: 1111111');
   assert.textPresent('.role-tag', 'Author');
+  assert.equal(this.$('a').attr('href'), 'http://a-link.co');
 });

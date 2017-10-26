@@ -14,11 +14,15 @@ export default DS.Model.extend({
   destination: DS.attr('string'),
 
   failed: Ember.computed.equal('state', 'failed'),
-  succeeded: Ember.computed.equal('state', 'delivered'),
+  succeeded: Ember.computed('state', function() {
+    let state = this.get('state');
+    return state === 'delivered' || state === 'preprint_published';
+  }),
   incomplete: Ember.computed('state', function() {
     let state = this.get('state');
-    return state !== 'delivered' && state !== 'failed';
+    return state === 'pending' || state === 'in_progress';
   }),
+  published: Ember.computed.equal('state', 'preprint_published'),
 
   preprintDoiAssigned: Ember.computed('destination', 'paper.aarxDoi', function(){
     let ppDoi = this.get('paper.aarxDoi');
@@ -39,7 +43,8 @@ export default DS.Model.extend({
       pending: 'is pending',
       in_progress: 'is in progress',
       failed: 'has failed',
-      delivered: 'succeeded'
+      delivered: 'succeeded',
+      preprint_published: 'succeeded'
     }[this.get('state')];
   })
 });

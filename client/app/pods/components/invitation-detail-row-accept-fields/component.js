@@ -9,6 +9,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   fields: Ember.A(['firstName', 'lastName']),
   actions: {
     cancelAccept(){
+      if (this.get('loading')) { return; }
       this.clearAllValidationErrors();
       this.set('stubInvitee', Ember.Object.create());
       this.get('cancelAccept')();

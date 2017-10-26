@@ -133,6 +133,8 @@ export default Component.extend(DragNDrop.DraggableMixin, {
 
   displayAcceptFields: false,
 
+  invitationLoading: false,
+
   uiState: computed('invitation', 'activeInvitation', 'activeInvitationState', function() {
     if (this.get('invitation') !== this.get('activeInvitation')) {
       return 'closed';
@@ -173,8 +175,9 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   }).restartable(),
 
   acceptInvitation: concurrencyTask(function * (data) {
+    this.set('invitationLoading', true);
     yield this.get('invitation').accept(data);
-    this.set('displayAcceptFields', false);
+    this.setProperties({displayAcceptFields: false, invitationLoading: false});
   }).drop(),
 
   actions: {

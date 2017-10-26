@@ -30,13 +30,18 @@
       {{error-message message=validationErrors.lastName displayIcon=true}}
     </div>
     <div class="col-sm-1">
-      <button class="button-link button--green cancel" {{action "cancelAccept"}}>cancel</button>
+      <button class="button-link button--green cancel {{if loading 'button--disabled'}}" {{action "cancelAccept"}}>cancel</button>
+    </div>
+    <div class="col-sm-2">
+      {{#save-button
+        class="button-secondary button--green"
+        disabled=loading
+        click=(action "confirmAccept")}}
+        ACCEPT INVITATION
+      {{/save-button}}
     </div>
     <div class="col-sm-1">
-      <button class="button-secondary button--green invitation-save-button"
-              {{action "confirmAccept"}}>
-        ACCEPT INVITATION
-      </button>
+      {{progress-spinner size="small" color="green" visible=loading}}
     </div>
   </div>
 {{/liquid-if}}

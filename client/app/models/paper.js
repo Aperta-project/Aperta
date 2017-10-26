@@ -116,10 +116,6 @@ export default DS.Model.extend({
     return this.get('title') || '[No Title]';
   }),
 
-  isPreprintPosted: computed(function() {
-    return true;
-  }),
-
   collaborators: computed('collaborations.@each.user', function() {
     return this.get('collaborations').mapBy('user');
   }),

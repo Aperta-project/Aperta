@@ -38,7 +38,7 @@ export default Ember.Controller.extend({
                         }),
   activePapers:         Ember.computed.filterBy('papers', 'active', true),
   inactivePapers:       Ember.computed.filterBy('papers', 'active', false),
-  preprintPostedPapers: Ember.computed.filterBy('papers', 'isPreprintPosted', true),
+  preprintPostedPapers: Ember.computed.filterBy('papers', 'preprintPublished', true),
   totalActivePaperCount: Ember.computed.alias('activePapers.length'),
 
   totalInactivePaperCount: Ember.computed.alias('inactivePapers.length'),

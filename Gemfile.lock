@@ -178,6 +178,9 @@ GEM
     chronic (0.10.2)
     climate_control (0.0.3)
       activesupport (>= 3.0)
+    closure_tree (6.6.0)
+      activerecord (>= 4.1.0)
+      with_advisory_lock (>= 3.0.0)
     cocaine (0.5.8)
       climate_control (>= 0.0.3, < 1.0)
     codeclimate-test-reporter (0.4.8)
@@ -714,6 +717,8 @@ GEM
       crack (>= 0.3.2)
     whenever (0.9.4)
       chronic (>= 0.6.3)
+    with_advisory_lock (3.2.0)
+      activerecord (>= 3.2)
     xml-simple (1.1.5)
     xpath (2.0.0)
       nokogiri (~> 1.3)
@@ -744,6 +749,7 @@ DEPENDENCIES
   capybara-select2
   carrierwave
   climate_control
+  closure_tree
   codeclimate-test-reporter
   combine_pdf
   database_cleaner

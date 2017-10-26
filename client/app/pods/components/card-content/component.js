@@ -22,7 +22,8 @@ export default Ember.Component.extend({
     owner: PropTypes.EmberObject.isRequired,
     preview: PropTypes.bool.isRequired,
     hasAnswerContainer: PropTypes.bool,
-    answerChanged: PropTypes.any
+    answerChanged: PropTypes.any,
+    repetition: PropTypes.oneOfType([PropTypes.null, PropTypes.EmberObject]).isRequired
   },
 
   keepAnswerContainer: Ember.computed('content', function(){
@@ -58,15 +59,34 @@ export default Ember.Component.extend({
     );
   },
 
-  answer: Ember.computed('content', 'owner', function() {
-    let answer = this.get('content').answerForOwner(this.get('owner'));
-    // if in preview mode set default values on components
-    // that are answerable
-    if(this.get('preview') && answer) {
-      answer.set('value', this.get('content.defaultAnswerValue'));
+  answer: Ember.computed('content', 'owner', 'repetition', function() {
+    let answer = this.get('content').answerForOwner(this.get('owner'), this.get('repetition'));
+
+    if(this.shouldEagerlySave(answer)) {
+      answer.save().then(a => {
+        a.initiallyHideErrors();
+      });
     }
+
     return answer;
   }),
+
+  shouldEagerlySave: function(answer) {
+    // Card Validations expects that requiredField questions already have an
+    // associated Answer saved on the server. This means we can't allow the
+    // Answer to be lazily created like most Answers.
+    //
+    // This is similar for content with a default value. We want to initially
+    // save the record, or we won't have an answer saved for something the
+    // user never changes from the default.
+    if(this.get('preview')) {
+      return false;
+    }
+    if(!(answer && answer.get('isNew'))) {
+      return false;
+    }
+    return this.get('content.requiredField') || this.get('content.defaultAnswerValue');
+  },
 
   _debouncedSave: concurrencyTask(function*() {
     yield timeout(this.get('debouncePeriod'));

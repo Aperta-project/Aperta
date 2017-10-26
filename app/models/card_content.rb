@@ -13,6 +13,9 @@ class CardContent < ActiveRecord::Base
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
   has_many :card_content_validations, dependent: :destroy
+  has_many :repetitions, inverse_of: :card_content, dependent: :destroy
+  has_many :answers, inverse_of: :card_content, dependent: :destroy
+
   validates :card_version, presence: true
 
   validates :parent_id,
@@ -22,7 +25,6 @@ class CardContent < ActiveRecord::Base
             },
             if: -> { root? }
 
-  has_many :answers
 
   # -- Card Content Validations
   # Note that the checks present here work in concert with the xml validations
@@ -45,7 +47,8 @@ class CardContent < ActiveRecord::Base
   # can either be boolean or text.
   # Content types that don't store answers ('display-children, etc') are omitted from this check
   VALUE_TYPES_FOR_CONTENT =
-    { 'dropdown': ['text', 'boolean'],
+    {
+      'dropdown': ['text', 'boolean'],
       'short-input': ['text'],
       'check-box': ['boolean'],
       'file-uploader': ['attachment', 'manuscript', 'sourcefile'],
@@ -54,7 +57,14 @@ class CardContent < ActiveRecord::Base
       'tech-check': ['boolean'],
       'tech-check-email': [nil],
       'date-picker': ['text'],
-      'sendback-reason': ['boolean'] }.freeze.with_indifferent_access
+      'sendback-reason': ['boolean'],
+      'numbered-list': [nil],
+      'bulleted-list': [nil],
+      'if': [nil],
+      'plain-list': [nil],
+      'repeat': [nil]
+    }.freeze.with_indifferent_access
+
   # Although we want to validate the various combinations of content types
   # and value types, many of the CardContent records that have been created
   # via the CardLoader don't have a content_type set at all, so we'll skip
@@ -145,10 +155,15 @@ class CardContent < ActiveRecord::Base
       {
         'required-field' => required_field
       }
-
     when 'error-message'
       {
         'key' => key
+      }
+    when 'repeat'
+      {
+        'min' => min,
+        'max' => max,
+        'item-name' => item_name
       }
     else
       {}

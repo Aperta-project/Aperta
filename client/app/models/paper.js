@@ -91,6 +91,8 @@ export default DS.Model.extend({
   legendsAllowed: attr('boolean'),
   currentUserRoles: attr(),
   manuallySimilarityChecked: attr('boolean'),
+  preprintOptOut: attr('boolean'),
+  preprintEligible: attr('boolean'),
 
   reviewDueAt: attr('date'),
   reviewOriginallyDueAt: attr('date'),

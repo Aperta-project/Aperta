@@ -3,7 +3,7 @@
   {{#if delivery.preprintDoiAssigned}}
     <br/>Assigned preprint DOI:
     {{#if delivery.published}}
-      <a href="{{delivery.paper.aarxLink}}">{{delivery.exportDoi}}</a>
+      <a class="preprint-link" href="{{delivery.paper.aarxLink}}">{{delivery.exportDoi}}</a>
     {{else}}
       {{delivery.exportDoi}}
     {{/if}}

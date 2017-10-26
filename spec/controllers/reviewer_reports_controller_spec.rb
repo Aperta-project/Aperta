@@ -84,6 +84,11 @@ describe ReviewerReportsController do
       end
 
       context 'and the user updates the report without a due datetime' do
+        before do
+          allow(user).to receive(:can?)
+            .with(:edit_due_date, reviewer_report.task)
+            .and_return false
+        end
         it 'returns a 200' do
           FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
           FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"

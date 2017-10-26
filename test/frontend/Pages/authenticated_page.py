@@ -219,6 +219,9 @@ class AuthenticatedPage(StyledPage):
       short_doi = self.get_current_url().split('/')[-1]
       count += 1
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
+    # added due to APERTA-10071, as it may look as pwom.NNNNN/submit
+    short_doi = self.get_current_url().split('/')[-2] if 'submit' in short_doi else short_doi
+
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     return short_doi
 

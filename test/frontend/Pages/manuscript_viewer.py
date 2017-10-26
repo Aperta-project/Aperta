@@ -10,9 +10,6 @@ import random
 import time
 from datetime import datetime
 
-
-
-
 from selenium.webdriver.common.by import By
 from .authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_GREY_DARK
 from Base.CustomException import ElementDoesNotExistAssertionError
@@ -30,6 +27,7 @@ from frontend.Tasks.supporting_information_task import SITask
 from frontend.Tasks.title_and_abstract_task import TitleAbstractTask
 from frontend.Tasks.new_taxon_task import NewTaxonTask
 from .styles import StyledPage
+from frontend.Overlays.submission_review import SubmissionReviewOverlay
 
 __author__ = 'sbassi@plos.org'
 
@@ -76,6 +74,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
     self._tb_more_withdraw_link = (By.ID, 'nav-withdraw-manuscript')
     self._tb_workflow_link = (By.ID, 'nav-workflow')
+    self._tb_correspondence_link = (By.ID, 'nav-correspondence')
     # Manage Collaborators Overlay
     self._add_collaborators_modal = (By.CLASS_NAME, 'show-collaborators-overlay')
     self._add_collaborators_modal_header = (By.CLASS_NAME, 'overlay-title-text')
@@ -162,6 +161,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._resize_handle_box = (By.CLASS_NAME, 'box-handle')
     self._resize_handle_box_lines = (By.CSS_SELECTOR, '.box-handle .vertical-line')
     self._resize_handle_box_tooltip = (By.CSS_SELECTOR, '.box-handle .tooltip')
+    #
+    self._review_overlay_submit_button = (By.ID, 'review-submission-submit-button')
+    #
+    self._review_before_submission = None
 
   # POM Actions
   def page_ready(self):
@@ -703,7 +706,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         base_task.click_completion_button()
       self.click_covered_element(task)
       time.sleep(2) #This sleep was added to fix a case where a following complete_task() call failed because this one wasn't done.
-    elif task_name in ('Cover Letter', 'Figures', 'Financial Disclosure', 'Reviewer Candidates'):
+    elif task_name in ('Cover Letter', 'Figures', 'Financial Disclosure', 'Reviewer Candidates', 'Preprint Posting'):
       # before checking that the complete is selected, in the accordion we need to
       # check if it is open
       if click_override:
@@ -761,7 +764,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       base_task.click_completion_button()
       self.click_covered_element(task)
       self._wait_on_lambda(lambda: self.is_task_open('Title And Abstract') == False)
-    elif task_name in ('Competing Interest', 'Data Availability', 'Early Article Posting',
+    elif task_name in ('Competing Interests', 'Data Availability', 'Early Article Posting',
                        'Ethics Statement', 'Reporting Guidelines'):
       # Complete Competing Interest data before mark close
       logging.info('Completing {0} Task'.format(task.text))
@@ -780,17 +783,86 @@ class ManuscriptViewerPage(AuthenticatedPage):
     paper_title = self._get(self._paper_title).text
     return paper_title
 
-  def click_submit_btn(self):
-    """Press the submit button"""
+  def click_submit_btn(self, review_overlay_validation=False):
+    """Press the submit button
+    :param review_overlay_validation: boolean, validates Preview Submission Overlay if True; default is False
+    :return: void function
+    """
     self._wait_for_element(self._get(self._submit_button), multiplier=7)
     self._get(self._submit_button).click()
+    self._review_before_submission = self.is_review_before_submission()
+    if self._review_before_submission:
+      if review_overlay_validation:
+        submission_review_overlay = SubmissionReviewOverlay(self._driver)
+        submission_review_overlay.overlay_ready()
+        submission_review_overlay.validate_styles_and_components()
+        submission_review_overlay.select_submit_or_make_changes("Submit")
+      else:
+        self._wait_for_element(self._get(self._review_overlay_submit_button), multiplier=7)
+        self._get(self._review_overlay_submit_button).click()
+
+  def is_preprint_on(self) -> bool:
+      """
+      A method that will determine for mmt if the pre-print feature flag is ON
+      :return: True if preprint feature flag is ON, otherwise False
+      :type return: bool
+      """
+      current_env = os.getenv('WEBDRIVER_TARGET_URL', '')
+      logging.info(current_env)
+      if current_env in ('https://www.aperta.tech', 'https://aperta:ieeetest@ieee.aperta.tech'):
+        return False
+      preprint_feature_flag = PgSQL().query('SELECT active FROM feature_flags WHERE name = \'PREPRINT\';')[0][0]
+      return preprint_feature_flag
+
+  def is_review_before_submission(self):
+      """
+      A method that will determine for mmt if the pre-print posting overlay should be shown as part of the
+      create new manuscript sequence. Tests for Preprint feature flag enablement for system, preprint checkbox
+      selection for mmt, and finally presence of Preprint Posting card in mmt. If all three are found, return
+      True, else False
+      :param journal: The name of the journal containing the mmt
+      :type journal: str
+      :param mmt: The name of the mmt
+      :type mmt: str
+      :return: True if preprint overlay should be shown in create sequence, otherwise False
+      :type return: bool
+      """
+      current_env = os.getenv('WEBDRIVER_TARGET_URL', '')
+      logging.info(current_env)
+      if current_env in ('https://www.aperta.tech', 'https://aperta:ieeetest@ieee.aperta.tech'):
+        return False
+      preprint_feature_flag = PgSQL().query('SELECT active FROM feature_flags WHERE name = \'PREPRINT\';')[0][0]
+      if not preprint_feature_flag:
+        return False
+
+      # check if manuscript template is preprint eligible
+      short_doi = self.get_paper_short_doi_from_url()
+      paper_id, paper_type, pp_eligible_mmt = PgSQL().query('SELECT p.id, p.paper_type, mmt.is_preprint_eligible '
+                                              #', p.preprint_opt_out '
+                                              'FROM papers p, journals j, manuscript_manager_templates mmt '
+                                              'WHERE p.journal_id = j.id '
+                                              'AND mmt.journal_id = j.id '
+                                              'AND mmt.paper_type = p.paper_type '
+                                              'AND p.short_doi =%s;', (short_doi,))[0]
+
+      if not pp_eligible_mmt:
+        return False
+      # check if "Preprint Posting" card is present
+      is_pp_task_present = self.is_task_present('Preprint Posting')
+      if not is_pp_task_present:
+        return False
+
+      return True
 
   def confirm_submit_btn(self):
     """Confirm paper submission"""
     # There is a lot going on under the covers in submittal - we need this pregnant delay
-    confirm_btn = self._get(self._so_submit_confirm)
-    confirm_btn.click()
-    time.sleep(10)
+    if self._review_before_submission == None:
+      self._review_before_submission = self.is_review_before_submission()
+    if not self._review_before_submission:
+      confirm_btn = self._get(self._so_submit_confirm)
+      confirm_btn.click()
+      time.sleep(10)
 
   def confirm_submit_cancel(self):
     """Cancel on confirm paper submission"""
@@ -805,6 +877,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """Click workflow button"""
     self._wait_for_element(self._get(self._tb_workflow_link))
     self._get(self._tb_workflow_link).click()
+
+  def click_correspondence_link(self):
+    """Click correspondence history link"""
+    self._wait_for_element(self._get(self._tb_correspondence_link))
+    self._get(self._tb_correspondence_link).click()
 
   def click_question_mark(self):
     """Click on the question mark to open Infobox"""

@@ -74,33 +74,29 @@ test('it renders a label for card-content', function(assert) {
 
 test(`it displays an indicator if 'isRequired set to true`, function(assert) {
   let cardContent = FactoryGuy.make('card-content', 'shortInput', { requiredField: true, label: 'Label1', text: 'Text' });
-  this.set('task.cardVersion.contentRoot', cardContent);
+  let root = 'task.cardVersion.contentRoot';
+  this.set(root, cardContent);
 
-  this.set('content', Ember.Object.create({
-    ident: 'test',
-    label: 'Label2',
-    text: 'Text'
-  }));
-
+  let text = `${root}.text`;
+  let label = `${root}.label`;
   let template = hbs`
-    {{custom-card-task task=task preview=false content=content}}
+    {{custom-card-task task=task preview=false}}
   `;
 
   this.render(template);
   assert.elementFound('.content-label .required-field', 'shows the required field indicator when both label and text are present');
 
-  this.set('content.text', null);
+  this.set(text, null);
   this.render(template);
   assert.elementFound('.content-label .required-field', 'shows the required field indicator in the label if no text');
 
-  this.set('content.text', 'here');
-  this.set('content.label', null);
+  this.set(text, 'here');
+  this.set(label, null);
   this.render(template);
-  debugger;
-  assert.elementFound('.content-text .required-field', 'shows the required field indicator near the text if no label');
+  assert.elementFound('.content-text .required-field', 'shows the required field indicator in the text if no label');
 
-  this.set('content.text', null);
-  this.set('content.label', null);
+  this.set(text, null);
+  this.set(label, null);
   this.render(template);
   assert.elementFound('.content-label .required-field', 'shows the required field indicator when neither label nor text are present');
 });

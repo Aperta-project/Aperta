@@ -91,14 +91,16 @@ class InvitationsController < ApplicationController
 
   def accept
     requires_user_can(:manage_invitations, invitation.task) unless invitation.invitee == current_user
-    invitation.actor = current_user
     invitee = invitation.invitee
     invitee ||= User.create(invitation_accept_params) do |user|
+      user.email = invitation.email
       user.auto_generate_password
       user.auto_generate_username
     end
     if invitee.valid?
-      invitation.reload.accept! # refresh invitation data bc user creation callbacks
+      invitation.reload # refresh invitation data bc user creation callbacks
+      invitation.actor = current_user
+      invitation.accept!
       Activity.invitation_accepted!(invitation, user: current_user)
     else
       invitation.errors.add(:invitee, 'User creation error')
@@ -164,7 +166,7 @@ class InvitationsController < ApplicationController
   end
 
   def invitation_accept_params
-    params.permit(:first_name, :last_name).merge(email: invitation.email)
+    params.permit(:first_name, :last_name)
   end
 
   def task

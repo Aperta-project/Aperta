@@ -1,14 +1,5 @@
-# Provides a template context for ReviewerReports
 class ReviewerReportContext < TemplateContext
   include ActionView::Helpers::SanitizeHelper
-  def self.complex_merge_fields
-    [{ name: :reviewer, context: UserContext },
-     { name: :answers, context: AnswerContext, many: true }]
-  end
-
-  def self.blacklisted_merge_fields
-    ActionView::Helpers::SanitizeHelper.public_instance_methods
-  end
 
   whitelist :state, :revision, :status, :datetime, :invitation_accepted?, :due_at
 
@@ -32,11 +23,21 @@ class ReviewerReportContext < TemplateContext
     reviewer_report.due_at.to_s(:due_with_hours)
   end
 
+  def submitted_at
+    reviewer_report.submitted_at
+  end
+
   def rendered_answer_idents
     [
+      'front_matter_reviewer_report--suitable--comment',
       'front_matter_reviewer_report--includes_unpublished_data--explanation',
       'reviewer_report--comments_for_author'
     ]
+  end
+
+  def rendered_answers
+    rendered_answer_idents.map { |ident| answers.find { |answer| answer.ident == ident } }
+      .compact
   end
 
   private

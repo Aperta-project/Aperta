@@ -90,7 +90,7 @@ class InvitationsController < ApplicationController
   end
 
   def accept
-    raise AuthorizationError unless invitation.invitee == current_user
+    requires_user_can(:manage_invitations, invitation.task) unless invitation.invitee == current_user
     invitation.actor = current_user
     invitation.accept!
     Activity.invitation_accepted!(invitation, user: current_user)

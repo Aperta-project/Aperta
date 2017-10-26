@@ -192,7 +192,7 @@ FactoryGirl.define do
 
       after(:create) do |paper, evaluator|
         task = FactoryGirl.create(
-          :publishing_related_questions_task,
+          :custom_card_task,
           :with_card,
           paper: paper
         )
@@ -266,7 +266,7 @@ FactoryGirl.define do
         )
       end
     end
-    
+
     trait(:with_versions) do
       transient do
         first_version_body  'first body'

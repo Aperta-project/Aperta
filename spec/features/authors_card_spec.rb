@@ -68,9 +68,8 @@ feature 'Authors card', js: true do
       find('input.author-first').send_keys('Last')
       find('input.author-email').send_keys('email2@email.email')
       find_button('done').click
-
-      last_author = find(:xpath, '//div[@class="ember-view author-task-item"][2]')
-      expect(last_author).to have_text 'Last'
+      assert_selector('.author-name', count: 2)
+      expect(all(".ember-view.author-task-item .author-name").last).to have_text 'Last'
     end
   end
 end

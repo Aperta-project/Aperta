@@ -57,6 +57,11 @@ module TahiStandardTasks
       )
     end
 
+    def accept_allowed?(invitation)
+      # Prevents accepting invitation without an invitee
+      invitation.invitee.present?
+    end
+
     private
 
     def invitation_body_template

@@ -3,7 +3,7 @@ import {moduleForComponent, test} from 'ember-qunit';
 import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup } from 'ember-data-factory-guy';
 import { createQuestionWithAnswer } from 'tahi/tests/factories/nested-question';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 import FakeCanService from '../helpers/fake-can-service';
 import sinon from 'sinon'
 
@@ -27,7 +27,7 @@ moduleForComponent(
       }});
 
       journal = FactoryGuy.make('journal');
-      TestHelper.mockFind('journal').returns({model: journal});
+      TestHelper.mockFindRecord('journal').returns({model: journal});
 
       let user = FactoryGuy.make('user');
       let task = FactoryGuy.make('authors-task');
@@ -80,7 +80,7 @@ template = hbs`
   }}`;
 
 test("component displays the orcid-connect component when the author has an orcidAccount", function(assert){
-  const can = FakeCanService.create().allowPermission('administer', journal);
+  const can = FakeCanService.create().allowPermission('manage_paper_authors', this.get('author.paper'));
   this.register('service:can', can.asService());
   let orcidAccount = FactoryGuy.make('orcid-account');
   Ember.run( () => {
@@ -91,7 +91,7 @@ test("component displays the orcid-connect component when the author has an orci
 });
 
 test("component does not display the orcid-connect component when the author does not have an orcidAccount", function(assert){
-  const can = FakeCanService.create().allowPermission('administer', journal);
+  const can = FakeCanService.create().allowPermission('manage_paper_authors', this.get('author.paper'));
   this.register('service:can', can.asService());
   Ember.run( () => {
     this.get("author.user").set("orcidAccount", null);
@@ -100,7 +100,7 @@ test("component does not display the orcid-connect component when the author doe
   assert.elementNotFound(".orcid-wrapper");
 });
 
-test("component shows coauthor controls when user is considered an admin user", function(assert){
+test('component shows coauthor controls when user is considered a paper-manager user', function(assert){
   template = hbs`
   {{author-form
       author=model.object
@@ -115,7 +115,7 @@ test("component shows coauthor controls when user is considered an admin user", 
   }}`;
 
   Ember.run(() => {
-    const can = FakeCanService.create().allowPermission('administer', journal);
+    const can = FakeCanService.create().allowPermission('manage_paper_authors', this.get('author.paper'));
     this.register('service:can', can.asService());
   });
 
@@ -123,7 +123,7 @@ test("component shows coauthor controls when user is considered an admin user", 
   assert.elementFound('[data-test-selector="coauthor-radio-controls"]');
 });
 
-test("component hides coauthor controls when user is considered an non-admin user", function(assert){
+test('component hides coauthor controls when user is considered an non-paper-manager user', function(assert){
   template = hbs`
   {{author-form
       author=model.object
@@ -137,7 +137,7 @@ test("component hides coauthor controls when user is considered an non-admin use
       authorIsPaperCreator=false
   }}`;
   Ember.run(() => {
-    const can = FakeCanService.create().rejectPermission('administer', journal);
+    const can = FakeCanService.create().rejectPermission('manage_paper_authors', this.get('author.paper'));
     this.register('service:can', can.asService());
   });
 
@@ -160,7 +160,7 @@ test('component hides coauthor controls if the setting is disabled', function(as
   }}`;
 
   Ember.run(() => {
-    const can = FakeCanService.create().allowPermission('administer', journal);
+    const can = FakeCanService.create().allowPermission('manage_paper_authors', this.get('author.paper'));
     this.register('service:can', can.asService());
   });
 

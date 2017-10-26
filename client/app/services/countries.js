@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { task } from 'ember-concurrency';
 
 const {
   computed,
@@ -29,40 +30,15 @@ export default Service.extend({
     }
   }),
 
-  fetch() {
-    if(!isEmpty(this.get('_data'))) { return; }
-    this._didStartLoading();
-
-    this.get('restless').get('/api/countries').then((response)=> {
-      if(this.get('isDestroying')) { return; }
+  fetch: task(function * (response) {
+    try {
+      this.set('loading', true);
+      yield this.get('restless').get('/api/countries');
       this.set('_data', response.countries);
-      this._didLoad();
-    }, ()=> {
-      this._didError();
-    });
-  },
-
-  _didStartLoading() {
-    this.setProperties({
-      loaded: false,
-      loading: true,
-      error: false
-    });
-  },
-
-  _didError() {
-    this.setProperties({
-      loaded: false,
-      loading: false,
-      error: true
-    });
-  },
-
-  _didLoad() {
-    this.setProperties({
-      loaded: true,
-      loading: false,
-      error: false
-    });
-  }
+      this.set('loaded');
+    } catch(e) {
+      this.set('loading', false);
+      this.set('error', true);
+    }
+  })
 });

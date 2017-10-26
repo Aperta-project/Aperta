@@ -1,26 +1,20 @@
 import Ember from 'ember';
 import { test } from 'ember-qunit';
-import startApp from '../helpers/start-app';
 import setupMockServer from '../helpers/mock-server';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 import Factory from '../helpers/factory';
+import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 
 var respondAuthorized, respondUnauthorized, setCurrentUserAdmin;
 
-let app = null;
 let server = null;
 
-module('Integration: Navbar', {
+moduleForAcceptance('Integration: Navbar', {
   afterEach() {
     server.restore();
-    Ember.run(app, app.destroy);
-    return Ember.run(function() {
-      return TestHelper.teardown();
-    });
   },
 
   beforeEach() {
-    app = startApp();
     server = setupMockServer();
     TestHelper.mockFindAll('paper');
     TestHelper.mockFindAll('invitation');

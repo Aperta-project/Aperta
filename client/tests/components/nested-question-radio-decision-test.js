@@ -2,12 +2,15 @@ import {
   moduleForComponent,
   test
 } from 'ember-qunit';
-
+import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('nested-question-radio', 'Integration | Component | nested question radio decision', {
-  integration: true
+  integration: true,
+  beforeEach() {
+    registerCustomAssertions();
+  }
 });
 
 test('shows help text in disabled state', function(assert) {

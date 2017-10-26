@@ -15,6 +15,9 @@ class LetterTemplate < ActiveRecord::Base
   validates :subject, presence: true
   validate :body_ok?
   validate :subject_ok?
+  validate :cc_ok?
+  validate :bcc_ok?
+  before_validation :canonicalize_email_addresses
 
   def render(context, check_blanks: false)
     tap do |my|
@@ -56,5 +59,34 @@ class LetterTemplate < ActiveRecord::Base
     Liquid::Template.parse(subject)
   rescue Liquid::SyntaxError => e
     errors.add(:subject, e.message.gsub(/^Liquid syntax error:/, '').strip)
+  end
+
+  def cc_ok?
+    return unless cc
+    cc.split(/,/).each do |email|
+      errors.add(:cc, "\"#{email}\" is an invalid email address") unless email.match(Devise.email_regexp)
+    end
+  end
+
+  def bcc_ok?
+    return unless bcc
+    bcc.split(/,/).each do |email|
+      errors.add(:bcc, "\"#{email}\" is an invalid email address") unless email.match(Devise.email_regexp)
+    end
+  end
+
+  def canonicalize_email_addresses
+    self.cc = canonicalize(cc) if cc
+    self.bcc = canonicalize(bcc) if bcc
+  end
+
+  # This accepts a variety of user-inputted email address formats, handles multiple addresses safely, and ends
+  # with a comma delimited list of simple addresses.
+  def canonicalize(address_line)
+    address_line.gsub(/"[^"]+"/, '')           # Git rid of quoted part of "Joe Smith, the third" <joe@gmail.com> addresses
+      .split(/[,;]+/)                          # Account for multiple addresses delimited by either comma or semicolon
+      .map(&:strip)                            # Git rid of surrounding whitespace
+      .map { |a| a.gsub(/.*<(.+)>$/, '\1') }   # Strip angle brackets and any leading friendly names that weren't quoted
+      .join(',')                               # ...and join them back together with the Tahi standard email separator
   end
 end

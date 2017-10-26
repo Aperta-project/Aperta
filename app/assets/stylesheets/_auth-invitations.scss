@@ -103,9 +103,14 @@
   .invitation-metadata {
     font-size: 14px;
     font-weight: bold;
-    .date {
+    margin-bottom: 0px;
+    .date, .normal-font-weight {
       font-weight: normal;
     }
+  }
+
+  .paper-title {
+    margin-top: 5px;
   }
 
   .decline-button {

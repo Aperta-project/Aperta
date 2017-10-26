@@ -282,7 +282,9 @@ describe TahiStandardTasks::ReviewerMailer do
         name: template_ident,
         scenario: 'ReviewerReportScenario',
         subject: 'review {{ journal.name }}',
-        body: '<p>Dear Dr. {{ reviewer.last_name }}, review {{ manuscript.title }} on {{ review.due_at }} </p>'
+        body: '<p>Dear Dr. {{ reviewer.last_name }}, review {{ manuscript.title }} on {{ review.due_at }} </p>',
+        cc: 'testcc1@example.com,testcc2@example.com',
+        bcc: 'testbcc@example.com'
       )
       report.set_due_datetime
       report.save!
@@ -314,6 +316,11 @@ describe TahiStandardTasks::ReviewerMailer do
       end
 
       it_behaves_like 'a Liquid email checked for blanks'
+
+      it 'contains correct cc and bcc addresses' do
+        expect(email.cc).to eq(report.paper.journal.letter_templates.first.cc.split(','))
+        expect(email.bcc).to eq([report.paper.journal.letter_templates.first.bcc])
+      end
     end
 
     describe '.first_late_notice' do

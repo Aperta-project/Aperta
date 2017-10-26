@@ -49,14 +49,11 @@ export default Ember.Component.extend({
   hasLabel: Ember.computed.notEmpty('content.label'),
   hasText:  Ember.computed.notEmpty('content.text'),
 
-  unlabeledTypes: ['check-box', 'dropdown', 'export-paper', 'file-uploader'],
-  unlabeled: Ember.computed('content.contentType', function () {
+  labeledTypes: ['check-box', 'dropdown', 'export-paper', 'file-uploader'],
+  canBeLabeled: Ember.computed('content.contentType', function () {
     let contentType = this.get('content.contentType');
-    return this.unlabeledTypes.includes(contentType);
-  }),
-
-  canBeLabeled: Ember.computed('content.label', 'unlabeled', function() {
-    return this.get('unlabeled') ? false : this.get('hasLabel');
+    if (this.labeledTypes.includes(contentType)) {return false;}
+    return this.get('hasLabel');
   }),
 
   name: Ember.computed('content.ident', function() {

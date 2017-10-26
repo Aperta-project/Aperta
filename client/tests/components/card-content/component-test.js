@@ -69,6 +69,60 @@ test('it renders a label for card-content', function(assert) {
   this.render(hbs`
     {{custom-card-task task=task preview=false}}
   `);
-  assert.textPresent('.content-label', 'Label');
+  assert.elementFound('.content-label');
 });
+
+test(`it displays an indicator if 'isRequired set to true`, function(assert) {
+  let cardContent = FactoryGuy.make('card-content', 'shortInput', { requiredField: true, label: 'Label1', text: 'Text' });
+  this.set('task.cardVersion.contentRoot', cardContent);
+
+  this.set('content', Ember.Object.create({
+    ident: 'test',
+    label: 'Label2',
+    text: 'Text'
+  }));
+
+  let template = hbs`
+    {{custom-card-task task=task preview=false content=content}}
+  `;
+
+  this.render(template);
+  assert.elementFound('.content-label .required-field', 'shows the required field indicator when both label and text are present');
+
+  this.set('content.text', null);
+  this.render(template);
+  assert.elementFound('.content-label .required-field', 'shows the required field indicator in the label if no text');
+
+  this.set('content.text', 'here');
+  this.set('content.label', null);
+  this.render(template);
+  debugger;
+  assert.elementFound('.content-text .required-field', 'shows the required field indicator near the text if no label');
+
+  this.set('content.text', null);
+  this.set('content.label', null);
+  this.render(template);
+  assert.elementFound('.content-label .required-field', 'shows the required field indicator when neither label nor text are present');
+});
+
+test(`it does not display an field indicator if 'isRequired set to false`, function(assert) {
+  let cardContent = FactoryGuy.make('card-content', 'shortInput', { requiredField: false });
+  this.set('task.cardVersion.contentRoot', cardContent);
+
+  this.set(
+    'content',
+    Ember.Object.create({
+      ident: 'test',
+      text: 'Test check-box',
+      label: 'some label'
+    })
+  );
+
+  this.render(hbs`
+    {{custom-card-task task=task preview=false}}
+  `);
+
+  assert.elementNotFound('.required-field');
+});
+
 

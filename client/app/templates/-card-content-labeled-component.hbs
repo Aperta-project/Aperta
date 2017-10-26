@@ -1,5 +1,7 @@
 {{! Both label and text}}
-{{#if (and hasText hasLabel)}}
+<p>Content.Label={{{content.label}}}</p>
+{{#if (and hasText canBeLabeled)}}
+  <p>Both</p>
   <p class="content-text">
     {{{content.text}}}
   </p>
@@ -16,6 +18,7 @@
   {{/if}}
 {{! Text no label}}
 {{else if hasText}}
+  <p>Text</p>
   <p class="content-text">
     {{{content.text}}}
     {{#if content.isRequired}}
@@ -24,7 +27,8 @@
   </p>
   {{partial "card-content-component"}}
 {{! Label no text}}
-{{else if (and canBeLabeled hasLabel)}}
+{{else if canBeLabeled}}
+  <p>Can Be Labeled</p>
   <label class="content-label">
     {{{content.label}}}
     {{#if content.isRequired}}
@@ -34,6 +38,7 @@
   </label>
 {{! Neither label nor text, but required}}
 {{else}}
+  <p>Neither</p>
   {{#if (and content.isRequired (not hasLabel) (not hasText))}}
     <p class="content-label">
       This field is required.

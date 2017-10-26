@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171018200454) do
+ActiveRecord::Schema.define(version: 20171025211453) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -405,6 +405,30 @@ ActiveRecord::Schema.define(version: 20171018200454) do
   add_index "email_logs", ["message_id"], name: "index_email_logs_on_message_id", using: :btree
   add_index "email_logs", ["paper_id"], name: "index_email_logs_on_paper_id", using: :btree
   add_index "email_logs", ["task_id"], name: "index_email_logs_on_task_id", using: :btree
+
+  create_table "event_behavior_attributes", force: :cascade do |t|
+    t.integer  "event_behavior_id", null: false
+    t.string   "name"
+    t.string   "value_type"
+    t.boolean  "boolean_value"
+    t.integer  "integer_value"
+    t.string   "string_value"
+    t.jsonb    "json_value"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "event_behavior_attributes", ["event_behavior_id"], name: "index_event_behavior_attributes_on_event_behavior_id", using: :btree
+
+  create_table "event_behaviors", force: :cascade do |t|
+    t.string   "event_name", null: false
+    t.string   "action",     null: false
+    t.integer  "journal_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "event_behaviors", ["journal_id"], name: "index_event_behaviors_on_journal_id", using: :btree
 
   create_table "feature_flags", force: :cascade do |t|
     t.string  "name",   null: false

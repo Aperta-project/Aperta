@@ -1,3 +1,9 @@
+{{#if (or showDescription (or preview (not disabled)))}}
+  <p class="description">
+    {{{description}}}
+  </p>
+{{/if}}
+
 {{#each attachments as |attachment|}}
   {{#if attachment.readyIssuesArray.length}}
     {{card-content/validation-errors errors=attachment.readyIssuesArray}}

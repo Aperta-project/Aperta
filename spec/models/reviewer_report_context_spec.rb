@@ -36,9 +36,10 @@ describe ReviewerReportContext do
       check_render("{{ answers | size }}", answers.count.to_s)
     end
 
-    context 'reviewer name' do
+    describe 'reviewer name' do
       before(:each) { reviewer_report.answers = [answer_1, answer_2] }
       let(:raw_value) { 'wat' }
+
       it 'renders without tags when ident card present' do
         allow(answer_1).to receive_message_chain('card_content.ident').and_return('--identity')
         allow(answer_1).to receive(:value).and_return("<p>#{raw_value}</p>")
@@ -47,12 +48,6 @@ describe ReviewerReportContext do
 
       it 'renders nothing without ident card' do
         check_render("{{ reviewer_name }}", '')
-      end
-    end
-
-    context 'submitted date' do
-      it 'returns submitted at date' do
-        expect(context.submitted_at).to eq(reviewer_report.submitted_at)
       end
     end
   end

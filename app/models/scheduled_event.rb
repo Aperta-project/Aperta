@@ -13,6 +13,7 @@ class ScheduledEvent < ActiveRecord::Base
   scope :complete, -> { where(state: 'complete') }
   scope :passive, -> { where(state: 'passive') }
   scope :due_to_trigger, -> { active.where('dispatch_at < ?', DateTime.now.in_time_zone) }
+  scope :serviceable, -> { where(state: ['passive', 'active']) }
 
   before_save :deactivate, if: :should_deactivate?
   before_save :reactivate, if: :should_reactivate?

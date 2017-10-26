@@ -16,7 +16,7 @@ class ScheduledEventFactory
   private
 
   def owned_serviceable_events
-    due_datetime.scheduled_events.where(state: ['passive', 'active'])
+    due_datetime.scheduled_events.serviceable
   end
 
   def dispatch_date(event)
@@ -50,7 +50,7 @@ class ScheduledEventFactory
 
   def update_scheduled_events
     template.each do |entry|
-      event = due_datetime.scheduled_events.where(name: entry[:name]).where.not(state: 'canceled').first
+      event = owned_serviceable_events.where(name: entry[:name]).first
       reschedule event, entry if event.present?
     end
   end

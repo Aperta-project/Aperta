@@ -639,7 +639,7 @@ class Paper < ActiveRecord::Base
   end
 
   def aarx_link
-    DOI_PROXY_HOST_URL + "/" + aarx_doi
+    DOI_PROXY_HOST_URL + "/" + aarx_doi if aarx_doi.present?
   end
 
   def preprint_doi_suffix

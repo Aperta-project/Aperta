@@ -17,6 +17,7 @@ class ReviewerReport < ActiveRecord::Base
     uniqueness: { scope: [:task_id, :user_id, :decision_id],
                   message: 'Only one report allowed per reviewer per decision' }
 
+  delegate :reviewer_number, to: :task
   delegate :due_at, :originally_due_at, to: :due_datetime, allow_nil: true
 
   SCHEDULED_EVENTS_TEMPLATE = [

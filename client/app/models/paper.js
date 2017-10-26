@@ -61,6 +61,7 @@ export default DS.Model.extend({
   creator: belongsTo('user', { async: false }),
   shortDoi: attr('string'),
   aarxDoi: attr('string'),
+  aarxLink: attr('string'),
   preprintPublished: attr('boolean'),
   doi: attr('string'),
   editable: attr('boolean'),

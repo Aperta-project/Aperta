@@ -70,9 +70,7 @@ class PrePrintPostCard(BaseCard):
 
   def check_opt_out_button(self):
     """
-    Click on the checkmark for the question:
-    "Yes - I confirm our figures comply with the guidelines."
-    :return: None
+   Checks if no button for opting out publishing a preprint is selected
     """
     self._get(self._no_radio_button).click()
     time.sleep(2)

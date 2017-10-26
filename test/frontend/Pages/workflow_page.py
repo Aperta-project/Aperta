@@ -95,6 +95,9 @@ class WorkflowPage(AuthenticatedPage):
     self._cards = (By.CSS_SELECTOR, 'div.card')
     self._card_types = (By.CSS_SELECTOR, 'div.row label')
     self._div_buttons = (By.CSS_SELECTOR, 'div.overlay-action-buttons')
+    self._authors_task_cards= (By.CSS_SELECTOR, 'div.author-task-cards')
+    self._staff_task_cards= (By.CSS_SELECTOR, 'div.staff-task-cards')
+
 
   # POM Actions
   def validate_initial_page_elements_styles(self):
@@ -358,8 +361,10 @@ class WorkflowPage(AuthenticatedPage):
     :return: None
     """
     self.click_add_new_card()
-    time.sleep(2)
+    self.overlay_ready()
     card_types = self._gets(self._card_types)
+    length=len(card_types)
+    assert length==37
     for card in card_types:
       if card.text == card_title:
         card.click()
@@ -409,3 +414,21 @@ class WorkflowPage(AuthenticatedPage):
     :return: Void Function
     """
     self._wait_for_element(self._get(self._add_new_card_button))
+
+  def overlay_ready(self):
+    """
+    Validate the overlay is loaded - use to validate overlay is ready for test
+    :return: Void Function
+    """
+    authortaskcards = self._get(self._authors_task_cards)
+    self._wait_for_element(authortaskcards)
+    stafftaskcards = self._get(self._staff_task_cards)
+    self._wait_for_element(stafftaskcards)
+    addbutton = self._get(self._add_button_overlay)
+    self._wait_for_element(addbutton)
+    cancelbutton = self._get(self._cancel_button_overlay)
+    self._wait_for_element(cancelbutton)
+    overlay = self._get(self._add_card_overlay_div)
+    self._wait_for_element(overlay)
+
+

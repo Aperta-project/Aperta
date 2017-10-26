@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 This test case validates style and function of Preprint Posting Card
@@ -14,7 +14,7 @@ import time
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users, handling_editor_login, academic_editor_login, staff_admin_login, \
-  super_admin_login, prod_staff_login, pub_svcs_login
+  super_admin_login, prod_staff_login, pub_svcs_login, external_editorial_users
 from frontend.Cards.preprint_posting_card import PrePrintPostCard
 from frontend.common_test import CommonTest
 from .Cards.revision_tech_check_card import RTCCard
@@ -29,7 +29,7 @@ editorial_users =          [super_admin_login,pub_svcs_login,]
 @MultiBrowserFixture
 class PPCardTest(CommonTest):
   """
-  Validate the elements, styles, functions of the Revision Tech Check card
+  Validate the elements, styles, functions of the Preprint Posting card
   """
 
   def test_pp_card(self):

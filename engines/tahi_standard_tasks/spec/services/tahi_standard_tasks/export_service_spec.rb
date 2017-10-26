@@ -49,14 +49,6 @@ describe TahiStandardTasks::ExportService do
         end
       end
     end
-
-    context "the destination is em or preprint" do
-      it "uploads to the router" do
-        export_delivery.destination = "em"
-        expect_any_instance_of(RouterUploaderService).to receive(:upload).and_return(nil)
-        service.make_delivery!
-      end
-    end
   end
 
   describe "#upload_to_ftp" do
@@ -121,13 +113,6 @@ describe TahiStandardTasks::ExportService do
         export_delivery.destination = "preprint"
         expect(service.send(:needs_preprint_doi?)).to eq(false)
       end
-    end
-  end
-
-  describe '#aperta_id' do
-    it 'returns the word aperta concatenated with a 7 digit string padded with zeros' do
-      allow(paper).to receive(:id) { '1111' }
-      expect(service.aperta_id).to be == 'aperta.0001111'
     end
   end
 end

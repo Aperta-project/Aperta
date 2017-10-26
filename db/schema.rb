@@ -384,7 +384,7 @@ ActiveRecord::Schema.define(version: 20171019212449) do
     t.string   "status"
     t.string   "error_message"
     t.datetime "errored_at"
-    t.datetime "sent_at"
+    t.datetime "sent_at",            null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "task_id"

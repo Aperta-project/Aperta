@@ -8,7 +8,7 @@
 
 .error {
   input, select, textarea,
-  .did-you-mean-input, .select2-container .select2-choice {
+  .did-you-mean-input, .select2-container .select2-choice, .rich-text-editor  {
     border: 1px solid $aperta-red;
   }
 }

@@ -30734,7 +30734,19 @@ content_attributes:
     - json
     - false
     - 
+    - text
     - 
+    - '2017-10-19 18:36:03.271037'
+    - '2017-10-19 18:36:03.271037'
+  - - '2181'
+    - '443'
+    - text
+    - string
+    - false
+    - 
+    - Please identify which results, data, or figures have been taken from other published
+      or pending manuscripts and explain why inclusion in this submission does not
+      constitute dual publication.
     - 
     - '2017-10-17 14:04:37.902331'
     - '2017-10-17 14:04:37.902331'
@@ -30744,7 +30756,19 @@ content_attributes:
     - json
     - false
     - 
+    - attachment
     - 
+    - '2017-10-19 18:36:03.305317'
+    - '2017-10-19 18:36:03.305317'
+  - - '2183'
+    - '444'
+    - text
+    - string
+    - false
+    - 
+    - Please also upload a copy of the related work with your submission as a 'Related
+      Manuscript' item. Note that reviewers may be asked to comment on the overlap
+      between the related submissions.
     - 
     - '2017-10-17 14:04:37.908973'
     - '2017-10-17 14:04:37.908973'
@@ -30774,7 +30798,17 @@ content_attributes:
     - json
     - false
     - 
+    - Is this manuscript being submitted in conjunction with another submission?
     - 
+    - '2017-10-19 18:36:03.34157'
+    - '2017-10-19 18:36:03.34157'
+  - - '2186'
+    - '446'
+    - value_type
+    - string
+    - false
+    - 
+    - text
     - 
     - '2017-10-17 14:04:37.942789'
     - '2017-10-17 14:04:37.942789'
@@ -30805,7 +30839,15 @@ content_attributes:
     - json
     - false
     - 
+    - '2017-10-19 18:36:03.373257'
+    - '2017-10-19 18:36:03.373257'
+  - - '2188'
+    - '447'
+    - value_type
+    - string
+    - false
     - 
+    - text
     - 
     - '2017-10-17 14:04:37.955399'
     - '2017-10-17 14:04:37.955399'
@@ -30845,6 +30887,7 @@ content_attributes:
     - json
     - false
     - 
+    - boolean
     - 
     - 
     - '2017-10-17 14:04:37.972718'
@@ -30875,7 +30918,18 @@ content_attributes:
     - json
     - false
     - 
+    - I have had previous interactions about this manuscript with a staff editor or
+      Academic Editor of this journal.
     - 
+    - '2017-10-19 18:36:03.519248'
+    - '2017-10-19 18:36:03.519248'
+  - - '2196'
+    - '451'
+    - value_type
+    - string
+    - false
+    - 
+    - html
     - 
     - '2017-10-17 14:04:37.997704'
     - '2017-10-17 14:04:37.997704'
@@ -30906,7 +30960,15 @@ content_attributes:
     - json
     - false
     - 
+    - html
     - 
+    - '2017-10-19 18:36:03.636078'
+    - '2017-10-19 18:36:03.636078'
+  - - '2201'
+    - '453'
+    - text
+    - string
+    - false
     - 
     - '2017-10-17 14:04:38.015118'
     - '2017-10-17 14:04:38.015118'
@@ -30939,7 +31001,18 @@ content_attributes:
     - json
     - false
     - 
+    - One or more of the authors (including myself) currently serve, or have previously
+      served, as an Academic Editor or Guest Editor for this journal.
     - 
+    - '2017-10-19 18:36:03.76405'
+    - '2017-10-19 18:36:03.76405'
+  - - '2208'
+    - '457'
+    - value_type
+    - string
+    - false
+    - 
+    - text
     - 
     - '2017-10-17 14:04:38.028513'
     - '2017-10-17 14:04:38.028513'

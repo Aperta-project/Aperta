@@ -8,10 +8,21 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   isUploading: false,
   restless: Ember.inject.service(),
 
+  timeSent: Ember.computed('model', function() {
+    let start = moment();
+    // rounding down the minutes to the nearest half-hour
+    if (start.minutes() < 30) {
+      start.minutes(0);
+    } else {
+      start.minutes(30);
+    }
+    return start.format('H:mm');
+  }),
+
   prepareModelDate() {
     let date = this.get('dateSent');
     let time = this.get('timeSent');
-    let m = moment.utc(date + ' ' + time, 'MM/DD/YYYY hh:mm a');
+    let m = moment.utc(date + ' ' + time, 'MM/DD/YYYY H:m');
     this.get('model').set('date', m.local().toJSON());
   },
 
@@ -19,17 +30,17 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     let dateIsValid = moment(this.get('dateSent'), 'MM/DD/YYYY').isValid();
 
     if (!dateIsValid) {
-      this.set('validationErrors.dateSent', 'Invalid Date. Format MM/DD/YYYY');
+      this.set('validationErrors.dateSent', 'Invalid Date.');
     }
 
     return dateIsValid;
   },
 
   validateTime() {
-    let timeIsValid = moment(this.get('timeSent'), 'hh:mm a').isValid();
+    let timeIsValid = moment(this.get('timeSent'), 'H:m').isValid();
 
     if (!timeIsValid) {
-      this.set('validationErrors.timeSent', 'Invalid Time. Format hh:mm a');
+      this.set('validationErrors.timeSent', 'Invalid Time.');
     }
 
     return timeIsValid;
@@ -44,7 +55,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       if (mandatoryFieldValue === '' ||
           mandatoryFieldValue === null ||
           mandatoryFieldValue === undefined) {
-        this.set('validationErrors.' + mandatoryFields[i], 'cannot be blank');
+        this.set('validationErrors.' + mandatoryFields[i], 'This field is required.');
         isValid = false;
       }
     }
@@ -61,6 +72,10 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   },
 
   actions: {
+    saveContentsBody(contents) {
+      this.set('model.body', contents);
+    },
+
     removeAttachment() {
       this.setProperties({
         doneUploading: false,

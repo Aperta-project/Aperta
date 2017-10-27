@@ -117,6 +117,7 @@ module TahiStandardTasks
       @paper = @reviewer_report.paper
       @journal = @paper.journal
       @letter_template = @journal.letter_templates.find_by(ident: letter_template_ident)
+      @invitation = @reviewer_report.invitation
       begin
         @letter_template.render(ReviewerReportScenario.new(@reviewer_report), check_blanks: true)
         @subject = @letter_template.subject

@@ -10,7 +10,7 @@ class SendbacksContext < TemplateContext
   context :journal, source: 'object.paper.journal'
   context :paper,   as: :manuscript,       source: 'object'
   context :user,    as: :author,           source: 'object.paper.creator'
-  context :answer,  as: :sendback_reasons, many: :true
+  context :answer,  many: :sendback_reasons
 
   def intro
     task.answer_for('tech-check-email--email-intro').value

@@ -11,6 +11,6 @@
 } %>
 
 <%= render partial: 'email/button', locals: {
-  href: voucher_invitation_url({ id: @invitation.token }).gsub('_', '-').gsub('api/', ''),
+  href: client_voucher_invitation_url(@invitation),
   text: 'Decline'
 } %>

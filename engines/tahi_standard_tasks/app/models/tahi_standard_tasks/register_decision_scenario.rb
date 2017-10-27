@@ -1,7 +1,7 @@
 module TahiStandardTasks
   class RegisterDecisionScenario < TemplateContext
     context :journal
-    context :paper,   as: :manuscript, source: "object"
+    context :paper, as: :manuscript, source: 'object'
     context :reviewer_report, many: :reviews
 
     def reviews

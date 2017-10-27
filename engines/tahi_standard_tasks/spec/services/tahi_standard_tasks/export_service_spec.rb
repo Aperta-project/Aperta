@@ -49,14 +49,6 @@ describe TahiStandardTasks::ExportService do
         end
       end
     end
-
-    context "the destination is em or preprint" do
-      it "uploads to the router" do
-        export_delivery.destination = "em"
-        expect_any_instance_of(RouterUploaderService).to receive(:upload).and_return(nil)
-        service.make_delivery!
-      end
-    end
   end
 
   describe "#upload_to_ftp" do

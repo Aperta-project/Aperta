@@ -97,8 +97,8 @@ class SubmissionReviewOverlay(AuthenticatedPage):
 
     card_metadata = self._gets(self._metadata)
     expected_values = {'Preprint'   : ["Would you like to post this paper as a preprint?",
-                                       "Yes -- I want to post this paper to the preprint server.",
-                                       "No -- I don't want to post to preprint."],
+                                       "Yes, I want to post a preprint.",
+                                       "No, I don't want to post a preprint."],
                        'Title'      : db_title,
                        'Author'     : db_authors_for_assertion[0],
                        'Co-Authors' : db_authors_for_assertion,
@@ -113,7 +113,7 @@ class SubmissionReviewOverlay(AuthenticatedPage):
 
     # Preprint line#2
     assert pp_posting_answer in {1,2}, pp_posting_answer
-    preprint_text = card_metadata[0].find_element_by_tag_name('mark')
+    preprint_text = card_metadata[0].find_element_by_tag_name('dd')
     expected_text = expected_values["Preprint"][pp_posting_answer]
     assert preprint_text.text.strip() == expected_text.strip()
 
@@ -127,7 +127,7 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     author_text = card_metadata[2].find_element_by_css_selector('td>p>span')
     expected_text = expected_values["Author"]
     # affiliations? according APERTA-10071, it should be  author name, Affiliation(s)
-    assert author_text.text.strip() in expected_text.strip()
+    assert self.normalize_spaces(author_text.text) in self.normalize_spaces(expected_text)
     self.validate_application_body_text(author_text)
 
     # Co-Author (list)
@@ -136,7 +136,7 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     # affiliations? according APERTA-10071, it should be  Author Name, Affiliation Name
     # Lauren said it's ok to have just names, but we have to double-check after PO acceptance
     for i in range(len(coauthors)):
-      assert coauthors[i].text.strip() in expected_coauthor_list[i].strip()
+      assert self.normalize_spaces(coauthors[i].text) == self.normalize_spaces(expected_coauthor_list[i])
       self.validate_application_body_text(coauthors[i])
 
     # Abstract
@@ -215,10 +215,10 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     for db_author in db_authors:
       logging.debug('Appending author {0} to the list db_authors_for_assertions'.format(db_author[0]))
       db_authors_for_assertion.append(
-              ('' if db_author[0]==None else db_author[0]+" ")+          # first name
-              ('' if db_author[1]==None else db_author[1]+" ")+          # middle name
-              ('' if db_author[2]==None else db_author[2]+" ") +", "+    # last name
-              ('' if db_author[3]==None else db_author[3]))              # affiliation
+              ('' if db_author[0]==None else db_author[0].strip()+" ")+          # first name
+              ('' if db_author[1]==None else db_author[1].strip()+" ")+          # middle name
+              ('' if db_author[2]==None else db_author[2].strip()) +", "+    # last name
+              ('' if db_author[3]==None else db_author[3].strip()))              # affiliation
 
     # check value selected in the 'Preprint Posting" card : 1(Yes) or 2 (No)
     # read card data from the DB

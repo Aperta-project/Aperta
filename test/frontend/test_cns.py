@@ -60,7 +60,7 @@ class ApertaCNSTest(CommonTest):
       My Submissions Welcome Text, button, info text and manuscript display
       Modals: View Invites and Create New Submission and Preprint Posting
     """
-    logging.info('CNSTest::validate_core_create_to_submit_wth_preprint_overlay')
+    logging.info('CNSTest::validate_core_create_to_submit_with_preprint_overlay')
     current_path = os.getcwd()
     logging.info(current_path)
     user_type = random.choice(users)
@@ -82,7 +82,7 @@ class ApertaCNSTest(CommonTest):
     """
     test_cns: Validate review submission overlay
     """
-    logging.info('CNSTest::validate_review_submission_overlay')
+    logging.info('CNSTest::validate_core_review_submission_overlay')
     author = random.choice(users)
     logging.info('Running test_validate_component_styles')
     logging.info('Logging in as {0}'.format(author))
@@ -91,22 +91,22 @@ class ApertaCNSTest(CommonTest):
     # dashboard_page.page_ready()
     # create a new manuscript
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Yeti', type_='No Author Tasks', random_bit=True, format_='word')
-    # self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True, format_='pdf')
+    #self.create_article(journal='PLOS Yeti', type_='No Author Tasks', random_bit=True, format_='word')
+    self.create_article(title='cns_review_submission_overlay', journal='PLOS Wombat',
+                        type_='Preprint Eligible', random_bit=True)
     ms_page = ManuscriptViewerPage(self.getDriver())
     ms_page.page_ready_post_create()
     # get doi
     short_doi = ms_page.get_paper_short_doi_from_url()
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     # open to check style
-    ms_page.complete_task('Title And Abstract')
     review_before_submission = ms_page.is_review_before_submission()
     if review_before_submission:
       ms_page.complete_task("Preprint Posting")
-    # ms_page.click_task('Upload Manuscript')
+    ms_page.complete_task('Title And Abstract')
+    ms_page.complete_task('Upload Manuscript')
     ms_page._wait_for_element(ms_page._get(ms_page._submit_button), 1)
     submit_button = ms_page._get(ms_page._submit_button)
-
 
     if review_before_submission:
       logging.info("Validating Review Submission overlay")

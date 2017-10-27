@@ -818,12 +818,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
       """
       A method that will determine for mmt if the pre-print posting overlay should be shown as part of the
       create new manuscript sequence. Tests for Preprint feature flag enablement for system, preprint checkbox
-      selection for mmt, and finally presence of Preprint Posting card in mmt. If all three are found, return
-      True, else False
-      :param journal: The name of the journal containing the mmt
-      :type journal: str
-      :param mmt: The name of the mmt
-      :type mmt: str
+      selection for mmt, and finally presence of Preprint Posting card in the manuscript. If all three are found,
+      return True, else False
       :return: True if preprint overlay should be shown in create sequence, otherwise False
       :type return: bool
       """
@@ -841,9 +837,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
                                               #', p.preprint_opt_out '
                                               'FROM papers p, journals j, manuscript_manager_templates mmt '
                                               'WHERE p.journal_id = j.id '
+                                              'AND j.name = %s '
                                               'AND mmt.journal_id = j.id '
                                               'AND mmt.paper_type = p.paper_type '
-                                              'AND p.short_doi =%s;', (short_doi,))[0]
+                                              'AND p.short_doi =%s;', ('PLOS Wombat',short_doi))[0]
 
       if not pp_eligible_mmt:
         return False

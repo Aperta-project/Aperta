@@ -1,4 +1,4 @@
-class RouterPublishStatusWorker
+class RouterPostStatusWorker
   include Sidekiq::Worker
 
   # retry once per hour (10 days total), then send to dead job queue

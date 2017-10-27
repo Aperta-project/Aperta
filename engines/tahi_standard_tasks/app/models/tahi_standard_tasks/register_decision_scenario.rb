@@ -1,8 +1,12 @@
 module TahiStandardTasks
-  class RegisterDecisionScenario < PaperScenario
+  class RegisterDecisionScenario < TemplateContext
+    context :journal
+    context :paper,   as: :manuscript, source: "@object"
+    context :reviews, many: true
+
     def reviews
-      return unless manuscript_object.draft_decision
-      @reviews ||= manuscript_object.draft_decision.reviewer_reports.submitted.map do |rr|
+      return unless @object.draft_decision
+      @reviews ||= @object.draft_decision.reviewer_reports.submitted.map do |rr|
         ReviewerReportContext.new(rr)
       end
       reviews_with_num, reviews_without_num = @reviews.partition(&:reviewer_number)

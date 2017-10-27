@@ -11,6 +11,24 @@ class TemplateContext < Liquid::Drop
     ]
   end
 
+  def self.context(context_type, options = {})
+    method_name = options[:as] || context_type
+    return if respond_to?(method_name)
+
+    context_class_name = "#{context_type}_context".camelize
+    source_model = options[:source] || "@object.#{method_name}"
+
+    if options[:many]
+      class_eval "def #{method_name}
+        #{source_model}.map { |model| #{context_class_name}.new(model) }
+      end"
+    else
+      class_eval "def #{method_name}
+        #{context_class_name}.new(#{source_model})
+      end"
+    end
+  end
+
   def self.merge_fields
     MergeFieldBuilder.merge_fields(self)
   end

@@ -1,19 +1,6 @@
-class ReviewerReportScenario < PaperScenario
-  def review
-    ReviewerReportContext.new(review_object)
-  end
-
-  def reviewer
-    UserContext.new(review_object.user)
-  end
-
-  private
-
-  def review_object
-    @object
-  end
-
-  def manuscript_object
-    review_object.paper
-  end
+class ReviewerReportScenario < TemplateContext
+  context :journal,                          source: "@object.paper.journal"
+  context :paper,           as: :manuscript, source: '@object.paper'
+  context :reviewer_report, as: :review,     source: "@object"
+  context :user,            as: :reviewer,   source: "@object.user"
 end

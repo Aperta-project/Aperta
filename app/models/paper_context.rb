@@ -2,22 +2,11 @@ class PaperContext < TemplateContext
   include UrlBuilder
 
   whitelist :title, :abstract, :paper_type
-
-  def academic_editors
-    @object.academic_editors.map { |ae| UserContext.new(ae) }
-  end
-
-  def handling_editors
-    @object.handling_editors.map { |he| UserContext.new(he) }
-  end
-
-  def authors
-    @object.authors.map { |a| AuthorContext.new(a) }
-  end
-
-  def corresponding_authors
-    @object.corresponding_authors.map { |ca| AuthorContext.new(ca) }
-  end
+  context :user,   as: :academic_editors, many: true
+  context :user,   as: :handling_editors, many: true
+  context :author, as: :authors, many: true
+  context :author, as: :corresponding_authors, many: true
+  context :user,   as: :editor
 
   def editor
     return if @object.handling_editors.empty?

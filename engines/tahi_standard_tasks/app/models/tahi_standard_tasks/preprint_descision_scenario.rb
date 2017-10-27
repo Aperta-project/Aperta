@@ -1,4 +1,6 @@
 module TahiStandardTasks
-  class PreprintDecisionScenario < PaperScenario
+  class PreprintDecisionScenario < TemplateContext
+    context :journal
+    context :paper, as: :manuscript, source: '@object'
   end
 end

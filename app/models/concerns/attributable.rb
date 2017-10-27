@@ -7,9 +7,10 @@ module Attributable
   extend ActiveSupport::Concern
 
   module ClassMethods
-    def has_attributes(relation_name, types:, inverse_of:, class_name:)
+    # rubocop:disable Metrics/MethodLength
+    def has_attributes(relation_name, class_name: nil, types:, inverse_of:)
       has_many relation_name, dependent: :destroy, inverse_of: inverse_of
-
+      class_name ||= relation_name.to_s.singularize.camelize.constantize
       types.each do |type, names|
         names.each do |name|
           getter = "#{name}_attribute".to_sym

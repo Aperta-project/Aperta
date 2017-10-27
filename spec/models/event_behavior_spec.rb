@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 describe EventBehavior do
-  describe '' do
-    subject(:event_behavior) { create(:event_behavior) }
+  context 'when the action is send_email' do
+    subject(:event_behavior) { build(:event_behavior, action: 'send_email') }
 
-    it 'should be' do
-      expect(event_behavior).to be
+    it 'should fail validation unless a letter_template is set' do
+      expect(subject).not_to be_valid
     end
   end
 end

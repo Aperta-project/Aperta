@@ -6,6 +6,10 @@ class EventBehavior < ActiveRecord::Base
   validates :action, inclusion: { in: BehaviorAction.action_names.map(&:to_s) }
   validates :event_name, inclusion: { in: %w[paper_submitted] }
 
+  BehaviorAction.mk_validators.each do |klass|
+    validates_with klass
+  end
+
   belongs_to :journal
 
   has_attributes :event_behavior_attributes,
@@ -14,7 +18,7 @@ class EventBehavior < ActiveRecord::Base
                  types: {
                    boolean: %w[boolean_param],
                    json: %w[json_param],
-                   string: %w[string_param]
+                   string: %w[string_param letter_template]
                  }
 
   def call(user:, paper:, task:)

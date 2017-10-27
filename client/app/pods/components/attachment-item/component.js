@@ -43,7 +43,7 @@ export default Ember.Component.extend({
     return `There was an error while processing ${this.get('attachment.filename')}. Please try again
     or contact Aperta staff.`;
   }),
-
+  
   init() {
     this._super(...arguments);
     Ember.assert('Please provide filePath property', this.get('filePath'));
@@ -101,6 +101,7 @@ export default Ember.Component.extend({
                                   this.get('attachment'));
       }
       this.set('fileUpload', null);
+      // debugger;
     }
   }
 });

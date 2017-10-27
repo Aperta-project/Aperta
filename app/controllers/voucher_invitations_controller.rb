@@ -6,11 +6,7 @@ class VoucherInvitationsController < ApplicationController
 
   def show
     return unless @invitation
-    if @invitation.invited?
-      render json: @invitation, root: 'voucher-invitation', serializer: ::VoucherInvitationsSerializer
-    else
-      render nothing: true, status: :not_found
-    end
+    render json: @invitation, root: 'voucher-invitation', serializer: ::VoucherInvitationsSerializer
   end
 
   def update

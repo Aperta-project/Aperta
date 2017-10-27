@@ -7,8 +7,12 @@ export default Ember.Route.extend({
   setupController(controller, model) {
     this._super(...arguments);
 
-    model.setDeclined();
-    model.set('pendingFeedback', true);
+    if (model.get('invited')) {
+      model.setDeclined();
+      model.set('pendingFeedback', true);
+    } else if (model.get('declined') || model.get('rescinded')) {
+      controller.set('inactive', true);
+    }
 
     controller.set('invitations', [model]);
   },

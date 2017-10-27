@@ -6,33 +6,11 @@ describe VoucherInvitationsController do
   let(:accepted_invitation) { FactoryGirl.create :invitation, :accepted }
 
   describe '#show' do
-    context 'for `invited` invitations' do
-      subject do
-        get :show, format: :json, id: invited_invitation.token
-      end
-      it 'should return 200' do
-        expect(subject).to have_http_status(200)
-      end
+    subject do
+      get :show, format: :json, id: invited_invitation.token
     end
-
-    context 'for `declined` invitations' do
-      subject do
-        get :show, format: :json, id: declined_invitation.token
-      end
-
-      it 'should return 404' do
-        expect(subject).to have_http_status(404)
-      end
-    end
-
-    context 'for `accepted` invitations' do
-      subject do
-        get :show, format: :json, id: accepted_invitation.token
-      end
-
-      it 'should return 404' do
-        expect(subject).to have_http_status(404)
-      end
+    it 'should return 200' do
+      expect(subject).to have_http_status(200)
     end
   end
 

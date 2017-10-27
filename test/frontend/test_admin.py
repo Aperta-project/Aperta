@@ -43,7 +43,7 @@ class ApertaAdminTest(CommonTest):
     """
     logging.info('Test Admin::validate_components_styles')
     logging.info('Validating Admin page components and styles')
-    # Temporary excluding staff admin role unil APERTA-11756 gets resolved
+    # Temporary excluding staff admin role until APERTA-11756 gets resolved
     # user_type = random.choice(admin_users)
     user_type = super_admin_login
     logging.info('Logging in as user: {0}'.format(user_type))

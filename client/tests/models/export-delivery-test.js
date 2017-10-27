@@ -12,7 +12,7 @@ var state_expectations = [
   {state: 'pending', failed: false, succeeded: false, incomplete: true, humanReadableState: 'is pending'},
   {state: 'in_progress', failed: false, succeeded: false, incomplete: true, humanReadableState: 'is in progress'},
   {state: 'delivered', failed: false, succeeded: true, incomplete: false, humanReadableState: 'succeeded'},
-  {state: 'preprint_published', failed: false, succeeded: true, incomplete: false, humanReadableState: 'succeeded'},
+  {state: 'preprint_postedd', failed: false, succeeded: true, incomplete: false, humanReadableState: 'succeeded'},
   {state: 'failed', failed: true, succeeded: false, incomplete: false, humanReadableState: 'has failed'},
 ];
 
@@ -21,7 +21,7 @@ state_expectations.forEach((state_expectation)=>{
     var export_delivery = make('export-delivery', { state: state_expectation.state });
     assert.equal(export_delivery.get('succeeded'), state_expectation.succeeded, 'succeeded flag is correct');
     assert.equal(export_delivery.get('incomplete'), state_expectation.incomplete, 'incomplete flag is correct');
-    assert.equal(export_delivery.get('preprint_published'), state_expectation.published, 'published flag is correct');
+    assert.equal(export_delivery.get('preprint_posted'), state_expectation.published, 'published flag is correct');
     assert.equal(export_delivery.get('failed'), state_expectation.failed, 'failed flag is correct');
     assert.equal(export_delivery.get('humanReadableState'), state_expectation.humanReadableState,
       'human-readable state is correct');

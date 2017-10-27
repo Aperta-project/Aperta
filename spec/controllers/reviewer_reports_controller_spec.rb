@@ -74,6 +74,10 @@ describe ReviewerReportsController do
         allow(user).to receive(:can?)
           .with(:view, reviewer_report.task)
           .and_return true
+
+        allow(user).to receive(:can?)
+          .with(:edit_due_date, reviewer_report.task)
+          .and_return false
       end
 
       it 'returns a 204' do

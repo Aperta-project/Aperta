@@ -16,7 +16,7 @@ class TemplateContext < Liquid::Drop
     return if respond_to?(method_name)
 
     context_class_name = "#{context_type}_context".camelize
-    source_model = options[:source] || "@object.#{method_name}"
+    source_model = options[:source] || "object.#{method_name}"
 
     if options[:many]
       class_eval "def #{method_name}
@@ -35,11 +35,15 @@ class TemplateContext < Liquid::Drop
 
   def self.whitelist(*args)
     args.each do |method|
-      delegate method, to: :@object
+      delegate method, to: :object
     end
   end
 
   def initialize(object)
     @object = object
   end
+
+  private
+
+  attr_reader :object
 end

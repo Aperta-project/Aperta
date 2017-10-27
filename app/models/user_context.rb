@@ -8,6 +8,6 @@ class UserContext < TemplateContext
   private
 
   def affiliations
-    @object.affiliations
+    object.affiliations
   end
 end

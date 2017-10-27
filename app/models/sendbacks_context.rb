@@ -7,10 +7,10 @@ class SendbacksContext < TemplateContext
      { name: :sendback_reasons, context: AnswerContext, many: true }]
   end
 
-  context :journal, source: '@object.paper.journal'
-  context :paper,   as: :manuscript,       source: '@object'
-  context :user,    as: :author,           source: '@object.paper.creator'
-  context :answer,  as: :sendback_reasons, source: "@object.sendback_reasons", many: :true
+  context :journal, source: 'object.paper.journal'
+  context :paper,   as: :manuscript,       source: 'object'
+  context :user,    as: :author,           source: 'object.paper.creator'
+  context :answer,  as: :sendback_reasons, many: :true
 
   def intro
     task.answer_for('tech-check-email--email-intro').value
@@ -44,6 +44,6 @@ class SendbacksContext < TemplateContext
   private
 
   def task
-    @object
+    object
   end
 end

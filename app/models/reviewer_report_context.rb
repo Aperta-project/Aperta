@@ -2,11 +2,11 @@ class ReviewerReportContext < TemplateContext
   include ActionView::Helpers::SanitizeHelper
 
   whitelist :state, :revision, :status, :datetime, :invitation_accepted?, :due_at
-  context :user,   as: :reviewer, source: "@object.user"
+  context :user,   as: :reviewer, source: "object.user"
   context :answer, as: :answers,  many: :true
 
   def reviewer_number
-    @object.task.reviewer_number
+    object.task.reviewer_number
   end
 
   def reviewer_name
@@ -14,11 +14,11 @@ class ReviewerReportContext < TemplateContext
   end
 
   def due_at
-    @object.due_at.to_s(:due_with_hours)
+    object.due_at.to_s(:due_with_hours)
   end
 
   def submitted_at
-    @object.submitted_at
+    object.submitted_at
   end
 
   def rendered_answer_idents

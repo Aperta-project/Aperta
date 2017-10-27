@@ -9,11 +9,11 @@ class PaperContext < TemplateContext
   context :user,   as: :editor
 
   def editor
-    return if @object.handling_editors.empty?
-    UserContext.new(@object.handling_editors.first)
+    return if object.handling_editors.empty?
+    UserContext.new(object.handling_editors.first)
   end
 
   def url
-    url_for(:paper, id: @object.id).sub("api/", "")
+    url_for(:paper, id: object.id).sub("api/", "")
   end
 end

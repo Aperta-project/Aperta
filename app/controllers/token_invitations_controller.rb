@@ -1,8 +1,8 @@
 # Serves as the method for non-users to decline without having to sign in.
 class TokenInvitationsController < ApplicationController
   before_action :redirect_if_logged_in, except: :accept
-  before_action :redirect_unless_declined, except: [:show, :decline, :accept, :inactive]
-  before_action :redirect_if_inactive, only: [:show, :accept, :decline]
+  before_action :redirect_unless_declined, except: [:show, :accept]
+  before_action :redirect_if_inactive, only: [:show, :accept]
   before_action :ensure_user!, only: [:accept], unless: :current_user
 
   # rubocop:disable Style/AndOr, Metrics/LineLength
@@ -20,40 +20,6 @@ class TokenInvitationsController < ApplicationController
       flash[:notice] = thank_you_message
     end
     redirect_to "/papers/#{invitation.paper.to_param}"
-  end
-
-  def decline
-    redirect_to invitation_feedback_form_path(token)
-
-    invitation.decline!
-    Activity.invitation_declined!(invitation, user: nil)
-  end
-
-  def feedback_form
-    if invitation.feedback_given?
-      redirect_to invitation_thank_you_path(token) and return
-    end
-
-    assign_template_vars
-  end
-
-  def thank_you
-    assign_template_vars
-  end
-
-  def feedback
-    unless invitation.feedback_given?
-      invitation.update_attributes(
-        feedback_params
-      )
-    end
-
-    redirect_to invitation_thank_you_path(token)
-  end
-
-  def inactive
-    assign_template_vars
-    @email = @paper.journal.staff_email
   end
 
   private

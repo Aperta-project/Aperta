@@ -94,6 +94,9 @@ class WorkflowPage(AuthenticatedPage):
     self._cards = (By.CSS_SELECTOR, 'div.card')
     self._card_types = (By.CSS_SELECTOR, 'div.row label')
     self._div_buttons = (By.CSS_SELECTOR, 'div.overlay-action-buttons')
+    self._similarity_check_card = (By.XPATH, "//a[./span[contains(text(),'Similarity Check')]]")
+    #
+    self._mmt_staff_cards = (By.CSS_SELECTOR, '.staff-task-cards>label')
 
   # POM Actions
   def validate_initial_page_elements_styles(self):

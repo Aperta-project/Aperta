@@ -156,6 +156,7 @@ class AuthenticatedPage(StyledPage):
     self._revise_task = None
     self._supporting_info_task = None
     self._upload_manu_task = None
+    self._similarity_check_card = None
     # Global Overlay Locators
     self._overlay_header_title = (By.CLASS_NAME, 'overlay-header-title')
     self._overlay_header_close = (By.CLASS_NAME, 'overlay-close')
@@ -492,12 +493,8 @@ class AuthenticatedPage(StyledPage):
   def check_for_flash_error(self):
     """
     Check that any process (submit, save, send, etc) did not trigger a flash error
-    :return: void function
+    :return: False if no error message, text of error if found.
     """
-    return # see comment below.  If we decide to do more than log, then we need
-           # spend time on the self._get(self._flash_error_msg) call.  In many of the
-           # places where this is called, self._get(self._flash_error_msg) just throws
-           # ElementNotFound after much more than 3 seconds
     error_msg = ''
     self.set_timeout(3)
     try:
@@ -505,13 +502,9 @@ class AuthenticatedPage(StyledPage):
       error_msg = self._get(self._flash_error_msg).text.strip(u'\xd7')
     except ElementDoesNotExistAssertionError:
       self.restore_timeout()
-
-    if error_msg:
-      # For the time being, capturing the error message and continuing rather than failing
-      #   and stopping the test is of greater importance. At some point we may want to enforce
-      #   this failure, so leaving it in place.
-      # raise ElementExistsAssertionError('Error Message found: {0}'.format(error_msg_string))
-      logging.error('Error Message found: {0}'.format(error_msg))
+      return False
+    self.restore_timeout()
+    return error_msg
 
   def check_for_flash_success(self, timeout=15):
     """
@@ -560,6 +553,8 @@ class AuthenticatedPage(StyledPage):
       short_doi = self.get_current_url().split('/')[-1]
       count += 1
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
+    short_doi = self.get_current_url().split('/')[-2] \
+      if short_doi in {'workflow','submit'} else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     return short_doi
 
@@ -597,6 +592,37 @@ class AuthenticatedPage(StyledPage):
                                     'WHERE short_doi =%s;', (short_doi,))
     return submission_data
 
+  def get_sim_check_auto_settings(self, short_doi, from_admin_mmt = False):
+    """
+    A method to return the settings for automated sending report; Similarity Check task
+    via a query
+    :param from_admin_mmt: boolean, True: if we are searching from admin Manuscript Template view,
+    False if we are searching from manuscript workflow view; default is False
+    :param short_doi: papers.short_doi of the requested paper
+    :return: auto_settings (settings.string_value) from db, a string
+    """
+    if from_admin_mmt:
+      mmt_id = self.get_current_url().split('/')[-2]
+      logging.info("Manuscript Manager Template id: {0}".format(mmt_id))
+      mmt_id = int(mmt_id)
+    else:
+      mmt_id = PgSQL().query('SELECT manuscript_manager_templates.id '
+                             'FROM papers, journals, manuscript_manager_templates '
+                             'WHERE papers.journal_id = journals.id '
+                             'AND journals.id = manuscript_manager_templates.journal_id '
+                             'AND manuscript_manager_templates.paper_type = papers.paper_type '
+                             'AND short_doi= %s;', (short_doi,))[0][0]
+
+    auto_setting = PgSQL().query('SELECT settings.string_value '
+                                 'FROM task_templates, phase_templates, settings '
+                                 'WHERE phase_templates.manuscript_manager_template_id = %s '
+                                 'AND phase_templates.id=task_templates.phase_template_id '
+                                 'AND settings.owner_id=task_templates.id '
+                                 'AND task_templates.title= %s '
+                                 'AND settings.NAME = %s;', (mmt_id, 'Similarity Check',
+                                                             'ithenticate_automation'))[0][0]
+    return auto_setting
+
   def click_card(self, cardname, title=''):
     """
     Passed a card name, opens the relevant card
@@ -605,7 +631,8 @@ class AuthenticatedPage(StyledPage):
       financial_disclosure, new_taxon, reporting_guidelines, reviewer_candidates, revise_task,
       supporting_info, upload_manuscript, assign_admin, assign_team, editor_discussion,
       final_tech_check, initial_decision, invite_academic_editor, invite_reviewers,
-      production_metadata, register_decision, reviewer_report, revision_tech_check or send_to_apex
+      production_metadata, register_decision, reviewer_report, revision_tech_check
+      similarity check or send_to_apex
     :param title: String with card title to rule out when there are cards with the same name
     NOTE: this does not cover the ad hoc card
     NOTE also that the locators for these are specifically defined within the scope of the
@@ -699,6 +726,8 @@ class AuthenticatedPage(StyledPage):
       card_title = self._get(self._send_to_apex_card)
     elif cardname.lower() == 'title_and_abstract':
       card_title = self._get(self._title_abstract_card)
+    elif cardname.lower() == 'similarity_check':
+      card_title = self._get(self._similarity_check_card)
     else:
       logging.info('Unknown Card')
       self.restore_timeout()

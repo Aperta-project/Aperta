@@ -164,7 +164,7 @@ class StyledPage(PlosPage):
     :param paragraph: paragraph to validate
     :return: Void Function
     """
-    assert APPLICATION_TYPEFACE in paragraph.value_of_css_property('font-family').lower(), \
+    assert APPLICATION_TYPEFACE in paragraph.value_of_css_property('font-family'), \
         paragraph.value_of_css_property('font-family')
     assert paragraph.value_of_css_property('font-size') == '14px', \
         paragraph.value_of_css_property('font-size')
@@ -742,7 +742,7 @@ class StyledPage(PlosPage):
         link.value_of_css_property('font-size')
     assert link.value_of_css_property('line-height') == '20px', \
         link.value_of_css_property('line-height')
-    assert link.value_of_css_property('background-color') == 'transparent', \
+    assert link.value_of_css_property('background-color') in ('transparent', TRANSPARENT), \
         link.value_of_css_property('background-color')
     assert link.value_of_css_property('color') == APERTA_BLUE, link.value_of_css_property('color')
     assert link.value_of_css_property('font-weight') == '400', \
@@ -826,7 +826,7 @@ class StyledPage(PlosPage):
     assert delete.value_of_css_property('text-align') == 'center', \
         delete.value_of_css_property('text-align')
     assert delete.value_of_css_property('background-color') == WHITE, \
-        delete.value_of_css_property('vertical-align')
+        delete.value_of_css_property('background-color')
 
   #  List Styles ==============================
   @staticmethod

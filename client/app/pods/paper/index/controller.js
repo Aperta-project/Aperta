@@ -63,6 +63,12 @@ export default Controller.extend(PaperBase, Discussions, {
 
   showPaperSubmitOverlay: false,
 
+  paperChanged: Ember.observer('paper', function() {
+    // was hoping this will be triggered when the
+    // paper model is updated but it doesn't work yet
+    this.set('paper.processing', false);
+  }),
+
   actions: {
     toggleSubmissionProcess() {
       this.toggleProperty('showSubmissionProcess');

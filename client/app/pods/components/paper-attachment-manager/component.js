@@ -93,11 +93,17 @@ export default Ember.Component.extend({
       let attachmentBinding =
         attachmentInfo[this.get('attachmentType')].attachmentBinding;
       let manuscript = this.get(attachmentBinding);
+      this.set('paper.processing', true);
       manuscript.setProperties({
         task: this.get('task'),
         s3Url: s3Url
       });
       manuscript.save();
+
+      //this works but not when there's a large file and not a best practice generally :(
+      Ember.run.later(this, ()=> {
+        this.set('paper.processing', false);
+      }, 5000);
     }
   }
 });

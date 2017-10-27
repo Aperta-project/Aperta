@@ -25,9 +25,6 @@ module Tahi
     config.autoload_paths += %W(#{config.root}/app/workers)
     config.autoload_paths += %W(#{config.root}/app/subscribers)
     config.autoload_paths += %W[#{config.root}/app/behavior_actions]
-    # This holds a registry that is loaded in an initializer, so we don't want
-    # to reload it
-    config.autoload_once_paths += %W[#{config.root}/app/behavior_actions/behavior_action]
     config.eager_load_paths += %W[#{config.root}/lib/custom_card]
 
     config.s3_bucket = ENV.fetch('S3_BUCKET', :not_set)

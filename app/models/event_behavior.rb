@@ -13,6 +13,10 @@ class EventBehavior < ActiveRecord::Base
 
   belongs_to :journal
 
+  def self.action_class(klass) # rubocop:disable Style/TrivialAccessors
+    @action_class = klass
+  end
+
   has_attributes :event_behavior_attributes,
                  inverse_of: :event_behavior,
                  types: {
@@ -22,7 +26,7 @@ class EventBehavior < ActiveRecord::Base
                  }
 
   def call(user:, paper:, task:)
-    BehaviorAction.find(action).new.call(parameters, event_data)
+    @action_klass.new.call(parameters, event_data)
   end
 
   def parameters

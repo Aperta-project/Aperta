@@ -55,16 +55,14 @@ moduleForComponent(
       });
 
       // Mock out pusher
-      this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+      this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
 
       Factory.createPermission('registerDecisionTask', 1, ['edit', 'view']);
 
       this.set('task', task);
 
-      // mockCreate('nested-question-answer'); does not work, so we cannot use factory guy here.
-      // TODO: revisit when factory guy update
-      $.mockjax({url: '/api/nested_questions/3/answers', type: 'PUT', status: 204, responseText: '[]'});
-      $.mockjax({url: '/api/nested_questions/3/answers', type: 'POST', status: 204, responseText: '[]'});
+      $.mockjax({url: /api\/nested_questions\/3\/answers/, type: 'PUT', status: 204, responseText: '[]'});
+      $.mockjax({url: '/api/nested_questions/3/answers', type: 'POST', status: 201, responseText: {nested_question_answer: {id: 1}}});
       $.mockjax({url: /\/api\/decisions\/[0-9]+/, type: 'PUT', status: 204, responseText: '[]'});
 
       this.selectDecision = function(decision) {

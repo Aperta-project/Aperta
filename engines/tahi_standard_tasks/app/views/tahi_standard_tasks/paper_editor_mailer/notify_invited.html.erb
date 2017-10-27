@@ -6,8 +6,13 @@
 </div>
 
 <%= render partial: 'email/button', locals: {
-  href: client_dashboard_url({ invitation_token: @invitation.token }),
-  text: 'View Invitation'
+  href: invitation_accept_url({ token: @invitation.token }),
+  text: 'Accept Invitation'
+} %>
+
+<%= render partial: 'email/button', locals: {
+  href: confirm_decline_invitation_url({ token: @invitation.token }),
+  text: 'Decline'
 } %>
 
 <%= render partial: 'email/journal_signature', locals: { journal: @paper.journal } %>

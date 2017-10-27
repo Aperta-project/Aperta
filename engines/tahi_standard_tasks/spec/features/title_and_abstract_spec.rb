@@ -20,6 +20,7 @@ feature 'Title And Abstract Task', js: true do
 
       within_editor_iframe(editor_name) do
         el = page.find('body')
+        el.click
         el.send_keys("\nc")
         expect(el).to have_content('abc')
       end
@@ -31,6 +32,7 @@ feature 'Title And Abstract Task', js: true do
 
       within_editor_iframe(editor_name) do
         el = page.find('body')
+        el.click
         el.send_keys("\nc")
         expect(el).to have_content("ab\nc")
       end

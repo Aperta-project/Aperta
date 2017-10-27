@@ -7,6 +7,7 @@ let currentState = function(stateName) {
 
 export default DS.Model.extend({
   abstract: DS.attr('string'),
+  actor: DS.belongsTo('user', { inverse: 'invitations' }),
   attachments: DS.hasMany('invitation-attachment'),
   body: DS.attr('string'),
   createdAt: DS.attr('date'),
@@ -18,12 +19,15 @@ export default DS.Model.extend({
   inviteeRole: DS.attr('string'),
   position: DS.attr('number'),
   primary: DS.belongsTo('invitation', { inverse: 'alternates', async: false }),
-  alternates: DS.hasMany('invitation'),
+  alternates: DS.hasMany('invitation', { inverse: 'primary' }),
   reviewerSuggestions: DS.attr('string'),
   state: DS.attr('string'),
   task: DS.belongsTo('task', { polymorphic: true }),
   decision: DS.belongsTo('decision', {async: false}),
   title: DS.attr('string'),
+  htmlSafeTitle: Ember.computed('title', function () {
+    return Ember.String.htmlSafe(this.get('title'));
+  }),
   reviewerReport: DS.belongsTo('reviewer_report'),
   paperShortDoi: DS.attr('string'),
   journalName: DS.attr('string'),
@@ -62,6 +66,8 @@ export default DS.Model.extend({
   ),
 
   isInvitedOrAccepted: Ember.computed.or('invited', 'accepted'),
+
+  isAcceptedByInvitee: Ember.computed.equal('actor.id', 'invitee.id'),
 
   needsUserUpdate: Ember.computed.or('invited', 'pendingFeedback'),
 
@@ -117,5 +123,14 @@ export default DS.Model.extend({
     this.set('declineReason', null);
     this.set('reviewerSuggestions', null);
     this.set('pendingFeedback', false);
+  },
+
+  accept(data={}) {
+    return this.get('restless')
+    .put(`/api/invitations/${this.get('id')}/accept`, data)
+    .then((data) => {
+      this.store.pushPayload(data);
+      return this;
+    });
   }
 });

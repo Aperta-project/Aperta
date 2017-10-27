@@ -2,11 +2,16 @@ import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import { moduleForComponent, test } from 'ember-qunit';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 
 moduleForComponent('invitation-detail-row', 'Integration | Component | invitation detail row', {
   integration: true,
   beforeEach() {
     manualSetup(this.container);
+    var can = FakeCanService.create();
+    var task = make('task');
+    this.registry.register('service:can', can.allowPermission('manage_invitations', task).asService());
+    this.set('owner', task);
     this.set('update-date', new Date('January 01, 2016'));
     this.set('completed-date', new Date('March 01, 2016'));
     this.set('due-at'), new Date('February 25, 2017)');
@@ -15,7 +20,8 @@ moduleForComponent('invitation-detail-row', 'Integration | Component | invitatio
       declineReason: null,
       declined: false,
       email: 'jane@example.com',
-      invitee: { fullName: 'Jane McEdits' },
+      invitee: { fullName: 'Jane McEdits', id: 1},
+      actor: { fullName: 'Some Editor', id: 2},
       reviewerSuggestions: null,
       reviewerReport: this.get('reviewerReport'),
       state: 'pending',
@@ -27,6 +33,7 @@ moduleForComponent('invitation-detail-row', 'Integration | Component | invitatio
 
 let template = hbs`{{invitation-detail-row
                       invitation=invitation
+                      owner=owner
                       uiState='closed'}}`;
 
 test('displays invitation information if invitation.invited is true', function(assert){
@@ -92,6 +99,7 @@ test('displays invitation email when no invitee present', function(assert){
 
 let openTemplate = hbs`{{invitation-detail-row invitation=invitation
                                                currentRound=currentRound
+                                               owner=owner
                                                uiState=uiState}}`;
 
 test('the row is in the closed state, in the current round', function(assert) {
@@ -187,6 +195,77 @@ test('the row is in the show state, invitation is declined, and in current round
   assert.elementNotFound('.invitation-item-action-send');
 });
 
+test('the row is in the show state, invitation is invited, and in current round', function(assert) {
+  assert.expect(2);
+  const spy = sinon.spy();
+  this.setProperties({
+    'invitation.state': 'invited',
+    currentRound: true,
+    uiState: 'show',
+    'invitation.accept': spy
+  });
+
+  this.render(openTemplate);
+
+  assert.textPresent('.invitation-item-action', 'Accept invitation for reviewer', 'Shows Accept button');
+  this.$('.invitation-item-action-accept').click();
+
+  assert.spyCalled(spy, 'clicking on button invokes invitation.accept()');
+});
+
+test('the row is in the show state, invitation is invited, and in current round but invitee has no id', function(assert) {
+  this.setProperties({
+    'invitation.state': 'invited',
+    currentRound: true,
+    uiState: 'show',
+    'invitation.invitee': {}
+  });
+
+  this.render(openTemplate);
+
+  assert.elementNotFound('.invitation-item-action-accept', 'Does not show Accept button');
+});
+
+test('the row is in the show state, invitation is accepted, and in current round', function(assert) {
+  this.setProperties({
+    'invitation.state': 'accepted',
+    currentRound: true,
+    uiState: 'closed'
+  });
+
+  this.render(openTemplate);
+
+  assert.textPresent('.invitation-item-status', this.get('invitation.actor.fullName'), 'Shows actor name');
+});
+
+test('the row is in the show state, invitation is accepted, there is no actor, and in current round', function(assert) {
+  this.setProperties({
+    'invitation.state': 'accepted',
+    currentRound: true,
+    uiState: 'closed',
+    'invitation.actor': null
+  });
+
+  this.render(openTemplate);
+
+  assert.textNotPresent('.invitation-item-status', 'Accepted by', 'Does not show actor name');
+});
+
+test('the row is in the show state, invitation is invited, and in current round, but no permission', function(assert) {
+  this.setProperties({
+    'invitation.state': 'invited',
+    currentRound: true,
+    uiState: 'show'
+  });
+
+  this.registry.register('service:can', FakeCanService.create().asService());
+
+  this.render(openTemplate);
+
+  assert.elementNotFound('.invitation-item-action-accept', 'Does not show Accept button');
+  assert.elementNotFound('.invitation-item-action-rescind', 'Does not show Rescind button');
+});
+
 test('grouped invitations are disabled when their primary has been invited or accepted', function(assert) {
   this.set('invitation', make('invitation', {
     email: 'jane@example.com',
@@ -250,6 +329,7 @@ test('displays decline feedback when declined', function(assert){
   });
 
   const openTemplate = hbs`{{invitation-detail-row invitation=invitation
+                                                   owner=owner
                                                    uiState='show'}}`;
 
   this.render(openTemplate);
@@ -263,6 +343,7 @@ test('that dragging text does not trigger invite dragging when dragging is disab
   this.set('startedDragging', spy);
   this.set('invitationIsExpanded', true); // will disable dragging
   const openTemplate = hbs`{{invitation-detail-row invitation=invitation
+                                                   owner=owner
                                                    uiState='show'
                                                    invitationIsExpanded=invitationIsExpanded
                                                    startedDragging=(action startedDragging)}}`;

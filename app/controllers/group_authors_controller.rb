@@ -24,7 +24,7 @@ class GroupAuthorsController < ApplicationController
     requires_user_can :edit_authors, group_author.paper
     group_author.update!(group_author_params)
 
-    if current_user.can? :administer, group_author.paper.journal
+    if current_user.can? :manage_paper_authors, group_author.paper
       group_author.update_coauthor_state(author_coauthor_state, current_user.id)
     end
 

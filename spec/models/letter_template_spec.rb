@@ -12,19 +12,6 @@ describe LetterTemplate do
       end
     end
 
-    it 'requires #scenario to name a subclass of TemplateScenario' do
-      letter_template = LetterTemplate.new(scenario: "TahiStandardTasks::RegisterDecisionScenario")
-      letter_template.valid?
-      expect(letter_template.errors[:scenario]).to be_empty
-
-      ['Blah', 'TemplateScenario'].each do |value|
-        letter_template.scenario = value
-        letter_template.valid?
-        expect(letter_template).to_not be_valid
-        expect(letter_template.errors[:scenario]).to include('must name a subclass of TemplateScenario')
-      end
-    end
-
     it 'has valid liquid syntax in subject' do
       letter_template =
         FactoryGirl.build(:letter_template,
@@ -55,6 +42,18 @@ describe LetterTemplate do
         letter_template.valid?
         expect(letter_template.errors[attr_key]).to include('This field is required')
       end
+    end
+
+    it 'simplifies addresses containing leading friendly names' do
+      letter_template = LetterTemplate.new(cc: '"John Q. Public, the third" <jqp@example.com>, John Smith <smith@example.com>')
+      letter_template.valid?
+      expect(letter_template.cc).to eq('jqp@example.com,smith@example.com')
+    end
+
+    it 'disallows invalid email addresses' do
+      letter_template = LetterTemplate.new(bcc: 'invalid@c.')
+      letter_template.valid?
+      expect(letter_template.errors[:bcc]).to include("\"#{letter_template.bcc}\" is an invalid email address")
     end
   end
 

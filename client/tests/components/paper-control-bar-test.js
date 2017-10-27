@@ -98,3 +98,15 @@ test('can not view recent activity, no recent activity nav icon', function(asser
     assert.equal(this.$('#nav-recent-activity').length, 0);
   });
 });
+
+test('Toggling Collaborators from paper index does not throw an error', function(assert) {
+  const can = FakeCanService.create();
+  this.register('service:can', can.asService());
+
+  this.render(template);
+  return wait().then(() => {
+    assert.equal(this.$('#nav-collaborators').length, 1);
+    this.$('#nav-collaborators').click();
+    assert.ok(this.$('#nav-collaborators').click());
+  });
+});

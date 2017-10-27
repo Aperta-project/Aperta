@@ -2,14 +2,14 @@
 <card required-for-submission="false" workflow-display-only="false">
   <content content-type="display-children">
     <content content-type="display-children" child-tag="li" custom-class="question-list" custom-child-class="question" wrapper-tag="ol">
-      <content content-type="text">
+      <content content-type="description">
         <text>
           Authors should check the <a target="_blank" href="http://www.equator-network.org">EQUATOR Network</a> site for any reporting guidelines that apply to their study design, and ensure that any required Supporting Information (checklists, protocols, flowcharts, etc.) be included in the article submission.
         </text>
       </content>
     </content>
     <content content-type="display-children" custom-class="question-list">
-      <content content-type="text">
+      <content content-type="description">
         <text>Select all that apply</text>
       </content>
       <content content-type="display-children" custom-class="left-indent">

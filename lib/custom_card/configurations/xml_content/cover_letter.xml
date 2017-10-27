@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <card required-for-submission="true" workflow-display-only="false">
   <content content-type="display-children">
-    <content content-type="text">
+    <content content-type="description">
       <text>To be of most use to editors, we suggest your letter could address the following questions:</text>
     </content>
-    <content content-type="text">
+    <content content-type="description">
       <text>
         <ul>
           <li>What is the scientific question you are addressing?</li>

@@ -26,7 +26,7 @@ describe InvitationSerializer, serializer_test: true do
   end
 
   context 'without an invitee' do
-    subject(:invitation) { FactoryGirl.create :invitation, task: task, invitee: nil }
+    subject(:invitation) { FactoryGirl.create :invitation, task: task, invitee: nil, actor: nil }
 
     it 'serializes successfully' do
       expect(deserialized_content).to match(hash_including(users: []))

@@ -1,7 +1,7 @@
 <card required-for-submission="true" workflow-display-only="false">
   <content content-type="display-children">
     <content content-type="if" condition="pdfAllowed">
-      <content content-type="text">
+      <content content-type="description">
         <text>
             <p>
               You may upload a manuscript in either Microsoft Word (.docx or .doc) or PDF format.
@@ -19,7 +19,7 @@
             </p>
         </text>
       </content>
-      <content content-type="text">
+      <content content-type="description">
         <text>
             <span>
               You can upload a replacement manuscript file at any time before you
@@ -38,7 +38,7 @@
     </content>
     <content content-type="if" condition="needsSourcefile">
       <content content-type="display-children">
-        <content content-type="text">
+        <content content-type="description">
             <text>
                 <h4>Please Upload Your Source File</h4>
                 <span>Because you uploaded a PDF, you must also provide your source file (e.g. .tex, .docx) before marking this task as done.</span>

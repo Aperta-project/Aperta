@@ -41,18 +41,12 @@ class PaperUpdateWorker
     if job_response.completed?
       @epub_stream = Faraday.get(
         job_response.format_url(:epub)
-      ).body unless job_response.pdf?
-      sync!
+      ).body
+      body = TahiEpub::Zip.extract(stream: epub_stream, filename: 'body').force_encoding("UTF-8") rescue nil
+      @paper.update!(body: body, processing: false)
+      Notifier.notify(event: "paper:data_extracted", data: { record: job_response })
+      Notifier.notify(event: 'paper:updated', data: @paper.event_payload(action: 'updated'))
     end
-    Notifier.notify(event: "paper:data_extracted",
-                    data: { record: job_response })
   end
 
-  def sync!
-    # use transaction to wait until all work is done before firing commit events
-    paper.transaction do
-      PaperAttributesExtractor.new(epub_stream).sync!(paper)
-      paper.update!(processing: false)
-    end
-  end
 end

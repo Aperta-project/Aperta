@@ -57,6 +57,7 @@ python -m frontend.test_authors_task
 python -m frontend.test_bdd_create_to_submit
 python -m frontend.test_changes_for_author
 python -m frontend.test_cns
+python -m frontend.test_co_author_confirmation
 python -m frontend.test_cover_letter
 python -m frontend.test_dashboard
 python -m frontend.test_discussion_forum

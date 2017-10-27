@@ -5,137 +5,143 @@
       Aperta. <strong>Note: this will NOT send an email</strong></p>
   </div>
 </div>
+
+<p>
+  Fields marked with an <i class="correspondence-asterisk-field">*</i> are required.
+</p>
+
 <div class="row">
   <div class="col-sm-6 col-md-3">
-    <div class="inset-form-control required">
-      <div class="inset-form-control-text">
-        <label>Date sent</label>
-        {{error-message message=validationErrors.dateSent
-                        displayIcon=true
-                        displayText=false}}
-      </div>
+    <label class="correspondence-label">Date sent</label>
+    <div class="{{if validationErrors.dateSent "error"}}">
       {{date-picker name='correspondence-date-sent'
                     value=dateSent
                     date=dateSent
-                    class="correspondence-date-sent inset-form-control-input"
-                    placeholder="Select date"}}
+                    placeholder="Select date..."
+                    class="correspondence-date-sent correspondence-input"}}
     </div>
+    <span>
+      {{error-message message=validationErrors.dateSent
+                      class="correspondence-error"
+                      displayIcon=true
+                      displayText=true}}
+    </span>
   </div>
   <div class="col-sm-6 col-md-3">
-    <div class="inset-form-control required">
-      <div class="inset-form-control-text">
-        <label>Time sent</label>
-        {{error-message message=validationErrors.timeSent
-                        displayIcon=true
-                        displayText=false}}
-      </div>
-      {{time-picker class="timepicker inset-form-control-input correspondence-time-sent"
+    <label class="correspondence-label">Time sent</label>
+    <div class="{{if validationErrors.timeSent "error"}}">
+      {{time-picker class="correspondence-time-sent correspondence-input"
                     name='correspondence-time-sent'
-                    value=timeSent
-                    placeholder="Select time..."}}
+                    value=timeSent}}
     </div>
+    <span>
+      {{error-message message=validationErrors.timeSent
+                      class="correspondence-error"
+                      displayIcon=true
+                      displayText=true}}
+    </span>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
-    <div class="inset-form-control required">
-      <div class="inset-form-control-text">
-        <label>Description</label>
-        {{error-message message=validationErrors.description
-                        displayIcon=true
-                        displayText=false}}
-      </div>
+    <label class="correspondence-label">Description</label>
+    <div class="{{if validationErrors.description "error"}}">
       {{input type="text"
               name='correspondence-description'
               value=model.description
-              class="correspondence-description inset-form-control-input"
-              placeholder="Enter a brief description of the purpose of the correspondence..."}}
+              class="correspondence-description correspondence-input"}}
     </div>
+    <span>
+      {{error-message message=validationErrors.description
+                      class="correspondence-error"
+                      displayIcon=true
+                      displayText=true}}
+    </span>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
-    <div class="inset-form-control required">
-      <div class="inset-form-control-text">
-        <label>From</label>
-        {{error-message message=validationErrors.sender
-                        displayIcon=true
-                        displayText=false}}
-      </div>
+    <label class="correspondence-label">From</label>
+    <div class="{{if validationErrors.sender "error"}}">
       {{input type="text"
               name='correspondence-from'
               value=model.sender
-              class="correspondence-from inset-form-control-input"
-              placeholder="Sender's name and/or email address..."}}
+              class="correspondence-from correspondence-input"}}
     </div>
+    <span>
+      {{error-message message=validationErrors.sender
+                      class="correspondence-error"
+                      displayIcon=true
+                      displayText=true}}
+    </span>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
-    <div class="inset-form-control required">
-      <div class="inset-form-control-text">
-        <label>To</label>
-        {{error-message message=validationErrors.recipients
-                        displayIcon=true
-                        displayText=false}}
-      </div>
+    <label class="correspondence-label">To</label>
+    <div class="{{if validationErrors.recipients "error"}}">
       {{input type="text"
               name='correspondence-to'
               value=model.recipients
-              class="correspondence-to inset-form-control-input"
-              placeholder="Recipient names and/or email address(es)..."}}
+              class="correspondence-to correspondence-input"}}
     </div>
+    <span>
+      {{error-message message=validationErrors.recipients
+                      class="correspondence-error"
+                      displayIcon=true
+                      displayText=true}}
+    </span>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
-    <div class="inset-form-control">
-      <div class="inset-form-control-text">
-        <label>Subject</label>
-        {{error-message message=validationErrors.subject
-                        displayIcon=true
-                        displayText=false}}
-      </div>
+    <label>Subject</label>
+    <div>
       {{input type="text"
               name='correspondence-subject'
               value=model.subject
-              class="correspondence-subject inset-form-control-input"
-              placeholder="Enter or copy-paste the subject..."}}
+              class="correspondence-subject correspondence-input"}}
     </div>
+    <span>
+      {{error-message message=validationErrors.subject
+                      class="correspondence-error"
+                      displayIcon=true
+                      displayText=true}}
+    </span>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
-    <div class="inset-form-control">
-      <div class="inset-form-control-text">
-        <label>CC</label>
-        {{error-message message=validationErrors.cc
-                        displayIcon=true
-                        displayText=false}}
-      </div>
+    <label>CC</label>
+    <div>
       {{input type="text"
               name='correspondence-cc'
               value=model.cc
-              class="correspondence-cc inset-form-control-input"
-              placeholder="Recipient names and/or email address(es)..."}}
+              class="correspondence-cc correspondence-input"}}
     </div>
+    <span>
+      {{error-message message=validationErrors.cc
+                      class="correspondence-error"
+                      displayIcon=true
+                      displayText=true}}
+    </span>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-12">
+    <label>BCC</label>
     <div class="inset-form-control">
-      <div class="inset-form-control-text">
-        <label>BCC</label>
-        {{error-message message=validationErrors.bcc
-                        displayIcon=true
-                        displayText=false}}
-      </div>
       {{input type="text"
               name='correspondence-bcc'
               value=model.bcc
-              class="correspondence-bcc inset-form-control-input"
-              placeholder="Recipient names and/or email address(es)..."}}
+              class="correspondence-bcc correspondence-input"}}
     </div>
+    <span>
+      {{error-message message=validationErrors.bcc
+                      class="correspondence-error"
+                      displayIcon=true
+                      displayText=true}}
+    </span>
   </div>
 </div>
 <div class="row">
@@ -169,20 +175,25 @@
 </div>
 <div class="row">
   <div class="col-sm-12">
-    <div class="inset-form-control required">
-      <div class="inset-form-control-text">
-        <label>Contents</label>
-        {{error-message message=validationErrors.body
-                        displayIcon=true
-                        displayText=false}}
+    <div class="form-group">
+      <label class="correspondence-label">
+        Contents
+      </label>
+      <div class="{{if validationErrors.body "error"}}">
+        {{rich-text-editor
+          editorStyle='basic'
+          ident='correspondence-body'
+          value=model.body
+          name="correspondence-body"
+          class="correspondence-body input"
+          onContentsChanged=(action 'saveContentsBody')
+          disabled=false
+        }}
       </div>
-      {{#expanding-textarea}}
-      {{textarea class="inset-form-control-textarea correspondence-body"
-                 name="correspondence-body"
-                 value=model.body
-                 placeholder="Enter or copy-paste the contents of the correspondence."
-                 autofocus="autofocus"}}
-      {{/expanding-textarea}}
+      {{error-message message=validationErrors.body
+                          class="correspondence-error"
+                          displayIcon=true
+                          displayText=true}}
     </div>
   </div>
 </div>

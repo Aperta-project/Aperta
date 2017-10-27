@@ -1,32 +1,12 @@
 module TahiStandardTasks
-  # Provides a template context for RegisterDecisionTasks
-  class RegisterDecisionScenario < TemplateScenario
-    def self.merge_field_definitions
-      [{ name: :manuscript, context: PaperContext },
-       { name: :journal, context: JournalContext },
-       { name: :reviews, context: ReviewerReportContext, many: true }]
-    end
-
-    def manuscript
-      @manuscript ||= PaperContext.new(paper)
-    end
-
-    def journal
-      @journal ||= JournalContext.new(paper.journal)
-    end
-
+  class RegisterDecisionScenario < PaperScenario
     def reviews
-      return unless paper.draft_decision
-      @reviews ||= paper.draft_decision.reviewer_reports.map do |rr|
+      return unless manuscript_object.draft_decision
+      @reviews ||= manuscript_object.draft_decision.reviewer_reports.submitted.map do |rr|
         ReviewerReportContext.new(rr)
       end
-      @reviews.sort_by(&:reviewer_number)
-    end
-
-    private
-
-    def paper
-      @object
+      reviews_with_num, reviews_without_num = @reviews.partition(&:reviewer_number)
+      @reviews = reviews_with_num.sort_by(&:reviewer_number) + reviews_without_num.sort_by { |r| r.submitted_at || 0 }
     end
   end
 end

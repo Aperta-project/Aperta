@@ -5,6 +5,6 @@ class PendingInvitationFragment < PageFragment
 
   def reject(button_text='Decline')
     click_button button_text
-    expect(session).to have_content("You've successfully declined this invitation")
+    expect(session).to have_content("You've successfully declined the invitation")
   end
 end

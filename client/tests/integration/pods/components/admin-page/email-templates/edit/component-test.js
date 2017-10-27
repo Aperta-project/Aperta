@@ -1,7 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import FactoryGuy from 'ember-data-factory-guy';
-import { manualSetup } from 'ember-data-factory-guy';
+import { manualSetup, mockUpdate } from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import Ember from 'ember';
 import wait from 'ember-test-helpers/wait';
@@ -11,6 +11,7 @@ moduleForComponent('admin-page/email-templates/edit',
     integration: true,
     beforeEach() {
       manualSetup(this.container);
+      this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
       this.set('dirtyEditorConfig', {model: 'template', properties: ['subject', 'body']});
     }
   }
@@ -49,6 +50,8 @@ test('it displays a success message if save succeeds and disables save button', 
   assert.expect(2);
 
   let template = FactoryGuy.make('letter-template', { subject: 'foo', body: 'bar'});
+  // Saving letter templates now triggers a reload, so we need to noop that for tests
+  template.reload = function() {};
 
   let saveStub = sinon.stub(template, 'save');
   saveStub.returns(Ember.RSVP.Promise.resolve());
@@ -62,8 +65,10 @@ test('it displays a success message if save succeeds and disables save button', 
   generateKeyEvent.call(this, 20);
   this.$('.button-primary').click();
 
-  assert.elementFound('.button-primary[disabled]');
-  assert.equal(this.$('span.text-success').text(), 'Your changes have been saved.');
+  return wait().then(() => {
+    assert.elementFound('.button-primary[disabled]');
+    assert.equal(this.$('span.text-success').text(), 'Your changes have been saved.');
+  });
 });
 
 test('it displays an error message if save fails', function(assert) {
@@ -91,14 +96,9 @@ test('it displays an error message if save fails', function(assert) {
 
 
 test('it warns user if input field has invalid content', function(assert) {
-  assert.expect(1);
-
   let template = FactoryGuy.make('letter-template', {subject: 'foo', body: 'bar'});
-
-  let saveStub = sinon.stub(template, 'save');
-  saveStub.returns(Ember.RSVP.Promise.reject(
-    { errors: [ { source: { pointer: '/subject'}, detail: 'Syntax Error'}]})
-  );
+  // see https://github.com/danielspaniel/ember-data-factory-guy#using-fails-method
+  mockUpdate(template).fails({status: 422, response: {errors: {subject: 'Syntax Error'}}});
 
   this.set('template', template);
 
@@ -110,7 +110,9 @@ test('it warns user if input field has invalid content', function(assert) {
   this.$('.template-subject').val('{{ name }').blur();
   this.$('.button-primary').click();
 
-  return wait().then(() => assert.equal(this.$('.error>ul>li').text().trim(), 'Syntax Error'));
+  return wait().then(() => {
+    assert.equal(this.$('.error>ul>li').text().trim(), 'Syntax Error', 'has the right text');
+  });
 });
 
 test('clicking the edit icon allows a user to edit the template name', function(assert) {
@@ -130,9 +132,9 @@ test('clicking the edit icon allows a user to edit the template name', function(
 
 test('it displays errors if you try to submit without a template name', function(assert) {
   const template = FactoryGuy.make('letter-template', { name: 'Rescind Email', subject: 'Rescinding a Review Task', body: 'foobar' });
-  
+
   this.set('template', template);
-  
+
   this.render(hbs`
     {{admin-page/email-templates/edit template=template dirtyEditorConfig=dirtyEditorConfig}}
   `);
@@ -155,3 +157,4 @@ let generateKeyEvent = function(keyCode) {
   e.keyCode = keyCode;
   Ember.run(() => this.$('.template-subject').trigger(e));
 };
+

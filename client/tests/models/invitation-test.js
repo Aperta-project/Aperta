@@ -4,26 +4,26 @@ import FactoryGuy from 'ember-data-factory-guy';
 import customAssertions from '../helpers/custom-assertions';
 import sinon from 'sinon';
 import startApp from '../helpers/start-app';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 
 var app;
 
 moduleForModel('invitation', 'Unit | Model | invitation', {
-  needs: ['model:invitation'],
+  integration: true,
 
   afterEach: function() {
     Ember.run(function() {
-      return TestHelper.teardown();
+      return TestHelper.mockTeardown();
     });
     return Ember.run(app, 'destroy');
   },
   beforeEach: function() {
     app = startApp();
-    return TestHelper.setup(app);
+    return TestHelper.mockSetup();
   }
 });
 
-test("rescind() uses restless to touch the rescind endpoint", function(assert) {
+test('rescind() and accept() use restless to touch endpoints', function(assert) {
   let fakeRestless = {
     put: sinon.stub()
   };
@@ -37,6 +37,12 @@ test("rescind() uses restless to touch the rescind endpoint", function(assert) {
   assert.spyCalledWith(fakeRestless.put,
     [`/api/invitations/${invitation.id}/rescind`],
     'Calls restless with rescind endpoint');
+
+  const data = { fname: 'foo', lname: 'bar'};
+  invitation.accept(data);
+  assert.spyCalledWith(fakeRestless.put,
+    [`/api/invitations/${invitation.id}/accept`, data],
+    'Calls restless with accept endpoint');
 });
 
 test('#declineFeedback sets declineReason and reviewerSuggestions to null,' +

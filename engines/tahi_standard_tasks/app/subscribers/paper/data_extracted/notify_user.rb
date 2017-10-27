@@ -15,22 +15,13 @@ class Paper::DataExtracted::NotifyUser < FlashMessageSubscriber
 
   def message
     if @event_data[:record].completed?
-      message = "Finished loading #{pdf_type? ? 'PDF' : 'Word'} file."
-      unless pdf_type?
-        addendum = ' Any figures included in the file will have been removed' \
-                   ' and should now be uploaded directly' \
-                   ' by clicking \'Figures\'.'
-        message.concat(addendum)
-      end
-      message
+      'Finished loading Word file.'\
+      ' Any figures included in the file will have been removed' \
+      ' and should now be uploaded directly' \
+      ' by clicking \'Figures\'.'
     elsif @event_data[:record].errored?
-      "There was an error loading your #{pdf_type? ? 'PDF' : 'Word'} file."
+      "There was an error loading your Word file."
     end
   end
 
-  private
-
-  def pdf_type?
-    @event_data[:record].recipe_name == 'pdf_to_html'
-  end
 end

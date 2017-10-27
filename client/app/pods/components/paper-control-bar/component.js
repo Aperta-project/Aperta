@@ -1,10 +1,9 @@
 import Ember from 'ember';
-import ControlBar from 'tahi/pods/components/control-bar/component';
 import { PropTypes } from 'ember-prop-types';
 
 const { computed } = Ember;
 
-export default ControlBar.extend({
+export default Ember.Component.extend({
   propTypes: {
     contributorsVisible: PropTypes.bool,
     versionsVisible: PropTypes.bool,
@@ -43,7 +42,7 @@ export default ControlBar.extend({
       if (this.get('submenuVisible') && this.get(`${sectionName}Visible`)) {
         this.resetSubmenuFlags();
         this.set('submenuVisible', false);
-        this.get('transitionToPaperIndex')();
+        if (this.get('versioningMode')) this.get('transitionToPaperIndex')();
       } else {
         this.showSection(sectionName);
       }

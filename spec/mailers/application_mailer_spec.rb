@@ -70,7 +70,7 @@ describe ApplicationMailer do
         expect(email_log.message_id).to be
         expect(email_log.subject).to eq 'this is the subject'
         expect(email_log.status).to eq 'failed'
-        expect(email_log.sent_at).to be nil
+        expect(email_log.sent_at).not_to eq nil
         expect(email_log.errored_at).to be
       end
     end

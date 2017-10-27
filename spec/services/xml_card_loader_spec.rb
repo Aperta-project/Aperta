@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe XmlCardLoader do
-  let(:content1) { '<content ident="foo" content-type="text"><text>foo</text></content>' }
-  let(:content2) { '<content ident="bar" content-type="text"><text>bar</text></content>' }
+  let(:content1) { '<content ident="foo" content-type="description"><text>foo</text></content>' }
+  let(:content2) { '<content ident="bar" content-type="description"><text>bar</text></content>' }
 
   let!(:card) { FactoryGirl.create(:card, :versioned, name: "original name") }
   let(:xml_card_loader) { XmlCardLoader.new(card) }
@@ -189,9 +189,9 @@ describe XmlCardLoader do
         card = xml_card_loader.load(xml)
         card.save
         expect(first.ident).to eq('foo')
-        expect(first.content_type).to eq('text')
+        expect(first.content_type).to eq('description')
         expect(second.ident).to eq('bar')
-        expect(second.content_type).to eq('text')
+        expect(second.content_type).to eq('description')
       end
     end
 
@@ -206,17 +206,16 @@ describe XmlCardLoader do
             <content ident='doesntmatter' value-type='boolean' content-type='tech-check'>
               <text>You shall not PASS!</text>
               <content content-type="sendback-reason" value-type="boolean">
-                <content content-type="display-children">
-                  <content ident="first-tech-check-box" value-type="boolean" content-type="check-box" default-answer-value="false">
-                    <text>Because REASONS!</text>
-                    <content ident='potato' value-type='text' content-type="paragraph-input" default-answer-value="I told you, Mr. Balrog!  You shall not PASS!">
-                    </content>
-                  </content>
-                  <content ident='second-tech-check-box' value-type='boolean' content-type="check-box" default-answer-value="false">
-                    <text>Because more REASONS!</text>
-                    <content ident='potatoe' value-type='text' content-type="paragraph-input" default-answer-value="I really mean it!  You shall not PASS!">
-                    </content>
-                  </content>
+                <content ident="first-tech-check-box" value-type="boolean" content-type="check-box">
+                  <default-answer-value>false</default-answer-value>
+                  <text>Because REASONS!</text>
+                </content>
+                <content ident='second-tech-check-box' value-type='boolean' content-type="check-box">
+                  <default-answer-value>false</default-answer-value>
+                  <text>Because more REASONS!</text>
+                </content>
+                <content ident='potatoe' value-type='text' content-type="paragraph-input">
+                  <default-answer-value>I really mean it!  You shall not PASS!</default-answer-value>
                 </content>
               </content>
             </content>
@@ -235,7 +234,8 @@ describe XmlCardLoader do
       context 'radio' do
         let(:content1) do
           <<-XML
-            <content ident='foo' value-type='text' content-type='radio' default-answer-value="1" required-field="false">
+            <content ident='foo' value-type='text' content-type='radio' required-field="false">
+              <default-answer-value>1</default-answer-value>
               <text>Question!</text>
               <possible-value label="one" value="1"/>
             </content>
@@ -281,7 +281,7 @@ describe XmlCardLoader do
       end
 
       context 'text' do
-        let(:content1) { "<content ident='foo' content-type='text'><text>#{text}</text></content>" }
+        let(:content1) { "<content ident='foo' content-type='description'><text>#{text}</text></content>" }
 
         shared_examples_for :the_text_attribute_is_set_properly do
           it "set the text as expected" do
@@ -325,7 +325,8 @@ describe XmlCardLoader do
         let(:text) { Faker::Lorem.sentence }
         let(:content1) do
           <<-XML
-            <content content-type='short-input' value-type='text' default-answer-value="foo" required-field="false">
+            <content content-type='short-input' value-type='text' required-field="false">
+              <default-answer-value>foo</default-answer-value>
               <text>#{text}</text>
             </content>
           XML
@@ -341,6 +342,47 @@ describe XmlCardLoader do
           card = xml_card_loader.load(xml)
           card.save
           expect(root_content.default_answer_value).to eq("foo")
+        end
+      end
+
+      context 'if-then' do
+        let(:text) { Faker::Lorem.sentence }
+        let(:content1) do
+          <<-XML
+            <content content-type="if" condition="isEditable">
+              <content content-type="paragraph-input" value-type="html">
+                <text>This is the THEN branch of an IF condition.</text>
+              </content>
+            </content>
+          XML
+        end
+
+        it 'sets the default answer value if given' do
+          card = xml_card_loader.load(xml)
+          card.save
+          expect(root_content.children.size).to eq(1)
+        end
+      end
+
+      context 'if-then-else' do
+        let(:text) { Faker::Lorem.sentence }
+        let(:content1) do
+          <<-XML
+            <content content-type="if" condition="isEditable">
+              <content content-type="paragraph-input" value-type="html">
+                <text>This is the THEN branch of an IF condition.</text>
+              </content>
+              <content content-type="short-input" value-type="text">
+                <text>This is the ELSE branch of an IF condition.</text>
+              </content>
+            </content>
+          XML
+        end
+
+        it 'sets the default answer value if given' do
+          card = xml_card_loader.load(xml)
+          card.save
+          expect(root_content.children.size).to eq(2)
         end
       end
 

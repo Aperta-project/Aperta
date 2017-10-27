@@ -18,7 +18,8 @@ export default Ember.Component.extend(ValidationErrorsMixin,{
 
   init() {
     this._super(...arguments);
-    this.get('countries').fetch();
+    let countries = this.get('countries');
+    countries.get('fetch').perform();
   },
 
   didInsertElement() {

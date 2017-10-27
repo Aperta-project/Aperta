@@ -37,7 +37,6 @@ export default DS.Model.extend({
   figures: hasMany('figure', { inverse: 'paper' }),
   groupAuthors: hasMany('group-author', { async: false }),
   journal: belongsTo('journal'),
-  manuscriptPageTasks: hasMany('task', { polymorphic: true }),
 
   file: belongsTo('manuscript-attachment', { async: false}),
   sourcefile: belongsTo('sourcefile-attachment', { async: false}),
@@ -62,6 +61,8 @@ export default DS.Model.extend({
   creator: belongsTo('user', { async: false }),
   shortDoi: attr('string'),
   aarxDoi: attr('string'),
+  aarxLink: attr('string'),
+  preprintPublished: attr('boolean'),
   doi: attr('string'),
   editable: attr('boolean'),
   editorMode: attr('string', { defaultValue: 'html' }),
@@ -90,6 +91,8 @@ export default DS.Model.extend({
   legendsAllowed: attr('boolean'),
   currentUserRoles: attr(),
   manuallySimilarityChecked: attr('boolean'),
+  preprintOptOut: attr('boolean'),
+  preprintEligible: attr('boolean'),
 
   reviewDueAt: attr('date'),
   reviewOriginallyDueAt: attr('date'),

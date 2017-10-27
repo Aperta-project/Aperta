@@ -64,7 +64,7 @@ gem 'rest-client'
 gem 'rsec'
 gem 'ruby-jing'
 gem 'ruby_dig'
-gem 'rubyzip', require: 'zip'
+gem 'rubyzip', '1.1.7', require: 'zip'
 gem 'sass-rails'
 gem 'sdoc'
 gem 'sidekiq'
@@ -105,8 +105,7 @@ group :development, :test do
   gem 'pry-remote'
   gem 'pry-rescue'
   gem 'quiet_assets'
-  # This needs to be in the development group to make rake tasks work
-  gem 'rspec-rails'
+  gem 'rspec-rails' # This needs to be in the development group to make rake tasks work
 end
 
 group :development do
@@ -135,6 +134,7 @@ group :test do
   gem 'fake_ftp'
   gem 'faker'
   gem 'fakeredis'
+  gem 'geckodriver-helper'
   gem 'generator_spec'
   gem 'pusher-fake'
   gem 'rspec-activemodel-mocks'

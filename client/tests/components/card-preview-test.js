@@ -17,16 +17,6 @@ moduleForComponent('card-preview', 'Integration | Component | card preview', {
   }
 });
 
-test('task is required', function(assert) {
-  assert.expect(1);
-
-  assert.throws(function() {
-    this.render(hbs`
-      {{card-preview}}
-    `);
-  }, Error, 'has thrown an Error');
-});
-
 test('it renders', function(assert) {
   assert.expect(1);
 

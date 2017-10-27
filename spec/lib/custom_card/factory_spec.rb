@@ -20,7 +20,7 @@ describe CustomCard::Factory do
         <<-XML.strip_heredoc
         <?xml version="1.0" encoding="UTF-8"?>
           <card required-for-submission="false" workflow-display-only="false">
-            <content content-type="text">
+            <content content-type="description">
               <text>Some card content</text>
             </content>
           </card>

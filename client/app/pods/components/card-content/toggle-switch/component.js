@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
-  classNames: ['card-content-toggle-switch'],
+  classNames: ['card-content', 'card-content-toggle-switch'],
   propTypes: {
     content: PropTypes.object.isRequired,
     disabled: PropTypes.bool,

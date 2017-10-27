@@ -8,6 +8,7 @@ class Paper < ActiveRecord::Base
   include EventStream::Notifiable
   include PaperTaskFinders
   include AASM
+  include AASMTriggerEvent
   include ActionView::Helpers::SanitizeHelper
   include PgSearch
   include Assignable::Model

@@ -1,8 +1,8 @@
 {{#liquid-if displayAcceptFields}}
-  <div>
+  <div class="instructions">
     Please provide a first and last name for reviewer <b>{{invitation.email}}</b>
   </div>
-  <div class="row">
+  <div class="row labels">
     <div class="col-sm-3">
       <label for="{{concat elementId '-fname'}}">
         <b>First Name</b>
@@ -14,11 +14,12 @@
       </label>
     </div>
   </div>
-  <div class="row">
+  <div class="row inputs">
     <div class="col-sm-3 {{if validationErrors.firstName 'error'}}">
       {{input
         id=(concat elementId '-fname')
         class="form-control"
+        disabled=loading
         value=stubInvitee.firstName}}
       {{error-message message=validationErrors.firstName displayIcon=true}}
     </div>
@@ -26,6 +27,7 @@
       {{input
         id=(concat elementId '-lname')
         class="form-control"
+        disabled=loading
         value=stubInvitee.lastName}}
       {{error-message message=validationErrors.lastName displayIcon=true}}
     </div>
@@ -34,8 +36,9 @@
     </div>
     <div class="col-sm-2">
       {{#save-button
-        class="button-secondary button--green"
+        class="button-secondary button--green accept"
         disabled=loading
+        displaySpinner=false
         click=(action "confirmAccept")}}
         ACCEPT INVITATION
       {{/save-button}}

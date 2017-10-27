@@ -112,6 +112,10 @@ describe TahiStandardTasks::ReviewerMailer do
         expect(email.body).to match(report.due_at.to_s(:due_with_minutes))
       end
     end
+
+    it "has a link to accept invitation" do
+      expect(email.body).to match(invitation_accept_url(token: report.invitation.token))
+    end
   end
 
   describe ".reviewer_accepted" do

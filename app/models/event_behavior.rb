@@ -3,18 +3,18 @@
 class EventBehavior < ActiveRecord::Base
   include Attributable
 
-  validates :action, inclusion: { in: BehaviorAction.action_names.map(&:to_s) }
   validates :event_name, inclusion: { in: %w[paper_submitted] }
 
-  BehaviorAction.mk_validators.each do |klass|
-    validates_with klass
+  self.inheritance_column = 'action'
+
+  def self.sti_name
+    name.gsub(/Behavior$/, '').underscore
   end
 
   belongs_to :journal
 
   has_attributes :event_behavior_attributes,
                  inverse_of: :event_behavior,
-                 class_name: 'EventBehaviorAttribute',
                  types: {
                    boolean: %w[boolean_param],
                    json: %w[json_param],

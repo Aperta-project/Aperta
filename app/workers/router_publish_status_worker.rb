@@ -1,8 +1,8 @@
 class RouterPublishStatusWorker
   include Sidekiq::Worker
 
-  # retry 48 times once per hour (2 days total), then send to dead job queue
-  sidekiq_options retry: 48
+  # retry once per hour (10 days total), then send to dead job queue
+  sidekiq_options retry: 240
   sidekiq_retry_in { 1.hour }
 
   def perform(export_delivery_id)

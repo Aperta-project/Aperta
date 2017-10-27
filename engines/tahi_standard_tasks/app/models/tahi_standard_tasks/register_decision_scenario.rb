@@ -5,12 +5,13 @@ module TahiStandardTasks
     context :reviewer_report, many: :reviews
 
     def reviews
-      return unless object.draft_decision
-      @reviews ||= object.draft_decision.reviewer_reports.submitted.map do |rr|
-        ReviewerReportContext.new(rr)
+      @reviews ||= [].tap do |reviews|
+        return [] unless object.draft_decision
+        reports = object.draft_decision.reviewer_reports.submitted
+        reports_with_num, reports_without_num = reports.partition { |r| r.task.reviewer_number }
+        reports = reports_with_num.sort_by { |r| r.task.reviewer_number } + reports_without_num.sort_by(&:submitted_at)
+        reports.each { |rr| reviews << ReviewerReportContext.new(rr) }
       end
-      reviews_with_num, reviews_without_num = @reviews.partition(&:reviewer_number)
-      @reviews = reviews_with_num.sort_by(&:reviewer_number) + reviews_without_num.sort_by { |r| r.submitted_at || 0 }
     end
   end
 end

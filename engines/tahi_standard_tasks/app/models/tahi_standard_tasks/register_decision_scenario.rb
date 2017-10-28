@@ -1,8 +1,8 @@
 module TahiStandardTasks
   class RegisterDecisionScenario < TemplateContext
     context :journal
-    context :paper, as: :manuscript, source: 'object'
-    context :reviewer_report, many: :reviews
+    context :manuscript, type: :paper,           source: 'object'
+    context :reviews,    type: :reviewer_report, many: true
 
     def reviews
       @reviews ||= [].tap do |reviews|

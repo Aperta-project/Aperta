@@ -2,8 +2,8 @@ class ReviewerReportContext < TemplateContext
   include ActionView::Helpers::SanitizeHelper
 
   whitelist :state, :revision, :status, :datetime, :invitation_accepted?, :due_at
-  context :user,   as:   :reviewer, source: 'object.user'
-  context :answer, many: :answers
+  context :reviewer, type: :user, source: 'object.user'
+  context :answers,  type: :answer, many: true
 
   def reviewer_number
     object.task.reviewer_number

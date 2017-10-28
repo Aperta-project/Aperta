@@ -12,10 +12,10 @@ class TemplateContext < Liquid::Drop
     ]
   end
 
-  def self.context(context_type, options = {})
-    method_name = options[:as] || options[:many] || context_type
+  def self.context(method_name, options = {})
     return if respond_to?(method_name)
 
+    context_type = options[:type] || method_name
     context_class_name = "#{context_type}_context".camelize
     source_model = options[:source] || "object.#{method_name}"
 

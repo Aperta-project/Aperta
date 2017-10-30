@@ -62,7 +62,7 @@ export default DS.Model.extend({
   shortDoi: attr('string'),
   aarxDoi: attr('string'),
   aarxLink: attr('string'),
-  preprintPublished: attr('boolean'),
+  preprintPosted: attr('boolean'),
   doi: attr('string'),
   editable: attr('boolean'),
   editorMode: attr('string', { defaultValue: 'html' }),

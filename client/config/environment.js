@@ -50,6 +50,10 @@ module.exports = function(environment) {
 
     moment: {
       includeTimezone: 'all'
+    },
+
+    tinyMCE: {
+      load: false
     }
   };
 

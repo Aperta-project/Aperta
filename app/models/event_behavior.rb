@@ -11,6 +11,9 @@ class EventBehavior < ActiveRecord::Base
     name.gsub(/Behavior$/, '').underscore
   end
 
+  def self.find_sti_class(type_name)
+    "#{type_name.camelize}Behavior".constantize
+  end
   belongs_to :journal
 
   def self.action_class(klass) # rubocop:disable Style/TrivialAccessors

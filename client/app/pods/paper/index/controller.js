@@ -5,7 +5,8 @@ import Discussions from 'tahi/mixins/discussions/route-paths';
 
 const {
   computed,
-  computed: { equal }
+  computed: { equal },
+  observer,
 } = Ember;
 
 export default Controller.extend(PaperBase, Discussions, {
@@ -63,9 +64,7 @@ export default Controller.extend(PaperBase, Discussions, {
 
   showPaperSubmitOverlay: false,
 
-  paperChanged: Ember.observer('paper', function() {
-    // was hoping this will be triggered when the
-    // paper model is updated but it doesn't work yet
+  fileChanged: observer('paper.file.fileHash', function() {
     this.set('paper.processing', false);
   }),
 

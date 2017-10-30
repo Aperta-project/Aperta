@@ -2,8 +2,10 @@ require 'rails_helper'
 
 feature "Register Decision", js: true, sidekiq: :inline! do
   let(:user) { FactoryGirl.create(:user) }
+  let(:journal) { FactoryGirl.create(:journal_for_integration_tests) }
+  let!(:letter_template) { FactoryGirl.create(:letter_template, :notify_submission, journal: journal) }
   let(:paper) do
-    FactoryGirl.create(:paper, :with_integration_journal, :submitted)
+    FactoryGirl.create(:paper, :submitted, journal: journal)
   end
   let(:task) { FactoryGirl.create(:register_decision_task, :with_loaded_card, paper: paper) }
   let(:dashboard_page) { DashboardPage.new }

@@ -38,6 +38,13 @@ moduleForComponent(
           journals: []
         }
       });
+      $.mockjax({
+        url: /api\/countries/,
+        status: 200,
+        responseText: {
+          countries: []
+        }
+      });
     },
     afterEach() {
       $.mockjax.clear();

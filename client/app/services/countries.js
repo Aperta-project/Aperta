@@ -19,7 +19,7 @@ export default Service.extend({
   data: computed({
     get() {
       if(isEmpty(this.get('_data'))) {
-        this.fetch();
+        this.get('fetch').perform();
       }
 
       return this.get('_data');

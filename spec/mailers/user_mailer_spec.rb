@@ -135,11 +135,12 @@ describe UserMailer, redis: true do
   end
 
   describe '#notify_creator_of_paper_submission' do
-    let(:paper) do
+    let!(:paper) do
       FactoryGirl.create(:paper, :with_creator, :submitted)
     end
-    let(:author) { paper.creator }
-    let(:email) { UserMailer.notify_creator_of_paper_submission(paper.id) }
+    let!(:author) { paper.creator }
+    let!(:letter_template) { FactoryGirl.create(:letter_template, :notify_submission, journal: paper.journal) }
+    let!(:email) { UserMailer.notify_creator_of_paper_submission(paper.id) }
 
     it "sends the email to the paper's creator with the correct subject" do
       expect(email.to).to contain_exactly(author.email)
@@ -239,7 +240,7 @@ describe UserMailer, redis: true do
       FactoryGirl.create(:paper, :with_creator, :initially_submitted)
     end
     let!(:author) { paper.creator }
-    let!(:letter_template) { FactoryGirl.create(:letter_template, :thanks_submitting, journal: paper.journal) }
+    let!(:letter_template) { FactoryGirl.create(:letter_template, :notify_initial_submission, journal: paper.journal) }
     let!(:email) { UserMailer.notify_creator_of_initial_submission(paper.id) }
 
     it "sends the email to the paper's creator with the correct subject" do

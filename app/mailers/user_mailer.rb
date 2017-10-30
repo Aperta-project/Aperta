@@ -91,11 +91,18 @@ class UserMailer < ApplicationMailer
     @paper = Paper.find(paper_id)
     @author = @paper.creator
     @journal = @paper.journal
-
-    mail(
-      to: @author.try(:email),
-      subject: "Thank you for submitting your manuscript to #{@journal.name}"
-    )
+    @letter_template = @journal.letter_templates.find_by(ident: 'notify-submission')
+    begin
+      @letter_template.render(PaperScenario.new(@paper))
+      @subject = @letter_template.subject
+      @body = @letter_template.body
+      @to = @letter_template.to
+      @cc = @letter_template.cc
+      @bcc = @letter_template.bcc
+      mail(to: @to, cc: @cc, bcc: @bcc, subject: @subject)
+    rescue BlankRenderFieldsError => e
+      Bugsnag.notify(e)
+    end
   end
 
   def notify_coauthor_of_paper_submission(paper_id, coauthor_id, coauthor_type)
@@ -115,12 +122,12 @@ class UserMailer < ApplicationMailer
     @paper = Paper.find(paper_id)
     @author = @paper.creator
     @journal = @paper.journal
-    @letter_template = @journal.letter_templates.find_by(ident: 'thanks-submitting-email')
+    @letter_template = @journal.letter_templates.find_by(ident: 'notify-initial-submission')
     begin
       @letter_template.render(PaperScenario.new(@paper))
       @subject = @letter_template.subject
       @body = @letter_template.body
-      @to = @author.email
+      @to = @letter_template.to
       @cc = @letter_template.cc
       @bcc = @letter_template.bcc
       mail(to: @to, cc: @cc, bcc: @bcc, subject: @subject)

@@ -173,7 +173,8 @@ class InviteReviewersCardTest(CommonTest):
     dashboard_page.validate_invitation_in_overlay(mmt=mmt,
                                                   invitation_type='Reviewers',
                                                   paper_id=paper_id)
-    invite_response, response_data = dashboard_page.accept_or_reject_invitation(manuscript_title)
+    invite_response, response_data = dashboard_page.accept_or_reject_invitation(manuscript_title,
+                                                                                invitation_role='Reviewer')
     logging.info('Invitees response to review request was {0}'.format(invite_response))
     # If accepted, validate new assignment in db
     wombat_journal_id = PgSQL().query('SELECT id '
@@ -298,7 +299,8 @@ class InviteReviewersCardTest(CommonTest):
     dashboard_page.validate_invitation_in_overlay(mmt=mmt,
                                                   invitation_type='Reviewers',
                                                   paper_id=paper_id)
-    invite_response, response_data = dashboard_page.accept_or_reject_invitation(manuscript_title)
+    invite_response, response_data = dashboard_page.accept_or_reject_invitation(manuscript_title,
+                                                                                invitation_role='Reviewer')
     logging.info('Invitees response to review request was {0}'.format(invite_response))
     # If accepted, validate new assignment in db
     wombat_journal_id = PgSQL().query('SELECT id '

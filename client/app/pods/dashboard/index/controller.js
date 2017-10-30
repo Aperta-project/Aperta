@@ -18,12 +18,12 @@ export default Ember.Controller.extend({
   hasPapers:         Ember.computed.notEmpty('papers'),
   hasActivePapers:   Ember.computed.notEmpty('activePapers'),
   hasInactivePapers: Ember.computed.notEmpty('inactivePapers'),
-  hasPreprintPostedPapers: Ember.computed.notEmpty('preprintPostedPapers'),
+  hasPostedPreprints: Ember.computed.notEmpty('preprints'),
   activePageNumber:   1,
   inactivePageNumber: 1,
   activePapersVisible: true,
   inactivePapersVisible: true,
-  activePreprintPostedVisible: true,
+  preprintsVisible: true,
   invitationsLoading: false,
   relatedAtSort: ['relatedAtDate:desc'],
   updatedAtSort: ['updatedAt:desc'],
@@ -38,11 +38,11 @@ export default Ember.Controller.extend({
                         }),
   activePapers:         Ember.computed.filterBy('papers', 'active', true),
   inactivePapers:       Ember.computed.filterBy('papers', 'active', false),
-  preprintPostedPapers: Ember.computed.filterBy('papers', 'preprintPosted', true),
+  preprints: Ember.computed.filterBy('papers', 'preprintPosted', true),
   totalActivePaperCount: Ember.computed.alias('activePapers.length'),
 
   totalInactivePaperCount: Ember.computed.alias('inactivePapers.length'),
-  totalPreprintPostedPaperCount: Ember.computed.alias('preprintPostedPapers.length'),
+  totalPreprintCount: Ember.computed.alias('preprints.length'),
   activeManuscriptsHeading: Ember.computed('totalActivePaperCount', function() {
     return 'Active ' +
             pluralizeString('Manuscript', this.get('totalActivePaperCount')) +
@@ -57,8 +57,8 @@ export default Ember.Controller.extend({
              ' (' + this.get('totalInactivePaperCount') + ')';
     }
   ),
-  preprintPostedHeading: Ember.computed('totalPreprintPostedPaperCount', function() {
-    return `Preprints (${this.get('totalPreprintPostedPaperCount')})`;
+  postedPreprintsHeading: Ember.computed('totalPreprintCount', function() {
+    return `Preprints (${this.get('totalPreprintCount')})`;
   }),
   showNewManuscriptOverlay: false,
 
@@ -86,7 +86,7 @@ export default Ember.Controller.extend({
     },
 
     togglePreprintContainer() {
-      this.toggleProperty('activePreprintPostedVisible');
+      this.toggleProperty('preprintsVisible');
     },
 
     showInvitationsOverlay() {

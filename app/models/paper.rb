@@ -647,8 +647,8 @@ class Paper < ActiveRecord::Base
     PREPRINT_DOI_JOURNAL_ABBREV + "." + preprint_doi_article_number
   end
 
-  def preprint_published?
-    export_deliveries.where(state: 'preprint_published').any?
+  def preprint_posted?
+    export_deliveries.where(state: 'preprint_posted').any?
   end
 
   def front_matter?

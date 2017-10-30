@@ -75,15 +75,20 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
               .get('answers.firstObject.value');
         template = templates.findBy('name', selectedTemplate).toJSON();
       }
-      const body = template.body;
-      const to = template.to;
-      const subject = template.subject;
+      
       const toQuestion = this.get('task').findQuestion('register_decision_questions--to-field');
       const toAnswer = toQuestion.answerForOwner(this.get('task'));
+      const to = template.to;
+      toAnswer.set('value', to);
+      toAnswer.save();
+
       const subjectQuestion = this.get('task').findQuestion('register_decision_questions--subject-field');
       const subjectAnswer = subjectQuestion.answerForOwner(this.get('task'));
-      toAnswer.set('value', to);
+      const subject = template.subject;
       subjectAnswer.set('value', subject);
+      subjectAnswer.save();
+      
+      const body = template.body;
       this.get('draftDecision').set('letter', body); // will trigger save
     }
   }

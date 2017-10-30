@@ -61,8 +61,12 @@ moduleForComponent(
 
       this.set('task', task);
 
+      $.mockjax({url: /api\/nested_questions\/1\/answers/, type: 'PUT', status: 204, responseText: '[]'});
+      $.mockjax({url: '/api/nested_questions/1/answers', type: 'POST', status: 201, responseText: {nested_question_answer: {id: 1}}});
+      $.mockjax({url: /api\/nested_questions\/2\/answers/, type: 'PUT', status: 204, responseText: '[]'});
+      $.mockjax({url: '/api/nested_questions/2/answers', type: 'POST', status: 201, responseText: {nested_question_answer: {id: 2}}});
       $.mockjax({url: /api\/nested_questions\/3\/answers/, type: 'PUT', status: 204, responseText: '[]'});
-      $.mockjax({url: '/api/nested_questions/3/answers', type: 'POST', status: 201, responseText: {nested_question_answer: {id: 1}}});
+      $.mockjax({url: '/api/nested_questions/3/answers', type: 'POST', status: 201, responseText: {nested_question_answer: {id: 3}}});
       $.mockjax({url: /\/api\/decisions\/[0-9]+/, type: 'PUT', status: 204, responseText: '[]'});
 
       this.selectDecision = function(decision) {

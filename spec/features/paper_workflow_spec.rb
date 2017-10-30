@@ -84,7 +84,7 @@ feature "Paper workflow", js: true, selenium: true do
     expect(task_manager_page).to have_no_application_error
     initial_card_count = task_manager_page.card_count
 
-    phase.remove_card('Upload Manuscript')
+    phase.remove_card('Figures')
     within '.overlay' do
       find('.submit-action-buttons button', text: 'Yes, Delete this Card'.upcase).click
     end

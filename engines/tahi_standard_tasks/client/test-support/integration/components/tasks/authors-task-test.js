@@ -303,6 +303,13 @@ test('it lets you uncomplete the task when it and its authors have validation er
     assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
     $.mockjax.clear();
     $.mockjax({
+      url: /api\/countries/,
+      status: 200,
+      responseText: {
+        countries: []
+      }
+    });
+    $.mockjax({
       url: /api\/journals/,
       status: 200,
       responseText: {

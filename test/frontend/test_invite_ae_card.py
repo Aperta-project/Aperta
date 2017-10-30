@@ -99,7 +99,7 @@ class InviteAECardTest(CommonTest):
     dashboard_page.click_view_invites_button()
     # AE accepts or declines invite
     invite_response, response_data = dashboard_page.accept_or_reject_invitation(manuscript_title,
-                                                                                invitation_role='Academic Editor')
+                                                                                role='Academic Editor')
     logging.info('Invitees response to review request was {0}'.format(invite_response))
     # If accepted, validate new assignment in db
     wombat_journal_id = PgSQL().query('SELECT id FROM journals '

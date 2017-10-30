@@ -35,6 +35,7 @@ class AssignTeamCard(BaseCard):
         By.XPATH,
         '//div[@class="select2-drop select2-display-none '
         'select2-with-searchbox select2-drop-active"][2]/div/input')
+    self.search_result_user = (By.CSS_SELECTOR, 'li>div.select2-result-label')
     self.assign_team_assign_button = (By.CSS_SELECTOR,
                                       'span.assign_team_select2_container + button')
 
@@ -80,12 +81,15 @@ class AssignTeamCard(BaseCard):
     user_input = self._get(self.assign_team_user_search_field)
     user_input.send_keys(person['email'])
     # Need time for the lookup to complete
-    time.sleep(4)
+    self._wait_for_text_be_present_in_element(self.search_result_user, person['name'])
+    #time.sleep(4)
     # once more with feeling to commit the selection
     user_input.send_keys(Keys.ENTER)
-    time.sleep(1)
+    self._wait_for_text_be_present_in_element(self.assign_team_user_selector, person['name'])
+    #time.sleep(1)
     self._get(self.assign_team_assign_button).click()
-    time.sleep(1)
+    self._wait_for_text_be_present_in_element(self.assign_team_role_selector, 'Please select Role')
+    #time.sleep(1)
     self._validate_assignment(person, role)
     time.sleep(1)
 

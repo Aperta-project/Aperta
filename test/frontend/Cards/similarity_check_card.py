@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import logging
-import random
-import time
-from Base.PostgreSQL import PgSQL
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 from Base.CustomException import ElementDoesNotExistAssertionError
+from Base.PostgreSQL import PgSQL
 from frontend.Cards.basecard import BaseCard
 
 __author__ = 'gtimonina@plos.org'
@@ -44,9 +40,6 @@ class SimilarityCheckCard(BaseCard):
     self._automated_report_status_active = (By.CSS_SELECTOR, 'div.automated-report-status p')  # 2 lines
     self._generate_report_button = (By.CSS_SELECTOR, 'button.generate-confirm')
     self._confirm_container = (By.CSS_SELECTOR, 'div.confirm-container')
-    # div.confirm-container div.confirm-container>button.button-link.button--white
-    # div.confirm-container>button.button-secondary.button--green.generate-report
-    # or div.confirm-container>button.generate-report
     self._confirm_text = (By.CSS_SELECTOR, 'div.confirm-container>h4')
     self._manually_generate_cancel_link = (By.CSS_SELECTOR, 'button.button-link')  # 'div.confirm-container>button.button-link'
     self._manually_generate_button = (By.CSS_SELECTOR, 'button.generate-report')  # 'div.confirm-container>button.generate-report'
@@ -62,6 +55,7 @@ class SimilarityCheckCard(BaseCard):
     #
     self._ithenticate_title = (By.CSS_SELECTOR, 'div.infobar-title')
     self._ithenticate_result = (By.CSS_SELECTOR, 'div.infobar-value')
+    self._btn_done = (By.CSS_SELECTOR, 'span.task-completed-section button')
 
   # POM Actions
   def validate_styles_and_components(self, ithenticate_automation='off'):
@@ -159,6 +153,7 @@ class SimilarityCheckCard(BaseCard):
 
 
   def generate_manual_report(self):
+
     send_for_manual_report_button = self._get(self._generate_report_button)
     send_for_manual_report_button.click()
 
@@ -172,6 +167,7 @@ class SimilarityCheckCard(BaseCard):
     # assert not send_for_manual_report_button.is_displayed
 
   def validate_report_result(self):
+
     self._wait_for_element(self._get(self._sim_check_report_title), 1)
     report_title = self._get(self._sim_check_report_title)
     assert 'Similarity Check Report' in report_title.text.strip()
@@ -181,17 +177,12 @@ class SimilarityCheckCard(BaseCard):
     # wait for completed report
     self._wait_for_element(self._get(self._sim_check_report_completed))
     report_completed = self._get(self._sim_check_report_completed)
-    time.sleep(20)
-    self._wait_for_element(self._get(self._sim_check_report_link), 500)
-    # report_link = self._get(self._sim_check_report_link)
-    # assert report_link._is_link_valid(), 'Report link {0} is invalid'. report_link.get_attribute('href')
-    # report_link.click()
+    self._wait_on_lambda(lambda: self.completed_state()==True, max_wait=300)
+    #self._wait_for_element(self._get(self._sim_check_report_link), 1000)
     score = self._get(self._sim_check_report_score)
     score = score.text
     self.launch_ithenticate_page(score, paper_title)
 
-    #time.sleep(5)
-    #self.traverse_from_window()
 
   def launch_ithenticate_page(self, score, paper_title):
     report_link = self._get(self._sim_check_report_link)
@@ -206,7 +197,7 @@ class SimilarityCheckCard(BaseCard):
     ithent_score = self._get(self._ithenticate_result)
     assert score.strip() in ithent_score.text.strip()
 
-  def validate_generate_report_button(self):
+  def validate_generate_report_button(self, ):
     card_completed_state = self.completed_state()
     send_for_manual_report_button = self._iget(self._generate_report_button)
     if card_completed_state:
@@ -234,14 +225,7 @@ class SimilarityCheckCard(BaseCard):
     assert confirm_container.value_of_css_property('background-color') == 'rgb(57, 163, 41)', \
         confirm_container.value_of_css_property('background-color')
 
-  def set_automation_db(self, short_doi, auto_option='off'):
-
-    mmt_id = PgSQL().query('SELECT manuscript_manager_templates.id '
-                           'FROM papers, journals, manuscript_manager_templates '
-                           'WHERE papers.journal_id = journals.id '
-                           'AND journals.id = manuscript_manager_templates.journal_id '
-                           'AND manuscript_manager_templates.paper_type = papers.paper_type '
-                           'AND short_doi= %s;', (short_doi,))[0][0]
+  def set_automation_db(self, mmt_id, auto_option='off'):
 
     settings_id, settings_owner_id, settings_owner_type, settings_name, \
     settings_string_value, settings_type, settings_created_at, settings_updated_at, \
@@ -265,41 +249,3 @@ class SimilarityCheckCard(BaseCard):
                      (settings_id, settings_owner_id, settings_owner_type, settings_name, \
                       auto_option, settings_type, settings_created_at, settings_updated_at, \
                       settings_value_type, settings_setting_template_id))
-
-  # def get_sim_check_auto_settings(self, from_admin_mmt = False):
-  #   """
-  #   A method to return the settings for automated sending report; Similarity Check task
-  #   via a query
-  #   :param from_admin_mmt: boolean, True: if we are searching from admin Manuscript Tempate view,
-  #   False if we are searching from manuscript workflow view; default is False
-  #   :return: auto_settings (settings.string_value) from db, a string
-  #   """
-  #   if from_admin_mmt:
-  #     mmt_id = self.get_current_url().split('/')[-2]
-  #     logging.info("Manuscript Manager Template id: {0}".format(mmt_id))
-  #     mmt_id = int(mmt_id)
-  #   else:
-  #     short_doi = self.get_short_doi()
-  #     mmt_id = PgSQL().query('SELECT manuscript_manager_templates.id '
-  #                            'FROM papers, journals, manuscript_manager_templates '
-  #                            'WHERE papers.journal_id = journals.id '
-  #                            'AND journals.id = manuscript_manager_templates.journal_id '
-  #                            'AND manuscript_manager_templates.paper_type = papers.paper_type '
-  #                            'AND short_doi= %s;', (short_doi,))[0][0]
-  #
-  #   auto_settings = PgSQL().query('SELECT settings.string_value '
-  #                                'FROM task_templates, phase_templates, settings '
-  #                                'WHERE phase_templates.manuscript_manager_template_id = %s '
-  #                                'AND phase_templates.id=task_templates.phase_template_id '
-  #                                'AND settings.owner_id=task_templates.id '
-  #                                'AND task_templates.title= %s '
-  #                                'AND settings.NAME = %s;', (mmt_id, 'Similarity Check',
-  #                                                            'ithenticate_automation'))[0][0]
-  #
-  #   return auto_settings
-
-  # def get_mmt_id_from_url(self):
-  #   #https://rc.aperta.tech/admin/mmt/journals/2/manuscript_manager_templates/19/edit
-  #   mmt_id = self.get_current_url().split('/')[-2]
-  #   logging.info("Manuscript Manager Template id: {0}".format(mmt_id))
-  #   return mmt_id

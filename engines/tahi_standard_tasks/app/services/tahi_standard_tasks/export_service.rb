@@ -58,11 +58,11 @@ module TahiStandardTasks
         response = router_status_connection.get("/api/deliveries/" + export_delivery.service_id)
         { job_status: response.body["job_status"],
           job_status_description: response.body["job_status_details"],
-          published_on_prod: response.body["published_on_prod"] }
+          preprint_posted: response.body["published_on_prod"] }
       else
         { job_status: "UNKNOWN",
           job_status_description: "No service job ID provided",
-          publish_on_prod: nil }
+          preprint_posted: nil }
       end
     end
 

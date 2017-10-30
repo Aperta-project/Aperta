@@ -18,10 +18,12 @@ export default Ember.Controller.extend({
   hasPapers:         Ember.computed.notEmpty('papers'),
   hasActivePapers:   Ember.computed.notEmpty('activePapers'),
   hasInactivePapers: Ember.computed.notEmpty('inactivePapers'),
+  hasPostedPreprints: Ember.computed.notEmpty('preprints'),
   activePageNumber:   1,
   inactivePageNumber: 1,
   activePapersVisible: true,
   inactivePapersVisible: true,
+  preprintsVisible: true,
   invitationsLoading: false,
   relatedAtSort: ['relatedAtDate:desc'],
   updatedAtSort: ['updatedAt:desc'],
@@ -36,10 +38,11 @@ export default Ember.Controller.extend({
                         }),
   activePapers:         Ember.computed.filterBy('papers', 'active', true),
   inactivePapers:       Ember.computed.filterBy('papers', 'active', false),
-
+  preprints: Ember.computed.filterBy('papers', 'preprintPosted', true),
   totalActivePaperCount: Ember.computed.alias('activePapers.length'),
 
   totalInactivePaperCount: Ember.computed.alias('inactivePapers.length'),
+  totalPreprintCount: Ember.computed.alias('preprints.length'),
   activeManuscriptsHeading: Ember.computed('totalActivePaperCount', function() {
     return 'Active ' +
             pluralizeString('Manuscript', this.get('totalActivePaperCount')) +
@@ -54,7 +57,9 @@ export default Ember.Controller.extend({
              ' (' + this.get('totalInactivePaperCount') + ')';
     }
   ),
-
+  postedPreprintsHeading: Ember.computed('totalPreprintCount', function() {
+    return `Preprints (${this.get('totalPreprintCount')})`;
+  }),
   showNewManuscriptOverlay: false,
 
   hideInvitationsOverlay() {
@@ -78,6 +83,10 @@ export default Ember.Controller.extend({
 
     toggleInactiveContainer() {
       this.toggleProperty('inactivePapersVisible');
+    },
+
+    togglePreprintContainer() {
+      this.toggleProperty('preprintsVisible');
     },
 
     showInvitationsOverlay() {

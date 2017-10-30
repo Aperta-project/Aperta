@@ -30,6 +30,10 @@ class TemplateContext < Liquid::Drop
     end
   end
 
+  def self.contexts(method_name, options = {})
+    context(method_name, options.merge(many: true))
+  end
+
   def self.merge_fields
     MergeFieldBuilder.merge_fields(self)
   end

@@ -93,7 +93,6 @@ export default Ember.Component.extend({
       let attachmentBinding =
         attachmentInfo[this.get('attachmentType')].attachmentBinding;
       let manuscript = this.get(attachmentBinding);
-      this.set('paper.processing', true);
       manuscript.setProperties({
         task: this.get('task'),
         s3Url: s3Url

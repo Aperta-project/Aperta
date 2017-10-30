@@ -76,8 +76,6 @@ module.exports = function(defaults) {
   app.import(app.bowerDirectory + '/At.js/dist/css/jquery.atwho.css');
 
   // TinyMCE
-  app.import(app.bowerDirectory + '/tinymce/plugins/codesample/css/prism.css');
-
   app.import('node_modules/tinymce/tinymce.js');
   app.import('node_modules/tinymce/themes/modern/theme.js');
   app.import('node_modules/tinymce/plugins/code/plugin.js');

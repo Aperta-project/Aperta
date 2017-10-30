@@ -22,7 +22,6 @@ export default Component.extend({
   errorsPresent: alias('model.errorsPresent'),
   isFileError: equal('file.status', 'error'),
   isEditing: equal('uiState', 'edit'),
-  legendsAllowed: alias('file.paper.legendsAllowed'),
   content: Ember.Object.create(),
   answer: Ember.Object.create(),
 
@@ -60,13 +59,6 @@ export default Component.extend({
     or contact Aperta staff.`;
   }),
 
-  configEditor() {
-    if (this.get('legendsAllowed')) {
-      this.set('content.editorStyle', 'basic');
-      this.set('content.valueType', 'html');
-    }
-  },
-
   actions: {
     enterDeleteState() {
       this.set('uiState', 'delete');
@@ -87,7 +79,6 @@ export default Component.extend({
     enterEditStateIfEditable() {
       if(this.get('isEditable')) {
         this.set('uiState', 'edit');
-        this.configEditor();
       }
     },
 

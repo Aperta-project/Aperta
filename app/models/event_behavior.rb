@@ -14,11 +14,8 @@ class EventBehavior < ActiveRecord::Base
   def self.find_sti_class(type_name)
     "#{type_name.camelize}Behavior".constantize
   end
-  belongs_to :journal
 
-  def self.action_class(klass) # rubocop:disable Style/TrivialAccessors
-    @action_class = klass
-  end
+  belongs_to :journal
 
   has_attributes :event_behavior_attributes,
                  inverse_of: :event_behavior,
@@ -29,12 +26,17 @@ class EventBehavior < ActiveRecord::Base
                  }
 
   def call(user:, paper:, task:)
-    @action_klass.new.call(parameters, event_data)
+    event_params = { user: user, paper: paper, task: task }
+    self.class.action_class.new.call(event_params, behavior_params)
   end
 
-  def parameters
+  def behavior_params
     event_behavior_attributes.each_with_object({}) do |attribute, hsh|
       hsh[attribute.name] = attribute.value
     end
+  end
+
+  class << self
+    attr_accessor :action_class
   end
 end

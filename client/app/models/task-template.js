@@ -9,6 +9,7 @@ export default DS.Model.extend({
   template: DS.attr(),
   title: DS.attr('string'),
   type: Ember.computed.readOnly('kind'),
+  viewable: true, // this is needed to allow us interact with task templates in the mmt view
   kind: Ember.computed.readOnly('journalTaskType.kind'),
   allSettings: DS.attr(),
   settings: Ember.computed('allSettings', function(){

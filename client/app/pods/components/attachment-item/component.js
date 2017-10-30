@@ -100,8 +100,6 @@ export default Ember.Component.extend({
                                   this.get('fileUpload.file'),
                                   this.get('attachment'));
       }
-      // also thinking we can set back processing to false here
-      // but paper is unavialable and there's no service to inject
       this.set('fileUpload', null);
     }
   }

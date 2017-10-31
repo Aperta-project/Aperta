@@ -29,6 +29,7 @@ describe TahiStandardTasks::ReviewerMailer do
     FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
     FactoryGirl.create :review_duration_period_setting_template
     FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
+    allow(report).to receive(:invitation).and_return(invitation)
   end
 
   describe ".notify_invited" do
@@ -110,6 +111,10 @@ describe TahiStandardTasks::ReviewerMailer do
         expect(report.due_at).to_not be_nil
         expect(email.body).to match(report.due_at.to_s(:due_with_minutes))
       end
+    end
+
+    it "has a link to accept invitation" do
+      expect(email.body).to match(invitation_accept_url(token: report.invitation.token))
     end
   end
 

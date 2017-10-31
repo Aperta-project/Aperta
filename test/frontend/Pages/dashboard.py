@@ -176,7 +176,7 @@ class DashboardPage(AuthenticatedPage):
     else:
       raise(ValueError(u'Title {0} not found'.format(title)))
 
-  def accept_or_reject_invitation(self, title, role='Reviewer'):
+  def accept_or_reject_invitation(self, title, role):
     """
     Returns a random response to a given invitation
     :param title: Title of the publication for the invitation
@@ -349,14 +349,14 @@ class DashboardPage(AuthenticatedPage):
     assert cns_btn.text.lower() == 'create new submission'
     self.validate_primary_big_green_button_style(cns_btn)
 
-  def validate_reviewer_invitation_response_styles(self, paper_title, role='Reviewer'):
+  def validate_reviewer_invitation_response_styles(self, paper_title, role):
     """
     Validates elements in feedback form of reviewer_invitation_response
     :param paper_title: Title of the submitted paper
     """
     # TODO: Validate these asserts with ST
     fb_modal_title = self._get(self._rim_title)
-    assert role + ' Invitation' in fb_modal_title.text, fb_modal_title.text
+    assert '{0} Invitation'.format(role) in fb_modal_title.text, fb_modal_title.text
     # Disable due APERTA-7212
     #self.validate_modal_title_style(fb_modal_title)
     # paper_title
@@ -366,7 +366,7 @@ class DashboardPage(AuthenticatedPage):
     # Disable due APERTA-7212
     #self.validate_X_style(rim_ms_title)
     rim_ms_decline_notice = self._get(self._rim_ms_decline_notice)
-    assert 'You\'ve successfully declined the invitation to be the ' + role + ' for ' \
+    assert 'You\'ve successfully declined the invitation to be the {0} for '.format(role) \
            in rim_ms_decline_notice.text, rim_ms_decline_notice.text
     assert ' We\'re always trying to improve our invitation process and would appreciate your feedback ' \
         'below.' in rim_ms_decline_notice.text, rim_ms_decline_notice.text
@@ -379,9 +379,10 @@ class DashboardPage(AuthenticatedPage):
     #self.validate_X_style(labels[0])
     role_name1 = "reviewers" if role == 'Reviewer' else "Academic Editors"
     role_name2 = "reviewers'" if role == 'Reviewer' else "editors’"
-    assert labels[1].text.rstrip() == "We would value your suggestions of alternative "+ role_name1 +" for this " \
-                             "manuscript. Please provide "+ role_name2 +" names, institutions, and " \
-                             "email addresses if known.", labels[1].text.rstrip()
+    assert labels[1].text.rstrip() == "We would value your suggestions of alternative {0} " \
+                                      "for this manuscript. Please provide {1} names, institutions, " \
+                                      "and email addresses if known.".format(role_name1,role_name2), \
+                                      labels[1].text.rstrip()
     # Disable due APERTA-7212
     #self.validate_X_style(labels[1])
     return None

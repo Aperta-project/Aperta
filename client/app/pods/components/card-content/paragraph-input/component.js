@@ -30,7 +30,7 @@ export default Ember.Component.extend(ValidateTextInput, {
       // Since textarea will pass valueChanged an event, we're going to be nice
       // and pass the mixin the string value it's expecting.
       // If the Rich Text Editor was the one calling the action we just pass in the html as e.
-      let value = (e.target && e.target.value !== undefined) ? e.target.value : e;
+      let value = e.target ? e.target.value : e;
       this._super(value);
     }
   }

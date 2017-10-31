@@ -288,6 +288,10 @@ describe TahiStandardTasks::ReviewerMailer do
       )
       report.set_due_datetime
       report.save!
+      # Referencing "invitation" here seems odd, but a side effect is that it instantiates
+      # the link between the report, it's decision, and the latest invitation, and so let's
+      # the reminder mailer get passed an invitation variable... and the token it needs.
+      invitation
     end
     let(:report_due_at) { report.due_at.to_s(:due_with_hours) }
 
@@ -309,6 +313,10 @@ describe TahiStandardTasks::ReviewerMailer do
 
       it 'renders the View Manuscript button' do
         expect(email.body).to match("View Manuscript")
+      end
+
+      it 'renders the new-style manuscript button link' do
+        expect(email.body).to match("invitations/#{invitation.token}/accept")
       end
 
       it 'renders the signature' do

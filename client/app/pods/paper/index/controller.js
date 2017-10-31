@@ -5,7 +5,7 @@ import Discussions from 'tahi/mixins/discussions/route-paths';
 
 const {
   computed,
-  computed: { equal },
+  computed: { equal }
 } = Ember;
 
 export default Controller.extend(PaperBase, Discussions, {

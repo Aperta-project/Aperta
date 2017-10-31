@@ -3056,9 +3056,9 @@ ember-data-filter@1.13.0:
   dependencies:
     ember-cli-babel "^5.0.0"
 
-ember-data@2.12.2:
-  version "2.12.2"
-  resolved "https://registry.yarnpkg.com/ember-data/-/ember-data-2.12.2.tgz#45369001847b59e7d0ca8b183e9f57cb1f339260"
+ember-data@2.11.3:
+  version "2.11.3"
+  resolved "https://registry.yarnpkg.com/ember-data/-/ember-data-2.11.3.tgz#46ba0e8411dce6dbb52cc02a29194f265b747ef9"
   dependencies:
     amd-name-resolver "0.0.5"
     babel-plugin-feature-flags "^0.2.1"

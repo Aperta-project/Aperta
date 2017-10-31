@@ -2,6 +2,7 @@
   {{#if errorPresent}}
     <i class="fa fa-exclamation-triangle" title={{errors}}></i>
   {{/if}}
+
   {{#if readOnly}}
     {{#if shouldDisplayQuestionText}}
       <span class="{{textClassNames}}">
@@ -29,7 +30,7 @@
 
       {{#if formatted}}
         {{card-content/paragraph-input
-                       workingValue=answer.value
+                       answer=answer
                        class=inputClassNames
                        focus-out=(action "save")
                        disabled=disabled}}

@@ -11,25 +11,13 @@ export default Ember.Component.extend(ValidateTextInput, {
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool
   },
-  isRichText: Ember.computed.equal('content.valueType', 'html'),
 
-  answerValue: Ember.computed('answer.value', 'workingValue', function () {
-    // Since some parent components don't have an answer object as a property
-    // then passing the parent's component 'value' as the workingValue
-    // will help keeping actions working as usual.
-    if (this.get('workingValue') === undefined) {
-      return this.get('answer.value');
-    } else {
-      return this.get('workingValue');
-    }
-  }),
+  isRichText: Ember.computed.equal('content.valueType', 'html'),
 
   actions: {
     valueChanged(e) {
-      // this._super will be the valueChanged action from the ValidateTextInput mixin.
-      // Since textarea will pass valueChanged an event, we're going to be nice
-      // and pass the mixin the string value it's expecting.
-      // If the Rich Text Editor was the one calling the action we just pass in the html as e.
+      // super to valueChanged in ValidateTextInput mixin.
+      // a text input will have a string so we give it the string. Rich text editor won't have that and needs the event
       let value = e.target ? e.target.value : e;
       this._super(value);
     }

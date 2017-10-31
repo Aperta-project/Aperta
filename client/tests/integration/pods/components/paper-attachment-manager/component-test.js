@@ -78,3 +78,34 @@ test(`deleting a sourcefile uses a different endpoint`, function(assert) {
     assert.mockjaxRequestMade(mockUrl, 'DELETE');
   });
 });
+
+test(`replacing a paper file`, function(assert) {
+  this.set(
+    'task',
+    make('upload-manuscript-task', {
+      paper: {
+        file: { filename: 'Test1.pdf', status: 'done' }
+      }
+    })
+  );
+
+  this.set('attachmentType', 'file');
+  this.render(
+    hbs`{{paper-attachment-manager
+          filePath="paper/manuscript"
+          attachmentType=attachmentType
+          task=task
+          disabled=false
+        }}`
+  );
+
+  let mockUrl = `/api/tasks/${this.get('task.id')}/upload_manuscript`;
+  let mockInfo = { url: mockUrl, type: 'PUT', status: 201 };
+  $.mockjax(mockInfo);
+
+  assert.textPresent('a.file-link', 'Test1.pdf');
+  // this.$('.replace-attachment').click();
+  // return wait().then(() => {
+  //   assert.mockjaxRequestMade(mockUrl, 'PUT');
+  // });
+});

@@ -31,10 +31,16 @@ class LetterTemplate < ActiveRecord::Base
   end
 
   def merge_fields
-    scenario.constantize.merge_fields
+    scenario_class.merge_fields
   end
 
   private
+
+  def scenario_class
+    replacements = { 'SendbacksContext' => 'TechCheckScenario' }
+    klass = replacements[scenario] || scenario
+    klass.constantize
+  end
 
   def render_attr(template, context, sanitize: false, check_blanks: false)
     raw = Liquid::Template.parse(template)

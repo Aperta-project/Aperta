@@ -52,7 +52,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     staff_user = random.choice(editorial_users)
     logging.info('logging in as user: {0}'.format(staff_user['name']))
     dashboard_page = self.cas_login(email=staff_user['email'])
-    dashboard_page.page_ready()
+    dashboard_page._wait_on_lambda(lambda: len(dashboard_page._gets(dashboard_page._dashboard_invite_title)) >= 1)
     dashboard_page.go_to_manuscript(short_doi)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.page_ready()

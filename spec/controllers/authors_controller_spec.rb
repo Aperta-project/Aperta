@@ -130,8 +130,8 @@ describe AuthorsController do
       end
     end
 
-    context 'administrator user' do
-      it 'a PUT request from an administrator allows updating coauthor status' do
+    context 'paper-manager user' do
+      it 'a PUT request from an paper-manager allows updating coauthor status' do
         allow(user).to receive(:can?).with(:edit_authors, paper).and_return(true)
         allow(user).to receive(:can?).with(:manage_paper_authors, paper).and_return(true)
 
@@ -145,9 +145,9 @@ describe AuthorsController do
         expect(author.co_author_state_modified_by_id).to eq user.id
       end
 
-      context 'non-administrator user with edit access'
+      context 'non-paper-manager user with edit access'
 
-      it 'a PUT request from an non-administrator skips updating coauthor status' do
+      it 'a PUT request from an non-paper-managerskips updating coauthor status' do
         allow(user).to receive(:can?).with(:edit_authors, author.paper).and_return(true)
         allow(user).to receive(:can?).with(:manage_paper_authors, paper).and_return(false)
 

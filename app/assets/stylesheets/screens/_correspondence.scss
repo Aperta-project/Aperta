@@ -50,6 +50,40 @@
   }
 }
 
+.correspondence-asterisk-field {
+  font-size: 18px;
+  color: $aperta-red;
+}
+
+.correspondence-error {
+  // there's a general "margin-left:15px for error-message in _inset-field.scss"
+  // which doesn't work well with the layout of the correspondence overlay
+  margin-left: auto;
+}
+
+.correspondence-input {
+  @extend .form-control;
+  padding-top: 5px;
+  height: auto;
+  @include placeholder { color: $aperta-grey-light; };
+  margin-bottom: 5px;
+}
+
+.correspondence-label {
+  &:after {
+    content: '*';
+    position: relative;
+    color: $aperta-red;
+    font-size: 20px;
+  }
+
+  .inset-form-control-input {
+    height: auto;
+    padding-top: 26px;
+
+  }
+}
+
 .correspondence-attachment-link {
   .attachment-item {
     display: inline;

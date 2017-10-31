@@ -39,6 +39,9 @@ module TahiStandardTasks
 
       state :failed
 
+      # It's 'posted' on prod (tracked for preprints only)
+      state :preprint_posted
+
       event(:delivery_in_progress) do
         transitions from: :pending, to: :in_progress
       end
@@ -49,6 +52,10 @@ module TahiStandardTasks
 
       event(:delivery_failed) do
         transitions from: :in_progress, to: :failed, after: :save_error
+      end
+
+      event(:posted) do
+        transitions from: :delivered, to: :preprint_posted
       end
     end
 

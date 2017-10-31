@@ -8,7 +8,7 @@ export default Ember.TextField.extend({
 
   didInsertElement() {
 
-    let $picker = this.$().timepicker();
+    let $picker = this.$().timepicker({timeFormat: 'H:i'});
 
     $picker.on('changeTime', (event) => {
       this.updateTime(event);

@@ -19,6 +19,12 @@ FactoryGuy.define('card-content', {
       valueType: null,
       text: 'Here is a paragraph of unanswerable text'
     },
+    checkBox: {
+      contentType: 'check-box',
+      valueType: 'boolean',
+      defaultAnswerValue: 'false',
+      text: 'Check box default text'
+    },
     list: {
       contentType: 'bulleted-list',
       valueType: null

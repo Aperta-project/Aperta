@@ -61,6 +61,8 @@ export default DS.Model.extend({
   creator: belongsTo('user', { async: false }),
   shortDoi: attr('string'),
   aarxDoi: attr('string'),
+  aarxLink: attr('string'),
+  preprintPosted: attr('boolean'),
   doi: attr('string'),
   editable: attr('boolean'),
   editorMode: attr('string', { defaultValue: 'html' }),
@@ -89,6 +91,8 @@ export default DS.Model.extend({
   legendsAllowed: attr('boolean'),
   currentUserRoles: attr(),
   manuallySimilarityChecked: attr('boolean'),
+  preprintOptOut: attr('boolean'),
+  preprintEligible: attr('boolean'),
 
   reviewDueAt: attr('date'),
   reviewOriginallyDueAt: attr('date'),

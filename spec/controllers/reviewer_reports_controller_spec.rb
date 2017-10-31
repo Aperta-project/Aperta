@@ -44,24 +44,6 @@ describe ReviewerReportsController do
       xhr :put, :update, format: :json, id: reviewer_report.id, reviewer_report: { task_id: reviewer_report.task.id }
     end
 
-    subject(:change_due_date) do
-      xhr :put, :update, format: :json,
-                         id: reviewer_report.id,
-                         reviewer_report: {
-                           task_id: reviewer_report.task.id,
-                           due_at: reviewer_report.due_at + 5.days
-                         }
-    end
-
-    subject(:change_no_due_date) do
-      xhr :put, :update, format: :json,
-                         id: reviewer_report.id,
-                         reviewer_report: {
-                           task_id: reviewer_report.task.id,
-                           due_at: reviewer_report.due_at
-                         }
-    end
-
     it_behaves_like 'an unauthenticated json request'
 
     context 'when the user is authorized to :update the reviewer report' do
@@ -85,43 +67,6 @@ describe ReviewerReportsController do
         FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
         do_request
         expect(response.status).to eq(204)
-      end
-
-      context 'and the user updates the report without a due datetime' do
-        it 'returns a 200' do
-          FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
-          FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
-          change_no_due_date
-          expect(response.status).to eq(200)
-        end
-      end
-
-      context 'and the user with edit due date permissions updates the report including the due datetime' do
-        before do
-          allow(user).to receive(:can?)
-            .with(:edit_due_date, reviewer_report.task)
-            .and_return true
-        end
-        it 'returns a 200' do
-          FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
-          FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
-          change_due_date
-          expect(response.status).to eq(200)
-        end
-      end
-
-      context 'and the user without edit due date permissions cannot update the due datetime' do
-        before do
-          allow(user).to receive(:can?)
-            .with(:edit_due_date, reviewer_report.task)
-            .and_return false
-        end
-        it 'returns a 403' do
-          FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
-          FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
-          change_due_date
-          expect(response.status).to eq(403)
-        end
       end
     end
   end

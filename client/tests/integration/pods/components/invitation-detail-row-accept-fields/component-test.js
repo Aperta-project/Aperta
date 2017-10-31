@@ -51,7 +51,9 @@ test('it binds in the stub invitee fields, and the object is passed into the cal
     assert.equal(obj.get('lastName'), lastName);
   };
   this.set('acceptInvitation', callback);
+  this.set('cancelAccept', function() { return; });
   this.render(template);
+  this.$('.cancel').click(); // cancel button shouldn't affect outcome of the test
   this.$("input[id*='fname']").val(firstName).change();
   this.$("input[id*='lname']").val(lastName).change();
   this.$('.accept').click();

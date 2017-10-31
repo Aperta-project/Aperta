@@ -126,10 +126,12 @@ export default DS.Model.extend({
   },
 
   accept(data={}) {
-    // needs more snek, should this be in a serializer?
-    data = _.reduce(Object.keys(data), function(memo, key) { return Object.assign(memo, {[key.decamelize()]: data[key]}); }, {});
+    var decamelizedData = {};
+    ['firstName', 'lastName'].forEach((key) => {
+      decamelizedData[key.decamelize()] = data[key];
+    });
     return this.get('restless')
-    .put(`/api/invitations/${this.get('id')}/accept`, data)
+    .put(`/api/invitations/${this.get('id')}/accept`, decamelizedData)
     .then((data) => {
       this.store.pushPayload(data);
       return this;

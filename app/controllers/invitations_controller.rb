@@ -91,21 +91,12 @@ class InvitationsController < ApplicationController
 
   def accept
     requires_user_can(:manage_invitations, invitation.task) unless invitation.invitee == current_user
-    invitee = invitation.invitee
-    invitee ||= User.create(invitation_accept_params) do |user|
-      user.email = invitation.email
-      user.auto_generate_password
-      user.auto_generate_username
-    end
-    if invitee.valid?
-      invitation.reload # refresh invitation data bc user creation callbacks
-      invitation.actor = current_user
-      invitation.accept!
-      Activity.invitation_accepted!(invitation, user: current_user)
-    else
-      invitation.errors.add(:invitee, 'User creation error')
-      raise ActiveRecord::RecordInvalid, invitation
-    end
+    invitee = find_or_create_invitee
+    validate_invitee(invitee)
+    invitation.reload # refresh invitation data bc user creation callbacks
+    invitation.actor = current_user
+    invitation.accept!
+    Activity.invitation_accepted!(invitation, user: current_user)
     render json: invitation
   end
 
@@ -175,5 +166,19 @@ class InvitationsController < ApplicationController
 
   def invitation
     @invitation ||= Invitation.find(params[:id])
+  end
+
+  def find_or_create_invitee
+    invitation.invitee || User.create(invitation_accept_params) do |user|
+      user.email = invitation.email
+      user.auto_generate_password
+      user.auto_generate_username
+    end
+  end
+
+  def validate_invitee(invitee)
+    return if invitee.valid?
+    invitation.errors.add(:invitee, 'User creation error')
+    raise ActiveRecord::RecordInvalid, invitation
   end
 end

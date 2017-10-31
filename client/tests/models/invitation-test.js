@@ -38,10 +38,10 @@ test('rescind() and accept() use restless to touch endpoints', function(assert) 
     [`/api/invitations/${invitation.id}/rescind`],
     'Calls restless with rescind endpoint');
 
-  const data = { fname: 'foo', lname: 'bar'};
+  const data = { firstName: 'foo', lastName: 'bar'};
   invitation.accept(data);
   assert.spyCalledWith(fakeRestless.put,
-    [`/api/invitations/${invitation.id}/accept`, data],
+    [`/api/invitations/${invitation.id}/accept`, {first_name: 'foo', last_name: 'bar'}],
     'Calls restless with accept endpoint');
 });
 

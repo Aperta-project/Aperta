@@ -1,18 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Page object definition for the Preprint Posting Overlay
+Page object definition for the Submission Review Overlay
 """
 
 import logging
 import random
-import time
-from Base.PDF_Util import PdfUtil
-from Base.PostgreSQL import PgSQL
-import os
 
 from selenium.webdriver.common.by import By
 
+from Base.PostgreSQL import PgSQL
 from frontend.Pages.authenticated_page import AuthenticatedPage
 
 __author__ = 'gtimonina@plos.org'

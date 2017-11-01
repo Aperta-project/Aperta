@@ -365,9 +365,10 @@ class DashboardPage(AuthenticatedPage):
     # Disable due APERTA-7212
     #self.validate_X_style(rim_ms_title)
     rim_ms_decline_notice = self._get(self._rim_ms_decline_notice)
-    assert rim_ms_decline_notice.text == 'You\'ve successfully declined this invitation.'\
-        ' We\'re always trying to improve our invitation process and would appreciate your '\
-        'feedback below.', rim_ms_decline_notice.text
+    assert 'You\'ve successfully declined the invitation to be the Reviewer for ' in rim_ms_decline_notice.text, \
+        rim_ms_decline_notice.text
+    assert ' We\'re always trying to improve our invitation process and would appreciate your feedback ' \
+        'below.' in rim_ms_decline_notice.text, rim_ms_decline_notice.text
     # Disable due APERTA-7212
     #self.validate_X_style(rim_ms_decline_notice)
     labels = self._gets(self._rim_request_labels)

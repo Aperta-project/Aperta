@@ -568,7 +568,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'Sendback Reasons', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'SendbacksContext'
+        lt.scenario = 'TechCheckScenario'
         lt.subject = 'Manuscript Sendback Reasons'
         lt.to = '{{author.email}}'
         lt.body = <<-TEXT.strip_heredoc

@@ -1,7 +1,12 @@
 <td colspan="2" class="export-delivery-message">
   Export <strong>{{ delivery.humanReadableState }}</strong>. {{ delivery.errorMessage }}
   {{#if delivery.preprintDoiAssigned}}
-    <br/>Assigned preprint DOI: {{delivery.exportDoi}}
+    <br/>Assigned preprint DOI:
+    {{#if delivery.published}}
+      <a class="preprint-link" href="{{delivery.paper.aarxLink}}" target="_blank">{{delivery.exportDoi}}</a>
+    {{else}}
+      {{delivery.exportDoi}}
+    {{/if}}
   {{/if}}
 </td>
 

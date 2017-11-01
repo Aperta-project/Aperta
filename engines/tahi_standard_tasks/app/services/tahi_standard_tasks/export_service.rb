@@ -14,6 +14,7 @@ module TahiStandardTasks
     end
 
     class ExportServiceError < StandardError; end
+    class StatusError < StandardError; end
 
     attr_reader :export_delivery,
                 :paper,
@@ -52,6 +53,19 @@ module TahiStandardTasks
       end
     end
 
+    def export_status
+      if export_delivery.service_id.present?
+        response = router_status_connection.get("/api/deliveries/" + export_delivery.service_id)
+        { job_status: response.body["job_status"],
+          job_status_description: response.body["job_status_details"],
+          preprint_posted: response.body["published_on_prod"] }
+      else
+        { job_status: "UNKNOWN",
+          job_status_description: "No service job ID provided",
+          preprint_posted: nil }
+      end
+    end
+
     private
 
     def needs_preprint_doi?
@@ -65,6 +79,9 @@ module TahiStandardTasks
       # for router exports, there is an async status polling of the router service
       # that needs to complete first (see RouterUploadStatusWorker)
       export_delivery.delivery_succeeded! if destination == 'apex'
+    rescue Faraday::ClientError => e
+      response_body = JSON.parse e.response[:body]
+      export_delivery.delivery_failed!(response_body['message'])
     rescue StandardError => e
       export_delivery.delivery_failed!(e.message)
       raise
@@ -95,16 +112,51 @@ module TahiStandardTasks
     end
 
     def upload_to_router
-      RouterUploaderService.new(
-        destination: destination,
-        email_on_failure: staff_emails,
-        file_io: packager.zip_file,
-        final_filename: package_filename,
-        filenames: packager.manifest.file_list,
-        paper: paper,
-        url: router_url,
-        export_delivery_id: export_delivery.id
-      ).upload
+      # execute initial article router service POST request
+      response = router_upload_connection.post("/api/deliveries") do |request|
+        request.body = router_payload
+      end
+
+      # save job id and poll downstream article ingestion job asynchronously
+      export_delivery.service_id = response.body["job_id"]
+      export_delivery.save!
+      RouterUploadStatusWorker.perform_in(10.seconds, export_delivery.id)
+    end
+
+    def router_payload
+      {
+        metadata_filename: 'metadata.json',
+        aperta_id: aperta_id,
+        files: packager.manifest.file_list.join(','),
+        destination: export_delivery.destination,
+        journal_code: paper.journal.doi_journal_abbrev,
+        # The archive_filename is not a string but the file itself.
+        archive_filename: Faraday::UploadIO.new(packager.zip_file, '')
+      }
+    end
+
+    def router_upload_connection
+      Faraday.new(url: router_url) do |faraday|
+        faraday.response :json
+        faraday.request :multipart
+        faraday.request :url_encoded
+        faraday.use :gzip
+        faraday.use Faraday::Response::RaiseError
+        faraday.adapter :net_http
+      end
+    end
+
+    def router_status_connection
+      Faraday.new(url: TahiEnv.router_url) do |faraday|
+        faraday.response :json
+        faraday.request :url_encoded
+        faraday.use Faraday::Response::RaiseError
+        faraday.adapter :net_http
+      end
+    end
+
+    def aperta_id
+      "aperta.#{paper.id.to_s.rjust(7, '0')}"
     end
   end
 end

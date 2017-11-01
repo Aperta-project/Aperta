@@ -12,7 +12,7 @@ from Base.Decorators import MultiBrowserFixture
 from frontend.common_test import CommonTest
 from .Pages.manuscript_viewer import ManuscriptViewerPage
 from .Pages.workflow_page import WorkflowPage
-from Base.Resources import staff_admin_login, internal_editor_login, ascii_only_users
+from Base.Resources import staff_admin_login, internal_editor_login, ascii_only_users, creator_login21, creator_login22
 from frontend.Tasks.additional_information_task import AITask
 
 __author__ = 'sbassi@plos.org'
@@ -58,7 +58,11 @@ class MetadataVersioningTest(CommonTest):
                'q3_child_answer': ['','n/a', ''],
                'q4': 'New Collection',
                'q5': 'More Short Title'}
-    creator_user = random.choice(ascii_only_users)
+    # excluding non_orcid_users_logins (2) from test as test is failing on Author card completion
+    users_without_non_orchid = ascii_only_users.copy()
+    users_without_non_orchid.remove(creator_login21)
+    users_without_non_orchid.remove(creator_login22)
+    creator_user = random.choice(users_without_non_orchid)
     logging.info('Logging in as {0}'.format(creator_user))
     dashboard_page = self.cas_login(email=creator_user['email'])
     # With a dashboard with several articles, this takes time to load and timeout

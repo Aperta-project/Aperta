@@ -457,4 +457,14 @@ describe User do
       end
     end
   end
+
+  describe '.auto_generate_username' do
+    let(:user) { User.new(first_name: 'foo', last_name: 'bar') }
+    let(:random_string) { 'abc123' }
+    it 'sets the user name to the first initial, last name and random string' do
+      expect(SecureRandom).to receive(:hex).with(6).and_return(random_string)
+      user.auto_generate_username
+      expect(user.username).to eq("#{user.first_name[0]}_#{user.last_name}_#{random_string}")
+    end
+  end
 end

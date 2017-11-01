@@ -68,7 +68,7 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
 
     context 'when prefixing a role with `-`' do
       let(:csv) do
-        [[nil, 'jane@example.edu', '-Staff Admin', nil, journal.name]]
+        [['Jane Doe', 'jane@example.edu', '-Staff Admin', nil, journal.name]]
       end
 
       it 'should remove the users role assignment' do
@@ -82,7 +82,7 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
 
     context 'when Role field is set to None' do
       let(:csv) do
-        [[nil, 'jane@example.edu', 'None', nil, journal.name]]
+        [['Jane Doe', 'jane@example.edu', 'None', nil, journal.name]]
       end
       let(:paper) { FactoryGirl.create(:paper, journal: journal) }
       let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
@@ -122,7 +122,7 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
   context 'with a user unassigned as site admin' do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
     let(:csv) do
-      [[nil, user.email, '-Site Admin', nil, journal.name]]
+      [['Jane Doe', user.email, '-Site Admin', nil, journal.name]]
     end
 
     it 'removes the user from the Site Admin role' do
@@ -133,7 +133,7 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
   end
 
   context 'a user without a name' do
-    let(:csv) { [[nil, 'jane@example.edu', Role::USER_ROLE, nil, journal.name]] }
+    let(:csv) { [['Jane Doe', 'jane@example.edu', Role::USER_ROLE, nil, journal.name]] }
 
     it 'should work' do
       expect { run_rake_task }.to change { User.count }.by 1

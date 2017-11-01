@@ -1,7 +1,7 @@
 class PaperSerializer < LitePaperSerializer
   attributes :abstract, :body, :current_user_roles, :doi, :gradual_engagement,
              :legends_allowed, :links, :manually_similarity_checked,
-             :paper_type, :short_title, :submitted_at, :versions_contain_pdf,
+             :paper_type, :short_title, :submitted_at, :first_submitted_at, :versions_contain_pdf,
              :preprint_eligible?
 
   %i(supporting_information_files).each do |relation|

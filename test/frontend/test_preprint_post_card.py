@@ -45,53 +45,44 @@ class PPCardTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True)
+    self.create_article(journal='PLOS Wombat', type_='Preprint Eligible Two', random_bit=True)
     dashboard_page.restore_timeout()
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     paper_canonical_url = manuscript_page.get_current_url().split('?')[0]
     paper_id = paper_canonical_url.split('/')[-1]
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
-    manuscript_page.complete_task('Upload Manuscript')
-    manuscript_page.complete_task('Title And Abstract')
-    manuscript_page.click_submit_btn()
-    manuscript_page.confirm_submit_btn()
-    # Now we get the submit confirmation overlay
-    # Sadly, we take time to switch the overlay
-    time.sleep(2)
-    manuscript_page.close_modal()
-    # logout and enter as editor
-    manuscript_page.logout()
+    manuscript_page.click_task('Preprint Posting')
+    pp_card = PrePrintPostCard(self.getDriver())
+    pp_card.card_ready()
+    #Validating State: Opt in Button is selected
+    pp_card.is_opt_in_button_selected()
+    #Changing State to Opt out: Opt out Button is selected
+    pp_card.check_opt_out_button()
+    pp_card.is_opt_out_button_selected()
+    pp_card.click_completion_button()
+    pp_card.completed_state()
+    pp_card.logout()
+
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
     self.cas_login(email=editorial_user['email'])
     paper_workflow_url = '{0}/workflow'.format(paper_canonical_url)
     self._driver.get(paper_workflow_url)
     workflow_page = WorkflowPage(self.getDriver())
-    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-    # otherwise failures
-    time.sleep(4)
-    # Check if PPC card is there, if not, add it.
-    if not workflow_page.is_card('Preprint Posting'):
-        workflow_page.page_ready()
-    workflow_page.add_card('Preprint Posting')
-    pp_card = PrePrintPostCard(self.getDriver())
     workflow_page.click_preprint_posting_card()
-    pp_card.validate_styles()
-    pp_card.card_ready()
-    pp_card.is_yes_button_checked()
-    pp_card.click_completion_button()
-    pp_card.completed_state()
-    # Checking elements are not clickable
+    pp_card = PrePrintPostCard(self.getDriver())
+    #Validating State: Opt out Button is selected
+    pp_card.is_opt_out_button_selected()
+    #Validating buttons are disabled
     pp_card.elementstate()
-    pp_card.click_close_button_bottom()
-    workflow_page.logout()
-    external_editorial_user=random.choice(external_editorial_users)
-    logging.info('Logging in as {0}'.format(external_editorial_user))
-    self.cas_login(email=external_editorial_user['email'])
-    paper_workflow_url = '{0}/workflow'.format(paper_canonical_url)
-    self._driver.get(paper_workflow_url)
-    pp_card.check_for_flash_error()
+    #Making changes
+    pp_card.click_completion_button()
+    pp_card.validate_styles()
+    #Changing State: Opt in button will be selected
+    pp_card.check_opt_in_button()
+    pp_card.is_opt_in_button_selected()
+
 
     if __name__ == '__main__':
       CommonTest._run_tests_randomly()

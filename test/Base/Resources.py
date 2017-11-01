@@ -1914,7 +1914,7 @@ pp_optin_mmt = {'name'              : 'Preprint Eligible',
                 'preprint_eligible' : True
                 }
 
-pp_card_mmt = {'name'              : 'Preprint Elgible',
+pp_card_mmt = {'name'              : 'Preprint Eligible Two',
                 'user_tasks'        : ['Upload Manuscript'],
                 'staff_tasks'       : ['Assign Team', 'Editor Discussion', 'Final Tech Check',
                                        'Invite Academic Editor', 'Invite Reviewers', 'Preprint Posting',

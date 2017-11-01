@@ -49,15 +49,15 @@ class PrePrintPostCard(BaseCard):
     assert intro_text.text == "Benefit: Establish priority", intro_text.text
     assert "Benefit: Gather feedback" in benefits_text.text,benefits_text.text
     assert "Benefit: Cite for funding" in benefits_text.text,benefits_text.text
-    opt_in_checkbox = self._get(self._yes_radio_button)
-    assert opt_in_checkbox.is_selected(), 'Default value for Preprint Posting Card should be selected, it isn\'t'
+   # opt_in_checkbox = self._get(self._yes_radio_button)
+   # assert opt_in_checkbox.is_selected(), 'Default value for Preprint Posting Card should be selected, it isn\'t'
     assert self._get(self._card_opt_in_content_label).text == "Yes, I want to accelerate research by publishing a preprint ahead of peer review"
     assert self._get(self._card_opt_out_content_label).text == "No, I do not want my article to appear online ahead of the reviewed article"
     self.validate_radio_button_label(self._get(self._card_opt_in_content_label))
     self.validate_radio_button_label(self._get(self._card_opt_out_content_label))
 
 
-  def is_yes_button_checked(self):
+  def is_opt_in_button_selected(self):
     """
     Checks if yes radio button for publishing a preprint is selected
     :return: Bool
@@ -68,14 +68,38 @@ class PrePrintPostCard(BaseCard):
     else:
       return False
 
+  def is_opt_out_button_selected(self):
+    """
+    Checks if no radio button for publishing a preprint is selected
+    :return: Bool
+    """
+    button_check = self._get(self._no_radio_button)
+    if button_check.is_selected():
+      return True
+    else:
+      return False
+
   def check_opt_out_button(self):
     """
    Checks if no button for opting out publishing a preprint is selected
     """
+    optOutButton= self._get(self._no_radio_button)
+    self._wait_for_element(optOutButton)
     self._get(self._no_radio_button).click()
-    time.sleep(2)
+    time.sleep(3)
     button_opt_out_check = self._get(self._no_radio_button)
     assert button_opt_out_check.is_selected()
+
+  def check_opt_in_button(self):
+    """
+   Checks if yes button for opting out publishing a preprint is selected
+    """
+    optInButton= self._get(self._yes_radio_button)
+    self._wait_for_element(optInButton)
+    self._get(self._yes_radio_button).click()
+    time.sleep(3)
+    button_opt_in_check = self._get(self._yes_radio_button)
+    assert button_opt_in_check.is_selected()
 
   def elementstate(self):
 

@@ -4,7 +4,7 @@
   {{/if}}</label>
 
 {{input
-  value=answer.value
+  value=(readonly answerProxy)
   class="form-control"
   change=(action "valueChanged")
   input=(action "valueChanged")

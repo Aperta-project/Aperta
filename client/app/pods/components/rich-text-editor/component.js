@@ -70,12 +70,8 @@ export default Ember.Component.extend({
 
   hasFocus: false,
 
-  init() {
-    this._super(...arguments);
-    this.set('editorValue', this.get('value'));
-  },
-
   editorIsEnabled: Ember.observer('disabled', function() {
+    this.set('editorValue', this.get('value'));
     if (!this.get('disabled')) {
       Ember.run.scheduleOnce('afterRender', this, this.postRender);
     }

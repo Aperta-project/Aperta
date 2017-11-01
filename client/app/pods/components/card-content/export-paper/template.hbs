@@ -1,15 +1,19 @@
-<button class="button-primary
-               button--green
-               send-to-apex-button
-               {{if disabled "disabled"}}"
-        {{action "sendToApex"}}>
-  {{{content.label}}}
-</button>
+<label class="card-form-element">
+  <button class="button-primary
+                 button--green
+                 send-to-apex-button
+                 {{if disabled 'disabled'}}"
+          {{action "sendToApex"}}>
+
+    <span class="card-form-element--label">
+      {{{content.label}}}
+    </span>
+  </button>
+</label>
 
 {{#if task.exportDeliveries}}
   <div class="export-history">
     <h3 class="export-history-header">{{capitalize destination}} Export History</h3>
-
     {{export-group exports=task.exportDeliveries}}
   </div>
 {{/if}}

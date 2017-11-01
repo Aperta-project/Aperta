@@ -1,44 +1,45 @@
-{{! Both label and text}}
-{{#if (and hasText canBeLabeled)}}
-  <p class="content-text">
-    {{{content.text}}}
-  </p>
+{{#if (and hasText canBeLabeled)}} {{! Both label and text}}
+  <span class="card-form-text">{{{content.text}}}</span>
   {{#if canBeLabeled}}
-    <label class="content-label">
-      {{{content.label}}}
-      {{#if content.isRequired}}
-        <span class="required-field"><i class="fa fa-asterisk"></i></span>
-      {{/if}}
+    <label class="card-form-element">
+      <div class="card-form-element--label">
+        <span class="card-form-text">{{{content.label}}}</span>
+        {{partial "required-field"}}
+      </div>
       {{partial "card-content-component"}}
     </label>
   {{else}}
     {{partial "card-content-component"}}
   {{/if}}
-{{! Text no label}}
-{{else if hasText}}
-  <p class="content-text">
-    {{{content.text}}}
-    {{#if content.isRequired}}
-      <span class="required-field"><i class="fa fa-asterisk"></i></span>
-    {{/if}}
-  </p>
-  {{partial "card-content-component"}}
-{{! Label no text}}
-{{else if canBeLabeled}}
-  <label class="content-label">
-    {{{content.label}}}
-    {{#if content.isRequired}}
-      <span class="required-field"><i class="fa fa-asterisk"></i></span>
-    {{/if}}
+
+{{else if hasText}} {{! Text, no label}}
+  <label class="card-form-element">
+    <span class="card-form-element--label">
+      <span class="card-form-text">{{{content.text}}}</span>
+      {{partial "required-field"}}
+    </span>
     {{partial "card-content-component"}}
   </label>
-{{! Neither label nor text, but required}}
-{{else}}
+
+{{else if canBeLabeled}} {{! Label, no text}}
+  <label class="card-form-element">
+    <span class="card-form-element--label">
+      <span class="card-form-text">{{{content.label}}}</span>
+      {{partial "required-field"}}
+    </span>
+    {{partial "card-content-component"}}
+  </label>
+
+{{else}} {{! Neither label nor text, but required}}
   {{#if (and content.isRequired (not hasLabel) (not hasText))}}
-    <p class="content-label">
-      This field is required.
-      <span class="required-field"><i class="fa fa-asterisk"></i></span>
-    </p>
+    <label class="card-form-element">
+      <span class="card-form-element--label">
+        <span class="card-form-text">This field is required.</span>
+        {{partial "required-field"}}
+      </span>
+      {{partial "card-content-component"}}
+    </label>
+  {{else}}
+    {{partial "card-content-component"}}
   {{/if}}
-  {{partial "card-content-component"}}
 {{/if}}

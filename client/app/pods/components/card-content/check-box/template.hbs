@@ -1,5 +1,5 @@
-<div class="checkbox">
-  <label class='content-label'>
+<div class="card-checkbox">
+  <label class="card-form-element">
     {{check-box
       name=name
       checked=answer.value
@@ -10,12 +10,12 @@
     }}
 
     {{#if content.label}}
-      <span>{{{content.label}}}</span>
+      <span class="card-form-element--label">
+      {{{content.label}}}
+      </span>
     {{/if}}
 
-    {{#if content.isRequired}}
-      <span class="required-field"><i class="fa fa-asterisk"></i></span>
-    {{/if}}
+    {{partial "required-field"}}
   </label>
 </div>
 

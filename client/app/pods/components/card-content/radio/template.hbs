@@ -1,7 +1,7 @@
-<div>
+<div class="card-radio">
   {{#if isText}}
     {{#each content.possibleValues as |opt index|}}
-      <label class="option">
+      <label class="card-form-element">
         {{radio-button
           selection=answer.value
           value=opt.value
@@ -10,13 +10,13 @@
           action=(action "valueChanged")
         }}
 
-        <span class="card-content-radio-label">
+        <span class="card-form-element--label">
           {{{opt.label}}}
         </span>
       </label>
     {{/each}}
   {{else }}
-    <label class="option">
+    <label class="card-form-element">
       {{radio-button
         selection=answer.value
         value=true
@@ -25,10 +25,10 @@
         action=(action "valueChanged")
       }}
 
-      <span class="card-content-radio-label">Yes</span>
+      <span class="card-form-element--label">Yes</span>
     </label>
 
-    <label class="option">
+    <label class="card-form-element">
       {{radio-button
         selection=answer.value
         value=false
@@ -37,7 +37,7 @@
         action=(action "valueChanged")
       }}
 
-      <span class="card-content-radio-label">No</span>
+      <span class="card-form-element--label">No</span>
     </label>
   {{/if}}
 </div>

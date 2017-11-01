@@ -23,8 +23,8 @@ accepted-file-type = element possible-value {
   attribute value { file-type }
 }
 
-allow-annotations      = attribute allow-annotations     { "true" | "false" }
-required-field         = attribute required-field        { "true" | "false" }
+allow-annotations      = attribute allow-annotations   { "true" | "false" }
+required-field         = attribute required-field      { "true" | "false" }
 default-answer-boolean = element default-answer-value  { "true" | "false" }
 default-answer-text    = element default-answer-value  { text }
 

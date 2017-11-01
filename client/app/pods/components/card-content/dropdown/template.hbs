@@ -1,9 +1,9 @@
 {{#if content.label}}
-  <label class="content-label" {{action "toggleDropdown"}}>
-    {{{content.label}}}
-    {{#if content.isRequired}}
-      <span class="required-field"><i class="fa fa-asterisk"></i></span>
-    {{/if}}
+  <label class="card-form-element" {{action "toggleDropdown"}}>
+    <div class="card-form-element--label">
+      <span class="card-form-text">{{{content.label}}}</span>
+      {{partial "required-field"}}
+    </div>
 
     {{#power-select
         options=content.possibleValues

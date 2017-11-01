@@ -1,4 +1,4 @@
-{{#if (or showDescription (or preview (not disabled)))}}
+{{#if (or showDescription preview (not disabled))}}
   <p class="description">
     {{{description}}}
   </p>
@@ -36,8 +36,13 @@
 </div>
 
 {{#if showAddButton}}
-  <div class="button-secondary button--green fileinput-button {{if disableAddButton "button--disabled"}}">
-    {{buttonText}}
+  <label class="card-form-element">
+    <div class="card-form-element--label">
+      <span class="card-form-text button-secondary button--green fileinput-button {{if disableAddButton "button--disabled"}}">
+        {{{buttonText}}}
+      </span>
+      {{partial "required-field"}}
+    </div>
     <div class="{{if uploadInProgress "hidden"}}">
       {{file-uploader class="add-new-attachment"
                          accept=accept
@@ -51,6 +56,7 @@
                          done=(action "uploadFinished")
                          start=(action "fileAdded")}}
     </div>
-  </div>
+  </label>
 {{/if}}
+
 <div>{{card-content/validation-errors errors=answer.readyIssuesArray}}</div>

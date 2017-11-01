@@ -41,8 +41,8 @@
       <span class="card-form-text button-secondary button--green fileinput-button {{if disableAddButton "button--disabled"}}">
         {{{buttonText}}}
       </span>
-      {{partial "required-field"}}
     </div>
+
     <div class="{{if uploadInProgress "hidden"}}">
       {{file-uploader class="add-new-attachment"
                          accept=accept

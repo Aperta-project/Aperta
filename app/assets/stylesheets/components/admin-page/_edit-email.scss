@@ -58,13 +58,14 @@
   }
 }
 
-.required-field-label:after {
+.required-field-label:after{
+  content: '*';
   color: $aperta-red;
 }
 
 .top-marg-10 { margin-top: 10px; }
 
-.name-input-size {
+.name-input-size { 
   width: 500px;
   height: 50px;
 }

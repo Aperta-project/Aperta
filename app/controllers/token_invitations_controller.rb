@@ -1,15 +1,22 @@
 # Serves as the method for non-users to decline without having to sign in.
 class TokenInvitationsController < ApplicationController
   before_action :redirect_if_logged_in, except: :accept
-  before_action :redirect_unless_declined, except: [:show, :accept]
-  before_action :redirect_if_inactive, only: [:show, :accept]
+  before_action :redirect_if_inactive, only: [:accept]
   before_action :ensure_user!, only: [:accept], unless: :current_user
 
   # rubocop:disable Style/AndOr, Metrics/LineLength
   def show
-    redirect_to root_path and return if invitation.accepted?
+    render json: invitation, root: 'token-invitation', serializer: InvitationIndexSerializer
+  end
 
-    assign_template_vars
+  def update
+    invitation.update_attributes(invitation_update_params.except(:state))
+    if invitation.invited? && invitation_update_params[:state] == 'declined'
+      invitation.decline!
+    else
+      invitation.save
+    end
+    render json: invitation, root: 'token-invitation', serializer: InvitationIndexSerializer
   end
 
   def accept
@@ -24,10 +31,8 @@ class TokenInvitationsController < ApplicationController
 
   private
 
-  def assign_template_vars
-    @invitation = invitation
-    @paper = invitation.task.paper
-    @journal_logo_url = @paper.journal.logo_url
+  def invitation_update_params
+    params.require(:token_invitation).permit(:state, :decline_reason, :reviewer_suggestions)
   end
 
   def redirect_if_inactive
@@ -42,15 +47,8 @@ class TokenInvitationsController < ApplicationController
     redirect_to root_path and return unless invitation.declined?
   end
 
-  def feedback_params
-    params
-      .require(:invitation)
-      .permit(:decline_reason,
-        :reviewer_suggestions)
-  end
-
   def token
-    params[:token] || params[:invitation][:token]
+    params[:token] || params.dig(:token_invitation, :token) || params[:id]
   end
 
   def invitation

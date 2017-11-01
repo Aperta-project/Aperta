@@ -2,7 +2,7 @@
                       outAnimationComplete=(action "hideInvitationsOverlay")
                       title="Aperta"
                       wormhole=false
-                      overlayClass="voucher-invitations-overlay"
+                      overlayClass="invitations-overlay"
                       enableClose=false
                       as |overlay|}}
     {{#if declineDone}}
@@ -17,7 +17,8 @@
     {{else}}
       {{invitations-x invitations=invitations
                       loading=invitationsLoading
-                      accept=(action "acceptVoucherInvitation")
-                      decline=(action "declineVoucherInvitation")}}
+                      accept=(action "acceptInvitation")
+                      decline=(action "declineInvitation")
+                      acquireFeedback=(action "saveInvitation")}}
     {{/if}}
 {{/overlay-fullscreen}}

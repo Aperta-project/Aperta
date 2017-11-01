@@ -50,6 +50,28 @@
       </div>
     </div>
 
+    {{#if legendsAllowed}}
+      <div class="flex-group">
+        <div class="flex-element">
+          {{card-content/paragraph-input
+            class="form-control si-file-title-input"
+            content=content
+            answer=answer
+            workingValue=file.title}}
+        </div>
+      </div>
+
+      <div class="flex-group">
+        <div class="flex-element">
+          {{card-content/paragraph-input
+            class="form-control si-file-caption-textbox"
+            content=content
+            answer=answer
+            workingValue=file.caption}}
+        </div>
+      </div>
+    {{/if}}
+
     <label class="si-file-publishable-checkbox">{{input type="checkbox" checked=file.publishable}} For publication</label>
 
     <div class="si-file-actions">
@@ -82,6 +104,14 @@
     <div class="si-file-title">
       {{file.label}} {{file.category}}
     </div>
+
+    {{!-- legendsAllowed is effectively a datemarker for May,9th
+      see APERTA-10180 and APERTA-8412--}}
+    {{#if legendsAllowed}}
+      <div class="si-file-title">
+        {{{file.title}}}
+      </div>
+    {{/if}}
 
     {{#if file.caption}}
       <div class="si-file-caption">{{{file.caption}}}</div>

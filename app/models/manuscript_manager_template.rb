@@ -13,4 +13,8 @@ class ManuscriptManagerTemplate < ActiveRecord::Base
   def papers
     journal.papers.where(paper_type: paper_type)
   end
+
+  def task_template_by_kind(kind)
+    task_templates.joins(:journal_task_type).find_by(journal_task_types: { kind: kind })
+  end
 end

@@ -83,7 +83,7 @@ module Typesetter
     end
 
     def early_article_posting
-      task('TahiStandardTasks::EarlyPostingTask').try(:answer_for, 'early-posting--consent').try(:value) || false
+      custom_task('Early Version').try(:answer_for, 'early-posting--consent').try(:value) || false
     end
 
     def custom_card_fields

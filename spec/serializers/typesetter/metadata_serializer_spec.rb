@@ -21,13 +21,20 @@ describe Typesetter::MetadataSerializer do
       short_title: '<p>my <pre><span>paper</span></pre> <u><span style="omg: so-much-garbage\">short</span></u></p>'
     )
   end
-  let(:early_posting_task) { FactoryGirl.create(:early_posting_task, paper: paper) }
+
+  let!(:early_posting_custom_task) do
+    card = FactoryGirl.create(:card, :versioned, name: 'Early Version', journal: journal)
+    card_version = card.latest_published_card_version
+    card_version.card_contents.last.update!(ident: 'early-posting--consent', value_type: "boolean")
+    FactoryGirl.create(:custom_card_task, title: 'Early Version', card_version: card_version, paper: paper)
+  end
+
   let(:metadata_tasks) do
     [
       FactoryGirl.create(:competing_interests_task, paper: paper),
       FactoryGirl.create(:financial_disclosure_task, paper: paper),
       FactoryGirl.create(:production_metadata_task, paper: paper),
-      early_posting_task
+      early_posting_custom_task
     ]
   end
   let(:our_question) do
@@ -39,7 +46,6 @@ describe Typesetter::MetadataSerializer do
   let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
 
   before do
-    CardLoader.load('TahiStandardTasks::EarlyPostingTask')
     paper.phases.first.tasks.push(*metadata_tasks)
   end
 
@@ -158,7 +164,7 @@ describe Typesetter::MetadataSerializer do
     context 'with an answer' do
       let!(:answer) do
         card_content = CardContent.where(ident: 'early-posting--consent').first
-        FactoryGirl.create(:answer, card_content: card_content, owner: early_posting_task, value: answer_value)
+        FactoryGirl.create(:answer, card_content: card_content, owner: early_posting_custom_task, value: answer_value)
       end
       context 'that is true' do
         let(:answer_value) { true }

@@ -34,7 +34,6 @@ describe ReviewerReportsController do
   end
 
   describe 'PUT #update' do
-    let(:due_datetime) { FactoryGirl.create(:due_datetime, :in_5_days) }
     let(:reviewer_report) do
       FactoryGirl.create(:reviewer_report,
                          due_datetime: due_datetime)
@@ -56,13 +55,9 @@ describe ReviewerReportsController do
         allow(user).to receive(:can?)
           .with(:view, reviewer_report.task)
           .and_return true
-
-        allow(user).to receive(:can?)
-          .with(:edit_due_date, reviewer_report.task)
-          .and_return false
       end
 
-      it 'returns a 204' do
+      it 'updates a reviewer report' do
         FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
         FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
         do_request

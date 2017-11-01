@@ -195,6 +195,7 @@ Tahi::Application.routes.draw do
 
     resources :related_articles, only: [:show, :create, :update, :destroy]
     resources :reviewer_reports, only: [:show, :update]
+    resources :due_datetime, only: [:update]
     resources :tasks, only: [:update, :create, :show, :destroy] do
       get :nested_questions
       get :nested_question_answers

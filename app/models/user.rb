@@ -59,8 +59,8 @@ class User < ActiveRecord::Base
     uniqueness: { case_sensitive: false },
     length: { maximum: 255 }
   validates :email, format: Devise.email_regexp
-  validates :first_name, length: { maximum: 255 }
-  validates :last_name, length: { maximum: 255 }
+  validates :first_name, presence: true, length: { maximum: 255 }
+  validates :last_name, presence: true, length: { maximum: 255 }
 
   validates :ned_id, uniqueness: true, allow_nil: true
   validates_with NedValidator
@@ -112,6 +112,11 @@ class User < ActiveRecord::Base
     if password_required?
       self.password = SecureRandom.urlsafe_base64(length - 1)
     end
+  end
+
+  def auto_generate_username
+    # 1 in 16M chance of collision, will trigger validation error
+    self.username = [first_name[0], last_name, SecureRandom.hex(6)].join('_')
   end
 
   def journal_admin?(journal)

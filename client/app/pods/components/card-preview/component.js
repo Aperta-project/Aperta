@@ -73,14 +73,15 @@ export default Ember.Component.extend({
 
   showDeleteButton: Ember.computed.and('canRemoveCard', 'notReviewerReportTask'),
 
-  notViewable: Ember.computed.not('task.viewable'),
+  notViewable: Ember.computed.not('viewable'),
+  viewable: Ember.computed.or('taskTemplate', 'task.viewable'),
 
   actions: {
     viewCard() {
-      if (!this.get('notViewable')) {
-        let action = this.get('action');
-        if (action) { action(); }
-      }
+      if (this.get('notViewable')) { return; }
+
+      let action = this.get('action');
+      if (action) { action(); }
     },
 
     promptDelete() {

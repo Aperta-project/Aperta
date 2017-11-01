@@ -1,20 +1,5 @@
 # Provides a template context for the Sendback Reasons Letter Template
-class SendbacksContext < TemplateContext
-  def self.complex_merge_fields
-    [{ name: :manuscript, context: PaperContext },
-     { name: :journal, context: JournalContext },
-     { name: :author, context: UserContext },
-     { name: :sendback_reasons, context: AnswerContext, many: true }]
-  end
-
-  def manuscript
-    @manuscript ||= PaperContext.new(task.paper)
-  end
-
-  def journal
-    @journal ||= JournalContext.new(task.journal)
-  end
-
+class TechCheckScenario < PaperScenario
   def intro
     task.answer_for('tech-check-email--email-intro').value
   end
@@ -49,6 +34,10 @@ class SendbacksContext < TemplateContext
   end
 
   private
+
+  def manuscript_object
+    task.paper
+  end
 
   def task
     @object

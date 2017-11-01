@@ -29,6 +29,7 @@ describe TahiStandardTasks::ReviewerMailer do
     FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
     FactoryGirl.create :review_duration_period_setting_template
     FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
+    allow(report).to receive(:invitation).and_return(invitation)
   end
 
   describe ".notify_invited" do
@@ -110,6 +111,10 @@ describe TahiStandardTasks::ReviewerMailer do
         expect(report.due_at).to_not be_nil
         expect(email.body).to match(report.due_at.to_s(:due_with_minutes))
       end
+    end
+
+    it "has a link to accept invitation" do
+      expect(email.body).to match(invitation_accept_url(token: report.invitation.token))
     end
   end
 
@@ -288,6 +293,10 @@ describe TahiStandardTasks::ReviewerMailer do
       )
       report.set_due_datetime
       report.save!
+      # Referencing "invitation" here seems odd, but a side effect is that it instantiates
+      # the link between the report, it's decision, and the latest invitation, and so let's
+      # the reminder mailer get passed an invitation variable... and the token it needs.
+      invitation
     end
     let(:report_due_at) { report.due_at.to_s(:due_with_hours) }
 
@@ -309,6 +318,10 @@ describe TahiStandardTasks::ReviewerMailer do
 
       it 'renders the View Manuscript button' do
         expect(email.body).to match("View Manuscript")
+      end
+
+      it 'renders the new-style manuscript button link' do
+        expect(email.body).to match("invitations/#{invitation.token}/accept")
       end
 
       it 'renders the signature' do

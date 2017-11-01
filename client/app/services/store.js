@@ -48,7 +48,11 @@ export default DS.Store.extend({
   },
 
   allTaskClasses() {
-    return Object.keys(this._identityMap._map).filter((k) => {
+    var allModelClasses = _.map(this.typeMaps, function(typeMap){
+      return _.pluck(typeMap.records, 'modelName');
+    }).flatten().uniq();
+
+    return allModelClasses.filter((k) => {
       return k.match(/-task/);
     });
   },

@@ -21,7 +21,6 @@ module MailLog
           message_id: message.message_id,
           subject: message.subject,
           body: message_body,
-          sent_at: DateTime.now.in_time_zone,
           # we need to do this instead of mail.without_attachments!
           # because without_attachments! mutates the message object
           raw_source: Mail.new(message.encoded).without_attachments!.to_s,

@@ -21,7 +21,7 @@ feature "Adding collaborators", js: true do
     collaborators_overlay.save
 
     expect(edit_paper).to have_no_application_error
-    expect(page).to have_content "Upload Manuscript"
+    expect(page).to have_content "Figures"
 
     collaborators_overlay = edit_paper.show_contributors
     expect(collaborators_overlay).to have_collaborators(user)
@@ -31,7 +31,7 @@ feature "Adding collaborators", js: true do
     collaborators_overlay.save
 
     expect(edit_paper).to have_no_application_error
-    expect(page).to have_content "Upload Manuscript"
+    expect(page).to have_content "Figures"
 
     collaborators_overlay = edit_paper.show_contributors
     expect(collaborators_overlay).to have_no_collaborator(user)

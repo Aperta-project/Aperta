@@ -4,10 +4,9 @@ export default Ember.Mixin.create({
   answerProxy: null,
 
   init() {
-    // in case this input has no answer, a workingValue needs to be manually passed to the component
+    // Answerproxy avoids having the input 2-way bind with answer.value
     this._super(...arguments);
-    let value = this.get('answer.value');
-    this.set('answerProxy', value);
+    this.set('answerProxy', this.get('answer.value'));
   },
 
   actions: {
@@ -20,7 +19,7 @@ export default Ember.Mixin.create({
       // If there were no previous errors, don't save to rails while typing
       if (this.get('answer.hasErrors')) {
         let action = this.get('valueChanged');
-        if (action) { action(this.get('answerProxy')); }
+        if (action) { action(newValue); }
       }
     },
 

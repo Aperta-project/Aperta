@@ -28,20 +28,12 @@
         <span class="text-field-title">{{label}}</span>
       {{/if}}
 
-      {{#if formatted}}
-        {{card-content/paragraph-input
-                       answer=answer
-                       class=inputClassNames
-                       focus-out=(action "save")
-                       disabled=disabled}}
-      {{else}}
-        {{input name=ident
-                value=answer.value
-                class=inputClassNames
-                placeholder=placeholderText
-                type=type
-                disabled=disabled}}
-      {{/if}}
+      {{input name=ident
+              value=answer.value
+              class=inputClassNames
+              placeholder=placeholderText
+              type=type
+              disabled=disabled}}
     </div>
 
   {{/if}}

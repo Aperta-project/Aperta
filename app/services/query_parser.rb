@@ -146,12 +146,12 @@ class QueryParser < QueryLanguageParser
   end
 
   add_two_part_expression('TASK', 'IS UNASSIGNED') do |task, _|
-    table = join Task
-    table.grouping(table[:title].matches(task).and(table[:assigned_user_id].eq(nil))).or(
-      paper_table[:id].not_in(
-        Arel::Nodes::SqlLiteral.new(
-          Task.arel_table.project(:paper_id).where(Task.arel_table[:title].matches(task)).to_sql
-        )
+    task_table = Task.arel_table
+    paper_table[:id].not_in(
+      Arel::Nodes::SqlLiteral.new(
+        task_table.project(:paper_id).where(
+          task_table[:title].matches(task).and(task_table[:assigned_user_id].not_eq(nil))
+        ).to_sql
       )
     )
   end

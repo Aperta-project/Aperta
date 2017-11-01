@@ -25,33 +25,34 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     self._title = (By.CLASS_NAME, 'overlay-body-title')
     self._subtitle = (By.CSS_SELECTOR, 'div.task-main-content>p')
     self._review_table = (By.CLASS_NAME, 'table')
-    #
-    self._headings = (By.CSS_SELECTOR, 'tr>th') # 6
-    self._metadata = (By.CSS_SELECTOR, 'tbody>tr>td') # 6
-    #
+    self._headings = (By.CSS_SELECTOR, 'tr>th')
+    self._metadata = (By.CSS_SELECTOR, 'tbody>tr>td')
+    self._abstract = (By.CSS_SELECTOR, 'td > p > p')
     self._review_ms_file_link = (By.CSS_SELECTOR, 'td>p>a')
-    #
     self._review_overlay_submit_button = (By.ID, 'review-submission-submit-button')
     self._review_overlay_back2ms_button = (By.ID, 'review-submission-make-changes-button')
     # manuscript viewer page
     self._submit_button = (By.ID, 'sidebar-submit-paper')
 
   def overlay_ready(self):
+    """"Ensure the overlay is ready to test"""
     self._wait_for_element(self._get(self._review_overlay_submit_button),1)
 
   def go_back_make_changes(self):
+    """"
+    Go back to Manuscript View by clicking on the 'Make changes' button
+    """
     self._wait_for_element(self._get(self._review_overlay_back2ms_button), 1)
     self._get(self._review_overlay_back2ms_button).click()
 
   def complete_submission(self):
-      """
-      Validate form and closing the Submission Review overlay
-      :return: None
-      """
-      self._wait_for_element(self._get(self._review_overlay_submit_button), 1)
-      self._get(self._review_overlay_submit_button).click()
-      logging.info('Submission after review')
-      return
+    """
+    Validate form and close the Submission Review overlay
+    :return: Void function
+    """
+    self._wait_for_element(self._get(self._review_overlay_submit_button), 1)
+    self._get(self._review_overlay_submit_button).click()
+    logging.info('Submission after review')
 
   def validate_styles_and_components(self):
     """
@@ -106,18 +107,18 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     # Preprint line#1
     preprint_text = card_metadata[0].find_element_by_tag_name('dt')
     expected_text = expected_values["Preprint"][0]
-    assert preprint_text.text.strip() == expected_text.strip()
+    assert preprint_text.text.strip() == expected_text.strip(), preprint_text.text.strip()
 
     # Preprint line#2
     assert pp_posting_answer in {1,2}, pp_posting_answer
     preprint_text = card_metadata[0].find_element_by_tag_name('dd')
     expected_text = expected_values["Preprint"][pp_posting_answer]
-    assert preprint_text.text.strip() == expected_text.strip()
+    assert preprint_text.text.strip() == expected_text.strip(), preprint_text.text.strip()
 
     # Title
     title_text = card_metadata[1].find_element_by_css_selector('td>p')
     expected_text = expected_values["Title"]
-    assert title_text.text.strip() == expected_text.strip()
+    assert title_text.text.strip() == expected_text.strip(), title_text.text.strip()
     self.validate_application_body_text(title_text)
 
     # Author
@@ -137,7 +138,9 @@ class SubmissionReviewOverlay(AuthenticatedPage):
       self.validate_application_body_text(coauthors[i])
 
     # Abstract
-    abstract_lines = card_metadata[4].find_elements_by_css_selector('td>p>p') # list
+    #abstract_lines = card_metadata[4].find_elements_by_css_selector('td>p>p') # list
+    abstract_lines = card_metadata[4].find_element(*self._abstract)
+
     expected_text = expected_values["Abstract"]
     abstract_text = ' '.join(map(lambda x: ' ' + x.text, abstract_lines))
     assert abstract_text.strip() == expected_text.strip()
@@ -155,7 +158,6 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     expected_link_title = expected_values["Manuscript"][0]
     assert ms_pdf_link.text.strip() == expected_link_title.strip()
     self.validate_default_link_style(ms_pdf_link)
-    #self.validate_manuscript_downloaded_file(ms_pdf_link, format='pdf')
 
     # validate buttons
     submit_button = self._get(self._review_overlay_submit_button)
@@ -181,12 +183,10 @@ class SubmissionReviewOverlay(AuthenticatedPage):
         go_back_button.click()
         self._wait_for_element(self._get(self._submit_button), 0.5)
         review_before_submission_button = self._get(self._submit_button)
-        assert review_before_submission_button
       elif selection.lower() == 'submit':
         submit_button.click()
         self._wait_for_element(self._get(self._overlay_header_close), 1)
         close_submission_overlay = self._get(self._overlay_header_close)
-        assert close_submission_overlay
       else:
           raise(ValueError, 'Invalid selection for going back/forward choice: {0}'.format(selection))
       return selection

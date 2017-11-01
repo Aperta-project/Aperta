@@ -11,23 +11,24 @@ import time
 from datetime import datetime
 
 from selenium.webdriver.common.by import By
+
 from .authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_GREY_DARK
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import users, staff_admin_login, pub_svcs_login, internal_editor_login, \
     super_admin_login
 from Base.PDF_Util import PdfUtil
 from Base.PostgreSQL import PgSQL
-from frontend.Tasks.basetask import BaseTask
+from frontend.Overlays.submission_review import SubmissionReviewOverlay
 from frontend.Tasks.additional_information_task import AITask
 from frontend.Tasks.authors_task import AuthorsTask
+from frontend.Tasks.basetask import BaseTask
 from frontend.Tasks.billing_task import BillingTask
+from frontend.Tasks.new_taxon_task import NewTaxonTask
 from frontend.Tasks.revise_manuscript_task import ReviseManuscriptTask
 from frontend.Tasks.reviewer_report_task import ReviewerReportTask
 from frontend.Tasks.supporting_information_task import SITask
 from frontend.Tasks.title_and_abstract_task import TitleAbstractTask
-from frontend.Tasks.new_taxon_task import NewTaxonTask
 from .styles import StyledPage
-from frontend.Overlays.submission_review import SubmissionReviewOverlay
 
 __author__ = 'sbassi@plos.org'
 
@@ -161,9 +162,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._resize_handle_box = (By.CLASS_NAME, 'box-handle')
     self._resize_handle_box_lines = (By.CSS_SELECTOR, '.box-handle .vertical-line')
     self._resize_handle_box_tooltip = (By.CSS_SELECTOR, '.box-handle .tooltip')
-    #
+    # Review before Submission overlay
     self._review_overlay_submit_button = (By.ID, 'review-submission-submit-button')
-    #
     self._review_before_submission = None
 
   # POM Actions

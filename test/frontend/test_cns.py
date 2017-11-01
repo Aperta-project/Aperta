@@ -11,11 +11,10 @@ import random
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users
-
 from frontend.common_test import CommonTest
+from frontend.Overlays.submission_review import SubmissionReviewOverlay
 from .Pages.dashboard import DashboardPage
 from .Pages.manuscript_viewer import ManuscriptViewerPage
-from frontend.Overlays.submission_review import SubmissionReviewOverlay
 
 __author__ = 'jgray@plos.org'
 
@@ -91,7 +90,6 @@ class ApertaCNSTest(CommonTest):
     # dashboard_page.page_ready()
     # create a new manuscript
     dashboard_page.click_create_new_submission_button()
-    #self.create_article(journal='PLOS Yeti', type_='No Author Tasks', random_bit=True, format_='word')
     self.create_article(title='cns_review_submission_overlay', journal='PLOS Wombat',
                         type_='Preprint Eligible', random_bit=True)
     ms_page = ManuscriptViewerPage(self.getDriver())

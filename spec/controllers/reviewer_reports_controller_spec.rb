@@ -40,7 +40,7 @@ describe ReviewerReportsController do
     end
 
     subject(:do_request) do
-      xhr :put, :update, format: :json, id: reviewer_report.id, reviewer_report: { task_id: reviewer_report.task.id }
+      xhr :put, :update, format: :json, id: reviewer_report.id, reviewer_report: { task_id: reviewer_report.task.id + 5.days }
     end
 
     it_behaves_like 'an unauthenticated json request'

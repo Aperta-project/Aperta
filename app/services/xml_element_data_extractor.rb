@@ -8,8 +8,18 @@ class XmlElementDataExtractor
     @el = el
   end
 
+  def element_name
+    @el.name
+  end
+
   def child_elements(name = '/')
     el.xpath(name).map { |child| self.class.new(child) }
+  end
+
+  def child_content_elements
+    el.xpath('*')
+      .select { |child| child.name =~ /\A[A-Z]/ || child.name == "content" }
+      .map { |child| self.class.new(child) }
   end
 
   def attr_value(name)

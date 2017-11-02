@@ -157,6 +157,8 @@ class QueryParser < QueryLanguageParser
         )
       )
     )
+    # When there are no tasks that match the name, return 0 papers, otherwise return the main query.
+    # This is to prevent returning all papers if no tasks match the title.
     Arel::Nodes::SqlLiteral.new("CASE WHEN (#{count.to_sql}) = 0 THEN 1=0 ELSE #{main.to_sql} END")
   end
 

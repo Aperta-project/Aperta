@@ -16,18 +16,21 @@ class TemplateContext < Liquid::Drop
     return if respond_to?(method_name)
 
     context_type = options[:type] || method_name
-    context_class_name = "#{context_type}_context".camelize
-    source_model = options[:source] || "object.#{method_name}"
+    context_class = "#{context_type}_context".camelize
+    source_object = options[:source] || "object.#{method_name}"
+    method_definition = if options[:many]
+                          "def #{method_name}
+                            #{source_object}.map do |model|
+                              #{context_class}.new(model)
+                            end
+                          end"
+                        else
+                          "def #{method_name}
+                            #{context_class}.new(#{source_object})
+                          end"
+                        end
 
-    if options[:many]
-      class_eval "def #{method_name}
-        #{source_model}.map { |model| #{context_class_name}.new(model) }
-      end"
-    else
-      class_eval "def #{method_name}
-        #{context_class_name}.new(#{source_model})
-      end"
-    end
+    class_eval method_definition
   end
 
   def self.contexts(method_name, options = {})

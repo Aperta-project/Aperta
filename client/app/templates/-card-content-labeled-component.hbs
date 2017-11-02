@@ -14,29 +14,29 @@
 
 {{else if hasText}} {{! Text, no label}}
   <label class="card-form-element">
-    <span class="card-form-element--label">
+    <div class="card-form-element--label">
       <span class="card-form-text">{{{content.text}}}</span>
       {{partial "required-field"}}
-    </span>
+    </div>
     {{partial "card-content-component"}}
   </label>
 
 {{else if canBeLabeled}} {{! Label, no text}}
   <label class="card-form-element">
-    <span class="card-form-element--label">
+    <div class="card-form-element--label">
       <span class="card-form-text">{{{content.label}}}</span>
       {{partial "required-field"}}
-    </span>
+    </div>
     {{partial "card-content-component"}}
   </label>
 
 {{else}} {{! Neither label nor text, but required}}
   {{#if (and content.isRequired (not hasLabel) (not hasText))}}
     <label class="card-form-element">
-      <span class="card-form-element--label">
+      <div class="card-form-element--label">
         <span class="card-form-text">This field is required.</span>
         {{partial "required-field"}}
-      </span>
+      </div>
       {{partial "card-content-component"}}
     </label>
   {{else}}

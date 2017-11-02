@@ -20,17 +20,18 @@ class TemplateContext < Liquid::Drop
     source_object = options[:source] || "object.#{method_name}"
     method_definition = if options[:many]
                           "def #{method_name}
-                            #{source_object}.map do |model|
+                            @#{method_name} ||= #{source_object}.map do |model|
                               #{context_class}.new(model)
                             end
                           end"
                         else
                           "def #{method_name}
-                            #{context_class}.new(#{source_object})
+                            @#{method_name} ||= #{context_class}.new(#{source_object})
                           end"
                         end
 
     class_eval method_definition
+    subcontexts[method_name] = options
   end
 
   def self.contexts(method_name, options = {})
@@ -45,6 +46,10 @@ class TemplateContext < Liquid::Drop
     args.each do |method|
       delegate method, to: :object
     end
+  end
+
+  def self.subcontexts
+    @subcontexts ||= {}
   end
 
   def initialize(object)

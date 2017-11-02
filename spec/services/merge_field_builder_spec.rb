@@ -2,12 +2,14 @@ require 'rails_helper'
 
 describe MergeFieldBuilder do
   class SampleContext < TemplateContext
+    contexts :foo, type: :second_sample
     def simple
       'so simple'
     end
   end
 
   class SecondSampleContext < TemplateContext
+    context :bar, type: :third_sample
     def blah
       'blah'
     end
@@ -20,13 +22,6 @@ describe MergeFieldBuilder do
   end
 
   describe '#merge_fields' do
-    before do
-      sample_definitions = Hash.new { [] }
-      sample_definitions[SampleContext] = [{ name: :foo, context: SecondSampleContext, many: true }]
-      sample_definitions[SecondSampleContext] = [{ name: :bar, context: ThirdSampleContext }]
-      MergeFieldBuilder.instance_variable_set(:@complex_merge_fields, sample_definitions)
-    end
-
     it 'expands subcontext merge fields' do
       expanded = [
         { name: :simple },

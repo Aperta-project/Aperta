@@ -2,6 +2,7 @@ require 'rails_helper'
 
 feature "Inviting a new reviewer", js: true do
   include InvitationFeatureHelpers
+  include RichTextEditorHelpers
 
   let(:paper) do
     FactoryGirl.create(
@@ -32,6 +33,32 @@ feature "Inviting a new reviewer", js: true do
     login_as(reviewer, scope: :user)
     visit_in_email root_path
     expect(page).to have_content("Thank you for agreeing to review for #{paper.journal.name}.")
+  end
+
+  scenario "Reviewer can decline without logging in" do
+    invite_new_reviewer_for_paper "malz@example.com", paper
+    ensure_email_got_sent_to "malz@example.com"
+    Page.new.sign_out
+
+    open_email "malz@example.com"
+
+    visit_in_email "Decline"
+    expect(page).to have_content(
+      "ACCEPT REVIEWER INVITATION"
+    )
+    expect(page).to have_content(paper.title)
+    page.click_button 'Decline'
+    expect(page).to have_content(
+      "You've successfully declined the invitation to be the Reviewer for \"#{paper.title}\""
+    )
+    wait_for_editors
+    set_rich_text(editor: 'declineReason', text: 'No thanks')
+    set_rich_text(editor: 'reviewerSuggestions', text: 'bob@example.com')
+    page.click_button "Send Feedback"
+    wait_for_ajax
+    expect(page).to have_content("Thank You")
+    expect(Invitation.last.decline_reason).to eq("<p>No thanks</p>")
+    expect(Invitation.last.reviewer_suggestions).to eq("<p>bob@example.com</p>")
   end
 
   scenario "Invitation token cannot be re-used" do

@@ -7,89 +7,17 @@ describe TokenInvitationsController do
   let(:task) { FactoryGirl.create :invitable_task }
 
   describe 'GET /invitations/:token' do
-    subject(:do_request) { get :show, token: invitation.token }
+    subject(:do_request) { get :show, id: invitation.token, format: :json }
     context 'there is no user logged in' do
       context 'when the token points to an "invited" invitation' do
         let(:email) { "test@example.com" }
         let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: nil, email: email) }
         it 'renders the show template' do
+          serialized_invitation = InvitationIndexSerializer.new(invitation, root: 'token-invitation')
           do_request
-          expect(response).to render_template(:show)
+          expect(response.body).to eq(serialized_invitation.to_json)
         end
       end
-    end
-  end
-
-  describe 'GET #feedback_form' do
-    subject(:do_request) { get :feedback_form, token: invitation.token }
-    context 'there is no user logged in' do
-      context 'when the token points to a "declined" invitation' do
-        context 'the invite has no feedback or reviewer suggestions' do
-          let(:invitation) { FactoryGirl.create(:invitation, :declined) }
-          it 'renders the feedback template' do
-            do_request
-            expect(response).to render_template(:feedback_form)
-          end
-        end
-      end
-
-      context 'when the invitation is in any other state' do
-        let(:invitation) { FactoryGirl.create(:invitation, :accepted) }
-        it 'redirects to the root page' do
-          do_request
-          expect(response).to redirect_to(root_path)
-        end
-      end
-    end
-
-    context 'the user is signed in' do
-      let(:invitation) { FactoryGirl.create(:invitation, :invited) }
-      before { stub_sign_in user }
-      it 'redirects the user to the root page' do
-        do_request
-        expect(response).to redirect_to(root_path)
-      end
-    end
-  end
-
-  describe 'GET #thank_you' do # this is the Thank-You screen
-    subject(:do_request) { get :thank_you, token: invitation.token }
-    context 'the user is signed in' do
-      let(:invitation) { FactoryGirl.create(:invitation, :declined) }
-      before { stub_sign_in user }
-      it 'redirects to the root page' do
-        do_request
-        expect(response).to redirect_to(root_path)
-      end
-    end
-
-    context 'the user is not signed in' do
-      context 'when the token points to a "declined" invitation' do
-        let(:invitation) { FactoryGirl.create(:invitation, :declined) }
-        it 'renders the template' do
-          do_request
-          expect(response).to render_template(:thank_you)
-        end
-      end
-
-      context 'when the invitation is in any other state' do
-        let(:invitation) { FactoryGirl.create(:invitation, :accepted) }
-        it 'redirects to the root page' do
-          do_request
-          expect(response).to redirect_to(root_path)
-        end
-      end
-    end
-  end
-
-  describe 'POST #feedback' do
-    subject(:do_request) do
-      post :feedback,
-        token: invitation.token,
-        invitation: {
-          reviewer_suggestions: "new reviewer",
-          decline_reason: "I decline"
-        }
     end
   end
 

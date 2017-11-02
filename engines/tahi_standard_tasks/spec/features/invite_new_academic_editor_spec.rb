@@ -2,6 +2,7 @@ require 'rails_helper'
 
 feature "Inviting a new Academic Editor", js: true do
   include InvitationFeatureHelpers
+  include RichTextEditorHelpers
 
   let(:internal_editor) { create :user, :site_admin }
   let(:paper) do
@@ -45,11 +46,14 @@ feature "Inviting a new Academic Editor", js: true do
     page.click_button 'Decline'
 
     expect(page).to have_content(
-      "You’ve successfully declined the invitation to be the Academic Editor for \"#{paper.title}\""
+      "You've successfully declined the invitation to be the Academic Editor for \"#{paper.title}\""
     )
-    page.execute_script("tinymce.get('invitation_decline_reason').setContent('No thanks')")
-    page.execute_script("tinymce.get('invitation_reviewer_suggestions').setContent('bob@example.com')")
+
+    wait_for_editors
+    set_rich_text(editor: 'declineReason', text: 'No thanks')
+    set_rich_text(editor: 'reviewerSuggestions', text: 'bob@example.com')
     page.click_button "Send Feedback"
+    wait_for_ajax
     expect(page).to have_content("Thank You")
     expect(Invitation.last.decline_reason).to eq("<p>No thanks</p>")
     expect(Invitation.last.reviewer_suggestions).to eq("<p>bob@example.com</p>")
@@ -63,7 +67,7 @@ feature "Inviting a new Academic Editor", js: true do
     open_email "johndoe@example.com"
     visit_in_email "Decline"
 
-    expect(page).to have_content("ACCEPT EDITOR INVITATION")
+    expect(page).to have_content("ACCEPT ACADEMIC EDITOR INVITATION")
   end
 
   scenario "Invitation token cannot be re-used" do

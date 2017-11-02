@@ -33,11 +33,11 @@ describe ClientRouteHelper do
     pending "handle params"
   end
 
-  describe '#client_voucher_invitiation_url' do
+  describe '#client_show_invitation_url' do
     let(:invitation) { double('task', token: 'hhf287gf278ogf87g4f4') }
     it 'generates the url to an invitation' do
-      url = client_voucher_invitation_url(invitation)
-      expect(url).to eq("http://test.host/voucher_invitations/hhf287gf278ogf87g4f4")
+      url = client_show_invitation_url(token: invitation.token)
+      expect(url).to eq("http://test.host/invitations/#{invitation.token}")
     end
   end
 end

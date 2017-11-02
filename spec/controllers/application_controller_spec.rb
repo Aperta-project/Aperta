@@ -61,4 +61,41 @@ describe ApplicationController do
       end
     end
   end
+
+  describe '#store_location_for_login_redirect' do
+    context 'when the request url is ok' do
+      it 'points to the url' do
+        controller.request.stub url: 'http://www.aperta.tech/admin'
+
+        expect(controller).to receive(:store_location_for)
+          .with(:user, 'http://www.aperta.tech/admin')
+
+        controller.send(:store_location_for_login_redirect)
+      end
+    end
+
+    context 'when request url points to an api route' do
+      it 'points to the referer instead' do
+        controller.request.stub url: 'http://example.com/api/auth'
+        controller.request.stub referer: 'http://www.aperta.tech/admin'
+
+        expect(controller).to receive(:store_location_for)
+          .with(:user, 'http://www.aperta.tech/admin')
+
+        controller.send(:store_location_for_login_redirect)
+      end
+    end
+
+    context 'when request url points to an api route and request referer is not set' do
+      it 'points to the dashboard' do
+        controller.request.stub url: 'http://aperta.tech/api/auth'
+        controller.request.stub host: 'http://aperta.tech/'
+
+        expect(controller).to receive(:store_location_for)
+          .with(:user, 'http://aperta.tech/')
+
+        controller.send(:store_location_for_login_redirect)
+      end
+    end
+  end
 end

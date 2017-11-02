@@ -74,6 +74,7 @@ module TahiStandardTasks
         ReviewerReport.where(user: @assignee,
                              decision: @paper.draft_decision).first
       @review_due_at = @reviewer_report.due_at || 10.days.from_now
+      @invitation = @reviewer_report.invitation
       mail(
         to: @assignee.try(:email),
         subject: "Thank you for agreeing to review for #{@journal.name}"
@@ -117,6 +118,7 @@ module TahiStandardTasks
       @paper = @reviewer_report.paper
       @journal = @paper.journal
       @letter_template = @journal.letter_templates.find_by(ident: letter_template_ident)
+      @invitation = @reviewer_report.invitation
       begin
         @letter_template.render(ReviewerReportScenario.new(@reviewer_report), check_blanks: true)
         @subject = @letter_template.subject

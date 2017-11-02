@@ -14,12 +14,7 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
   showArchiveOverlay: false,
   showDeleteOverlay: false,
 
-  actionIsRunning: Ember.computed('saveCard.isRunning', 'publishCard.isRunning', 'revertCard.isRunning', function() {
-    const saving = this.get('saveCard.isRunning');
-    const publishing = this.get('publishCard.isRunning');
-    const reverting =  this.get('revertCard.isRunning');
-    return saving || publishing || reverting;
-  }),
+  actionIsRunning: Ember.computed.or('saveCard.isRunning', 'publishCard.isRunning', 'revertCard.isRunning'),
 
   disableRevert: Ember.computed('actionIsRunning', 'editorIsDirty', function() {
     return this.get('editorIsDirty') || this.get('actionIsRunning');

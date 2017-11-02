@@ -5,7 +5,7 @@ class TokenInvitationsController < ApplicationController
   # rubocop:disable Style/AndOr, Metrics/LineLength
   def show
     redirect_to root_path and return if current_user
-    render json: invitation, root: 'token-invitation', serializer: InvitationIndexSerializer
+    render json: invitation, serializer: TokenInvitationSerializer
   end
 
   def update
@@ -15,7 +15,7 @@ class TokenInvitationsController < ApplicationController
     else
       invitation.save
     end
-    render json: invitation, root: 'token-invitation', serializer: InvitationIndexSerializer
+    render json: invitation, serializer: TokenInvitationSerializer
   end
 
   def accept

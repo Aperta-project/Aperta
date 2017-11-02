@@ -13,8 +13,7 @@ class InvitationIndexSerializer < ActiveModel::Serializer
              :information,
              :paper_type,
              :paper_short_doi,
-             :journal_name,
-             :journal_staff_email
+             :journal_name
 
   has_one :task, embed: :id, polymorphic: true
 
@@ -36,9 +35,5 @@ class InvitationIndexSerializer < ActiveModel::Serializer
 
   def journal_name
     object.paper.journal.name
-  end
-
-  def journal_staff_email
-    object.paper.journal.staff_email
   end
 end

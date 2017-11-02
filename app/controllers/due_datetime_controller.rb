@@ -7,21 +7,20 @@ class DueDatetimeController < ApplicationController
 
   def update
     if FeatureFlag[:REVIEW_DUE_DATE]
-      requires_user_can :edit_due_date, reviewer_report.task
-      due_at_date = reviewer_report_params.slice(:due_at)
-      reviewer_report.due_datetime.update_attributes due_at_date
-      reviewer_report.schedule_events if FeatureFlag[:REVIEW_DUE_AT]
+      requires_user_can :edit_due_date, due_datetime.due.task
+      due_datetime.update_attributes due_datetime_params
+      due_datetime.due.schedule_events if FeatureFlag[:REVIEW_DUE_AT]
     end
-    render json: reviewer_report
+    render json: due_datetime
   end
 
   private
 
-  def reviewer_report
-    @reviewer_report ||= ReviewerReport.find(params[:id])
+  def due_datetime
+    @due_datetime ||= DueDatetime.find(params[:id])
   end
 
-  def reviewer_report_params
-    params.require(:reviewer_report).permit(:due_at)
+  def due_datetime_params
+    params.require(:due_datetime).permit(:due_at)
   end
 end

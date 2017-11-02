@@ -5,13 +5,10 @@ describe DueDatetimeController do
 
   describe 'PUT #update' do
     let(:due_datetime) { FactoryGirl.create(:due_datetime, :in_5_days) }
-    let(:reviewer_report) do
-      FactoryGirl.create(:reviewer_report,
-                         due_datetime: due_datetime)
-    end
+    let(:reviewer_report) { FactoryGirl.create(:reviewer_report, due_datetime: due_datetime) }
 
     subject(:do_request) do
-      xhr :put, :update, format: :json, id: reviewer_report.id, reviewer_report: { due_at: reviewer_report.due_at }
+      xhr :put, :update, format: :json, id: due_datetime.id, due_datetime: { due_at: due_datetime.due_at + 5.days }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -19,12 +16,15 @@ describe DueDatetimeController do
     context 'when the user is authorized to :update the reviewer report' do
       before do
         stub_sign_in user
+        allow(due_datetime).to receive(:due)
+          .and_return reviewer_report
+
         allow(user).to receive(:can?)
-          .with(:view, reviewer_report.task)
+          .with(:view, due_datetime.due.task)
           .and_return true
 
         allow(user).to receive(:can?)
-          .with(:edit_due_date, reviewer_report.task)
+          .with(:edit_due_date, due_datetime.due.task)
           .and_return true
       end
 

@@ -34,13 +34,10 @@ describe ReviewerReportsController do
   end
 
   describe 'PUT #update' do
-    let(:reviewer_report) do
-      FactoryGirl.create(:reviewer_report,
-                         due_datetime: due_datetime)
-    end
+    let(:reviewer_report) { FactoryGirl.create(:reviewer_report) }
 
     subject(:do_request) do
-      xhr :put, :update, format: :json, id: reviewer_report.id, reviewer_report: { task_id: reviewer_report.task.id + 5.days }
+      xhr :put, :update, format: :json, id: reviewer_report.id, reviewer_report: { task_id: reviewer_report.task.id }
     end
 
     it_behaves_like 'an unauthenticated json request'

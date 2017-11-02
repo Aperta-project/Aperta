@@ -13,9 +13,36 @@ describe TokenInvitationsController do
         let(:email) { "test@example.com" }
         let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: nil, email: email) }
         it 'renders the show template' do
-          serialized_invitation = InvitationIndexSerializer.new(invitation, root: 'token-invitation')
           do_request
-          expect(response.body).to eq(serialized_invitation.to_json)
+          expect(response.body).to eq(TokenInvitationSerializer.new(invitation).to_json)
+        end
+      end
+    end
+  end
+
+  describe 'PUT /invitations/:id' do
+    subject(:do_request) { put :update, data.merge(id: invitation.id, format: :json) }
+    context 'fetch and set correct invitation attributes for data' do
+      before do
+        expect(Invitation).to receive(:find_by_token!).with(data[:token_invitation][:token]).and_return(invitation)
+        expect(invitation).to receive(:update_attributes).with(data[:token_invitation].slice(:decline_reason))
+      end
+      let(:data) do
+        { token_invitation: { token: 'abc', state: 'declined', decline_reason: 'foo', evil_setting: 'bar' } }
+      end
+      context 'with invitation in invited state' do
+        let(:invitation) { FactoryGirl.create(:invitation, :invited) }
+        it 'should receive .decline! method' do
+          expect(invitation).to receive(:decline!).and_return(invitation)
+          do_request
+        end
+      end
+      context 'with invitation in not invited state' do
+        let(:invitation) { FactoryGirl.create(:invitation, :declined) }
+        it 'should receive .save method' do
+          expect(invitation).to receive(:save).and_return(invitation)
+          expect(invitation).to_not receive(:decline!)
+          do_request
         end
       end
     end

@@ -1,6 +1,6 @@
 {{input
   value=(readonly answer.value)
-  class="form-control"
+  class="card-input"
   change=(action "valueChanged")
   input=(action "valueChanged")
   focusOut=(action "validate")
@@ -11,5 +11,5 @@
 }}
 
 {{#unless hideError}}
-  {{card-content/validation-errors errors=answer.readyIssuesArray}}
+  {{card-content/validation-errors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
 {{/unless}}

@@ -37,6 +37,8 @@ class CardContentValidation < ActiveRecord::Base
   def string_to_validate(answer)
     if answer.value_type == 'html'
       ActionView::Base.full_sanitizer.sanitize(answer.value)
+    elsif answer.value.nil?
+      ""
     else
       answer.value
     end

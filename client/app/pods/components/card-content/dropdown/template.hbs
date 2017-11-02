@@ -35,11 +35,12 @@
   {{/power-select}}
 {{/if}}
 
-{{card-content/validation-errors content=content errors=answer.readyIssuesArray}}
+{{card-content/validation-errors content=content hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
 
 {{card-content/display-children
   content=content
   owner=owner
   disabled=disabled
+  repetition=repetition
   preview=preview
 }}

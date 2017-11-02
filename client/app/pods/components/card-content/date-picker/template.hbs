@@ -8,9 +8,8 @@
         dateChanged="valueChanged"
         answer=answer
         disabled=disabled
-        content=content
-      }}
+        content=content}}
 
-    {{card-content/validation-errors content=content errors=answer.readyIssuesArray}}
+    <div>{{card-content/validation-errors content=content hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}</div>
   </div>
 </div>

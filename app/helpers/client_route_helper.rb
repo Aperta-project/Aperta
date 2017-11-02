@@ -23,7 +23,7 @@ module ClientRouteHelper
       "#{discussion.to_param}/#{query}"
   end
 
-  def client_confirm_decline_invitation_url(token:)
+  def client_show_invitation_url(token:)
     "#{root_url}invitations/#{token}"
   end
 end

@@ -11,6 +11,6 @@
 } %>
 
 <%= render partial: 'email/button', locals: {
-  href: client_confirm_decline_invitation_url({ token: @invitation.token }),
+  href: client_show_invitation_url({ token: @invitation.token }),
   text: 'Decline'
 } %>

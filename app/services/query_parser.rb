@@ -147,13 +147,17 @@ class QueryParser < QueryLanguageParser
 
   add_two_part_expression('TASK', 'IS UNASSIGNED') do |task, _|
     task_table = Task.arel_table
-    paper_table[:id].not_in(
-      Arel::Nodes::SqlLiteral.new(
-        task_table.project(:paper_id).where(
-          task_table[:title].matches(task).and(task_table[:assigned_user_id].not_eq(nil))
-        ).to_sql
+    task_q = task_table[:title].matches(task) # Returns all the tasks that matches the title
+    count = task_table.where(task_q).project('count(id)') # Counts how many tasks matches the title
+    # Returns the papers that doesnt have the task assigned to a user or doesnt have the task created
+    main = paper_table[:id].not_in(
+      task_table.project(:paper_id).where(
+        task_q.and(
+          task_table[:assigned_user_id].not_eq(nil)
+        )
       )
     )
+    Arel::Nodes::SqlLiteral.new("CASE WHEN (#{count.to_sql}) = 0 THEN 1=0 ELSE #{main.to_sql} END")
   end
 
   add_two_part_expression('TASK', 'IS ASSIGNED TO') do |task, user_query|

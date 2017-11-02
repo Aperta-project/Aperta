@@ -34,31 +34,6 @@ feature "Inviting a new reviewer", js: true do
     expect(page).to have_content("Thank you for agreeing to review for #{paper.journal.name}.")
   end
 
-  scenario "Reviewer can decline without logging in" do
-    invite_new_reviewer_for_paper "malz@example.com", paper
-    ensure_email_got_sent_to "malz@example.com"
-    Page.new.sign_out
-
-    open_email "malz@example.com"
-
-    visit_in_email "Decline"
-    expect(page).to have_content(
-      "ACCEPT REVIEWER INVITATION"
-    )
-    expect(page).to have_content(paper.title)
-    page.click_button 'Decline'
-
-    expect(page).to have_content(
-      "You've successfully declined the invitation to review"
-    )
-    page.execute_script("tinymce.get('invitation_decline_reason').setContent('No thanks')")
-    page.execute_script("tinymce.get('invitation_reviewer_suggestions').setContent('bob@example.com')")
-    find('form input').native.send_keys :enter # the only capybara would submit the form
-    expect(page).to have_content("Thank You")
-    expect(Invitation.last.decline_reason).to eq("<p>No thanks</p>")
-    expect(Invitation.last.reviewer_suggestions).to eq("<p>bob@example.com</p>")
-  end
-
   scenario "Invitation token cannot be re-used" do
     invite_new_reviewer_for_paper "malz@example.com", paper
     ensure_email_got_sent_to "malz@example.com"

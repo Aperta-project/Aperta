@@ -20,35 +20,6 @@ describe TokenInvitationsController do
     end
   end
 
-  describe 'POST #decline' do
-    subject(:do_request) { post :decline, token: invitation.token }
-    context 'when the token points to an "invited" invitation' do
-      let(:email) { "test@example.com" }
-      let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: nil, email: email) }
-      it 'declines the invitation' do
-        do_request
-        expect(invitation.reload.state).to eq("declined")
-      end
-
-      it 'creates an Activity' do
-        expected_activity = {
-          message: "#{email} declined invitation as #{task.invitee_role.capitalize}",
-          feed_name: 'workflow'
-        }
-        expect(Activity).to receive(:create).with hash_including(expected_activity)
-        do_request
-      end
-    end
-
-    context 'when the token points to a "declined" invitation' do
-      let(:invitation) { FactoryGirl.create(:invitation, :declined) }
-      it 'redirects to inactive' do
-        do_request
-        expect(response).to redirect_to(invitation_inactive_path(invitation.token))
-      end
-    end
-  end
-
   describe 'GET #feedback_form' do
     subject(:do_request) { get :feedback_form, token: invitation.token }
     context 'there is no user logged in' do
@@ -59,22 +30,6 @@ describe TokenInvitationsController do
             do_request
             expect(response).to render_template(:feedback_form)
           end
-        end
-
-        it 'redirects to the /thank_you page if the invite has feedback' do
-          invitation = FactoryGirl.create(:invitation,
-            :declined,
-            decline_reason: "Foo")
-          get :feedback_form, token: invitation.token
-          expect(response).to redirect_to(invitation_thank_you_path(invitation.token))
-        end
-
-        it 'redirects to the /thank_you page if the invite has reviewer suggestions' do
-          invitation = FactoryGirl.create(:invitation,
-            :declined,
-            reviewer_suggestions: "dave@example.com")
-          get :feedback_form, token: invitation.token
-          expect(response).to redirect_to(invitation_thank_you_path(invitation.token))
         end
       end
 
@@ -135,42 +90,6 @@ describe TokenInvitationsController do
           reviewer_suggestions: "new reviewer",
           decline_reason: "I decline"
         }
-    end
-
-    context "the invite is in a state other than 'declined'" do
-      let(:invitation) { FactoryGirl.create(:invitation, :accepted) }
-      it 'redirects to the root page' do
-        do_request
-        expect(response).to redirect_to(root_path)
-      end
-    end
-
-    context "the invite is in a 'declined' state" do
-      let(:invitation) { FactoryGirl.create(:invitation, :declined) }
-
-      it 'redirects to the thank you page' do
-        do_request
-        expect(response).to redirect_to(invitation_thank_you_path(invitation.token))
-      end
-
-      context 'the invite has no feedback or reviewer suggestions' do
-        it 'updates the invite with the given attributes' do
-          do_request
-          invitation.reload
-          expect(invitation.reviewer_suggestions).to eq("new reviewer")
-          expect(invitation.decline_reason).to eq("I decline")
-        end
-      end
-
-      context 'the invite already has either feedback or suggestions' do
-        let(:invitation) { FactoryGirl.create(:invitation, :declined, decline_reason: "reasons") }
-        it 'does not update the invite' do
-          do_request
-          invitation.reload
-          expect(invitation.reviewer_suggestions).to eq("None")
-          expect(invitation.decline_reason).to eq("reasons")
-        end
-      end
     end
   end
 

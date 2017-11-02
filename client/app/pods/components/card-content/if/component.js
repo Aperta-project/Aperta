@@ -8,6 +8,7 @@ export default Ember.Component.extend({
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool,
     owner: PropTypes.EmberObject.isRequired,
+    repetition: PropTypes.oneOfType([PropTypes.null, PropTypes.EmberObject]).isRequired,
     preview: PropTypes.bool
   },
 
@@ -79,6 +80,7 @@ export default Ember.Component.extend({
 
       let owner = this.get('owner');
       let content = this.get('content');
+      let repetition = this.get('repetition');
 
       let branchToPrune;
       if(previousValue === null) {
@@ -91,7 +93,7 @@ export default Ember.Component.extend({
         return; // the else branch doesn't exist, so there's no answers to delete.
       }
 
-      branchToPrune.visitDescendants(child => child.get('answers').filterBy('owner', owner).invoke('destroyRecord'));
+      branchToPrune.destroyDescendants(owner, repetition);
     });
   }),
 

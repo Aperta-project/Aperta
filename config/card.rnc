@@ -203,11 +203,20 @@ content = (
 | file-uploader
 | if
 | radio-input
+| repeat
 | sendback-reason
 | tech-check-email
 | tech-check
 | text-input
 )
+
+repeat = element content {
+                attribute content-type { "repeat" },
+                attribute min { text }?,
+                attribute max { text }?,
+                attribute item-name { text },
+                content+
+}
 
 start = element card {
   attribute required-for-submission { "true" | "false" }

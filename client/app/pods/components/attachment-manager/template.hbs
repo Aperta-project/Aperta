@@ -11,7 +11,7 @@
 
 {{#each attachments as |attachment|}}
   {{#if attachment.readyIssuesArray.length}}
-    {{card-content/validation-errors errors=attachment.readyIssuesArray}}
+    {{card-content/validation-errors errors=attachment.readyIssuesArray hideErrors=false}}
   {{/if}}
 
   {{attachment-item
@@ -58,4 +58,4 @@
     </div>
   </div>
 {{/if}}
-<div>{{card-content/validation-errors errors=answer.readyIssuesArray}}</div>
+<div>{{card-content/validation-errors errors=answer.readyIssuesArray hideErrors=false}}</div>

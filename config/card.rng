@@ -494,11 +494,29 @@
       <ref name="file-uploader"/>
       <ref name="if"/>
       <ref name="radio-input"/>
+      <ref name="repeat"/>
       <ref name="sendback-reason"/>
       <ref name="tech-check-email"/>
       <ref name="tech-check"/>
       <ref name="text-input"/>
     </choice>
+  </define>
+  <define name="repeat">
+    <element name="content">
+      <attribute name="content-type">
+        <value>repeat</value>
+      </attribute>
+      <optional>
+        <attribute name="min"/>
+      </optional>
+      <optional>
+        <attribute name="max"/>
+      </optional>
+      <attribute name="item-name"/>
+      <oneOrMore>
+        <ref name="content"/>
+      </oneOrMore>
+    </element>
   </define>
   <start>
     <element name="card">

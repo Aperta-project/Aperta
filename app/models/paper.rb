@@ -379,6 +379,13 @@ class Paper < ActiveRecord::Base
       alert_duplicate_file(attachment, uploaded_by)
       # No need to process attachment, mark the paper record as "done"
       update(processing: false)
+      return
+    end
+    if attachment.file_type == 'pdf'
+      # bypass ihat for PDFs, and update paper and associated versioned_text object
+      attachment.paper.update!(body: '', processing: false)
+    else
+      ProcessManuscriptWorker.perform_async(attachment.id)
     end
   end
 

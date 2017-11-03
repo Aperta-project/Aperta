@@ -314,6 +314,7 @@ FactoryGirl.define do
           s3_dir: 'sample/dir',
           status: 'done'
         )
+        paper.update!(body: '') # this update is necessary in order to properly create versioned_texts for PDF
 
         paper.save!
 

@@ -1,7 +1,7 @@
 {{#if (or showDescription preview (not disabled))}}
-  <p class="description">
+  <div class="description">
     {{{description}}}
-  </p>
+  </div>
 {{/if}}
 
 {{#each attachments as |attachment|}}
@@ -31,17 +31,14 @@
   {{upload-preview upload=f}}
 {{/each}}
 
-<div>
+
   {{error-message message=uploadErrorMessage displayIcon=true indent=false}}
-</div>
+
 
 {{#if showAddButton}}
-  <label class="card-form-element">
-    <div class="card-form-element--label">
-      <div class="card-form-text button-secondary button--green fileinput-button {{if disableAddButton "button--disabled"}}">
+      <div class="button-secondary button--green fileinput-button {{if disableAddButton "button--disabled"}}">
         {{{buttonText}}}
       </div>
-    </div>
 
     <div class="{{if uploadInProgress "hidden"}}">
       {{file-uploader class="add-new-attachment"
@@ -55,8 +52,7 @@
                          progress=(action "uploadProgress")
                          done=(action "uploadFinished")
                          start=(action "fileAdded")}}
-    </div>
-  </label>
+
 {{/if}}
 
 <div>{{card-content/validation-errors errors=answer.readyIssuesArray hideErrors=false}}</div>

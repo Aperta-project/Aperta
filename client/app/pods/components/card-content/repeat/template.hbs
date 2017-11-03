@@ -1,0 +1,34 @@
+{{#each repetitions as |rep|}}
+  <div class="repeated-block">
+    <h4>
+      {{#if canDeleteRepetition}}
+        <a class="fa fa-trash remove-repetition pull-right" {{action "deleteRepetition" rep}} href="#"></a>
+      {{/if}}
+      {{ itemName }}
+    </h4>
+    {{#if (or preview (not rep.isNew)) }}
+      {{!--
+        When the repetition is new, it won't have an id. We must wait for the
+        repetition to be saved before rendering the child content. Any
+        requiredField answers are created eagerly, but we need to wait for the
+        reptition to be saved to correctly associate them.
+
+        None of that is something we need to worry about in the Card Preview
+        though, since neither Repetitions nor Answers are actually persisted to
+        the server.
+      --}}
+      {{#each content.children as |child|}}
+        {{card-content
+          content=child
+          disabled=disabled
+          owner=owner
+          answerChanged=answerChanged
+          repetition=rep
+          preview=preview}}
+      {{/each}}
+    {{/if}}
+  </div>
+  <a class="add-repetition {{unless canAddRepetition "disabled"}}" {{action "addRepetition" rep}} href="#">&#43; {{addLabelText}}</a>
+{{else}}
+  <a class="add-repetition {{unless canAddRepetition "disabled"}}" {{action "addRepetition"}} href="#">&#43; {{addLabelText}}</a>
+{{/each}}

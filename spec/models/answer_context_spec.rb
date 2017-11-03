@@ -1,19 +1,13 @@
 require 'rails_helper'
 
 describe AnswerContext do
-  subject(:context) do
-    AnswerContext.new(answer)
-  end
+  subject(:context) { AnswerContext.new(answer) }
 
   let(:answer) do
-    FactoryGirl.build(:answer, card_content: card_content, value: true)
+    FactoryGirl.build(:answer,
+      card_content: FactoryGirl.build(:card_content, value_type: 'boolean', text: 'favorite color?', ident: 'foo--bar'),
+      value: true)
   end
-
-  let(:card_content) do
-    FactoryGirl.build(:card_content, value_type: value_type, text: "question")
-  end
-
-  let(:value_type) { 'boolean' }
 
   context 'rendering an answer' do
     def check_render(template, expected)
@@ -21,8 +15,8 @@ describe AnswerContext do
         .to eq(expected)
     end
 
-    it 'has a value_type' do
-      check_render("{{ value_type }}", value_type)
+    it 'renders a value_type' do
+      check_render("{{ value_type }}", 'boolean')
     end
 
     it 'renders a string value' do
@@ -30,11 +24,15 @@ describe AnswerContext do
     end
 
     it 'renders a value' do
-      check_render("{{ value }}", answer.value.to_s)
+      check_render("{{ value }}", "true")
     end
 
     it 'renders a question' do
-      check_render("{{ question }}", answer.card_content.text)
+      check_render("{{ question }}", 'favorite color?')
+    end
+
+    it 'renders an ident' do
+      check_render("{{ ident }}", 'foo--bar')
     end
   end
 end

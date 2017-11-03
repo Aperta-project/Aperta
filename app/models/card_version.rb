@@ -32,16 +32,6 @@ class CardVersion < ActiveRecord::Base
     card_contents.each { |card_content| card_content.traverse(visitor) }
   end
 
-  def create_default_answers(task)
-    card_contents.select { |content| content.default_answer_value.present? }.each do |content|
-      task.answers.create!(
-        card_content: content,
-        paper: task.paper,
-        value: content.default_answer_value
-      )
-    end
-  end
-
   private
 
   def submittable_state

@@ -8,6 +8,9 @@ module Typesetter
       object.tasks.where(type: task_type)
     end
 
+    ##
+    # Only looks up CustomCardTask tasks with a given name
+    #
     def custom_task(task_name)
       tasks = object.tasks.where(type: 'CustomCardTask', title: task_name)
       first_if_single(tasks)

@@ -75,15 +75,9 @@ module.exports = function(defaults) {
   // At.js
   app.import(app.bowerDirectory + '/At.js/dist/css/jquery.atwho.css');
 
-  // TinyMCE
-  var tinymce = new Funnel('node_modules/tinymce/', {
-    srcDir: '/',
-    destDir: '/assets/tinymce',
-  });
-
   if (app.env !== 'production') {
     app.import('vendor/pusher-test-stub.js', { type: 'test' });
   }
 
-  return app.toTree([select2Assets, tinymce]);
+  return app.toTree([select2Assets]);
 };

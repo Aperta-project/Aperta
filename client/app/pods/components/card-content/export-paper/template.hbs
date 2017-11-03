@@ -1,15 +1,13 @@
-<label class="card-form-element">
+<div class="card-form-element">
   <button class="button-primary
                  button--green
                  send-to-apex-button
                  {{if disabled 'disabled'}}"
           {{action "sendToApex"}}>
 
-    <span class="card-form-element--label">
       {{{content.label}}}
-    </span>
   </button>
-</label>
+</div>
 
 {{#if task.exportDeliveries}}
   <div class="export-history">

@@ -66,9 +66,9 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     assert overlay_title.text == expected_overlay_title, 'The overlay title: {0} is not ' \
                                                          'the expected: {1}'.format(overlay_title.text,
                                                                                     expected_overlay_title)
-    # commented temporary as it will fail so far:
-    # font-size 36px instead of 48px according to the style guide
-    # should be filed as a bug in case if it is not fixed before deploying to CI
+
+    # commented until APERTA-11857 gets resolved:
+    # font-size is 36px instead of 48px according to the style guide
     # self.validate_overlay_card_title_style(overlay_title)
 
     overlay_subtitle = self._get(self._subtitle)

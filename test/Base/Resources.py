@@ -35,6 +35,9 @@ psql_db = getenv('APERTA_PSQL_DBNAME', 'tahi')
 local_tz = 'US/Pacific'
 test_journal = 'PLOS Wombat'
 
+# The list of production urls
+production_urls = ['https://www.aperta.tech', 'https://aperta:ieeetest@ieee.aperta.tech']
+
 # Aperta native registration resources
 user_email = 'admin'
 user_pw = 'yetishrimp'
@@ -1905,6 +1908,16 @@ no_cards_mmt = {'name'              : 'NoCards',
                 }
 pp_optin_mmt = {'name'              : 'Preprint Eligible',
                 'user_tasks'        : ['Upload Manuscript'],
+                'staff_tasks'       : ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                       'Invite Academic Editor', 'Invite Reviewers', 'Preprint Posting',
+                                       'Production Metadata', 'Register Decision',
+                                       'Related Articles', 'Revision Tech Check', 'Send to Apex',
+                                       'Similarity Check', 'Title And Abstract'],
+                'uses_resrev_report': True,
+                'preprint_eligible' : True
+                }
+pp_authors_mmt = {'name'              : 'Preprint Eligible with Authors',
+                'user_tasks'        : ['Upload Manuscript, Authors'],
                 'staff_tasks'       : ['Assign Team', 'Editor Discussion', 'Final Tech Check',
                                        'Invite Academic Editor', 'Invite Reviewers', 'Preprint Posting',
                                        'Production Metadata', 'Register Decision',

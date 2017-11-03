@@ -15,7 +15,7 @@ from selenium.webdriver.common.by import By
 from .authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_GREY_DARK
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import users, staff_admin_login, pub_svcs_login, internal_editor_login, \
-    super_admin_login
+    super_admin_login, production_urls
 from Base.PDF_Util import PdfUtil
 from Base.PostgreSQL import PgSQL
 from frontend.Overlays.submission_review import SubmissionReviewOverlay
@@ -809,7 +809,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       """
       current_env = os.getenv('WEBDRIVER_TARGET_URL', '')
       logging.info(current_env)
-      if current_env in ('https://www.aperta.tech', 'https://aperta:ieeetest@ieee.aperta.tech'):
+      if current_env in production_urls:
         return False
       preprint_feature_flag = PgSQL().query('SELECT active FROM feature_flags WHERE name = \'PREPRINT\';')[0][0]
       return preprint_feature_flag
@@ -823,7 +823,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       """
       current_env = os.getenv('WEBDRIVER_TARGET_URL', '')
       logging.info(current_env)
-      if current_env in ('https://www.aperta.tech', 'https://aperta:ieeetest@ieee.aperta.tech'):
+      if current_env in production_urls:
         return False
       preprint_feature_flag = PgSQL().query('SELECT active FROM feature_flags WHERE name = \'PREPRINT\';')[0][0]
       if not preprint_feature_flag:
@@ -832,13 +832,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # check if manuscript template is preprint eligible
       short_doi = self.get_paper_short_doi_from_url()
       paper_id, paper_type, pp_eligible_mmt = PgSQL().query('SELECT p.id, p.paper_type, mmt.is_preprint_eligible '
-                                              #', p.preprint_opt_out '
                                               'FROM papers p, journals j, manuscript_manager_templates mmt '
                                               'WHERE p.journal_id = j.id '
-                                              'AND j.name = %s '
                                               'AND mmt.journal_id = j.id '
                                               'AND mmt.paper_type = p.paper_type '
-                                              'AND p.short_doi =%s;', ('PLOS Wombat',short_doi))[0]
+                                              'AND p.short_doi =%s;', (short_doi,))[0]
 
       if not pp_eligible_mmt:
         return False

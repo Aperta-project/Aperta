@@ -26,7 +26,7 @@ class ApertaCNSTest(CommonTest):
   Two tests explicit to the current two paths of creating a new submission. Relies on the seeding data provided by
     test_add_stock_mmt.
   """
-  def rest_smoke_validate_create_to_submit_no_preprint_overlay(self, init=True):
+  def test_smoke_validate_create_to_submit_no_preprint_overlay(self, init=True):
     """
     test_cns: Validates Creating a new document - needs extension to take it through to Submit
     Validates the presence of the following elements:
@@ -51,7 +51,7 @@ class ApertaCNSTest(CommonTest):
     title = manuscript_page.get_paper_title_from_page()
     logging.info(u'Paper page title is: {0}'.format(title))
 
-  def rest_core_validate_create_to_submit_with_preprint_overlay(self, init=True):
+  def test_core_validate_create_to_submit_with_preprint_overlay(self, init=True):
     """
     test_cns: Validates Creating a new document - needs extension to take it through to Submit with the preprint
     overlay in the create sequence.
@@ -87,8 +87,7 @@ class ApertaCNSTest(CommonTest):
     logging.info('Running test_validate_component_styles')
     logging.info('Logging in as {0}'.format(author))
     dashboard_page = self.cas_login(email=author['email'])
-    dashboard_page._wait_on_lambda(lambda: len(dashboard_page._gets(dashboard_page._dashboard_invite_title)) >= 1)
-    # dashboard_page.page_ready()
+    dashboard_page.page_ready()
     # create a new manuscript
     dashboard_page.click_create_new_submission_button()
     self.create_article(title='cns_review_submission_overlay', journal='PLOS Wombat',
@@ -109,6 +108,7 @@ class ApertaCNSTest(CommonTest):
     authors_task = AuthorsTask(self.getDriver())
     authors_task.add_individual_author_task_action()
     authors_task.edit_author(author)
+    # TODO: add group co-author when APERTA-11838 gets resolved
 
     ms_page._wait_for_element(ms_page._get(ms_page._submit_button), 1)
     submit_button = ms_page._get(ms_page._submit_button)

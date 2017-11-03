@@ -82,14 +82,11 @@ class AssignTeamCard(BaseCard):
     user_input.send_keys(person['email'])
     # Need time for the lookup to complete
     self._wait_for_text_be_present_in_element(self.search_result_user, person['name'])
-    #time.sleep(4)
     # once more with feeling to commit the selection
     user_input.send_keys(Keys.ENTER)
     self._wait_for_text_be_present_in_element(self.assign_team_user_selector, person['name'])
-    #time.sleep(1)
     self._get(self.assign_team_assign_button).click()
     self._wait_for_text_be_present_in_element(self.assign_team_role_selector, 'Please select Role')
-    #time.sleep(1)
     self._validate_assignment(person, role)
     time.sleep(1)
 

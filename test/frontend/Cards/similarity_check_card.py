@@ -4,7 +4,6 @@
 from selenium.webdriver.common.by import By
 
 from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.PostgreSQL import PgSQL
 from frontend.Cards.basecard import BaseCard
 
 __author__ = 'gtimonina@plos.org'
@@ -17,45 +16,32 @@ class SimilarityCheckCard(BaseCard):
     super(SimilarityCheckCard, self).__init__(driver)
 
     # Locators - Instance members
-    # setting edit page
-    self._automatic_check_settings = (By.CLASS_NAME, 'similarity-check-settings')
-    self._automatic_checks_text = (By.CSS_SELECTOR, '.similarity-check-settings h4')
-    self._automatic_checks_slider_input = (By.CSS_SELECTOR, 'input#toogle')
-    self._automatic_checks_slider = (By.CLASS_NAME, 'slider')#(By.ID, 'toogle')
-    self._automatic_options = (By.CSS_SELECTOR, 'div.liquid-container>div')
-    self._send_ms_on_submission_radio_button = (By.NAME, 'submissionOption')
-    self._send_ms_after_revision_drop_list_collapsed = (By.CSS_SELECTOR, '.select2-container')
-    self._send_ms_after_revision_input = (By.CSS_SELECTOR, 'input.select2-input')
-    self._send_ms_after_revision_list_items = (By.CSS_SELECTOR, 'li.select2-result-selectable')
-    self._after_revision_chosen = (By.CSS_SELECTOR, 'span.select2-chosen')
-    self._after_revision_arrow = (By.CSS_SELECTOR, '.select2-arrow')
-    self._sim_check_settings_save_button = (By.CSS_SELECTOR, 'div.overlay-action-buttons>button.button-primary')
-    self._overlay_header_close = (By.CSS_SELECTOR, 'button.cancel')
-    # (By.CSS_SELECTOR, 'div.overlay-action-buttons>button.cancel')
     # mmt card locators
     self._sim_check_task_overlay = (By.CSS_SELECTOR, '.task.similarity-check-task')
     self._instruction = (By.CSS_SELECTOR, 'div.ember-view.task>div>p')
     self._automation_disabled_info = (By.CSS_SELECTOR, 'div.auto-report-off p')
     self._automated_report_status = (By.CSS_SELECTOR, '.task.similarity-check-task p')
-    self._automated_report_status_active = (By.CSS_SELECTOR, 'div.automated-report-status p')  # 2 lines
+    self._automated_report_status_active = (By.CSS_SELECTOR, 'div.automated-report-status p')
     self._generate_report_button = (By.CSS_SELECTOR, 'button.generate-confirm')
     self._confirm_container = (By.CSS_SELECTOR, 'div.confirm-container')
+    self._confirm_form = (By.CSS_SELECTOR, 'div div')
     self._confirm_text = (By.CSS_SELECTOR, 'div.confirm-container>h4')
-    self._manually_generate_cancel_link = (By.CSS_SELECTOR, 'button.button-link')  # 'div.confirm-container>button.button-link'
-    self._manually_generate_button = (By.CSS_SELECTOR, 'button.generate-report')  # 'div.confirm-container>button.generate-report'
+    self._manually_generate_cancel_link = (By.CSS_SELECTOR, 'button.button-link')
+    self._manually_generate_button = (By.CSS_SELECTOR, 'button.generate-report')
     self._report_pending_spinner = (By.CSS_SELECTOR, 'div.progress-spinner')
     self._report_pending_spinner_message = (By.CSS_SELECTOR, 'div.ember-view.progress-spinner-message')
-    self._sim_check_report_title = (By.CLASS_NAME, 'latest-versioned-text>h3')
+    self._sim_check_report_title = (By.CSS_SELECTOR, 'latest-versioned-text>h3')
     self._sim_check_report_completed = (By.CSS_SELECTOR, '.latest-versioned-text p')
     self._sim_check_report_score_text = (By.CSS_SELECTOR, '.latest-versioned-text p + p')
     self._sim_check_report_link = (By.CSS_SELECTOR, '.similarity-check a')
     self._sim_check_report_score = (By.CLASS_NAME, 'score')
     self._sim_check_report_history = (By.CSS_SELECTOR, '.task.similarity-check-task>div>h3')
     self._sim_check_report_revision_number = (By.CSS_SELECTOR, 'similarity-check-bar-revision-number')
-    #
+    self._btn_done = (By.CSS_SELECTOR, 'span.task-completed-section button')
+    # _ithenticate page locators
     self._ithenticate_title = (By.CSS_SELECTOR, 'div.infobar-title')
     self._ithenticate_result = (By.CSS_SELECTOR, 'div.infobar-value')
-    self._btn_done = (By.CSS_SELECTOR, 'span.task-completed-section button')
+
 
   # POM Actions
   def validate_styles_and_components(self, ithenticate_automation='off'):
@@ -133,7 +119,8 @@ class SimilarityCheckCard(BaseCard):
       self.validate_generate_confirmation_style(confirm_container)
 
       confirm_text = self._get(self._confirm_text)
-      expected_confirm_text = 'Manually generating the report will disable the automated similarity check for this manuscript'
+      expected_confirm_text = 'Manually generating the report will disable the automated similarity check ' \
+                              'for this manuscript'
       assert expected_confirm_text == confirm_text.text.strip()
       confirm_cancel = self._get(self._manually_generate_cancel_link)
       assert confirm_cancel # cancel link
@@ -145,15 +132,18 @@ class SimilarityCheckCard(BaseCard):
       # click on 'cancel' - confirm container should not be displayed
       confirm_cancel.click()
       gen_report = self._get(self._sim_check_task_overlay)
-      gen_report.find_element_by_css_selector('div div')
-
+      gen_report.find_element(*self._confirm_form)
+      #gen_report.find_element_by_css_selector('div div')
       assert 'confirm-container' not in gen_report.get_attribute('class')
       # click "GENERATE REPORT' again
       self.validate_generate_report_button()
 
 
   def generate_manual_report(self):
-
+    """
+    Generate report manually by clicking on 'Generate Report' button
+    :return: void function
+    """
     send_for_manual_report_button = self._get(self._generate_report_button)
     send_for_manual_report_button.click()
 
@@ -167,37 +157,52 @@ class SimilarityCheckCard(BaseCard):
     # assert not send_for_manual_report_button.is_displayed
 
   def validate_report_result(self):
-
+    """
+    Wait for the report result and validate
+    :return: void function
+    """
     self._wait_for_element(self._get(self._sim_check_report_title), 1)
+
     report_title = self._get(self._sim_check_report_title)
-    assert 'Similarity Check Report' in report_title.text.strip()
+    assert 'Similarity Check Report' in report_title.text.strip(), report_title.text.strip()
     self.validate_application_h3_style(report_title)
     html_header_title = self._get(self._header_title_link)
     paper_title = html_header_title.text
     # wait for completed report
     self._wait_for_element(self._get(self._sim_check_report_completed))
     report_completed = self._get(self._sim_check_report_completed)
-    self._wait_on_lambda(lambda: self.completed_state()==True, max_wait=300)
+    self._wait_on_lambda(lambda: self.completed_state()==True, max_wait=300)  # score and style
     #self._wait_for_element(self._get(self._sim_check_report_link), 1000)
     score = self._get(self._sim_check_report_score)
     score = score.text
-    self.launch_ithenticate_page(score, paper_title)
+    self.launch_ithenticate_page(score, paper_title)# return score and paper_title
 
 
   def launch_ithenticate_page(self, score, paper_title):
+    """
+    Click on iThenticate report link and validate results
+    :return: void function
+    """
     report_link = self._get(self._sim_check_report_link)
     assert self._is_link_valid(report_link), 'Report link {0} is invalid'.report_link.get_attribute('href')
     report_link.click()
     self.traverse_to_new_window()
     self._wait_for_element(self._get(self._ithenticate_title))
     ithent_title = self._get(self._ithenticate_title)
-    assert paper_title.strip() == ithent_title.text.strip()
+    assert paper_title.strip() == ithent_title.text.strip(), paper_title.strip()
 
     self._wait_for_element(self._get(self._ithenticate_result))
     ithent_score = self._get(self._ithenticate_result)
-    assert score.strip() in ithent_score.text.strip()
+    assert score.strip() in ithent_score.text.strip(), 'Score {0} is expected in {1}'\
+                                                        .format(score.strip(), ithent_score.text.strip())
 
-  def validate_generate_report_button(self, ):
+  def validate_generate_report_button(self):
+    """
+    Validate 'Generate Report' button visibility depending on completion:
+    it should be not visible if the card completed
+    and visible if the card is uncompleted
+    :return: void function
+    """
     card_completed_state = self.completed_state()
     send_for_manual_report_button = self._iget(self._generate_report_button)
     if card_completed_state:
@@ -207,8 +212,9 @@ class SimilarityCheckCard(BaseCard):
 
   def validate_generate_confirmation_style(self, confirm_container):
     """
-    Ensure consistency in rendering cancel link across confirmation
-    :param cancel: Cancel element
+    Validate confirm container style checking CSS properties
+    :param confirm_container: Web element to validate
+    :return: void function
     """
     assert 'source-sans-pro' in confirm_container.value_of_css_property('font-family'), \
         confirm_container.value_of_css_property('font-family')
@@ -225,27 +231,3 @@ class SimilarityCheckCard(BaseCard):
     assert confirm_container.value_of_css_property('background-color') == 'rgb(57, 163, 41)', \
         confirm_container.value_of_css_property('background-color')
 
-  def set_automation_db(self, mmt_id, auto_option='off'):
-
-    settings_id, settings_owner_id, settings_owner_type, settings_name, \
-    settings_string_value, settings_type, settings_created_at, settings_updated_at, \
-    settings_value_type, settings_setting_template_id = \
-    PgSQL().query('SELECT settings.id, settings.owner_id, settings.owner_type, '
-                  'settings.name, settings.string_value, settings.type, '
-                  'settings.created_at, settings.updated_at, settings.value_type, '
-                  'settings.setting_template_id'
-                  'FROM task_templates, phase_templates, settings '
-                  'WHERE phase_templates.manuscript_manager_template_id = %s '
-                  'AND phase_templates.id=task_templates.phase_template_id '
-                  'AND settings.owner_id=task_templates.id '
-                  'AND task_templates.title= %s '
-                  'AND settings.NAME = %s;', (mmt_id, 'Similarity Check',
-                                              'ithenticate_automation'))[0]
-    if auto_option != settings_string_value:
-      PgSQL().modify('INSERT INTO settings (id, owner_id, owner_type, name, string_value, type, '
-                     'created_at, updated_at, value_type, setting_template_id) '
-                     'VALUES (%s, %s, %s, %s, %s, %s, '
-                     'now(), now(), %s, %s);',
-                     (settings_id, settings_owner_id, settings_owner_type, settings_name, \
-                      auto_option, settings_type, settings_created_at, settings_updated_at, \
-                      settings_value_type, settings_setting_template_id))

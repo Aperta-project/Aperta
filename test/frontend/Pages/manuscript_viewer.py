@@ -10,10 +10,8 @@ import random
 import time
 from datetime import datetime
 
-
-
-
 from selenium.webdriver.common.by import By
+
 from .authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_GREY_DARK
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import users, staff_admin_login, pub_svcs_login, internal_editor_login, \
@@ -163,6 +161,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._resize_handle_box = (By.CLASS_NAME, 'box-handle')
     self._resize_handle_box_lines = (By.CSS_SELECTOR, '.box-handle .vertical-line')
     self._resize_handle_box_tooltip = (By.CSS_SELECTOR, '.box-handle .tooltip')
+    # relative locators
+    self._rel_locator_to_check_if_task_completed = (By.CSS_SELECTOR, 'div div')
+    self._rel_locator_to_check_if_task_open = (By.XPATH, '../div')
+    self._parent_node = (By.XPATH, '..')
 
   # POM Actions
   def page_ready(self):
@@ -535,7 +537,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     tasks = self._gets(self._task_headings)
     for task in tasks:
       if task.text == task_name:
-        completed_icon = task.find_element_by_css_selector('div div')
+        #completed_icon = task.find_element_by_css_selector('div div')
+        completed_icon = task.find_element(*self._rel_locator_to_check_if_task_completed)
         if 'active' in completed_icon.get_attribute('class'):
           logging.info('Completed is true')
           return True
@@ -551,7 +554,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     tasks = self._gets(self._task_headings)
     for task in tasks:
       if task.text == task_name:
-        div_list = task.find_elements_by_xpath("../div")
+        #div_list = task.find_elements_by_xpath("../div")
+        div_list = task.find_element(*self._rel_locator_to_check_if_task_open)
         # if task is open it should be 2 div under task: task-disclosure-heading and task-disclosure-body
         # if task is closed, only 1: task-disclosure-heading
         return len(div_list)==2
@@ -604,7 +608,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # if task is marked as complete, leave is at is.
     if not click_override:
       for task in tasks:
-        task_div = task.find_element_by_xpath('..')
+        #task_div = task.find_element_by_xpath('..')
+        task_div = task.find_element(*self._parent_node)
         if task_name in task.text \
             and 'active' \
             not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):

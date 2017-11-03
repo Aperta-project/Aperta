@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Page Object Model for the Similarity Check Settings Page, Workflow Tab. Validates elements and their styles,
+Page Object Model for the Similarity Check Settings Page on Workflow Tab. Validates elements and their styles,
 and functions.
 also includes
 Page Object Model for the card settings overlay.
@@ -18,7 +18,7 @@ __author__ = 'gtimonina@plos.org'
 
 class SimCheckSettings(AdminWorkflowsPage):
   """
-  Model the Similarity Check Settings Page, Workflow Tab elements and their functions
+  Model the Similarity Check Settings Page on Workflow Tab elements and their functions
   """
   def __init__(self, driver):
     super(SimCheckSettings, self).__init__(driver)
@@ -29,7 +29,7 @@ class SimCheckSettings(AdminWorkflowsPage):
     self._automatic_check_settings = (By.CLASS_NAME, 'similarity-check-settings')
     self._automatic_checks_text = (By.CSS_SELECTOR, '.similarity-check-settings h4')
     self._automatic_checks_slider_input = (By.CSS_SELECTOR, 'input#toogle')
-    self._automatic_checks_slider = (By.CLASS_NAME, 'slider')#(By.ID, 'toogle')
+    self._automatic_checks_slider = (By.CLASS_NAME, 'slider')
     self._automatic_options = (By.CSS_SELECTOR, 'div.liquid-container>div')
     self._send_ms_on_submission_radio_button = (By.NAME, 'submissionOption')
     self._radio_button_labels = (By.CSS_SELECTOR, 'label.flex-element')
@@ -40,47 +40,6 @@ class SimCheckSettings(AdminWorkflowsPage):
     self._after_revision_arrow = (By.CSS_SELECTOR, '.select2-arrow')
     self._sim_check_settings_save_button = (By.CSS_SELECTOR, 'div.overlay-action-buttons>button.button-primary')
     self._overlay_header_close = (By.CSS_SELECTOR, 'button.cancel')
-
-
-  def open_mmt(self, mmt_name):
-    """
-    A function to open existing mmt
-    :return: void function
-    """
-    self._wait_for_element(self._get(self._admin_workflow_pane_title))
-    #self._wait_for_element(self._get(self._admin_workflow_mmt_thumbnail))
-    mmts = self._gets(self._admin_workflow_mmt_thumbnail)
-    for mmt in mmts:
-      name = mmt.find_element(*self._admin_workflow_mmt_title)
-      if name.text == mmt_name:
-        logging.info('Opening {0} template'.format(name.text))
-        self._scroll_into_view(name)
-        name.click()
-        break
-
-  def click_on_card_settings(self, card_settings_locator):
-    """
-    A function to open card settings
-    :return: void function
-    """
-    settings_icon = self._get(card_settings_locator)
-    # Hover color of the Similarity Check settings cog should be Admin blue
-    self._scroll_into_view(settings_icon)
-    color_before = settings_icon.value_of_css_property('color')
-    self._actions.move_to_element(settings_icon).perform()
-    #self._actions.move_to_element_with_offset(settings_icon, 5, 5).perform()
-    self._wait_on_lambda(lambda: settings_icon.value_of_css_property('color') != color_before)
-    #time.sleep(1)
-    assert settings_icon.value_of_css_property('color') == APERTA_BLUE, \
-       settings_icon.value_of_css_property('color')
-    settings_icon.click()
-
-  def close_mmt_card(self):
-
-    self._wait_for_element(self._get(self._mmt_template_back_link))
-    back_btn = self._get(self._mmt_template_back_link)
-    back_btn.click()
-    self._wait_for_element(self._get(self._admin_workflow_pane_title))
 
   def validate_setting_style_and_components(self):
     """
@@ -146,20 +105,10 @@ class SimCheckSettings(AdminWorkflowsPage):
     after_revision_arrow = self._get(self._after_revision_arrow)
     after_revision_arrow.click()
     after_revision_options = self._gets(self._send_ms_after_revision_list_items)
-    self._scroll_into_view(after_revision_options[option_index])
+    self._scroll_into_view(after_revision_options[option_index]) # find by option name
     after_revision_options[option_index].click()
     chosen_option = self._get(self._after_revision_chosen)
     assert chosen_option.text == option_text, chosen_option.text
-
-  def save_settings(self):
-    """
-    function to save settings: click on 'SAVE' button on settings overlay
-    :return: void function
-    """
-    self._wait_for_element(self._get(self._sim_check_settings_save_button))
-    save_overlay_button = self._get(self._sim_check_settings_save_button)
-    save_overlay_button.click()
-
 
   def set_automation(self, automation=True):
     """
@@ -176,7 +125,7 @@ class SimCheckSettings(AdminWorkflowsPage):
         automation_slider.value_of_css_property('background-color')
       automation_slider.click()
 
-  def set_automation_after_submission(self, option_index = 0):
+  def set_after_submission_option(self, option_index = 0):
     """
     function to check radio button that defines trigger for automated Similarity Check
     :param option_index: 0 - to check option 'on first full submission', 1 - 'after revision'
@@ -187,3 +136,52 @@ class SimCheckSettings(AdminWorkflowsPage):
     if not on_submission.is_selected():
       on_submission.click()
 
+  def save_settings(self):
+    """
+    function to save settings: click on 'SAVE' button on settings overlay
+    :return: void function
+    """
+    self._wait_for_element(self._get(self._sim_check_settings_save_button))
+    save_overlay_button = self._get(self._sim_check_settings_save_button)
+    save_overlay_button.click()
+
+  def close_mmt(self):
+    """
+    Close manuscript template page by clicking on Back button
+    """
+    self._wait_for_element(self._get(self._mmt_template_back_link))
+    back_btn = self._get(self._mmt_template_back_link)
+    back_btn.click()
+    self._wait_for_element(self._get(self._admin_workflow_pane_title))
+
+  def open_mmt(self, mmt_name):
+    """
+    A function to open existing mmt
+    :return: void function
+    """
+    self._wait_for_element(self._get(self._admin_workflow_pane_title))
+    mmts = self._gets(self._admin_workflow_mmt_thumbnail)
+    for mmt in mmts:
+      name = mmt.find_element(*self._admin_workflow_mmt_title)
+      if name.text == mmt_name:
+        logging.info('Opening {0} template'.format(name.text))
+        self._scroll_into_view(name)
+        name.click()
+        break
+
+  def click_on_card_settings(self, card_settings_locator):
+    """
+    A function to open card settings
+    :return: void function
+    """
+    settings_icon = self._get(card_settings_locator)
+    # Hover color of the Similarity Check settings cog should be Admin blue
+    self._scroll_into_view(settings_icon)
+    color_before = settings_icon.value_of_css_property('color')
+    self._actions.move_to_element(settings_icon).perform()
+    # self._actions.move_to_element_with_offset(settings_icon, 5, 5).perform()
+    self._wait_on_lambda(lambda: settings_icon.value_of_css_property('color') != color_before)
+    # time.sleep(1)
+    assert settings_icon.value_of_css_property('color') == APERTA_BLUE, \
+      settings_icon.value_of_css_property('color')
+    settings_icon.click()

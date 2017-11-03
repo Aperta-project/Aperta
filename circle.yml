@@ -1,69 +1,101 @@
-## Customize machine
-machine:
-  timezone:
-    America/Los_Angeles
-
-  ruby:
-    version:
-      2.2.8 # when changing ruby versions, also update the cache_directory path below
-  node:
-    version: 6.11.1
-
-  environment:
-    RAILS_ENV: test
-    DATABASE_URL: postgres://ubuntu:@127.0.0.1:5432/circle_test
-    FIREFOX_URL: https://ftp.mozilla.org/pub/firefox/releases/54.0.1/linux-x86_64/en-US/firefox-54.0.1.tar.bz2
-    FF_FILE: ff/firefox-54.0.1.tar.bz2
-
-## Customize dependencies
-dependencies:
-  cache_directories:
-    - "/opt/circleci/.rvm/gems/ruby-2.2.8@tahi"
-    - "client/node_modules"
-    - "client/bower_components"
-    - ff
-
-  pre:
-    - gem update --system
-    - gem install bundler -v '1.15.4'
-    - bundle config --global jobs 7
-    - bundle config --global without staging:production
-    - "[ -f $FF_FILE ] || wget $FIREFOX_URL -qP ff"
-    - tar xvf $FF_FILE
-
-  override:
-    - bundle install: # note ':' here
-        timeout: 600
-
-
-## Customize database setup
-database:
-  pre:
-    # install custom postgres extensions
-    - psql -c "CREATE EXTENSION IF NOT EXISTS plpgsql;" -d circle_test
-    - psql -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;" -d circle_test
-    - psql -c "CREATE EXTENSION IF NOT EXISTS unaccent;" -d circle_test
-  override:
-    - bundle exec rake db:create db:schema:load
-  post:
-    - bundle exec rake ember:install:
-        timeout: 900 # 15 minutes
-
-
-## Customize test commands
-test:
-  override:
-    - bundle exec rake circleci:qunit:
-       parallel: true
-    - bundle exec rspec -p 30 -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml:
-        timeout: 1800
-        parallel: true
-        files:
-          - "**/spec/**/*_spec.rb"
-    - bundle exec rspec -p 30 -t js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml:
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.2.7-node-browsers
+      - image: circleci/postgres:9.6-alpine-ram
         environment:
-          SELENIUM_FIREFOX_PATH: $PWD/firefox/firefox
-        timeout: 1800
-        parallel: true
-        files:
-          - "**/spec/**/*_spec.rb"
+          POSTGRES_USER: "ubuntu"
+          POSTGRES_DB: "circle_test"
+          TZ: "America/Los_Angeles"
+    parallelism: 16
+    working_directory: /home/circleci/tahi
+    environment:
+      RAILS_ENV: test
+      RACK_ENV: test
+      DATABASE_URL: postgres://ubuntu:@127.0.0.1:5432/circle_test
+      CIRCLE_TEST_REPORTS: /tmp/reports
+      TZ: "America/Los_Angeles"
+      PGHOST: 127.0.0.1
+      PGUSER: "ubuntu"
+    steps:
+      - run: sudo apt-get install libcups2=1.7.5-11+deb8u1 -y --force-yes
+      - run: sudo apt install graphicsmagick graphicsmagick-libmagick-dev-compat
+      - type: checkout
+      - run: cp Gemfile{,.bak} && sed -i'' 's/2.2.6/2.2.7/g' Gemfile
+
+      - restore_cache:
+          key: tahi-v2-gems-{{ checksum "Gemfile.bak" }}
+          keys:
+            - tahi-v2-gems-
+
+      - restore_cache:
+          key: tahi-v2-node-{{ checksum "package.json" }}
+          keys:
+            tahi-v2-node-
+
+      - run:
+          name: prepare Node and Ruby versions
+          command: |
+            gem install bundler -v '1.15.3'
+            bundle config --global jobs 7
+            bundle config --global without staging:production
+            bundle config --global path /home/circleci/bundle
+            node --version
+            which node
+
+      - run:
+          name: install package dependencies (Bundle, npm)
+          command: |
+            node --version
+            time bundle install
+            time bundle exec rake ember:install
+
+      - save_cache:
+          key: tahi-v2-gems-{{ checksum "Gemfile.bak" }}
+          paths:
+            - /home/circleci/bundle
+
+      - save_cache:
+          key: tahi-v2-gems-{{ checksum "package.json" }}
+          paths:
+            - /home/circleci/tahi/node_modules
+            - /home/circleci/tahi/client
+
+      - run:
+          name: install psql client
+          shell: sudo bash -eo pipefail
+          command: apt-get update && apt-get install -y postgresql-client
+
+      - run:
+          name: install custom postgres extensions
+          command: |
+            psql --version
+            psql --host 127.0.0.1 -c "CREATE EXTENSION IF NOT EXISTS plpgsql;" -d circle_test
+            psql --host 127.0.0.1 -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;" -d circle_test
+            psql --host 127.0.0.1 -c "CREATE EXTENSION IF NOT EXISTS unaccent;" -d circle_test
+
+      - run:
+          name: set up database
+          command: bundle exec rake db:create db:schema:load
+
+      - run:
+          name: Run ember tests
+          command: |
+            mkdir -p $CIRCLE_TEST_REPORTS
+            bundle exec rake circleci:qunit
+
+      - run:
+          name: Run all rspec tests separately
+          command: |
+            SPECS=$(circleci tests glob "**/spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+            echo $SPECS
+            bundle exec rspec -p 30 -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml -- ${SPECS}
+            bundle exec rspec -p 30 -t js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml -- ${SPECS}
+
+      - type: test-results-store
+        path: /tmp/reports
+
+      - type: artifacts-store
+        path: /tmp/reports
+        destination: reports

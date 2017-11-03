@@ -225,3 +225,4 @@ class SubmissionReviewOverlay(AuthenticatedPage):
                                       'WHERE owner_id = %s AND owner_type=%s;', (task_id, 'Task'))[0][0]
 
     return  db_title, db_abstract, db_authors_for_assertion, int(pp_posting_answer)
+

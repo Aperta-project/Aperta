@@ -13,6 +13,7 @@
     hideError=hideError
   }}
 {{else}}
+<div class="card-form-control">
   {{textarea
     value=(readonly answerValue)
     class="card-input"
@@ -21,7 +22,6 @@
     focusOut=(action "validate")
     disabled=disabled
   }}
-
+</div>
   {{card-content/validation-errors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
 {{/if}}
-

@@ -1,10 +1,10 @@
 {{#if content.label}}
   <label class="card-form-element" {{action "toggleDropdown"}}>
-    <div class="card-form-element--label">
-      <div class="card-form-text">{{{content.label}}}</div>
+    <div class="card-form-label">
+      <span class="card-form-text">{{{content.label}}}</span>
       {{partial "required-field"}}
     </div>
-
+    <div class="card-form-control">
     {{#power-select
         options=content.possibleValues
         selected=selectedValue
@@ -18,8 +18,11 @@
         as |val|}}
       {{val.label}}
     {{/power-select}}
+    </div>
   </label>
 {{else}}
+<div class="card-form-element">
+  <div class="card-form-control">
   {{#power-select
       options=content.possibleValues
       selected=selectedValue
@@ -33,6 +36,8 @@
       as |val|}}
     {{val.label}}
   {{/power-select}}
+  </div>
+</div>
 {{/if}}
 
 {{card-content/validation-errors content=content hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}

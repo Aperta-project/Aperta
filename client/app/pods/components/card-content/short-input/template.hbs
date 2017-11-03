@@ -15,5 +15,5 @@
   content=content}}
 
 {{#unless hideError}}
-  {{card-content/validation-errors errors=answer.readyIssuesArray}}
+  {{card-content/validation-errors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
 {{/unless}}

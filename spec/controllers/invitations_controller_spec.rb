@@ -531,7 +531,7 @@ describe InvitationsController do
           expect(response.status).to eq(200)
           invitation.reload
           expect(invitation.state).to eq("accepted")
-          expect(invitation.actor).to eq(invitee)
+          expect(invitation.actor).to eq(user)
           expect(task.paper.assigned_users).to include(invitee)
           expect(task.paper.academic_editors).to include(invitee)
         end
@@ -560,6 +560,46 @@ describe InvitationsController do
           expect(non_invitee_user).to receive(:can?).with(:manage_invitations, task).and_return(true)
           do_request
           expect(response.status).to eq 200
+        end
+
+        context 'if invitation.invitee is nil' do
+          before(:each) do
+            stub_sign_in non_invitee_user
+            expect(non_invitee_user).to receive(:can?).with(:manage_invitations, task).and_return(true)
+          end
+          let(:invitation_wo_invitee) do
+            FactoryGirl.create(:invitation, :invited, invitee: nil, task: task)
+          end
+
+          let(:accept_params) do
+            {
+              id: invitation_wo_invitee.id,
+              first_name: 'Lazy',
+              last_name: 'Prof',
+              is_admin: true,
+              format: 'json'
+            }
+          end
+
+          let(:user_double) { double('User') }
+          context 'with necessary params' do
+            it 'creates a user with correct params' do
+              expect(user_double).to receive(:email=).with(invitation_wo_invitee.email)
+              expect(user_double).to receive(:auto_generate_password)
+              expect(user_double).to receive(:auto_generate_username)
+              expect(user_double).to receive(:valid?).and_return(true)
+              expect(User).to receive(:create).with(accept_params.slice(:first_name, :last_name)).and_yield(user_double).and_return(user_double)
+              put(:accept, accept_params)
+            end
+          end
+
+          context 'without necessary params ' do
+            it 'should return a 422 with an error message' do
+              put(:accept, accept_params.except(:last_name))
+              expect(response.status).to eq(422)
+              expect(response.body).to match("User creation error")
+            end
+          end
         end
       end
     end

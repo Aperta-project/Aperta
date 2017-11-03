@@ -98,3 +98,45 @@ test('delete button display for any other type of task', function(assert) {
     assert.equal(this.$('.task-disclosure-heading .card-remove').length, 1);
   });
 });
+
+test('is disabled when the task is not viewable', function(assert) {
+  this.set('task', {
+    viewable: false,
+  });
+  assert.expect(1);
+
+  this.render(hbs`
+    {{card-preview taskTemplate=taskTemplate task=task}}
+  `);
+
+  assert.equal(this.$('.task-disclosure-heading.disabled').length, 1);
+});
+
+test('is not disabled when the task is viewable', function(assert) {
+  this.set('task', {
+    viewable: true,
+  });
+  assert.expect(1);
+
+  this.render(hbs`
+    {{card-preview taskTemplate=taskTemplate task=task}}
+  `);
+
+  assert.equal(this.$('.task-disclosure-heading.disabled').length, 0);
+});
+
+test('is not disabled when displaying a taskTemplate (as in the MMT Workflow admin screen', function(assert) {
+  this.set('task', {
+    viewable: false,
+  });
+  this.set('taskTemplate', {
+    foo: 'bar',
+  });
+  assert.expect(1);
+
+  this.render(hbs`
+    {{card-preview taskTemplate=taskTemplate task=task}}
+  `);
+
+  assert.equal(this.$('.task-disclosure-heading.disabled').length, 0);
+});

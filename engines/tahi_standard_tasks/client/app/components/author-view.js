@@ -19,8 +19,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   coauthorConfirmationEnabled: readOnly('journal.coauthorConfirmationEnabled'),
 
   componentName: computed('model', function() {
-    return this.get('author').constructor
-               .toString()
+    return this.get('author').get('constructor.modelName').toString()
                .match(/group/) ? 'group-author-form' : 'author-form';
   }),
 

@@ -126,8 +126,12 @@ export default DS.Model.extend({
   },
 
   accept(data={}) {
+    var decamelizedData = {};
+    ['firstName', 'lastName'].forEach((key) => {
+      decamelizedData[key.decamelize()] = data[key];
+    });
     return this.get('restless')
-    .put(`/api/invitations/${this.get('id')}/accept`, data)
+    .put(`/api/invitations/${this.get('id')}/accept`, decamelizedData)
     .then((data) => {
       this.store.pushPayload(data);
       return this;

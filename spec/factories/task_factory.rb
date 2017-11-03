@@ -98,15 +98,6 @@ FactoryGirl.define do
       title "Data Availability"
     end
 
-    factory :early_posting_task, class: 'TahiStandardTasks::EarlyPostingTask' do
-      title "Early Article Posting"
-
-      before(:create) do
-        early_posting = CardContent.find_by_ident('early-posting--consent')
-        FactoryGirl.create(:card_content, ident: 'early-posting--consent').save unless early_posting
-      end
-    end
-
     factory :editors_discussion_task, class: 'PlosBioInternalReview::EditorsDiscussionTask' do
       title "Editor Discussion"
     end

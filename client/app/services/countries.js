@@ -19,7 +19,7 @@ export default Service.extend({
   data: computed({
     get() {
       if(isEmpty(this.get('_data'))) {
-        this.fetch();
+        this.get('fetch').perform();
       }
 
       return this.get('_data');
@@ -30,15 +30,17 @@ export default Service.extend({
     }
   }),
 
-  fetch: task(function * (response) {
+  fetch: task(function * () {
     try {
       this.set('loading', true);
-      yield this.get('restless').get('/api/countries');
+      const response = yield this.get('restless').get('/api/countries');
       this.set('_data', response.countries);
-      this.set('loaded');
+      this.set('loaded', true);
+      this.set('loading', false);
     } catch(e) {
       this.set('loading', false);
       this.set('error', true);
+      throw(e);
     }
   })
 });

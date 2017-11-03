@@ -21,7 +21,7 @@ class ReviewerReportSerializer < ActiveModel::Serializer
   end
 
   def due_at_id
-    object.due_datetime.id if FeatureFlag[:REVIEW_DUE_DATE]
+    object.due_datetime.id if object.due_datetime.present? && FeatureFlag[:REVIEW_DUE_DATE]
   end
 
   def status

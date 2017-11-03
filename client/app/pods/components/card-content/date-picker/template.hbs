@@ -1,4 +1,4 @@
-<div class="form-group">
+<div class="card-form-element">
   <div class="inset-form-control {{if validationErrors.publicationDate "error"}}">
     {{date-picker
         name=name
@@ -10,6 +10,6 @@
         disabled=disabled
         content=content}}
 
-    <div>{{card-content/validation-errors content=content hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}</div>
+   {{card-content/validation-errors content=content hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
   </div>
 </div>

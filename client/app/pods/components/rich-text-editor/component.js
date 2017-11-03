@@ -26,7 +26,8 @@ const rejectNewlines = function(editor) {
   });
 };
 
-
+// Monkey patch TinyMceEditor to allow us to pass in an 'afterEditorInit' action. Otherwise, we aren't
+// changing anything about this method.
 TinyMceEditor.reopen({
   initTiny: Ember.on('didInsertElement', Ember.observer('options', function() {
     let {options, editor, afterEditorInit} = this.getProperties('options', 'editor', 'afterEditorInit');

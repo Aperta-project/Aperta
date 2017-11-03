@@ -901,7 +901,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'Preprint Accept', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'TahiStandardTasks::PreprintDecisionScenario'
+        lt.scenario = 'PreprintDecisionScenario'
         lt.subject = 'Manuscript Accepted for ApertarXiv'
         lt.to = '{creator email}'
         lt.body = <<-TEXT.strip_heredoc
@@ -925,7 +925,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'Preprint Reject', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'TahiStandardTasks::PreprintDecisionScenario'
+        lt.scenario = 'PreprintDecisionScenario'
         lt.subject = 'Manuscript Declined for ApertarXiv'
         lt.to = '{creator email}'
         lt.body = <<-TEXT.strip_heredoc

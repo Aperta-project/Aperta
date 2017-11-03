@@ -6,7 +6,7 @@ class TemplateContext < Liquid::Drop
       ReviewerReportScenario,
       InvitationScenario,
       PaperReviewerScenario,
-      TahiStandardTasks::PreprintDecisionScenario,
+      PreprintDecisionScenario,
       RegisterDecisionScenario,
       TechCheckScenario
     ]

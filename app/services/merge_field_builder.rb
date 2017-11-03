@@ -31,7 +31,7 @@ class MergeFieldBuilder
         { name: :reviewer, context: UserContext }
       ]
       hash[PaperReviewerScenario] = hash[InvitationScenario]
-      hash[TahiStandardTasks::PreprintDecisionScenario] = hash[PaperScenario]
+      hash[PreprintDecisionScenario] = hash[PaperScenario]
       hash[RegisterDecisionScenario] = hash[PaperScenario] + [
         { name: :reviews, context: ReviewerReportContext, many: true }
       ]

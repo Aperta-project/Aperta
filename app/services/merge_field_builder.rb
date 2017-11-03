@@ -32,7 +32,7 @@ class MergeFieldBuilder
       ]
       hash[PaperReviewerScenario] = hash[InvitationScenario]
       hash[TahiStandardTasks::PreprintDecisionScenario] = hash[PaperScenario]
-      hash[TahiStandardTasks::RegisterDecisionScenario] = hash[PaperScenario] + [
+      hash[RegisterDecisionScenario] = hash[PaperScenario] + [
         { name: :reviews, context: ReviewerReportContext, many: true }
       ]
       hash[TechCheckScenario] = hash[PaperScenario] + [

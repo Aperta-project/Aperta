@@ -23,6 +23,9 @@ module.exports = function(defaults) {
     },
     minifyJS: {
       enabled: EmberApp.env() === 'production'
+    },
+    fingerprint: {
+      exclude: ['skins', 'plugins']
     }
   };
 
@@ -72,9 +75,31 @@ module.exports = function(defaults) {
   // At.js
   app.import(app.bowerDirectory + '/At.js/dist/css/jquery.atwho.css');
 
+  // TinyMCE
+  app.import('node_modules/tinymce/tinymce.js');
+  app.import('node_modules/tinymce/themes/modern/theme.js');
+  app.import('node_modules/tinymce/plugins/code/plugin.js');
+  app.import('node_modules/tinymce/plugins/codesample/plugin.js');
+  app.import('node_modules/tinymce/plugins/paste/plugin.js');
+  app.import('node_modules/tinymce/plugins/table/plugin.js');
+  app.import('node_modules/tinymce/plugins/link/plugin.js');
+  app.import('node_modules/tinymce/plugins/autoresize/plugin.js');
+
+  var tinymceSkins = new Funnel('node_modules/tinymce/skins/lightgray', {
+    srcDir: '/',
+    include: ['fonts/*.woff', 'fonts/*.ttf', '*.css'],
+    destDir: '/assets/skins/lightgray'
+  });
+
+  var prism = new Funnel('node_modules/tinymce/plugins/codesample/css', {
+    srcDir: '/',
+    include: ['*.css'],
+    destDir: '/assets/plugins/codesample/css'
+  });
+
   if (app.env !== 'production') {
     app.import('vendor/pusher-test-stub.js', { type: 'test' });
   }
 
-  return app.toTree(select2Assets);
+  return app.toTree([select2Assets, tinymceSkins, prism]);
 };

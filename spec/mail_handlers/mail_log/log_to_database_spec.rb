@@ -171,7 +171,7 @@ module MailLog::LogToDatabase
       end
 
       let!(:email_log) do
-        Correspondence.create!(message_id: 'abc123', status: 'pending')
+        Correspondence.create!(message_id: 'abc123', status: 'pending', sent_at: DateTime.now.in_time_zone)
       end
 
       it 'marks the logged email record as sent' do
@@ -200,7 +200,7 @@ module MailLog::LogToDatabase
       end
 
       let!(:email_log) do
-        Correspondence.create!(message_id: 'abc123', status: 'sent')
+        Correspondence.create!(message_id: 'abc123', status: 'sent', sent_at: DateTime.now.in_time_zone)
       end
 
       it 'yields the given block' do

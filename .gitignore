@@ -7,6 +7,7 @@ tmp
 .bundle
 tags
 node_modules
+client/node_modules
 
 # Assets
 doc/*.svg

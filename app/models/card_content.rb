@@ -14,18 +14,44 @@ class CardContent < ActiveRecord::Base
                  inverse_of: :card_content,
                  class_name: 'ContentAttribute',
                  types: {
-                   boolean: %w[allow_annotations allow_file_captions allow_multiple_uploads required_field],
+                   boolean: %w[
+                     allow_annotations
+                     allow_file_captions
+                     allow_multiple_uploads
+                     required_field
+                   ],
                    json: %w[possible_values],
-                   string: %w[child_tag condition custom_class
-                              custom_child_class default_answer_value
-                              editor_style error_message instruction_text
-                              key label text value_type
-                              visible_with_parent_answer wrapper_tag]
+                   integer: %w[
+                     min
+                     max
+                   ],
+                   string: %w[
+                     child_tag
+                     condition
+                     custom_child_class
+                     custom_class
+                     default_answer_value
+                     editor_style
+                     error_message
+                     instruction_text
+                     item_name
+                     key
+                     label
+                     max
+                     min
+                     text
+                     value_type
+                     visible_with_parent_answer
+                     wrapper_tag
+                   ]
                  }
 
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
   has_many :card_content_validations, dependent: :destroy
+  has_many :repetitions, inverse_of: :card_content, dependent: :destroy
+  has_many :answers, inverse_of: :card_content, dependent: :destroy
+
   validates :card_version, presence: true
 
   validates :parent_id,
@@ -35,7 +61,6 @@ class CardContent < ActiveRecord::Base
             },
             if: -> { root? }
 
-  has_many :answers
 
   # -- Card Content Validations
   # Note that the checks present here work in concert with the xml validations
@@ -58,7 +83,8 @@ class CardContent < ActiveRecord::Base
   # can either be boolean or text.
   # Content types that don't store answers ('display-children, etc') are omitted from this check
   VALUE_TYPES_FOR_CONTENT =
-    { 'dropdown': ['text', 'boolean'],
+    {
+      'dropdown': ['text', 'boolean'],
       'short-input': ['text'],
       'check-box': ['boolean'],
       'file-uploader': ['attachment', 'manuscript', 'sourcefile'],
@@ -67,7 +93,10 @@ class CardContent < ActiveRecord::Base
       'tech-check': ['boolean'],
       'tech-check-email': [nil],
       'date-picker': ['text'],
-      'sendback-reason': ['boolean'] }.freeze.with_indifferent_access
+      'sendback-reason': ['boolean'],
+      'repeat': [nil]
+    }.freeze.with_indifferent_access
+
   # Although we want to validate the various combinations of content types
   # and value types, many of the CardContent records that have been created
   # via the CardLoader don't have a content_type set at all, so we'll skip
@@ -158,10 +187,15 @@ class CardContent < ActiveRecord::Base
       {
         'required-field' => required_field
       }
-
     when 'error-message'
       {
         'key' => key
+      }
+    when 'repeat'
+      {
+        'min' => min,
+        'max' => max,
+        'item-name' => item_name
       }
     else
       {}

@@ -339,7 +339,7 @@ describe TokenInvitationsController do
         allow(controller).to receive(:use_authentication?).and_return(use_authentication_response)
       end
       context 'when the token points to an "invited" invitation and the user should be logged in' do
-        let(:invitation_double) { double('Invitation', invitee_id: nil, token: 'abc', declined?: false, rescinded?: false) }
+        let(:invitation_double) { double('Invitation', invitee: nil, token: 'abc', declined?: false, rescinded?: false) }
         let(:use_authentication_response) { true }
         before do
           expect_any_instance_of(TahiEnv).to receive(:cas_enabled?).and_return(cas_enabled)
@@ -365,7 +365,7 @@ describe TokenInvitationsController do
         end
       end
       context 'when the token points to an "invited" invitation with an invitee_id and the user should be logged in' do
-        let(:invitation_double) { double('Invitation', invitee_id: 1234, token: 'abc', declined?: false, rescinded?: false) }
+        let(:invitation_double) { double('Invitation', invitee: user, token: 'abc', declined?: false, rescinded?: false) }
         let(:use_authentication_response) { false }
         it 'redirects user to login page' do
           allow_any_instance_of(TahiEnv).to receive(:cas_enabled?).and_return(false)
@@ -376,7 +376,7 @@ describe TokenInvitationsController do
       context 'the user should go through akita phased signup' do
         let(:use_authentication_response) { false }
         let(:invitation_double) do
-          double('Invitation', token: 'blah', email: user.email, invitee_role: 'Reviewer', invitee_id: nil, declined?: false, rescinded?: false)
+          double('Invitation', token: 'blah', email: user.email, invitee_role: 'Reviewer', invitee: nil, declined?: false, rescinded?: false)
         end
         let(:dummy_cas_url) { 'http://setphaserstostun.org' }
         let(:dummy_key) { OpenSSL::PKey::EC.new('prime256v1').generate_key }
@@ -410,7 +410,7 @@ describe TokenInvitationsController do
             allow(invitation_double).to receive(:actor=)
           end
           let(:invitation_double) do
-            double('Invitation', invited?: true, declined?: false, rescinded?: false, email: user.email, accept!: true, paper: task.paper, invitee_role: 'Reviewer', invitee_id: 123)
+            double('Invitation', invited?: true, declined?: false, rescinded?: false, email: user.email, accept!: true, paper: task.paper, invitee_role: 'Reviewer', invitee: user)
           end
 
           it 'creates an Activity' do

@@ -44,15 +44,15 @@
   }}
 </div>
 
- {{rich-text-editor
-    ident="decision-letter-field"
-    inputClassNames='decision-letter-field'
-    onContentsChanged=(action "updateAnswer")
-    placeholder="Please type or paste your cover letter into this text field, or attach a file below"
-    owner=task
-    value=letterValue
-    disabled=disabled
-  }}
+{{rich-text-editor
+  ident="decision-letter-field"
+  inputClassNames='decision-letter-field'
+  onContentsChanged=(action "updateAnswer")
+  placeholder="Please type or paste your cover letter into this text field, or attach a file below"
+  owner=task
+  value=letterValue
+  disabled=disabled
+}}
 
 {{#unless disabled}}
   <button class="button-primary button--green send-email-action"

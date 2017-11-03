@@ -11,6 +11,7 @@ export default DS.Model.extend({
     inverse: 'unsortedChildren'
   }),
   answers: DS.hasMany('answer', { async: false }),
+  repetitions: DS.hasMany('repetitions', { async: false }),
 
   allowMultipleUploads: DS.attr('boolean'),
   allowFileCaptions: DS.attr('boolean'),
@@ -35,6 +36,9 @@ export default DS.Model.extend({
   answerable: Ember.computed.notEmpty('valueType'),
   errorMessage: DS.attr('string'),
   key: DS.attr('string'),
+  min: DS.attr('number'),
+  max: DS.attr('number'),
+  itemName: DS.attr('string'),
 
 
   // The unusual nature of the sendback component (being reliant on other card-content within the context
@@ -59,9 +63,40 @@ export default DS.Model.extend({
   childrenSort: ['order:asc'],
   children: Ember.computed.sort('unsortedChildren', 'childrenSort'),
 
-  visitDescendants: function(f) {
-    f(this);
-    this.get('children').forEach((child) => child.visitDescendants(f));
+  visitDescendants(task, parentRepetition, f) {
+    let repetitions = this.get('repetitions').filterBy('parent', parentRepetition).filterBy('task.id', task.get('id'));
+    if(repetitions.length) {
+      // we're a repeater, so now start using our repetitions.
+    } else {
+      // we're not a repeater, so we inherit a repetition from somewhere higher in the card content heirarchy.
+      repetitions = [parentRepetition];
+    }
+
+    if(repetitions.length) {
+      // traverse the card content for each repetition
+      repetitions.forEach((repetition) => {
+        this.get('children').forEach((child) => child.visitDescendants(task, repetition, f));
+        f(this, repetition);
+      });
+    } else {
+      // we're not inside a repetition, so just traverse the tree like normal
+      this.get('children').forEach((child) => child.visitDescendants(task, null, f));
+      f(this, null);
+    }
+  },
+
+  destroyDescendants(owner, parentRepetition) {
+    this.visitDescendants(owner, parentRepetition, (childCC, repetition) => {
+      if(repetition) {
+        childCC.get('answers').filterBy('owner', owner).filterBy('repetition', repetition).invoke('destroyRecord');
+
+        if(childCC.get('repetitions').includes(repetition)) {
+          repetition.destroyRecord();
+        }
+      } else {
+        childCC.get('answers').filterBy('owner', owner).invoke('destroyRecord');
+      }
+    });
   },
 
   isRequired: Ember.computed.equal('requiredField', true),
@@ -70,22 +105,46 @@ export default DS.Model.extend({
     return this.get('isRequired') === true ? 'true' : 'false';
   }),
 
-  createAnswerForOwner(owner){
-    // only create answers for things that are actually
-    // answerable (i.e., textboxes, radio buttons) and
-    // not things like static text or paragraphs
-    if(this.get('answerable')) {
-      return this.get('store').createRecord('answer', {
-        owner: owner,
-        cardContent: this
-      });
+  createAnswerForOwner(owner, repetition){
+    let store = this.get('store');
+    let answer = store.createRecord('answer', {
+      owner: owner,
+      cardContent: this,
+      repetition: repetition,
+      value: this.parsedDefaultAnswerValue(),
+    });
+
+    return answer;
+  },
+
+  parsedDefaultAnswerValue() {
+    let defaultAnswerValue = this.get('defaultAnswerValue');
+    if(!defaultAnswerValue) { return; }
+
+    if(this.get('valueType') === 'text')  {
+      return defaultAnswerValue;
     } else {
-      return null;
+      return JSON.parse(defaultAnswerValue);
     }
   },
 
-  answerForOwner(owner) {
-    return this.get('answers').findBy('owner', owner) ||
-           this.createAnswerForOwner(owner);
+  answerForOwner(owner, repetition) {
+    if(!this.get('answerable')) {
+      // only return answers for things that are actually
+      // answerable (i.e., textboxes, radio buttons) and
+      // not things like static text or paragraphs
+      return;
+    }
+
+    if(repetition) {
+      let answer = this.get('answers').filterBy('owner', owner).findBy('repetition', repetition);
+      if(!answer) {
+        answer = this.createAnswerForOwner(owner, repetition);
+      }
+      return answer;
+    } else {
+      return this.get('answers').findBy('owner', owner) ||
+             this.createAnswerForOwner(owner);
+    }
   }
 });

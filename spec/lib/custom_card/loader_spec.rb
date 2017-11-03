@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe CustomCard::Loader do
   let(:custom_card_loader) { CustomCard::Loader }
-  let(:card_configuration) { CustomCard::Configurations::Sampler }
+  let(:card_configuration) { double('CustomCard::Configurations::Sampler') }
 
   before do
     # let each test stub out the available card configurations

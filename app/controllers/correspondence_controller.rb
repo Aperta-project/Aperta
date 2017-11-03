@@ -11,7 +11,6 @@ class CorrespondenceController < ApplicationController
   def create
     correspondence = @paper.correspondence.build correspondence_params
     correspondence.sent_at = params.dig(:correspondence, :date)
-
     if correspondence.save
       render json: correspondence, status: :ok
     else

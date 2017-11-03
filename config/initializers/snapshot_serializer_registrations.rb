@@ -20,7 +20,6 @@ ActionDispatch::Reloader.to_prepare do
       serialize SupportingInformationFile, with: Snapshot::AttachmentSerializer
 
       serialize TahiStandardTasks::AuthorsTask, with: Snapshot::AuthorTaskSerializer
-      serialize TahiStandardTasks::EarlyPostingTask, with: Snapshot::EarlyPostingTaskSerializer
       serialize TahiStandardTasks::FigureTask, with: Snapshot::FigureTaskSerializer
       serialize TahiStandardTasks::FinancialDisclosureTask, with: Snapshot::FinancialDisclosureTaskSerializer
       serialize TahiStandardTasks::Funder, with: Snapshot::FunderSerializer

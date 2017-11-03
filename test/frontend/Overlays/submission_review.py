@@ -27,7 +27,7 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     self._review_table = (By.CLASS_NAME, 'table')
     self._headings = (By.CSS_SELECTOR, 'tr>th')
     self._metadata = (By.CSS_SELECTOR, 'tbody>tr>td')
-    self._abstract = (By.CSS_SELECTOR, 'td > p > p')
+    self._abstract = (By.CSS_SELECTOR, 'td>p')
     self._review_ms_file_link = (By.CSS_SELECTOR, 'td>p>a')
     self._review_overlay_submit_button = (By.ID, 'review-submission-submit-button')
     self._review_overlay_back2ms_button = (By.ID, 'review-submission-make-changes-button')
@@ -86,11 +86,10 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     assert len(card_headings) == len(expected_headings)
     for i in range(len(card_headings)):
       assert card_headings[i].text.strip() == expected_headings[i], card_headings[i]
-      # selected=True allows bold font, needs to be checked if it's correct
       self.validate_table_heading_style(card_headings[i], True)
 
-    # metadata
     short_doi = self.get_paper_short_doi_from_url()
+    # get metadata from db
     db_title, db_abstract, db_authors_for_assertion, pp_posting_answer = self.get_metadata(short_doi)
 
     card_metadata = self._gets(self._metadata)
@@ -99,7 +98,7 @@ class SubmissionReviewOverlay(AuthenticatedPage):
                                        "No, I don't want to post a preprint."],
                        'Title'      : db_title,
                        'Author'     : db_authors_for_assertion[0],
-                       'Co-Authors' : db_authors_for_assertion,
+                       'Co-Authors' : db_authors_for_assertion[1:],
                        'Abstract'   : db_abstract,
                        'Manuscript' : ['Download PDF',
                                        'Note: Figures and Supplemental Files are included in the PDF.']}
@@ -123,49 +122,47 @@ class SubmissionReviewOverlay(AuthenticatedPage):
 
     # Author
     author_text = card_metadata[2].find_element_by_css_selector('td>p>span')
-    expected_text = expected_values["Author"]
-    # affiliations? according APERTA-10071, it should be  author name, Affiliation(s)
-    assert self.normalize_spaces(author_text.text) in self.normalize_spaces(expected_text)
+    expected_text = self.normalize_spaces(expected_values["Author"])
+    assert self.normalize_spaces(author_text.text) == expected_text, \
+      'Invalid Author representation on the page: {0}, expected: {1}' \
+        .format(self.normalize_spaces(author_text.text), expected_text)
     self.validate_application_body_text(author_text)
 
-    # Co-Author (list)
+    # Co-Author (list) might be empty, if there are no co-authors
     coauthors = card_metadata[3].find_elements_by_css_selector('td>p>span')
     expected_coauthor_list = expected_values["Co-Authors"]
-    # affiliations? according APERTA-10071, it should be  Author Name, Affiliation Name
-    # Lauren said it's ok to have just names, but we have to double-check after PO acceptance
     for i in range(len(coauthors)):
-      assert self.normalize_spaces(coauthors[i].text) == self.normalize_spaces(expected_coauthor_list[i])
+      assert self.normalize_spaces(coauthors[i].text) == self.normalize_spaces(expected_coauthor_list[i]), \
+      'Invalid Co-Authors representation on the page: {0}, expected: {1}' \
+        .format(self.normalize_spaces(coauthors[i].text), self.normalize_spaces(expected_coauthor_list[i]))
       self.validate_application_body_text(coauthors[i])
 
     # Abstract
-    #abstract_lines = card_metadata[4].find_elements_by_css_selector('td>p>p') # list
-    abstract_lines = card_metadata[4].find_element(*self._abstract)
-
-    expected_text = expected_values["Abstract"]
-    abstract_text = ' '.join(map(lambda x: ' ' + x.text, abstract_lines))
-    assert abstract_text.strip() == expected_text.strip()
-    for abstract_line in abstract_lines:
-      self.validate_application_body_text(abstract_line)
+    abstract_text = card_metadata[4].find_element(*self._abstract)
+    expected_text = self.normalize_spaces(expected_values["Abstract"])
+    assert self.normalize_spaces(abstract_text.text) == expected_text, \
+      'Invalid Abstract text on the page: {0}, expected: {1}' \
+        .format(self.normalize_spaces(abstract_text.text), expected_text)
 
     # Manuscript
     ms_text = card_metadata[5].find_element_by_css_selector('p.muted')
     expected_text = expected_values["Manuscript"][1]
     assert ms_text.text.strip() == expected_text.strip()
-    self.validate_application_body_text(ms_text)
+    self.validate_application_body_text(ms_text), ms_text.text.strip()
 
     # download pdf
     ms_pdf_link = card_metadata[5].find_element_by_css_selector('a')
     expected_link_title = expected_values["Manuscript"][0]
-    assert ms_pdf_link.text.strip() == expected_link_title.strip()
+    assert ms_pdf_link.text.strip() == expected_link_title.strip(), ms_pdf_link.text.strip()
     self.validate_default_link_style(ms_pdf_link)
 
     # validate buttons
     submit_button = self._get(self._review_overlay_submit_button)
     assert submit_button.text == 'SUBMIT'
-    self.validate_primary_big_green_button_style(submit_button)
+    self.validate_primary_big_green_button_style(submit_button), submit_button.text
 
     make_changes_button = self._get(self._review_overlay_back2ms_button)
-    assert make_changes_button.text == 'MAKE CHANGES'
+    assert make_changes_button.text == 'MAKE CHANGES', make_changes_button.text
     self.validate_secondary_big_green_button_style(make_changes_button)
 
   def select_submit_or_make_changes(self, selection=''):
@@ -174,6 +171,9 @@ class SubmissionReviewOverlay(AuthenticatedPage):
       :param selection:  "Make Changes" or "Submit", not specified will lead to random selection
       :return: selection: "Make Changes" or "Submit"
       """
+      if selection:
+        assert selection in ['Make Changes', 'Submit'], 'Invalid selection for ' \
+                                                        'going back/forward choice: {0}'.format(selection)
       go_back_button = self._get(self._review_overlay_back2ms_button)
       submit_button =  self._get(self._review_overlay_submit_button)
       logging.info('Submission Review button is: {0}'.format(selection))
@@ -182,13 +182,9 @@ class SubmissionReviewOverlay(AuthenticatedPage):
       if selection.lower() == 'make changes':
         go_back_button.click()
         self._wait_for_element(self._get(self._submit_button), 0.5)
-        review_before_submission_button = self._get(self._submit_button)
       elif selection.lower() == 'submit':
         submit_button.click()
         self._wait_for_element(self._get(self._overlay_header_close), 1)
-        close_submission_overlay = self._get(self._overlay_header_close)
-      else:
-          raise(ValueError, 'Invalid selection for going back/forward choice: {0}'.format(selection))
       return selection
 
   def get_metadata(self, short_doi):

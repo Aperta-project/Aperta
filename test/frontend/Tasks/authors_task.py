@@ -454,8 +454,9 @@ class AuthorsTask(BaseTask):
       pass
     else:
       raise AssertionError('Error message fired for institution with quote in name: {0}'.format(error_msg))
-    institution_input.clear()
-    institution_input.send_keys(author['1_institution'] + Keys.ENTER)
+    if error_msg:
+      institution_input.clear()
+      institution_input.send_keys(author['1_institution'] + Keys.ENTER)
     sec_institution_input.send_keys(author['2_institution'] + Keys.ENTER)
 
     # check one of the boxes in Author Contributions, as this is required

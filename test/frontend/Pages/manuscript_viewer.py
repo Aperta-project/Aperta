@@ -820,8 +820,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
       create new manuscript sequence. Tests for Preprint feature flag enablement for system, preprint checkbox
       selection for mmt, and finally presence of Preprint Posting card in the manuscript. If all three are found,
       return True, else False
-      :return: True if preprint overlay should be shown in create sequence, otherwise False
-      :type return: bool
       """
       current_env = os.getenv('WEBDRIVER_TARGET_URL', '')
       logging.info(current_env)

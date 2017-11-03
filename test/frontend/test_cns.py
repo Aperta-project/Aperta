@@ -13,6 +13,7 @@ from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users
 from frontend.common_test import CommonTest
 from frontend.Overlays.submission_review import SubmissionReviewOverlay
+from frontend.Tasks.authors_task import AuthorsTask
 from .Pages.dashboard import DashboardPage
 from .Pages.manuscript_viewer import ManuscriptViewerPage
 
@@ -25,7 +26,7 @@ class ApertaCNSTest(CommonTest):
   Two tests explicit to the current two paths of creating a new submission. Relies on the seeding data provided by
     test_add_stock_mmt.
   """
-  def test_smoke_validate_create_to_submit_no_preprint_overlay(self, init=True):
+  def rest_smoke_validate_create_to_submit_no_preprint_overlay(self, init=True):
     """
     test_cns: Validates Creating a new document - needs extension to take it through to Submit
     Validates the presence of the following elements:
@@ -50,7 +51,7 @@ class ApertaCNSTest(CommonTest):
     title = manuscript_page.get_paper_title_from_page()
     logging.info(u'Paper page title is: {0}'.format(title))
 
-  def test_core_validate_create_to_submit_with_preprint_overlay(self, init=True):
+  def rest_core_validate_create_to_submit_with_preprint_overlay(self, init=True):
     """
     test_cns: Validates Creating a new document - needs extension to take it through to Submit with the preprint
     overlay in the create sequence.
@@ -91,7 +92,7 @@ class ApertaCNSTest(CommonTest):
     # create a new manuscript
     dashboard_page.click_create_new_submission_button()
     self.create_article(title='cns_review_submission_overlay', journal='PLOS Wombat',
-                        type_='Preprint Eligible', random_bit=True)
+                        type_='Preprint Eligible with Authors', random_bit=True)
     ms_page = ManuscriptViewerPage(self.getDriver())
     ms_page.page_ready_post_create()
     # get doi
@@ -103,6 +104,12 @@ class ApertaCNSTest(CommonTest):
       ms_page.complete_task("Preprint Posting")
     ms_page.complete_task('Title And Abstract')
     ms_page.complete_task('Upload Manuscript')
+    # On the Authors card, we add a co-author
+    ms_page.click_task('Authors')
+    authors_task = AuthorsTask(self.getDriver())
+    authors_task.add_individual_author_task_action()
+    authors_task.edit_author(author)
+
     ms_page._wait_for_element(ms_page._get(ms_page._submit_button), 1)
     submit_button = ms_page._get(ms_page._submit_button)
 

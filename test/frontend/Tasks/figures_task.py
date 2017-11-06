@@ -148,6 +148,7 @@ class FiguresTask(BaseTask):
     "Yes - I confirm our figures comply with the guidelines."
     :return: None
     """
+    self._wait_for_element(self._get(self._completion_button), multiplier=2)
     writable = not self.completed_state()
     if writable:
       self._get(self._question_check).click()
@@ -204,7 +205,10 @@ class FiguresTask(BaseTask):
       if not figure.startswith('frontend/assets/imgs/'):
         figure = 'frontend/assets/imgs/' + figure
       logging.info(figure)
-      figure_candidates_list.remove(figure)
+      try:
+        figure_candidates_list.remove(figure)
+      except ValueError:
+        logging.warning('{0} not found in figure candidates list'.format(figure))
       figure = figure.split('/')[-1]
       logging.info(figure)
       chosen_figures_list.append(figure)

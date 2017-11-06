@@ -1,8 +1,8 @@
 # Provides a template context for the Sendback Reasons Letter Template
 class TechCheckScenario < TemplateContext
-  context  :journal,                        source: 'object.paper.journal'
-  context  :manuscript,       type: :paper, source: 'object.paper'
-  context  :author,           type: :user,  source: 'object.paper.creator'
+  context  :journal,                        source: [:object, :paper, :journal]
+  context  :manuscript,       type: :paper, source: [:object, :paper]
+  context  :author,           type: :user,  source: [:object, :paper, :creator]
   contexts :sendback_reasons, type: :answer
 
   def intro

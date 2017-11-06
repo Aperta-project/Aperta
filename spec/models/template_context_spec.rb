@@ -35,9 +35,9 @@ describe TemplateContext do
     end
 
     context 'with a :source option' do
-      it 'evaluates the :source option to get the object to pass to the context constructor' do
+      it 'evaluates the :source option as a method call chain to get the object to pass to the context constructor' do
         allow(fake_model).to receive(:foo) { Paper.new(title: 'foobars in space') }
-        context_class.send(:context, :paper, source: '@object.foo')
+        context_class.send(:context, :paper, source: [:object, :foo])
 
         expect(context_instance.paper.title).to eq 'foobars in space'
       end

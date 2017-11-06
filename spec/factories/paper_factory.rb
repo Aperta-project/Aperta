@@ -314,7 +314,10 @@ FactoryGirl.define do
           s3_dir: 'sample/dir',
           status: 'done'
         )
-        paper.update!(body: '') # this update is necessary in order to properly create versioned_texts for PDF
+        # although PDF manuscripts don't store content in the body, it must
+        # be updated anyway since the versioned_texts object is created
+        # as a side effect of that call
+        paper.update!(body: '')
 
         paper.save!
 

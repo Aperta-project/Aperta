@@ -33,6 +33,7 @@ module Attributable
       value_type
       visible_with_parent_answer
       wrapper_tag
+      letter_template
     ]
   }.freeze
 

@@ -128,6 +128,13 @@ tech-check-email = element content {
   content*
 }
 
+email-editor = element content {
+  (attribute content-type { "email-editor" }
+  & attribute ident { text }?
+  & attribute letter-template { text }?),
+  content*
+}
+
 sendback-reason = element content {
   attribute content-type { "sendback-reason" }
   & input-attributes
@@ -208,6 +215,7 @@ content = (
 | tech-check-email
 | tech-check
 | text-input
+| email-editor
 )
 
 repeat = element content {

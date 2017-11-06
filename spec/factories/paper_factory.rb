@@ -315,7 +315,7 @@ FactoryGirl.define do
           status: 'done'
         )
         # although PDF manuscripts don't store content in the body, it must
-        # be updated anyway since the versioned_texts object is created
+        # be updated anyway since the versioned text object is created
         # as a side effect of that call
         paper.update!(body: '')
 

@@ -382,7 +382,7 @@ class Paper < ActiveRecord::Base
     elsif attachment.file_type == 'pdf'
       # bypass ihat for PDFs, and update paper and associated versioned_text object
       # NOTE: although PDF manuscripts don't store content in the body, it must
-      # be updated anyway since the versioned_texts object is created
+      # be updated anyway since the versioned text object is created
       # as a side effect of that call
       attachment.paper.update!(body: '', processing: false)
     else

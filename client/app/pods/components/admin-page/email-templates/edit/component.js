@@ -24,14 +24,6 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
   nameErrorPresent: Ember.computed.notEmpty('nameError'),
   ccErrorPresent: Ember.computed.notEmpty('ccErrors'),
   bccErrorPresent: Ember.computed.notEmpty('bccErrors'),
-  templateScenarioName: Ember.computed('template', function() {
-    let scenario_name = this.get('template.scenario');
-    scenario_name = scenario_name
-      .replace(/Scenario$/, '')
-      .replace(/([A-Z])/g, ' $1')
-      .trim();
-    return scenario_name;
-  }),
 
   actions: {
     editTitle() {
@@ -125,4 +117,3 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
     }
   }
 });
-

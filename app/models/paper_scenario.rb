@@ -8,12 +8,7 @@ class PaperScenario < TemplateContext
   end
 
   def self.scenario_name
-    name
-      .gsub(/Scenario$/, '')
-      .underscore
-      .split('_')
-      .map!(&:capitalize!)
-      .join(' ')
+    scenarios.invert[name.constantize]
   end
 
   private

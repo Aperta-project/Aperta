@@ -161,6 +161,10 @@ class CardContent < ActiveRecord::Base
         'max' => max,
         'item-name' => item_name
       }
+    when 'email-editor'
+      {
+        'letter-template' => letter_template
+      }
     else
       {}
     end

@@ -14,7 +14,6 @@ export default NestedQuestionComponent.extend({
     'errorPresent:error' // errorPresent defined in NestedQuestionComponent
   ],
   displayContent: true,
-  formatted: false,
   inputClassNames: ['form-control tall-text-field'],
   type: 'text',
   clearHiddenQuestions: Ember.observer('displayContent', function() {

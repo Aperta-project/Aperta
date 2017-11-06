@@ -197,6 +197,14 @@ error-message = element content {
   & element text { text }?
 }
 
+repeat = element content {
+  attribute content-type { "repeat" },
+  attribute min { text }?,
+  attribute max { text }?,
+  attribute item-name { text },
+  content+
+}
+
 content = (
   check-box-input
 | date-picker
@@ -215,14 +223,6 @@ content = (
 | tech-check
 | text-input
 )
-
-repeat = element content {
-                attribute content-type { "repeat" },
-                attribute min { text }?,
-                attribute max { text }?,
-                attribute item-name { text },
-                content+
-}
 
 start = element card {
   attribute required-for-submission { "true" | "false" }

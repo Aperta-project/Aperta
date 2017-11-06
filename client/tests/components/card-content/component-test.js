@@ -33,8 +33,12 @@ test('it creates an answer for card-content', function(assert) {
     {{custom-card-task task=task preview=false}}
   `);
 
-  assert.elementsFound('input.card-input', 1);
-  this.$('input.card-input').val('a new answer').trigger('input').blur();
+  assert.expect(2);
+
+  wait().then(() => {
+    assert.elementsFound('input.card-input', 1);
+    this.$('input.card-input').val('a new answer').trigger('input').blur();
+  });
 
   return wait().then(() => {
     assert.mockjaxRequestMade('/api/answers', 'POST');
@@ -47,11 +51,15 @@ test('it does not create an answer for non answerables', function(assert) {
   let cardContent = make('card-content', 'description');
   this.set('task.cardVersion.contentRoot', cardContent);
 
+  assert.expect(1);
+
   this.render(hbs`
     {{custom-card-task task=task preview=false}}
   `);
 
-  assert.equal(this.get('task.cardVersion.contentRoot.answers.length'), 0, 'there are no answers for a paragraph tag');
+  return wait().then(() => {
+    assert.equal(this.get('task.cardVersion.contentRoot.answers.length'), 0, 'there are no answers for a paragraph tag');
+  });
 });
 
 test('it renders text for card-content', function(assert) {
@@ -73,7 +81,9 @@ test('it renders a label for card-content', function(assert) {
     {{custom-card-task task=task preview=false}}
   `);
 
-  assert.elementFound('label.card-form-element');
+  return wait().then(() => {
+    assert.elementFound('label.card-form-element');
+  });
 });
 
 test('it displays an indicator for required fields', function(assert) {
@@ -88,19 +98,23 @@ test('it displays an indicator for required fields', function(assert) {
     {{custom-card-task task=task preview=false}}
   `;
 
+  assert.expect(4);
+
   this.render(template);
-  assert.elementFound('.required-field', 'shows the required field indicator when both label and text are present');
+  wait().then(() => {
+    assert.elementFound('.required-field', 'shows the required field indicator when both label and text are present');
 
-  this.set(text, null);
-  assert.elementFound('.required-field', 'shows the required field indicator in the label if no text');
+    this.set(text, null);
+    assert.elementFound('.required-field', 'shows the required field indicator in the label if no text');
 
-  this.set(text, 'here');
-  this.set(label, null);
-  assert.elementFound('.required-field', 'shows the required field indicator in the text if no label');
+    this.set(text, 'here');
+    this.set(label, null);
+    assert.elementFound('.required-field', 'shows the required field indicator in the text if no label');
 
-  this.set(text, null);
-  this.set(label, null);
-  assert.elementFound('.required-field', 'shows the required field indicator when neither label nor text are present');
+    this.set(text, null);
+    this.set(label, null);
+    assert.elementFound('.required-field', 'shows the required field indicator when neither label nor text are present');
+  });
 });
 
 test('it does not display an indicator for non-required fields', function(assert) {
@@ -120,7 +134,9 @@ test('it does not display an indicator for non-required fields', function(assert
     {{custom-card-task task=task preview=false}}
   `);
 
-  assert.elementNotFound('.required-field');
+  return wait().then(() => {
+    assert.elementNotFound('.required-field');
+  });
 });
 
 test('When having "false" as the content.defaultAnswerValue it casts it to boolean', function(assert) {
@@ -130,7 +146,9 @@ test('When having "false" as the content.defaultAnswerValue it casts it to boole
   this.set('preview', true);
 
   this.render(hbs` {{card-content content=content owner=owner preview=preview }}`);
-  assert.equal(this.$('input[type=checkbox]').is(':checked'), false);
+  return wait().then(() => {
+    assert.equal(this.$('input[type=checkbox]').is(':checked'), false);
+  });
 });
 
 test('When having "true" as the content.defaultAnswerValue it casts it to boolean', function(assert) {
@@ -143,7 +161,9 @@ test('When having "true" as the content.defaultAnswerValue it casts it to boolea
   this.set('preview', true);
 
   this.render(hbs `{{card-content content=content owner=owner preview=preview }}`);
-  assert.equal(this.$('input[type=checkbox]').is(':checked'), true);
+  return wait().then(() => {
+    assert.equal(this.$('input[type=checkbox]').is(':checked'), true);
+  });
 });
 
 

@@ -16,7 +16,7 @@
     </div>
   {{/if}}
 
-{{else if hasText}} {{! Text, no label}}
+{{else if (and hasText (not canBeLabeled))}} {{! Text, no label}}
   <label class="card-form-element">
     <div class="card-form-label">
       {{{content.text}}}
@@ -25,7 +25,7 @@
     {{partial "card-content-component"}}
   </label>
 
-{{else if canBeLabeled}} {{! Label, no text}}
+{{else if (and canBeLabeled (not hasText))}} {{! Label, no text}}
   <label class="card-form-element">
     <div class="card-form-label">
       {{{content.label}}}

@@ -50,7 +50,7 @@ export default Ember.Component.extend({
   hasLabel: Ember.computed.notEmpty('content.label'),
   hasText:  Ember.computed.notEmpty('content.text'),
 
-  labeledTypes: ['check-box', 'display-children', 'display-with-value', 'dropdown', 'export-paper', 'file-uploader', 'sendback-reason', 'tech-check', 'tech-check-email'],
+  labeledTypes: ['check-box', 'display-children', 'display-with-value', 'dropdown', 'export-paper', 'file-uploader', 'radio', 'sendback-reason', 'tech-check', 'tech-check-email'],
   canBeLabeled: Ember.computed('content.contentType', function () {
     let contentType = this.get('content.contentType');
     if (this.labeledTypes.includes(contentType)) {return false;}

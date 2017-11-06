@@ -16,7 +16,7 @@ class TemplateContext < Liquid::Drop
     subcontexts[context_name] = options
     return if respond_to?(context_name)
 
-    source_chain = options[:source] || [:object, context_name]
+    source_chain = Array(options[:source] || [:object, context_name])
     context_type = options[:type] || context_name
     context_class = "#{context_type}_context".camelize.constantize
 

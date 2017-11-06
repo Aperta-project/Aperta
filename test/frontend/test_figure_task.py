@@ -183,7 +183,8 @@ class FigureTaskTest(CommonTest):
     figures_list = figures_task.upload_figure()
     # Need to allot a good amount of time here for figure upload, storage and thumbnail processing
     #  Have had rare failures at 20s
-    time.sleep(22)
+    figures_task._wait_for_text_be_present_in_element(figures_task._figure_dl_link, figures_list[0])
+    #time.sleep(22)
     figures_task.delete_figure(figures_list)
     figures_task.validate_figure_not_present(figures_list)
 

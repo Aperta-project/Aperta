@@ -62,6 +62,7 @@ class FiguresTask(BaseTask):
     self._figure_processing_spinner = (By.CSS_SELECTOR, 'div.progress-spinner')
     self._figure_processing_text = (By.CSS_SELECTOR, 'div.progress-text')
     self._figure_processing_cancel = (By.CSS_SELECTOR, 'a.upload-cancel-link')
+    self._figure_list_children = (By.CSS_SELECTOR, '#figure-list>div div')
 
 
   # POM Actions
@@ -148,6 +149,7 @@ class FiguresTask(BaseTask):
     "Yes - I confirm our figures comply with the guidelines."
     :return: None
     """
+    self._wait_for_element(self._get(self._completion_button), multiplier=2)
     writable = not self.completed_state()
     if writable:
       self._get(self._question_check).click()
@@ -204,7 +206,10 @@ class FiguresTask(BaseTask):
       if not figure.startswith('frontend/assets/imgs/'):
         figure = 'frontend/assets/imgs/' + figure
       logging.info(figure)
-      figure_candidates_list.remove(figure)
+      try:
+        figure_candidates_list.remove(figure)
+      except ValueError:
+        logging.warning('{0} not found in figure candidates list'.format(figure))
       figure = figure.split('/')[-1]
       logging.info(figure)
       chosen_figures_list.append(figure)
@@ -267,18 +272,21 @@ class FiguresTask(BaseTask):
     for page_fig_item in page_fig_list:
       if figure == page_fig_item.text:
         logging.info('Deleting figure: {0}'.format(figure))
-        time.sleep(5)
+        #time.sleep(5)
+        delete_icon = page_fig_item.find_element_by_xpath('../../../..//span[@class="fa fa-trash"]')
+        self._scroll_into_view(delete_icon)
         # Redefining this down here to avoid a stale element reference due to the listing having
         #   been replaced, potentially, since lookup
-        self._figure_listing = (By.CSS_SELECTOR, 'div.liquid-child > div.ember-view')
+        # self._figure_listing = (By.CSS_SELECTOR, 'div.liquid-child > div.ember-view')
         # Move to item to get the edit icons to appear
         self._actions.move_to_element(page_fig_item).perform()
-        delete_icon = self._get(self._figure_delete_icon)
+        #delete_icon = self._get(self._figure_delete_icon)
         try:
           delete_icon.click()
         except WebDriverException:
           self.click_covered_element(delete_icon)
-        time.sleep(1)
+        self._wait_for_element(self._get(self._figure_delete_confirmation))
+        #time.sleep(1)
         self._get(self._figure_delete_confirmation)
         line_1 = self._get(self._figure_delete_confirm_line1)
         assert 'This will permanently delete this file.' in line_1.text, line_1.text
@@ -481,17 +489,25 @@ class FiguresTask(BaseTask):
     :param fig_list: list of file names
     :return: void function
     """
-    page_fig_name_list = []
-    page_fig_list = self._gets(self._figure_dl_link)
-    for page_fig_item in page_fig_list:
-      if not page_fig_item.text:
-        return
-      else:
-        page_fig_name_list.append(page_fig_item.text)
-        for figure in fig_list:
-          # We shouldn't have to url-encode this, but due to APERTA-6946 we must for now.
-          assert urllib.parse.quote_plus(figure) not in page_fig_name_list, \
-              '{0} found in {1}'.format(urllib.parse.quote_plus(figure), page_fig_name_list)
+    # check if we have any figures:
+    # if we don't, there is only one div under div.liquid-container: div.liquid-child
+    elements_to_check = self._gets(self._figure_list_children)
+    if len(elements_to_check) == 1:
+      # no figures, nothing to check
+      pass
+    else:
+      # we have some figures, checking if deleted figures are not in the figures list
+      page_fig_name_list = []
+      page_fig_list = self._gets(self._figure_dl_link)
+      for page_fig_item in page_fig_list:
+        if not page_fig_item.text:
+          return
+        else:
+          page_fig_name_list.append(page_fig_item.text)
+          for figure in fig_list:
+            # We shouldn't have to url-encode this, but due to APERTA-6946 we must for now.
+            assert urllib.parse.quote_plus(figure) not in page_fig_name_list, \
+                '{0} found in {1}'.format(urllib.parse.quote_plus(figure), page_fig_name_list)
 
   def _validate_striking_image_set(self, figure):
     """

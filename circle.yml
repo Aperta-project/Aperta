@@ -2,7 +2,8 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.2.8-node:6-browsers
+      - image: circleci/ruby:2.2.8
+      - image: circleci/node:6-browsers
       - image: circleci/postgres:9.6-alpine-ram
         environment:
           POSTGRES_USER: "ubuntu"

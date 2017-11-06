@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.2.8
+      - image: circleci/ruby:2.2.8-node
       - image: circleci/node:6.11-browsers
       - image: circleci/postgres:9.6-alpine-ram
         environment:

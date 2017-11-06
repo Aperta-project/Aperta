@@ -1,23 +1,23 @@
 require 'rails_helper'
 
 describe MergeFieldBuilder do
-  class SampleContext < TemplateContext
-    contexts :foo, type: :second_sample
-    def simple
-      'so simple'
+  class ThirdLevelSampleContext < TemplateContext
+    def baz
+      42
     end
   end
 
-  class SecondSampleContext < TemplateContext
-    context :bar, type: :third_sample
+  class SecondLevelSampleContext < TemplateContext
+    context :bar, type: :third_level_sample
     def blah
       'blah'
     end
   end
 
-  class ThirdSampleContext < TemplateContext
-    def baz
-      42
+  class TopLevelSampleContext < TemplateContext
+    contexts :foo, type: :second_level_sample
+    def simple
+      'so simple'
     end
   end
 
@@ -32,7 +32,7 @@ describe MergeFieldBuilder do
           ] }
         ] }
       ]
-      merge_fields = MergeFieldBuilder.merge_fields(SampleContext)
+      merge_fields = MergeFieldBuilder.merge_fields(TopLevelSampleContext)
       expect(merge_fields).to eq(expanded)
     end
   end

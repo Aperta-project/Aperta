@@ -28,7 +28,6 @@ test('it creates an answer for card-content', function(assert) {
   // add a single piece of answerable card content to work with
   let cardContent = make('card-content', 'shortInput');
   this.set('task.cardVersion.contentRoot', cardContent);
-  mockCreate('answer');
 
   this.render(hbs`
     {{custom-card-task task=task preview=false}}
@@ -78,7 +77,7 @@ test('it renders a label for card-content', function(assert) {
 });
 
 test('it displays an indicator for required fields', function(assert) {
-  let cardContent = make('card-content', 'shortInput', { requiredField: true, ident: 'test', label: 'Label', text: 'Text', repetition: null });
+  let cardContent = make('card-content', 'shortInput', { requiredField: true, label: 'Label', text: 'Text', repetition: null });
   let root = 'task.cardVersion.contentRoot';
   this.set(root, cardContent);
 

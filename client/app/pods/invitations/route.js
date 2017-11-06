@@ -6,6 +6,6 @@ export default Ember.Route.extend({
   },
 
   model(params) {
-    return this.store.queryRecord('token-invitation', {token: params.token});
+    return this.store.findRecord('token-invitation', params.token);
   }
 });

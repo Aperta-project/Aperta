@@ -7,7 +7,7 @@ describe TokenInvitationsController do
   let(:task) { FactoryGirl.create :invitable_task }
 
   describe 'GET /invitations/:token' do
-    subject(:do_request) { get :show, id: invitation.token, format: :json }
+    subject(:do_request) { get :show, token: invitation.token, format: :json }
     context 'there is no user logged in' do
       context 'when the token points to an "invited" invitation' do
         let(:email) { "test@example.com" }
@@ -20,15 +20,15 @@ describe TokenInvitationsController do
     end
   end
 
-  describe 'PUT /invitations/:id' do
-    subject(:do_request) { put :update, data.merge(id: invitation.id, format: :json) }
+  describe 'PUT /invitations/:token' do
+    subject(:do_request) { put :update, data.merge(token: invitation.token, format: :json) }
     context 'fetch and set correct invitation attributes for data' do
       before do
-        expect(Invitation).to receive(:find_by_token!).with(data[:token_invitation][:token]).and_return(invitation)
+        expect(Invitation).to receive(:find_by!).with(token: invitation.token).and_return(invitation)
         expect(invitation).to receive(:update_attributes).with(data[:token_invitation].slice(:decline_reason))
       end
       let(:data) do
-        { token_invitation: { token: 'abc', state: 'declined', decline_reason: 'foo', evil_setting: 'bar' } }
+        { token_invitation: { state: 'declined', decline_reason: 'foo', evil_setting: 'bar' } }
       end
       context 'with invitation in invited state' do
         let(:invitation) { FactoryGirl.create(:invitation, :invited) }
@@ -209,7 +209,7 @@ describe TokenInvitationsController do
     end
     context 'there is no user logged in' do
       before do
-        expect(Invitation).to receive(:find_by_token!).and_return(invitation_double)
+        expect(Invitation).to receive(:find_by!).and_return(invitation_double)
         allow(controller).to receive(:use_authentication?).and_return(use_authentication_response)
       end
       context 'when the token points to an "invited" invitation and the user should be logged in' do
@@ -274,7 +274,7 @@ describe TokenInvitationsController do
     context 'there is a user logged in' do
       before do
         stub_sign_in user
-        expect(Invitation).to receive(:find_by_token!).and_return(invitation_double)
+        expect(Invitation).to receive(:find_by!).and_return(invitation_double)
         allow(controller).to receive(:use_authentication?).and_return(true)
       end
       context 'when the invitation hasn\'t been accepted' do

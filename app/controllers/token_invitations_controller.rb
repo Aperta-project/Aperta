@@ -38,12 +38,8 @@ class TokenInvitationsController < ApplicationController
     invitation.declined? or invitation.rescinded?
   end
 
-  def token
-    params[:token] || params.dig(:token_invitation, :token) || params[:id]
-  end
-
   def invitation
-    @invitation ||= Invitation.find_by_token!(token)
+    @invitation ||= Invitation.find_by!(token: params[:token])
   end
 
   def thank_you_message

@@ -1,6 +1,6 @@
 import Invitation from 'tahi/models/invitation';
+import DS from 'ember-data';
 
 export default Invitation.extend({
-  token: DS.attr('string'),
   journalStaffEmail: DS.attr('string')
 });

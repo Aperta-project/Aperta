@@ -11,7 +11,7 @@ export default Ember.Component.extend({
   }),
   actions: {
     acceptInvitation() {
-      window.location.href = `/invitations/${this.get('model.token')}/accept`;
+      window.location.href = `/invitations/${this.get('model.id')}/accept`;
     },
     declineInvitation(invitation) {
       return invitation.save().then(() => {

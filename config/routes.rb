@@ -218,7 +218,7 @@ Tahi::Application.routes.draw do
     resources :task_templates do
       put :update_setting, on: :member
     end
-    resources :token_invitations, only: [:show, :update]
+    resources :token_invitations, only: [:show, :update], param: :token
     resources :users, only: [:show, :index] do
       get :reset, on: :collection
       put :update_avatar, on: :collection

@@ -101,7 +101,7 @@ test('it displays an indicator for required fields', function(assert) {
   assert.expect(4);
 
   this.render(template);
-  wait().then(() => {
+  return wait().then(() => {
     assert.elementFound('.required-field', 'shows the required field indicator when both label and text are present');
 
     this.set(text, null);

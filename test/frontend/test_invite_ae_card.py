@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 This behavioral test case validates Paper submission and invite Academic Editor (AE)
@@ -27,7 +27,7 @@ class InviteAECardTest(CommonTest):
   Validate the elements, styles, functions of the Invite AE card
   """
 
-  def test_invite_ae_card(self):
+  def test_smoke_invite_ae_card(self):
     """
     test_invite_ae: Validates the elements, styles, roles and functions of invite academic editors
     from new document creation through inviting ae, validation of the invite on the invitees
@@ -52,8 +52,7 @@ class InviteAECardTest(CommonTest):
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
-    # Sadly, we take time to switch the overlay
-    time.sleep(2)
+    manuscript_page.page_ready()
     manuscript_page.close_modal()
     # logout and enter as editor
     manuscript_page.logout()
@@ -99,7 +98,8 @@ class InviteAECardTest(CommonTest):
     dashboard_page.page_ready()
     dashboard_page.click_view_invites_button()
     # AE accepts or declines invite
-    invite_response, response_data = dashboard_page.accept_or_reject_invitation(manuscript_title)
+    invite_response, response_data = dashboard_page.accept_or_reject_invitation(manuscript_title,
+                                                                                role='Academic Editor')
     logging.info('Invitees response to review request was {0}'.format(invite_response))
     # If accepted, validate new assignment in db
     wombat_journal_id = PgSQL().query('SELECT id FROM journals '

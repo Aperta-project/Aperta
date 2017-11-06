@@ -8,10 +8,11 @@
                   labelText='Pass'
                   disabled=disabled
                   answer=answer
+                  repetition=repetition
                   valueChanged=(action 'saveAnswer')}}
 </div>
 
-{{card-content/validation-errors errors=answer.readyIssuesArray}}
+{{card-content/validation-errors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
 
 {{card-content/display-children
   content=content
@@ -19,5 +20,6 @@
   disabled=disabled
   hasAnswerContainer=false
   answerChanged=(action 'sendbackChanged')
+  repetition=repetition
   preview=preview
 }}

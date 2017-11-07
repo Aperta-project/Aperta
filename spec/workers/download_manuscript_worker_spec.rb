@@ -80,6 +80,7 @@ describe DownloadManuscriptWorker, redis: true do
     end
 
     it 'doesn\'t displays a message if a new file is uploaded' do
+      expect(ProcessManuscriptWorker).to receive(:perform_async).and_return(nil)
       expect(pusher_channel).to_not receive_push(payload: hash_including(:messageType, :message), down: 'user', on: 'flashMessage')
       DownloadManuscriptWorker.download(paper, url, user)
       expect(paper.reload.processing).to eq true

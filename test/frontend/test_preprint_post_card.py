@@ -22,6 +22,7 @@ from .Pages.manuscript_viewer import ManuscriptViewerPage
 from .Pages.workflow_page import WorkflowPage
 
 __author__ = 'gholmes@plos.org'
+# List of users should be reverted to the default list once APERTA-11884 is resolved
 external_editorial_users = [handling_editor_login, academic_editor_login]
 editorial_users =          [super_admin_login,pub_svcs_login,]
 

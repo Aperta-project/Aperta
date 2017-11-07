@@ -363,8 +363,6 @@ class WorkflowPage(AuthenticatedPage):
     self.click_add_new_card()
     self.overlay_ready()
     card_types = self._gets(self._card_types)
-    length=len(card_types)
-    assert length==37
     for card in card_types:
       if card.text == card_title:
         card.click()

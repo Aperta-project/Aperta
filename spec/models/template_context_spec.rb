@@ -43,10 +43,10 @@ describe TemplateContext do
       end
     end
 
-    context 'with a :many option' do
+    context 'with a :is_array option' do
       it 'returns a collection of contexts' do
         allow(fake_model).to receive(:papers) { [Paper.new(title: 'first foobar')] }
-        context_class.send(:context, :papers, type: :paper, many: true)
+        context_class.send(:context, :papers, type: :paper, is_array: true)
 
         expect(context_instance.papers.map(&:class)).to eq [PaperContext]
         expect(context_instance.papers.first.title).to eq 'first foobar'
@@ -55,8 +55,8 @@ describe TemplateContext do
   end
 
   describe '.contexts' do
-    it 'delegates to .context, adding the option {many: true}' do
-      expect(TemplateContext).to receive(:context).with(:bars, type: :author, many: true)
+    it 'delegates to .context, adding the option {is_array: true}' do
+      expect(TemplateContext).to receive(:context).with(:bars, type: :author, is_array: true)
       TemplateContext.contexts(:bars, type: :author)
     end
   end

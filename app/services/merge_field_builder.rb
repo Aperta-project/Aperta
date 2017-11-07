@@ -13,7 +13,7 @@ class MergeFieldBuilder
   def self.expand_context(field_name, options)
     context_type = options[:type] || field_name
     context_class = "#{context_type}_context".camelize.constantize
-    expansion_options = options.slice(:many)
+    expansion_options = options.slice(:is_array)
     expansion_options[:children] = merge_fields(context_class)
 
     [field_name, expansion_options]

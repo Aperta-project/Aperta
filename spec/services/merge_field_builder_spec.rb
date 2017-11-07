@@ -25,7 +25,7 @@ describe MergeFieldBuilder do
     it 'expands subcontext merge fields' do
       expanded = [
         { name: :simple },
-        { name: :foo, many: true, children: [
+        { name: :foo, is_array: true, children: [
           { name: :blah },
           { name: :bar, children: [
             { name: :baz }

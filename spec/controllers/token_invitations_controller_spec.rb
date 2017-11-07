@@ -277,6 +277,15 @@ describe TokenInvitationsController do
         expect(Invitation).to receive(:find_by!).and_return(invitation_double)
         allow(controller).to receive(:use_authentication?).and_return(true)
       end
+
+      context 'the invitation is in an intactive state' do
+        let(:invitation_double) { double('Invitation', declined?: true) }
+        it 'redirects to the show page' do
+          do_request
+          expect(response).to redirect_to(controller.send(:client_show_invitation_url, token: request.params[:token]))
+        end
+      end
+
       context 'when the invitation hasn\'t been accepted' do
         context 'when invitation and current user emails are the same' do
           before do

@@ -2,6 +2,7 @@
 class TokenInvitationsController < ApplicationController
   before_action :ensure_user!, only: [:accept], unless: :current_user
 
+  include ClientRouteHelper
   # rubocop:disable Style/AndOr, Metrics/LineLength
   def show
     render json: invitation, serializer: TokenInvitationSerializer
@@ -17,7 +18,7 @@ class TokenInvitationsController < ApplicationController
   end
 
   def accept
-    redirect_to client_show_invitation_url(token: token) and return if invitation_inactive?
+    redirect_to client_show_invitation_url(token: params[:token]) and return if invitation_inactive?
     if invitation.invited? and current_user.email == invitation.email
       invitation.actor = current_user
       invitation.accept!

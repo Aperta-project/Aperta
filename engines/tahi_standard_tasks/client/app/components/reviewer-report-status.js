@@ -75,12 +75,14 @@ export default Ember.Component.extend({
     return statuses[status];
   }),
 
+  restless: Ember.inject.service('restless'),
+
   actions: {
     changeDueDate(newDate) {
       var hours = this.get('report.dueAt').getHours();
       newDate.setHours(hours);
       this.set('report.dueAt', newDate);
-      this.get('report').save();
+      this.get('restless').put(`/api/due_datetime/${this.get('report.dueAtId')}`, {due_at: newDate});
     }
   }
 });

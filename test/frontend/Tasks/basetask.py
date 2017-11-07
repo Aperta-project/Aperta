@@ -60,7 +60,7 @@ class BaseTask(AuthenticatedPage):
     elif btn_label == 'Make changes to this task':
       return True
     else:
-      raise ValueError('Completed button in unexpected state {0}'.format(btn_label))
+      raise ValueError('Completed button in unexpected state: {0}.'.format(btn_label))
 
   def validate_completion_error(self):
     """

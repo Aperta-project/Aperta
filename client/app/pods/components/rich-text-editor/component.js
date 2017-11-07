@@ -123,8 +123,6 @@ export default Ember.Component.extend({
     }
 
     deleteEmptyParagraph(fragment.node);
-
-    if(Ember.isBlank(this.get('editorValue'))) this.set('editorValue', fragment.node.innerHTML);
   },
 
   postRender(editor) {

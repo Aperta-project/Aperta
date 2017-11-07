@@ -53,7 +53,7 @@ export default Ember.Component.extend({
     this.set('showEmailPreview', false);
   }),
 
-  _templateConfig(endpoint) {
+  loadEmailTemplate(endpoint) {
     return {
       url: `/api/tasks/${this.get('owner.id')}/${endpoint}`,
       data: {

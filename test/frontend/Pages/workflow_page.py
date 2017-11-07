@@ -62,7 +62,7 @@ class WorkflowPage(AuthenticatedPage):
     self._competing_ints_card = (By.XPATH, "//a[.//span[contains(text(),'Competing Interests')]]")
     self._cover_letter_card = (By.XPATH, "//a[./span[contains(text(),'Cover Letter')]]")
     self._data_avail_card = (By.XPATH, "//a[.//span[contains(text(),'Data Availability')]]")
-    self._early_article_posting_card = (By.CSS_SELECTOR, 'div.early-posting-task > a')
+    self._early_version_card = (By.XPATH, "//a[.//span[contains(text(),'Early Version')]]")
     self._editor_discussion_card = (By.CSS_SELECTOR, 'div.editors-discussion-task > a')
     self._ethics_statement_card = (By.CSS_SELECTOR, 'div.ethics-task > a')
     self._figures_card = (By.CSS_SELECTOR, 'div.figure-task > a')
@@ -263,7 +263,7 @@ class WorkflowPage(AuthenticatedPage):
     for card in staff_cards:
       staff_card_namelist.append(card.text)
     expected_author_cards = ['Additional Information', 'Authors', 'Billing', 'Competing Interests', 'Cover Letter',
-                             'Data Availability', 'Early Article Posting', 'Ethics Statement', 'Figures',
+                             'Data Availability', 'Early Version', 'Ethics Statement', 'Figures',
                              'Financial Disclosure', 'New Taxon', 'Preprint Posting', 'Reporting Guidelines',
                              'Reviewer Candidates', 'Supporting Info', 'Upload Manuscript']
     expected_staff_cards = ['Ad-hoc for Authors', 'Ad-hoc for Editors', 'Ad-hoc for Reviewers', 'Ad-hoc for Staff Only',

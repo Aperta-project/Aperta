@@ -72,6 +72,7 @@ class AuthorsTask(BaseTask):
     self._department_lbl = (By.CSS_SELECTOR, 'div.flex-group + div.flex-group div + div div label')
     self._department_input = (By.CSS_SELECTOR, 'input.author-department')
     self._institution_div = (By.CLASS_NAME, 'did-you-mean-input')
+    self._institution_change_link = (By.CLASS_NAME, 'did-you-mean-change')
     self._orcid_connect_div = (By.CLASS_NAME, 'orcid-connect')
     self._author_lbls = (By.CLASS_NAME, 'question-checkbox')
     self._author_other_lbl = (
@@ -454,6 +455,10 @@ class AuthorsTask(BaseTask):
       pass
     else:
       raise AssertionError('Error message fired for institution with quote in name: {0}'.format(error_msg))
+    self._get(self._institution_change_link).click()
+    # next two lines: redefining again here to avoid the dread stale reference exception
+    institution_div, sec_institution_div = self._gets(self._institution_div)
+    institution_input = institution_div.find_element_by_tag_name('input')
     institution_input.clear()
     institution_input.send_keys(author['1_institution'] + Keys.ENTER)
     sec_institution_input.send_keys(author['2_institution'] + Keys.ENTER)

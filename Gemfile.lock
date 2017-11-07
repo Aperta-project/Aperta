@@ -693,8 +693,6 @@ GEM
       hitimes
     tiny_tds (0.7.0)
       mini_portile (= 0.6.2)
-    tinymce-rails (4.6.4)
-      railties (>= 3.1.1)
     trollop (2.1.2)
     twitter-text (1.13.0)
       unf (~> 0.1.0)
@@ -837,7 +835,6 @@ DEPENDENCIES
   timecop
   timeliness
   tiny_tds
-  tinymce-rails
   twitter-text
   unf
   vcr

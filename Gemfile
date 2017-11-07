@@ -74,7 +74,6 @@ gem 'sinatra', require: nil
 gem 'sort_alphabetical'
 gem 'timeliness'
 gem 'tiny_tds'
-gem 'tinymce-rails'
 gem 'twitter-text'
 gem 'unf'
 gem 'whenever'

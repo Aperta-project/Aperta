@@ -11,7 +11,7 @@ export default Ember.Mixin.create({
     let joinedProps = props.join(',');
 
     Ember.defineProperty(this, 'editorIsDirty',
-      Ember.computed(`${modelName}.{${joinedProps}}`, 'dirtyEditorConfig.{model,properties}', function() {
+      Ember.computed(`${modelName}.hasDirtyAttributes`, `${modelName}.{${joinedProps}}`, 'dirtyEditorConfig.{model,properties}', function() {
         let model = this.get(modelName);
         let dirtyAndRelevant = props.any((item) => model.changedAttributes()[item]);
         return !!(model.get('hasDirtyAttributes') && dirtyAndRelevant);

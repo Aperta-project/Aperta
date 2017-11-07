@@ -10,6 +10,6 @@ FactoryGuy.define('answer', {
 export function createAnswer(owner, ident, attrs) {
   return FactoryGuy.make('answer', Object.assign(attrs, {
     owner: owner,
-    cardContent: FactoryGuy.store.peekCardContent(ident)
+    cardContent: FactoryGuy.store.peekAll('card-content').findBy('ident', ident),
   }));
 }

@@ -31,6 +31,7 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
   phase: DS.belongsTo('phase', {
     inverse: 'tasks'
   }),
+  repetitions: DS.hasMany('repetition'),
   snapshots: DS.hasMany('snapshot', {
     inverse: 'source'
   }),

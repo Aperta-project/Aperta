@@ -77,7 +77,7 @@ Tahi::Application.routes.draw do
 
     get "/answers/:owner_type/:owner_id", to: "answers#index", as: "answers_for_owner"
     resources :answers, only: [:show, :create, :destroy, :update]
-
+    resources :repetitions, only: [:create, :update, :destroy]
     resources :cards do
       put :publish, on: :member
       put :archive, on: :member
@@ -195,6 +195,7 @@ Tahi::Application.routes.draw do
 
     resources :related_articles, only: [:show, :create, :update, :destroy]
     resources :reviewer_reports, only: [:show, :update]
+    resources :due_datetime, only: [:update]
     resources :tasks, only: [:update, :create, :show, :destroy] do
       get :nested_questions
       get :nested_question_answers
@@ -205,6 +206,7 @@ Tahi::Application.routes.draw do
       resources :comments, only: [:index]
       resources :participations, only: [:index]
       resources :questions, only: [:index]
+      resources :repetitions, only: [:index]
       resources :snapshots, only: [:index]
       put :send_message, on: :member
       put :sendback_email, on: :member

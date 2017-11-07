@@ -27,33 +27,21 @@
     {{#if card.revertable}}
       <button class="button button--blue button-primary editor-revert"
               onclick={{action "confirmRevert"}}
-              disabled={{or
-                         saveCard.isRunning
-                         publishCard.isRunning
-                         revertCard.isRunning
-                         editorIsDirty}}>
+              disabled={{disableRevert}}>
         Revert
       </button>
     {{/if}}
 
     <button class="button button--blue button-primary editor-save"
             onclick={{perform saveCard}}
-            disabled={{or
-                       saveCard.isRunning
-                       publishCard.isRunning
-                       revertCard.isRunning
-                       (not editorIsDirty)}}>
+              disabled={{disableSave}}>
       Save
     </button>
 
     <button class="button button--blue button-primary editor-publish"
             onclick={{action "confirmPublish"}}
-            disabled={{or
-                       saveCard.isRunning
-                       publishCard.isRunning
-                       editorIsDirty
-                       revertCard.isRunning
-                       (not card.publishable)}}>
+            disabled={{disablePublish}}>
+
       {{#if (eq card.state "draft")}}
         Publish Card
       {{else}}

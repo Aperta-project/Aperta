@@ -9,13 +9,16 @@
                          dueDate=currentReviewerReport.dueAt}}
     {{/if}}
     {{#if task.isSubmitted}}
-      {{reviewer-report-questions model=currentReviewerReport readOnly=true}}
+      <a {{action "editReport"}}>Edit</a>
+      <a {{action "saveEdits"}}>Save</a>
+      <a {{action "cancelEdits"}}>Cancel</a>
+      {{reviewer-report-questions report=currentReviewerReport readOnly=notEditing}}
     {{else}}
       <p><strong>Please refer to our
         <a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication">reviewer</a>
         guidelines for detailed instructions.</strong>
       </p>
-      {{reviewer-report-questions model=currentReviewerReport readOnly=isNotEditable}}
+      {{reviewer-report-questions report=currentReviewerReport readOnly=isNotEditable}}
 
       {{#if currentReviewerReport.needsSubmission }}
       <div class="reviewer-report-confirmation">
@@ -49,7 +52,7 @@
             </div>
             <div id="collapse-{{unbound report.decision.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="decision-{{unbound report.decision.id}}">
               <div class="panel-body">
-                {{reviewer-report-questions model=report readOnly=true}}
+                {{reviewer-report-questions report=report readOnly=true}}
               </div>
             </div>
           </div>

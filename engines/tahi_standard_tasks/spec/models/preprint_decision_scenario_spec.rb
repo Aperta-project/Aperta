@@ -20,21 +20,21 @@ describe TahiStandardTasks::PreprintDecisionScenario do
     )
   end
 
-  describe "rendering a PreprintDecisionScenario" do
-    it "renders the journal" do
-      template = "{{ journal.name }}"
+  describe 'rendering a PreprintDecisionScenario' do
+    it 'renders the journal' do
+      template = '{{ journal.name }}'
       expect(LetterTemplate.new(body: template).render(context).body)
         .to eq(paper.journal.name)
     end
 
-    it "renders the manuscript type" do
-      template = "{{ manuscript.paper_type }}"
+    it 'renders the manuscript type' do
+      template = '{{ manuscript.paper_type }}'
       expect(LetterTemplate.new(body: template).render(context).body)
         .to eq(paper.paper_type)
     end
 
-    it "renders the manuscript title" do
-      template = "{{ manuscript.title }}"
+    it 'renders the manuscript title' do
+      template = '{{ manuscript.title }}'
       expect(LetterTemplate.new(body: template).render(context).body)
         .to eq(paper.title)
     end

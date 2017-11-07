@@ -6,10 +6,16 @@ class TemplateContext < Liquid::Drop
       ReviewerReportScenario,
       InvitationScenario,
       TahiStandardTasks::PaperReviewerScenario,
-      TahiStandardTasks::PreprintDecisionScenario,
       TahiStandardTasks::RegisterDecisionScenario,
       TechCheckScenario
-    ]
+    ] + feature_flagged_scenarios
+  end
+
+  # temporary added for https://jira.plos.org/jira/browse/APERTA-11721
+  # we should remove this once the preprint feature flag is removed
+  # and move these secnarios back into ::scenarios
+  def self.feature_flagged_scenarios
+    !FeatureFlag[:PREPRINT] ? [] : [TahiStandardTasks::PreprintDecisionScenario]
   end
 
   def self.merge_fields

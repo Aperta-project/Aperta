@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/BlockLength
 require 'rails_helper'
 
 describe LetterTemplate do
@@ -117,6 +116,33 @@ describe LetterTemplate do
       it 'adds blank fields to error object' do
         expect { letter_template.render(letter_context.stringify_keys, check_blanks: true) }.to raise_error BlankRenderFieldsError, '["subject", "email"]'
       end
+    end
+  end
+
+  describe '::related_to_journal' do
+    let(:journal) { FactoryGirl.create(:journal) }
+    let!(:non_preprint_letter_template) do
+      FactoryGirl.create(:letter_template,
+        name: 'one',
+        scenario: ReviewerReportScenario,
+        journal: journal)
+    end
+    let!(:preprint_letter_template) do
+      FactoryGirl.create(:letter_template,
+        name: 'two',
+        scenario: TahiStandardTasks::PreprintDecisionScenario,
+        journal: journal)
+    end
+    it 'returns all scenarios if preprint feature flag is enabled' do
+      FeatureFlag.create(name: 'PREPRINT', active: true)
+      templates = LetterTemplate.related_to_journal(journal.id)
+      expect(templates.map(&:scenario)).to match(['ReviewerReportScenario', 'TahiStandardTasks::PreprintDecisionScenario'])
+    end
+
+    it 'returns all scenarios except preprint ones if feature flag is disabled' do
+      FeatureFlag.create(name: 'PREPRINT', active: false)
+      templates = LetterTemplate.related_to_journal(journal.id)
+      expect(templates.map(&:scenario)).to match(['ReviewerReportScenario'])
     end
   end
 

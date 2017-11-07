@@ -34,6 +34,11 @@ class LetterTemplate < ActiveRecord::Base
     scenario_class.merge_fields
   end
 
+  # temporary until removal of feature flag
+  def self.related_to_journal(journal_id)
+    !FeatureFlag[:PREPRINT] ? where(journal_id: journal_id).where.not(scenario: TahiStandardTasks::PreprintDecisionScenario) : where(journal_id: journal_id)
+  end
+
   private
 
   def scenario_class

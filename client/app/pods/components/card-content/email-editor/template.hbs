@@ -1,50 +1,46 @@
-{{#unless disabled }}
-  <p>Please select the template letter and then edit further.</p>
-{{/unless}}
-
 <div class='input-group'>
   <div class='input-group-addon email-header'>
     To:
   </div>
-  {{nested-question-input
-    ident="register_decision_questions--to-field"
-    defaultAnswer=toField
-    owner=task
-    inputClassNames='form-control to-field'
+  {{input
+    value=emailToField
+    class="form-control to-field"
+    change=(action "valueChanged")
+    input=(action "valueChanged")
+    focusIn=(action "maybeHideError")
     disabled=disabled
-    displayQuestionText=false
-    placeholder='someone@example.edu'
-  }}
+    content=content
+    placeholder='someone@example.edu'}}
 </div>
 
 <div class='input-group'>
   <div class='input-group-addon email-header'>
     Subject:
   </div>
-  {{nested-question-input
-    ident="register_decision_questions--subject-field"
-    defaultAnswer=subjectLine
-    owner=task
-    inputClassNames='form-control subject-field'
+  {{input
+    value=emailToSubject
+    class="form-control subject-field"
+    change=(action "valueChanged")
+    input=(action "valueChanged")
+    focusIn=(action "maybeHideError")
     disabled=disabled
-    displayQuestionText=false
-    placeholder='Enter your subject here'
-  }}
+    content=content
+    placeholder='Enter your subject here'}}
 </div>
 
 {{rich-text-editor
-  ident="decision-letter-field"
+  ident="generic_email_editor--letter-field"
   inputClassNames='decision-letter-field'
   onContentsChanged=(action "updateAnswer")
   placeholder="Please type or paste your cover letter into this text field, or attach a file below"
   owner=task
-  value=letterValue
+  value=emailToBody
   disabled=disabled
 }}
 
 {{#unless disabled}}
   <button class="button-primary button--green send-email-action"
     {{action "registerDecision"}}>
-    Register Decision and Email the Author
+    Send Email
   </button>
 {{/unless}}

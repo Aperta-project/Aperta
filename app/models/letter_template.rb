@@ -34,13 +34,14 @@ class LetterTemplate < ActiveRecord::Base
     scenario_class.merge_fields
   end
 
-  private
-
   def scenario_class
     replacements = { 'SendbacksContext' => 'TechCheckScenario' }
     klass = replacements[scenario] || scenario
+    return klass.split('::').inject(Object) { |o, c| o.const_get c } if klass.include? "::"
     klass.constantize
   end
+
+  private
 
   def render_attr(template, context, sanitize: false, check_blanks: false)
     raw = Liquid::Template.parse(template)

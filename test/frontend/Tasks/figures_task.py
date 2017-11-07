@@ -294,7 +294,7 @@ class FiguresTask(BaseTask):
         delete_btn = self._get(self._figure_delete_confirm_confirm)
         assert 'DELETE FOREVER' in delete_btn.text, delete_btn.text
         delete_btn.click()
-        self._wait_on_lambda(lambda: self.is_task_has_figures() == False)
+        self._wait_on_lambda(lambda: self.task_has_figures() == False)
         return
       logging.info('no match found')
 
@@ -484,7 +484,7 @@ class FiguresTask(BaseTask):
     :return: void function
     """
     # check if we have any figures:
-    if not self.is_task_has_figures():
+    if not self.task_has_figures():
       # no figures, nothing to check
       pass
     else:
@@ -501,7 +501,7 @@ class FiguresTask(BaseTask):
             assert urllib.parse.quote_plus(figure) not in page_fig_name_list, \
                 '{0} found in {1}'.format(urllib.parse.quote_plus(figure), page_fig_name_list)
 
-  def is_task_has_figures(self):
+  def task_has_figures(self):
     """
     Check if 'Figures' task has any figures
     :return: True if 'Figures' task has at least 1 figure and False if it does not

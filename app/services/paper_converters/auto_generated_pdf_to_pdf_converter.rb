@@ -10,7 +10,7 @@ module PaperConverters
     end
 
     def output_data
-      parsed_uploaded_pdf
+      parsed_uploaded_pdf.to_pdf
     end
   end
 end

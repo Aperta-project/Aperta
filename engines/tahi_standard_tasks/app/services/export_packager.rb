@@ -55,7 +55,7 @@ class ExportPackager
 
   def add_generated_pdf(package)
     package.put_next_entry(converter.output_filename)
-    package.write(converter.output_data.to_pdf)
+    package.write(converter.output_data)
     manifest.add_file(converter.output_filename)
   end
 

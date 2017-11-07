@@ -29,6 +29,11 @@ class PaperSerializer < LitePaperSerializer
            include: true,
            serializer: AuthorSerializer
 
+  has_many :group_authors,
+           embed: :ids,
+           include: true,
+           serializer: GroupAuthorSerializer
+
   has_one :journal, embed: :id
   has_one :file, embed: :id, include: true, serializer: AttachmentSerializer
   has_one :sourcefile, embed: :id, include: true, serializer: AttachmentSerializer

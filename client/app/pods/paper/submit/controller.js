@@ -30,6 +30,11 @@ export default Ember.Controller.extend({
     this.set('showFeedbackOverlay', true);
   },
 
+  groupAuthors: Ember.computed('paper.groupAuthors', function() {
+    return this.get('paper.groupAuthors').map((author) =>
+      `${author.get('contactFirstName')} ${author.get('contactLastName')}`).join(', ');
+  }),
+
   setPaperStateAsSubmitted() {
     this.set('paperSubmitted', true);
   },

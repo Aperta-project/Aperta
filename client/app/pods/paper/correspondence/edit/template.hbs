@@ -1,0 +1,12 @@
+{{#overlay-fullscreen
+  visible=true
+  outAnimationComplete=(action "hideCorrespondenceOverlay")
+  title="Edit Correspondence Record"
+  enableClose=false
+  wormhole=false
+  overlayClass="correspondence-overlay" as |overlay|}}
+  {{correspondence-form model=model
+                        paper=linkedPaper
+                        saveText='SAVE'
+                        close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}

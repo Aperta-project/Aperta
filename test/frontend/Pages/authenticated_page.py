@@ -110,7 +110,7 @@ class AuthenticatedPage(StyledPage):
     self._competing_ints_card = None
     self._cover_letter_card = None
     self._data_avail_card = None
-    self._early_article_posting_card = None
+    self._early_version_card = None
     self._ethics_statement_card = None
     self._figures_card = None
     self._fin_disclose_card = None
@@ -143,7 +143,7 @@ class AuthenticatedPage(StyledPage):
     self._cfa_task = None
     self._competing_ints_task = None
     self._cover_letter_task = None
-    self._early_article_posting_task = None
+    self._early_version_task = None
     self._data_avail_task = None
     self._ethics_statement_task = None
     self._figures_task = None
@@ -624,8 +624,8 @@ class AuthenticatedPage(StyledPage):
       card_title = self._get(self._cover_letter_card)
     elif cardname.lower() == 'data_availability':
       card_title = self._get(self._data_avail_card)
-    elif cardname.lower() == 'early_article_posting':
-      card_title = self._get(self._early_article_posting_card)
+    elif cardname.lower() == 'early_version':
+      card_title = self._get(self._early_version_card)
     elif cardname.lower() == 'ethics_statement':
       card_title = self._get(self._ethics_statement_card)
     elif cardname.lower() == 'figures':

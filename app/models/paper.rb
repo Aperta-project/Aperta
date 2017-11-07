@@ -656,6 +656,21 @@ class Paper < ActiveRecord::Base
     !uses_research_article_reviewer_report?
   end
 
+  def manuscript_manager_template
+    ManuscriptManagerTemplate.find_by(journal: journal, paper_type: paper_type)
+  end
+
+  def review_duration_period
+    default = 10
+    if FeatureFlag[:REVIEW_DUE_DATE]
+      setting = manuscript_manager_template
+        .try(:task_template_by_kind, "TahiStandardTasks::PaperReviewerTask")
+        .try(:setting, 'review_duration_period')
+      return setting.value if setting.present?
+    end
+    default
+  end
+
   private
 
   def new_major_version!

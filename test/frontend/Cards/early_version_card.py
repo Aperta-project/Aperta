@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Page object definition for the early article posting card
+Page object definition for the early version card
 """
 from selenium.webdriver.common.by import By
 
@@ -10,29 +10,29 @@ from frontend.Cards.basecard import BaseCard
 __author__ = 'jgray@plos.org'
 
 
-class EarlyArticlePostingCard(BaseCard):
+class EarlyVersionCard(BaseCard):
   """
-  Page Object Model for the Early Article Posting Card
+  Page Object Model for the Early Version Card
   """
   def __init__(self, driver):
-    super(EarlyArticlePostingCard, self).__init__(driver)
+    super(EarlyVersionCard, self).__init__(driver)
 
     # Locators - Instance members
-    self._intro_text = (By.CSS_SELECTOR, 'div.task-main-content > p')
-    self._accman_consent_checkbox = (By.NAME, 'early-posting--consent')
-    self._accman_consent_label = (By.CLASS_NAME, 'model-question')
+    self._intro_text = (By.CSS_SELECTOR, 'div.card-content.card-content-view-text.ember-view > p')
+    self._accman_consent_checkbox = (By.ID, 'check-box-early-posting--consent')
+    self._accman_consent_label = (By.CSS_SELECTOR, '#check-box-early-posting--consent + span')
 
   # POM Actions
   def validate_styles(self):
     """
-    Validate styles in the Early Articl Posting Card
+    Validate styles in the Early Version Card
     :return: void function
     """
     completed = self.completed_state()
     if completed:
       self.click_completion_button()
     card_title = self._get(self._card_heading)
-    assert card_title.text == 'Early Article Posting', card_title.text
+    assert card_title.text == 'Early Version', card_title.text
     self.validate_overlay_card_title_style(card_title)
     intro_text = self._get(self._intro_text)
     self.validate_application_body_text(intro_text)
@@ -45,7 +45,7 @@ class EarlyArticlePostingCard(BaseCard):
     opt_in_checkbox = self._get(self._accman_consent_checkbox)
     # APERTA-8500
     # self.validate_checkbox(opt_in_checkbox)
-    assert opt_in_checkbox.is_selected(), 'Default value for EAP should be selected, it isn\'t'
+    assert opt_in_checkbox.is_selected(), 'Default value for EV should be selected, it isn\'t'
     opt_in_label = self._get(self._accman_consent_label)
     self.validate_checkbox_label(opt_in_label)
 
@@ -62,7 +62,7 @@ class EarlyArticlePostingCard(BaseCard):
       try:
         opt_in_checkbox.is_selected()
       except:
-        raise(ValueError, 'EAP opt-in state expected to be True, '
+        raise(ValueError, 'EV opt-in state expected to be True, '
                           'actual state: {0}'.format(not selection_state))
       return
     else:
@@ -71,5 +71,5 @@ class EarlyArticlePostingCard(BaseCard):
         assert opt_in_checkbox.is_selected()
       except AssertionError:
         return
-      raise (ValueError, 'EAP opt-in state expected to be False, '
+      raise (ValueError, 'EV opt-in state expected to be False, '
                          'actual state: {0}'.format(not selection_state))

@@ -76,6 +76,24 @@ describe CustomCard::Migrator do
       expect(Task.find(task_id).type).to eq('TahiStandardTasks::PaperReviewerTask')
     end
 
+    it 'changes existing Task titles to match the name in the configuration class' do
+      task.update(title: "Some other title")
+      CustomCard::Migrator.new(legacy_task_klass_name: task.type, configuration_class: configuration).migrate
+      expect(task.reload.title).to eq('Review The Paper')
+    end
+
+    it 'changes existing TaskTemplate titles to match the name in the configuration class' do
+      jtt = FactoryGirl.create(:journal_task_type,
+                               journal: journal,
+                               kind: 'TahiStandardTasks::PaperReviewerTask')
+      task_template = FactoryGirl.create(:task_template,
+                                         journal_task_type: jtt,
+                                         title: 'Old Title')
+
+      CustomCard::Migrator.new(legacy_task_klass_name: task.type, configuration_class: configuration).migrate
+      expect(task_template.reload.title).to eq('Review The Paper')
+    end
+
     it 'the new task type can be something different than the original' do
       other_configuration = Class.new do
         def self.name

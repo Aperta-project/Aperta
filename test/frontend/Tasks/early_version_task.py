@@ -11,23 +11,23 @@ from frontend.Tasks.basetask import BaseTask
 __author__ = 'jgray@plos.org'
 
 
-class EarlyArticlePostingTask(BaseTask):
+class EarlyVersionTask(BaseTask):
   """
-  Page Object Model for Early Article Posting task
+  Page Object Model for Early Version task
   """
 
   def __init__(self, driver):
-    super(EarlyArticlePostingTask, self).__init__(driver)
+    super(EarlyVersionTask, self).__init__(driver)
 
     # Locators - Instance members
-    self._intro_text = (By.CSS_SELECTOR, 'div.task-main-content > p')
-    self._accman_consent_checkbox = (By.NAME, 'early-posting--consent')
-    self._accman_consent_label = (By.CLASS_NAME, 'model-question')
+    self._intro_text = (By.CSS_SELECTOR, 'div.card-content.card-content-view-text.ember-view > p')
+    self._accman_consent_checkbox = (By.ID, 'check-box-early-posting--consent')
+    self._accman_consent_label = (By.CSS_SELECTOR, '#check-box-early-posting--consent + span')
 
   # POM Actions
   def validate_styles(self):
     """
-    Validate styles in the Early Article Posting Task
+    Validate styles in the Early Version Task
     """
     intro_text = self._get(self._intro_text)
     self.validate_application_body_text(intro_text)
@@ -40,13 +40,13 @@ class EarlyArticlePostingTask(BaseTask):
     opt_in_checkbox = self._get(self._accman_consent_checkbox)
     # APERTA-8500
     # self.validate_checkbox(opt_in_checkbox)
-    assert opt_in_checkbox.is_selected(), 'Default value for EAP should be selected, it isn\'t'
+    assert opt_in_checkbox.is_selected(), 'Default value for EV should be selected, it isn\'t'
     opt_in_label = self._get(self._accman_consent_label)
     self.validate_checkbox_label(opt_in_label)
 
   def complete_form(self, choice=''):
     """
-    Fill out the single item EAP form with supplied data or random data if none provided
+    Fill out the single item EV form with supplied data or random data if none provided
     :param choice: If supplied, will fill out the form accordingly, else, will make a random
       choice. A boolean.
     :returns choice: the selection to opt in or opt out, a boolean. (True=Opt in; False=Opt out)
@@ -59,7 +59,7 @@ class EarlyArticlePostingTask(BaseTask):
                                       '{0}'.format(choice)
     else:
       choice = random.choice(choices)
-    logging.info('Early Article Posting selection is: {0}'.format(choice))
+    logging.info('Early Version selection is: {0}'.format(choice))
     if choice:
       try:
         assert opt_in_checkbox.is_selected()
@@ -72,7 +72,7 @@ class EarlyArticlePostingTask(BaseTask):
         already_deselected = True
       if not already_deselected:
         opt_in_checkbox.click()
-      # Abe is, I beleive saying this click is not registered before we move on. So adding a dread
+      # Abe is, I believe saying this click is not registered before we move on. So adding a dread
       #   sleep.
       time.sleep(.5)
     return choice

@@ -5,7 +5,6 @@ import time
 
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from frontend.Pages.authenticated_page import AuthenticatedPage
@@ -61,7 +60,7 @@ class BaseTask(AuthenticatedPage):
     elif btn_label == 'Make changes to this task':
       return True
     else:
-      raise ValueError('Completed button in unexpected state {0}'.format(btn_label))
+      raise ValueError('Completed button in unexpected state: {0}.'.format(btn_label))
 
   def validate_completion_error(self):
     """
@@ -136,4 +135,4 @@ class BaseTask(AuthenticatedPage):
     A basic method to test that a task is fully populated before we interact with it.
     :return: Void Function
     """
-    self._wait_for_element(self._get(self._completion_button))
+    self._wait_for_element(self._get(self._completion_button), multiplier=2)

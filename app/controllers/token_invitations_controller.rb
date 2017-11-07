@@ -8,11 +8,10 @@ class TokenInvitationsController < ApplicationController
   end
 
   def update
-    invitation.update_attributes(invitation_update_params.except(:state))
     if invitation.invited? && invitation_update_params[:state] == 'declined'
       invitation.decline!
-    else
-      invitation.save
+    elsif !invitation.feedback_given?
+      invitation.update_attributes(invitation_update_params.except(:state))
     end
     render json: invitation, serializer: TokenInvitationSerializer
   end

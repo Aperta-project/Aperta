@@ -25,7 +25,6 @@ describe TokenInvitationsController do
     context 'fetch and set correct invitation attributes for data' do
       before do
         expect(Invitation).to receive(:find_by!).with(token: invitation.token).and_return(invitation)
-        expect(invitation).to receive(:update_attributes).with(data[:token_invitation].slice(:decline_reason))
       end
       let(:data) do
         { token_invitation: { state: 'declined', decline_reason: 'foo', evil_setting: 'bar' } }
@@ -37,10 +36,11 @@ describe TokenInvitationsController do
           do_request
         end
       end
-      context 'with invitation in not invited state' do
+      context 'with invitation in not invited state but no feedback recorded' do
         let(:invitation) { FactoryGirl.create(:invitation, :declined) }
-        it 'should receive .save method' do
-          expect(invitation).to receive(:save).and_return(invitation)
+        it 'should receive .update_attributes method' do
+          expect(invitation).to receive(:feedback_given?).and_return(false)
+          expect(invitation).to receive(:update_attributes).with(data[:token_invitation].slice(:decline_reason))
           expect(invitation).to_not receive(:decline!)
           do_request
         end

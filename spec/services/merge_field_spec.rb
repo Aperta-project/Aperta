@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe MergeFieldBuilder do
+describe MergeField do
   class ThirdLevelSampleContext < TemplateContext
     def baz
       42
@@ -32,7 +32,7 @@ describe MergeFieldBuilder do
           ] }
         ] }
       ]
-      merge_fields = MergeFieldBuilder.merge_fields(TopLevelSampleContext)
+      merge_fields = MergeField.list_for(TopLevelSampleContext)
       expect(merge_fields).to eq(expanded)
     end
   end

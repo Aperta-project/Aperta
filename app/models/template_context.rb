@@ -16,8 +16,7 @@ class TemplateContext < Liquid::Drop
   end
 
   # Defines a method that returns a type of TemplateContext.  Makes it easier to compose new contexts.
-  # It also registers the method with MergeFieldBuilder so that the listing of merge fields spiders
-  # into this context.
+  # It also registers the method with so that the MergeField listing spiders into this context.
   #
   # type:     the specific return type, which is a subclass of TemplateContext
   #             e.g. type: :user means the return type is UserContext
@@ -55,7 +54,7 @@ class TemplateContext < Liquid::Drop
   end
 
   def self.merge_fields
-    @merge_fields ||= MergeFieldBuilder.merge_fields(self)
+    @merge_fields ||= MergeField.list_for(self)
   end
 
   def initialize(object)

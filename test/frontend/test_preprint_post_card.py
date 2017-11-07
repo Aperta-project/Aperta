@@ -55,15 +55,13 @@ class PPCardTest(CommonTest):
     manuscript_page.click_task('Preprint Posting')
     pp_card = PrePrintPostCard(self.getDriver())
     pp_card.card_ready()
-    #Validating State: Opt in Button is selected
-    pp_card.is_opt_in_button_selected()
-    #Changing State to Opt out: Opt out Button is selected
-    pp_card.check_opt_out_button()
-    pp_card.is_opt_out_button_selected()
+    # Verifying State is default Opt In: Opt in Button is selected
+    pp_card.complete_form('optIn')
+    # Changing State to Opt out: Opt out Button is selected
+    pp_card.complete_form('optOut')
     pp_card.click_completion_button()
     pp_card.completed_state()
     pp_card.logout()
-
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
     self.cas_login(email=editorial_user['email'])
@@ -72,16 +70,13 @@ class PPCardTest(CommonTest):
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.click_preprint_posting_card()
     pp_card = PrePrintPostCard(self.getDriver())
-    #Validating State: Opt out Button is selected
-    pp_card.is_opt_out_button_selected()
-    #Validating buttons are disabled
-    pp_card.elementstate()
-    #Making changes
     pp_card.click_completion_button()
+    #Validating State: Opt out Button is selected
+    pp_card.validate_state('optOut')
     pp_card.validate_styles()
     #Changing State: Opt in button will be selected
-    pp_card.check_opt_in_button()
-    pp_card.is_opt_in_button_selected()
+    pp_card.complete_form('optIn')
+    pp_card.validate_state('optOut')
 
 
     if __name__ == '__main__':

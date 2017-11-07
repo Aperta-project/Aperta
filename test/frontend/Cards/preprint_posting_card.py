@@ -16,107 +16,92 @@ __author__ = 'gholmes@plos.org'
 
 
 class PrePrintPostCard(BaseCard):
-  """
+    """
   Page Object Model for Billing Card
   """
-  def __init__(self, driver):
-    super(PrePrintPostCard, self).__init__(driver)
 
-    # Locators - Instance members
-    self._intro_text = (By.CSS_SELECTOR, 'div[id^="ember"] li div > p')
-    self._benefit_text = (By.CSS_SELECTOR, 'div[id^="ember"] ol')
+    def __init__(self, driver):
+        super(PrePrintPostCard, self).__init__(driver)
 
-    self._yes_radio_button = (By.XPATH,"//input[@class='ember-view'][@value='1']")
-    self._no_radio_button = (By.XPATH, "//input[@class='ember-view'][@value='2']")
-    self._card_opt_in_content_label = (By.CSS_SELECTOR, 'div>label:nth-child(1)')
-    self._card_opt_out_content_label = (By.CSS_SELECTOR, 'div>label:nth-child(2)')
-    self._yes_disabled_radio_button = (By.XPATH,"//input[@class='ember-view'][@value='1'][@disabled='']")
-    self._no_disabled_radio_button = (By.XPATH,"//input[@class='ember-view'][@value='1'][@disabled='']")
+        # Locators - Instance members
+        self._benefit_text = (By.CSS_SELECTOR, 'div[id^="ember"] ol')
 
+        self._yes_radio_button = (By.XPATH, "//input[@class='ember-view'][@value='1']")
+        self._no_radio_button = (By.XPATH, "//input[@class='ember-view'][@value='2']")
+        self._card_opt_in_content_label = (By.CSS_SELECTOR, 'div>label:nth-child(1)')
+        self._card_opt_out_content_label = (By.CSS_SELECTOR, 'div>label:nth-child(2)')
+        self._yes_disabled_radio_button = (By.XPATH, "//input[@class='ember-view'][@value='1'][@disabled='']")
+        self._no_disabled_radio_button = (By.XPATH, "//input[@class='ember-view'][@value='1'][@disabled='']")
 
-
-  def validate_styles(self):
-    """
+    def validate_styles(self):
+        """
     Validate styles for the Preprint Posting Card
     """
-    card_title = self._get(self._card_heading)
-    assert card_title.text == 'Preprint Posting', card_title.text
-    self.validate_overlay_card_title_style(card_title)
-    intro_text = self._get(self._intro_text)
-    self.validate_application_body_text(intro_text)
-    benefits_text = self._get(self._benefit_text)
-    self.validate_application_body_text(benefits_text)
-    assert intro_text.text == "Benefit: Establish priority", intro_text.text
-    assert "Benefit: Gather feedback" in benefits_text.text,benefits_text.text
-    assert "Benefit: Cite for funding" in benefits_text.text,benefits_text.text
-   # opt_in_checkbox = self._get(self._yes_radio_button)
-   # assert opt_in_checkbox.is_selected(), 'Default value for Preprint Posting Card should be selected, it isn\'t'
-    assert self._get(self._card_opt_in_content_label).text == "Yes, I want to accelerate research by publishing a preprint ahead of peer review"
-    assert self._get(self._card_opt_out_content_label).text == "No, I do not want my article to appear online ahead of the reviewed article"
-    self.validate_radio_button_label(self._get(self._card_opt_in_content_label))
-    self.validate_radio_button_label(self._get(self._card_opt_out_content_label))
+        card_title = self._get(self._card_heading)
+        assert card_title.text == 'Preprint Posting', card_title.text
+        self.validate_overlay_card_title_style(card_title)
+        benefits_text = self._get(self._benefit_text)
+        self.validate_application_body_text(benefits_text)
+        assert "Benefit: Establish priority" in benefits_text.text, benefits_text.text
+        assert "Benefit: Gather feedback" in benefits_text.text, benefits_text.text
+        assert "Benefit: Cite for funding" in benefits_text.text, benefits_text.text
+        # opt_in_checkbox = self._get(self._yes_radio_button)
+        # assert opt_in_checkbox.is_selected(), 'Default value for Preprint Posting Card should be selected, it isn\'t'
+        assert self._get(
+            self._card_opt_in_content_label).text == "Yes, I want to accelerate research by publishing a preprint ahead of peer review"
+        assert self._get(
+            self._card_opt_out_content_label).text == "No, I do not want my article to appear online ahead of the reviewed article"
+        self.validate_radio_button_label(self._get(self._card_opt_in_content_label))
+        self.validate_radio_button_label(self._get(self._card_opt_out_content_label))
 
+    def complete_form(self, choices):
+        """
+        Filling out the preprint card with selected data
+        :param choice: If supplied, will fill out the form accordingly, else, will make a random
+          choice. A boolean.
+        """
+        opt_in = self._get(self._yes_radio_button)
+        self._wait_for_element(opt_in)
+        opt_out = self._get(self._no_radio_button)
+        self._wait_for_element(opt_out)
+        if choices == 'optIn':
+            try:
 
-  def is_opt_in_button_selected(self):
-    """
-    Checks if yes radio button for publishing a preprint is selected
-    :return: Bool
-    """
-    button_check = self._get(self._yes_radio_button)
-    if button_check.is_selected():
-      return True
-    else:
-      return False
+                assert opt_in.is_selected
+            except AssertionError:
+              opt_in.click()
+              return
+        else:
+            if choices =='optOut':
+                try:
+                    opt_out.click()
+                    assert opt_out.is_selected
+                except AssertionError:
+                    return
 
-  def is_opt_out_button_selected(self):
-    """
-    Checks if no radio button for publishing a preprint is selected
-    :return: Bool
-    """
-    button_check = self._get(self._no_radio_button)
-    if button_check.is_selected():
-      return True
-    else:
-      return False
+    def validate_state(self, selection_state):
+        """
+        Validate the Selection state
+        :param selection_state: The expected state of the card
+        :return: void function
+        """
+        opt_in = self._get(self._yes_radio_button)
+        self._wait_for_element(opt_in)
+        opt_out = self._get(self._no_radio_button)
+        self._wait_for_element(opt_out)
 
-  def check_opt_out_button(self):
-    """
-   Checks if no button for opting out publishing a preprint is selected
-    """
-    optOutButton= self._get(self._no_radio_button)
-    self._wait_for_element(optOutButton)
-    self._get(self._no_radio_button).click()
-    time.sleep(3)
-    button_opt_out_check = self._get(self._no_radio_button)
-    assert button_opt_out_check.is_selected()
-
-  def check_opt_in_button(self):
-    """
-   Checks if yes button for opting out publishing a preprint is selected
-    """
-    optInButton= self._get(self._yes_radio_button)
-    self._wait_for_element(optInButton)
-    self._get(self._yes_radio_button).click()
-    time.sleep(3)
-    button_opt_in_check = self._get(self._yes_radio_button)
-    assert button_opt_in_check.is_selected()
-
-  def elementstate(self):
-
-    """
-      Asserting elements should not be clickable for external users
-       """
-    button_opt_out_disabled_check = self._get(self._no_disabled_radio_button)
-    button_opt_in_disabled_check = self._get(self._yes_disabled_radio_button)
-    if button_opt_in_disabled_check.is_displayed:
-      return True
-    else:
-      return False
-    if button_opt_out_disabled_check.is_displayed:
-      return True
-    else:
-      return False
-
-
-
-
+        if selection_state == 'optIn':
+            try:
+                opt_in.is_selected()
+            except:
+                raise (ValueError, 'Preprint cart state expected to be opt_in, '
+                                   'actual state: opt_out'.format(not selection_state))
+            return
+        else:
+            if selection_state == 'optOut':
+                try:
+                    opt_out.is_selected()
+                except:
+                    return
+                    raise (ValueError, 'Preprint cart state expected to be opt_out, '
+                                       'actual state: opt_in'.format(not selection_state))

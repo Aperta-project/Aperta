@@ -44,7 +44,7 @@ test(`it displays the value from answer.value`, function(assert) {
   assert.equal(this.$('input').val(), 'Bar');
 });
 test(`it sends 'valueChanged' on change`, function(assert) {
-  assert.expect(1);
+  assert.expect(2);
   this.set('answer', Ember.Object.create({ value: 'Old' }));
   this.set('actionStub', function(newVal) {
     assert.equal(newVal, 'New', 'it calls the action with the new value');
@@ -53,7 +53,7 @@ test(`it sends 'valueChanged' on change`, function(assert) {
   this.$('input').val('New').trigger('change').trigger('blur');
 });
 test(`it sends 'valueChanged' on input`, function(assert) {
-  assert.expect(1);
+  assert.expect(2);
   this.set('answer', Ember.Object.create({ value: 'Old' }));
   this.set('actionStub', function(newVal) {
     assert.equal(newVal, 'New', 'it calls the action with the new value');

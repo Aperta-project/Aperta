@@ -16,13 +16,8 @@ export default Ember.Mixin.create({
       // Hide error messages if field is blank
       if (Ember.isBlank(newValue) || newValue === '<p></p>') this.set('hideError', true);
 
-      const parentContentType = this.get('answer.cardContent.parent.contentType');
-
-      // If there were no previous errors, don't save to rails while typing
-      if (this.get('answer.hasErrors') || parentContentType === 'sendback-reason' ) {
-        let action = this.get('valueChanged');
-        if (action) { action(newValue); }
-      }
+      let action = this.get('valueChanged');
+      if (action) { action(newValue); }
     },
 
     validate() {

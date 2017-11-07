@@ -117,4 +117,3 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
     }
   }
 });
-

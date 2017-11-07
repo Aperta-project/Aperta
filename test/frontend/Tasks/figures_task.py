@@ -506,6 +506,7 @@ class FiguresTask(BaseTask):
     Check if 'Figures' task has any figures
     :return: True if 'Figures' task has at least 1 figure and False if it does not
     """
+    self._reset_position_to_conformance_question()
     # if we don't have figures, there is only one div under div.liquid-container: div.liquid-child
     elements_to_check = self._gets(self._figure_list_children)
     return len(elements_to_check) > 1

@@ -267,26 +267,20 @@ class FiguresTask(BaseTask):
     logging.info(figure)
     self._reset_position_to_conformance_question()
     self._wait_for_element(self._gets(self._figure_dl_link)[0])
-    page_fig_list = self._gets(self._figure_dl_link)
     figure = urllib.parse.quote_plus(figure[0])
-    for page_fig_item in page_fig_list:
-      if figure == page_fig_item.text:
+
+    figure_listings = self._gets(self._figure_listing)
+    for figure_listing in figure_listings:
+      page_fig_name = figure_listing.find_element(*self._figure_dl_link)
+      if page_fig_name.text == figure:
         logging.info('Deleting figure: {0}'.format(figure))
-        #time.sleep(5)
-        delete_icon = page_fig_item.find_element_by_xpath('../../../..//span[@class="fa fa-trash"]')
+        delete_icon = figure_listing.find_element(*self._figure_delete_icon)
         self._scroll_into_view(delete_icon)
-        # Redefining this down here to avoid a stale element reference due to the listing having
-        #   been replaced, potentially, since lookup
-        # self._figure_listing = (By.CSS_SELECTOR, 'div.liquid-child > div.ember-view')
-        # Move to item to get the edit icons to appear
-        self._actions.move_to_element(page_fig_item).perform()
-        #delete_icon = self._get(self._figure_delete_icon)
         try:
           delete_icon.click()
         except WebDriverException:
           self.click_covered_element(delete_icon)
         self._wait_for_element(self._get(self._figure_delete_confirmation))
-        #time.sleep(1)
         self._get(self._figure_delete_confirmation)
         line_1 = self._get(self._figure_delete_confirm_line1)
         assert 'This will permanently delete this file.' in line_1.text, line_1.text
@@ -296,11 +290,11 @@ class FiguresTask(BaseTask):
         assert 'cancel' in cancel_link.text
         cancel_link.click()
         delete_icon.click()
-        time.sleep(1)
+        self._wait_for_element(self._get(self._figure_delete_confirmation))
         delete_btn = self._get(self._figure_delete_confirm_confirm)
         assert 'DELETE FOREVER' in delete_btn.text, delete_btn.text
         delete_btn.click()
-        time.sleep(5)
+        self._wait_on_lambda(lambda: self.is_task_has_figures() == False)
         return
       logging.info('no match found')
 
@@ -490,9 +484,7 @@ class FiguresTask(BaseTask):
     :return: void function
     """
     # check if we have any figures:
-    # if we don't, there is only one div under div.liquid-container: div.liquid-child
-    elements_to_check = self._gets(self._figure_list_children)
-    if len(elements_to_check) == 1:
+    if not self.is_task_has_figures():
       # no figures, nothing to check
       pass
     else:
@@ -508,6 +500,15 @@ class FiguresTask(BaseTask):
             # We shouldn't have to url-encode this, but due to APERTA-6946 we must for now.
             assert urllib.parse.quote_plus(figure) not in page_fig_name_list, \
                 '{0} found in {1}'.format(urllib.parse.quote_plus(figure), page_fig_name_list)
+
+  def is_task_has_figures(self):
+    """
+    Check if 'Figures' task has any figures
+    :return: True if 'Figures' task has at least 1 figure and False if it does not
+    """
+    # if we don't have figures, there is only one div under div.liquid-container: div.liquid-child
+    elements_to_check = self._gets(self._figure_list_children)
+    return len(elements_to_check) > 1
 
   def _validate_striking_image_set(self, figure):
     """

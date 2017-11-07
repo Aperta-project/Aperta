@@ -23,4 +23,15 @@ class Correspondence < ActiveRecord::Base
   def external?
     external
   end
+
+  def activities
+    Activity.where(feed_name: ['workflow'], subject_type: ['Correspondence'])
+      .map do |f|
+        {
+          key: f.activity_key,
+          full_name: f.user.full_name,
+          created_at: f.created_at
+        }
+      end
+  end
 end

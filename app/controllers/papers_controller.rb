@@ -92,7 +92,7 @@ class PapersController < ApplicationController
   def workflow_activities
     requires_user_can(:manage_workflow, paper)
     feeds = ['workflow', 'manuscript']
-    activities = Activity.includes(:user).feed_for(feeds, paper)
+    activities = Activity.includes(:user).feed_for_type(feeds, ['Paper', 'Correspondence'])
     respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
   end
 

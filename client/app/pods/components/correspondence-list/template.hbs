@@ -29,11 +29,11 @@
                 {{/if}}
               </div>
             </td>
-            <td>{{message.recipient}}</td>
-            <td class="{{if (eq message.manuscriptVersionStatus "Unavailable") "unavailable"}}">
+            <td style="border-top: none">{{message.recipient}}</td>
+            <td class="{{if (eq message.manuscriptVersionStatus "Unavailable") "unavailable"}}" style="border-top: none">
               {{message.manuscriptVersionStatus}}
             </td>
-            <td>{{message.sender}}</td>
+            <td style="border-top: none">{{message.sender}}</td>
           </tr>
         {{/each}}
       </tbody>

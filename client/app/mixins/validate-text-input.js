@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { timeout, task as concurrencyTask } from 'ember-concurrency';
 
 export default Ember.Mixin.create({
   answerProxy: null,
@@ -9,20 +10,19 @@ export default Ember.Mixin.create({
     this.set('answerProxy', this.get('answer.value'));
   },
 
+  updateValue: concurrencyTask(function * (action, value, debounce) {
+    yield timeout(debounce);
+    action(value);
+  }).drop(),
+
   actions: {
     valueChanged(newValue) {
       //in effect, this makes `answerProxy` a computed on answer.value
       this.set('answerProxy', newValue);
       // Hide error messages if field is blank
       if (Ember.isBlank(newValue) || newValue === '<p></p>') this.set('hideError', true);
-
-      const parentContentType = this.get('answer.cardContent.parent.contentType');
-
-      // If there were no previous errors, don't save to rails while typing
-      if (this.get('answer.hasErrors') || parentContentType === 'sendback-reason' ) {
-        let action = this.get('valueChanged');
-        if (action) { action(newValue); }
-      }
+      let action = this.get('valueChanged');
+      if (action) { this.get('updateValue').perform(action, newValue, 500); }
     },
 
     validate() {

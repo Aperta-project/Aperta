@@ -28,7 +28,7 @@ let fakeTextContent = Ember.Object.extend({
   contentType: 'description',
   text: 'Child 1' ,
   answerForOwner() {
-    return {value: 'foo'};
+    return Ember.Object.create({value: 'bar'});
   }
 });
 
@@ -66,7 +66,7 @@ test(
       visibleWithParentAnswer: 'foo',
       parent: {
         answerForOwner() {
-          return {value: 'foo'};
+          return Ember.Object.create({value: 'foo'});
         }
       },
       children: [
@@ -89,7 +89,7 @@ test(
       visibleWithParentAnswer: '1',
       parent: {
         answerForOwner() {
-          return {value: 1};
+          return Ember.Object.create({value: 1});
         }
       },
       children: [
@@ -110,7 +110,7 @@ test(
       visibleWithParentAnswer: '',
       parent: {
         answerForOwner() {
-          return {value: ''};
+          return Ember.Object.create({value: ''});
         }
       },
       children: [
@@ -131,7 +131,7 @@ test(
       visibleWithParentAnswer: 'foo',
       parent: {
         answerForOwner() {
-          return {value: 'bar'};
+          return Ember.Object.create({value: 'bar'});
         }
       },
       children: [
@@ -151,7 +151,7 @@ test(
       visibleWithParentAnswer: '1',
       parent: {
         answerForOwner() {
-          return {value: null};
+          return Ember.Object.create({value: null});
         }
       },
       children: [
@@ -170,7 +170,7 @@ test(
       visibleWithParentAnswer: '1',
       parent: {
         answerForOwner() {
-          return {};
+          return Ember.Object.create({});
         }
       },
       children: [

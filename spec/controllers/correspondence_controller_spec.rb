@@ -13,6 +13,7 @@ def new_correspondence_params(paper)
     recipients: Faker::Internet.safe_email,
     cc: Faker::Internet.safe_email,
     bcc: Faker::Internet.safe_email,
+    date: DateTime.now.in_time_zone.as_json,
     sent_at: DateTime.now.in_time_zone.as_json,
     description: "A bleak description",
     subject: Faker::Lorem.sentence,

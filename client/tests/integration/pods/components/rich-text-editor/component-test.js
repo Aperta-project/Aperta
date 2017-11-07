@@ -128,3 +128,23 @@ test('checking the focusOut action triggers after editor is disabled', function(
 
   assert.equal(focusOutCount, 2, 'focusOut was called again after reenabling the editor');
 });
+
+test('contents do not update from upstream changes when editor is active', function(assert) {
+  const initialValue = '<p>pickachu</p>';
+  this.set('value', initialValue);
+  this.set('saveContents', function() {});
+  const template = hbs`{{rich-text-editor
+                      value=value
+                      ident='test-editor'
+                      onContentsChanged=saveContents}}`;
+  this.render(template);
+  const editor = findEditor('test-editor');
+  editorFireEvent('test-editor', 'focus'); // get focus
+  assert.equal(editor.getContent(), initialValue, 'initial value should be set');
+  this.set('value', '<p>bulbasaur</p>');
+  assert.equal(editor.getContent(), initialValue, 'the contents should not change when the editor has focus');
+  editorFireEvent('test-editor', 'blur'); // lose focus
+  const upstreamValue = '<p>charmander</p>';
+  this.set('value', upstreamValue);
+  assert.equal(editor.getContent(), upstreamValue, 'the contents should change if the editor does not have focus');
+});

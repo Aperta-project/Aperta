@@ -184,8 +184,8 @@ describe QueryParser do
 
       it 'parses TASK x IS UNASSIGNED' do
         parse = QueryParser.new.parse 'TASK anytask IS UNASSIGNED'
-        expect(parse.to_sql).to eq(<<-SQL.strip)
-          ((\"tasks_0\".\"title\" ILIKE 'anytask' AND \"tasks_0\".\"assigned_user_id\" IS NULL) OR \"papers\".\"id\" NOT IN (SELECT paper_id FROM \"tasks\" WHERE \"tasks\".\"title\" ILIKE 'anytask'))
+        expect(parse).to eq(<<-SQL.strip)
+          CASE WHEN (SELECT count(id) FROM \"tasks\" WHERE \"tasks\".\"title\" ILIKE 'anytask') = 0 THEN 1=0 ELSE \"papers\".\"id\" NOT IN (SELECT paper_id FROM \"tasks\" WHERE \"tasks\".\"title\" ILIKE 'anytask' AND \"tasks\".\"assigned_user_id\" IS NOT NULL) END
         SQL
       end
 

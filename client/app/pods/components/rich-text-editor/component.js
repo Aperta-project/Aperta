@@ -68,11 +68,22 @@ export default Ember.Component.extend({
     /* eslint-enable camelcase */
   },
 
+  hasFocus: false,
+
   editorIsEnabled: Ember.observer('disabled', function() {
+    this.set('editorValue', this.get('value'));
     if (!this.get('disabled')) {
       Ember.run.scheduleOnce('afterRender', this, this.postRender);
     }
   }).on('init'),
+
+  // This prevents upstream changes from clobbering something that
+  // a user is actively editing.
+  updateEditorValueIfNotActive: Ember.observer('value', function() {
+    if (!this.get('hasFocus')) {
+      this.set('editorValue', this.get('value'));
+    }
+  }),
 
   pastePostprocess(editor, fragment) {
     function deleteEmptyParagraph(elem) {
@@ -85,7 +96,7 @@ export default Ember.Component.extend({
 
     deleteEmptyParagraph(fragment.node);
 
-    if(Ember.isBlank(this.get('value'))) this.set('value', fragment.node.innerHTML);
+    if(Ember.isBlank(this.get('editorValue'))) this.set('editorValue', fragment.node.innerHTML);
   },
 
   postRender() {
@@ -94,6 +105,8 @@ export default Ember.Component.extend({
     document.querySelector(iframeSelector).removeAttribute('title');
     let callback = this.get('focusOut');
     if (callback) editor.on('blur', callback);
+    editor.on('focus', () => this.set('hasFocus', true) );
+    editor.on('blur', () => this.set('hasFocus', false) );
   },
 
   configureCommon(options) {

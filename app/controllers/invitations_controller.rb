@@ -91,6 +91,9 @@ class InvitationsController < ApplicationController
 
   def accept
     requires_user_can(:manage_invitations, invitation.task) unless invitation.invitee == current_user
+    invitee = find_or_create_invitee
+    validate_invitee(invitee)
+    invitation.reload # refresh invitation data bc user creation callbacks
     invitation.actor = current_user
     invitation.accept!
     Activity.invitation_accepted!(invitation, user: current_user)
@@ -153,11 +156,29 @@ class InvitationsController < ApplicationController
       .permit(:id, :body, :email)
   end
 
+  def invitation_accept_params
+    params.permit(:first_name, :last_name)
+  end
+
   def task
     @task ||= Task.find(params[:invitation][:task_id])
   end
 
   def invitation
     @invitation ||= Invitation.find(params[:id])
+  end
+
+  def find_or_create_invitee
+    invitation.invitee || User.create(invitation_accept_params) do |user|
+      user.email = invitation.email
+      user.auto_generate_password
+      user.auto_generate_username
+    end
+  end
+
+  def validate_invitee(invitee)
+    return if invitee.valid?
+    invitation.errors.add(:invitee, 'User creation error')
+    raise ActiveRecord::RecordInvalid, invitation
   end
 end

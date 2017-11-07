@@ -223,7 +223,7 @@ test('the row is in the show state, invitation is invited, and in current round 
 
   this.render(openTemplate);
 
-  assert.elementNotFound('.invitation-item-action-accept', 'Does not show Accept button');
+  assert.textPresent('.invitation-item-action', 'Accept invitation for reviewer', 'Shows Accept button');
 });
 
 test('the row is in the show state, invitation is accepted, and in current round', function(assert) {

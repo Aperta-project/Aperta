@@ -53,6 +53,7 @@ class Paper < ActiveRecord::Base
   has_many :related_articles, dependent: :destroy
   has_many :withdrawals, dependent: :destroy
   has_many :correspondence
+  has_many :export_deliveries, class_name: 'TahiStandardTasks::ExportDelivery'
 
   has_many :authors,
            -> { order 'author_list_items.position ASC' },
@@ -70,12 +71,14 @@ class Paper < ActiveRecord::Base
   validates :title, presence: true
 
   class InvalidPreprintDoiError < ::StandardError; end
+  DOI_PROXY_HOST_URL = "http://doi.org".freeze
   PREPRINT_DOI_ARTICLE_NUMBER_LENGTH = 7
   PREPRINT_DOI_PREFIX = "10.24196".freeze
+  PREPRINT_DOI_JOURNAL_ABBREV = "aarx".freeze
   PREPRINT_DOI_FORMAT = %r{
     \A
     #{PREPRINT_DOI_PREFIX}
-    /aarx\.
+    /#{PREPRINT_DOI_JOURNAL_ABBREV}\.
     \d{#{PREPRINT_DOI_ARTICLE_NUMBER_LENGTH }}
   \z}x
 
@@ -635,13 +638,36 @@ class Paper < ActiveRecord::Base
     PREPRINT_DOI_PREFIX + "/" + preprint_doi_suffix
   end
 
+  def aarx_link
+    DOI_PROXY_HOST_URL + "/" + aarx_doi if aarx_doi.present?
+  end
+
   def preprint_doi_suffix
     return nil unless preprint_doi_article_number
-    "aarx." + preprint_doi_article_number
+    PREPRINT_DOI_JOURNAL_ABBREV + "." + preprint_doi_article_number
+  end
+
+  def preprint_posted?
+    export_deliveries.where(state: 'preprint_posted').any?
   end
 
   def front_matter?
     !uses_research_article_reviewer_report?
+  end
+
+  def manuscript_manager_template
+    ManuscriptManagerTemplate.find_by(journal: journal, paper_type: paper_type)
+  end
+
+  def review_duration_period
+    default = 10
+    if FeatureFlag[:REVIEW_DUE_DATE]
+      setting = manuscript_manager_template
+        .try(:task_template_by_kind, "TahiStandardTasks::PaperReviewerTask")
+        .try(:setting, 'review_duration_period')
+      return setting.value if setting.present?
+    end
+    default
   end
 
   private

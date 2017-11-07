@@ -8,6 +8,7 @@ class Answer < ActiveRecord::Base
   belongs_to :card_content
   belongs_to :owner, polymorphic: true
   belongs_to :paper
+  belongs_to :repetition, inverse_of: :answers
 
   has_many :attachments, -> { order('id ASC') },
                               dependent: :destroy,
@@ -18,7 +19,7 @@ class Answer < ActiveRecord::Base
   validates :owner, presence: true
   validates :paper, presence: true
 
-  delegate :value_type, to: :card_content
+  delegate :value_type, :ident, to: :card_content
 
   before_save :sanitize_html, if: :html_value_type?
   # The 'value: true' option means it's validating value using
@@ -73,6 +74,10 @@ class Answer < ActiveRecord::Base
       # It's not nil, so I guess it's not blank.
       false
     end
+  end
+
+  def question
+    card_content.text
   end
 
   private

@@ -167,6 +167,26 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     expect(report.scheduled_events.pluck(:state).uniq).to eq ['canceled']
   end
 
+  scenario 'Changing due dates updates active event dispatch times' do
+    create_reviewer_invitation(paper)
+    reviewer_report_task = create_reviewer_report_task
+    report = reviewer_report_task.reviewer_reports.first
+    report.rescind_invitation!
+    report.accept_invitation!
+
+    expect(ScheduledEvent.active.count).to eq 3
+    expect(ScheduledEvent.canceled.count).to eq 3
+
+    canceled_dates = ScheduledEvent.all.canceled.pluck(:dispatch_at)
+    active_dates = ScheduledEvent.all.active.pluck(:dispatch_at)
+
+    report.due_datetime.update(due_at: report.due_at + 1.day)
+    report.schedule_events
+
+    expect(ScheduledEvent.canceled.pluck(:dispatch_at)).to eq canceled_dates
+    expect(ScheduledEvent.active.pluck(:dispatch_at)).to_not eq active_dates
+  end
+
   scenario 'Reviewer can upload attachments' do
     create_reviewer_invitation(paper)
     create_reviewer_report_task

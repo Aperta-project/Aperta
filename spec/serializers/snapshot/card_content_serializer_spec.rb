@@ -7,7 +7,7 @@ describe Snapshot::CardContentSerializer do
   end
   let(:owner) { FactoryGirl.create(:ad_hoc_task) }
 
-  describe '#as_json - serializing card content as nested questions' do
+  describe '#as_json' do
     it 'serializes the card content without an answer' do
       expect(serializer.as_json).to eq(
         name: 'my-question',
@@ -21,6 +21,39 @@ describe Snapshot::CardContentSerializer do
         },
         children: []
       )
+    end
+
+    context 'when it has repetitions' do
+      let(:card_content) { FactoryGirl.create(:card_content, :unanswerable, ident: 'my-repeater', content_type: 'repeat') }
+      let(:child) { FactoryGirl.create(:card_content, parent: card_content, ident: 'my-question', value_type: 'text', text: 'What up?') }
+      let(:repetition) { FactoryGirl.create(:repetition, card_content: card_content, task: owner) }
+      let!(:answer) { FactoryGirl.create(:answer, card_content: child, repetition: repetition, owner: owner, value: 'the sky') }
+
+      it 'serializes the card content with each repetition and its answers' do
+        expect(serializer.as_json).to eq(
+          name: 'my-repeater',
+          type: 'question',
+          value: {
+            id: card_content.id,
+            title: nil,
+            answer_type: nil,
+            answer: nil,
+            attachments: []
+          },
+          children: [
+            name: 'my-question',
+            type: 'question',
+            value: {
+              id: child.id,
+              title: 'What up?',
+              answer_type: 'text',
+              answer: 'the sky',
+              attachments: []
+            },
+            children: []
+          ]
+        )
+      end
     end
 
     context 'when it has child content' do
@@ -73,7 +106,7 @@ describe Snapshot::CardContentSerializer do
       end
     end
 
-    it 'serializes card conntent with an answer as nested questions' do
+    it 'serializes card content with an answer as nested questions' do
       FactoryGirl.create(
         :answer,
         owner: owner,

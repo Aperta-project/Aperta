@@ -37,9 +37,7 @@ class LetterTemplate < ActiveRecord::Base
   private
 
   def scenario_class
-    replacements = { 'SendbacksContext' => 'TechCheckScenario' }
-    klass = replacements[scenario] || scenario
-    klass.constantize
+    TemplateContext.scenarios[scenario]
   end
 
   def render_attr(template, context, sanitize: false, check_blanks: false)

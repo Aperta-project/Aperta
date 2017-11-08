@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171107225712) do
+ActiveRecord::Schema.define(version: 20171108191325) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -405,6 +405,7 @@ ActiveRecord::Schema.define(version: 20171107225712) do
   end
 
   add_index "entity_attributes", ["entity_id"], name: "index_entity_attributes_on_entity_id", using: :btree
+  add_index "entity_attributes", ["entity_type"], name: "index_entity_attributes_on_entity_type", using: :btree
   add_index "entity_attributes", ["name"], name: "index_entity_attributes_on_name", using: :btree
   add_index "entity_attributes", ["value_type"], name: "index_entity_attributes_on_value_type", using: :btree
 

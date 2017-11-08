@@ -17,13 +17,9 @@ class EventBehavior < ActiveRecord::Base
 
   belongs_to :journal
 
-  has_attributes :event_behavior_attributes,
-                 inverse_of: :event_behavior,
-                 types: {
-                   boolean: %w[boolean_param],
-                   json: %w[json_param],
-                   string: %w[string_param letter_template]
-                 }
+  has_attributes boolean: %w[boolean_param],
+                 json: %w[json_param],
+                 string: %w[string_param letter_template]
 
   def call(user:, paper:, task:)
     event_params = { user: user, paper: paper, task: task }

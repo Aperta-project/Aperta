@@ -1,8 +1,8 @@
-class ContentAttribute < ActiveRecord::Base
+class EntityAttribute < ActiveRecord::Base
   include XmlSerializable
 
-  belongs_to :card_content, inverse_of: :content_attributes
-  validates :name, presence: true, uniqueness: { scope: :card_content }
+  belongs_to :entity, inverse_of: :entity_attributes, polymorphic: true
+  validates :name, presence: true, uniqueness: { scope: :entity }
 
   def value
     case value_type

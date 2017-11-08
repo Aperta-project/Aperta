@@ -10,41 +10,37 @@ class CardContent < ActiveRecord::Base
 
   acts_as_nested_set
 
-  has_attributes :content_attributes,
-                 inverse_of: :card_content,
-                 class_name: 'ContentAttribute',
-                 types: {
-                   boolean: %w[
-                     allow_annotations
-                     allow_file_captions
-                     allow_multiple_uploads
-                     required_field
-                   ],
-                   json: %w[possible_values],
-                   integer: %w[
-                     min
-                     max
-                   ],
-                   string: %w[
-                     child_tag
-                     condition
-                     custom_child_class
-                     custom_class
-                     default_answer_value
-                     editor_style
-                     error_message
-                     instruction_text
-                     item_name
-                     key
-                     label
-                     max
-                     min
-                     text
-                     value_type
-                     visible_with_parent_answer
-                     wrapper_tag
-                   ]
-                 }
+  has_attributes \
+    boolean: %w[
+      allow_annotations
+      allow_file_captions
+      allow_multiple_uploads
+      required_field
+    ],
+    json: %w[possible_values],
+    integer: %w[
+      min
+      max
+    ],
+    string: %w[
+      child_tag
+      condition
+      custom_child_class
+      custom_class
+      default_answer_value
+      editor_style
+      error_message
+      instruction_text
+      item_name
+      key
+      label
+      max
+      min
+      text
+      value_type
+      visible_with_parent_answer
+      wrapper_tag
+    ]
 
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version

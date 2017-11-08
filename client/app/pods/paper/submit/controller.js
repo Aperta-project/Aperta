@@ -22,6 +22,13 @@ export default Ember.Controller.extend({
     return paperDownloadPath({ paperId: this.get('paper.id'), format: 'pdf_with_attachments' });
   }),
 
+  coAuthorsSort: ['position:asc'],
+  authors: Ember.computed.union('paper.authors', 'paper.groupAuthors'),
+  coAuthors: Ember.computed.filter('authors.@each', function(author) {
+    return author.get('position') > 1;
+  }),
+  sortedCoAuthors: Ember.computed.sort('coAuthors', 'coAuthorsSort'),
+
   recordPreviousPublishingState: function () {
     this.set('previousPublishingState', this.get('paper.publishingState'));
   },
@@ -29,11 +36,6 @@ export default Ember.Controller.extend({
   showFeedbackOverlayFunc() {
     this.set('showFeedbackOverlay', true);
   },
-
-  groupAuthors: Ember.computed('paper.groupAuthors', function() {
-    return this.get('paper.groupAuthors').map((author) =>
-      `${author.get('contactFirstName')} ${author.get('contactLastName')}`).join(', ');
-  }),
 
   setPaperStateAsSubmitted() {
     this.set('paperSubmitted', true);

@@ -72,19 +72,16 @@
               <th>Co-Authors</th>
               <td>
                 <p>
-                  {{#each paper.authors as |author|}}
-                    {{#unless (eq author paper.authors.firstObject)}}
-                      <span>{{author.firstName}} {{author.middleInitial}} {{author.lastName}}{{#if author.affiliation}},&nbsp;&nbsp;{{author.affiliation}}{{/if}}{{#unless (eq author paper.authors.lastObject)}}<br/>{{/unless}}</span>
-                    {{/unless}}
+                  {{#each sortedCoAuthors as |author|}}
+                  <span>
+                    {{#if author.name }}
+                      {{author.name}}
+                    {{else}}
+                      {{author.firstName}} {{author.middleInitial}} {{author.lastName}}{{#if author.affiliation}},&nbsp;&nbsp;{{author.affiliation}}{{/if}}
+                    {{/if}}
+                    {{#unless (eq author sortedCoAuthors.lastObject)}}<br/>{{/unless}}
+                  </span>
                   {{/each}}
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <th>Group Authors</th>
-              <td>
-                <p>
-                  <span>{{groupAuthors}}</span>
                 </p>
               </td>
             </tr>

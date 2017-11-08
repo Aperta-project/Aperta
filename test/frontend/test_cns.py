@@ -44,7 +44,7 @@ class ApertaCNSTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     self.create_article(title='cns_test', journal='PLOS Wombat', type_='Research', random_bit=True, format_='word')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.page_ready()
+    manuscript_page.page_ready_post_create()
     manuscript_page.validate_ihat_conversions_success(fail_on_missing=True)
     # Outputting the title allows us to validate update following conversion
     manuscript_page.get_paper_short_doi_from_url()
@@ -71,7 +71,7 @@ class ApertaCNSTest(CommonTest):
     self.create_article(title='cns_w_preprint_overlay', journal='PLOS Wombat',
                         type_='Preprint Eligible', random_bit=True, format_='word')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.page_ready()
+    manuscript_page.page_ready_post_create()
     # APERTA-11897
     # manuscript_page.validate_ihat_conversions_success(fail_on_missing=True)
     # Outputting the title allows us to validate update following conversion
@@ -94,7 +94,7 @@ class ApertaCNSTest(CommonTest):
     self.create_article(title='cns_review_submission_overlay', journal='PLOS Wombat',
                         type_='Preprint Eligible with Authors', random_bit=True)
     ms_page = ManuscriptViewerPage(self.getDriver())
-    ms_page.page_ready()
+    ms_page.page_ready_post_create()
     # get doi
     short_doi = ms_page.get_paper_short_doi_from_url()
     logging.info("Assigned paper short doi: {0}".format(short_doi))

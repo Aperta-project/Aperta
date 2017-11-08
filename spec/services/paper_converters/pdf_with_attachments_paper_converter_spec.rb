@@ -136,6 +136,8 @@ describe PaperConverters::PdfWithAttachmentsPaperConverter do
       allow(converter).to receive(:create_attachments_pdf).and_return(sample_combine_pdf)
     end
 
-    it { is_expected.to be_present }
+    it "is serialized to String" do
+      expect(subject).to be_an_instance_of String
+    end
   end
 end

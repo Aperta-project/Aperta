@@ -42,8 +42,5 @@
 @media screen and (max-height: 680px) {
   .split-pane.preprint-pane button {
     bottom: 10px;
-    position: fixed;
-    right: inherit;
-    left: calc(50% + 350px);
   }
 }

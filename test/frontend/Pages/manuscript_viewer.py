@@ -788,7 +788,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :param review_overlay_validation: boolean, validates Preview Submission Overlay if True; default is False
     :return: void function
     """
-    self._wait_for_element(self._get(self._submit_button), multiplier=7)
+    self._wait_for_element(self._get(self._submit_button), multiplier=2)
     self._get(self._submit_button).click()
     self._review_before_submission = self.is_review_before_submission()
     if self._review_before_submission:
@@ -798,7 +798,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         submission_review_overlay.validate_styles_and_components()
         submission_review_overlay.select_submit_or_make_changes("Submit")
       else:
-        self._wait_for_element(self._get(self._review_overlay_submit_button), multiplier=7)
+        self._wait_for_element(self._get(self._review_overlay_submit_button), multiplier=2)
         self._get(self._review_overlay_submit_button).click()
 
   def is_preprint_on(self) -> bool:

@@ -94,7 +94,7 @@ class ApertaCNSTest(CommonTest):
     self.create_article(title='cns_review_submission_overlay', journal='PLOS Wombat',
                         type_='Preprint Eligible with Authors', random_bit=True)
     ms_page = ManuscriptViewerPage(self.getDriver())
-    ms_page.page_ready_post_create()
+    ms_page.page_ready()
     # get doi
     short_doi = ms_page.get_paper_short_doi_from_url()
     logging.info("Assigned paper short doi: {0}".format(short_doi))

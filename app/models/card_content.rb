@@ -250,7 +250,7 @@ class CardContent < ActiveRecord::Base
   # an entire traversable tree in one database query.
   # Returns an array of CardContent objects.
   def preload_descendants
-    all = [self] + descendants.includes(:content_attributes, :card_content_validations).to_a
+    all = [self] + descendants.includes(:entity_attributes, :card_content_validations).to_a
     children = all.group_by(&:parent_id)
     all.each do |d|
       d.quick_children = children.fetch(d.id, [])

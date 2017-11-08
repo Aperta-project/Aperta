@@ -17,8 +17,9 @@ class XmlElementDataExtractor
   end
 
   def child_content_elements
+    # Select any elements which begin with a capital letter because currently only cardContents have that casing
     el.xpath('*')
-      .select { |child| child.name =~ /\A[A-Z]/ || child.name == "content" }
+      .select { |child| child.name =~ /\A[A-Z]/ }
       .map { |child| self.class.new(child) }
   end
 

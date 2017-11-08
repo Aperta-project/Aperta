@@ -27,9 +27,4 @@ Subscriptions.configure do
   add 'discussion_participant:destroyed', \
       Notification::Unbadger
 
-  add 'manuscript_attachment:created', \
-      ManuscriptAttachment::ProcessManuscript
-
-  add 'manuscript_attachment:updated', \
-      ManuscriptAttachment::ProcessManuscript
 end

@@ -11,9 +11,9 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import super_admin_login, no_cards_mmt, gen_cmplt_apexdata, imgs_init_dec_mmt, \
-  resrch_w_init_dec, research_mmt, front_matter_mmt, only_rev_cands_mmt, only_init_dec_mmt, pp_optin_mmt, \
-  bio_essay, bio_resart, bio_genres, bio_mystery, bio_commpage, bio_formcomm, bio_nwc, gen_resart, \
-  gen_persp
+    resrch_w_init_dec, research_mmt, front_matter_mmt, only_rev_cands_mmt, only_init_dec_mmt, pp_optin_mmt, \
+    bio_essay, bio_resart, bio_genres, bio_mystery, bio_commpage, bio_formcomm, bio_nwc, gen_resart, \
+    gen_persp, pp_card_mmt
 
 from frontend.common_test import CommonTest
 from .Pages.admin_workflows import AdminWorkflowsPage
@@ -210,7 +210,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
     :return: void function
     """
     qa_mmts = [only_init_dec_mmt, only_rev_cands_mmt, gen_cmplt_apexdata, front_matter_mmt,
-               no_cards_mmt, imgs_init_dec_mmt, resrch_w_init_dec, research_mmt, pp_optin_mmt]
+               no_cards_mmt, imgs_init_dec_mmt, resrch_w_init_dec, research_mmt, pp_optin_mmt,pp_card_mmt]
     logging.info('test_populate_base_mmts for QA')
     logging.info('Logging in as user: {0}, {1}'.format(super_admin_login['name'],
                                                        super_admin_login['email']))
@@ -326,6 +326,8 @@ class ApertaSeedJournalMMTTest(CommonTest):
         # It is necessary to reinvoke the driver to avoid a Stale Element Reference Exception
         #   as each new mmt add updates the DOM
         adm_wf_page = AdminWorkflowsPage(self.getDriver())
+
+
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

@@ -167,7 +167,7 @@ class SendToApexTest(CommonTest):
     manuscript_page.complete_task('Competing Interest')
     manuscript_page.complete_task('Cover Letter')
     manuscript_page.complete_task('Data Availability')
-    manuscript_page.complete_task('Early Article Posting')
+    manuscript_page.complete_task('Early Version')
     manuscript_page.complete_task('Ethics Statement')
     manuscript_page.complete_task('Figures')
     manuscript_page.complete_task('Financial Disclosure')

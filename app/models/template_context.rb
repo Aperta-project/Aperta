@@ -4,15 +4,15 @@ class TemplateContext < Liquid::Drop
   # A scenario presents the world of data that would be relevant to a letter template.
   # Not all TemplateContexts are scenarios. Some represent individual models from which scenarios are composed.
   def self.scenarios
-    [
-      PaperScenario,
-      ReviewerReportScenario,
-      InvitationScenario,
-      TahiStandardTasks::PaperReviewerScenario,
-      TahiStandardTasks::PreprintDecisionScenario,
-      TahiStandardTasks::RegisterDecisionScenario,
-      TechCheckScenario
-    ]
+    {
+      'Manuscript' => PaperScenario,
+      'Reviewer Report' => ReviewerReportScenario,
+      'Invitation' => InvitationScenario,
+      'Paper Reviewer' => PaperReviewerScenario,
+      'Preprint Decision' => PreprintDecisionScenario,
+      'Decision' => RegisterDecisionScenario,
+      'Tech Check' => TechCheckScenario
+    }
   end
 
   # Defines a method that returns a type of TemplateContext.  Makes it easier to compose new contexts.

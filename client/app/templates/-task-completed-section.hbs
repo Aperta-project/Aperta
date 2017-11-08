@@ -6,7 +6,7 @@
         Make changes to this task
       </button>
     {{else}}
-      <button class="task-completed task-not-completed button-secondary {{if validationErrors.completed "button--red" "button--green"}}"
+      <button class="task-completed task-not-completed button-secondary {{if task.notReady "button--red" "button--green"}}"
               name="task_completed">
         I am done with this task
       </button>

@@ -13,6 +13,7 @@ export default NestedQuestionOwner.extend(Answerable, {
   createdAt: DS.attr('date'),
   submitted: DS.attr('boolean'),
   dueAt: DS.attr('date'),
+  dueAtId: DS.attr('string'),
   originallyDueAt: DS.attr('date'),
   needsSubmission: Ember.computed('status', 'submitted', function() {
     var status = this.get('status');

@@ -40,11 +40,6 @@ test(`it displays the value from answer.value`, function(assert) {
   this.render(template);
   assert.equal(this.$('.ember-text-area').val(), 'Bar', 'Text is present in textarea');
 });
-test(`it displays workingValue when answer.value is not present`, function(assert) {
-  this.set('workingValue', 'Baz');
-  this.render(template);
-  assert.equal(this.$('.ember-text-area').val(), 'Baz', 'Text is present in textarea');
-});
 test('it displays error messages if present', function(assert){
   let errorsArr = ['Oh Noes', 'You fool!'];
   this.set('answer', Ember.Object.create({readyIssuesArray: errorsArr, shouldShowErrors: true}));

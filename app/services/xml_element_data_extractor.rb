@@ -8,8 +8,20 @@ class XmlElementDataExtractor
     @el = el
   end
 
+  def element_name
+    @el.name
+  end
+
   def child_elements(name = '/')
     el.xpath(name).map { |child| self.class.new(child) }
+  end
+
+  def child_content_elements
+    # Select any elements which begin with a capital letter because currently only cardContents have that casing
+    # child.name == "content" may be vestigal or intended to handle legacy cases. Chris westra can confirm
+    el.xpath('*')
+      .select { |child| child.name =~ /\A[A-Z]/ || child.name == "content" }
+      .map { |child| self.class.new(child) }
   end
 
   def attr_value(name)

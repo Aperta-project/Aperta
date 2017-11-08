@@ -5,8 +5,6 @@ import { PropTypes } from 'ember-prop-types';
 export default Ember.Component.extend(ValidationErrorsMixin, {
   classNameBindings: ['card-content', 'card-content-email-editor'],
   //passed-in stuff
-  category: null,
-  letterValue: null,
   updateTemplate: null,
   restless: Ember.inject.service('restless'),
   flash: Ember.inject.service('flash'),
@@ -22,7 +20,6 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     const config = this._templateConfig('load_email_template');
 
     var templateName = this.get('content.letterTemplate');
-    Ember.Logger.info('email template name:', templateName);
 
     this.get('restless').get(config.url, {letter_template_name: templateName}).then((data)=> {
       this.set('emailToField', data.to);
@@ -49,11 +46,12 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       this.set('showEmailPreview', true);
     });
   },
+
   inputClassNames: ['form-control'],
 
   actions: {
     updateAnswer(contents) {
-      this.set('letterValue', contents);
+      this.set('emailToBody', contents);
     },
 
     valueChanged(e) {

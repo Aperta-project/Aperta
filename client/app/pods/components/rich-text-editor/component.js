@@ -1,5 +1,8 @@
+/*global tinymce */
+
 import ENV from 'tahi/config/environment';
 import Ember from 'ember';
+import TinyMceEditor from 'ember-cli-tinymce/components/tinymce-editor';
 
 const inlineElements   = 'strong/b,em/i,u,sub,sup';
 
@@ -22,6 +25,34 @@ const rejectNewlines = function(editor) {
     if (e.keyCode === 13) return false;
   });
 };
+
+// Monkey patch TinyMceEditor to allow us to pass in an 'afterEditorInit' action. Otherwise, we aren't
+// changing anything about this method.
+TinyMceEditor.reopen({
+  initTiny: Ember.on('didInsertElement', Ember.observer('options', function() {
+    let {options, editor, afterEditorInit} = this.getProperties('options', 'editor', 'afterEditorInit');
+
+    let initFunction = (editor) => {
+      this.set('editor', editor);
+      this.get('editor').setContent(this.get('value') || ''); //Set content with default text
+      if (typeof afterEditorInit === 'function') {
+        afterEditorInit(editor);
+      }
+    };
+
+    let customOptions = {
+      selector: `#${this.get('elementId')}`,
+      init_instance_callback: Ember.run.bind(this, initFunction)
+    };
+
+    if (editor){
+      editor.setContent('');
+      editor.destroy();
+    }
+
+    tinymce.init(Ember.assign({}, options, customOptions));
+  })),
+});
 
 export default Ember.Component.extend({
   classNames: ['rich-text-editor'],
@@ -72,9 +103,6 @@ export default Ember.Component.extend({
 
   editorIsEnabled: Ember.observer('disabled', function() {
     this.set('editorValue', this.get('value'));
-    if (!this.get('disabled')) {
-      Ember.run.scheduleOnce('afterRender', this, this.postRender);
-    }
   }).on('init'),
 
   // This prevents upstream changes from clobbering something that
@@ -95,12 +123,9 @@ export default Ember.Component.extend({
     }
 
     deleteEmptyParagraph(fragment.node);
-
-    if(Ember.isBlank(this.get('editorValue'))) this.set('editorValue', fragment.node.innerHTML);
   },
 
-  postRender() {
-    let editor = this.childViews.find(child => child.editor).editor;
+  postRender(editor) {
     let iframeSelector = 'iframe#' + editor.id + '_ifr';
     document.querySelector(iframeSelector).removeAttribute('title');
     let callback = this.get('focusOut');

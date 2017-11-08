@@ -86,7 +86,7 @@ class MetadataVersioningTest(CommonTest):
     manuscript_page.complete_task('Figures')
     manuscript_page.complete_task('Supporting Info')
     manuscript_page.complete_task('Financial Disclosure')
-    manuscript_page.complete_task('Early Article Posting')
+    manuscript_page.complete_task('Early Version')
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.complete_task('Title And Abstract')
     manuscript_page._wait_for_element(manuscript_page._get(

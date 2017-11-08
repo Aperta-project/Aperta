@@ -1,8 +1,8 @@
 require 'rails_helper'
 # rubocop:disable Metrics/BlockLength
-describe TahiStandardTasks::PreprintDecisionScenario do
+describe PreprintDecisionScenario do
   subject(:context) do
-    TahiStandardTasks::PreprintDecisionScenario.new(paper)
+    PreprintDecisionScenario.new(paper)
   end
 
   let(:task) do

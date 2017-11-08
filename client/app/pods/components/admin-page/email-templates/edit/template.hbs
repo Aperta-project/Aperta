@@ -124,7 +124,8 @@
             <div class="col-xs-3 available-merge-fields-col">
               <div class="available-merge-fields-header">
                 <strong>Available Merge Fields for</strong>
-                {{util/wrap-at-delimiter input=template.scenario}}
+                <br>
+                {{template.scenario}}
               </div>
               <div class="available-merge-fields">
                 {{#each template.mergeFields as |mergeField|}}

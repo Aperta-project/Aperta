@@ -62,7 +62,7 @@ class WorkflowPage(AuthenticatedPage):
     self._competing_ints_card = (By.XPATH, "//a[.//span[contains(text(),'Competing Interests')]]")
     self._cover_letter_card = (By.XPATH, "//a[./span[contains(text(),'Cover Letter')]]")
     self._data_avail_card = (By.XPATH, "//a[.//span[contains(text(),'Data Availability')]]")
-    self._early_article_posting_card = (By.CSS_SELECTOR, 'div.early-posting-task > a')
+    self._early_version_card = (By.XPATH, "//a[.//span[contains(text(),'Early Version')]]")
     self._editor_discussion_card = (By.CSS_SELECTOR, 'div.editors-discussion-task > a')
     self._ethics_statement_card = (By.CSS_SELECTOR, 'div.ethics-task > a')
     self._figures_card = (By.CSS_SELECTOR, 'div.figure-task > a')
@@ -73,6 +73,7 @@ class WorkflowPage(AuthenticatedPage):
     self._invite_ae_card = (By.CSS_SELECTOR, 'div.paper-editor-task > a')
     self._invite_reviewers_card = (By.CSS_SELECTOR, 'div.paper-reviewer-task > a')
     self._new_taxon_card = (By.CSS_SELECTOR, 'div.taxon-task > a')
+    self._preprint_posting_card= (By.XPATH, "//a[.//span[contains(text(),'Preprint Posting')]]")
     self._production_metadata_card = (By.CSS_SELECTOR, 'div.production-metadata-task > a')
     self._register_decision_card = (By.CSS_SELECTOR, 'div.register-decision-task > a')
     self._related_articles_card = (By.CSS_SELECTOR, 'div.related-articles-task > a')
@@ -94,6 +95,9 @@ class WorkflowPage(AuthenticatedPage):
     self._cards = (By.CSS_SELECTOR, 'div.card')
     self._card_types = (By.CSS_SELECTOR, 'div.row label')
     self._div_buttons = (By.CSS_SELECTOR, 'div.overlay-action-buttons')
+    self._authors_task_cards= (By.CSS_SELECTOR, 'div.author-task-cards')
+    self._staff_task_cards= (By.CSS_SELECTOR, 'div.staff-task-cards')
+
 
   # POM Actions
   def validate_initial_page_elements_styles(self):
@@ -110,6 +114,10 @@ class WorkflowPage(AuthenticatedPage):
   def click_initial_decision_card(self):
     """Open the Initial Decision Card from the workflow page"""
     self._get(self._initial_decision_card).click()
+
+  def click_preprint_posting_card(self):
+    """Open the Preprint Posting Card from the workflow page"""
+    self._get(self._preprint_posting_card).click()
 
   def click_supporting_information_card(self):
     """Open the Supporting Information Card from the workflow page"""
@@ -263,7 +271,7 @@ class WorkflowPage(AuthenticatedPage):
     for card in staff_cards:
       staff_card_namelist.append(card.text)
     expected_author_cards = ['Additional Information', 'Authors', 'Billing', 'Competing Interests', 'Cover Letter',
-                             'Data Availability', 'Early Article Posting', 'Ethics Statement', 'Figures',
+                             'Data Availability', 'Early Version', 'Ethics Statement', 'Figures',
                              'Financial Disclosure', 'New Taxon', 'Preprint Posting', 'Reporting Guidelines',
                              'Reviewer Candidates', 'Supporting Info', 'Upload Manuscript']
     expected_staff_cards = ['Ad-hoc for Authors', 'Ad-hoc for Editors', 'Ad-hoc for Reviewers', 'Ad-hoc for Staff Only',
@@ -353,6 +361,7 @@ class WorkflowPage(AuthenticatedPage):
     :return: None
     """
     self.click_add_new_card()
+    self.overlay_ready()
     card_types = self._gets(self._card_types)
     for card in card_types:
       if card.text == card_title:
@@ -403,3 +412,21 @@ class WorkflowPage(AuthenticatedPage):
     :return: Void Function
     """
     self._wait_for_element(self._get(self._add_new_card_button))
+
+  def overlay_ready(self):
+    """
+    Validate the overlay is loaded - use to validate overlay is ready for test
+    :return: Void Function
+    """
+    authortaskcards = self._get(self._authors_task_cards)
+    self._wait_for_element(authortaskcards)
+    stafftaskcards = self._get(self._staff_task_cards)
+    self._wait_for_element(stafftaskcards)
+    addbutton = self._get(self._add_button_overlay)
+    self._wait_for_element(addbutton)
+    cancelbutton = self._get(self._cancel_button_overlay)
+    self._wait_for_element(cancelbutton)
+    overlay = self._get(self._add_card_overlay_div)
+    self._wait_for_element(overlay)
+
+

@@ -314,6 +314,10 @@ FactoryGirl.define do
           s3_dir: 'sample/dir',
           status: 'done'
         )
+        # although PDF manuscripts don't store content in the body, it must
+        # be updated anyway since the versioned text object is created
+        # as a side effect of that call
+        paper.update!(body: '')
 
         paper.save!
 

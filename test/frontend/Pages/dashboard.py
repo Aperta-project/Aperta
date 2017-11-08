@@ -1037,9 +1037,10 @@ class DashboardPage(AuthenticatedPage):
     """Method for debugging purposes only"""
     return self._get(self._cns_base_overlay_div)
 
-  def page_ready(self):
+  def page_ready_dashboard_test(self):
     """
-    A fuction to validate that the dashboard page is loaded before interacting with it
+    A function to validate that the dashboard page is loaded before interacting with it
+    for dashboard test
     """
     self.set_timeout(5)
     try:
@@ -1051,3 +1052,9 @@ class DashboardPage(AuthenticatedPage):
         #self._wait_for_element(self._get(self._dashboard_info_text))
         self._wait_on_lambda(lambda: self._get(self._dashboard_info_text))
     self.restore_timeout()
+
+  def page_ready(self):
+    """
+    A function to validate that the dashboard page is loaded before interacting with it
+    """
+    self._wait_on_lambda(lambda: len(self._gets(self._dashboard_invite_title)) >= 1)

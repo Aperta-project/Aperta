@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171108191325) do
+ActiveRecord::Schema.define(version: 20171108191539) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -392,9 +392,9 @@ ActiveRecord::Schema.define(version: 20171108191325) do
   add_index "email_logs", ["task_id"], name: "index_email_logs_on_task_id", using: :btree
 
   create_table "entity_attributes", force: :cascade do |t|
-    t.integer  "entity_id"
-    t.string   "name"
-    t.string   "value_type"
+    t.integer  "entity_id",     null: false
+    t.string   "name",          null: false
+    t.string   "value_type",    null: false
     t.boolean  "boolean_value"
     t.integer  "integer_value"
     t.string   "string_value"

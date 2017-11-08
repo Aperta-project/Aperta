@@ -86,3 +86,14 @@
     <iframe srcdoc={{break-to-tag message.body}} width="100%" height="400px" frameborder="0"></iframe>
   </div>
 </div>
+<hr>
+<div class="row">
+  <div class="col-sm-12">
+    <h1>History</h1>
+  </div>
+  {{#each message.activities as |activity|}}
+  <div class="col-sm-12">
+    {{activity}}
+  </div>
+  {{/each}}
+</div>

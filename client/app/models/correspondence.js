@@ -17,6 +17,7 @@ export default DS.Model.extend({
   sentAt: DS.attr('date'),
   manuscriptVersion: DS.attr('string'),
   manuscriptStatus: DS.attr('string'),
+  activities: DS.attr(), // array?
 
   manuscriptVersionStatus: Ember.computed('manuscriptVersion','manuscriptStatus', function() {
     if (!this.get('manuscriptVersion') || !this.get('manuscriptStatus')) {
@@ -29,5 +30,7 @@ export default DS.Model.extend({
 
   hasAnyAttachment: Ember.computed('attachments', function() {
     return (this.get('attachments').length !== 0);
-  })
+  }),
+
+  hasActivities: Ember.computed.notEmpty('activities'),
 });

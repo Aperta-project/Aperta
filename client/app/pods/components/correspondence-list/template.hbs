@@ -12,6 +12,11 @@
       </thead>
       <tbody>
         {{#each model as |message|}}
+          {{#if message.hasActivities}}
+            <div class="col-sm-12 bottom-align-text">
+              <p><em>{{message.activities.lastObject}}</em></p>
+            </div>
+          {{/if}}
           <tr>
             <td>{{format-date message.sentAt}}</td>
             <td>

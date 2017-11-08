@@ -24,23 +24,21 @@ class TemplateContext < Liquid::Drop
   #             e.g. [:object, :paper] means the source object is at self.object.paper
   # is_array: if true then the method returns an array instead of a single context
   #
-  def self.context(context_name, options = {})
-    subcontexts[context_name] = options
+  def self.context(context_name, props = {})
+    MergeField.register_subcontext(self, context_name, props)
     return if respond_to?(context_name)
 
     default_source_chain = [:object, context_name]
-    source_chain = options[:source] ? Array(options[:source]) : default_source_chain
-
-    context_type = options[:type] || context_name
-    context_class = "#{context_type}_context".camelize.constantize
+    source_chain = props[:source] ? Array(props[:source]) : default_source_chain
+    context_class = class_for(props[:type] || context_name)
 
     define_method context_name do
-      context_instance_eval(context_name, source_chain, context_class, options[:is_array])
+      context_instance_eval(context_name, source_chain, context_class, props[:is_array])
     end
   end
 
-  def self.contexts(context_name, options = {})
-    context(context_name, options.merge(is_array: true))
+  def self.contexts(context_name, props = {})
+    context(context_name, props.merge(is_array: true))
   end
 
   def self.whitelist(*args)
@@ -49,12 +47,12 @@ class TemplateContext < Liquid::Drop
     end
   end
 
-  def self.subcontexts
-    @subcontexts ||= {}
-  end
-
   def self.merge_fields
     @merge_fields ||= MergeField.list_for(self)
+  end
+
+  def self.class_for(context_type)
+    "#{context_type}_context".camelize.constantize
   end
 
   def initialize(object)

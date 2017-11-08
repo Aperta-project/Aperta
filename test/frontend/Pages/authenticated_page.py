@@ -468,7 +468,7 @@ class AuthenticatedPage(StyledPage):
           logging.warning('No conversion result message displayed at all')
     else:
       success_msg = self._get(self._flash_success_msg)
-      match_ = re.search('Finished loading (Word|PDF) file.', success_msg.text)
+      match_ = re.search('Finished loading Word file.', success_msg.text)
       if match_:
         pass
       else:

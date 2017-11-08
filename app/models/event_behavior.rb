@@ -19,7 +19,7 @@ class EventBehavior < ActiveRecord::Base
 
   has_attributes boolean: %w[boolean_param],
                  json: %w[json_param],
-                 string: %w[string_param letter_template]
+                 string: %w[string_param]
 
   def call(user:, paper:, task:)
     event_params = { user: user, paper: paper, task: task }

@@ -6,10 +6,12 @@
 module Attributable
   extend ActiveSupport::Concern
 
+  included do
+    has_many :entity_attributes, dependent: :destroy, inverse_of: :entity, as: :entity
+  end
+
   module ClassMethods
-    # rubocop:disable Metrics/MethodLength
     def has_attributes(types)
-      has_many :entity_attributes, dependent: :destroy, inverse_of: :entity, as: :entity
       types.each do |type, names|
         names.each do |name|
           getter = "#{name}_attribute".to_sym

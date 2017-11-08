@@ -61,7 +61,7 @@ python -m frontend.test_co_author_confirmation
 python -m frontend.test_cover_letter
 python -m frontend.test_dashboard
 python -m frontend.test_discussion_forum
-python -m frontend.test_early_article_posting
+python -m frontend.test_early_version
 python -m frontend.test_figure_task
 python -m frontend.test_final_tech_check
 python -m frontend.test_initial_decision_card

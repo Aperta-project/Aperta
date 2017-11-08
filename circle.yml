@@ -20,7 +20,7 @@ jobs:
       PGUSER: "ubuntu"
     steps:
       - run: apt-get install libcups2=1.7.5-11+deb8u1 -y --force-yes
-      - run: apt install graphicsmagick graphicsmagick-libmagick-dev-compat
+      - run: apt install graphicsmagick graphicsmagick-libmagick-dev-compat -y --force-yes
       - type: checkout
       - run: cp Gemfile{,.bak} && sed -i'' 's/2.2.6/2.2.7/g' Gemfile
 

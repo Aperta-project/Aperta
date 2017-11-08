@@ -26,7 +26,7 @@ class TemplateContext < Liquid::Drop
   #             e.g. [:object, :paper] means the source object is at self.object.paper
   # is_array: if true then the method returns an array instead of a single context
   #
-  def self.context(context_name, props = {})
+  def self.subcontext(context_name, props = {})
     MergeField.register_subcontext(self, context_name, props)
     return if respond_to?(context_name)
 
@@ -39,8 +39,8 @@ class TemplateContext < Liquid::Drop
     end
   end
 
-  def self.contexts(context_name, props = {})
-    context(context_name, props.merge(is_array: true))
+  def self.subcontexts(context_name, props = {})
+    subcontext(context_name, props.merge(is_array: true))
   end
 
   def self.whitelist(*args)

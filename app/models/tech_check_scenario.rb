@@ -1,9 +1,9 @@
 # Provides a template context for the Sendback Reasons Letter Template
 class TechCheckScenario < TemplateContext
-  context  :journal,                        source: [:object, :paper, :journal]
-  context  :manuscript,       type: :paper, source: [:object, :paper]
-  context  :author,           type: :user,  source: [:object, :paper, :creator]
-  contexts :sendback_reasons, type: :answer
+  subcontext  :journal,                        source: [:object, :paper, :journal]
+  subcontext  :manuscript,       type: :paper, source: [:object, :paper]
+  subcontext  :author,           type: :user,  source: [:object, :paper, :creator]
+  subcontexts :sendback_reasons, type: :answer
 
   def intro
     task.answer_for('tech-check-email--email-intro').value

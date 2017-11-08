@@ -8,14 +8,14 @@ describe MergeField do
   end
 
   class SecondLevelSampleContext < TemplateContext
-    context :bar, type: :third_level_sample
+    subcontext :bar, type: :third_level_sample
     def blah
       'blah'
     end
   end
 
   class TopLevelSampleContext < TemplateContext
-    contexts :foo, type: :second_level_sample
+    subcontexts :foo, type: :second_level_sample
     def simple
       'so simple'
     end

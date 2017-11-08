@@ -1,7 +1,7 @@
 class RegisterDecisionScenario < TemplateContext
-  context  :journal
-  context  :manuscript, type: :paper, source: :object
-  contexts :reviews,    type: :reviewer_report
+  subcontext  :journal
+  subcontext  :manuscript, type: :paper, source: :object
+  subcontexts :reviews,    type: :reviewer_report
 
   def reviews
     @reviews ||= [].tap do |reviews|

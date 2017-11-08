@@ -8,7 +8,7 @@ describe TemplateContext do
 
     context 'without options' do
       before do
-        context_class.send(:context, :paper)
+        context_class.send(:subcontext, :paper)
       end
 
       it 'uses the argument to determine the method name and the context class to use' do
@@ -28,7 +28,7 @@ describe TemplateContext do
     context 'with a :type option' do
       it 'uses the :type option to determine the context class' do
         allow(fake_model).to receive(:foo) { Paper.new }
-        context_class.send(:context, :foo, type: :paper)
+        context_class.send(:subcontext, :foo, type: :paper)
 
         expect(context_instance.foo.class).to eq PaperContext
       end
@@ -37,7 +37,7 @@ describe TemplateContext do
     context 'with a :source option' do
       it 'evaluates the :source option as a method call chain to get the object to pass to the context constructor' do
         allow(fake_model).to receive(:foo) { Paper.new(title: 'foobars in space') }
-        context_class.send(:context, :paper, source: [:object, :foo])
+        context_class.send(:subcontext, :paper, source: [:object, :foo])
 
         expect(context_instance.paper.title).to eq 'foobars in space'
       end
@@ -46,7 +46,7 @@ describe TemplateContext do
     context 'with a :is_array option' do
       it 'returns a collection of contexts' do
         allow(fake_model).to receive(:papers) { [Paper.new(title: 'first foobar')] }
-        context_class.send(:context, :papers, type: :paper, is_array: true)
+        context_class.send(:subcontext, :papers, type: :paper, is_array: true)
 
         expect(context_instance.papers.map(&:class)).to eq [PaperContext]
         expect(context_instance.papers.first.title).to eq 'first foobar'
@@ -56,8 +56,8 @@ describe TemplateContext do
 
   describe '.contexts' do
     it 'delegates to .context, adding the option {is_array: true}' do
-      expect(TemplateContext).to receive(:context).with(:bars, type: :author, is_array: true)
-      TemplateContext.contexts(:bars, type: :author)
+      expect(TemplateContext).to receive(:subcontext).with(:bars, type: :author, is_array: true)
+      TemplateContext.subcontexts(:bars, type: :author)
     end
   end
 end

@@ -1,4 +1,4 @@
 class PaperScenario < TemplateContext
-  context :journal
-  context :manuscript, type: :paper, source: :object
+  subcontext :journal
+  subcontext :manuscript, type: :paper, source: :object
 end

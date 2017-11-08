@@ -1,0 +1,10 @@
+{{#if hasLabel}}
+  <label class="card-form-label">
+    {{{content.label}}}
+    {{partial "required-field"}}
+    {{yield}}
+  </label>
+{{else}}
+  {{yield}}
+{{/if}}
+

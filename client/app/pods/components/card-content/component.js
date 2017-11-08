@@ -47,16 +47,6 @@ export default Ember.Component.extend({
     return findNearestProperty(this, 'scenario');
   }),
 
-  hasLabel: Ember.computed.notEmpty('content.label'),
-  hasText:  Ember.computed.notEmpty('content.text'),
-
-  labeledTypes: ['check-box', 'display-children', 'display-with-value', 'dropdown', 'export-paper', 'file-uploader', 'radio', 'tech-check', 'tech-check-email'],
-  canBeLabeled: Ember.computed('content.contentType', function () {
-    let contentType = this.get('content.contentType');
-    if (this.labeledTypes.includes(contentType)) {return false;}
-    return this.get('hasLabel');
-  }),
-
   name: Ember.computed('content.ident', function() {
     let ident = this.get('content.ident');
     return Ember.isEmpty(ident) ? Ember.guidFor(this) : ident;

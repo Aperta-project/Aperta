@@ -8,14 +8,14 @@ namespace :data do
       # APERTA-11397. TemplateContext.scenarios may change, that's why this list
       # is duplicated here.
       scenarios = {
-        'Manuscript' => PaperScenario,
-        'Reviewer Report' => ReviewerReportScenario,
-        'Invitation' => InvitationScenario,
-        'Paper Reviewer' => PaperReviewerScenario,
-        'Preprint Decision' => PreprintDecisionScenario,
-        'Decision' => RegisterDecisionScenario,
-        'Tech Check' => TechCheckScenario
-      }.invert
+        'PaperScenario'            => 'Manuscript',
+        'ReviewerReportScenario'   => 'Reviewer Report',
+        'InvitationScenario'       => 'Invitation',
+        'PaperReviewerScenario'    => 'Paper Reviewer',
+        'PreprintDecisionScenario' => 'Preprint Decision',
+        'RegisterDecisionScenario' => 'Decision',
+        'TechCheckScenario'        => 'Tech Check'
+      }
 
       # Remove module scopes
       # rubocop:disable Rails/SkipsModelValidations
@@ -36,7 +36,7 @@ namespace :data do
           tpl.update(scenario: 'Tech Check')
           next
         end
-        scenario_class = scenario_class.constantize
+
         tpl.update(scenario: scenarios[scenario_class]) if scenarios.key? scenario_class
       end
     end

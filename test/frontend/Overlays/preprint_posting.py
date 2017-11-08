@@ -48,7 +48,7 @@ class PreprintPostingOverlay(AuthenticatedPage):
                                                                                     expected_overlay_title)
     self.validate_overlay_card_title_style(overlay_title)
     expected_background_image = \
-            '/assets/preprint-sample-44c043cb98f585b85799ac431f49d1578a397f835494763723783bbf8b9e9ab7.png'
+            '/assets/preprint-sample-488992c533d61c7c2296749809a9ba170516a74b81025d39a1ea45d8d896a726.png'
     bg_image = self._get(self._preprint_image).value_of_css_property('background-image')
     assert expected_background_image in bg_image, bg_image
 
@@ -58,16 +58,6 @@ class PreprintPostingOverlay(AuthenticatedPage):
     assert benefits[2].text.strip() == 'Benefit: Cite for funding', benefits[2].text
     for benefit in benefits:
       self.validate_application_body_text(benefit)
-
-    paragraph_text = self._get(self._preprint_content_text)
-    expected_paragraph_text = 'Establish priority: take credit for your research and discoveries, by posting a copy ' \
-                              'of your uncorrected proof online. If you do NOT consent to having an early version of ' \
-                              'your paper posted online, indicate your choice below.'
-    bold_p_text = self._get(self._preprint_content_text_em)
-    expected_paragraph_text_em = 'NOT'
-    assert expected_paragraph_text in paragraph_text.text, paragraph_text.text
-    assert expected_paragraph_text_em in bold_p_text.text, bold_p_text.text
-    self.validate_application_body_text(paragraph_text)
 
     radio_buttons = self._gets(self._preprint_input_radios)
     yes_radio = radio_buttons[0]

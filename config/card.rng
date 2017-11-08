@@ -173,15 +173,6 @@
   <define name="text-input-attributes">
     <interleave>
       <ref name="input-attributes"/>
-      <attribute name="value-type">
-        <choice>
-          <value>text</value>
-          <value>html</value>
-        </choice>
-      </attribute>
-      <optional>
-        <attribute name="editor-style"/>
-      </optional>
       <optional>
         <ref name="default-answer-text"/>
       </optional>
@@ -349,12 +340,28 @@
   </define>
   <define name="short-input">
     <element name="ShortInput">
-      <ref name="text-input-attributes"/>
+      <interleave>
+        <ref name="text-input-attributes"/>
+        <attribute name="value-type">
+          <value>text</value>
+        </attribute>
+      </interleave>
     </element>
   </define>
   <define name="paragraph-input">
     <element name="ParagraphInput">
-      <ref name="text-input-attributes"/>
+      <interleave>
+        <ref name="text-input-attributes"/>
+        <attribute name="value-type">
+          <choice>
+            <value>text</value>
+            <value>html</value>
+          </choice>
+        </attribute>
+        <optional>
+          <attribute name="editor-style"/>
+        </optional>
+      </interleave>
     </element>
   </define>
   <!-- Contents -->

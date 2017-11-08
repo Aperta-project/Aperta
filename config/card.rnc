@@ -65,9 +65,7 @@ input-attributes =
   & allow-annotations?
 
 text-input-attributes =
-    input-attributes
-  & attribute value-type { "text" | "html" }
-  & attribute editor-style { text }?
+  input-attributes
   & default-answer-text?
   & instructions-label-optional-text
   & string-validation*
@@ -83,7 +81,7 @@ radio-input = element Radio {
   & content*
 }
 
-check-box-input = element  CheckBox {
+check-box-input = element CheckBox {
   input-attributes
   & attribute value-type { "boolean" }
   & default-answer-boolean?
@@ -139,10 +137,13 @@ sendback-reason = element SendbackReason {
 
 short-input = element ShortInput {
   text-input-attributes
+  & attribute value-type { "text" }
 }
 
 paragraph-input = element ParagraphInput {
   text-input-attributes
+  & attribute value-type { "text" | "html" }
+  & attribute editor-style { text }?
 }
 
 # Contents

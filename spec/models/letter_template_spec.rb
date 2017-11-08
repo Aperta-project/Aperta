@@ -32,8 +32,8 @@ describe LetterTemplate do
   end
 
   describe 'new template validations' do
-    it 'requires a name and a valid scenario subclass on first create' do
-      letter_template = LetterTemplate.new(name: 'Test', scenario: 'ReviewerReportScenario')
+    it 'requires a name and a scenario on first create' do
+      letter_template = LetterTemplate.new(name: 'Test', scenario: 'Reviewer Report')
       letter_template.valid?
       expect(letter_template).to_not be_valid
 

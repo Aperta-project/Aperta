@@ -18,12 +18,17 @@ namespace :data do
       }.invert
 
       # Remove module scopes
+      # rubocop:disable Rails/SkipsModelValidations
       LetterTemplate
         .where(scenario: 'TahiStandardTasks::RegisterDecisionScenario')
         .update_all(scenario: 'RegisterDecisionScenario')
       LetterTemplate
         .where(scenario: 'TahiStandardTasks::PreprintDecisionScenario')
         .update_all(scenario: 'PreprintDecisionScenario')
+      LetterTemplate
+        .where(scenario: 'TahiStandardTasks::PaperReviewerScenario')
+        .update_all(scenario: 'PaperReviewerScenario')
+      # rubocop:enable Rails/SkipsModelValidations
 
       LetterTemplate.find_each do |tpl|
         scenario_class = tpl.scenario

@@ -1,22 +1,24 @@
 # Provides a base template context
 class TemplateContext < Liquid::Drop
-  # The list of scenarios we present to users to match up with letter templates.
+  # Some TemplateContexts we want to present to letter template admins to choose when creating new letter templates.
+  # We call these scenarios and map them by a friendly scenario name.
   # A scenario presents the world of data that would be relevant to a letter template.
   # Not all TemplateContexts are scenarios. Some represent individual models from which scenarios are composed.
   def self.scenarios
     {
-      'Manuscript' => PaperScenario,
-      'Reviewer Report' => ReviewerReportScenario,
-      'Invitation' => InvitationScenario,
-      'Paper Reviewer' => PaperReviewerScenario,
+      'Manuscript'        => PaperScenario,
+      'Reviewer Report'   => ReviewerReportScenario,
+      'Invitation'        => InvitationScenario,
+      'Paper Reviewer'    => PaperReviewerScenario,
       'Preprint Decision' => PreprintDecisionScenario,
-      'Decision' => RegisterDecisionScenario,
-      'Tech Check' => TechCheckScenario
+      'Decision'          => RegisterDecisionScenario,
+      'Tech Check'        => TechCheckScenario
     }
   end
 
-  # Defines a method that returns a type of TemplateContext.  Makes it easier to compose new contexts.
-  # It also registers the method with so that the MergeField listing spiders into this context.
+  # Unless already defined, this defines a method which returns a TemplateContext.
+  # Intended to support a scenario being defined as a composition of TemplateContexts.
+  # This method also registers the subcontext with the MergeField listing service.
   #
   # type:     the specific return type, which is a subclass of TemplateContext
   #             e.g. type: :user means the return type is UserContext

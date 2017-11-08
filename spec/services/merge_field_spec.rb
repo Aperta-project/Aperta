@@ -24,13 +24,13 @@ describe MergeField do
   describe '#merge_fields' do
     it 'expands subcontext merge fields' do
       expanded = [
-        { name: :simple },
         { name: :foo, is_array: true, children: [
-          { name: :blah },
           { name: :bar, children: [
             { name: :baz }
-          ] }
-        ] }
+          ] },
+          { name: :blah }
+        ] },
+        { name: :simple }
       ]
       merge_fields = MergeField.list_for(TopLevelSampleContext)
       expect(merge_fields).to eq(expanded)

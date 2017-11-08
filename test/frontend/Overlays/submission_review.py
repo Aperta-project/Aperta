@@ -202,7 +202,8 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     db_authors_for_assertion = []
     db_authors = PgSQL().query('SELECT a.first_name, a.middle_initial, a.last_name, a.affiliation '
                                'FROM authors a, author_list_items al '
-                               'WHERE al.paper_id=%s AND al.author_id = a.id;',(db_paper_id,))
+                               'WHERE al.paper_id=%s AND al.author_id = a.id '
+                               'ORDER BY al.position;',(db_paper_id,))
 
 
     for db_author in db_authors:
@@ -210,7 +211,7 @@ class SubmissionReviewOverlay(AuthenticatedPage):
       db_authors_for_assertion.append(
               ('' if db_author[0]==None else db_author[0].strip()+" ")+          # first name
               ('' if db_author[1]==None else db_author[1].strip()+" ")+          # middle name
-              ('' if db_author[2]==None else db_author[2].strip()) +", "+    # last name
+              ('' if db_author[2]==None else db_author[2].strip()) +", "+        # last name
               ('' if db_author[3]==None else db_author[3].strip()))              # affiliation
 
     # check value selected in the 'Preprint Posting" card : 1(Yes) or 2 (No)

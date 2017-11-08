@@ -816,17 +816,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def is_review_before_submission(self):
       """
-      A method that will determine for mmt if the pre-print posting overlay should be shown as part of the
-      create new manuscript sequence. Tests for Preprint feature flag enablement for system, preprint checkbox
-      selection for mmt, and finally presence of Preprint Posting card in the manuscript. If all three are found,
+      A method that will determine for the manuscript if the 'Review Your Submission' overlay should be shown
+      on submission. Tests for Preprint feature flag enablement for system, preprint checkbox selection for mmt,
+      and finally presence of Preprint Posting card in the manuscript. If all three are found,
       return True, else False
       """
-      current_env = os.getenv('WEBDRIVER_TARGET_URL', '')
-      logging.info(current_env)
-      if current_env in production_urls:
-        return False
-      preprint_feature_flag = PgSQL().query('SELECT active FROM feature_flags WHERE name = \'PREPRINT\';')[0][0]
-      if not preprint_feature_flag:
+      # check if the pre-print feature flag is ON
+      if not self.is_preprint_on():
         return False
 
       # check if manuscript template is preprint eligible

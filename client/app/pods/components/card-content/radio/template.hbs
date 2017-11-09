@@ -1,3 +1,9 @@
+{{#if hasText}}
+  <div class="card-form-text">
+    {{{content.text}}}
+  </div>
+{{/if}}
+
 <div class="card-radio">
   {{#if isText}}
     {{#each content.possibleValues as |opt index|}}

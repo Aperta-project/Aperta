@@ -1,15 +1,16 @@
-<div class="card-form-element">
-  <div class="inset-form-control {{if validationErrors.publicationDate "error"}}">
+<div class="inset-form-control {{if validationErrors.publicationDate "error"}}">
+  {{#card-content/label content=content}}
     {{date-picker
-        name=name
-        type="text"
-        value=answer.value
-        date=answer.value
-        dateChanged="valueChanged"
-        answer=answer
-        disabled=disabled
-        content=content}}
+      name=name
+      type="text"
+      value=answer.value
+      date=answer.value
+      dateChanged="valueChanged"
+      answer=answer
+      disabled=disabled
+      content=content
+    }}
+  {{/card-content/label}}
 
-   {{card-content/validation-errors content=content hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
-  </div>
+ {{card-content/validation-errors content=content hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
 </div>

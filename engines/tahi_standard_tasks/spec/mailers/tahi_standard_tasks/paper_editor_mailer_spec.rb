@@ -67,7 +67,7 @@ describe TahiStandardTasks::PaperEditorMailer do
 
       it "has a link to decline the invitation in the email body" do
         expect(email.body).to include
-        confirm_decline_invitation_url(invitation.token)
+        client_show_invitation_url(token: invitation.token)
       end
     end
   end

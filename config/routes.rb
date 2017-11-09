@@ -220,6 +220,7 @@ Tahi::Application.routes.draw do
     resources :task_templates do
       put :update_setting, on: :member
     end
+    resources :token_invitations, only: [:show, :update], param: :token
     resources :users, only: [:show, :index] do
       get :reset, on: :collection
       put :update_avatar, on: :collection
@@ -261,30 +262,6 @@ Tahi::Application.routes.draw do
     put 'scheduled_events/:id/update_state',
       to: 'scheduled_events#update_state'
   end
-
-  get '/invitations/:token',
-    to: 'token_invitations#show',
-    as: 'confirm_decline_invitation'
-
-  post '/invitations/:token/decline',
-    to: 'token_invitations#decline',
-    as: 'decline_token_invitation'
-
-  get '/invitations/:token/feedback',
-    to: 'token_invitations#feedback_form',
-    as: 'invitation_feedback_form'
-
-  get '/invitations/:token/inactive',
-    to: 'token_invitations#inactive',
-    as: 'invitation_inactive'
-
-  post '/invitations/:token/feedback',
-    to: 'token_invitations#feedback',
-    as: 'post_feedback'
-
-  get '/invitations/:token/thank_you',
-    to: 'token_invitations#thank_you',
-    as: 'invitation_thank_you'
 
   get '/invitations/:token/accept',
     to: 'token_invitations#accept',

@@ -19,6 +19,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     acquireFeedback(invitation) {
       invitation.setDeclined();
       invitation.set('pendingFeedback', true);
+      if (this.get('acquireFeedback')) { return this.get('acquireFeedback')(invitation); }
     },
 
     decline(invitation) {

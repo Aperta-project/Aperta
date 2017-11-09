@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Mixin.create({
   answerProxy: null,
+  hideError: true,
 
   init() {
     // Answerproxy avoids having the input 2-way bind with answer.value
@@ -20,11 +21,9 @@ export default Ember.Mixin.create({
       if (action) { action(newValue); }
     },
 
-    validate() {
-      // Triggered on input blur. AnswerProxy is needed becasue blur does not pass the field's value
+    displayErrors() {
+      // All persistence done on input. Show errors once user focuses out.
       this.set('hideError', false);
-      let action = this.get('valueChanged');
-      if (action) { action(this.get('answerProxy')); }
     }
   }
 });

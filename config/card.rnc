@@ -35,20 +35,12 @@ html = any-element* & text
 any-attribute = attribute * { text }
 any-element = element * { any-attribute*, html }
 
-instructions-optional-text =
+instructions-text =
   element instruction-text { html }?
   & element text { html }?
 
-instructions-required-text =
-  element instruction-text { html }?
-  & element text { html }
-
-instructions-label-required-text =
-  instructions-required-text
-  & element label { html }?
-
-instructions-label-optional-text =
-  instructions-optional-text
+instructions-label-text =
+  instructions-text
   & element label { html }?
 
 file-validation =
@@ -71,23 +63,36 @@ input-attributes =
   & allow-annotations?
 
 # Inputs
-radio-input = element content {
-  attribute content-type { "radio" }
-  & input-attributes
-  & attribute value-type { "text" | "boolean" }
-  & default-answer-text?
-  & instructions-label-optional-text
-  & possible-value*
-  & content*
-}
-
 check-box-input = element content {
   attribute content-type { "check-box" }
   & input-attributes
   & attribute value-type { "boolean" }
   & default-answer-boolean?
-  & instructions-label-optional-text
+  & instructions-label-text
   & content*
+}
+
+date-picker = element content {
+  attribute content-type { "date-picker" }
+  & input-attributes
+  & attribute value-type { "text" }
+  & instructions-label-text
+}
+
+dropdown-input = element content {
+  attribute content-type { "dropdown" }
+  & input-attributes
+  & attribute value-type { "text" | "boolean" }
+  & default-answer-text?
+  & instructions-label-text
+  & possible-value+
+  & content*
+}
+
+export-paper = element content {
+  attribute content-type { "export-paper" }
+  & attribute ident { text }?
+  & instructions-label-text
 }
 
 file-uploader = element content {
@@ -97,48 +102,18 @@ file-uploader = element content {
   & attribute error-message { text }?
   & attribute allow-file-captions    { "true" | "false" }?
   & attribute allow-multiple-uploads { "true" | "false" }?
-  & instructions-label-optional-text
+  & instructions-label-text
   & file-validation*
   & accepted-file-type*
 }
 
-date-picker = element content {
-  attribute content-type { "date-picker" }
-  & input-attributes
-  & attribute value-type { "text" }
-  & instructions-label-required-text
-}
-
-dropdown-input = element content {
-  attribute content-type { "dropdown" }
+radio-input = element content {
+  attribute content-type { "radio" }
   & input-attributes
   & attribute value-type { "text" | "boolean" }
   & default-answer-text?
-  & instructions-label-required-text
-  & possible-value+
-  & content*
-}
-
-tech-check = element content {
-  attribute content-type { "tech-check" }
-  & input-attributes
-  & attribute value-type { "boolean" }
-  & default-answer-boolean?
-  & instructions-required-text
-  & content*
-}
-
-tech-check-email = element content {
-  attribute ident { text }?,
-  attribute content-type { "tech-check-email" },
-  content*
-}
-
-sendback-reason = element content {
-  attribute content-type { "sendback-reason" }
-  & input-attributes
-  & attribute value-type { "boolean" }
-  & instructions-optional-text
+  & instructions-label-text
+  & possible-value*
   & content*
 }
 
@@ -148,7 +123,7 @@ text-input = element content {
   & attribute value-type { "text" | "html" }
   & attribute editor-style { text }?
   & default-answer-text?
-  & instructions-label-optional-text
+  & instructions-label-text
   & string-validation*
 }
 
@@ -177,12 +152,6 @@ display-with-value-content = element content {
   & content*
   }
 
-export-paper = element content {
-  attribute content-type { "export-paper" }
-  & attribute ident { text }?
-  & instructions-label-optional-text
-}
-
 # IF requires comma, not interleave '&', to distinguish required THEN content from optional ELSE content.
 if = element content {
   attribute content-type { "if" },
@@ -203,6 +172,29 @@ repeat = element content {
   attribute max { text }?,
   attribute item-name { text },
   content+
+}
+
+sendback-reason = element content {
+  attribute content-type { "sendback-reason" }
+  & input-attributes
+  & attribute value-type { "boolean" }
+  & instructions-text
+}
+
+tech-check = element content {
+  attribute content-type { "tech-check" }
+  & input-attributes
+  & attribute value-type { "boolean" }
+  & default-answer-boolean?
+  & element instruction-text { html }?
+  & element text { html }
+  & content*
+}
+
+tech-check-email = element content {
+  attribute ident { text }?,
+  attribute content-type { "tech-check-email" },
+  content*
 }
 
 content = (

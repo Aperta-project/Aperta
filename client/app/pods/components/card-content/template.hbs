@@ -1,15 +1,13 @@
 {{!--
-This card-content component will be rendered
-=======
-{{!--This card-content component will be rendered
->>>>>>> 596883e76bcef7696e2406e110665de048eefb07
-for every node in the tree, wrapping a more specific
-inner component that depends on the type of the content--}}
+  This card-content component will be rendered
+  for every node in the tree, wrapping a more specific
+  inner component that depends on the type of the content
+--}}
 
 {{#if (and answer keepAnswerContainer)}}
   <div class="answer-container">
     <div class="answer">
-      {{partial "card-content-labeled-component"}}
+      {{partial "card-content-component"}}
     </div>
 
     <div class="additional-text">
@@ -25,5 +23,5 @@ inner component that depends on the type of the content--}}
     </div>
   </div>
 {{else}}
-  {{partial "card-content-labeled-component"}}
+  {{partial "card-content-component"}}
 {{/if}}

@@ -1,29 +1,30 @@
-{{#if isRichText}}
-  {{rich-text-editor
-    editorStyle=content.editorStyle
-    name=content.ident
-    data-editor=content.ident
-    value=(readonly answerProxy)
-    hasErrors=answer.hasErrors
-    errorMessages=answer.readyIssuesArray
-    onContentsChanged=(action "valueChanged")
-    focusOut=(action "validate")
-    class=inputClassNames
-    disabled=disabled
-    hideError=hideError
-  }}
-{{else}}
-<div class="card-form-control">
-  {{textarea
-    value=(readonly answerProxy)
-    class="card-input"
-    class="form-control"
-    change=(action "valueChanged")
-    input=(action "valueChanged")
-    focusOut=(action "validate")
-    disabled=disabled
-    id=content.ident
-  }}
-</div>
+{{#card-content/label content=content}}
+  {{#if isRichText}}
+    {{rich-text-editor
+      editorStyle=content.editorStyle
+      name=content.ident
+      data-editor=content.ident
+      value=(readonly answerProxy)
+      hasErrors=answer.hasErrors
+      errorMessages=answer.readyIssuesArray
+      onContentsChanged=(action "valueChanged")
+      focusOut=(action "validate")
+      class=inputClassNames
+      disabled=disabled
+      hideError=hideError
+    }}
+  {{else}}
+    {{textarea
+      value=(readonly answerProxy)
+      class="card-input"
+      class="form-control"
+      change=(action "valueChanged")
+      input=(action "valueChanged")
+      focusOut=(action "validate")
+      disabled=disabled
+      id=content.ident
+    }}
+  {{/if}}
+
   {{card-content/validation-errors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
-{{/if}}
+{{/card-content/label}}

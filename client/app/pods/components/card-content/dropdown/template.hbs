@@ -1,10 +1,5 @@
-{{#if content.label}}
-  <label class="card-form-element" {{action "toggleDropdown"}}>
-    <div class="card-form-label">
-      <span class="card-form-text">{{{content.label}}}</span>
-      {{partial "required-field"}}
-    </div>
-    <div class="card-form-control">
+{{#card-content/label content=content onclick=(action "toggleDropdown")}}
+  <div class="card-form-control">
     {{#power-select
         options=content.possibleValues
         selected=selectedValue
@@ -18,27 +13,8 @@
         as |val|}}
       {{val.label}}
     {{/power-select}}
-    </div>
-  </label>
-{{else}}
-<div class="card-form-element">
-  <div class="card-form-control">
-  {{#power-select
-      options=content.possibleValues
-      selected=selectedValue
-      onchange=(action "valueChanged")
-      onfocus=(action "handleFocus")
-      ariaLabel=content.label
-      searchEnabled=false
-      disabled=disabled
-      content=content
-      required=content.isRequired
-      as |val|}}
-    {{val.label}}
-  {{/power-select}}
   </div>
-</div>
-{{/if}}
+{{/card-content/label}}
 
 {{card-content/validation-errors content=content hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
 

@@ -1,10 +1,21 @@
-{{#if hasLabel}}
-  <label class="card-form-label">
-    {{{content.label}}}
-    {{partial "required-field"}}
-    {{yield}}
-  </label>
-{{else}}
-  {{yield}}
+{{#if hasText}}
+  <div class="card-form-text">
+    {{{content.text}}}
+  </div>
 {{/if}}
 
+{{#if hasLabel}}
+  <label class="card-form-element" {{action onclick preventDefault=false}}>
+    <span class="card-form-label">
+      {{{content.label}}}
+    </span>
+    {{partial "required-field"}}
+    <div class="card-form-control">
+      {{yield}}
+    </div>
+  </label>
+{{else}}
+  <div class="card-form-control">
+    {{yield}}
+  </div>
+{{/if}}

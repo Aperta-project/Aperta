@@ -1,4 +1,4 @@
-{{#label content=content}}
+{{#card-content/label content=content}}
   {{input
     value=(readonly answerProxy)
     class="card-input"
@@ -10,7 +10,7 @@
     required=content.isRequired
     content=content
   }}
-{{/label}}
+{{/card-content/label}}
 
 {{#unless hideError}}
   {{card-content/validation-errors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}

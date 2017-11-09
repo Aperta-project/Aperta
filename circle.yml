@@ -38,7 +38,6 @@ jobs:
           name: prepare Node and Ruby versions
           command: |
             gem install bundler -v '1.15.3'
-            gem install rspec
             bundle config --global jobs 7
             bundle config --global without staging:production
             bundle config --global path /home/circleci/bundle

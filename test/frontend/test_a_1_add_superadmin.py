@@ -6,9 +6,10 @@ This test case that populates all mmt needed for python test suite runs.
 
 import logging
 
+import pytest
+
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import super_admin_login
-
 from frontend.common_test import CommonTest
 
 __author__ = 'jgray@plos.org'
@@ -21,6 +22,8 @@ class ApertaPopulateSuperAdmin(CommonTest):
      - Populate user and assignment data necessary to run the QA maintained integration test suite
      user list is maintained in Base/Resources.py
   """
+
+  @pytest.mark.setup
   def test_populate_superadmin_assignments(self):
     """
     test_add_superadmin: Getting around a chicken and egg issue. Need the superadmin to bootstrap

@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::RegisterDecisionScenario do
+describe RegisterDecisionScenario do
   subject(:context) do
-    TahiStandardTasks::RegisterDecisionScenario.new(paper)
+    RegisterDecisionScenario.new(paper)
   end
 
   let(:paper) do
@@ -36,7 +36,7 @@ describe TahiStandardTasks::RegisterDecisionScenario do
 
     it "renders the reviews" do
       reports = [FactoryGirl.create(:reviewer_report), FactoryGirl.create(:reviewer_report)]
-      paper.stub_chain(:draft_decision, :reviewer_reports, :submitted).and_return(reports)
+      allow(paper).to receive_message_chain(:draft_decision, :reviewer_reports, :submitted).and_return(reports)
       names = reports.map { |r| r.user.first_name }
       template = "{%- for review in reviews -%} Review by {{review.reviewer.first_name}},{%- endfor -%}"
       expect(LetterTemplate.new(body: template).render(context).body)
@@ -63,7 +63,7 @@ describe TahiStandardTasks::RegisterDecisionScenario do
       reports.values_at(1, 0, 4).each { |r| r.task.new_reviewer_number }
 
       ordered_reviews = reports.values_at(1, 0, 4, 3, 2)
-      expect(context.reviews.map { |r| r.send(:reviewer_report) }).to eq(ordered_reviews)
+      expect(context.reviews.map { |r| r.send(:object) }).to eq(ordered_reviews)
     end
   end
 end

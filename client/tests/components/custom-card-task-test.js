@@ -11,19 +11,35 @@ moduleForComponent('custom-card-task', 'Integration | Components | Tasks | Custo
   beforeEach() {
     manualSetup(this.container);
     this.registry.register('service:can', FakeCanService);
-
-    // factory builds a CustomCardTask along with a piece of sample CardContent
-    let task = FactoryGuy.make('custom-card-task');
-    this.set('task', task);
   }
 });
 
-test('it renders the custom card content', function(assert) {
-  assert.expect(1);
+test('it renders the custom card content starting in a non error state', function(assert) {
+  // factory builds a CustomCardTask along with a piece of sample CardContent
+  let task = FactoryGuy.make('custom-card-task', {notReady: false});
+  this.set('task', task);
+  let fake = this.container.lookup('service:can');
+  fake.allowPermission('edit', this.get('task'));
 
   this.render(hbs`
     {{custom-card-task task=task}}
   `);
 
   assert.elementFound('.card-content-short-input', 'found the associated card content');
+  assert.elementFound('.task-completed.button--green', 'renders the task completed button in a non error state');
+});
+
+
+test('if errors are present on submit, the complete button gets an error state', function(assert) {
+  // factory builds a CustomCardTask along with a piece of sample CardContent
+  let task = FactoryGuy.make('custom-card-task', {notReady: true});
+  this.set('task', task);
+  let fake = this.container.lookup('service:can');
+  fake.allowPermission('edit', this.get('task'));
+
+  this.render(hbs`
+    {{custom-card-task task=task}}
+  `);
+
+  assert.elementFound('.task-completed.button--red', 'renders the task completed button in an error state');
 });

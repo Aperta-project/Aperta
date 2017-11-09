@@ -63,12 +63,14 @@ module CustomCard
       # to an update, so we stay in SQL-land, so Rails won't notice the missing class.
       Task.where(type: legacy_class_name)
         .joins(:paper).where(papers: { journal_id: journal_id })
-        .update_all(type: configuration_class.task_class, card_version_id: new_card_version) # rubocop:disable Rails/SkipsModelValidations
+        .update_all(type: configuration_class.task_class, # rubocop:disable Rails/SkipsModelValidations
+                    card_version_id: new_card_version,
+                    title: configuration_class.name)
 
       # Update existing task templates so new papers use new custom card
-      TaskTemplate.joins(:journal, :journal_task_type)
-        .where(journals: { id: journal_id }, journal_task_types: { kind: legacy_class_name })
-        .update_all(journal_task_type_id: nil, card_id: card_id) # rubocop:disable Rails/SkipsModelValidations
+      TaskTemplate.joins(:journal_task_type)
+        .where(journal_task_types: { kind: legacy_class_name, journal_id: journal_id })
+        .update_all(journal_task_type_id: nil, card_id: card_id, title: configuration_class.name) # rubocop:disable Rails/SkipsModelValidations
     end
 
     def update_content_id(ident, old_card_version, new_card_version, journal_id)

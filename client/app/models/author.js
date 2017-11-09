@@ -86,7 +86,10 @@ export default NestedQuestionOwner.extend({
   orcidIdentifier: alias('user.orcidAccount.identifier'),
   confirmedAsCoAuthor: Ember.computed.equal('coAuthorState', 'confirmed'),
   refutedAsCoAuthor: Ember.computed.equal('coAuthorState', 'refuted'),
-
+  affiliations: Ember.computed('affiliation', 'secondaryAffiliation', function() {
+    // Filter out null values
+    return _.filter([this.get('affiliation'), this.get('secondaryAffiliation')]).join(', ');
+  }),
   authorInitial: attr('string'),
   firstName: attr('string'),
   middleInitial: attr('string'),

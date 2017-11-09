@@ -77,7 +77,7 @@
                     {{#if author.name }}
                       {{author.name}}
                     {{else}}
-                      {{author.firstName}} {{author.middleInitial}} {{author.lastName}}{{#if author.affiliation}},&nbsp;&nbsp;{{author.affiliation}}{{/if}}
+                      {{author.firstName}} {{author.middleInitial}} {{author.lastName}}{{#if author.affiliation}},&nbsp;&nbsp;{{author.affiliations}}{{/if}}
                     {{/if}}
                     {{#unless (eq author sortedCoAuthors.lastObject)}}<br/>{{/unless}}
                   </span>

@@ -294,15 +294,6 @@ class Activity < ActiveRecord::Base
     )
   end
 
-  def self.state_changed!(paper, to:)
-    create(
-      feed_name: 'forensic',
-      activity_key: "paper.state_changed.#{to}",
-      subject: paper,
-      message: "Paper state changed to #{to}"
-    )
-  end
-
   def self.reminder_sent!(reminder)
     task_klass = reminder.due_datetime.due.class.name
     task_id = reminder.due_datetime.due.id

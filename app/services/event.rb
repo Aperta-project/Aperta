@@ -2,12 +2,11 @@
 
 class Event
   # Single method to call to start a method.
-  def self.trigger(name, paper:, user:, task: nil)
-    raise ArgumentError if user.nil?
+  def self.trigger(name, paper:, user:, task: nil, **rest)
     raise ArgumentError if paper.nil?
 
     # Broadcast it
-    Notifier.notify(event: name, data: { paper: paper, task: task })
+    Notifier.notify(event: name, data: { paper: paper, task: task }.merge(rest))
 
     # Run handlers
     EventBehavior.where(event_name: name).each do |action|
@@ -19,7 +18,8 @@ class Event
       feed_name: "forensic",
       activity_key: name,
       subject: task || paper,
-      user: user
+      user: user,
+      message: rest[:event_message]
     )
   end
 end

@@ -1,18 +1,15 @@
-# rubocop:disable Style/PredicateName
 module AASMTriggerEvent
   extend ActiveSupport::Concern
 
   included do
-    aasm do
-      after_all_transitions :trigger_event
-    end
-
-    def trigger_event(user)
-      Event.trigger("#{self.class.name.underscore}_#{aasm.current_event}",
-                    paper: self,
-                    user: user,
-                    from_state: aasm.from_state,
-                    to_state: aasm.to_state)
+    def trigger_aasm_event(aasm, **args)
+      Event.trigger(
+        "#{self.class.name.underscore}.state_changed.#{aasm.to_state}",
+        activity_message: "Paper state changed to #{aasm.to_state}",
+        from_state: aasm.from_state,
+        to_state: aasm.to_state,
+        **args
+      )
     end
   end
 end

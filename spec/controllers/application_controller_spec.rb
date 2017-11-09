@@ -93,7 +93,7 @@ describe ApplicationController do
 
         expect(controller).to receive(:store_location_for)
           .with(:user, 'http://aperta.tech/')
-          
+
         controller.send(:store_location_for_login_redirect)
       end
     end

@@ -63,7 +63,7 @@ describe RegisterDecisionScenario do
       reports.values_at(1, 0, 4).each { |r| r.task.new_reviewer_number }
 
       ordered_reviews = reports.values_at(1, 0, 4, 3, 2)
-      expect(context.reviews.map { |r| r.send(:reviewer_report) }).to eq(ordered_reviews)
+      expect(context.reviews.map { |r| r.send(:object) }).to eq(ordered_reviews)
     end
   end
 end

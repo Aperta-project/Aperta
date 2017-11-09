@@ -14,7 +14,7 @@ from selenium.common.exceptions import TimeoutException
 from Base.FrontEndTest import FrontEndTest
 from Base.PostgreSQL import PgSQL
 from Base.Resources import login_valid_pw, docs, users, editorial_users, external_editorial_users, \
-    au_login, co_login, rv_login, ae_login, he_login, fm_login, oa_login, pdfs
+    au_login, co_login, rv_login, ae_login, he_login, fm_login, oa_login, pdfs, production_urls
 from .Pages.login_page import LoginPage
 from .Pages.akita_login_page import AkitaLoginPage
 from .Pages.dashboard import DashboardPage
@@ -438,7 +438,7 @@ class CommonTest(FrontEndTest):
       """
       current_env = os.getenv('WEBDRIVER_TARGET_URL', '')
       logging.info(current_env)
-      if current_env in ('https://www.aperta.tech', 'https://aperta:ieeetest@ieee.aperta.tech'):
+      if current_env in production_urls:
         return False
       pp_ff = PgSQL().query('SELECT active FROM feature_flags WHERE name = \'PREPRINT\';')[0][0]
       if not pp_ff:

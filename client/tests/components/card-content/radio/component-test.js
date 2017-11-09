@@ -15,7 +15,7 @@ moduleForComponent(
       };
 
       this.radioBooleanContent = {
-        text: `<b class='foo'>Foo</b>`,
+        text: `<b class='bar'>Bar</b>`,
         valueType: 'boolean'
       };
     }
@@ -32,9 +32,10 @@ let template = hbs`
 test(`it renders a radio button for each of the possibleValues, allowing html`, function(assert) {
   this.set('content', this.defaultContent);
   this.render(template);
-  assert.textPresent('.card-radio-label', 'Choice 1');
-  assert.textPresent('.card-radio-label', 'Choice 2');
-  assert.elementFound('.card-radio-label b', 'The bold tag is rendered properly');
+  let labels = this.$('.card-form-label');
+  assert.textPresent(labels[0], 'Choice 1');
+  assert.textPresent(labels[1], 'Choice 2');
+  assert.elementFound('.card-form-label b', 'The bold tag is rendered properly');
 });
 
 test(`it disables the inputs if disabled=true`, function(assert) {
@@ -79,6 +80,6 @@ test(`it sends 'valueChanged' on change`, function(assert) {
 test(`it renders a radio button for Yes and No when value type is boolean`, function(assert) {
   this.set('content', this.radioBooleanContent);
   this.render(template);
-  assert.textPresent('.card-radio-label', 'Yes');
-  assert.textPresent('.card-radio-label', 'No');
+  assert.textPresent('.card-form-element', 'Yes');
+  assert.textPresent('.card-form-element', 'No');
 });

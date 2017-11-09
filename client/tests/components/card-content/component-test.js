@@ -89,31 +89,19 @@ test('it renders a label for card-content', function(assert) {
 test('it displays an indicator for required fields', function(assert) {
   let cardContent = make('card-content', 'shortInput', { requiredField: true, label: 'Label', text: 'Text', repetition: null });
   let root = 'task.cardVersion.contentRoot';
-  this.set(root, cardContent);
-
-  let text = `${root}.text`;
   let label = `${root}.label`;
+  this.set(root, cardContent);
 
   let template = hbs`
     {{custom-card-task task=task preview=false}}
   `;
 
-  assert.expect(4);
-
   this.render(template);
   return wait().then(() => {
-    assert.elementFound('.required-field', 'shows the required field indicator when both label and text are present');
+    assert.elementFound('.required-field', 'shows the required field indicator when the label is present');
 
-    this.set(text, null);
-    assert.elementFound('.required-field', 'shows the required field indicator in the label if no text');
-
-    this.set(text, 'here');
     this.set(label, null);
-    assert.elementFound('.required-field', 'shows the required field indicator in the text if no label');
-
-    this.set(text, null);
-    this.set(label, null);
-    assert.elementFound('.required-field', 'shows the required field indicator when neither label nor text are present');
+    assert.elementNotFound('.required-field', 'shows no required field indicator when the label is absent');
   });
 });
 

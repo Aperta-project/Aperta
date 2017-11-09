@@ -1,4 +1,10 @@
 <div class="sendback-reason-row">
+  {{#if hasText}}
+    <div class="card-form-text">
+      {{{content.text}}}
+    </div>
+  {{/if}}
+
   {{card-content
     content=checkbox
     disabled=disabled

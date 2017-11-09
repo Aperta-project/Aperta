@@ -58,7 +58,7 @@ test('it shows its text if provided', function(assert) {
   owner=owner
   valueChanged=(action actionStub)}}`);
 
-  assert.equal(this.$('.content-text').text().trim(), 'lalalala');
+  assert.equal(this.$('.card-checkbox .card-form-text').text().trim(), 'lalalala');
 });
 
 test('it shows its label if provided', function(assert) {

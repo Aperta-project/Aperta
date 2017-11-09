@@ -6,9 +6,10 @@ This test case that populates all mmt needed for python test suite runs.
 
 import logging
 
+import pytest
+
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import all_orcid_users
-
 from frontend.common_test import CommonTest
 from .Pages.profile_page import ProfilePage
 from .Pages.orcid_login_page import OrcidLoginPage
@@ -25,6 +26,7 @@ class ApertaPopulateUsersTest(CommonTest):
      This test should be run last among test_add_superadmin (first), test_add_stock_mmt (second) and
     test_add_stock_users_assignments (last).
   """
+  @pytest.mark.setup
   def test_populate_base_users_assignments(self):
     """
     test_add_stock_users_assignments: adds the stock users via forcing logins and then sets the

@@ -8,7 +8,7 @@ export default Ember.Component.extend({
     disabled: PropTypes.bool,
     labelText: PropTypes.string,
     answer: PropTypes.object.isRequired,
-    size: PropTypes.string, // 'small', 'medium', or 'large'
+    size: PropTypes.string, // 'smaller', small', 'medium', or 'large'
     color: PropTypes.string // 'green', 'blue'
   },
 

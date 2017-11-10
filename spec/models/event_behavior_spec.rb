@@ -2,6 +2,19 @@ require 'rails_helper'
 
 describe EventBehavior do
   let(:args) { { event_name: :fake_event } }
+  let(:journal) { create(:journal) }
+
+  class TestBehaviorAction < BehaviorAction
+    def self.call(*args)
+      super(*args)
+    end
+  end
+
+  class TestBehavior < EventBehavior
+    has_attributes boolean: %w[bool_attr], string: %w[string_attr], json: %w[json_attr]
+    self.action_class = TestBehaviorAction
+  end
+
   before(:each) do
     Event.register(:fake_event)
   end
@@ -11,7 +24,7 @@ describe EventBehavior do
   end
 
   context 'when the action is send_email' do
-    subject(:event_behavior) { build(:send_email_behavior, **args) }
+    subject { build(:send_email_behavior, **args) }
 
     it 'should fail validation unless a letter_template is set' do
       expect(subject).not_to be_valid
@@ -19,17 +32,8 @@ describe EventBehavior do
   end
 
   context 'event validation' do
-    let(:klass) do
-      Class.new(described_class) do
-        def self.name
-          'TestBehavior'
-        end
-        has_attributes boolean: %w[bool_attr]
-      end
-    end
-
     context 'when no subject is provided' do
-      subject(:behavior) { klass.new }
+      subject { TestBehavior.new }
 
       it 'should fail validation' do
         expect(subject).not_to be_valid
@@ -38,7 +42,7 @@ describe EventBehavior do
     end
 
     context 'when the event_name is not registered' do
-      subject(:behavior) { klass.new(event_name: :fake_event_2) }
+      subject { TestBehavior.new(event_name: :fake_event_2) }
 
       it 'should fail validation' do
         expect(subject).not_to be_valid
@@ -47,7 +51,7 @@ describe EventBehavior do
     end
 
     context 'when the event_name is registered' do
-      subject(:behavior) { klass.new(event_name: :fake_event_2) }
+      subject(:behavior) { TestBehavior.new(event_name: :fake_event_2) }
 
       it 'should be valid' do
         Event.register(:fake_event_2)
@@ -58,14 +62,7 @@ describe EventBehavior do
   end
 
   context 'subclassing' do
-    subject(:klass) do
-      Class.new(described_class) do
-        def self.name
-          'TestBehavior'
-        end
-        has_attributes boolean: %w[bool_attr]
-      end
-    end
+    subject { TestBehavior }
 
     it 'should allow a bool_attr' do
       expect(subject.new(bool_attr: true, **args)).to be_valid
@@ -78,7 +75,7 @@ describe EventBehavior do
     end
 
     context 'with a validation' do
-      subject(:klass) do
+      subject do
         Class.new(described_class) do
           def self.name
             'TestBehavior'
@@ -92,6 +89,38 @@ describe EventBehavior do
         expect(subject.new(string_attr: 'baz', **args)).not_to be_valid
         expect(subject.new(string_attr: 'bar', **args)).to be_valid
       end
+    end
+  end
+
+  context 'with action' do
+    let!(:behavior) do
+      TestBehavior.create!(
+        event_name: :fake_event,
+        journal: journal,
+        bool_attr: true,
+        string_attr: 'foo',
+        json_attr: { 'bar' => 'baz' }
+      )
+    end
+    let(:paper) { FactoryGirl.create(:paper) }
+    let(:user) { FactoryGirl.create(:user) }
+
+    it 'should raise an exception if the class does not override call' do
+      behavior
+      expect { Event.trigger(:fake_event, paper: paper, user: user) }.to raise_error(NotImplementedError)
+    end
+
+    it 'should call the call method with both the action and behavior parameters' do
+      behavior
+      expect(TestBehaviorAction).to receive(:call).with(
+        event_params: { user: user, paper: paper, task: nil },
+        behavior_params: {
+          "bool_attr" => true,
+          "string_attr" => "foo",
+          "json_attr" => { "bar" => "baz" }
+        }
+      )
+      Event.trigger(:fake_event, paper: paper, user: user)
     end
   end
 end

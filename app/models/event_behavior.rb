@@ -19,11 +19,14 @@ class EventBehavior < ActiveRecord::Base
 
   def call(user:, paper:, task:)
     event_params = { user: user, paper: paper, task: task }
-    self.class.action_class.new.call(event_params, behavior_params)
+    self.class.action_class.call(
+      event_params: event_params,
+      behavior_params: behavior_params
+    )
   end
 
   def behavior_params
-    event_behavior_attributes.each_with_object({}) do |attribute, hsh|
+    entity_attributes.each_with_object({}) do |attribute, hsh|
       hsh[attribute.name] = attribute.value
     end
   end

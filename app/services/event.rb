@@ -24,16 +24,16 @@ class Event
   end
 
   # Single method to call to start a method.
-  def self.trigger(name, paper:, user:, task: nil, **rest)
-    raise ArgumentError if paper.nil?
-    raise ArgumentError unless Event.allowed?(name)
+  def self.trigger(name, paper:, user: nil, task: nil, **rest)
+    raise ArgumentError, "A paper is required" if paper.nil?
+    raise ArgumentError, "Event #{name} not registered" unless Event.allowed?(name)
 
     # Broadcast it
     Notifier.notify(event: name, data: { paper: paper, task: task }.merge(rest))
 
     # Run handlers
-    EventBehavior.where(event_name: name).each do |action|
-      action.call(paper: paper, task: task, user: user)
+    EventBehavior.where(event_name: name).each do |behavior|
+      behavior.call(paper: paper, task: task, user: user)
     end
 
     # Log to the activity feed

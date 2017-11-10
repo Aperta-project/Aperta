@@ -474,6 +474,9 @@
     <element name="Repeat">
       <interleave>
         <optional>
+          <attribute name="ident"/>
+        </optional>
+        <optional>
           <attribute name="min"/>
         </optional>
         <optional>

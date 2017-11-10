@@ -194,7 +194,8 @@ error-message = element ErrorMessage {
 }
 
 repeat = element Repeat {
-  attribute min { text }?
+  attribute ident { text }?
+  & attribute min { text }?
   & attribute max { text }?
   & attribute item-name { text }
   & content+

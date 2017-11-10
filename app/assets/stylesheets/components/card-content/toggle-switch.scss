@@ -34,6 +34,10 @@
   // can be replaced by the toggle UI
   .switch input { display: none; }
 
+  .switch .interior-text {
+    color: white;
+  }
+
   .slider {
     position: absolute;
     cursor: pointer;

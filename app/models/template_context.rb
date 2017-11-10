@@ -9,8 +9,8 @@ class TemplateContext < Liquid::Drop
       'Manuscript'        => PaperScenario,
       'Reviewer Report'   => ReviewerReportScenario,
       'Invitation'        => InvitationScenario,
-      'Paper Reviewer'    => PaperReviewerScenario,
-      'Preprint Decision' => PreprintDecisionScenario,
+      'Paper Reviewer'    => InvitationScenario,
+      'Preprint Decision' => PaperScenario,
       'Decision'          => RegisterDecisionScenario,
       'Tech Check'        => TechCheckScenario
     }

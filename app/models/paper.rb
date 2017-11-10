@@ -282,6 +282,8 @@ class Paper < ActiveRecord::Base
     end
   end
 
+  register_events!
+
   # All known paper states
   STATES = aasm.states.map(&:name).freeze
   # States which should generally be editable by the creator

@@ -3,7 +3,7 @@
 class EventBehavior < ActiveRecord::Base
   include Attributable
 
-  validates :event_name, inclusion: { in: %w[paper_submitted] }
+  validates :event_name, presence: true, inclusion: { in: ->(_) { Event.allowed_events } }
 
   self.inheritance_column = 'action'
 

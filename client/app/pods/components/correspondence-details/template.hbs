@@ -86,14 +86,17 @@
     <iframe srcdoc={{break-to-tag message.body}} width="100%" height="400px" frameborder="0"></iframe>
   </div>
 </div>
-<hr>
-<div class="row">
-  <div class="col-sm-12">
-    <h1>History</h1>
+
+{{#if message.hasActivities}}
+  <hr>
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 class='history-heading'>History</h1>
+    </div>
+    {{#each message.activityMessages as |activity|}}
+    <div class="col-sm-12 history-entry">
+      {{activity}}
+    </div>
+    {{/each}}
   </div>
-  {{#each message.activities as |activity|}}
-  <div class="col-sm-12">
-    {{activity}}
-  </div>
-  {{/each}}
-</div>
+{{/if}}

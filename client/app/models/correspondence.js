@@ -1,5 +1,6 @@
 import DS from 'ember-data';
 import Ember from 'ember';
+import moment from 'moment';
 
 export default DS.Model.extend({
   paper: DS.belongsTo('paper', { async: false }),
@@ -33,4 +34,16 @@ export default DS.Model.extend({
   }),
 
   hasActivities: Ember.computed.notEmpty('activities'),
+  activityMessages: Ember.computed('activities', function() {
+    return this.get('activities').map((activity) => {
+      let result = '';
+      if (activity[0] === 'correspondence.created') {
+        result += 'Added by ';
+      } else {
+        result += 'Edited by ';
+      }
+      result += activity[1] + ' on ' + moment(activity[2]).format('MMMM DD, YYYY kk:mm');
+      return result;
+    });
+  }),
 });

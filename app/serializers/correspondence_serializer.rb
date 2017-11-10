@@ -19,8 +19,6 @@ class CorrespondenceSerializer < ActiveModel::Serializer
   end
 
   def activities
-    Activity.where(activity_key: ['correspondence.created', 'correspondence.edited'],
-                   subject_id: object.id)
-            .pluck(:message) # The most recent is at the bottom
+    Activity.feed_for('workflow', object).map { |f| [f.activity_key, f.user.full_name, f.created_at] }
   end
 end

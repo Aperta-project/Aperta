@@ -20,8 +20,8 @@ describe CorrespondenceSerializer, serializer_test: true do
     end
 
     it 'prints the "Added" message' do
-      added_message = serializer.as_json.dig(:correspondence, :activities).first
-      expect(added_message).to match("Added by #{user.full_name} on")
+      added_message = serializer.as_json.dig(:correspondence, :activities).first.first
+      expect(added_message).to match("correspondence.created")
     end
   end
 end

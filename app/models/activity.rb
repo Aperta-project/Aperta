@@ -349,13 +349,11 @@ class Activity < ActiveRecord::Base
   end
 
   def self.correspondence_created!(correspondence, user:)
-    date = DateTime.now.utc.strftime('%B %d %Y, %H:%M')
     create(
       feed_name: 'workflow',
       activity_key: 'correspondence.created',
       subject: correspondence,
-      user: user,
-      message: "Added by #{user.full_name} on #{date}"
+      user: user
     )
   end
 end

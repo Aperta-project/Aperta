@@ -9,7 +9,7 @@ class TemplateContext < Liquid::Drop
       'Manuscript'        => PaperScenario,
       'Reviewer Report'   => ReviewerReportScenario,
       'Invitation'        => InvitationScenario,
-      'Paper Reviewer'    => PaperReviewerScenario,
+      'Paper Reviewer'    => InvitationScenario,
       'Decision' => RegisterDecisionScenario,
       'Tech Check' => TechCheckScenario
     }.merge(feature_flagged_scenarios)
@@ -19,7 +19,7 @@ class TemplateContext < Liquid::Drop
   # we should remove this once the preprint feature flag is removed
   # and move these scenarios back into ::scenarios
   def self.feature_flagged_scenarios
-    FeatureFlag[:PREPRINT] ? { 'Preprint Decision' => PreprintDecisionScenario } : {}
+    FeatureFlag[:PREPRINT] ? { 'Preprint Decision' => PaperScenario } : {}
   end
 
   # Unless already defined, this defines a method which returns a TemplateContext.

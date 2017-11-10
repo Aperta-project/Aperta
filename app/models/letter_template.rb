@@ -36,7 +36,7 @@ class LetterTemplate < ActiveRecord::Base
 
   # temporary until removal of feature flag
   def self.related_to_journal(journal_id)
-    !FeatureFlag[:PREPRINT] ? where(journal_id: journal_id).where.not(scenario: TahiStandardTasks::PreprintDecisionScenario) : where(journal_id: journal_id)
+    FeatureFlag[:PREPRINT] ? where(journal_id: journal_id) : where(journal_id: journal_id).where.not(scenario: 'Preprint Decision')
   end
 
   private

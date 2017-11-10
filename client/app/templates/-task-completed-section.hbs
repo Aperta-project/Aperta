@@ -5,15 +5,18 @@
               name="task_completed">
         Make changes to this task
       </button>
+
     {{else}}
-      <button class="task-completed task-not-completed button-secondary {{if task.notReady "button--red" "button--green"}}"
+      <button class="task-completed task-not-completed button-secondary button--green"
               name="task_completed">
         I am done with this task
       </button>
     {{/if}}
-    {{#if task.taskNotReady}}
+
+    {{#if task.notReady}}
       <span class="error-message">{{completedErrorText}}</span>
     {{/if}}
+
     {{#if validationErrors.completed}}
       {{error-message message=validationErrors.completed}}
     {{/if}}

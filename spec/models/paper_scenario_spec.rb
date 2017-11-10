@@ -1,8 +1,8 @@
 require 'rails_helper'
 # rubocop:disable Metrics/BlockLength
-describe PreprintDecisionScenario do
+describe PaperScenario do
   subject(:context) do
-    PreprintDecisionScenario.new(paper)
+    PaperScenario.new(paper)
   end
 
   let(:task) do
@@ -20,7 +20,7 @@ describe PreprintDecisionScenario do
     )
   end
 
-  describe "rendering a PreprintDecisionScenario" do
+  describe "rendering a PaperScenario" do
     it "renders the journal" do
       template = "{{ journal.name }}"
       expect(LetterTemplate.new(body: template).render(context).body)

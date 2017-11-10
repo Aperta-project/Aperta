@@ -1,3 +1,5 @@
+/* global history */
+
 import Ember from 'ember';
 import deepCamelizeKeys from 'tahi/lib/deep-camelize-keys';
 import deNamespaceTaskType from 'tahi/lib/de-namespace-task-type';
@@ -107,9 +109,7 @@ export default Controller.extend(Discussions, {
     },
 
     hideTaskOverlay() {
-      const r = this.get('routing.router._routerMicrolib');
-      const lastRoute = r.currentHandlerInfos[r.currentHandlerInfos.length - 1];
-      r.updateURL(r.generate(lastRoute.name, lastRoute.context.get('shortDoi')));
+      history.back();
       this.set('showTaskOverlay', false);
     },
 

@@ -450,6 +450,9 @@
           <value>boolean</value>
         </attribute>
         <ref name="instructions-text"/>
+        <zeroOrMore>
+          <ref name="content"/>
+        </zeroOrMore>
       </interleave>
     </element>
   </define>

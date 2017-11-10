@@ -179,6 +179,7 @@ sendback-reason = element content {
   & input-attributes
   & attribute value-type { "boolean" }
   & instructions-text
+  & content*
 }
 
 tech-check = element content {

@@ -17,10 +17,6 @@ class EventBehavior < ActiveRecord::Base
 
   belongs_to :journal
 
-  has_attributes boolean: %w[boolean_param],
-                 json: %w[json_param],
-                 string: %w[string_param]
-
   def call(user:, paper:, task:)
     event_params = { user: user, paper: paper, task: task }
     self.class.action_class.new.call(event_params, behavior_params)

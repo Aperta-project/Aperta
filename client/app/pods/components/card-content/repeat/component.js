@@ -41,14 +41,7 @@ export default Ember.Component.extend({
   }),
   ownedRepetitions() {
     let contentRepetitions = this.get('content.repetitions');
-
-    if(this.get('preview')){
-      // scope repetitions to the card-preview
-      return contentRepetitions.filterBy('task.id', undefined);
-    } else {
-      // scope repetitions to the resolved task
-      return contentRepetitions.filterBy('task.id', this.get('owner.id'));
-    }
+    return contentRepetitions.filterBy('task.id', this.get('owner.id'));
   },
   repetitionSort: ['position:asc'],
   repetitions: Ember.computed.sort('unsortedRepetitions', 'repetitionSort'),
@@ -88,12 +81,12 @@ export default Ember.Component.extend({
     let repetition = this.get('store').createRecord('repetition', {
       cardContent: this.get('content'),
       parent: this.get('repetition'),
+      task: this.get('owner'),
       position: position,
     });
 
     if(!this.get('preview')) {
       // a task relationship is only applicable in non-previews (card-editor/previews aren't tasks)
-      repetition.set('task', this.get('owner'));
       repetition.save();
     }
 

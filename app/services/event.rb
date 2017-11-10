@@ -8,13 +8,15 @@ class Event
     end
   end
 
+  def self.deregister(*events)
+    events.map(&:to_s).each do |event|
+      @events.delete(event)
+    end
+  end
+
   def self.allowed_events
     return [] if @events.nil?
     @events.dup
-  end
-
-  def self.clear_registry
-    @events = []
   end
 
   def self.allowed?(event)

@@ -7,7 +7,7 @@ describe EventBehavior do
   end
 
   after(:each) do
-    Event.clear_registry
+    Event.deregister(:fake_name)
   end
 
   context 'when the action is send_email' do
@@ -52,7 +52,7 @@ describe EventBehavior do
       it 'should be valid' do
         Event.register(:fake_event_2)
         expect(subject).to be_valid
-        Event.clear_registry
+        Event.deregister(:fake_event_2)
       end
     end
   end

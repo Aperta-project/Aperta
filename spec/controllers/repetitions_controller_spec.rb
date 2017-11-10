@@ -135,11 +135,14 @@ describe RepetitionsController do
     let(:task) { FactoryGirl.create(:custom_card_task, :with_card) }
     let(:card_content) { task.card_version.card_contents.first }
     let!(:repetition) { FactoryGirl.create(:repetition, task: task, card_content: card_content) }
+    let!(:another_repetition) { FactoryGirl.create(:repetition, task: task, card_content: card_content) }
+    let(:destroying_all) { true }
 
     subject(:do_request) do
       delete :destroy,
             format: "json",
             id: repetition.id,
+            destroying_all: destroying_all,
             repetition: {
               task_id: task.id
             }
@@ -155,12 +158,37 @@ describe RepetitionsController do
           .and_return(true)
       end
 
-      it "creates a repetition" do
-        expect { do_request }.to change(Repetition, :count).by(-1)
+      context "when destroying one" do
+        let(:destroying_all) { false }
+
+        it "destroys a repetition" do
+          expect { do_request }.to change(Repetition, :count).by(-1)
+        end
+
+        it "does not return itself" do
+          do_request
+          repetitions = res_body["repetitions"]
+          expect(repetitions.length).to eq(1)
+          expect(repetitions.first["id"]).to eq(another_repetition.id)
+        end
+
+        it { is_expected.to responds_with(200) }
+      end
+
+      context "when destroying all" do
+        let(:destroying_all) { true }
+
+        it "destroys a repetition" do
+          expect { do_request }.to change(Repetition, :count).by(-1)
+        end
+
+        it { is_expected.to responds_with(204) }
       end
     end
 
     context "when the user does not have access" do
+      let(:destroying_all) { false }
+
       before do
         stub_sign_in(user)
         allow(user).to receive(:can?)

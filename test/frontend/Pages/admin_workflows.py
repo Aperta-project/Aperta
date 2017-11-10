@@ -72,6 +72,9 @@ class AdminWorkflowsPage(BaseAdminPage):
     # borrowed locators from the add_new_cards overlay definition in workflow_page
     self._card_types = (By.CSS_SELECTOR, 'div.row label')
     self._div_buttons = (By.CSS_SELECTOR, 'div.overlay-action-buttons')
+    # locators for card settings overlay
+    self._similarity_check_card = (By.XPATH, "//a[./span[contains(text(),'Similarity Check')]]")
+    self._sim_check_card_settings = (By.XPATH, "//a[./span[contains(text(),'Similarity Check')]]//i")
 
 
   # POM Actions
@@ -435,3 +438,46 @@ class AdminWorkflowsPage(BaseAdminPage):
       journal_title = self._get(self._base_admin_journal_links)
       assert journal_title.text in db_journals, '{0} not found in \n{1}'.format(journal_title.text,
                                                                                 db_journals)
+
+  def close_mmt(self):
+    """
+    Close manuscript template page by clicking on Back button
+    """
+    self._wait_for_element(self._get(self._mmt_template_back_link))
+    back_btn = self._get(self._mmt_template_back_link)
+    back_btn.click()
+    self._wait_for_element(self._get(self._admin_workflow_pane_title))
+
+  def open_mmt(self, mmt_name):
+    """
+    A function to open existing mmt
+    :param mmt_name: optional name for the new mmt
+    :return: void function
+    """
+    self._wait_for_element(self._get(self._admin_workflow_pane_title))
+    mmts = self._gets(self._admin_workflow_mmt_thumbnail)
+    for mmt in mmts:
+      name = mmt.find_element(*self._admin_workflow_mmt_title)
+      if name.text == mmt_name:
+        logging.info('Opening {0} template'.format(name.text))
+        self._scroll_into_view(name)
+        name.click()
+        break
+
+  def click_on_card_settings(self, card_settings_locator):
+    """
+    A function to open card settings
+    :param card_settings_locator: locator to find the gear icon
+    :return: void function
+    """
+    settings_icon = self._get(card_settings_locator)
+    # Hover color of the Similarity Check settings cog should be Admin blue
+    self._scroll_into_view(settings_icon)
+    color_before = settings_icon.value_of_css_property('color')
+    self._actions.move_to_element(settings_icon).perform()
+    # self._actions.move_to_element_with_offset(settings_icon, 5, 5).perform()
+    self._wait_on_lambda(lambda: settings_icon.value_of_css_property('color') != color_before)
+    # time.sleep(1)
+    assert settings_icon.value_of_css_property('color') == APERTA_BLUE, \
+      settings_icon.value_of_css_property('color')
+    settings_icon.click()

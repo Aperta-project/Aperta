@@ -14,6 +14,8 @@ from Base.Resources import users, editorial_users, super_admin_login, \
 from frontend.common_test import CommonTest
 from .Cards.assign_team_card import AssignTeamCard
 from .Cards.similarity_check_card import SimilarityCheckCard
+from .Pages.admin_workflows import AdminWorkflowsPage
+from .Pages.card_settings import CardSettings
 from .Pages.manuscript_viewer import ManuscriptViewerPage
 from .Pages.workflow_page import WorkflowPage
 from .Pages.sim_check_settings import SimCheckSettings
@@ -31,23 +33,23 @@ class SimilarityCheckTest(CommonTest):
     test_admin: Validate elements and styles for the base Similarity Check page
     :return: void function
     """
-    logging.info('Test Similarity Check::validate_components_styles')
-    logging.info('Validating Similarity Check page components and styles')
+    logging.info('Validating Similarity Check Settings: page components and styles')
     user_type = super_admin_login
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'])
-    #dashboard_page.page_ready()
-    dashboard_page._wait_on_lambda(lambda: len(dashboard_page._gets(dashboard_page._dashboard_invite_title)) >= 1)
+    dashboard_page.page_ready()
     dashboard_page.click_admin_link()
-    adm_wf_page = SimCheckSettings(self.getDriver())
+    adm_wf_page = AdminWorkflowsPage(self.getDriver())
     adm_wf_page.page_ready()
     adm_wf_page.open_mmt('Similarity Check test')
-
     adm_wf_page.click_on_card_settings(adm_wf_page._sim_check_card_settings)
-    adm_wf_page.validate_setting_style_and_components()
 
-    adm_wf_page.close_overlay()
-    #adm_wf_page.close_mmt()
+    card_settings = SimCheckSettings(self.getDriver())
+    card_settings.overlay_ready()
+    card_settings.validate_card_setting_style('Similarity Check: Settings')
+    card_settings.validate_setting_style_and_components()
+
+    card_settings.click_cancel()
 
   def test_smoke_generate_manually(self):
     """

@@ -21,11 +21,14 @@ export default DS.Model.extend({
   activities: DS.attr(), // array?
 
   manuscriptVersionStatus: Ember.computed('manuscriptVersion','manuscriptStatus', function() {
-    if (!this.get('manuscriptVersion') || !this.get('manuscriptStatus')) {
+    let version_status = this.get('manuscriptVersion') + ' ' + this.get('manuscriptStatus');
+    version_status = version_status.replace('null','').trim();
+
+    if (version_status === 'null') {
       return 'Unavailable';
     }
     else {
-      return this.get('manuscriptVersion') + ' ' + this.get('manuscriptStatus');
+      return version_status;
     }
   }),
 

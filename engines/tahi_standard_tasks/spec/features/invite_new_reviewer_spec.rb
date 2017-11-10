@@ -2,6 +2,7 @@ require 'rails_helper'
 
 feature "Inviting a new reviewer", js: true do
   include InvitationFeatureHelpers
+  include RichTextEditorHelpers
 
   let(:paper) do
     FactoryGirl.create(
@@ -47,13 +48,14 @@ feature "Inviting a new reviewer", js: true do
     )
     expect(page).to have_content(paper.title)
     page.click_button 'Decline'
-
     expect(page).to have_content(
-      "You've successfully declined the invitation to review"
+      "You've successfully declined the invitation to be the Reviewer for \"#{paper.title}\""
     )
-    page.execute_script("tinymce.get('invitation_decline_reason').setContent('No thanks')")
-    page.execute_script("tinymce.get('invitation_reviewer_suggestions').setContent('bob@example.com')")
-    find('form input').native.send_keys :enter # the only capybara would submit the form
+    wait_for_editors
+    set_rich_text(editor: 'declineReason', text: 'No thanks')
+    set_rich_text(editor: 'reviewerSuggestions', text: 'bob@example.com')
+    page.click_button "Send Feedback"
+    wait_for_ajax
     expect(page).to have_content("Thank You")
     expect(Invitation.last.decline_reason).to eq("<p>No thanks</p>")
     expect(Invitation.last.reviewer_suggestions).to eq("<p>bob@example.com</p>")

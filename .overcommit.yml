@@ -1,6 +1,6 @@
 PreCommit:
   RuboCop:
-    enabled: false
+    enabled: true
     command: ['bundle', 'exec', 'rubocop']
     problem_on_unmodified_line:
   EsLint:

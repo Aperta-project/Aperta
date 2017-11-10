@@ -114,12 +114,12 @@ class TasksController < ApplicationController
         task: task
       )
     end
-    d = DateTime.current
+    d = Time.now.getlocal
     initiator = current_user.email
     render json:  {
       to: sent_to_users,
       from: initiator,
-      date: d.strftime("%h %d, %Y %H:%M"),
+      date: d.strftime("%h %d, %Y %r"),
       subject: params[:subject],
       body: params[:body]
     }

@@ -1,46 +1,73 @@
-<div class='input-group'>
-  <div class='input-group-addon email-header'>
-    To:
+{{#if answer.value}}
+  <table class="table table-hover">
+    <tbody>
+    <tr>
+      <th>Selection</th>
+      <th>Recipient</th>
+      <th>Initiator</th>
+      <th>Date</th>
+    </tr>
+    <tr>
+      <td>
+        {{subject}}
+      </td>
+      <td>
+        {{to}}
+      </td>
+      <td>
+        {{from}}
+      </td>
+      <td>
+        {{date}}
+      </td>
+    </tr>
+    </tbody>
+  </table>
+{{else}}
+  <div class='input-group'>
+    <div class='input-group-addon email-header'>
+      To:
+    </div>
+    {{input
+      value=emailToField
+      class="form-control to-field"
+      change=(action "valueChanged")
+      input=(action "valueChanged")
+      focusIn=(action "maybeHideError")
+      disabled=disabled
+      content=content
+      placeholder='someone@example.edu'}}
   </div>
-  {{input
-    value=emailToField
-    class="form-control to-field"
-    change=(action "valueChanged")
-    input=(action "valueChanged")
-    focusIn=(action "maybeHideError")
-    disabled=disabled
-    content=content
-    placeholder='someone@example.edu'}}
-</div>
 
-<div class='input-group'>
-  <div class='input-group-addon email-header'>
-    Subject:
+  <div class='input-group'>
+    <div class='input-group-addon email-header'>
+      Subject:
+    </div>
+    {{input
+      value=emailToSubject
+      class="form-control subject-field"
+      change=(action "valueChanged")
+      input=(action "valueChanged")
+      focusIn=(action "maybeHideError")
+      disabled=disabled
+      content=content
+      placeholder='Enter your subject here'}}
   </div>
-  {{input
-    value=emailToSubject
-    class="form-control subject-field"
-    change=(action "valueChanged")
-    input=(action "valueChanged")
-    focusIn=(action "maybeHideError")
-    disabled=disabled
-    content=content
-    placeholder='Enter your subject here'}}
-</div>
 
-{{rich-text-editor
-  ident="generic_email_editor--letter-field"
-  inputClassNames='decision-letter-field'
-  onContentsChanged=(action "updateAnswer")
-  placeholder="Please type or paste your cover letter into this text field, or attach a file below"
-  owner=task
-  value=emailToBody
-  disabled=false
-}}
+  {{rich-text-editor
+    inputClassNames='decision-letter-field'
+    onContentsChanged=(action "updateAnswer")
+    placeholder="Please type or paste your cover letter into this text field, or attach a file below"
+    owner=task
+    value=emailToBody
+    disabled=false
+  }}
 
-{{#unless disabled}}
-  <button class="button-primary button--green send-email-action"
-    {{action "registerDecision"}}>
-    Send Email
-  </button>
-{{/unless}}
+  {{#unless disabled}}
+    <button class="button-primary button--green send-email-action"
+      {{action "sendEmail"}}>
+      Send Email
+    </button>
+  {{/unless}}
+{{/if}}
+

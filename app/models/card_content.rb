@@ -53,6 +53,7 @@ class CardContent < ActiveRecord::Base
       'check-box': ['boolean'],
       'file-uploader': ['attachment', 'manuscript', 'sourcefile'],
       'paragraph-input': ['text', 'html'],
+      'email-editor': ['html'],
       'radio': ['boolean', 'text'],
       'tech-check': ['boolean'],
       'tech-check-email': [nil],

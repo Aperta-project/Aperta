@@ -216,6 +216,7 @@ describe XmlCardLoader do
                 </content>
                 <content ident='potatoe' value-type='text' content-type="paragraph-input">
                   <default-answer-value>I really mean it!  You shall not PASS!</default-answer-value>
+                  <text>Because more REASONS!</text>
                 </content>
               </content>
             </content>

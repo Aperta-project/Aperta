@@ -36,6 +36,11 @@
 
   .switch .interior-text {
     color: white;
+    visibility: hidden;
+  }
+
+  input:checked + .slider .interior-text {
+    visibility: visible;
   }
 
   .slider {

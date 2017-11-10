@@ -5,13 +5,13 @@ import { PropTypes } from 'ember-prop-types';
 export default Ember.Component.extend(ValidationErrorsMixin, {
   classNameBindings: ['card-content', 'card-content-email-editor'],
   //passed-in stuff
-  updateTemplate: null,
   restless: Ember.inject.service('restless'),
   flash: Ember.inject.service('flash'),
   propTypes: {
     content: PropTypes.EmberObject.isRequired,
     owner: PropTypes.EmberObject.isRequired,
-    disabled: PropTypes.bool,
+    answer: PropTypes.EmberObject.isRequired,
+    disabled: PropTypes.bool.isRequired,
     repetition: PropTypes.oneOfType([PropTypes.null, PropTypes.EmberObject]).isRequired
   },
 
@@ -19,7 +19,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     this._super(...arguments);
     const config = this._templateConfig('load_email_template');
 
-    var templateName = this.get('content.letterTemplate');
+    let templateName = this.get('content.letterTemplate');
 
     this.get('restless').get(config.url, {letter_template_name: templateName}).then((data)=> {
       this.set('emailToField', data.to);
@@ -30,22 +30,58 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
   _templateConfig(endpoint) {
     return {
-      url: `/api/tasks/${this.get('owner.id')}/${endpoint}`,
-      data: {
-        intro: this.get('emailIntroText'),
-        footer: this.get('emailFooterText')
-      }
+      url: `/api/tasks/${this.get('owner.id')}/${endpoint}`
     };
   },
 
-  generatePreview() {
-    const config = this._templateConfig('sendback_preview');
+  name: Ember.computed('content.ident', function() {
+    let ident = this.get('content.ident');
+    return `email-editor-${ident}`;
+  }),
 
-    this.get('restless').put(config.url, config.data).then((data)=> {
-      this.set('emailPreview', data.body);
-      this.set('showEmailPreview', true);
-    });
-  },
+  answer: Ember.computed('content', 'owner', function(){
+    return this.get('content').get('answers').findBy('owner', this.get('owner'));
+  }),
+
+  emailAnswer: Ember.computed('content', 'owner', function(){
+    let answer = this.get('content').get('answers').findBy('owner', this.get('owner'));
+    if(answer) {
+      let value = answer.get('value');
+      let emailJSON = value ? JSON.parse(value) : undefined;
+      return emailJSON;
+    }
+    return answer;
+  }),
+
+  disableEditor: Ember.computed('content', 'owner', function(){
+    let answer = this.get('content').get('answers').findBy('owner', this.get('owner'));
+    return answer ? true : false;
+  }),
+
+  to: Ember.computed('emailAnswer', function() {
+    let answer = this.get('emailAnswer');
+    return answer ? answer.to : undefined;
+  }),
+
+  subject: Ember.computed('emailAnswer', function() {
+    let answer = this.get('emailAnswer');
+    return answer ? answer.subject : undefined;
+  }),
+
+  body: Ember.computed('emailAnswer', function() {
+    let answer = this.get('emailAnswer');
+    return answer ? answer.body : undefined;
+  }),
+
+  from: Ember.computed('emailAnswer', function() {
+    let answer = this.get('emailAnswer');
+    return answer ? answer.from : undefined;
+  }),
+
+  date: Ember.computed('emailAnswer', function() {
+    let answer = this.get('emailAnswer');
+    return answer ? answer.date : undefined;
+  }),
 
   inputClassNames: ['form-control'],
 
@@ -65,6 +101,26 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       if (Ember.isBlank(this.get('answerProxy'))) {
         this.set('hideError', true);
       }
+    },
+
+    sendEmail() {
+      const config = this._templateConfig('send_message_email');
+      let owner = this.get('owner');
+      var emailMessage = {
+        recipients: [this.get('emailToField')],
+        subject: this.get('emailToSubject'),
+        body: this.get('emailToBody')};
+
+      this.get('restless').put(config.url, emailMessage).then((data)=> {
+        this.set('emailToField', data.to.toString());
+        this.set('emailToSubject', data.subject);
+        this.set('emailToBody', data.body);
+        var emailResult = JSON.stringify(data);
+        let content = this.get('content');
+        let answer = content.get('answers').findBy('owner', owner) || content.createAnswerForOwner(owner);
+        answer.set('value', emailResult);
+        answer.save();
+      });
     }
   }
 });

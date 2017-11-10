@@ -131,7 +131,8 @@ tech-check-email = element content {
 email-editor = element content {
   (attribute content-type { "email-editor" }
   & attribute ident { text }?
-  & attribute letter-template { text }?),
+  & attribute letter-template { text }?
+  & attribute value-type { "html" }),
   content*
 }
 

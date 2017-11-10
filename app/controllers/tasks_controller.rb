@@ -99,6 +99,32 @@ class TasksController < ApplicationController
     head :no_content
   end
 
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
+  def send_message_email
+    requires_user_can :edit, task
+    users = User.where(email: params[:recipients])
+    sent_to_users = []
+    users.each do |user|
+      sent_to_users << user.email
+      GenericMailer.delay.send_email(
+        subject: params[:subject],
+        body: params[:body],
+        to: user.email,
+        task: task
+      )
+    end
+    d = DateTime.current
+    initiator = current_user.email
+    render json:  {
+      to: sent_to_users,
+      from: initiator,
+      date: d.strftime("%h %d, %Y %H:%M"),
+      subject: params[:subject],
+      body: params[:body]
+    }
+  end
+
   def sendback_preview
     @task = Task.find(params[:id])
     @letter_template = render_sendback_template(@task)

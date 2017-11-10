@@ -112,7 +112,7 @@ radio-input = element content {
   & input-attributes
   & attribute value-type { "text" | "boolean" }
   & default-answer-text?
-  & instructions-label-text
+  & instructions-text
   & possible-value*
   & content*
 }

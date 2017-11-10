@@ -103,12 +103,12 @@
   </define>
   <define name="instructions-label-text">
     <interleave>
+      <ref name="instructions-text"/>
       <optional>
-        <ref name="instructions-text"/>
+        <element name="label">
+          <ref name="html"/>
+        </element>
       </optional>
-      <element name="label">
-        <ref name="html"/>
-      </element>
     </interleave>
   </define>
   <define name="file-validation">
@@ -291,7 +291,7 @@
         <optional>
           <ref name="default-answer-text"/>
         </optional>
-        <ref name="instructions-label-text"/>
+        <ref name="instructions-text"/>
         <zeroOrMore>
           <ref name="possible-value"/>
         </zeroOrMore>

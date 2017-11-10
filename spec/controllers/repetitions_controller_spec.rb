@@ -113,9 +113,9 @@ describe RepetitionsController do
 
       it "updates a repetition position (along with siblings)" do
         do_request
-        expect(repetition_a.reload.position).to be(1)
-        expect(repetition_b.reload.position).to be(2)
-        expect(repetition_c.reload.position).to be(0)
+        expect(repetition_a.reload.position).to eq(1)
+        expect(repetition_b.reload.position).to eq(2)
+        expect(repetition_c.reload.position).to eq(0)
       end
     end
 

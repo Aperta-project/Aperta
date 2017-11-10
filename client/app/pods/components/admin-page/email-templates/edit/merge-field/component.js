@@ -1,7 +1,7 @@
 import Ember from 'ember';
 export default Ember.Component.extend({
 
-  isGroup: Ember.computed.alias('mergeField.many'),
+  isGroup: Ember.computed.alias('mergeField.is_array'),
   children: Ember.computed.alias('mergeField.children'),
   isLeafNode: Ember.computed.not('children.length'),
 

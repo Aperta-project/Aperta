@@ -156,17 +156,7 @@ class ReviewerReport < ActiveRecord::Base
   end
 
   def review_duration_period
-    # unfortunately the better way to get this value is lost in the ReviewerReportTaskCreator
-    # where it is originating_task.task_template.setting('review_duration_period').value
-    # until we shore up our data modeling, le sigh.
-    period = 10 # use the original default in case anything is missing
-    if mmt = paper.journal.manuscript_manager_templates.find_by(paper_type: paper.paper_type)
-      clause = { journal_task_types: { kind: "TahiStandardTasks::PaperReviewerTask" } }
-      if task_template = mmt.task_templates.joins(:journal_task_type).find_by(clause)
-        period = task_template.setting('review_duration_period').value
-      end
-    end
-    period
+    paper.review_duration_period
   end
 
   def thank_reviewer

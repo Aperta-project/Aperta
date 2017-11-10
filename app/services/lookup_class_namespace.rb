@@ -16,7 +16,6 @@ class LookupClassNamespace
     "AssignTeamTask"                 =>     "Tahi::AssignTeam::AssignTeamTask",
     "AuthorsTask"                    =>     "TahiStandardTasks::AuthorsTask",
     "DataAvailabilityTask"           =>     "TahiStandardTasks::DataAvailabilityTask",
-    "EarlyPostingTask"               =>     "TahiStandardTasks::EarlyPostingTask",
     "FigureTask"                     =>     "TahiStandardTasks::FigureTask",
     "FinancialDisclosureTask"        =>     "TahiStandardTasks::FinancialDisclosureTask",
     "FrontMatterReviewerReportTask"  =>     "TahiStandardTasks::FrontMatterReviewerReportTask",

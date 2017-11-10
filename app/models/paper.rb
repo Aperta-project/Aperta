@@ -379,6 +379,14 @@ class Paper < ActiveRecord::Base
       alert_duplicate_file(attachment, uploaded_by)
       # No need to process attachment, mark the paper record as "done"
       update(processing: false)
+    elsif attachment.file_type == 'pdf'
+      # bypass ihat for PDFs, and update paper and associated versioned_text object
+      # NOTE: although PDF manuscripts don't store content in the body, it must
+      # be updated anyway since the versioned text object is created
+      # as a side effect of that call
+      attachment.paper.update!(body: '', processing: false)
+    else
+      ProcessManuscriptWorker.perform_async(attachment.id)
     end
   end
 
@@ -647,12 +655,27 @@ class Paper < ActiveRecord::Base
     PREPRINT_DOI_JOURNAL_ABBREV + "." + preprint_doi_article_number
   end
 
-  def preprint_published?
-    export_deliveries.where(state: 'preprint_published').any?
+  def preprint_posted?
+    export_deliveries.where(state: 'preprint_posted').any?
   end
 
   def front_matter?
     !uses_research_article_reviewer_report?
+  end
+
+  def manuscript_manager_template
+    ManuscriptManagerTemplate.find_by(journal: journal, paper_type: paper_type)
+  end
+
+  def review_duration_period
+    default = 10
+    if FeatureFlag[:REVIEW_DUE_DATE]
+      setting = manuscript_manager_template
+        .try(:task_template_by_kind, "TahiStandardTasks::PaperReviewerTask")
+        .try(:setting, 'review_duration_period')
+      return setting.value if setting.present?
+    end
+    default
   end
 
   private

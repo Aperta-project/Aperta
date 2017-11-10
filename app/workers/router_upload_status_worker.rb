@@ -21,7 +21,7 @@ class RouterUploadStatusWorker
     when "SUCCESS"
       export_delivery.delivery_succeeded!
       # check for published status (for preprints only)
-      RouterPublishStatusWorker.perform_in(1.hour, export_delivery.id) if export_delivery.destination == 'preprint'
+      RouterPostStatusWorker.perform_in(1.hour, export_delivery.id) if export_delivery.destination == 'preprint'
     else
       export_delivery.delivery_failed!(result[:job_status_description])
     end

@@ -9,9 +9,9 @@ end
 
 namespace :reports do
   task print_letter_template_scenarios: :environment do
-    TemplateContext.scenarios.each do |scenario|
-      puts scenario
-      print_merge_fields(scenario.merge_fields)
+    TemplateContext.scenarios.each do |name, klass|
+      puts "#{name} | #{klass}"
+      print_merge_fields(klass.merge_fields)
     end
   end
 end

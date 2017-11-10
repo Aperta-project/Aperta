@@ -31,10 +31,14 @@ class LetterTemplate < ActiveRecord::Base
   end
 
   def merge_fields
-    scenario.constantize.merge_fields
+    scenario_class.merge_fields
   end
 
   private
+
+  def scenario_class
+    TemplateContext.scenarios[scenario]
+  end
 
   def render_attr(template, context, sanitize: false, check_blanks: false)
     raw = Liquid::Template.parse(template)

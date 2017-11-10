@@ -291,7 +291,7 @@ class BaseCard(AuthenticatedPage):
     Used to validate the card is ready to be interacted with.
     :return: Void function
     """
-    self._wait_for_element(self._get(self._completion_button))
+    self._wait_for_element(self._get(self._completion_button), multiplier=2)
 
   def get_issues_text(self):
     """

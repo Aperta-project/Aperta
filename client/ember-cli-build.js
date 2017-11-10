@@ -23,6 +23,9 @@ module.exports = function(defaults) {
     },
     minifyJS: {
       enabled: EmberApp.env() === 'production'
+    },
+    fingerprint: {
+      exclude: ['skins', 'plugins']
     }
   };
 
@@ -76,5 +79,5 @@ module.exports = function(defaults) {
     app.import('vendor/pusher-test-stub.js', { type: 'test' });
   }
 
-  return app.toTree(select2Assets);
+  return app.toTree([select2Assets]);
 };

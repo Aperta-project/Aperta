@@ -1,18 +1,24 @@
 # Serves as the method for non-users to decline without having to sign in.
 class TokenInvitationsController < ApplicationController
-  before_action :redirect_if_logged_in, except: :accept
-  before_action :redirect_unless_declined, except: [:show, :decline, :accept, :inactive]
-  before_action :redirect_if_inactive, only: [:show, :accept, :decline]
   before_action :ensure_user!, only: [:accept], unless: :current_user
 
+  include ClientRouteHelper
   # rubocop:disable Style/AndOr, Metrics/LineLength
   def show
-    redirect_to root_path and return if invitation.accepted?
+    render json: invitation, serializer: TokenInvitationSerializer
+  end
 
-    assign_template_vars
+  def update
+    if invitation.invited? && invitation_update_params[:state] == 'declined'
+      invitation.decline!
+    elsif !invitation.feedback_given?
+      invitation.update_attributes(invitation_update_params.except(:state))
+    end
+    render json: invitation, serializer: TokenInvitationSerializer
   end
 
   def accept
+    redirect_to client_show_invitation_url(token: params[:token]) and return if invitation_inactive?
     if invitation.invited? and current_user.email == invitation.email
       invitation.actor = current_user
       invitation.accept!
@@ -22,73 +28,18 @@ class TokenInvitationsController < ApplicationController
     redirect_to "/papers/#{invitation.paper.to_param}"
   end
 
-  def decline
-    redirect_to invitation_feedback_form_path(token)
-
-    invitation.decline!
-    Activity.invitation_declined!(invitation, user: nil)
-  end
-
-  def feedback_form
-    if invitation.feedback_given?
-      redirect_to invitation_thank_you_path(token) and return
-    end
-
-    assign_template_vars
-  end
-
-  def thank_you
-    assign_template_vars
-  end
-
-  def feedback
-    unless invitation.feedback_given?
-      invitation.update_attributes(
-        feedback_params
-      )
-    end
-
-    redirect_to invitation_thank_you_path(token)
-  end
-
-  def inactive
-    assign_template_vars
-    @email = @paper.journal.staff_email
-  end
-
   private
 
-  def assign_template_vars
-    @invitation = invitation
-    @paper = invitation.task.paper
-    @journal_logo_url = @paper.journal.logo_url
+  def invitation_update_params
+    params.require(:token_invitation).permit(:state, :decline_reason, :reviewer_suggestions)
   end
 
-  def redirect_if_inactive
-    redirect_to invitation_inactive_path(token) and return if invitation.declined? or invitation.rescinded?
-  end
-
-  def redirect_if_logged_in
-    redirect_to root_path if current_user
-  end
-
-  def redirect_unless_declined
-    redirect_to root_path and return unless invitation.declined?
-  end
-
-  def feedback_params
-    params
-      .require(:invitation)
-      .permit(:decline_reason,
-        :reviewer_suggestions)
-  end
-
-  def token
-    params[:token] || params[:invitation][:token]
+  def invitation_inactive?
+    invitation.declined? or invitation.rescinded?
   end
 
   def invitation
-    @invitation ||= Invitation.find_by_token!(token)
+    @invitation ||= Invitation.find_by!(token: params[:token])
   end
 
   def thank_you_message
@@ -118,7 +69,7 @@ class TokenInvitationsController < ApplicationController
   end
 
   def ensure_user!
-    if invitation.invitee_id or use_authentication?
+    if invitation.invitee.try(:ned_id) or use_authentication?
       if TahiEnv.cas_enabled?
         redirect_to omniauth_authorize_path(:user, 'cas', url: akita_invitation_accept_url)
       else

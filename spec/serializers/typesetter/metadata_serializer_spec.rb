@@ -21,13 +21,20 @@ describe Typesetter::MetadataSerializer do
       short_title: '<p>my <pre><span>paper</span></pre> <u><span style="omg: so-much-garbage\">short</span></u></p>'
     )
   end
-  let(:early_posting_task) { FactoryGirl.create(:early_posting_task, paper: paper) }
+
+  let!(:early_posting_custom_task) do
+    card = FactoryGirl.create(:card, :versioned, name: 'Early Version', journal: journal)
+    card_version = card.latest_published_card_version
+    card_version.card_contents.last.update!(ident: 'early-posting--consent', value_type: "boolean")
+    FactoryGirl.create(:custom_card_task, title: 'Early Version', card_version: card_version, paper: paper)
+  end
+
   let(:metadata_tasks) do
     [
       FactoryGirl.create(:competing_interests_task, paper: paper),
       FactoryGirl.create(:financial_disclosure_task, paper: paper),
       FactoryGirl.create(:production_metadata_task, paper: paper),
-      early_posting_task
+      early_posting_custom_task
     ]
   end
   let(:our_question) do
@@ -39,7 +46,6 @@ describe Typesetter::MetadataSerializer do
   let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
 
   before do
-    CardLoader.load('TahiStandardTasks::EarlyPostingTask')
     paper.phases.first.tasks.push(*metadata_tasks)
   end
 
@@ -158,7 +164,7 @@ describe Typesetter::MetadataSerializer do
     context 'with an answer' do
       let!(:answer) do
         card_content = CardContent.where(ident: 'early-posting--consent').first
-        FactoryGirl.create(:answer, card_content: card_content, owner: early_posting_task, value: answer_value)
+        FactoryGirl.create(:answer, card_content: card_content, owner: early_posting_custom_task, value: answer_value)
       end
       context 'that is true' do
         let(:answer_value) { true }
@@ -252,30 +258,29 @@ describe Typesetter::MetadataSerializer do
     let(:paper) { FactoryGirl.create(:paper, :with_phases, :version_with_file_type, :with_author, journal: journal) }
     let(:card_version) { FactoryGirl.create(:card_version) }
     let(:another_card_version) { FactoryGirl.create(:card_version) }
-    let(:my_custom_task) { FactoryGirl.create(:custom_card_task, card_version: card_version, paper: paper) }
-    let(:another_my_custom_task) { FactoryGirl.create(:custom_card_task, card_version: another_card_version, paper: paper) }
+    let!(:my_custom_task) { FactoryGirl.create(:custom_card_task, card_version: card_version, paper: paper) }
+    let!(:another_my_custom_task) { FactoryGirl.create(:custom_card_task, card_version: another_card_version, paper: paper) }
     subject(:parsed_metadata) { JSON.parse(Typesetter::MetadataSerializer.new(paper, options).to_json) }
 
     before do
       parent = card_version.content_root
-      parent.children << [FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "my_custom_task--some_text", value_type: 'text', default_answer_value: 'This is my anwser'),
-                          FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "my_custom_task--question_1", value_type: 'boolean', default_answer_value: 'true'),
-                          FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "my_custom_task--question_2", value_type: 'boolean', default_answer_value: 'false')]
-      card_version.reload.create_default_answers(my_custom_task)
+      parent.children << [FactoryGirl.create(:card_content, :with_answer, parent: parent, card_version: card_version, ident: "my_custom_task--some_text", value_type: 'text', answer_value: 'This is my answer'),
+                          FactoryGirl.create(:card_content, :with_answer, parent: parent, card_version: card_version, ident: "my_custom_task--question_1", value_type: 'boolean', answer_value: 'true'),
+                          FactoryGirl.create(:card_content, :with_answer, parent: parent, card_version: card_version, ident: "my_custom_task--question_2", value_type: 'boolean', answer_value: 'false')]
+
       parent = another_card_version.content_root
-      parent.children << [FactoryGirl.create(:card_content, parent: parent, card_version: another_card_version, ident: "another_custom_task--some_text", value_type: 'text', default_answer_value: 'This is my other anwser'),
-                          FactoryGirl.create(:card_content, parent: parent, card_version: another_card_version, ident: "another_custom_task--question_1", value_type: 'boolean', default_answer_value: 'false'),
-                          FactoryGirl.create(:card_content, parent: parent, card_version: another_card_version, ident: "another_custom_task--question_2", value_type: 'boolean', default_answer_value: 'false')]
-      another_card_version.reload.create_default_answers(another_my_custom_task)
+      parent.children << [FactoryGirl.create(:card_content, :with_answer, parent: parent, card_version: another_card_version, ident: "another_custom_task--some_text", value_type: 'text', answer_value: 'This is my other answer'),
+                          FactoryGirl.create(:card_content, :with_answer, parent: parent, card_version: another_card_version, ident: "another_custom_task--question_1", value_type: 'boolean', answer_value: 'false'),
+                          FactoryGirl.create(:card_content, :with_answer, parent: parent, card_version: another_card_version, ident: "another_custom_task--question_2", value_type: 'boolean', answer_value: 'false')]
       paper.publishing_state = 'accepted'
     end
 
     shared_examples_for :includes_custom_metadata do
       it "ensure exported metadata includes custom card fields" do
-        expected_metadata = { "my_custom_task--some_text" => 'This is my anwser',
+        expected_metadata = { "my_custom_task--some_text" => 'This is my answer',
                               "my_custom_task--question_1" => true,
                               "my_custom_task--question_2" => false,
-                              "another_custom_task--some_text" => 'This is my other anwser',
+                              "another_custom_task--some_text" => 'This is my other answer',
                               "another_custom_task--question_1" => false,
                               "another_custom_task--question_2" => false }
         expect(subject['metadata']['custom_card_fields']).to eq expected_metadata

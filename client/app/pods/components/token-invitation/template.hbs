@@ -1,0 +1,25 @@
+{{#overlay-fullscreen visible=overlayVisible
+                      outAnimationComplete=(action "hideInvitationsOverlay")
+                      title="Aperta"
+                      wormhole=false
+                      overlayClass="invitations-overlay"
+                      enableClose=false
+                      as |overlay|}}
+    {{#if declineDone}}
+      <div class='message thankyou'>
+        <h1>Thank You!</h1>
+      </div>
+    {{else if inactive}}
+      <div class='message inactive'>
+        <h3>This invitation is no longer active.</h3>
+        <br>
+        <p>Either you previously declined to review this submission for <i>{{model.journalName}}</i> or your invitation was rescinded. If you are interested in reviewing this manuscript, please email <a href="mailto:{{model.journalStaffEmail}}">{{model.journalStaffEmail}}</a> for assistance.</p>
+      </div>
+    {{else}}
+      {{invitations-x invitations=invitations
+                      loading=invitationsLoading
+                      accept=(action "acceptInvitation")
+                      decline=(action "declineInvitation")
+                      acquireFeedback=(action "saveInvitation")}}
+    {{/if}}
+{{/overlay-fullscreen}}

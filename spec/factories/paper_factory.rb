@@ -180,7 +180,6 @@ FactoryGirl.define do
           end_time = Time.now
           puts "seeded cards in test in #{end_time - start} seconds"
         end
-        FactoryGirl.create(:early_posting_task, :with_loaded_card)
         PaperFactory.new(paper, paper.creator).add_phases_and_tasks
       end
     end
@@ -315,6 +314,10 @@ FactoryGirl.define do
           s3_dir: 'sample/dir',
           status: 'done'
         )
+        # although PDF manuscripts don't store content in the body, it must
+        # be updated anyway since the versioned text object is created
+        # as a side effect of that call
+        paper.update!(body: '')
 
         paper.save!
 

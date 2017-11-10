@@ -62,6 +62,7 @@ test('can manage workflow, list appears for manually created correspondence', fu
   this.set('paper', paper);
   this.render(template);
   return wait().then(() => {
+    assert.equal(this.$('.correspondence-table .most-recent-activity').length, 0);
     assert.equal(this.$('.correspondence-table').length, 1);
     assert.equal(this.$('tbody').length, 1);
     assert.textPresent('tr:last td:nth-child(1)', formatDate(correspondence.get('sentAt'), {}));
@@ -82,5 +83,23 @@ test('can not manage workflow, list is hidden', function(assert) {
   this.render(template);
   return wait().then(() => {
     assert.equal(this.$('.correspondence-table').length, 0);
+  });
+});
+
+test('correspondence with activities show the activity atop the entry', function(assert) {
+  let paper = FactoryGuy.make('paper');
+  let correspondence = FactoryGuy.make('correspondence', 'externalCorrespondence', {
+    activities: [['correspondence.created', 'Jim', '1992-3-4']],
+    paper: paper
+  });
+  const can = FakeCanService.create().allowPermission('manage_workflow', paper);
+  this.register('service:can', can.asService());
+
+  this.set('correspondence', [correspondence]);
+  this.set('paper', paper);
+  this.render(template);
+
+  return wait().then(() => {
+    assert.textPresent('.correspondence-table .most-recent-activity', 'Added by Jim');
   });
 });

@@ -13,9 +13,9 @@
       <tbody>
         {{#each model as |message|}}
           {{#if message.hasActivities}}
-            <div class="col-sm-12 bottom-align-text">
-              <p><em>{{message.activityMessages.lastObject}}</em></p>
-            </div>
+            <tr class="most-recent-activity">
+              <td colspan="5">{{message.activityMessages.lastObject}}</td>
+            </tr>
           {{/if}}
           <tr>
             <td>{{format-date message.sentAt}}</td>

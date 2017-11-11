@@ -31,6 +31,10 @@ $scheduled-event-row-padding: 10px;
     .switch {
       margin: 0;
       vertical-align: bottom;
+
+      .interior-text {
+        font-size: 12px;
+      }
     }
   }
 

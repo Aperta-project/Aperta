@@ -54,9 +54,8 @@
     transition: .4s;
   }
 
-  .slider:before {
+  .slider-button {
     position: absolute;
-    content: "";
     height: 83%;
     width: 46%;
     left: 3%;
@@ -73,7 +72,7 @@
     box-shadow: 0 0 1px green;
   }
 
-  input:checked + .slider:before {
+  input:checked + .slider .slider-button {
     transform: translateX(100%);
   }
 
@@ -89,7 +88,7 @@
     border-radius: 34px;
   }
 
-  .slider.round:before {
+  .slider.round .slider-button {
     border-radius: 50%;
   }
 

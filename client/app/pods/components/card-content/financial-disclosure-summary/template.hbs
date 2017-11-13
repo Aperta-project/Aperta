@@ -4,7 +4,7 @@
     Your Financial Disclosure Statement will appear as:
   </p>
 
-  {{#each funders as |funder index|}}
+  {{#each funders as |funder|}}
     <div>
       {{#if funder.onlyHasAdditionalComments}}
         {{{funder.additionalComments}}}

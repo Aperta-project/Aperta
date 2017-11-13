@@ -16,7 +16,11 @@
 }
 
 .card-checkbox {
+  .card-form-element {
+   margin:0; 
+  }
   .card-form-label {
-    display:inline; 
+    display:inline;
+    margin-left:5px;
   }
 }

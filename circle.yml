@@ -88,7 +88,7 @@ jobs:
       - run:
           name: Run all rspec tests separately
           command: |
-            SPECS=$(circleci tests glob "**/spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+            SPECS=$(circleci tests glob "**/spec/**/*_spec.rb" | circleci tests)
             echo $SPECS
             bundle exec rspec -p 30 -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml -- ${SPECS}
             bundle exec rspec -p 30 -t js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml -- ${SPECS}

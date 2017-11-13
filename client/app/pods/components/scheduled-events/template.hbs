@@ -3,7 +3,7 @@
   {{#each events as |event|}}
     <div class="scheduled-event scheduled-event-row event-{{event.state}}">
       <div class="scheduled-event-cell">
-        <div class="scheduled-event-description scheduled-event-cell">
+        <div class="scheduled-event-description">
           {{event.name}} on
           {{moment-format event.dispatchAt dispatchDateFormat}} {{dueAtTimezone}}
           {{due-date-offset event.dispatchAt dueDate}}

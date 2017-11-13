@@ -17,6 +17,7 @@ from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PostgreSQL import PgSQL
 from .styles import APERTA_BLUE
 from .base_admin import BaseAdminPage
+from .sim_check_settings import SimCheckSettings
 
 __author__ = 'jgray@plos.org'
 
@@ -239,7 +240,8 @@ class AdminWorkflowsPage(BaseAdminPage):
                                         'revision_tech_check', 'send_to_apex',
                                         'title_and_abstract'),
                            uses_resrev_report=True,
-                           preprint_eligible=False):
+                           preprint_eligible=False,
+                           settings=None):
     """
     A function to add a new mmt (paper type) template to a journal
     :param commit: boolean, whether to commit the named mmt to the journal, defaults to False.
@@ -250,6 +252,7 @@ class AdminWorkflowsPage(BaseAdminPage):
     :param uses_resrev_report: boolean, default true, specifies mmt type as research for
       the purposes of reviewer report selection
     :param preprint_eligible: bool, Whether the mmt supports preprint functions, including export
+    :param settings: dictionary
     :return: void function
     """
     if not commit:
@@ -288,11 +291,13 @@ class AdminWorkflowsPage(BaseAdminPage):
       time.sleep(1)
     else:
       logging.info('Adding {0} MMT with user tasks: {1}, staff tasks {2}, and that uses the research reviewer '
-                   'report: {3}, with a preprint eligible setting: {4}'.format(mmt_name,
-                                                                               user_tasks,
-                                                                               staff_tasks,
-                                                                               uses_resrev_report,
-                                                                               preprint_eligible))
+                   'report: {3}, with a preprint eligible setting: {4}, automation setting for the '
+                   'similar check card: {5}'.format(mmt_name,
+                                                    user_tasks,
+                                                    staff_tasks,
+                                                    uses_resrev_report,
+                                                    preprint_eligible,
+                                                    settings))
       add_mmt_btn = self._get(self._admin_workflow_add_mmt_btn)
       add_mmt_btn.click()
       self._wait_for_element(self._get(self._mmt_template_name_field))
@@ -300,6 +305,11 @@ class AdminWorkflowsPage(BaseAdminPage):
         self._get(self._mmt_template_resrev_checkbox).click()
       if preprint_eligible:
         self._get(self._mmt_template_preprint_checkbox).click()
+      if settings:
+        for setting in settings:
+          self.set_settings(setting)
+          self._wait_for_element(self._get(self._mmt_template_name_field))
+
       template_field = self._get(self._mmt_template_name_field)
       save_template_button = self._get(self._mmt_template_save_button)
       template_field.click()
@@ -481,3 +491,15 @@ class AdminWorkflowsPage(BaseAdminPage):
     assert settings_icon.value_of_css_property('color') == APERTA_BLUE, \
       settings_icon.value_of_css_property('color')
     settings_icon.click()
+
+  def set_settings(self, setting):
+    """
+    A function to set card setting
+    :param setting: dictionary with card name, seetting name and setting value
+    :return: void function
+    """
+    if setting['card_name'] == 'Similarity Check':
+      self.click_on_card_settings(self._sim_check_card_settings)
+      sim_check_settings = SimCheckSettings(self.getDriver())
+      sim_check_settings.set_ithenticate(setting['value'])
+      sim_check_settings.click_save_settings()

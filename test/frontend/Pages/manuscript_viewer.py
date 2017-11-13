@@ -1330,7 +1330,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     for key, line in enumerate(handle_box_lines):
       assert line.value_of_css_property('top') == line_expected_top, \
           'The handle box line {0} top {1} is not the expected: {2}'.format(
-          line.value_of_css_property('top'), line_expected_top)
+          key, line.value_of_css_property('top'), line_expected_top)
 
       assert line.value_of_css_property('padding-left') == line_expected_padding_left, \
         'The handle box line {0} padding-left {1} is not the expected: {2}'.format(

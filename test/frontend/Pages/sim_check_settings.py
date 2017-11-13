@@ -136,6 +136,29 @@ class SimCheckSettings(CardSettings):
     on_submission = radio_buttons[option_index]
     if not on_submission.is_selected():
       on_submission.click()
+
+  def set_ithenticate(self, auto_option='off'):
+    """
+    Set Similarity Check automation options
+    :param: auto_option: string: one of the options: 'off','at_first_full_submission',
+    'after_major_revise_decision','after_minor_revise_decision','after_any_first_revise_decision'
+    :return: void function
+    """
+    if auto_option == 'off':
+       self.set_automation(automation=False)
+    else:
+       self.set_automation(automation=True)
+       if auto_option == 'at_first_full_submission':
+         self.set_after_submission_option(0)  # after first submission
+       else:
+         self.set_after_submission_option(1)  # after revision
+         if auto_option == 'after_major_revise_decision':
+           self.select_and_validate_after_revision_option('major revision', 0)
+         elif auto_option == 'after_minor_revise_decision':
+           self.select_and_validate_after_revision_option('minor revision', 1)
+         elif auto_option == 'after_any_first_revise_decision':
+           self.select_and_validate_after_revision_option('any first revision', 2)
+
 #
 #   def save_settings(self):
 #     """

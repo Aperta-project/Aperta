@@ -1937,16 +1937,73 @@ pp_card_mmt = {'name'              : 'Preprint Eligible Two',
                 'uses_resrev_report': True,
                 'preprint_eligible' : False
                 }
-sim_check_mmt = {'name'              : 'Similarity Check test',
-                'user_tasks'        : ['Upload Manuscript'],
-                'staff_tasks'       : ['Assign Team', 'Editor Discussion', 'Final Tech Check',
-                                       'Invite Academic Editor', 'Invite Reviewers',
-                                       'Production Metadata', 'Register Decision',
-                                       'Related Articles', 'Revision Tech Check', 'Send to Apex',
-                                       'Similarity Check', 'Title And Abstract'],
-                'uses_resrev_report': True,
-                'preprint_eligible' : False
-                }
+sim_check_off_mmt = {'name': 'Similarity Check test',
+                     'user_tasks': ['Upload Manuscript'],
+                     'staff_tasks': ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                     'Invite Academic Editor', 'Invite Reviewers',
+                                     'Production Metadata', 'Register Decision',
+                                     'Related Articles', 'Revision Tech Check', 'Send to Apex',
+                                     'Similarity Check', 'Title And Abstract'],
+                     'uses_resrev_report': True,
+                     'preprint_eligible': False,
+                     'settings': {'card_name':'Similarity Check', 'setting':'ithenticate_automation', 'value':'off'}
+                     }
+sim_check_full_submission_mmt = {'name': 'Similarity Check test',
+                                 'user_tasks': ['Upload Manuscript'],
+                                 'staff_tasks': ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                                 'Invite Academic Editor', 'Invite Reviewers',
+                                                 'Production Metadata', 'Register Decision',
+                                                 'Related Articles', 'Revision Tech Check', 'Send to Apex',
+                                                 'Similarity Check', 'Title And Abstract'],
+                                 'uses_resrev_report': True,
+                                 'preprint_eligible': False,
+                                 'settings':
+                                   {'card_name': 'Similarity Check',
+                                    'setting': 'ithenticate_automation',
+                                    'value': 'at_first_full_submission'}
+                                 }
+sim_check_major_revision_mmt = {'name': 'Similarity Check test',
+                                'user_tasks': ['Upload Manuscript'],
+                                'staff_tasks': ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                                'Invite Academic Editor', 'Invite Reviewers',
+                                                'Production Metadata', 'Register Decision',
+                                                'Related Articles', 'Revision Tech Check', 'Send to Apex',
+                                                'Similarity Check', 'Title And Abstract'],
+                                'uses_resrev_report': True,
+                                'preprint_eligible': False,
+                                'settings':
+                                  {'card_name': 'Similarity Check',
+                                   'setting': 'ithenticate_automation',
+                                   'value': 'after_major_revise_decision'}
+                                }
+sim_check_minor_revision_mmt = {'name': 'Similarity Check test',
+                                'user_tasks': ['Upload Manuscript'],
+                                'staff_tasks': ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                                'Invite Academic Editor', 'Invite Reviewers',
+                                                'Production Metadata', 'Register Decision',
+                                                'Related Articles', 'Revision Tech Check', 'Send to Apex',
+                                                'Similarity Check', 'Title And Abstract'],
+                                'uses_resrev_report': True,
+                                'preprint_eligible': False,
+                                'settings':
+                                  {'card_name': 'Similarity Check',
+                                   'setting': 'ithenticate_automation',
+                                   'value': 'after_minor_revise_decision'}
+                                }
+sim_check_first_revision_mmt = {'name': 'Similarity Check test',
+                                'user_tasks': ['Upload Manuscript'],
+                                'staff_tasks': ['Assign Team', 'Editor Discussion', 'Final Tech Check',
+                                                'Invite Academic Editor', 'Invite Reviewers',
+                                                'Production Metadata', 'Register Decision',
+                                                'Related Articles', 'Revision Tech Check', 'Send to Apex',
+                                                'Similarity Check', 'Title And Abstract'],
+                                'uses_resrev_report': True,
+                                'preprint_eligible': False,
+                                'settings':
+                                  {'card_name': 'Similarity Check',
+                                   'setting': 'ithenticate_automation',
+                                   'value': 'after_any_first_revise_decision'}
+                                }
 
 # The following MMT definitions are seed data for our demo environment only
 bio_essay = {'name':               'Essay',

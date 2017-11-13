@@ -47,7 +47,7 @@ module CustomCardVisitors
   # except IF components, which can have the same ident on both legs.
 
   class CardIfIdentValidator < CustomCardVisitor
-    IGNORED = Set.new(%w[if]).freeze
+    COMPONENTS = Set.new(%w[if]).freeze
 
     def initialize
       @idents = Hash.new(0)
@@ -58,7 +58,7 @@ module CustomCardVisitors
       return if remembered?(card_content.object_id)
 
       parent = card_content.parent
-      if parent.present? && IGNORED.member?(parent.content_type)
+      if parent.present? && COMPONENTS.member?(parent.content_type)
         parent.children.map(&:ident).reject(&:blank?).uniq.each { |ident| @idents[ident] += 1 }
         remember(parent.children.map(&:object_id))
       elsif card_content.ident.present?

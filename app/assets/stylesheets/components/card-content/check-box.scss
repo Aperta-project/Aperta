@@ -6,11 +6,17 @@
   label input[type="checkbox"] {
     margin-right: .5em;
   }
-  label {
-    display: flex;
+  label {/*
+    display: flex;*/
     .required-field {
         position: inherit;
         margin-left: 5px;
     }
+  }
+}
+
+.card-checkbox {
+  .card-form-label {
+    display:inline; 
   }
 }

@@ -201,6 +201,10 @@ repeat = element Repeat {
   & content+
 }
 
+financial-disclosure-summary = element FinancialDisclosureSummary {
+  attribute ident { text }?
+}
+
 content = (
  check-box-input
 | date-picker
@@ -211,6 +215,7 @@ content = (
 | error-message
 | export-paper
 | file-uploader
+| financial-disclosure-summary
 | if
 | paragraph-input
 | radio-input

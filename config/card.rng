@@ -489,6 +489,13 @@
       </interleave>
     </element>
   </define>
+  <define name="financial-disclosure-summary">
+    <element name="FinancialDisclosureSummary">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+    </element>
+  </define>
   <define name="content">
     <choice>
       <ref name="check-box-input"/>
@@ -500,6 +507,7 @@
       <ref name="error-message"/>
       <ref name="export-paper"/>
       <ref name="file-uploader"/>
+      <ref name="financial-disclosure-summary"/>
       <ref name="if"/>
       <ref name="paragraph-input"/>
       <ref name="radio-input"/>

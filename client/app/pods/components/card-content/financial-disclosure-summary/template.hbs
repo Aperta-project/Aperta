@@ -1,0 +1,30 @@
+{{#if funders.length }}
+  <p>
+    Please note that if your manuscript is accepted, this statement will be published.<br/>
+    Your Financial Disclosure Statement will appear as:
+  </p>
+
+  {{#each funders as |funder index|}}
+    <div>
+      {{#if funder.onlyHasAdditionalComments}}
+        {{{funder.additionalComments}}}
+      {{else}}
+        {{#if funder.formattedWebsite}}
+          <a href={{funder.formattedWebsite}} target="_blank"><strong>{{funder.formattedName}}</strong></a>
+        {{else}}
+          <strong>{{funder.formattedName}}</strong>
+        {{/if}}
+
+        {{#if funder.grantNumber}}
+          (grant number <strong>{{funder.grantNumber}}</strong>)
+        {{/if}}
+
+        {{#if funder.additionalComments}}
+          {{{funder.additionalComments}}}
+        {{/if}}
+      {{/if}}
+
+      <p>{{funder.fundingStatement}}</p>
+    </div>
+  {{/each}}
+{{/if}}

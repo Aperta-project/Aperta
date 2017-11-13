@@ -43,8 +43,7 @@ module CustomCardVisitors
     end
   end
 
-  # This class ensures that idents are unique within a card,
-  # except IF components, which can have the same ident on both legs.
+  # Idents must be unique within a card, except IF components, which can have the same ident on both legs.
 
   class CardIfIdentValidator < CustomCardVisitor
     COMPONENTS = Set.new(%w[if]).freeze

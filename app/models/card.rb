@@ -140,7 +140,8 @@ class Card < ActiveRecord::Base
 
   # evaluate card semantics
   def check_semantics
-    traverse(CardSemanticValidator.new)
+    traverse(CardIfIdentValidator.new)
+    traverse(CardIfConditionValidator.new)
   end
 
   # traverse card and its latest children

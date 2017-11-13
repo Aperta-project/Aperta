@@ -129,21 +129,6 @@ describe SalesforceServices::ObjectTranslations do
         FactoryGirl.create(:billing_task, title: 'Billing', paper: paper)
       end
 
-      let!(:financial_disclosure_task) do
-        FactoryGirl.create(
-          :financial_disclosure_task,
-          funders: [funder],
-          paper: paper
-        )
-      end
-
-      let!(:funder) do
-        FactoryGirl.create(
-          :funder,
-          name: "funder001",
-          grant_number: '000-2222-111')
-      end
-
       before do
         fill_out_questions_on_paper(paper)
       end
@@ -166,17 +151,11 @@ describe SalesforceServices::ObjectTranslations do
         expect(data['PFA_Question_1b__c']).to          eq (100.00)
         expect(data['PFA_Question_2__c']).to           eq ('Yes')
         expect(data['PFA_Question_2a__c']).to          eq ('foo')
-        expect(data['PFA_Question_2b__c']).to          eq (100.00)
-        expect(data['PFA_Question_3__c']).to           eq ('Yes')
-        expect(data['PFA_Question_3a__c']).to          eq (100.00)
-        expect(data['PFA_Question_4__c']).to           eq ('Yes')
         expect(data['PFA_Question_4a__c']).to          eq (100.00)
         expect(data['PFA_Able_to_Pay_R__c']).to        eq (100.00)
         expect(data['PFA_Additional_Comments__c']).to  eq ('my comments')
         expect(data['PFA_Supporting_Docs__c']).to      eq (true) #indirectly tests private method boolean_from_yes_no
-        expect(data['PFA_Funding_Statement__c']).to    eq ('funder001 http://alderaan.gov (grant number 000-2222-111). ' +
-                                                            'The funder had no role in study design, data collection and analysis, ' +
-                                                            'decision to publish, or preparation of the manuscript.')
+        expect(data['PFA_Funding_Statement__c']).to    be_nil
         # rubocop:enable Style/SingleSpaceBeforeFirstArg
       end
     end
@@ -201,18 +180,31 @@ describe SalesforceServices::ObjectTranslations do
         expect(data['PFA_Able_to_Pay_R__c']).to be nil
         expect(data['PFA_Additional_Comments__c']).to be nil
         expect(data['PFA_Supporting_Docs__c']).to be nil
-        expect(data['PFA_Funding_Statement__c']).to be nil
       end
     end
 
-    context 'and the paper has a billing but not a financial_disclosure_task' do
-      before do
-        expect(paper.financial_disclosure_task).to be nil
+    describe "financial disclosure data" do
+      context 'does not have financial disclosure data' do
+        before do
+          expect_any_instance_of(FinancialDisclosureStatement).to receive(:asked?).and_return(false)
+        end
+
+        it 'should have nil value for the funding statement field' do
+          data = billing_translator.paper_to_billing_hash
+          expect(data['PFA_Funding_Statement__c']).to be_nil
+        end
       end
 
-      it 'should have nil value for the funding statement field' do
-        data = billing_translator.paper_to_billing_hash
-        expect(data['PFA_Funding_Statement__c']).to be nil
+      context 'has financial disclosure data' do
+        before do
+          expect_any_instance_of(FinancialDisclosureStatement).to receive(:asked?).and_return(true)
+          expect_any_instance_of(FinancialDisclosureStatement).to receive(:funding_statement).and_return("funding statement")
+        end
+
+        it 'should have a funding statement' do
+          data = billing_translator.paper_to_billing_hash
+          expect(data['PFA_Funding_Statement__c']).to eq("funding statement")
+        end
       end
     end
 

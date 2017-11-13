@@ -20,12 +20,7 @@ namespace :data do
     DESC
 
     task aperta_11422_manuscript_version_and_status_in_correspondence_history: :environment do
-      papers = Paper.all
-      if papers.empty?
-        raise Exception, "No paper was found."
-      end
-
-      papers.each do |paper|
+      Paper.find_each do |paper|
         versions = paper.versioned_texts
         version_created_date = versions.map(&:created_at).sort
         paper.correspondence.each do |correspondence|

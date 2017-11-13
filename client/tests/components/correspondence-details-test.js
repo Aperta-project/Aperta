@@ -14,7 +14,9 @@ moduleForComponent('correspondence', 'Integration | Component | Correspondence D
 test('shows the history if there are activities', function(assert) {
   let paper = make('paper');
   let correspondence = make('correspondence', 'externalCorrespondence', {
-    activities: [['correspondence.created', 'Jim', '1992-3-4']],
+    activities: [
+      { activity_key: 'correspondence.created', full_name: 'Jim', created_at: '1989-8-19' }
+    ],
     paper: paper
   });
   const can = FakeCanService.create().allowPermission('manage_workflow', paper);

@@ -89,7 +89,9 @@ test('can not manage workflow, list is hidden', function(assert) {
 test('correspondence with activities show the activity atop the entry', function(assert) {
   let paper = FactoryGuy.make('paper');
   let correspondence = FactoryGuy.make('correspondence', 'externalCorrespondence', {
-    activities: [['correspondence.created', 'Jim', '1992-3-4']],
+    activities: [
+      { activity_key: 'correspondence.created', full_name: 'Jim', created_at: '1989-8-19' }
+    ],
     paper: paper
   });
   const can = FakeCanService.create().allowPermission('manage_workflow', paper);

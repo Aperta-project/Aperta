@@ -1,6 +1,6 @@
 import DS from 'ember-data';
 import Ember from 'ember';
-import moment from 'moment';
+import formatDate from 'tahi/lib/format-date';
 
 export default DS.Model.extend({
   paper: DS.belongsTo('paper', { async: false }),
@@ -37,12 +37,12 @@ export default DS.Model.extend({
   activityMessages: Ember.computed('activities', function() {
     return this.get('activities').map((activity) => {
       let result = '';
-      if (activity[0] === 'correspondence.created') {
+      if (activity.activity_key === 'correspondence.created') {
         result += 'Added by ';
       } else {
         result += 'Edited by ';
       }
-      result += activity[1] + ' on ' + moment(activity[2]).format('MMMM DD, YYYY kk:mm');
+      result += activity.full_name + ' on ' + formatDate(activity.created_at, { format: 'MMMM DD, YYYY kk:mm' });
       return result;
     });
   }),

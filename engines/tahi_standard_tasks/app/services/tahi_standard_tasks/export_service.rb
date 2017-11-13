@@ -124,6 +124,8 @@ module TahiStandardTasks
     end
 
     def router_payload
+      # build the zip archive along with the manifest.file_list
+      archive_file = packager.zip_file
       {
         metadata_filename: 'metadata.json',
         aperta_id: aperta_id,
@@ -131,7 +133,7 @@ module TahiStandardTasks
         destination: export_delivery.destination,
         journal_code: paper.journal.doi_journal_abbrev,
         # The archive_filename is not a string but the file itself.
-        archive_filename: Faraday::UploadIO.new(packager.zip_file, '')
+        archive_filename: Faraday::UploadIO.new(archive_file, '')
       }
     end
 

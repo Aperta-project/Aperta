@@ -22,4 +22,8 @@ module ClientRouteHelper
     "#{root_url}papers/#{paper.to_param}/discussions/" \
       "#{discussion.to_param}/#{query}"
   end
+
+  def client_show_invitation_url(token:)
+    "#{root_url}invitations/#{token}"
+  end
 end

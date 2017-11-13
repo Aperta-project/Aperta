@@ -1,2 +1,0 @@
-class PreprintDecisionScenario < PaperScenario
-end

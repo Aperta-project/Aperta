@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe PaperReviewerScenario do
+describe InvitationScenario do
   subject(:context) do
-    PaperReviewerScenario.new(invitation)
+    InvitationScenario.new(invitation)
   end
 
   let(:paper) do

@@ -6,11 +6,6 @@
     display: inline-block;
     margin: 5px;
 
-    &.preview {
-      --slider-button-diameter: 16px;
-      min-width: 30px;
-    }
-
     &.smaller {
       --slider-button-diameter: 18px;
       min-width: 34px;

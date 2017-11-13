@@ -17,7 +17,7 @@
               <td colspan="5">{{message.activityMessages.lastObject}}</td>
             </tr>
           {{/if}}
-          <tr>
+          <tr onmouseenter={{action "toggleHighlight"}} onmouseleave={{action "toggleHighlight"}}>
             <td>{{format-date message.sentAt}}</td>
             <td>
               <div class="correspondence{{message.id}}">

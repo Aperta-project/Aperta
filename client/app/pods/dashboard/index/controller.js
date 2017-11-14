@@ -1,7 +1,9 @@
 import Ember from 'ember';
 import pluralizeString from 'tahi/lib/pluralize-string';
+import DS from 'ember-data';
 
 export default Ember.Controller.extend({
+  can: Ember.inject.service('can'),
   restless: Ember.inject.service('restless'),
 
   papers: [],
@@ -38,7 +40,17 @@ export default Ember.Controller.extend({
                         }),
   activePapers:         Ember.computed.filterBy('papers', 'active', true),
   inactivePapers:       Ember.computed.filterBy('papers', 'active', false),
-  preprints: Ember.computed.filterBy('papers', 'preprintPosted', true),
+  preprints: Ember.computed('papers', function() {
+    const promise = Ember.RSVP.filter(this.get('papers').toArray(), paper => {
+      return paper.get('preprintPosted') && this.get('can').can('edit', paper).then((canEdit) => {
+        return canEdit;
+      });
+    });
+    return DS.PromiseArray.create({
+      promise: promise
+    });
+  }),
+
   totalActivePaperCount: Ember.computed.alias('activePapers.length'),
 
   totalInactivePaperCount: Ember.computed.alias('inactivePapers.length'),

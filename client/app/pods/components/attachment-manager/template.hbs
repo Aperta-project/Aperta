@@ -24,35 +24,36 @@
     content=content
     fileAdded=(action "clearError")
     uploadError=(action "uploadError")
-    uploadFinished=attrs.updateAttachment}}
+    uploadFinished=attrs.updateAttachment
+  }}
 {{/each}}
 
 {{#each fileUploads as |f|}}
   {{upload-preview upload=f}}
 {{/each}}
 
-
-  {{error-message message=uploadErrorMessage displayIcon=true indent=false}}
-
+{{error-message message=uploadErrorMessage displayIcon=true indent=false}}
 
 {{#if showAddButton}}
-      <div class="button-secondary button--green fileinput-button {{if disableAddButton "button--disabled"}}">
-        {{{buttonText}}}
-      </div>
+  <div class="button-secondary button--green fileinput-button {{if disableAddButton "button--disabled"}}">
+    {{{buttonText}}}
+  </div>
 
-    <div class="{{if uploadInProgress "hidden"}}">
-      {{file-uploader class="add-new-attachment"
-                         accept=accept
-                         uploaderId=uploaderId
-                         filePrefix=filePath
-                         multiple=multiple
-                         disabled=disableAddButton
-                         content=content
-                         addingFileFailed=(action "uploadError")
-                         progress=(action "uploadProgress")
-                         done=(action "uploadFinished")
-                         start=(action "fileAdded")}}
-    </div>
+  <div class="{{if uploadInProgress "hidden"}}">
+    {{file-uploader
+      class="add-new-attachment"
+       accept=accept
+       uploaderId=uploaderId
+       filePrefix=filePath
+       multiple=multiple
+       disabled=disableAddButton
+       content=content
+       addingFileFailed=(action "uploadError")
+       progress=(action "uploadProgress")
+       done=(action "uploadFinished")
+       start=(action "fileAdded")
+     }}
+  </div>
 {{/if}}
 
-<div>{{card-content/validation-errors errors=answer.readyIssuesArray hideErrors=false}}</div>
+{{card-content/validation-errors errors=answer.readyIssuesArray hideErrors=false}}

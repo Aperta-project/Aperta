@@ -9,7 +9,10 @@
     </tr>
     <tr>
       <td>
-        {{subject}}
+        {{#link-to "paper.correspondence" paper class="control-bar-button"}}
+          {{fa-icon icon="envelope-open-o"}}
+          {{subject}}
+        {{/link-to}}
       </td>
       <td>
         {{to}}

@@ -82,6 +82,11 @@ describe CorrespondenceController do
         it 'creates a correspondence' do
           expect { do_request }.to change { Correspondence.count }.by 1
         end
+
+        it 'creates adds a correspondence.created activity' do
+          expect(Activity).to receive(:correspondence_created!)
+          do_request
+        end
       end
     end
   end

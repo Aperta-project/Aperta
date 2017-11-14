@@ -1,5 +1,6 @@
 import DS from 'ember-data';
 import Ember from 'ember';
+import formatDate from 'tahi/lib/format-date';
 
 export default DS.Model.extend({
   paper: DS.belongsTo('paper', { async: false }),
@@ -17,6 +18,7 @@ export default DS.Model.extend({
   sentAt: DS.attr('date'),
   manuscriptVersion: DS.attr('string'),
   manuscriptStatus: DS.attr('string'),
+  activities: DS.attr(), // array?
 
   manuscriptVersionStatus: Ember.computed('manuscriptVersion','manuscriptStatus', function() {
     if (!this.get('manuscriptVersion') || !this.get('manuscriptStatus')) {
@@ -29,5 +31,19 @@ export default DS.Model.extend({
 
   hasAnyAttachment: Ember.computed('attachments', function() {
     return (this.get('attachments').length !== 0);
-  })
+  }),
+
+  hasActivities: Ember.computed.notEmpty('activities'),
+  activityMessages: Ember.computed('activities', function() {
+    return this.get('activities').map((activity) => {
+      let result = '';
+      if (activity.activity_key === 'correspondence.created') {
+        result += 'Added by ';
+      } else {
+        result += 'Edited by ';
+      }
+      result += activity.full_name + ' on ' + formatDate(activity.created_at, { format: 'MMMM DD, YYYY kk:mm' });
+      return result;
+    });
+  }),
 });

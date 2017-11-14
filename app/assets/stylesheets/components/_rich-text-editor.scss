@@ -8,7 +8,14 @@
     }
   }
 }
-.read-only .rich-text-editor {
-  padding: 10px 5px;
-  outline:1px solid $aperta-grey-light;
+.read-only {
+  .card-form-label {
+    margin-top:10px;
+  }
+  .rich-text-editor {
+   border:1px solid $aperta-grey-light;
+   border-radius:4px;
+   margin-bottom:10px; 
+   padding: 4px;
+  }
 }

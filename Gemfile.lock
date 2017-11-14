@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Tahi-project/loofah-gem.git
-  revision: e7463697d93bdd255126f12f99d921fd35256af2
+  revision: 98392bdee51dc2c0c65d92d4300b238cf4c63a60
   specs:
     loofah (2.1.2)
       crass (~> 1.0.2)

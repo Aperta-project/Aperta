@@ -1,10 +1,6 @@
 import DS from 'ember-data';
 import Ember from 'ember';
-<<<<<<< 2b6615940031340b06620a6704aa877c044946bb
 import formatDate from 'tahi/lib/format-date';
-=======
-import moment from 'moment';
->>>>>>> Show edit history in correspondence view and recent activity feed
 
 export default DS.Model.extend({
   paper: DS.belongsTo('paper', { async: false }),
@@ -49,10 +45,10 @@ export default DS.Model.extend({
     } else {
       result += 'Edited by ';
     }
-    result += activity.full_name + ' on ' + moment(activity.created_at).format('MMMM DD, YYYY kk:mm');
+    result += activity.full_name + ' on ' + formatDate(activity.created_at, { format: 'MMMM DD, YYYY kk:mm' });
     return result;
   }),
-  
+
   lastActivityMessage: Ember.computed('activityMessages', function(){
     return this.get('activityMessages.firstObject');
   }),

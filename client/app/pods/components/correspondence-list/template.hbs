@@ -14,7 +14,7 @@
         {{#each model as |message|}}
           {{#if message.hasActivities}}
             <tr class="most-recent-activity">
-              <td colspan="5">{{message.activityMessages.lastObject}}</td>
+              <td colspan="5">{{message.lastActivityMessage}}</td>
             </tr>
           {{/if}}
           <tr onmouseenter={{action "toggleHighlight"}} onmouseleave={{action "toggleHighlight"}}>

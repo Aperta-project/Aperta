@@ -64,7 +64,7 @@
               <th>Author</th>
               <td>
                 <p>
-                  <span>{{paper.authors.firstObject.firstName}} {{paper.authors.firstObject.middleInitial}} {{paper.authors.firstObject.lastName}}{{#if paper.authors.firstObject.affiliation}},&nbsp;&nbsp;{{paper.authors.firstObject.affiliations}}{{/if}}</span>
+                  <span>{{firstAuthor.fullNameWithAffiliations}}</span>
                 </p>
               </td>
             </tr>
@@ -77,7 +77,7 @@
                     {{#if author.name }}
                       {{author.name}}
                     {{else}}
-                      {{author.firstName}} {{author.middleInitial}} {{author.lastName}}{{#if author.affiliation}},&nbsp;&nbsp;{{author.affiliations}}{{/if}}
+                      {{author.fullNameWithAffiliations}}
                     {{/if}}
                     {{#unless (eq author sortedCoAuthors.lastObject)}}<br/>{{/unless}}
                   </span>

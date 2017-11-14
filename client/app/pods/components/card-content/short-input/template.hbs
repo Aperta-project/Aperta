@@ -4,7 +4,7 @@
     class="card-input"
     change=(action "valueChanged")
     input=(action "valueChanged")
-    focusOut=(action "validate")
+    focusOut=(action "displayErrors")
     focusIn=(action "maybeHideError")
     disabled=disabled
     required=content.isRequired

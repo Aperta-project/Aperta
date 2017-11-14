@@ -8,9 +8,18 @@
     action="valueChanged"
   }}
 
-  <div class="slider round {{color}}" ></div>
+  <div class="slider round {{color}}" >
+    <div class="slider-button-wrapper">
+      <div class="slider-button">&nbsp;</div>
+    </div>
+    {{#if interiorText}}
+      <div class="interior-text">{{interiorText}}</div>
+    {{/if}}
+  </div>
 
   {{#if labelText}}
     <div class="checked-label-text">{{labelText}}</div>
   {{/if}}
 </label>
+
+/Users/jhaungs/workspaces/plos/tahi/client/app/pods/components/card-content/toggle-switch/template.hbs

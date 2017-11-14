@@ -44,7 +44,7 @@ describe Card do
       <?xml version="1.0" encoding="UTF-8"?>
       <card required-for-submission="false" workflow-display-only="false">
         <content content-type="display-children">
-          <content content-type="if" condition="isEditable">
+          <content content-type="if" condition="pdfAllowed">
             <content ident="SomeStuff" content-type="paragraph-input" value-type="html">
               <text>This is the THEN branch of an inner IF condition.</text>
             </content>

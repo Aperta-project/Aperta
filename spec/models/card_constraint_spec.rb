@@ -71,7 +71,7 @@ describe Card do
             </content>
           </content>
           <content ident="SomeStuff" content-type="short-input" value-type="text">
-            <text>This is the ELSE branch of an inner IF condition.</text>
+            <text>This is some text with an invalid matching ident.</text>
           </content>
         </content>
       </card>
@@ -91,16 +91,25 @@ describe Card do
       expect(card).to_not be_valid
       expect(card.errors).to_not be_empty
       expect(card.errors[:detail]).to be_present
-      expect(card.errors[:detail].first[:message]).to match(/unique.*SomeStuff/)
+      expect(card.errors[:detail].any? { |error| error[:message].match(/unique.*SomeStuff/) })
     end
 
     it 'idents cannot duplicate IF idents' do
       loader = XmlCardLoader.new(card)
-      loader.load(dup_xml)
+      loader.load(dup_if_xml)
       expect(card).to_not be_valid
       expect(card.errors).to_not be_empty
       expect(card.errors[:detail]).to be_present
-      expect(card.errors[:detail].first[:message]).to match(/unique.*SomeStuff/)
+      expect(card.errors[:detail].any? { |error| error[:message].match(/unique.*SomeStuff/) })
+    end
+
+    it 'IFs with isEditable condition cannot have input children' do
+      loader = XmlCardLoader.new(card)
+      loader.load(dup_if_xml)
+      expect(card).to_not be_valid
+      expect(card.errors).to_not be_empty
+      expect(card.errors[:detail]).to be_present
+      expect(card.errors[:detail].any? { |error| error[:message].match(/isEditable/) })
     end
 
     it 'immediate children of an IF component may have the same ident' do

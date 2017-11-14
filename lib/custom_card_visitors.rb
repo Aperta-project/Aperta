@@ -106,8 +106,8 @@ module CustomCardVisitors
 
     def report
       return [] if @errors.zero?
-      components = COMPONENTS.to_a.join(', ').sort
-      conditions = CONDITIONS.to_a.join(', ').sort
+      components = COMPONENTS.to_a.sort.join(', ')
+      conditions = CONDITIONS.to_a.sort.join(', ')
       ["#{components} components with #{conditions} conditions may not contain value-type child components"]
     end
 

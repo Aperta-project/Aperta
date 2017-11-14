@@ -17,21 +17,7 @@ class Behavior < ActiveRecord::Base
     "#{type_name.camelize}Behavior".constantize
   end
 
-  def call(user:, paper:, task:)
-    event_params = { user: user, paper: paper, task: task }
-    self.class.action_class.call(
-      event_params: event_params,
-      behavior_params: behavior_params
-    )
-  end
-
-  def behavior_params
-    entity_attributes.each_with_object({}) do |attribute, hsh|
-      hsh[attribute.name] = attribute.value
-    end
-  end
-
-  class << self
-    attr_accessor :action_class
+  def call(*_)
+    raise NotImplementedError
   end
 end

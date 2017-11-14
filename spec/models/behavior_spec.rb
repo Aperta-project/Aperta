@@ -4,15 +4,9 @@ describe Behavior do
   let(:args) { { event_name: :fake_event } }
   let(:journal) { create(:journal) }
 
-  class TestBehaviorAction < BehaviorAction
-    def self.call(*args)
-      super(*args)
-    end
-  end
-
   class TestBehavior < Behavior
     has_attributes boolean: %w[bool_attr], string: %w[string_attr], json: %w[json_attr]
-    self.action_class = TestBehaviorAction
+    def call(*args); end
   end
 
   before(:each) do
@@ -105,20 +99,10 @@ describe Behavior do
     let(:paper) { FactoryGirl.create(:paper) }
     let(:user) { FactoryGirl.create(:user) }
 
-    it 'should raise an exception if the class does not override call' do
-      behavior
-      expect { Event.trigger(:fake_event, paper: paper, user: user) }.to raise_error(NotImplementedError)
-    end
-
     it 'should call the call method with both the action and behavior parameters' do
-      behavior
-      expect(TestBehaviorAction).to receive(:call).with(
-        event_params: { user: user, paper: paper, task: nil },
-        behavior_params: {
-          "bool_attr" => true,
-          "string_attr" => "foo",
-          "json_attr" => { "bar" => "baz" }
-        }
+      expect(Behavior).to receive(:where).with(event_name: :fake_event).and_return([behavior])
+      expect(behavior).to receive(:call).with(
+        user: user, paper: paper, task: nil
       )
       Event.trigger(:fake_event, paper: paper, user: user)
     end

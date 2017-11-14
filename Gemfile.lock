@@ -1,5 +1,5 @@
 GIT
-  remote: https://github.com/Tahi-project/loofah-gem.git
+  remote: https://github.com/Tahi-project/loofah-gem
   revision: 98392bdee51dc2c0c65d92d4300b238cf4c63a60
   specs:
     loofah (2.1.2)

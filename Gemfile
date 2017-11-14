@@ -39,7 +39,7 @@ gem 'jwt'
 gem 'kaminari'
 gem 'liquid'
 gem 'lograge'
-gem 'loofah', git: 'https://github.com/Tahi-project/loofah-gem.git'
+gem 'loofah', git: 'https://github.com/Tahi-project/loofah-gem'
 gem 'mail_safe', require: false
 gem 'migration_comments'
 gem 'migration_data'

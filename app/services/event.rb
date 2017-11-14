@@ -32,7 +32,7 @@ class Event
     Notifier.notify(event: name, data: { paper: paper, task: task }.merge(rest))
 
     # Run handlers
-    EventBehavior.where(event_name: name).each do |behavior|
+    Behavior.where(event_name: name).each do |behavior|
       behavior.call(paper: paper, task: task, user: user)
     end
 

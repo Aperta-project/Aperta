@@ -1,6 +1,6 @@
 # Defines a "behavior" which triggers an action on a certain event.
 
-class EventBehavior < ActiveRecord::Base
+class Behavior < ActiveRecord::Base
   include Attributable
 
   belongs_to :journal

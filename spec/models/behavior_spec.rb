@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe EventBehavior do
+describe Behavior do
   let(:args) { { event_name: :fake_event } }
   let(:journal) { create(:journal) }
 
@@ -10,7 +10,7 @@ describe EventBehavior do
     end
   end
 
-  class TestBehavior < EventBehavior
+  class TestBehavior < Behavior
     has_attributes boolean: %w[bool_attr], string: %w[string_attr], json: %w[json_attr]
     self.action_class = TestBehaviorAction
   end

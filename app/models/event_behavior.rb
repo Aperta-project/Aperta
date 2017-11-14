@@ -3,6 +3,8 @@
 class EventBehavior < ActiveRecord::Base
   include Attributable
 
+  belongs_to :journal
+
   validates :event_name, presence: true, inclusion: { in: ->(_) { Event.allowed_events } }
 
   self.inheritance_column = 'action'
@@ -14,8 +16,6 @@ class EventBehavior < ActiveRecord::Base
   def self.find_sti_class(type_name)
     "#{type_name.camelize}Behavior".constantize
   end
-
-  belongs_to :journal
 
   def call(user:, paper:, task:)
     event_params = { user: user, paper: paper, task: task }

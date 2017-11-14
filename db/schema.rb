@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171108194319) do
+ActiveRecord::Schema.define(version: 20171114225351) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -154,6 +154,16 @@ ActiveRecord::Schema.define(version: 20171108194319) do
   end
 
   add_index "authors", ["token"], name: "index_authors_on_token", unique: true, using: :btree
+
+  create_table "behaviors", force: :cascade do |t|
+    t.string   "event_name", null: false
+    t.string   "action",     null: false
+    t.integer  "journal_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "behaviors", ["journal_id"], name: "index_behaviors_on_journal_id", using: :btree
 
   create_table "billing_log_reports", force: :cascade do |t|
     t.string   "csv_file"
@@ -408,16 +418,6 @@ ActiveRecord::Schema.define(version: 20171108194319) do
   add_index "entity_attributes", ["entity_type"], name: "index_entity_attributes_on_entity_type", using: :btree
   add_index "entity_attributes", ["name"], name: "index_entity_attributes_on_name", using: :btree
   add_index "entity_attributes", ["value_type"], name: "index_entity_attributes_on_value_type", using: :btree
-
-  create_table "event_behaviors", force: :cascade do |t|
-    t.string   "event_name", null: false
-    t.string   "action",     null: false
-    t.integer  "journal_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "event_behaviors", ["journal_id"], name: "index_event_behaviors_on_journal_id", using: :btree
 
   create_table "feature_flags", force: :cascade do |t|
     t.string  "name",   null: false

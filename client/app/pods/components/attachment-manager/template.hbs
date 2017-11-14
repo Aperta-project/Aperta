@@ -37,22 +37,22 @@
 {{#if showAddButton}}
   <div class="button-secondary button--green fileinput-button {{if disableAddButton "button--disabled"}}">
     {{{buttonText}}}
-  </div>
 
-  <div class="{{if uploadInProgress "hidden"}}">
-    {{file-uploader
-      class="add-new-attachment"
-       accept=accept
-       uploaderId=uploaderId
-       filePrefix=filePath
-       multiple=multiple
-       disabled=disableAddButton
-       content=content
-       addingFileFailed=(action "uploadError")
-       progress=(action "uploadProgress")
-       done=(action "uploadFinished")
-       start=(action "fileAdded")
-     }}
+    <div class="{{if uploadInProgress "hidden"}}">
+      {{file-uploader
+        class="add-new-attachment"
+         accept=accept
+         uploaderId=uploaderId
+         filePrefix=filePath
+         multiple=multiple
+         disabled=disableAddButton
+         content=content
+         addingFileFailed=(action "uploadError")
+         progress=(action "uploadProgress")
+         done=(action "uploadFinished")
+         start=(action "fileAdded")
+       }}
+    </div>
   </div>
 {{/if}}
 

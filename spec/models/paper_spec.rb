@@ -1760,4 +1760,20 @@ describe Paper do
       expect(paper).to_not be_valid
     end
   end
+
+  describe '#trigger_event' do
+    it 'should find the user in the args' do
+      expect(paper).to receive(:trigger_aasm_event).with(
+        paper.aasm, task: nil, paper: paper, user: user
+      )
+      paper.send(:trigger_event, 1, user, 3)
+    end
+
+    it 'should work if no user is passed' do
+      expect(paper).to receive(:trigger_aasm_event).with(
+        paper.aasm, task: nil, paper: paper, user: nil
+      )
+      paper.send(:trigger_event, 1, 2, 3)
+    end
+  end
 end

@@ -778,7 +778,7 @@ class Paper < ActiveRecord::Base
   end
 
   def trigger_event(*args)
-    user = args[-1] # Most events send user as the first arg, but withdraw has a reason first.
+    user = args.find { |i| i.is_a? User } # Most events send user as the first arg, but withdraw has a reason first.
     trigger_aasm_event(aasm, task: nil, paper: self, user: user)
   end
 end

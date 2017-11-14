@@ -88,9 +88,25 @@ describe TahiStandardTasks::ExportService do
   end
 
   describe "#needs_preprint_doi?" do
+    let!(:task) {
+      FactoryGirl.create(
+        :custom_card_task,
+        :with_card,
+        paper: paper
+      )
+    }
+    let!(:card_content) {
+      FactoryGirl.create(
+        :card_content,
+        parent: task.card.content_root_for_version(:latest),
+        ident: 'preprint-posting--consent',
+        content_type: 'radio'
+      )
+    }
+
     context "the paper has not opted out of preprint" do
       before do
-        paper.update(preprint_opt_out: false)
+        task.find_or_build_answer_for(card_content: card_content, value: '1').save
       end
 
       it "for a preprint export it needs a preprint doi" do
@@ -106,9 +122,8 @@ describe TahiStandardTasks::ExportService do
 
     context "the paper has opted out of preprint" do
       before do
-        paper.update(preprint_opt_out: true)
+        task.find_or_build_answer_for(card_content: card_content, value: '2').save
       end
-
       it "does not ensure a need doi" do
         export_delivery.destination = "preprint"
         expect(service.send(:needs_preprint_doi?)).to eq(false)

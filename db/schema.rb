@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171108194319) do
+ActiveRecord::Schema.define(version: 20171109214526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -596,7 +596,6 @@ ActiveRecord::Schema.define(version: 20171108194319) do
     t.boolean  "number_reviewer_reports",               default: false, null: false
     t.boolean  "legends_allowed",                       default: false, null: false
     t.string   "preprint_doi_article_number"
-    t.boolean  "preprint_opt_out",                      default: false, null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

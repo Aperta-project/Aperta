@@ -3,6 +3,7 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
+  subRouteName: 'correspondence',
   classNameBindings: ['card-content', 'card-content-email-editor'],
   //passed-in stuff
   restless: Ember.inject.service('restless'),
@@ -37,6 +38,10 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   name: Ember.computed('content.ident', function() {
     let ident = this.get('content.ident');
     return `email-editor-${ident}`;
+  }),
+
+  paper: Ember.computed('paper', function() {
+    return this.get('owner').get('paper');
   }),
 
   answer: Ember.computed('content', 'owner', function(){

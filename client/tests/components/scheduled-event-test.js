@@ -27,7 +27,7 @@ test('renders future scheduled differences properly', function (assert) {
   ];
   this.set('events', scheduledEvents);
   this.render(hbs`{{scheduled-events events=events dueDate=dueDate}}`);
-  assert.textPresent('.scheduled-event p', '2 days after due date');
+  assert.textPresent('.scheduled-event-description', '2 days after due date');
 });
 
 test('renders past scheduled differences properly', function (assert) {
@@ -39,5 +39,5 @@ test('renders past scheduled differences properly', function (assert) {
   ];
   this.set('events', scheduledEvents);
   this.render(hbs`{{scheduled-events events=events dueDate=dueDate}}`);
-  assert.textPresent('.scheduled-event p', '2 days before due date');
+  assert.textPresent('.scheduled-event-description', '2 days before due date');
 });

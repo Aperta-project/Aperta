@@ -451,6 +451,22 @@
       </interleave>
     </element>
   </define>
+  <define name="repeat">
+    <element name="Repeat">
+      <interleave>
+        <optional>
+          <attribute name="min"/>
+        </optional>
+        <optional>
+          <attribute name="max"/>
+        </optional>
+        <attribute name="item-name"/>
+        <oneOrMore>
+          <ref name="content"/>
+        </oneOrMore>
+      </interleave>
+    </element>
+  </define>
   <define name="content">
     <choice>
       <ref name="check-box-input"/>
@@ -471,23 +487,6 @@
       <ref name="tech-check"/>
       <ref name="tech-check-email"/>
     </choice>
-  </define>
-  <define name="repeat">
-    <element name="content">
-      <attribute name="content-type">
-        <value>repeat</value>
-      </attribute>
-      <optional>
-        <attribute name="min"/>
-      </optional>
-      <optional>
-        <attribute name="max"/>
-      </optional>
-      <attribute name="item-name"/>
-      <oneOrMore>
-        <ref name="content"/>
-      </oneOrMore>
-    </element>
   </define>
   <start>
     <element name="card">

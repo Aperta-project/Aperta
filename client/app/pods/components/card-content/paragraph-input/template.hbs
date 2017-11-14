@@ -12,7 +12,7 @@
     hasErrors=answer.hasErrors
     errorMessages=answer.readyIssuesArray
     onContentsChanged=(action "valueChanged")
-    focusOut=(action "validate")
+    focusOut=(action "displayErrors")
     class=inputClassNames
     disabled=disabled
     hideError=hideError
@@ -23,7 +23,7 @@
       class="form-control"
       change=(action "valueChanged")
       input=(action "valueChanged")
-      focusOut=(action "validate")
+      focusOut=(action "displayErrors")
       disabled=disabled
       id=content.ident
   }}

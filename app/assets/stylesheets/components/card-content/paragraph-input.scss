@@ -1,15 +1,13 @@
 .card-content-paragraph-input {
-  /*  margin-top: 15px;*/
-    .form-control {
-        min-height: 100px;
+  .form-control {
+    min-height: 100px;
     }
-
     textarea {
       resize: vertical;
     }
 
     label {
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       &.content-text {
           font-size: 20px;
       }

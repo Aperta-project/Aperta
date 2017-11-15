@@ -29,3 +29,7 @@
 .card-form-label {
   display:block;
 }
+
+.read-only .card-form-label {
+  font-weight:600; 
+}

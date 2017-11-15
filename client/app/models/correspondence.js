@@ -45,7 +45,7 @@ export default DS.Model.extend({
     } else {
       result += 'Edited by ';
     }
-    result += activity.full_name + ' on ' + formatDate(activity.created_at, { format: 'MMMM DD, YYYY kk:mm' });
+    result += activity.full_name + ' on ' + formatDate(activity.created_at, { format: 'MMMM DD, YYYY HH:mm' });
     return result;
   }),
 

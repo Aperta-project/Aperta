@@ -19,6 +19,10 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     return start.format('H:mm');
   }),
 
+  dateSent: Ember.computed('model', function() {
+    return moment(this.get('model.date')).format('MM/DD/YYYY');
+  }),
+
   prepareModelDate() {
     let date = this.get('dateSent');
     let time = this.get('timeSent');

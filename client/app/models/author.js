@@ -131,7 +131,7 @@ export default NestedQuestionOwner.extend({
     return affiliations.compact().join(', ');
   }),
 
-  fullNameWithAffiliations: Ember.computed('firstName', 'middleInitial', 'lastName', 'affiliations', function() {
+  fullNameWithAffiliations: Ember.computed('displayName', 'affiliation', 'affiliations', function() {
     if (this.get('affiliation')) {
       return [this.get('displayName'), this.get('affiliations')].compact().join(', ');
     } else {

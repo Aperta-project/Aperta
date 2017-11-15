@@ -7,6 +7,7 @@ class PaperContext < TemplateContext
   subcontexts :authors,               type: :author
   subcontexts :corresponding_authors, type: :author
   subcontext  :editor,                type: :user
+  subcontext  :creator,               type: :user
 
   def editor
     return if object.handling_editors.empty?

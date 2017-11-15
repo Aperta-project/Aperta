@@ -952,7 +952,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'Notify Initial Submission', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'PaperScenario'
+        lt.scenario = 'Manuscript'
         lt.subject = "Thank you for submitting to {{ journal.name }}"
         lt.to = '{{ manuscript.creator.email }}'
         lt.body = <<-TEXT.strip_heredoc
@@ -978,7 +978,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'Notify Submission', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'PaperScenario'
+        lt.scenario = 'Manuscript'
         lt.subject = "Thank you for submitting your manuscript to {{ journal.name }}"
         lt.to = '{{ manuscript.creator.email }}'
         lt.body = <<-TEXT.strip_heredoc

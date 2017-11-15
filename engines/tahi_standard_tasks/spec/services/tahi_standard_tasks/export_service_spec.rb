@@ -75,7 +75,7 @@ describe TahiStandardTasks::ExportService do
 
       it "the POST request returns an error if a param value is missing" do
         allow(packager).to receive_message_chain(:manifest, :file_list).and_return([])
-        expect { service.send(:make_delivery!) }.to raise_error(TahiStandardTasks::ExportService::ExportServiceError)
+        expect { service.send(:make_delivery!) }.to raise_error(TahiStandardTasks::ExportService::ExportServiceError, /Missing required.*files/)
         expect(RouterUploadStatusWorker).to_not receive(:perform_in)
       end
     end

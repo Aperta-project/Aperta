@@ -17,14 +17,6 @@ describe Behavior do
     Event.deregister(:fake_name)
   end
 
-  context 'when the action is send_email' do
-    subject { build(:send_email_behavior, **args) }
-
-    it 'should fail validation unless a letter_template is set' do
-      expect(subject).not_to be_valid
-    end
-  end
-
   context 'event validation' do
     context 'when no subject is provided' do
       subject { TestBehavior.new }

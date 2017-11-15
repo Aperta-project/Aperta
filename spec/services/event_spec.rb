@@ -7,7 +7,7 @@ describe Event do
   let(:user) { create(:user) }
   let(:task) { FactoryGirl.create(:task, :with_card, title: Faker::Lorem.sentence, paper: paper) }
   let(:paper) { create(:paper) }
-  subject { Event.trigger(:good_event, **action_data) }
+  subject { Event.new(name: :good_event, **action_data).trigger }
 
   before(:each) do
     Event.register(:good_event)
@@ -19,15 +19,11 @@ describe Event do
 
   describe '#trigger' do
     it 'should error if the event is not registered' do
-      expect { Event.trigger(:bad_event, paper: paper) }.to raise_error(ArgumentError, /not registered/)
+      expect { Event.new(name: :bad_event, paper: paper, task: nil, user: nil).trigger }.to raise_error(ArgumentError, /not registered/)
     end
 
     it 'should error if the paper is nil' do
-      expect { Event.trigger(:good_event, paper: nil) }.to raise_error(ArgumentError, /paper is required/)
-    end
-
-    it 'should error if the paper is nil' do
-      expect { Event.trigger(:good_event, paper: nil) }.to raise_error(ArgumentError, /paper is required/)
+      expect { Event.new(name: :good_event, paper: nil, task: nil, user: nil).trigger }.to raise_error(ArgumentError, /paper is required/)
     end
 
     it 'should append to the ActivityFeed' do
@@ -36,7 +32,7 @@ describe Event do
         subject: task,
         activity_key: :good_event,
         user: user,
-        message: nil
+        message: "good_event triggered"
       )
       subject
     end
@@ -65,13 +61,11 @@ describe Event do
       end
       let(:paper) { FactoryGirl.create(:paper) }
       let(:user) { FactoryGirl.create(:user) }
-
+      let(:event) { Event.new(name: :good_event, paper: paper, user: user, task: nil) }
       it 'should call the call method with action parameters' do
         expect(Behavior).to receive(:where).with(event_name: :good_event).and_return([send_email_behavior])
-        expect(send_email_behavior).to receive(:call).with(
-          user: user, paper: paper, task: nil
-        )
-        Event.trigger(:good_event, paper: paper, user: user)
+        expect(send_email_behavior).to receive(:call).with(event)
+        event.trigger
       end
     end
   end

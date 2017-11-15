@@ -1,4 +1,4 @@
-# Defines a "behavior" which triggers an action on a certain event.
+# Defines a "behavior" which triggers some code on a certain event.
 
 class Behavior < ActiveRecord::Base
   include Attributable
@@ -17,7 +17,8 @@ class Behavior < ActiveRecord::Base
     "#{type_name.camelize}Behavior".constantize
   end
 
-  def call(*_)
+  # Main entry point for a behavior.
+  def call(_event)
     raise NotImplementedError
   end
 end

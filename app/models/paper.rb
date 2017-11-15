@@ -783,6 +783,6 @@ class Paper < ActiveRecord::Base
 
   def trigger_event(*args)
     user = args.find { |i| i.is_a? User } # Most events send user as the first arg, but withdraw has a reason first.
-    trigger_aasm_event(aasm, task: nil, paper: self, user: user)
+    StateChangeEvent.new(aasm: aasm, instance: self, paper: self, task: nil, user: user).trigger
   end
 end

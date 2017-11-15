@@ -1762,17 +1762,21 @@ describe Paper do
   end
 
   describe '#trigger_event' do
+    let(:event) { double(StateChangeEvent) }
+
     it 'should find the user in the args' do
-      expect(paper).to receive(:trigger_aasm_event).with(
-        paper.aasm, task: nil, paper: paper, user: user
-      )
+      expect(event).to receive(:trigger)
+      expect(StateChangeEvent).to receive(:new).with(
+        aasm: paper.aasm, instance: paper, task: nil, paper: paper, user: user
+      ).and_return(event)
       paper.send(:trigger_event, 1, user, 3)
     end
 
     it 'should work if no user is passed' do
-      expect(paper).to receive(:trigger_aasm_event).with(
-        paper.aasm, task: nil, paper: paper, user: nil
-      )
+      expect(event).to receive(:trigger)
+      expect(StateChangeEvent).to receive(:new).with(
+        aasm: paper.aasm, instance: paper, task: nil, paper: paper, user: nil
+      ).and_return(event)
       paper.send(:trigger_event, 1, 2, 3)
     end
   end

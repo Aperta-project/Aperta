@@ -1,18 +1,6 @@
 module AASMTriggerEvent
   extend ActiveSupport::Concern
 
-  included do
-    def trigger_aasm_event(aasm, **args)
-      Event.trigger(
-        self.class.make_event_name(aasm.to_state),
-        event_message: "#{self.class.name} state changed to #{aasm.to_state}",
-        from_state: aasm.from_state,
-        to_state: aasm.to_state,
-        **args
-      )
-    end
-  end
-
   module ClassMethods
     def register_events!
       Event.register(*aasm.states.map(&:name).map { |s| make_event_name(s) })

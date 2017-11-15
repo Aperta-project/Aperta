@@ -15,6 +15,7 @@ import os
 import random
 import time
 
+import pytest
 from selenium.webdriver.common.by import By
 
 from Base.Decorators import MultiBrowserFixture
@@ -36,6 +37,8 @@ class ApertaProdDeployVerifyTest(CommonTest):
   """
   A deployment validation step for the Aperta build chain
   """
+
+  @pytest.mark.deploy_verify
   def test_validate_create_complete_cards_submit_withdraw(self, init=True):
     """
     test_deploy_verify: Validates creating a new document, completing several cards,

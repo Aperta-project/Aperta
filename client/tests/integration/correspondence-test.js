@@ -105,13 +105,13 @@ test('Date and Time [format] are properly validated', (assert) => {
   click('.correspondence-submit');
 
   andThen(() => {
-    assert.equal($($('.correspondence-error .fa-exclamation-triangle').get(0)).attr('title'), 'Invalid Date.');
+    assert.equal($($('.correspondence-error .fa-exclamation-triangle').get(0)).attr('title'), '');
     assert.equal($($('.correspondence-error .fa-exclamation-triangle').get(1)).attr('title'), '');
   });
 
   // Context: Incorrect Date && Incorrect Time
   visit('/papers/' + paper.get('shortDoi') + '/correspondence/new');
-  fillIn('.correspondence-date-sent', 'some date');
+  fillIn('.correspondence-date-sent', '');
   fillIn('.correspondence-time-sent', 'some time');
   fillIn('.correspondence-description', 'Good Description');
   fillIn('.correspondence-from', 'from@example.com');

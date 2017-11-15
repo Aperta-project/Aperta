@@ -1,40 +1,31 @@
 {{#if answer.value}}
-  <div class="container-fluid row">
-    <div class="col-xs-11">
-      <table class="table table-hover">
-        <tbody>
-        <tr>
-          <th>Selection</th>
-          <th>Recipient</th>
-          <th>Initiator</th>
-          <th>Date</th>
-        </tr>
-        <tr>
-          <td>
-            {{#link-to "paper.correspondence" paper class="control-bar-button"}}
-              {{fa-icon icon="envelope-open-o"}}
-              {{subject}}
-            {{/link-to}}
-          </td>
-          <td>
-            {{to}}
-          </td>
-          <td>
-            {{from}}
-          </td>
-          <td>
-            {{date}}
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="col-xs-1">
-      {{#if content.isRequired}}
-        <span class="required-field">*</span>
-      {{/if}}
-    </div>
-  </div>
+  <table class="table table-hover">
+    <tbody>
+    <tr>
+      <th>Selection</th>
+      <th>Recipient</th>
+      <th>Initiator</th>
+      <th>Date</th>
+    </tr>
+    <tr>
+      <td>
+        {{#link-to "paper.correspondence" paper class="control-bar-button"}}
+          {{fa-icon icon="envelope-open-o"}}
+          {{subject}}
+        {{/link-to}}
+      </td>
+      <td>
+        {{to}}
+      </td>
+      <td>
+        {{from}}
+      </td>
+      <td>
+        {{date}}
+      </td>
+    </tr>
+    </tbody>
+  </table>
 {{else}}
   <div class='input-group'>
     <div class='input-group-addon email-header'>
@@ -82,6 +73,7 @@
     </button>
     {{#if content.isRequired}}
       <span class="required-field">*</span>
+      {{card-content/validation-errors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
     {{/if}}
   {{/unless}}
 {{/if}}

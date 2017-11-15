@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<card required-for-submission="false" workflow-display-only="true">
+  <content content-type="display-children">
+    <content content-type="radio" value-type="text" allow-annotations="false" required-field="true">
+      <text>Please make a selection</text>
+      <possible-value label="Accept for Preprint" value="accept"/>
+      <possible-value label="Reject for Preprint" value="reject"/>
+      <content content-type="description">
+        <text><br/></text>
+      </content>
+      <content content-type="display-with-value" visible-with-parent-answer="accept">
+        <content ident="preprint-decision--email-accept" content-type="email-editor" value-type="html" letter-template="preprint-accept" button-label="Register preprint decision" required-field="true">
+        </content>
+      </content>
+      <content content-type="display-with-value" visible-with-parent-answer="reject">
+        <content ident="preprint-decision--email-reject" content-type="email-editor" value-type="html" letter-template="preprint-reject" button-label="Register preprint decision" required-field="true">
+        </content>
+      </content>
+    </content>
+  </content>
+</card>

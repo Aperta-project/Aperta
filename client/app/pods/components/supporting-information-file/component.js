@@ -91,6 +91,16 @@ export default Component.extend({
       }
     },
 
+    updateTitle(value) {
+      if (!(typeof(value) === 'string')) { return; }
+      this.set('file.title', value);
+    },
+
+    updateCaption(value) {
+      if (!(typeof(value) === 'string')) { return; }
+      this.set('file.caption', value);
+    },
+
     validateCategory() {
       this.get('model').validateProperty('category');
     },

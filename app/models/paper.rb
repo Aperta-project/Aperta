@@ -318,6 +318,10 @@ class Paper < ActiveRecord::Base
     find(id)
   end
 
+  def preprint_opt_out?
+    answer_for('preprint-posting--consent').value == '2'
+  end
+
   def inactive?
     !active?
   end
@@ -379,6 +383,14 @@ class Paper < ActiveRecord::Base
       alert_duplicate_file(attachment, uploaded_by)
       # No need to process attachment, mark the paper record as "done"
       update(processing: false)
+    elsif attachment.file_type == 'pdf'
+      # bypass ihat for PDFs, and update paper and associated versioned_text object
+      # NOTE: although PDF manuscripts don't store content in the body, it must
+      # be updated anyway since the versioned text object is created
+      # as a side effect of that call
+      attachment.paper.update!(body: '', processing: false)
+    else
+      ProcessManuscriptWorker.perform_async(attachment.id)
     end
   end
 
@@ -653,6 +665,21 @@ class Paper < ActiveRecord::Base
 
   def front_matter?
     !uses_research_article_reviewer_report?
+  end
+
+  def manuscript_manager_template
+    ManuscriptManagerTemplate.find_by(journal: journal, paper_type: paper_type)
+  end
+
+  def review_duration_period
+    default = 10
+    if FeatureFlag[:REVIEW_DUE_DATE]
+      setting = manuscript_manager_template
+        .try(:task_template_by_kind, "TahiStandardTasks::PaperReviewerTask")
+        .try(:setting, 'review_duration_period')
+      return setting.value if setting.present?
+    end
+    default
   end
 
   private

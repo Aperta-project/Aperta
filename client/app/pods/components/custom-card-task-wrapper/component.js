@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
-let { any, bool, func } = PropTypes;
+let { any, bool, func, oneOfType } = PropTypes;
 
 export default Ember.Component.extend({
   propTypes: {
@@ -13,7 +13,8 @@ export default Ember.Component.extend({
     task: any.isRequired,
     taskStateToggleable: bool.isRequired,
     toggleTaskCompletion: func.isRequired,
-    validationErrors: any.isRequired
+    validationErrors: any.isRequired,
+    repetition: oneOfType([PropTypes.null, PropTypes.EmberObject]).isRequired
   },
 
   getDefaultProps() {

@@ -5,12 +5,14 @@
     owner=owner
     answerChanged=answerChanged
     hasAnswerContainer=false
+    repetition=repetition
     preview=preview}}
   {{#if checkboxAnswer.value}}
     {{#card-content
       content=pencil
       disabled=disabled
       owner=owner
+      repetition=repetition
       hasAnswerContainer=false
       preview=preview as |cc|}}
       <i class="fa fa-pencil" {{action 'toggleAnswer' cc.answer}}></i>
@@ -25,6 +27,7 @@
       disabled=disabled
       hasAnswerContainer=false
       owner=owner
+      repetition=repetition
       preview=preview}}
   </div>
 {{/if}}

@@ -44,8 +44,8 @@
 
 .flash-message--critical-error {
   display: block;
-  border: 1px solid #ce0b24;
-  background: #ce0b24;
+  border: 1px solid $aperta-red;
+  background: $aperta-red;
   color: $aperta-grey-xlight;
   font-size: 14px;
   font-weight: 400;

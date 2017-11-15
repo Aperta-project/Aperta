@@ -3,6 +3,10 @@
 # tahi-integration
 Contains the base integration test framework and tahi core test cases and page object models. 
 
+# Developers
+Please read https://confluence.plos.org/confluence/display/TAHI/Running+the+QA+Automation+Tests+for+Developers
+for more detailed information on getting the python test environment set up on your machine.
+
 # Install requirements if needed
 
   `$ pip install -r /path/to/requirements.txt`

@@ -7,7 +7,6 @@ This test case validates the Authors Task.
 import logging
 import os
 import random
-import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users
@@ -59,10 +58,11 @@ class CoAuthorConfirmationTest(CommonTest):
     manuscript_page.complete_task('Competing Interests')
     manuscript_page.complete_task('Financial Disclosure')
     manuscript_page.complete_task('Additional Information')
-    manuscript_page.complete_task('Early Article Posting')
+    manuscript_page.complete_task('Early Version')
     # Now, on the Authors card, we add a co-author
     manuscript_page.click_task('Authors')
     authors_task = AuthorsTask(self.getDriver())
+    authors_task.task_ready()
     authors_task.add_individual_author_task_action()
     authors_task.edit_author(creator_user)
     manuscript_page.click_submit_btn()
@@ -122,7 +122,7 @@ class CoAuthorConfirmationTest(CommonTest):
     manuscript_page.complete_task('Competing Interests')
     manuscript_page.complete_task('Financial Disclosure')
     manuscript_page.complete_task('Additional Information')
-    manuscript_page.complete_task('Early Article Posting')
+    manuscript_page.complete_task('Early Version')
     # Now, on the Authors card, we add a co-author
     manuscript_page.click_task('Authors')
     authors_task = AuthorsTask(self.getDriver())

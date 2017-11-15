@@ -8,11 +8,12 @@ export default Ember.Component.extend({
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool,
     owner: PropTypes.EmberObject.isRequired,
+    repetition: PropTypes.oneOfType([PropTypes.null, PropTypes.EmberObject]).isRequired,
     preview: PropTypes.bool
   },
 
-  parentAnswer: Ember.computed('content.parent', 'owner', function() {
-    return this.get('content.parent').answerForOwner(this.get('owner'));
+  parentAnswer: Ember.computed('content.parent', 'owner', 'repetition', function() {
+    return this.get('content.parent').answerForOwner(this.get('owner'), this.get('repetition'));
   }),
 
   showChildren: Ember.computed(
@@ -32,7 +33,8 @@ export default Ember.Component.extend({
 
     let owner = this.get('owner');
     let content = this.get('content');
+    let repetition = this.get('repetition');
 
-    content.visitDescendants(child => child.get('answers').filterBy('owner', owner).invoke('destroyRecord'));
+    content.destroyDescendants(owner, repetition);
   }),
 });

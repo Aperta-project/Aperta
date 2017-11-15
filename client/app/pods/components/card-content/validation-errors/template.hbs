@@ -1,3 +1,5 @@
-{{#each errors as |error|}}
-  <span class="validation-error error-message">{{fa-icon "exclamation-triangle"}}{{error}}</span>
-{{/each}}
+{{#unless hideErrors}}
+  {{#each errors as |error|}}
+    <span class="validation-error error-message">{{fa-icon "exclamation-triangle"}}{{error}}</span>
+  {{/each}}
+{{/unless}}

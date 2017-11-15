@@ -4,16 +4,16 @@
   {{/if}}</label>
 
 {{input
-  value=(readonly answer.value)
+  value=(readonly answerProxy)
   class="form-control"
   change=(action "valueChanged")
   input=(action "valueChanged")
-  focusOut=(action "validate")
+  focusOut=(action "displayErrors")
   focusIn=(action "maybeHideError")
   disabled=disabled
   required=content.isRequired
   content=content}}
 
 {{#unless hideError}}
-  {{card-content/validation-errors errors=answer.readyIssuesArray}}
+  {{card-content/validation-errors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
 {{/unless}}

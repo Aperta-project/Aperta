@@ -12,6 +12,7 @@ class CorrespondenceController < ApplicationController
     correspondence = @paper.correspondence.build correspondence_params
     correspondence.sent_at = params.dig(:correspondence, :date)
     if correspondence.save
+      Activity.correspondence_created! correspondence, user: current_user
       render json: correspondence, status: :ok
     else
       respond_with correspondence, status: :unprocessable_entity

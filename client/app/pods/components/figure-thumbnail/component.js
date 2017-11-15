@@ -35,6 +35,13 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
         let rank = this.get('figure.rank');
         if (rank === 0) { return true; }
 
+        // the validation mixin is checking records that
+        // are technically destroyed somehow
+        // see APERTA-11742 for details
+        if (!this.get('figure.paper')) {
+          return true;
+        }
+
         let count = this.get('figure.paper.figures').filterBy('rank', rank).get('length');
 
         return count === 1;

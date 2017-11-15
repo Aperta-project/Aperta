@@ -90,4 +90,27 @@ describe CorrespondenceController do
       end
     end
   end
+
+  describe 'PUT update' do
+    before do
+      correspondence_rbac true
+    end
+
+    let(:correspondence) { FactoryGirl.create :correspondence, paper: paper }
+    subject(:do_request) do
+      xhr :put, :update,
+                format: :json,
+                id: correspondence.id,
+                paper_id: correspondence.paper.id,
+                correspondence: { description: 'Updated description' }
+    end
+
+    it 'updates the correspondence' do
+      expect do
+        do_request
+        expect(response.status).to eq 200
+      end.to change { correspondence.reload.description }
+        .from(correspondence.description).to 'Updated description'
+    end
+  end
 end

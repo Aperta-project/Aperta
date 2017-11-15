@@ -164,7 +164,9 @@ class CardContent < ActiveRecord::Base
       }
     when 'email-editor'
       {
-        'letter-template' => letter_template
+        'letter-template' => letter_template,
+        'button-label' => button_label,
+        'required-field' => required_field
       }
     else
       {}

@@ -44,6 +44,11 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     return this.get('owner').get('paper');
   }),
 
+  buttonLabel: Ember.computed('content.buttonLabel', function() {
+    let label = this.get('content.buttonLabel');
+    return label ? label : 'Send Email';
+  }),
+
   answer: Ember.computed('content', 'owner', function(){
     return this.get('content').get('answers').findBy('owner', this.get('owner'));
   }),

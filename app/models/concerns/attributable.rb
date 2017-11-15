@@ -34,6 +34,7 @@ module Attributable
       visible_with_parent_answer
       wrapper_tag
       letter_template
+      button_label
     ]
   }.freeze
 

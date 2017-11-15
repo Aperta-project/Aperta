@@ -132,6 +132,7 @@ email-editor = element content {
   (attribute content-type { "email-editor" }
   & attribute ident { text }?
   & attribute letter-template { text }?
+  & attribute button-label { text }?
   & attribute value-type { "html" }),
   content*
 }

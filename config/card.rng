@@ -345,6 +345,9 @@
         <optional>
           <attribute name="letter-template"/>
         </optional>
+        <optional>
+          <attribute name="button-label"/>
+        </optional>
         <attribute name="value-type">
           <value>html</value>
         </attribute>

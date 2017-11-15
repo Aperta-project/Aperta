@@ -50,6 +50,8 @@ class Event
     @triggered = true
   end
 
+  private
+
   def notify_payload
     { paper: paper, task: task }
   end

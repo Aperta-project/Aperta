@@ -7,16 +7,6 @@ class Behavior < ActiveRecord::Base
 
   validates :event_name, presence: true, inclusion: { in: ->(_) { Event.allowed_events } }
 
-  self.inheritance_column = 'action'
-
-  def self.sti_name
-    name.gsub(/Behavior$/, '').underscore
-  end
-
-  def self.find_sti_class(type_name)
-    "#{type_name.camelize}Behavior".constantize
-  end
-
   # Main entry point for a behavior.
   def call(_event)
     raise NotImplementedError

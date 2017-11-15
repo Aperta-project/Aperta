@@ -55,8 +55,9 @@ describe Event do
     context 'when an behavior is defined' do
       let!(:send_email_behavior) do
         create(
-          :behavior,
-          event_name: :good_event
+          :send_email_behavior,
+          event_name: :good_event,
+          letter_template: 'my-template'
         )
       end
       let(:paper) { FactoryGirl.create(:paper) }

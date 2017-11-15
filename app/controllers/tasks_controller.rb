@@ -77,7 +77,7 @@ class TasksController < ApplicationController
     requires_user_can :edit, task
     @task = Task.find(params[:id])
     template_name = params[:letter_template_name]
-    @letter_template = render_email_template(@task, template_name)
+    @letter_template = render_email_template(@task.paper, template_name)
     render json:  {
       to: @letter_template.to,
       subject: @letter_template.subject,
@@ -176,11 +176,10 @@ class TasksController < ApplicationController
     letter_template.render(TechCheckScenario.new(task_obj), check_blanks: false)
   end
 
-  def render_email_template(task_obj, template_name)
-    paper = task_obj.paper
+  def render_email_template(paper, template_name)
     journal = paper.journal
-    letter_template = journal.letter_templates.find_by(name: template_name)
-    letter_template.render(letter_template.scenario_class.new(task_obj), check_blanks: false)
+    letter_template = journal.letter_templates.find_by(ident: template_name)
+    letter_template.render(letter_template.scenario_class.new(paper), check_blanks: false)
   end
 
   def paper

@@ -339,9 +339,7 @@
         <attribute name="content-type">
           <value>email-editor</value>
         </attribute>
-        <optional>
-          <attribute name="ident"/>
-        </optional>
+        <ref name="input-attributes"/>
         <optional>
           <attribute name="letter-template"/>
         </optional>

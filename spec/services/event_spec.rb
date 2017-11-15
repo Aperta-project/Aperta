@@ -59,17 +59,19 @@ describe Event do
     context 'when an behavior is defined' do
       let!(:send_email_behavior) do
         create(
-          :event_behavior,
+          :behavior,
           event_name: :good_event
         )
       end
+      let(:paper) { FactoryGirl.create(:paper) }
+      let(:user) { FactoryGirl.create(:user) }
 
-      it 'the behaviors action should be called' do
-        expect(SendEmailAction).to receive(:call).with(
-          event_params: { user: user, paper: paper, task: task },
-          behavior_params: {}
+      it 'should call the call method with action parameters' do
+        expect(Behavior).to receive(:where).with(event_name: :good_event).and_return([send_email_behavior])
+        expect(send_email_behavior).to receive(:call).with(
+          user: user, paper: paper, task: nil
         )
-        subject
+        Event.trigger(:good_event, paper: paper, user: user)
       end
     end
   end

@@ -85,26 +85,4 @@ describe Behavior do
       end
     end
   end
-
-  context 'with action' do
-    let!(:behavior) do
-      TestBehavior.create!(
-        event_name: :fake_event,
-        journal: journal,
-        bool_attr: true,
-        string_attr: 'foo',
-        json_attr: { 'bar' => 'baz' }
-      )
-    end
-    let(:paper) { FactoryGirl.create(:paper) }
-    let(:user) { FactoryGirl.create(:user) }
-
-    it 'should call the call method with both the action and behavior parameters' do
-      expect(Behavior).to receive(:where).with(event_name: :fake_event).and_return([behavior])
-      expect(behavior).to receive(:call).with(
-        user: user, paper: paper, task: nil
-      )
-      Event.trigger(:fake_event, paper: paper, user: user)
-    end
-  end
 end

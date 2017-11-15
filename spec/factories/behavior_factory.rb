@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :event_behavior do
+  factory :behavior do
     event_name 'paper_submitted'
     action 'send_email'
     journal

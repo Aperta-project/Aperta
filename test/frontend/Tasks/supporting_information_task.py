@@ -23,8 +23,8 @@ class SITask(BaseTask):
 
     # Locators - Instance members
     self._si_filename = (By.CLASS_NAME, 'si-file-filename')
-    self._si_pencil_icon = (By.CLASS_NAME, 'fa-pencil')
-    self._si_trash_icon = (By.CLASS_NAME, 'fa-trash')
+    self.si_pencil_icon = (By.CLASS_NAME, 'fa-pencil')
+    self.si_trash_icon = (By.CLASS_NAME, 'fa-trash')
     self._si_error_message = (By.CLASS_NAME, 'error-message')
     self._si_upload_btn = (By.CLASS_NAME, 'si-files-upload-button')
     self._si_file_label_field = (By.CLASS_NAME, 'si-file-label-field')
@@ -191,7 +191,7 @@ class SITask(BaseTask):
     :return: None
     """
     self.validate_default_link_style(attached_filename)
-    edit_btn = self._get(self._si_pencil_icon)
+    edit_btn = self._get(self.si_pencil_icon)
     edit_btn.click()
     self.validate_si_edit_form_style(False)
     cancel_btn = self._get(self._si_file_cancel_btn)

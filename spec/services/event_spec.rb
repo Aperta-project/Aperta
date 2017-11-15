@@ -7,7 +7,8 @@ describe Event do
   let(:user) { create(:user) }
   let(:task) { FactoryGirl.create(:task, :with_card, title: Faker::Lorem.sentence, paper: paper) }
   let(:paper) { create(:paper) }
-  subject { Event.new(name: :good_event, **action_data).trigger }
+  let(:event) { Event.new(name: :good_event, **action_data) }
+  subject { event.trigger }
 
   before(:each) do
     Event.register(:good_event)
@@ -24,6 +25,11 @@ describe Event do
 
     it 'should error if the paper is nil' do
       expect { Event.new(name: :good_event, paper: nil, task: nil, user: nil).trigger }.to raise_error(ArgumentError, /paper is required/)
+    end
+
+    it 'should error if triggered twice' do
+      event.trigger
+      expect { event.trigger }.to raise_error(StandardError, /already triggered/)
     end
 
     it 'should append to the ActivityFeed' do

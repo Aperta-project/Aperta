@@ -37,6 +37,7 @@ class Event
   def trigger
     raise ArgumentError, "A paper is required" if paper.nil?
     raise ArgumentError, "Event #{name} not registered" unless Event.allowed?(name)
+    raise StandardError, "Event #{self} already triggered" if @triggered
 
     # Broadcast it
     Notifier.notify(event: name, data: notify_payload)
@@ -46,6 +47,7 @@ class Event
 
     # Log to the activity feed
     Activity.create(**activity_feed_payload)
+    @triggered = true
   end
 
   def notify_payload

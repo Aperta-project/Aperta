@@ -28,14 +28,11 @@
 
 .card-form-label {
   display:block;
+  font-size:16px;
 }
 
-.read-only {
-  .card-form-label {
-  font-weight:600;
-  }
-  .card-checkbox .card-form-label,
-  .card-radio .card-form-label {
-    font-weight:normal;
-    }
+.card-checkbox .card-form-label,
+.card-radio .card-form-label {
+  font-size:14px;
 }
+

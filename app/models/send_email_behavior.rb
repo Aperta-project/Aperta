@@ -4,9 +4,9 @@ class SendEmailBehavior < Behavior
 
   def call(event)
     lt = paper.journal.letter_templates.find_by(letter_template)
-    scenario = lt.scenario.constantize
-    lt.render(scenario.new(task_obj))
-
+    scenario_class = lt.send(:scenario_class)
+    raise unless scenario == PaperScenario
+    lt.render(scenario_class.new(event.paper))
     GenericMailer.delay.send_email(
       subject: lt.subject,
       body: lt.body,

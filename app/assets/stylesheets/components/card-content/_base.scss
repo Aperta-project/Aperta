@@ -30,6 +30,12 @@
   display:block;
 }
 
-.read-only .card-form-label {
-  font-weight:600; 
+.read-only {
+  .card-form-label {
+  font-weight:600;
+  }
+  .card-checkbox .card-form-label,
+  .card-radio .card-form-label {
+    font-weight:normal;
+    }
 }

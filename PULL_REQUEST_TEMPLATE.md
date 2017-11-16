@@ -69,7 +69,7 @@ JIRA issue: link-to-jira
 
 Explain in a few sentences what functionality changed, and how. Don't be afraid
 to give a little extra detail. The Reviewer is going to read the original
-ticket, but this can point them in the right direction. Hi!
+ticket, but this can point them in the right direction.
 
 Can your changes be *seen* by a user? Then add a screenshot. Is it an
 interaction?  Perhaps a quick recording?

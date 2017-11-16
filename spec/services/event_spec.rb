@@ -10,15 +10,60 @@ describe Event do
   let(:event) { Event.new(name: :good_event, **action_data) }
   subject { event.trigger }
 
-  before(:each) do
-    Event.register(:good_event)
-  end
+  describe 'event registry' do
+    describe 'Event.register' do
+      after(:each) { Event.deregister('my_event') }
 
-  after(:each) do
-    Event.deregister(:good_event)
+      it 'should work' do
+        Event.register('my_event')
+        expect(Event.allowed_events).to contain_exactly('my_event')
+      end
+
+      it 'should convert to a string' do
+        Event.register(:my_event)
+        expect(Event.allowed_events).to contain_exactly('my_event')
+      end
+    end
+
+    describe 'Event.allowed?' do
+      before(:each) { Event.register('my_event') }
+      after(:each) { Event.deregister('my_event') }
+
+      it 'should work' do
+        expect(Event.allowed?('my_event')).to be(true)
+      end
+
+      it 'should work with symbols' do
+        expect(Event.allowed?(:my_event)).to be(true)
+      end
+    end
+
+    describe 'Event.allowed_events_including_descendants' do
+      let!(:klass) { Class.new(Event) }
+      after(:each) { Event.deregister('my_event') }
+      before(:each) { Event.register(:my_event) }
+      before(:each) { klass.register(:other_event) }
+
+      it 'should include the events registered for that class' do
+        expect(Event.allowed_events_including_descendants).to include('my_event')
+      end
+
+      it 'should include the events registered for the subclass' do
+        Event.register(:my_event)
+        expect(Event.allowed_events_including_descendants).to include('other_event')
+      end
+    end
   end
 
   describe '#trigger' do
+    before(:each) do
+      Event.register(:good_event)
+    end
+
+    after(:each) do
+      Event.deregister(:good_event)
+    end
+
     it 'should error if the event is not registered' do
       expect { Event.new(name: :bad_event, paper: paper, task: nil, user: nil).trigger }.to raise_error(ArgumentError, /not registered/)
     end
@@ -33,7 +78,7 @@ describe Event do
     end
 
     it 'should append to the ActivityFeed' do
-      expect(Activity).to receive(:create).with(
+      expect(Activity).to receive(:create!).with(
         feed_name: 'forensic',
         subject: task,
         activity_key: :good_event,

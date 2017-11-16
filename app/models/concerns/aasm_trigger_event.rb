@@ -3,7 +3,7 @@ module AASMTriggerEvent
 
   module ClassMethods
     def register_events!
-      Event.register(*aasm.states.map(&:name).map { |s| make_event_name(s) })
+      StateChangeEvent.register(*aasm.states.map(&:name).map { |s| make_event_name(s) })
     end
 
     # TODO: This should be based on the event, not the state

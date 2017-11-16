@@ -5,7 +5,7 @@ class Behavior < ActiveRecord::Base
 
   belongs_to :journal
 
-  validates :event_name, presence: true, inclusion: { in: ->(_) { Event.allowed_events } }
+  validates :event_name, presence: true, inclusion: { in: ->(_) { Event.allowed_events_including_descendants } }
 
   # Main entry point for a behavior.
   def call(_event)

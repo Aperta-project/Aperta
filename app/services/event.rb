@@ -20,6 +20,10 @@ class Event
     @events.dup
   end
 
+  def self.allowed_events_including_descendants
+    allowed_events + descendants.flat_map(&:allowed_events)
+  end
+
   def self.allowed?(event)
     @events.member?(event.to_s)
   end
@@ -36,7 +40,7 @@ class Event
   # Single method to call to start a method.
   def trigger
     raise ArgumentError, "A paper is required" if paper.nil?
-    raise ArgumentError, "Event #{name} not registered" unless Event.allowed?(name)
+    raise ArgumentError, "Event #{name} not registered" unless self.class.allowed?(name)
     raise StandardError, "Event #{self} already triggered" if @triggered
 
     # Broadcast it

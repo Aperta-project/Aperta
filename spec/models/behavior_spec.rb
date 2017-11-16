@@ -17,6 +17,10 @@ describe Behavior do
     Event.deregister(:fake_name)
   end
 
+  describe TestBehavior do
+    it_behaves_like :behavior_subclass
+  end
+
   context 'event validation' do
     context 'when no subject is provided' do
       subject { TestBehavior.new }
@@ -52,12 +56,6 @@ describe Behavior do
 
     it 'should allow a bool_attr' do
       expect(subject.new(bool_attr: true, **args)).to be_valid
-    end
-
-    it 'should not allow some random attr' do
-      expect {
-        subject.new(xxx_attr: true, **args)
-      }.to raise_error(ActiveRecord::UnknownAttributeError)
     end
 
     context 'with a validation' do

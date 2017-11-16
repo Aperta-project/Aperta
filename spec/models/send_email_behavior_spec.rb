@@ -18,6 +18,8 @@ describe Behavior do
     Event.deregister(:fake_name)
   end
 
+  it_behaves_like :behavior_subclass
+
   it 'should fail validation unless a letter_template is set' do
     expect(subject).not_to be_valid
   end

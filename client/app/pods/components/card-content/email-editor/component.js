@@ -109,6 +109,10 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
         subject: this.get('emailToSubject'),
         body: this.get('emailToBody')};
 
+      if(!this.get('emailToField') || !this.get('emailToSubject') || !this.get('emailToBody')) {
+        return;
+      }
+
       this.get('restless').put(config.url, emailMessage).then((data)=> {
         this.set('emailToField', data.to.toString());
         this.set('emailToSubject', data.subject);

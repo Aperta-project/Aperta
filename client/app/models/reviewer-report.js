@@ -12,8 +12,10 @@ export default NestedQuestionOwner.extend(Answerable, {
   revision: DS.attr('string'),
   createdAt: DS.attr('date'),
   submitted: DS.attr('boolean'),
-  dueAt: DS.attr('date'),
-  dueAtId: DS.attr('string'),
+  // this is my best attempt at a hasOne in ember . . .
+  dueDatetimes: DS.hasMany('due_datetime', { async: false }),
+  dueDatetime: Ember.computed.alias('dueDatetimes.firstObject'),
+
   originallyDueAt: DS.attr('date'),
   needsSubmission: Ember.computed('status', 'submitted', function() {
     var status = this.get('status');

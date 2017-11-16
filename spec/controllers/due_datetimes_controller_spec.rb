@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DueDatetimeController do
+describe DueDatetimesController do
   let(:user) { FactoryGirl.build_stubbed(:user) }
 
   describe 'PUT #update' do
@@ -9,6 +9,11 @@ describe DueDatetimeController do
 
     subject(:do_request) do
       xhr :put, :update, format: :json, id: due_datetime.id, due_datetime: { due_at: due_datetime.due_at + 5.days }
+    end
+
+    before :each do
+      FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
+      FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -29,10 +34,15 @@ describe DueDatetimeController do
       end
 
       it 'updates due date time' do
-        FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
-        FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
         do_request
         expect(response.status).to eq(200)
+      end
+
+      it 'responds with the rescheduled scheduled events' do
+        do_request
+        data = JSON.parse(response.body)
+        expect(data).to be_present
+        binding.pry
       end
     end
   end

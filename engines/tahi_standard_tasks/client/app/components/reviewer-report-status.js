@@ -6,9 +6,11 @@ export default Ember.Component.extend({
   readOnly: false,
   shortStatus: Ember.computed.reads('short'),
 
-  statusSubMessage: Ember.computed('report.status','report.revision','statusDate', 'report.originallyDueAt', 'report.dueAt', function() {
+  dueDatetime: Ember.computed.alias('report.dueDatetime'),
+
+  statusSubMessage: Ember.computed('report.status','report.revision','statusDate', 'report.originallyDueAt', 'report.dueDatetime.dueAt', function() {
     const status = this.get('report.status');
-    var output = '';    
+    var output = '';
     const verbs = {
       'pending': 'accepted',
       'invitation_invited': 'sent on',
@@ -22,10 +24,10 @@ export default Ember.Component.extend({
       output = `Invitation ${verbs[status]} ${this.get('statusDate')}`;
     }
 
-    const dueDate = this.get('report.dueAt');        
+    const dueDate = this.get('report.dueDatetime.dueAt');
     const originalDueDate = this.get('report.originallyDueAt');
-    const format = 'MMMM D';   
-    const formattedDueDate = moment(dueDate).format(format);    
+    const format = 'MMMM D';
+    const formattedDueDate = moment(dueDate).format(format);
     const formattedOriginalDueDate = moment(originalDueDate).format(format);
     if (dueDate && formattedDueDate !== formattedOriginalDueDate) {
       output += `; original due date was ${formattedOriginalDueDate}.`;
@@ -49,8 +51,8 @@ export default Ember.Component.extend({
     return moment(date).format(format);
   }),
 
-  reviewDueMessage: Ember.computed('report.dueAt', function(){
-    const date = this.get('report.dueAt');
+  reviewDueMessage: Ember.computed('dueDatetime.dueAt', function(){
+    const date = this.get('dueDatetime.dueAt');
     var output = '';
     if (date) {
       const format = 'MMMM D, YYYY h:mm a z';
@@ -59,7 +61,7 @@ export default Ember.Component.extend({
     }
     return output;
   }),
-  
+
   reviewerStatus: Ember.computed('report.status', function() {
     const status = this.get('report.status');
     const statuses = {
@@ -75,14 +77,12 @@ export default Ember.Component.extend({
     return statuses[status];
   }),
 
-  restless: Ember.inject.service('restless'),
-
   actions: {
     changeDueDate(newDate) {
-      var hours = this.get('report.dueAt').getHours();
+      var hours = this.get('dueDatetime.dueAt').getHours();
       newDate.setHours(hours);
-      this.set('report.dueAt', newDate);
-      this.get('restless').put(`/api/due_datetime/${this.get('report.dueAtId')}`, {due_at: newDate});
+      this.set('dueDatetime.dueAt', newDate);
+      this.get('dueDatetime').save();
     }
   }
 });

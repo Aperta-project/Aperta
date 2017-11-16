@@ -13,8 +13,7 @@ class ReviewerReportSerializer < ActiveModel::Serializer
     :due_at_id,
     :originally_due_at,
     :revision
-  has_one :task
-  has_many :scheduled_events, embed: :ids, include: true
+  has_one :due_datetime, embed: :ids, include: true
 
   def due_at
     object.due_at if FeatureFlag[:REVIEW_DUE_DATE]

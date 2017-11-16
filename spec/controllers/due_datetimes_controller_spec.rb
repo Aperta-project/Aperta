@@ -5,7 +5,11 @@ describe DueDatetimesController do
 
   describe 'PUT #update' do
     let(:due_datetime) { FactoryGirl.create(:due_datetime, :in_5_days) }
-    let(:reviewer_report) { FactoryGirl.create(:reviewer_report, due_datetime: due_datetime) }
+    let(:reviewer_report) do
+      rr = FactoryGirl.create(:reviewer_report, due_datetime: due_datetime)
+      rr.schedule_events
+      rr
+    end
 
     subject(:do_request) do
       xhr :put, :update, format: :json, id: due_datetime.id, due_datetime: { due_at: due_datetime.due_at + 5.days }
@@ -39,10 +43,11 @@ describe DueDatetimesController do
       end
 
       it 'responds with the rescheduled scheduled events' do
+        scheduled_event_count = due_datetime.scheduled_events.count
+        expect(scheduled_event_count).to be > 0
         do_request
         data = JSON.parse(response.body)
-        expect(data).to be_present
-        binding.pry
+        expect(data["scheduled_events"].count).to eq scheduled_event_count
       end
     end
   end

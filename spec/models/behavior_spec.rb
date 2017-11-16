@@ -4,11 +4,6 @@ describe Behavior do
   let(:args) { { event_name: :fake_event } }
   let(:journal) { create(:journal) }
 
-  class TestBehavior < Behavior
-    has_attributes boolean: %w[bool_attr], string: %w[string_attr], json: %w[json_attr]
-    def call(*args); end
-  end
-
   before(:each) do
     Event.register(:fake_event)
   end

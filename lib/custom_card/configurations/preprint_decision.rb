@@ -11,11 +11,11 @@ module CustomCard
       end
 
       def self.view_role_names
-        ["Staff Admin"]
+        ["Internal Editor", "Publishing Services", "Production Staff", "Staff Admin"]
       end
 
       def self.edit_role_names
-        ["Staff Admin"]
+        ["Internal Editor", "Publishing Services", "Production Staff", "Staff Admin"]
       end
 
       def self.publish

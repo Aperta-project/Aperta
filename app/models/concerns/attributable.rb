@@ -1,8 +1,11 @@
 # rubocop:disable Style/PredicateName
 # rubocop:disable Metrics/AbcSize
 #
-# Concern providing an entity-attribute-value model
+# This concern enables the entity part of an EAV model
+# (https://en.wikipedia.org/wiki/Entity%E2%80%93attribute%E2%80%93value_model)
+#
 # See CardContent model for an example of its use.
+# See EntityAttribute for the attributes.
 module Attributable
   extend ActiveSupport::Concern
 

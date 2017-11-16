@@ -3,9 +3,7 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
-  subRouteName: 'correspondence',
   classNameBindings: ['card-content', 'card-content-email-editor'],
-  //passed-in stuff
   restless: Ember.inject.service('restless'),
   flash: Ember.inject.service('flash'),
   propTypes: {
@@ -35,11 +33,6 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     };
   },
 
-  name: Ember.computed('content.ident', function() {
-    let ident = this.get('content.ident');
-    return `email-editor-${ident}`;
-  }),
-
   paper: Ember.computed('paper', function() {
     return this.get('owner').get('paper');
   }),
@@ -54,18 +47,13 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   }),
 
   emailAnswer: Ember.computed('content', 'owner', function(){
-    let answer = this.get('content').get('answers').findBy('owner', this.get('owner'));
+    let answer = this.get('answer');
     if(answer) {
       let value = answer.get('value');
       let emailJSON = value ? JSON.parse(value) : undefined;
       return emailJSON;
     }
     return answer;
-  }),
-
-  disableEditor: Ember.computed('content', 'owner', function(){
-    let answer = this.get('content').get('answers').findBy('owner', this.get('owner'));
-    return answer ? true : false;
   }),
 
   to: Ember.computed('emailAnswer', function() {

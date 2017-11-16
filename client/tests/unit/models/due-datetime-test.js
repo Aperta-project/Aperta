@@ -10,4 +10,5 @@ moduleForModel('due-datetime', 'Unit | Model | due datetime', {
 test('the factory', function(assert) {
   let model = make('due-datetime');
   assert.ok(!!model);
+  assert.ok(moment(model.get('dueAt')).isValid(), 'dueAt is a valid date string');
 });

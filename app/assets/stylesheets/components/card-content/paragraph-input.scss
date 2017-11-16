@@ -6,10 +6,12 @@
       resize: vertical;
     }
 
-    label {
+    label,
+    .card-form-label {
       margin-bottom: 10px;
       &.content-text {
-          font-size: 20px;
+        font-size: 16px;
+        line-height: 20px;
       }
     }
 }

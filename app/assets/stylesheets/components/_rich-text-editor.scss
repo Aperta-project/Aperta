@@ -10,13 +10,11 @@
 }
 .read-only {
   .card-form-label {
-    font-weight:600;
-    margin-top:10px;
+    font-size:16px;
   }
   .rich-text-editor {
    border:1px solid $aperta-grey-light;
    border-radius:4px;
-   margin-bottom:10px; 
    padding: 4px;
   }
 }

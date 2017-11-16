@@ -1,12 +1,4 @@
 GIT
-  remote: https://github.com/Tahi-project/loofah-gem
-  revision: 98392bdee51dc2c0c65d92d4300b238cf4c63a60
-  specs:
-    loofah (2.1.2)
-      crass (~> 1.0.2)
-      nokogiri (>= 1.5.9)
-
-GIT
   remote: https://github.com/rails/activemodel-globalid
   revision: 189c69988b0208d6d4760ae823043b94a84f0814
   specs:
@@ -428,6 +420,9 @@ GEM
       actionpack (>= 3)
       activesupport (>= 3)
       railties (>= 3)
+    loofah (2.1.1)
+      crass (~> 1.0.2)
+      nokogiri (>= 1.5.9)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
     mail_safe (0.3.4)
@@ -782,7 +777,6 @@ DEPENDENCIES
   kaminari
   liquid
   lograge
-  loofah!
   mail_safe
   migration_comments
   migration_data

@@ -4,7 +4,7 @@ FactoryGuy.define('reviewer-report', {
   default: {
     task: { id: 1 },
     decision: { id: 1},
-    dueDatetimes: FactoryGuy.hasMany('due-datetime', 1),
+    dueDatetime: FactoryGuy.belongsTo('due-datetime'),
     dueAt: '2017-07-04T14:00:00.028Z',
     originallyDueAt: '2017-07-04T14:00:00.028Z',
     user: { id: 1}

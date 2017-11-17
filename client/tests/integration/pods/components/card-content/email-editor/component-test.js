@@ -3,6 +3,7 @@ import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import Ember from 'ember';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
+import wait from 'ember-test-helpers/wait';
 
 moduleForComponent('card-content/email-editor', 'Integration | Component | card content/email editor', {
   integration: true,
@@ -35,5 +36,14 @@ test(`it renders an email`, function(assert) {
 
   this.render(template);
 
-  assert.equal(1,1);
+  return wait().then(() => {
+    assert.elementFound(
+      `.email-editor`, 'email editor is visible after generated'
+    );
+    assert.equal($('input.to-field').val().trim(), 'test@example.com', 'the email displays the recipient');
+    assert.equal($('input.subject-field').val().trim(), 'hello world', 'the email displays the correct subject');
+    assert.elementFound(
+      `.email-editor .button-primary`, 'email editor has a send email button'
+    );
+  });
 });

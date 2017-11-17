@@ -93,6 +93,7 @@ class Page < PageFragment
     # Don't visit CAS logout route in CI
     ClimateControl.modify CAS_LOGOUT_URL: nil do
       find('.main-nav-user-section-header').click
+      wait_for_ajax
       find('#nav-signout').click
 
       within ".auth-container" do

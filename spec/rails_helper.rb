@@ -120,7 +120,7 @@ RSpec.configure do |config|
       client = Selenium::WebDriver::Remote::Http::Default.new
       client.read_timeout = 90
       client.open_timeout = 90
-      options = Selenium::WebDriver::Firefox::Options.new
+      options = Selenium::WebDriver::Firefox::Options.new(args: ['-headless'])
       options.profile = profile
       Capybara::Selenium::Driver
         .new(app, browser: :firefox, options: options, http_client: client)

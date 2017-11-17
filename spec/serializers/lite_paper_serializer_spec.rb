@@ -93,20 +93,28 @@ describe LitePaperSerializer do
       end
     end
 
-    describe '#preprint_dashboard' do
+    describe '#preprint_dashboard?' do
       let(:author) { FactoryGirl.build_stubbed(:author) }
 
       before do
         allow(paper).to receive(:authors) { [author] }
       end
 
-      it 'returns true if current user also and author of the paper' do
+      it 'returns true if preprint_posted flag is true and current user is also the author of the paper' do
         allow(author).to receive(:user_id) { current_user.id }
+        allow(paper).to receive(:preprint_posted?) { true }
         expect(json[:preprint_dashboard]).to be_truthy
       end
 
-      it 'returns false if current user is not an author of the paper' do
+      it 'returns false if preprint_posted flag is true and current user is not an author of the paper' do
+        allow(paper).to receive(:preprint_posted?) { true }
         allow(author).to receive(:user_id) { user.id }
+        expect(json[:preprint_dashboard]).to be_falsey
+      end
+
+      it 'returns false if preprint_posted flag is false no matter the rest' do
+        allow(paper).to receive(:preprint_posted?) { false }
+        allow(author).to receive(:user_id) { current_user.id } # current user is author of the paper
         expect(json[:preprint_dashboard]).to be_falsey
       end
     end

@@ -1780,4 +1780,12 @@ describe Paper do
       paper.send(:trigger_event, 1, 2, 3)
     end
   end
+
+  context 'aasm trigger' do
+    subject { paper.submit!(user) }
+    let(:model) { paper }
+    let(:to_state) { 'submitted' }
+    let(:state) { paper.publishing_state }
+    it_behaves_like :an_aasm_trigger_model
+  end
 end

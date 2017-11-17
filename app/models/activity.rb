@@ -353,26 +353,24 @@ class Activity < ActiveRecord::Base
   end
 
   def self.correspondence_created!(correspondence, user:)
-    paper = correspondence.paper
-    correspondence_link = "/papers/#{paper.short_doi}/correspondence/viewcorrespondence/#{correspondence.id}"
+    correspondence_url = client_show_correspondence(correspondence)
     create(
       feed_name: 'workflow',
       activity_key: 'correspondence.created',
       subject: correspondence,
       user: user,
-      message: "A <a href='#{correspondence_link}'>correspondence entry</a> was created"
+      message: "A <a href='#{correspondence_url}'>correspondence entry</a> was created"
     )
   end
 
   def self.correspondence_edited!(correspondence, user:)
-    paper = correspondence.paper
-    correspondence_link = "/papers/#{paper.short_doi}/correspondence/viewcorrespondence/#{correspondence.id}"
+    correspondence_url = client_show_correspondence(correspondence)
     create(
       feed_name: 'workflow',
       activity_key: 'correspondence.edited',
       subject: correspondence,
       user: user,
-      message: "A <a href='#{correspondence_link}'>correspondence entry</a> was edited"
+      message: "A <a href='#{correspondence_url}'>correspondence entry</a> was edited"
     )
   end
 end

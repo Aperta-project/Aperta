@@ -8,19 +8,19 @@
       <th>Date</th>
     </tr>
     <tr>
-      <td>
+      <td class="read-only-subject">
         {{#link-to "paper.correspondence" paper class="control-bar-button"}}
           {{fa-icon icon="envelope-open-o"}}
           {{subject}}
         {{/link-to}}
       </td>
-      <td>
+      <td class="read-only-to">
         {{to}}
       </td>
-      <td>
+      <td class="read-only-from">
         {{from}}
       </td>
-      <td>
+      <td class="read-only-date">
         {{date}}
       </td>
     </tr>

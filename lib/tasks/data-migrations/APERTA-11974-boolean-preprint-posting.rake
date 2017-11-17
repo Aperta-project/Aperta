@@ -16,7 +16,11 @@ namespace :data do
         answers.each do |answer|
           answer.update_attributes(value: answer.value.to_i == 1)
         end
-        card_content.update_attributes(value_type: 'boolean')
+        card_content.update_attributes(value_type: 'boolean', default_answer_value: 'true')
+        values = card_content.possible_values
+        values.each { |value| value['value'] = value['value'].to_i == 1 }
+        card_content.possible_values = values
+        card_content.save
       end
     end
   end

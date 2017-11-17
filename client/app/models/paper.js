@@ -94,6 +94,7 @@ export default DS.Model.extend({
   manuallySimilarityChecked: attr('boolean'),
   preprintOptOut: attr('boolean'),
   preprintEligible: attr('boolean'),
+  preprintDashboard: attr('boolean'),
 
   reviewDueAt: attr('date'),
   reviewOriginallyDueAt: attr('date'),

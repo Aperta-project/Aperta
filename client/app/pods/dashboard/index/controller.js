@@ -40,15 +40,8 @@ export default Ember.Controller.extend({
                         }),
   activePapers:         Ember.computed.filterBy('papers', 'active', true),
   inactivePapers:       Ember.computed.filterBy('papers', 'active', false),
-  preprints: Ember.computed('papers', function() {
-    const promise = Ember.RSVP.filter(this.get('papers').toArray(), paper => {
-      return paper.get('preprintPosted') && this.get('can').can('edit', paper).then((canEdit) => {
-        return canEdit;
-      });
-    });
-    return DS.PromiseArray.create({
-      promise: promise
-    });
+  preprints: Ember.computed.filter('papers', function(paper) {
+    return paper.get('preprintDashboard');
   }),
 
   totalActivePaperCount: Ember.computed.alias('activePapers.length'),

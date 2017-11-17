@@ -15,14 +15,15 @@
       </content>
       <content content-type="description">
         <text>
-          Establish priority: take credit for your research and discoveries, by posting a copy of your uncorrected proof online. If you do <b>NOT</b> consent to having an early version of your paper posted online, indicate your choice below.
+          Establish priority: take credit for your research and discoveries, by posting a copy of your uncorrected proof online.
+          If you do <b>NOT</b> consent to having an early version of your paper posted online, indicate your choice below.
         </text>
       </content>
     </content>
-    <content content-type="radio" value-type="text" allow-annotations="false" required-field="false">
-      <default-answer-value>1</default-answer-value>
-      <possible-value label="Yes, I want to accelerate research by publishing a preprint ahead of peer review" value="1"/>
-      <possible-value label="No, I do not want my article to appear online ahead of the reviewed article" value="2"/>
+    <content content-type="radio" ident="preprint-posting--consent" value-type="boolean" allow-annotations="false" required-field="false">
+      <default-answer-value>true</default-answer-value>
+      <possible-value label="Yes, I want to accelerate research by publishing a preprint ahead of peer review" value="true"/>
+      <possible-value label="No, I do not want my article to appear online ahead of the reviewed article" value="false"/>
     </content>
   </content>
 </card>

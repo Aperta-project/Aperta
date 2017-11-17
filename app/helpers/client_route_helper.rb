@@ -27,8 +27,8 @@ module ClientRouteHelper
     "#{root_url}invitations/#{token}"
   end
 
-  def client_show_correspondence(correspondence)
+  def client_show_correspondence_url(correspondence)
     paper = correspondence.paper
-    "#{root_url}papers/#{paper.short_doi}/correspondence/viewcorrespondence/#{correspondence.id}"
+    "/papers/#{paper.short_doi}/correspondence/viewcorrespondence/#{correspondence.id}"
   end
 end

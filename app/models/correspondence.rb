@@ -20,10 +20,6 @@ class Correspondence < ActiveRecord::Base
                              allow_blank: false
   end
 
-  def external?
-    external
-  end
-
   def activities
     Activity.feed_for('workflow', self).map do |f|
       {

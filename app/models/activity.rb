@@ -2,6 +2,7 @@
 # Activities are used to make up a feed for various users in the system. The
 # feed is determined by the feed name assigned to each activity.
 class Activity < ActiveRecord::Base
+  extend ClientRouteHelper
   belongs_to :subject, polymorphic: true
   belongs_to :user
 
@@ -353,7 +354,7 @@ class Activity < ActiveRecord::Base
   end
 
   def self.correspondence_created!(correspondence, user:)
-    correspondence_url = client_show_correspondence(correspondence)
+    correspondence_url = client_show_correspondence_url(correspondence)
     create(
       feed_name: 'workflow',
       activity_key: 'correspondence.created',
@@ -364,7 +365,7 @@ class Activity < ActiveRecord::Base
   end
 
   def self.correspondence_edited!(correspondence, user:)
-    correspondence_url = client_show_correspondence(correspondence)
+    correspondence_url = client_show_correspondence_url(correspondence)
     create(
       feed_name: 'workflow',
       activity_key: 'correspondence.edited',

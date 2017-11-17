@@ -104,19 +104,34 @@ describe Event do
     end
 
     context 'when an behavior is defined' do
-      let!(:send_email_behavior) do
+      let!(:behavior) do
         create(
-          :send_email_behavior,
-          event_name: :good_event,
-          letter_template: 'my-template'
+          :test_behavior,
+          event_name: :good_event
         )
       end
-      let(:paper) { FactoryGirl.create(:paper) }
-      let(:user) { FactoryGirl.create(:user) }
+
       let(:event) { Event.new(name: :good_event, paper: paper, user: user, task: nil) }
+
       it 'should call the call method with action parameters' do
-        expect(Behavior).to receive(:where).with(event_name: :good_event).and_return([send_email_behavior])
-        expect(send_email_behavior).to receive(:call).with(event)
+        expect(Behavior).to receive(:where).with(event_name: :good_event).and_return([behavior])
+        expect(behavior).to receive(:call).with(event)
+        event.trigger
+      end
+    end
+
+    describe 'exception handling' do
+      let!(:behavior) do
+        create(
+          :test_behavior,
+          event_name: :good_event
+        )
+      end
+      let(:event) { Event.new(name: :good_event, paper: paper, user: user, task: nil) }
+
+      it 'should call the call method with action parameters' do
+        expect(Behavior).to receive(:where).with(event_name: :good_event).and_return([behavior])
+        expect(behavior).to receive(:call).with(event)
         event.trigger
       end
     end

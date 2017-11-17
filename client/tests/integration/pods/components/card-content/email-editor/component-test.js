@@ -1,25 +1,46 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import { manualSetup, make } from 'ember-data-factory-guy';
+import Ember from 'ember';
+import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 
 moduleForComponent('card-content/email-editor', 'Integration | Component | card content/email editor', {
-  integration: true
+  integration: true,
+  beforeEach() {
+    manualSetup(this.container);
+    registerCustomAssertions();
+    this.set('actionStub', function() {});
+    this.set('preview', true);
+    this.set('content', Ember.Object.create({ ident: 'test', letterTemplate: 'preprint-accept'}));
+    this.set('answer', Ember.Object.create({ value: null }));
+  }
 });
 
-test('it renders', function(assert) {
+let template = hbs`{{card-content/email-editor
+content=content
+disabled=disabled
+owner=owner
+answer=answer
+valueChanged=(action actionStub)
+}}`;
 
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+test(`it renders an email`, function(assert) {
+  let owner = make('custom-card-task');
 
-  this.render(hbs`{{card-content/email-editor}}`);
+  this.set('owner', owner);
 
-  assert.equal(this.$().text().trim(), '');
+  /*$.mockjax({
+    url:`/api/tasks/${this.get('owner.id')}/${endpoint}`,
+    contentType:"text/json",
+    responseText:[ { to: sent_to_users,
+      from: initiator,
+      date: d.strftime("%h %d, %Y %r"),
+      subject: params[:subject],
+      body: params[:body] }]
+  });
+*/
 
-  // Template block usage:
-  this.render(hbs`
-    {{#card-content/email-editor}}
-      template block text
-    {{/card-content/email-editor}}
-  `);
+  this.render(template);
 
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(1,1);
 });

@@ -12,10 +12,6 @@ class Activity < ActiveRecord::Base
     where(feed_name: feed_names, subject: subject).order('created_at DESC')
   end
 
-  scope :feed_for_type, -> (feed_names, subject_types) do
-    where(feed_name: feed_names, subject_type: subject_types).order('created_at DESC')
-  end
-
   def self.assignment_created!(assignment, user:)
     msg = "#{assignment.user.full_name} was added as #{assignment.role.name}"
     create(
@@ -358,7 +354,7 @@ class Activity < ActiveRecord::Base
     create(
       feed_name: 'workflow',
       activity_key: 'correspondence.created',
-      subject: correspondence,
+      subject: correspondence.paper,
       user: user,
       message: "A <a href='#{correspondence_url}'>correspondence entry</a> was created"
     )
@@ -369,7 +365,7 @@ class Activity < ActiveRecord::Base
     create(
       feed_name: 'workflow',
       activity_key: 'correspondence.edited',
-      subject: correspondence,
+      subject: correspondence.paper,
       user: user,
       message: "A <a href='#{correspondence_url}'>correspondence entry</a> was edited"
     )

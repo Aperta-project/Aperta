@@ -54,7 +54,7 @@ test('can manage workflow, list appears for correspondence with manuscript versi
 
 test('can manage workflow, list appears for correspondence without manuscript version and status', function(assert) {
   let paper = FactoryGuy.make('paper');
-  let correspondence = FactoryGuy.make('correspondence', 'externalCorrespondence', { paper: paper });
+  let correspondence = FactoryGuy.make('correspondence', { paper: paper });
   const can = FakeCanService.create().allowPermission('manage_workflow', paper);
   this.register('service:can', can.asService());
 

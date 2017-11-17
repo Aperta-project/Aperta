@@ -12,13 +12,15 @@ class Activity < ActiveRecord::Base
     where(feed_name: feed_names, subject: subject).order('created_at DESC')
   end
 
-  scope :for_workflow, -> (feed_names, subject) do
+  def self.for_workflow(feed_names, subject)
     where(
       subject_type: 'Correspondence',
       subject_id: subject.correspondence_ids
     )
     .order('created_at DESC')
     .concat(feed_for(feed_names, subject))
+    .sort_by(&:created_at)
+    .reverse
   end
 
   def self.assignment_created!(assignment, user:)

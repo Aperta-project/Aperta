@@ -38,15 +38,13 @@ export default DS.Model.extend({
 
   hasActivities: Ember.computed.notEmpty('activities'),
 
+  activityNames: {
+    'correspondence.created': 'Added',
+    'correspondence.edited': 'Edited'
+  },
+
   activityMessages: Ember.computed.map('activities', function(activity) {
-    let result = '';
-    if (activity.key === 'correspondence.created') {
-      result += 'Added by ';
-    } else {
-      result += 'Edited by ';
-    }
-    result += activity.full_name + ' on ' + formatDate(activity.created_at, { format: 'MMMM DD, YYYY HH:mm' });
-    return result;
+    return `${this.get('activityNames')[activity.key]} by ${activity.full_name} on ${formatDate(activity.created_at, { format: 'MMMM DD, YYYY H:mm' })}`;
   }),
 
   lastActivityMessage: Ember.computed('activityMessages', function(){

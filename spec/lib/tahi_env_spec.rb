@@ -27,7 +27,7 @@ describe TahiEnv do
       IHAT_URL: 'http://ihat.tahi-project.com',
       NED_CAS_APP_ID: 'ned123',
       NED_CAS_APP_PASSWORD: 'password',
-      USE_NED_INSTITUTIONS: 'false',
+      NED_INSTITUTIONS_ENABLED: 'false',
       S3_URL: 'http://tahi-test.amazonaws.com',
       S3_BUCKET: 'tahi',
       AWS_ACCESS_KEY_ID: 'DNCDCC55F',
@@ -129,7 +129,7 @@ describe TahiEnv do
   it_behaves_like 'required env var', var: 'NED_CAS_APP_ID'
   it_behaves_like 'required env var', var: 'NED_CAS_APP_PASSWORD'
   it_behaves_like 'optional boolean env var', var: 'NED_SSL_VERIFY', default_value: true
-  it_behaves_like 'required boolean env var', var: 'USE_NED_INSTITUTIONS'
+  it_behaves_like 'required boolean env var', var: 'NED_INSTITUTIONS_ENABLED'
 
   # Newrelic
   it_behaves_like 'optional env var', var: 'NEWRELIC_KEY'

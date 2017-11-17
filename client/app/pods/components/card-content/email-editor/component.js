@@ -14,6 +14,10 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     repetition: PropTypes.oneOfType([PropTypes.null, PropTypes.EmberObject]).isRequired
   },
 
+  emailToField: null,
+  emailToSubject: null,
+  emailToBody: null,
+
   init() {
     this._super(...arguments);
     const config = this._templateConfig('load_email_template');

@@ -29,16 +29,9 @@ test(`it renders an email`, function(assert) {
 
   this.set('owner', owner);
 
-  /*$.mockjax({
-    url:`/api/tasks/${this.get('owner.id')}/${endpoint}`,
-    contentType:"text/json",
-    responseText:[ { to: sent_to_users,
-      from: initiator,
-      date: d.strftime("%h %d, %Y %r"),
-      subject: params[:subject],
-      body: params[:body] }]
-  });
-*/
+  this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+  $.mockjax({url: '/api/tasks/1/load_email_template', type: 'get', status: 200, responseText: '{"to": "test@example.com", "subject":"hello world", "body": "some text"}'});
+
 
   this.render(template);
 

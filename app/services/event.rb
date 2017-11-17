@@ -43,14 +43,14 @@ class Event
     raise ArgumentError, "Event #{name} not registered" unless self.class.allowed?(name)
     raise StandardError, "Event #{self} already triggered" if @triggered
 
-    # Broadcast it
-    Notifier.notify(event: name, data: notify_payload)
-
     # Run handlers
     Behavior.where(event_name: name).each { |behavior| behavior.call(self) }
 
+    # Broadcast it
+    Notifier.notify(event: name, data: notify_payload)
+
     # Log to the activity feed
-    Activity.create(**activity_feed_payload)
+    Activity.create!(**activity_feed_payload)
     @triggered = true
   end
 

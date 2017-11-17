@@ -127,12 +127,26 @@ describe Event do
           event_name: :good_event
         )
       end
+
       let(:event) { Event.new(name: :good_event, paper: paper, user: user, task: nil) }
 
-      it 'should call the call method with action parameters' do
+      before(:each) do
         expect(Behavior).to receive(:where).with(event_name: :good_event).and_return([behavior])
-        expect(behavior).to receive(:call).with(event)
-        event.trigger
+        expect(behavior).to receive(:call).with(event).and_raise(StandardError)
+      end
+
+      it 'should raise the exception in trigger' do
+        expect { event.trigger }.to raise_error(StandardError)
+      end
+
+      it 'should not write to the activity feed if a behavior throws an exception' do
+        expect do
+          begin
+            event.trigger
+          rescue
+            nil
+          end
+        end.not_to(change { Activity.count })
       end
     end
   end

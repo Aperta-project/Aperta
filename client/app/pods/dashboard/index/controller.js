@@ -1,9 +1,7 @@
 import Ember from 'ember';
 import pluralizeString from 'tahi/lib/pluralize-string';
-import DS from 'ember-data';
 
 export default Ember.Controller.extend({
-  can: Ember.inject.service('can'),
   restless: Ember.inject.service('restless'),
 
   papers: [],

@@ -10,10 +10,19 @@ moduleForComponent('card-content/email-editor', 'Integration | Component | card 
   beforeEach() {
     manualSetup(this.container);
     registerCustomAssertions();
+    let owner = make('custom-card-task');
+    let answer = Ember.Object.create({ owner: owner, value: null, save: function(){}});
+    this.set('owner', owner);
+    this.set('answer', answer);
+    this.set('disabled', false);
+    this.set('repetition', null);
     this.set('actionStub', function() {});
     this.set('preview', true);
-    this.set('content', Ember.Object.create({ ident: 'test', letterTemplate: 'preprint-accept'}));
-    this.set('answer', Ember.Object.create({ value: null }));
+    this.set('content', Ember.Object.create({
+      ident: 'test',
+      letterTemplate: 'preprint-accept',
+      answers: [answer]
+    }));
   }
 });
 
@@ -25,14 +34,9 @@ answer=answer
 valueChanged=(action actionStub)
 }}`;
 
-test(`it renders an email`, function(assert) {
-  let owner = make('custom-card-task');
-
-  this.set('owner', owner);
-
+test(`it renders an email-editor initialized by the template`, function(assert) {
   this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
   $.mockjax({url: '/api/tasks/1/load_email_template', type: 'get', status: 200, responseText: '{"to": "test@example.com", "subject":"hello world", "body": "some text"}'});
-
 
   this.render(template);
 
@@ -45,5 +49,23 @@ test(`it renders an email`, function(assert) {
     assert.elementFound(
       `.email-editor .button-primary`, 'email editor has a send email button'
     );
+  });
+});
+
+test(`it renders an email-editor initialized by a template and sends the template`, function(assert) {
+  this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+  $.mockjax({url: '/api/tasks/1/load_email_template', type: 'get', status: 200, responseText: '{"to": "test@example.com", "subject":"hello world", "body": "some text"}'});
+  $.mockjax({url: '/api/tasks/1/send_message_email', type: 'PUT', status: 201, responseText: '{"to": "test@example.com", "from": "initiator@example.com", "date": "Nov 17, 2017 11:45pm", "subject":"hello world", "body": "some text"}'});
+
+  this.render(template);
+
+  return wait().then(() => {
+    this.$('.email-editor .button-primary').click();
+    return wait().then(() => {
+      assert.mockjaxRequestMade({url: '/api/tasks/1/send_message_email', type: 'PUT'}, 'it saves the sendback after clearing it');
+      assert.elementFound(
+        `.email-readonly-summary`, 'email editor is displaying read-only summary'
+      );
+    });
   });
 });

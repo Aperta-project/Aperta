@@ -19,7 +19,7 @@ class ScheduledEvent < ActiveRecord::Base
   before_save :reactivate, if: :should_reactivate?
 
   def should_deactivate?
-    dispatch_at && dispatch_at < DateTime.now.in_time_zone && active?
+    dispatch_at && dispatch_at < DateTime.now.in_time_zone && (active? || passive?)
   end
 
   def should_reactivate?
@@ -44,7 +44,7 @@ class ScheduledEvent < ActiveRecord::Base
     end
 
     event(:deactivate) do
-      transitions from: :active, to: :inactive
+      transitions from: [:active, :passive], to: :inactive
     end
 
     event(:switch_off) do

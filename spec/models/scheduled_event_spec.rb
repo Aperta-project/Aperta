@@ -56,7 +56,7 @@ describe ScheduledEvent do
         subject.dispatch_at = DateTime.now.in_time_zone.beginning_of_minute - 3.days
       end
 
-      it 'should be true for only active events' do
+      it 'should be true for only active or passive events' do
         expect(subject.should_deactivate?).to be true
 
         subject.deactivate!
@@ -65,6 +65,10 @@ describe ScheduledEvent do
         subject.reactivate!
         subject.trigger!
         expect(subject.should_deactivate?).to be false
+
+        subject.reactivate!
+        subject.switch_off!
+        expect(subject.should_deactivate?).to be true
       end
     end
 
@@ -95,7 +99,7 @@ describe ScheduledEvent do
         subject.dispatch_at = DateTime.now.in_time_zone.beginning_of_minute + 3.days
       end
 
-      it 'should be true for only active events' do
+      it 'should be true for only inactive events' do
         expect(subject.should_reactivate?).to be false
 
         subject.deactivate!

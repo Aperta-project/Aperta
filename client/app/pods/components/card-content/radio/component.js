@@ -25,11 +25,11 @@ export default Ember.Component.extend({
   },
 
   trueLabel: Ember.computed('content.possibleValues', function () {
-    return this.findLabelByValue('true') || 'Yes';
+    return this.findLabelByValue(true) || 'Yes';
   }),
 
   falseLabel: Ember.computed('content.possibleValues', function () {
-    return this.findLabelByValue('false') || 'No';
+    return this.findLabelByValue(false) || 'No';
   }),
 
   findLabelByValue: function (match) {

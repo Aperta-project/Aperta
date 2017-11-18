@@ -12,13 +12,13 @@ class Activity < ActiveRecord::Base
     where(feed_name: feed_names, subject: subject).order('created_at DESC')
   end
 
-  def self.for_workflow(feed_names, subject)
+  def self.for_paper_workflow(subject)
     where(
       subject_type: 'Correspondence',
       subject_id: subject.correspondence_ids
     )
     .order('created_at DESC')
-    .concat(feed_for(feed_names, subject))
+    .concat(feed_for(['manuscript', 'workflow'], subject))
     .sort_by(&:created_at)
     .reverse
   end

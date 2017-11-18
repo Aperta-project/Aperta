@@ -4,12 +4,10 @@
       {{message.lastActivityMessage}}
     </div>
     <div class="col-sm-3 actions">
-      <span {{action 'editCorrespondence'}} class="action-edit">
-        {{fa-icon 'pencil' size="lg"}} <small>Edit</small>
-      </span>
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <span class="action-delete">
-        {{fa-icon 'trash' size="lg"}} <small>Delete</small>
+      <span class="action-edit">
+        {{#link-to 'paper.correspondence.edit' message.id}}
+          {{fa-icon 'pencil' size="lg"}} <small>Edit</small>
+        {{/link-to}}
       </span>
     </div>
   </div>

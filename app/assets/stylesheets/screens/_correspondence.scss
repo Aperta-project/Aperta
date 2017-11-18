@@ -137,4 +137,12 @@
 
     span:hover { cursor: pointer; }
   }
+  
+  a {
+    color: $aperta-grey;
+
+    &:focus, &:hover {
+      text-decoration: none;
+    }    
+  }
 }

@@ -91,8 +91,7 @@ class PapersController < ApplicationController
 
   def workflow_activities
     requires_user_can(:manage_workflow, paper)
-    feeds = ['workflow', 'manuscript']
-    activities = Activity.includes(:user).for_workflow(feeds, paper)
+    activities = Activity.includes(:user).for_paper_workflow(paper)
     respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
   end
 

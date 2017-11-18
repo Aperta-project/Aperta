@@ -319,7 +319,7 @@ class Paper < ActiveRecord::Base
   end
 
   def preprint_opt_out?
-    answer_for('preprint-posting--consent').value == '2'
+    answer_for('preprint-posting--consent').try(:value).to_i == 2
   end
 
   def inactive?

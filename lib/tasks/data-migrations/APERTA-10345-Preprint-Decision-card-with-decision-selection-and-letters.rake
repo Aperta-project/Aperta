@@ -2,7 +2,7 @@
 
 namespace :data do
   namespace :migrate do
-    desc 'It updates liquid templates for accept and reject email letters'
+    desc 'It updates liquid templates for `preprint` accept and reject email letters'
     task update_preprint_decision_templates: :environment do
       ident = 'preprint-accept'
       LetterTemplate.where(ident: ident).first_or_initialize.tap do |lt|

@@ -8,13 +8,9 @@
     }
   }
 }
-.read-only {
-  .card-form-label {
-    font-size:16px;
-  }
-  .rich-text-editor {
+
+.rich-text-editor {
    border:1px solid $aperta-grey-light;
    border-radius:4px;
    padding: 4px;
-  }
 }

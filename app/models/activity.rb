@@ -373,7 +373,7 @@ class Activity < ActiveRecord::Base
     )
   end
 
-  def self.duedate_updated!(due_datetime, user:)
+  def self.due_datetime_updated!(due_datetime, user:)
     new_due_date = due_datetime.due_at.strftime('%B %d, %Y')
     reviewer_name = due_datetime.due.user.full_name
     msg = "Due date for Review by #{reviewer_name} was changed to #{new_due_date}"

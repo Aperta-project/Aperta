@@ -590,4 +590,22 @@ describe Activity do
       )
     }
   end
+
+  describe "#due_datetime_updated!" do
+    let(:due) { FactoryGirl.create :reviewer_report }
+    let(:due_datetime) { FactoryGirl.create :due_datetime, :in_5_days, due: due }
+    subject { Activity.due_datetime_updated!(due_datetime, user: user) }
+
+    it {
+      expected_reviewer_name = due_datetime.due.user.full_name
+      expected_new_date = due_datetime.due_at.strftime('%B %d, %Y')
+
+      is_expected.to have_attributes(
+        feed_name: 'workflow',
+        activity_key: 'duedatetime.updated',
+        subject: due_datetime.due.paper,
+        message: "Due date for Review by #{expected_reviewer_name} was changed to #{expected_new_date}"
+      )
+    }
+  end
 end

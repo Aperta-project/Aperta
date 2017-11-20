@@ -10,8 +10,9 @@ class DueDatetimesController < ApplicationController
       requires_user_can :edit_due_date, due_datetime.due.task
       due_datetime.update_attributes due_datetime_params
       due_datetime.due.schedule_events if FeatureFlag[:REVIEW_DUE_AT]
-      render json: due_datetime
+      Activity.duedate_updated!(due_datetime, user: current_user)
     end
+    render json: due_datetime
   end
 
   private

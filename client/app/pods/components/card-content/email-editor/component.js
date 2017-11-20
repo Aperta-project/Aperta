@@ -60,31 +60,6 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     return answer;
   }),
 
-  to: Ember.computed('emailAnswer', function() {
-    let answer = this.get('emailAnswer');
-    return answer ? answer.to : undefined;
-  }),
-
-  subject: Ember.computed('emailAnswer', function() {
-    let answer = this.get('emailAnswer');
-    return answer ? answer.subject : undefined;
-  }),
-
-  body: Ember.computed('emailAnswer', function() {
-    let answer = this.get('emailAnswer');
-    return answer ? answer.body : undefined;
-  }),
-
-  from: Ember.computed('emailAnswer', function() {
-    let answer = this.get('emailAnswer');
-    return answer ? answer.from : undefined;
-  }),
-
-  date: Ember.computed('emailAnswer', function() {
-    let answer = this.get('emailAnswer');
-    return answer ? answer.date : undefined;
-  }),
-
   inputClassNames: ['form-control'],
 
   actions: {

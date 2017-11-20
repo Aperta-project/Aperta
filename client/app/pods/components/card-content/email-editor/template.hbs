@@ -11,17 +11,17 @@
       <td class="read-only-subject">
         {{#link-to "paper.correspondence" paper class="control-bar-button"}}
           {{fa-icon icon="envelope-open-o"}}
-          {{subject}}
+          {{emailAnswer.subject}}
         {{/link-to}}
       </td>
       <td class="read-only-to">
-        {{to}}
+        {{emailAnswer.to}}
       </td>
       <td class="read-only-from">
-        {{from}}
+        {{emailAnswer.from}}
       </td>
       <td class="read-only-date">
-        {{date}}
+        {{emailAnswer.date}}
       </td>
     </tr>
     </tbody>

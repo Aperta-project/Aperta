@@ -347,4 +347,13 @@ class Activity < ActiveRecord::Base
       message: msg
     )
   end
+
+  def self.correspondence_created!(correspondence, user:)
+    create(
+      feed_name: 'workflow',
+      activity_key: 'correspondence.created',
+      subject: correspondence,
+      user: user
+    )
+  end
 end

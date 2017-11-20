@@ -1,10 +1,18 @@
 require "rails_helper"
 
+RSpec::Matchers.define :hash_has_keys do |expected_key_list|
+  match { |hash| expected_key_list.all? { |s| hash.key? s } }
+end
+
 describe TahiStandardTasks::ExportService do
   let(:export_delivery) do
     FactoryGirl.build(:export_delivery).tap { |d| d.paper.doi = doi }
   end
   let(:doi) { "23423/journal.tur.0001" }
+  let(:post_params) { [:metadata_filename, :aperta_id, :files, :destination, :journal_code, :archive_filename] }
+  let(:router_connection) { double('Faraday') }
+  let(:request) { double('Faraday::Request') }
+  let(:response) { double('Faraday::Response') }
   let(:packager) do
     double('ExportPackager').tap do |d|
       allow(d).to receive(:zip_file).and_return(Tempfile.new('zip'))
@@ -49,6 +57,28 @@ describe TahiStandardTasks::ExportService do
         end
       end
     end
+
+    context "the destination is preprint" do
+      before do
+        export_delivery.destination = "preprint"
+        allow(service).to receive(:router_upload_connection).and_return router_connection
+        allow(router_connection).to receive(:post).and_return(response)
+        expect(router_connection).to receive(:post).with("/api/deliveries").and_return(response).and_yield(request)
+      end
+
+      it "submits a POST request to the router service" do
+        expect(request).to receive(:body=).with(hash_has_keys(post_params))
+        expect(response).to receive(:body).and_return({})
+        expect(RouterUploadStatusWorker).to receive(:perform_in)
+        service.make_delivery!
+      end
+
+      it "the POST request returns an error if a param value is missing" do
+        allow(packager).to receive_message_chain(:manifest, :file_list).and_return([])
+        expect { service.send(:make_delivery!) }.to raise_error(TahiStandardTasks::ExportService::ExportServiceError, /Missing required.*files/)
+        expect(RouterUploadStatusWorker).to_not receive(:perform_in)
+      end
+    end
   end
 
   describe "#upload_to_ftp" do
@@ -88,9 +118,25 @@ describe TahiStandardTasks::ExportService do
   end
 
   describe "#needs_preprint_doi?" do
+    let!(:task) {
+      FactoryGirl.create(
+        :custom_card_task,
+        :with_card,
+        paper: paper
+      )
+    }
+    let!(:card_content) {
+      FactoryGirl.create(
+        :card_content,
+        parent: task.card.content_root_for_version(:latest),
+        ident: 'preprint-posting--consent',
+        content_type: 'radio'
+      )
+    }
+
     context "the paper has not opted out of preprint" do
       before do
-        paper.update(preprint_opt_out: false)
+        task.find_or_build_answer_for(card_content: card_content, value: '1').save
       end
 
       it "for a preprint export it needs a preprint doi" do
@@ -106,9 +152,8 @@ describe TahiStandardTasks::ExportService do
 
     context "the paper has opted out of preprint" do
       before do
-        paper.update(preprint_opt_out: true)
+        task.find_or_build_answer_for(card_content: card_content, value: '2').save
       end
-
       it "does not ensure a need doi" do
         export_delivery.destination = "preprint"
         expect(service.send(:needs_preprint_doi?)).to eq(false)

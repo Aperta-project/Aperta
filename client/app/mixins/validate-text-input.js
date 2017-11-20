@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Mixin.create({
   answerProxy: null,
+  hideError: true,
 
   init() {
     // Answerproxy avoids having the input 2-way bind with answer.value
@@ -16,20 +17,13 @@ export default Ember.Mixin.create({
       // Hide error messages if field is blank
       if (Ember.isBlank(newValue) || newValue === '<p></p>') this.set('hideError', true);
 
-      const parentContentType = this.get('answer.cardContent.parent.contentType');
-
-      // If there were no previous errors, don't save to rails while typing
-      if (this.get('answer.hasErrors') || parentContentType === 'sendback-reason' ) {
-        let action = this.get('valueChanged');
-        if (action) { action(newValue); }
-      }
+      let action = this.get('valueChanged');
+      if (action) { action(newValue); }
     },
 
-    validate() {
-      // Triggered on input blur. AnswerProxy is needed becasue blur does not pass the field's value
+    displayErrors() {
+      // All persistence done on input. Show errors once user focuses out.
       this.set('hideError', false);
-      let action = this.get('valueChanged');
-      if (action) { action(this.get('answerProxy')); }
     }
   }
 });

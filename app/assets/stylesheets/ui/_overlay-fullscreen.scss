@@ -7,13 +7,15 @@ $ov--fullscreen-breakpoint: 780px;
   justify-content: center;
   overflow-y: scroll;
   padding: 40px 0;
+  display: block;
 
   .overlay-container {
+    display: block;
     position: relative;
     width: 85rem;
-    margin: auto 75px;
+    margin: auto;
     background-color: $aperta-grey-xlight;
-    padding: 40px 60px;
+    padding: 40px 60px 80px;
   }
 }
 

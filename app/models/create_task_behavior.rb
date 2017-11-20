@@ -1,29 +1,60 @@
 class CreateTaskBehavior < Behavior
-  # has_attributes string: %w[task_name], integer: %w[phase_id]
+  # has_attributes string: integer: %w[card_id]
   # validates :task_name, presence: true
 
+  # deal with real time card display
+  # deal with attributes
+  # tests
   def call(event)
-    task_name = entity_attributes.find_by(name: 'task_name').string_value
-    card_version = event.paper.journal.cards.find_by(name: task_name).latest_card_version
+    card_id = entity_attributes.find_by(name: 'card_id').value
+    card = Card.find card_id
+
+    task_attrs = get_task_attrs(card)
+    return if disallowed_duplicate?(event, task_attrs[:name])
     phase_id = event.paper.phases.first.id
 
     task_opts = {
       "completed" => false,
-      "title" => task_name,
+      "title" => task_attrs[:name],
       "phase_id" => phase_id,
       "body" => [],
       'paper' => event.paper,
-      'card_version' => card_version
+      'card_version' => card.latest_published_card_version
     }
 
-    TaskFactory.create(CustomCardTask, task_opts)
+    TaskFactory.create(task_attrs[:class], task_opts)
+  end
+
+  def get_task_attrs(card)
+    # Legacy cards are locked at creation. This is like asking 'card.legacy_card?'
+    if card.locked?
+      task_class = card.name.constantize
+      task_name = task_class::DEFAULT_TITLE
+    else
+      task = Task.find_by(title: card.name)
+      task_class = task.class
+      task_name = task.title
+    end
+
+    { class: task_class, name: task_name }
+  end
+
+  def disallowed_duplicate?(event, task_name)
+    !entity_attributes.find_by(name: 'duplicates_allowed').value &&
+    event.paper.tasks.where(title: task_name).any?
   end
 end
 
 # this should be done by rake task
-# behavior = CreateTaskBehavior.create(event_name: "paper.state_changed.submitted", journal_id: Journal.first.id )
+# b1 = CreateTaskBehavior.create(event_name: "paper.state_changed.submitted", journal_id: Journal.first.id )
 
-# task_ent = behavior.entity_attributes.create(name: 'task_name', value_type:'string', string_value: 'Ethics Statement')
+# b1.entity_attributes.create(name: 'card_id', value_type:'integer', integer_value: 68)
 
-# phase_ent = behavior.entity_attributes.create(name: 'phase_id', value_type:'integer', integer_value: 51)
+# b1.entity_attributes.create(name: 'duplicates_allowed', value_type:'boolean', boolean_value: true)
+
+# b2 = CreateTaskBehavior.create(event_name: "paper.state_changed.submitted", journal_id: Journal.first.id )
+
+# b2.entity_attributes.create(name: 'card_id', value_type:'integer', integer_value: 27)
+
+# b2.entity_attributes.create(name: 'duplicates_allowed', value_type:'boolean', boolean_value: true)
 

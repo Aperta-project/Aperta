@@ -389,6 +389,7 @@ class Paper < ActiveRecord::Base
       # be updated anyway since the versioned text object is created
       # as a side effect of that call
       attachment.paper.update!(body: '', processing: false)
+      notify(action: "updated")
     else
       ProcessManuscriptWorker.perform_async(attachment.id)
     end

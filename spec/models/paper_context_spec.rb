@@ -37,17 +37,36 @@ describe PaperContext do
 
     context 'with Preprint Enabled' do
       let!(:preprint_flag) { FactoryGirl.create :feature_flag, name: "PREPRINT", active: true }
+      let!(:task) {
+        FactoryGirl.create(
+          :custom_card_task,
+          :with_card,
+          paper: paper
+        )
+      }
+      let!(:card_content) {
+        FactoryGirl.create(
+          :card_content,
+          parent: task.card.content_root_for_version(:latest),
+          ident: 'preprint-posting--consent',
+          content_type: 'radio'
+        )
+      }
 
       context 'with preprint opt-in' do
+        before do
+          task.find_or_build_answer_for(card_content: card_content, value: '1').save
+        end
         it 'renders opt-in block' do
           check_render("{% if preprint_opted_in %}opt-in{% endif %}", "opt-in")
         end
       end
 
       context 'with preprint opt-out' do
+        before do
+          task.find_or_build_answer_for(card_content: card_content, value: '2').save
+        end
         it 'renders opt-out block' do
-          paper.preprint_opt_out = true
-          paper.save
           check_render("{% if preprint_opted_out %}opt-out{% endif %}", "opt-out")
         end
       end

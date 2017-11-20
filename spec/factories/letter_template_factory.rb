@@ -52,7 +52,7 @@ FactoryGirl.define do
     end
 
     trait(:notify_initial_submission) do
-      scenario 'PaperScenario'
+      scenario 'Manuscript'
       ident 'notify-initial-submission'
       name 'Notify Initial Submission'
       to '{{ manuscript.creator.email }}'
@@ -76,7 +76,7 @@ FactoryGirl.define do
     end
 
     trait(:notify_submission) do
-      scenario 'PaperScenario'
+      scenario 'Manuscript'
       ident 'notify-submission'
       name 'Notify Submission'
       to '{{ manuscript.creator.email }}'

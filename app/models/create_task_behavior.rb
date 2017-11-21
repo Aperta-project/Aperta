@@ -6,7 +6,7 @@ class CreateTaskBehavior < Behavior
   # tests
 
   def call(event)
-    card_id = entity_attributes.find_by(name: 'card_id').value
+    # Handle journal not having card
     card = Card.find card_id
 
     task_attrs = get_task_attrs(card)
@@ -31,7 +31,9 @@ class CreateTaskBehavior < Behavior
       task_class = card.name.constantize
       task_name = task_class::DEFAULT_TITLE
     else
+      #this doesn't make sense. Research how tasks get made from custom cards
       task = Task.find_by(title: card.name)
+    binding.pry
       task_class = task.class
       task_name = task.title
     end
@@ -40,7 +42,7 @@ class CreateTaskBehavior < Behavior
   end
 
   def disallowed_duplicate?(event, task_name)
-    !entity_attributes.find_by(name: 'duplicates_allowed').value &&
+    !duplicates_allowed &&
     event.paper.tasks.where(title: task_name).any?
   end
 end

@@ -158,13 +158,22 @@
       </optional>
     </interleave>
   </define>
+  <define name="text-input-attributes">
+    <interleave>
+      <ref name="input-attributes"/>
+      <optional>
+        <ref name="default-answer-text"/>
+      </optional>
+      <ref name="instructions-label-optional-text"/>
+      <zeroOrMore>
+        <ref name="string-validation"/>
+      </zeroOrMore>
+    </interleave>
+  </define>
   <!-- Inputs -->
-  <define name="check-box-input">
-    <element name="content">
+  <define name="radio-input">
+    <element name="Radio">
       <interleave>
-        <attribute name="content-type">
-          <value>check-box</value>
-        </attribute>
         <ref name="input-attributes"/>
         <attribute name="value-type">
           <value>boolean</value>
@@ -179,12 +188,9 @@
       </interleave>
     </element>
   </define>
-  <define name="date-picker">
-    <element name="content">
+  <define name="check-box-input">
+    <element name="CheckBox">
       <interleave>
-        <attribute name="content-type">
-          <value>date-picker</value>
-        </attribute>
         <ref name="input-attributes"/>
         <attribute name="value-type">
           <value>text</value>
@@ -233,11 +239,8 @@
     </element>
   </define>
   <define name="file-uploader">
-    <element name="content">
+    <element name="FileUploader">
       <interleave>
-        <attribute name="content-type">
-          <value>file-uploader</value>
-        </attribute>
         <ref name="input-attributes"/>
         <attribute name="value-type">
           <choice>
@@ -275,12 +278,20 @@
       </interleave>
     </element>
   </define>
-  <define name="radio-input">
-    <element name="content">
+  <define name="date-picker">
+    <element name="DatePicker">
       <interleave>
-        <attribute name="content-type">
-          <value>radio</value>
+        <ref name="input-attributes"/>
+        <attribute name="value-type">
+          <value>text</value>
         </attribute>
+        <ref name="instructions-label-required-text"/>
+      </interleave>
+    </element>
+  </define>
+  <define name="dropdown-input">
+    <element name="Dropdown">
+      <interleave>
         <ref name="input-attributes"/>
         <attribute name="value-type">
           <choice>
@@ -295,22 +306,64 @@
         <zeroOrMore>
           <ref name="possible-value"/>
         </zeroOrMore>
+      </interleave>
+    </element>
+  </define>
+  <define name="tech-check">
+    <element name="TechCheck">
+      <interleave>
+        <ref name="input-attributes"/>
+        <attribute name="value-type">
+          <value>boolean</value>
+        </attribute>
+        <optional>
+          <ref name="default-answer-boolean"/>
+        </optional>
+        <ref name="instructions-label-required-text"/>
         <zeroOrMore>
           <ref name="content"/>
         </zeroOrMore>
       </interleave>
     </element>
   </define>
-  <define name="text-input">
-    <element name="content">
+  <define name="tech-check-email">
+    <element name="TechCheckEmail">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="sendback-reason">
+    <element name="SendbackReason">
       <interleave>
-        <attribute name="content-type">
-          <choice>
-            <value>short-input</value>
-            <value>paragraph-input</value>
-          </choice>
-        </attribute>
         <ref name="input-attributes"/>
+        <attribute name="value-type">
+          <value>boolean</value>
+        </attribute>
+        <ref name="instructions-label-optional-text"/>
+        <zeroOrMore>
+          <ref name="content"/>
+        </zeroOrMore>
+      </interleave>
+    </element>
+  </define>
+  <define name="short-input">
+    <element name="ShortInput">
+      <interleave>
+        <ref name="text-input-attributes"/>
+        <attribute name="value-type">
+          <value>text</value>
+        </attribute>
+      </interleave>
+    </element>
+  </define>
+  <define name="paragraph-input">
+    <element name="ParagraphInput">
+      <interleave>
+        <ref name="text-input-attributes"/>
         <attribute name="value-type">
           <choice>
             <value>text</value>
@@ -332,11 +385,8 @@
   </define>
   <!-- Contents -->
   <define name="description">
-    <element name="content">
+    <element name="Description">
       <interleave>
-        <attribute name="content-type">
-          <value>description</value>
-        </attribute>
         <optional>
           <attribute name="ident"/>
         </optional>
@@ -350,11 +400,8 @@
     </element>
   </define>
   <define name="display-children-content">
-    <element name="content">
+    <element name="DisplayChildren">
       <interleave>
-        <attribute name="content-type">
-          <value>display-children</value>
-        </attribute>
         <optional>
           <attribute name="ident"/>
         </optional>
@@ -379,11 +426,8 @@
     </element>
   </define>
   <define name="display-with-value-content">
-    <element name="content">
+    <element name="DisplayWithValue">
       <interleave>
-        <attribute name="content-type">
-          <value>display-with-value</value>
-        </attribute>
         <optional>
           <attribute name="ident"/>
         </optional>
@@ -394,12 +438,19 @@
       </interleave>
     </element>
   </define>
+  <define name="export-paper">
+    <element name="ExportPaper">
+      <interleave>
+        <optional>
+          <attribute name="ident"/>
+        </optional>
+        <ref name="instructions-label-optional-text"/>
+      </interleave>
+    </element>
+  </define>
   <!-- IF requires comma, not interleave '&', to distinguish required THEN content from optional ELSE content. -->
   <define name="if">
-    <element name="content">
-      <attribute name="content-type">
-        <value>if</value>
-      </attribute>
+    <element name="If">
       <attribute name="condition"/>
       <ref name="content"/>
       <optional>
@@ -408,11 +459,8 @@
     </element>
   </define>
   <define name="error-message">
-    <element name="content">
+    <element name="ErrorMessage">
       <interleave>
-        <attribute name="content-type">
-          <value>error-message</value>
-        </attribute>
         <attribute name="key"/>
         <optional>
           <element name="text">
@@ -423,77 +471,19 @@
     </element>
   </define>
   <define name="repeat">
-    <element name="content">
-      <attribute name="content-type">
-        <value>repeat</value>
-      </attribute>
-      <optional>
-        <attribute name="min"/>
-      </optional>
-      <optional>
-        <attribute name="max"/>
-      </optional>
-      <attribute name="item-name"/>
-      <oneOrMore>
-        <ref name="content"/>
-      </oneOrMore>
-    </element>
-  </define>
-  <define name="sendback-reason">
-    <element name="content">
+    <element name="Repeat">
       <interleave>
-        <attribute name="content-type">
-          <value>sendback-reason</value>
-        </attribute>
-        <ref name="input-attributes"/>
-        <attribute name="value-type">
-          <value>boolean</value>
-        </attribute>
-        <ref name="instructions-text"/>
-        <zeroOrMore>
-          <ref name="content"/>
-        </zeroOrMore>
-      </interleave>
-    </element>
-  </define>
-  <define name="tech-check">
-    <element name="content">
-      <interleave>
-        <attribute name="content-type">
-          <value>tech-check</value>
-        </attribute>
-        <ref name="input-attributes"/>
-        <attribute name="value-type">
-          <value>boolean</value>
-        </attribute>
         <optional>
-          <ref name="default-answer-boolean"/>
+          <attribute name="min"/>
         </optional>
         <optional>
-          <element name="instruction-text">
-            <ref name="html"/>
-          </element>
+          <attribute name="max"/>
         </optional>
-        <element name="text">
-          <ref name="html"/>
-        </element>
-        <zeroOrMore>
+        <attribute name="item-name"/>
+        <oneOrMore>
           <ref name="content"/>
-        </zeroOrMore>
+        </oneOrMore>
       </interleave>
-    </element>
-  </define>
-  <define name="tech-check-email">
-    <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <attribute name="content-type">
-        <value>tech-check-email</value>
-      </attribute>
-      <zeroOrMore>
-        <ref name="content"/>
-      </zeroOrMore>
     </element>
   </define>
   <define name="content">
@@ -508,12 +498,13 @@
       <ref name="export-paper"/>
       <ref name="file-uploader"/>
       <ref name="if"/>
+      <ref name="paragraph-input"/>
       <ref name="radio-input"/>
       <ref name="repeat"/>
       <ref name="sendback-reason"/>
-      <ref name="tech-check-email"/>
+      <ref name="short-input"/>
       <ref name="tech-check"/>
-      <ref name="text-input"/>
+      <ref name="tech-check-email"/>
     </choice>
   </define>
   <start>

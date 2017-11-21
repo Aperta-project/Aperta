@@ -592,4 +592,17 @@ describe Activity do
       )
     }
   end
+
+  describe '#correspondence_edited!' do
+    let(:correspondence) { FactoryGirl.create :correspondence }
+    subject { Activity.correspondence_edited!(correspondence, user: user) }
+
+    it {
+      is_expected.to have_attributes(
+        feed_name: 'workflow',
+        activity_key: 'correspondence.edited',
+        subject: correspondence
+      )
+    }
+  end
 end

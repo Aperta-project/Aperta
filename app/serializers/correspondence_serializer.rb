@@ -17,14 +17,4 @@ class CorrespondenceSerializer < ActiveModel::Serializer
   def body
     LinkSanitizer.sanitize(object.body.presence || object.raw_source)
   end
-
-  def activities
-    Activity.feed_for('workflow', object).map do |f|
-      {
-        activity_key: f.activity_key,
-        full_name: f.user.full_name,
-        created_at: f.created_at
-      }
-    end
-  end
 end

@@ -43,8 +43,6 @@ Tahi::Application.routes.draw do
 
     get 'paper_tracker', to: 'paper_tracker#index'
 
-    put :task_event, to: 'tasks#create_event'
-
     resources :supporting_information_files, only: [:show, :create, :destroy, :update] do
       put :update_attachment, on: :member
     end
@@ -159,7 +157,6 @@ Tahi::Application.routes.draw do
       resources :discussion_topics, only: :index do
         get :new_discussion_users, on: :collection
       end
-
       resources :task_types, only: :index, controller: 'paper_task_types'
       resources :available_cards, only: :index
       resources :correspondence, only: [:index, :create, :show, :update] do

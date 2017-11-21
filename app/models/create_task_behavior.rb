@@ -17,14 +17,12 @@ class CreateTaskBehavior < Behavior
   end
 
   def create_task_opts(event, card, task_attrs)
-    {
-      "completed" => false,
+    { "completed" => false,
       "title" => task_attrs[:name],
       "phase_id" => event.paper.phases.first.id,
       "body" => [],
       'paper' => event.paper,
-      'card_version' => card.latest_published_card_version
-    }
+      'card_version' => card.latest_published_card_version }
   end
 
   def get_task_attrs(card)
@@ -46,18 +44,3 @@ class CreateTaskBehavior < Behavior
     event.paper.tasks.where(title: task_name).any?
   end
 end
-
-# this should be done by rake task
-# b1 = CreateTaskBehavior.create(event_name: "paper.state_changed.submitted", journal_id: Journal.first.id )
-
-# b1.card_id = 68
-
-# b1.duplicates_allowed = true
-
-# b2 = CreateTaskBehavior.create(event_name: "paper.state_changed.submitted", journal_id: Journal.first.id )
-
-# b2.card_id = 27
-
-# b2.duplicates_allowed = true
-
-

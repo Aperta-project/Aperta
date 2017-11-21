@@ -29,10 +29,6 @@ class TasksController < ApplicationController
     respond_with(task, location: task_url(task))
   end
 
-  def create_event
-    binding.pry
-  end
-
   def update
     requires_user_can :edit, task
 

@@ -35,6 +35,9 @@ dependencies:
     - bundle install: # note ':' here
         timeout: 600
 
+  post:
+    - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+    - chmod +x ./cc-test-reporter
 
 ## Customize database setup
 database:
@@ -52,6 +55,8 @@ database:
 
 ## Customize test commands
 test:
+  pre:
+    - ./cc-test-reporter before-build
   override:
     - bundle exec rake circleci:qunit:
        parallel: true
@@ -67,3 +72,5 @@ test:
         parallel: true
         files:
           - "**/spec/**/*_spec.rb"
+  post:
+    - ./cc-test-reporter after-build --exit-code $EXIT_CODE

@@ -68,8 +68,6 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     },
 
     valueChanged(e) {
-      // super to valueChanged in ValidateTextInput mixin.
-      // a text input will have a string so we give it the string. Rich text editor won't have that and needs the event
       let value = e.target ? e.target.value : e;
       this._super(value);
     },

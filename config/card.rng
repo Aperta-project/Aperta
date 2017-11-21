@@ -176,6 +176,29 @@
       <interleave>
         <ref name="input-attributes"/>
         <attribute name="value-type">
+          <choice>
+            <value>text</value>
+            <value>boolean</value>
+          </choice>
+        </attribute>
+        <optional>
+          <ref name="default-answer-text"/>
+        </optional>
+        <ref name="instructions-label-optional-text"/>
+        <zeroOrMore>
+          <ref name="possible-value"/>
+        </zeroOrMore>
+        <zeroOrMore>
+          <ref name="content"/>
+        </zeroOrMore>
+      </interleave>
+    </element>
+  </define>
+  <define name="check-box-input">
+    <element name="CheckBox">
+      <interleave>
+        <ref name="input-attributes"/>
+        <attribute name="value-type">
           <value>boolean</value>
         </attribute>
         <optional>
@@ -188,8 +211,8 @@
       </interleave>
     </element>
   </define>
-  <define name="check-box-input">
-    <element name="CheckBox">
+  <define name="date-picker">
+    <element name="DatePicker">
       <interleave>
         <ref name="input-attributes"/>
         <attribute name="value-type">
@@ -200,11 +223,8 @@
     </element>
   </define>
   <define name="dropdown-input">
-    <element name="content">
+    <element name="Dropdown">
       <interleave>
-        <attribute name="content-type">
-          <value>dropdown</value>
-        </attribute>
         <ref name="input-attributes"/>
         <attribute name="value-type">
           <choice>
@@ -226,11 +246,8 @@
     </element>
   </define>
   <define name="export-paper">
-    <element name="content">
+    <element name="ExportPaper">
       <interleave>
-        <attribute name="content-type">
-          <value>export-paper</value>
-        </attribute>
         <optional>
           <attribute name="ident"/>
         </optional>
@@ -268,7 +285,7 @@
             </choice>
           </attribute>
         </optional>
-        <ref name="instructions-label-text"/>
+        <ref name="instructions-label-optional-text"/>
         <zeroOrMore>
           <ref name="file-validation"/>
         </zeroOrMore>
@@ -278,34 +295,19 @@
       </interleave>
     </element>
   </define>
-  <define name="date-picker">
-    <element name="DatePicker">
+  <define name="paragraph-input">
+    <element name="ParagraphInput">
       <interleave>
-        <ref name="input-attributes"/>
-        <attribute name="value-type">
-          <value>text</value>
-        </attribute>
-        <ref name="instructions-label-required-text"/>
-      </interleave>
-    </element>
-  </define>
-  <define name="dropdown-input">
-    <element name="Dropdown">
-      <interleave>
-        <ref name="input-attributes"/>
+        <ref name="text-input-attributes"/>
         <attribute name="value-type">
           <choice>
             <value>text</value>
-            <value>boolean</value>
+            <value>html</value>
           </choice>
         </attribute>
         <optional>
-          <ref name="default-answer-text"/>
+          <attribute name="editor-style"/>
         </optional>
-        <ref name="instructions-text"/>
-        <zeroOrMore>
-          <ref name="possible-value"/>
-        </zeroOrMore>
       </interleave>
     </element>
   </define>
@@ -324,16 +326,6 @@
           <ref name="content"/>
         </zeroOrMore>
       </interleave>
-    </element>
-  </define>
-  <define name="tech-check-email">
-    <element name="TechCheckEmail">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <zeroOrMore>
-        <ref name="content"/>
-      </zeroOrMore>
     </element>
   </define>
   <define name="sendback-reason">
@@ -360,27 +352,14 @@
       </interleave>
     </element>
   </define>
-  <define name="paragraph-input">
-    <element name="ParagraphInput">
-      <interleave>
-        <ref name="text-input-attributes"/>
-        <attribute name="value-type">
-          <choice>
-            <value>text</value>
-            <value>html</value>
-          </choice>
-        </attribute>
-        <optional>
-          <attribute name="editor-style"/>
-        </optional>
-        <optional>
-          <ref name="default-answer-text"/>
-        </optional>
-        <ref name="instructions-label-text"/>
-        <zeroOrMore>
-          <ref name="string-validation"/>
-        </zeroOrMore>
-      </interleave>
+  <define name="tech-check-email">
+    <element name="TechCheckEmail">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
     </element>
   </define>
   <!-- Contents -->
@@ -435,16 +414,6 @@
         <zeroOrMore>
           <ref name="content"/>
         </zeroOrMore>
-      </interleave>
-    </element>
-  </define>
-  <define name="export-paper">
-    <element name="ExportPaper">
-      <interleave>
-        <optional>
-          <attribute name="ident"/>
-        </optional>
-        <ref name="instructions-label-optional-text"/>
       </interleave>
     </element>
   </define>

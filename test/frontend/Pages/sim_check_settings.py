@@ -10,7 +10,6 @@ import logging
 
 from selenium.webdriver.common.by import By
 
-from .admin_workflows import AdminWorkflowsPage
 from .card_settings import CardSettings
 from .styles import APERTA_BLUE, APERTA_GREY_DARK
 
@@ -84,9 +83,9 @@ class SimCheckSettings(CardSettings):
     assert not on_first_submission.is_selected(), 'After submission option expected to be checked'
     assert after_revision.is_selected(),  'On first full submission option expected to be unchecked'
     # check options of the dropdown list
-    self.select_and_validate_after_revision_option('major revision', 0)
-    self.select_and_validate_after_revision_option('minor revision', 1)
-    self.select_and_validate_after_revision_option('any first revision', 2)
+    self.select_and_validate_after_revision_option('major revision')
+    self.select_and_validate_after_revision_option('minor revision')
+    self.select_and_validate_after_revision_option('any first revision')
 
     # cancel_link = self._get(self._overlay_header_close)
     # self. validate_admin_link_style(cancel_link)
@@ -96,20 +95,26 @@ class SimCheckSettings(CardSettings):
     # self.validate_primary_big_blue_button_style(save_overlay_button)
 
 
-  def select_and_validate_after_revision_option(self, option_text, option_index):
+  def select_and_validate_after_revision_option(self, option_text):
     """
     function to select automatic Check send option, after revision
     :param option_text: expected option text for assertion
-    :param option_number: option index in the option list (0-2)
     :return: void function
     """
     after_revision_arrow = self._get(self._after_revision_arrow)
     after_revision_arrow.click()
     after_revision_options = self._gets(self._send_ms_after_revision_list_items)
-    self._scroll_into_view(after_revision_options[option_index]) # find by option name
-    after_revision_options[option_index].click()
-    chosen_option = self._get(self._after_revision_chosen)
-    assert chosen_option.text == option_text, chosen_option.text
+    option_names = [option.text for option in after_revision_options]
+    assert option_text in option_names
+    for option in after_revision_options:
+      if option.text == option_text:
+        self._scroll_into_view(option)
+        option.click()
+        break
+
+    # after_revision_options[option_index].click()
+    # chosen_option = self._get(self._after_revision_chosen)
+    # assert chosen_option.text == option_text, chosen_option.text
 
   def set_automation(self, automation=True):
     """
@@ -153,11 +158,11 @@ class SimCheckSettings(CardSettings):
        else:
          self.set_after_submission_option(1)  # after revision
          if auto_option == 'after_major_revise_decision':
-           self.select_and_validate_after_revision_option('major revision', 0)
+           self.select_and_validate_after_revision_option('major revision')
          elif auto_option == 'after_minor_revise_decision':
-           self.select_and_validate_after_revision_option('minor revision', 1)
+           self.select_and_validate_after_revision_option('minor revision')
          elif auto_option == 'after_any_first_revise_decision':
-           self.select_and_validate_after_revision_option('any first revision', 2)
+           self.select_and_validate_after_revision_option('any first revision')
 
 #
 #   def save_settings(self):

@@ -12,6 +12,7 @@ import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.expected_conditions import alert_is_present
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PostgreSQL import PgSQL
@@ -70,9 +71,21 @@ class AdminWorkflowsPage(BaseAdminPage):
     self._mmt_template_column_title = (By.CSS_SELECTOR, 'div.column-header div h2')
     self._mmt_template_column_no_cards_card = (By.CSS_SELECTOR, 'div.sortable-no-cards')
     self._mmt_template_column_add_new_card_btn = (By.CSS_SELECTOR, 'a.button-secondary')
+    self._mmt_template_column_content = (By.CLASS_NAME, 'column-content')
+    self._mmt_template_card_title = (By.CLASS_NAME, 'card-title')
+    self._mmt_template_edit = (By.CSS_SELECTOR, 'i.fa-pencil')
     # borrowed locators from the add_new_cards overlay definition in workflow_page
     self._card_types = (By.CSS_SELECTOR, 'div.row label')
     self._div_buttons = (By.CSS_SELECTOR, 'div.overlay-action-buttons')
+    # relative locators
+    self._card_columns = (By.CSS_SELECTOR, 'div.row')
+    self._card_titles = (By.CSS_SELECTOR, 'label')
+    self._add_button = (By.CLASS_NAME, 'button-primary')
+    self._overlay_drop_zone = (By.CSS_SELECTOR, 'div.ember-view>div#overlay-drop-zone>*')
+    self._div = (By.TAG_NAME, 'div')
+    self._control_bar = (By.ID, 'control-bar')
+    self._overlay_body = (By.CSS_SELECTOR, 'div.ember-view .overlay-body')
+    self._check_divs = (By.CSS_SELECTOR, 'div.ember-view>div.ember-view')
     # locators for card settings overlay
     self._similarity_check_card = (By.XPATH, "//a[./span[contains(text(),'Similarity Check')]]")
     self._sim_check_card_settings = (By.XPATH, "//a[./span[contains(text(),'Similarity Check')]]//i")
@@ -232,7 +245,7 @@ class AdminWorkflowsPage(BaseAdminPage):
     time.sleep(2)
 
   def add_new_mmt_template(self, commit=False, mmt_name='',
-                           user_tasks=('upload_manuscript'),
+                           user_tasks=('upload_manuscript',),
                            staff_tasks=('assign_team', 'editor_discussion', 'final_tech_check',
                                         'initial_tech_check', 'invite_academic_editor',
                                         'invite_reviewers', 'production_metadata',
@@ -252,7 +265,7 @@ class AdminWorkflowsPage(BaseAdminPage):
     :param uses_resrev_report: boolean, default true, specifies mmt type as research for
       the purposes of reviewer report selection
     :param preprint_eligible: bool, Whether the mmt supports preprint functions, including export
-    :param settings: dictionary
+    :param settings: tuple of dictionaries: card_name, setting name and value
     :return: void function
     """
     if not commit:
@@ -305,39 +318,74 @@ class AdminWorkflowsPage(BaseAdminPage):
         self._get(self._mmt_template_resrev_checkbox).click()
       if preprint_eligible:
         self._get(self._mmt_template_preprint_checkbox).click()
-      if settings:
-        for setting in settings:
-          self.set_settings(setting)
-          self._wait_for_element(self._get(self._mmt_template_name_field))
-
       template_field = self._get(self._mmt_template_name_field)
       save_template_button = self._get(self._mmt_template_save_button)
       template_field.click()
       template_field.send_keys(Keys.ARROW_DOWN + (Keys.BACKSPACE * 8) + mmt_name + Keys.ENTER)
       self._wait_for_element(save_template_button)
       save_template_button.click()
-      time.sleep(1)
+      # time.sleep(1)
+      #
+      active_queries = self._driver.execute_script("return jQuery.active")
+      seconds_to_wait = max(5, int(int(active_queries) / 4))
+      logging.info('Saving mmt: {0}, active queries: {1}, max_wait: {2}'.format(mmt_name, str(active_queries),
+                                                                                str(seconds_to_wait)))
+      self._wait_on_lambda(lambda:
+                           self._driver.execute_script("return jQuery.active") == 0, max_wait=seconds_to_wait)
+      #
+
       phases = self._gets(self._mmt_template_column_add_new_card_btn)
       phase1 = phases[0]
-      phase1.click()
-      for card_name in user_tasks:
-        self.add_card_to_mmt(card_name)
-      div_buttons = self._get(self._div_buttons)
-      div_buttons.find_element_by_class_name('button-primary').click()
-      time.sleep(1)
+      if user_tasks:
+        phase1.click()
+        # wait for custom cards loading
+        self._wait_for_text_be_present_in_element(self._card_columns,'Reporting Guidelines')
+        for card_name in user_tasks:
+          self.add_card_to_mmt(card_name)
+        div_buttons = self._get(self._div_buttons)
+        check_divs_before = len(self._gets(self._check_divs))
+        div_buttons.find_element(*self._add_button).click()
+        self._wait_on_lambda(lambda: self._driver.execute_script("return jQuery.active") == 0, max_wait=10)
+        self._wait_on_lambda(lambda: len(self._driver.find_elements(*self._check_divs))
+                                     ==(check_divs_before+len(user_tasks)-2), max_wait=5)
+        #time.sleep(1)
       phase2 = phases[1]
-      phase2.click()
-      for card_name in staff_tasks:
-        self.add_card_to_mmt(card_name)
-      div_buttons = self._get(self._div_buttons)
-      div_buttons.find_element_by_class_name('button-primary').click()
-      time.sleep(1)
-      new_save_template_button = self._get(self._mmt_template_save_button)
-      new_save_template_button.click()
-      time.sleep(1)
+      if staff_tasks:
+        phase2.click()
+        # wait for custom cards loading
+        self._wait_for_text_be_present_in_element(self._card_columns,'Reporting Guidelines')
+        for card_name in staff_tasks:
+          self.add_card_to_mmt(card_name)
+        div_buttons = self._get(self._div_buttons)
+        check_divs_before = len(self._gets(self._check_divs))
+        div_buttons.find_element(*self._add_button).click()
+        self._wait_on_lambda(lambda: self._driver.execute_script("return jQuery.active") == 0, max_wait=10)
+        self._wait_on_lambda(lambda: len(self._driver.find_elements(*self._check_divs))
+                                     ==(check_divs_before+len(staff_tasks)-2), max_wait=5)
+
+        self._scroll_into_view(self._get(self._mmt_template_save_button))
+        save_template_button = self._get(self._mmt_template_save_button)
+        save_template_button.click()
+        #
+        active_queries = self._driver.execute_script("return jQuery.active")
+        seconds_to_wait = max(5, int(int(active_queries)/4))
+        logging.info('Saving mmt: {0}, active queries: {1}, max_wait: {2}'.format(mmt_name, str(active_queries),
+                                                                                  str(seconds_to_wait)))
+        self._wait_on_lambda(lambda:
+                             self._driver.execute_script("return jQuery.active") == 0, max_wait=seconds_to_wait)
+        self._wait_for_element(self._get(self._mmt_template_back_link))
+        #
+      #time.sleep(1)
+      if settings:
+        for setting in settings:
+          self.set_settings(setting)
+          self._wait_for_not_element(self._div_buttons, 0.1)
+        time.sleep(1)
+      self._wait_for_element(self._get(self._mmt_template_back_link))
       back_btn = self._get(self._mmt_template_back_link)
+      #self._scroll_into_view(self._get(self._mmt_template_save_button))
       back_btn.click()
-      self._wait_for_not_element(self._mmt_template_back_link, .15)
+      self._wait_on_lambda(lambda: 'workflows' in self._driver.current_url)
 
   def delete_new_mmt_template(self):
     """
@@ -480,12 +528,16 @@ class AdminWorkflowsPage(BaseAdminPage):
     :param card_settings_locator: locator to find the gear icon
     :return: void function
     """
+    self._wait_for_element(self._get(card_settings_locator))
     settings_icon = self._get(card_settings_locator)
     # Hover color of the Similarity Check settings cog should be Admin blue
     self._scroll_into_view(settings_icon)
     color_before = settings_icon.value_of_css_property('color')
-    self._actions.move_to_element(settings_icon).perform()
-    # self._actions.move_to_element_with_offset(settings_icon, 5, 5).perform()
+    logging.info('Icon color before moving to it: '.format(color_before))
+    #self._actions.move_to_element(settings_icon).perform()
+    logging.info('Moving to settings gear icon')
+    self._actions.move_to_element_with_offset(settings_icon, 1, 1).perform()
+    logging.info('Icon color is: '.format(settings_icon.value_of_css_property('color')))
     self._wait_on_lambda(lambda: settings_icon.value_of_css_property('color') != color_before)
     # time.sleep(1)
     assert settings_icon.value_of_css_property('color') == APERTA_BLUE, \
@@ -500,6 +552,16 @@ class AdminWorkflowsPage(BaseAdminPage):
     """
     if setting['card_name'] == 'Similarity Check':
       self.click_on_card_settings(self._sim_check_card_settings)
-      sim_check_settings = SimCheckSettings(self.getDriver())
+      sim_check_settings = SimCheckSettings(self._driver)
       sim_check_settings.set_ithenticate(setting['value'])
       sim_check_settings.click_save_settings()
+
+  def wait_for_not_active_jqueries(self, mmt_name):
+    #
+    active_queries = self._driver.execute_script("return jQuery.active")
+    seconds_to_wait = max(5, int(int(active_queries) / 4))
+    logging.info('Saving mmt: {0}, active queries: {1}, max_wait: {2}'.format(mmt_name, str(active_queries),
+                                                                              str(seconds_to_wait)))
+    self._wait_on_lambda(lambda:
+                         self._driver.execute_script("return jQuery.active") == 0, max_wait=seconds_to_wait)
+    #

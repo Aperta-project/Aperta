@@ -372,7 +372,7 @@ class SimilarityCheckTest(CommonTest):
   #     sim_check = SimilarityCheckCard(self.getDriver())
   #     sim_check._wait_for_element(sim_check._get(sim_check._card_heading))
   #     card_title = sim_check._get(sim_check._card_heading)
-  #     assert card_title.text == 'Similarity Check'
+  #     assert card_title.text == 'Similarity Check
   #     assert sim_check._check_for_absence_of_element(sim_check._btn_done)
   #
   #     # logout
@@ -410,11 +410,11 @@ class SimilarityCheckTest(CommonTest):
     #   else:
     #     adm_wf_page.set_after_submission_option(1)  # after revision
     #     if auto_option == 'after_major_revise_decision':
-    #       adm_wf_page.select_and_validate_after_revision_option('major revision', 0)
+    #       adm_wf_page.select_and_validate_after_revision_option('major revision')
     #     elif auto_option == 'after_minor_revise_decision':
-    #       adm_wf_page.select_and_validate_after_revision_option('minor revision', 1)
+    #       adm_wf_page.select_and_validate_after_revision_option('minor revision')
     #     elif auto_option == 'after_any_first_revise_decision':
-    #       adm_wf_page.select_and_validate_after_revision_option('any first revision', 2)
+    #       adm_wf_page.select_and_validate_after_revision_option('any first revision')
     #
     # adm_wf_page.click_save_settings()
     # adm_wf_page.logout()

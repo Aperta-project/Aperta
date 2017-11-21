@@ -12,8 +12,6 @@ from selenium.webdriver.common.by import By
 
 from frontend.Cards.basecard import BaseCard
 
-from .admin_workflows import AdminWorkflowsPage
-
 __author__ = 'gtimonina@plos.org'
 
 

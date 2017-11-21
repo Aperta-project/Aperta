@@ -247,7 +247,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
                                          user_tasks=mmt['user_tasks'],
                                          staff_tasks=mmt['staff_tasks'],
                                          uses_resrev_report=mmt['uses_resrev_report'],
-                                         preprint_elligible=mmt['preprint_eligible'],
+                                         preprint_eligible=mmt['preprint_eligible'],
                                          settings = mmt_settings)
         # It is necessary to reinvoke the driver to avoid a Stale Element Reference Exception
         #   as each new mmt add updates the DOM
@@ -288,7 +288,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
                                          user_tasks=mmt['user_tasks'],
                                          staff_tasks=mmt['staff_tasks'],
                                          uses_resrev_report=mmt['uses_resrev_report'],
-                                         preprint_elligible=mmt['preprint_eligible'])
+                                         preprint_eligible=mmt['preprint_eligible'])
         # It is necessary to reinvoke the driver to avoid a Stale Element Reference Exception
         #   as each new mmt add updates the DOM
         adm_wf_page = AdminWorkflowsPage(self.getDriver())

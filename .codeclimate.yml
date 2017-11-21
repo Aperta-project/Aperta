@@ -1,6 +1,14 @@
 plugins:
   rubocop:
     enabled: true
-    config:
-      file: ".rubocop.yml"
+    channel: rubocop-0-49
+exclude_patterns:
+  - ".fonts/"
+  - "bin/"
+  - "client/tests/"
+  - "client/vendor/"
+  - "doc/"
+  - "spec/"
+  - "test/"
+  - "vendor/"
 

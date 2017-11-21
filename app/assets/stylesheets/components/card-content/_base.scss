@@ -27,20 +27,4 @@
 
 .card-form-label {
   display:block;
-  font-size:16px;
-}
-
-.card-checkbox .card-form-label,
-.card-radio .card-form-label {
-  font-size:14px;
-}
-
-.read-only {
-  .card-form-label {
-    font-size:16px;
-  }
-  .card-checkbox .card-form-label,
-  .card-radio .card-form-label {
-    font-size:14px;
-  }   
 }

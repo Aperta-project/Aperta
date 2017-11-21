@@ -5,11 +5,13 @@ describe PaperContext do
     PaperContext.new(paper)
   end
 
-  let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
+  let!(:journal) { FactoryGirl.create(:journal, :with_creator_role, :with_default_mmt) }
+  let(:mmt) { journal.manuscript_manager_templates.last }
   let(:paper) do
     FactoryGirl.create(
       :paper,
       abstract: 'abstract',
+      paper_type: mmt.paper_type,
       journal: journal
     )
   end
@@ -55,6 +57,7 @@ describe PaperContext do
 
       context 'with preprint opt-in' do
         before do
+          mmt.update(is_preprint_eligible: true)
           task.find_or_build_answer_for(card_content: card_content, value: '1').save
         end
         it 'renders opt-in block' do
@@ -64,6 +67,7 @@ describe PaperContext do
 
       context 'with preprint opt-out' do
         before do
+          mmt.update(is_preprint_eligible: true)
           task.find_or_build_answer_for(card_content: card_content, value: '2').save
         end
         it 'renders opt-out block' do

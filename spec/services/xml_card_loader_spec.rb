@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe XmlCardLoader do
-  let(:content1) { '<content ident="foo" content-type="description"><text>foo</text></content>' }
-  let(:content2) { '<content ident="bar" content-type="description"><text>bar</text></content>' }
+  let(:content1) { '<Description ident="foo"><text>foo</text></Description>' }
+  let(:content2) { '<Description ident="bar"><text>bar</text></Description>' }
 
   let!(:card) { FactoryGirl.create(:card, :versioned, name: "original name") }
   let(:xml_card_loader) { XmlCardLoader.new(card) }
@@ -41,10 +41,10 @@ describe XmlCardLoader do
       let(:xml) do
         <<-XML
         <card required-for-submission='false' workflow-display-only='true'>
-          <content content-type='display-children'>
-            <content ident='foo' content-type='short-input' value-type='html'>
-            </content>
-          </content>
+          <DisplayChildren>
+            <ShortInput ident='foo' value-type='html'>
+            </ShortInput>
+          </DisplayChildren>
         </card>
       XML
       end
@@ -134,20 +134,20 @@ describe XmlCardLoader do
     let(:validations) { child_content.card_content_validations }
     let(:xml) do
       <<-XML
-        <card required-for-submission='false' workflow-display-only='true'>
-          <content content-type='display-children'>
-            <content ident='foo' content-type='short-input' value-type='text' required-field='false'>
+        <card required-for-submission="false" workflow-display-only="true">
+          <DisplayChildren>
+            <ShortInput ident="foo" value-type="text" required-field="false">
               <text>foo</text>
-              <validation validation-type='string-match'>
+              <validation validation-type="string-match">
                 <error-message>First Validation</error-message>
                 <validator>/test-one/</validator>
               </validation>
-              <validation validation-type='string-match'>
+              <validation validation-type="string-match">
                 <error-message>Second Validation</error-message>
                 <validator>/second-one/</validator>
               </validation>
-            </content>
-          </content>
+            </ShortInput>
+          </DisplayChildren>
         </card>
       XML
     end
@@ -175,10 +175,10 @@ describe XmlCardLoader do
       let(:xml) do
         <<-XML
           <card required-for-submission='false' workflow-display-only='true'>
-            <content content-type='display-children'>
+            <DisplayChildren>
               #{content1}
               #{content2}
-            </content>
+            </DisplayChildren>
           </card>
         XML
       end
@@ -202,25 +202,24 @@ describe XmlCardLoader do
         let(:card) { FactoryGirl.create(:card, :versioned, name: 'original name') }
         let(:content1) do
           <<-XML
-          <content content-type='display-children'>
-            <content ident='doesntmatter' value-type='boolean' content-type='tech-check'>
+          <DisplayChildren>
+            <TechCheck ident="doesntmatter" value-type="boolean">
               <text>You shall not PASS!</text>
-              <content content-type="sendback-reason" value-type="boolean">
-                <content ident="first-tech-check-box" value-type="boolean" content-type="check-box">
+              <SendbackReason value-type="boolean">
+                <CheckBox ident="first-tech-check-box" value-type="boolean">
+                  <default-answer-value>false</default-answer-value>
                   <text>Because REASONS!</text>
+                </CheckBox>
+                <CheckBox ident="second-tech-check-box" value-type="boolean">
                   <default-answer-value>false</default-answer-value>
-                </content>
-                <content ident='second-tech-check-box' value-type='boolean' content-type="check-box">
                   <text>Because more REASONS!</text>
-                  <default-answer-value>false</default-answer-value>
-                </content>
-                <content ident='potatoe' value-type='text' content-type="paragraph-input">
-                  <text>Because more REASONS!</text>
+                </CheckBox>
+                <ParagraphInput ident="potatoe" value-type="text">
                   <default-answer-value>I really mean it!  You shall not PASS!</default-answer-value>
-                </content>
-              </content>
-            </content>
-          </content>
+                </ParagraphInput>
+              </SendbackReason>
+            </TechCheck>
+          </DisplayChildren>
           XML
         end
 
@@ -235,11 +234,11 @@ describe XmlCardLoader do
       context 'radio' do
         let(:content1) do
           <<-XML
-            <content ident='foo' value-type='text' content-type='radio' required-field="false">
+            <Radio ident="foo" value-type="text" required-field="false">
               <default-answer-value>1</default-answer-value>
               <text>Question!</text>
               <possible-value label="one" value="1"/>
-            </content>
+            </Radio>
           XML
         end
 
@@ -261,10 +260,10 @@ describe XmlCardLoader do
         let(:label) { Faker::Lorem.sentence }
         let(:content1) do
           <<-XML
-            <content content-type='check-box' value-type='boolean' required-field='false'>
+            <CheckBox value-type='boolean' required-field='false'>
               <text>#{text}</text>
               <label>#{label}</label>
-            </content>
+            </CheckBox>
           XML
         end
 
@@ -282,7 +281,7 @@ describe XmlCardLoader do
       end
 
       context 'text' do
-        let(:content1) { "<content ident='foo' content-type='description'><text>#{text}</text></content>" }
+        let(:content1) { "<Description ident='foo'><text>#{text}</text></Description>" }
 
         shared_examples_for :the_text_attribute_is_set_properly do
           it "set the text as expected" do
@@ -326,10 +325,10 @@ describe XmlCardLoader do
         let(:text) { Faker::Lorem.sentence }
         let(:content1) do
           <<-XML
-            <content content-type='short-input' value-type='text' required-field="false">
+            <ShortInput value-type='text' required-field="false">
               <default-answer-value>foo</default-answer-value>
               <text>#{text}</text>
-            </content>
+            </ShortInput>
           XML
         end
 
@@ -350,11 +349,11 @@ describe XmlCardLoader do
         let(:text) { Faker::Lorem.sentence }
         let(:content1) do
           <<-XML
-            <content content-type="if" condition="isEditable">
-              <content content-type="paragraph-input" value-type="html">
+            <If condition="isEditable">
+              <ParagraphInput value-type="html">
                 <text>This is the THEN branch of an IF condition.</text>
-              </content>
-            </content>
+              </ParagraphInput>
+            </If>
           XML
         end
 
@@ -369,14 +368,14 @@ describe XmlCardLoader do
         let(:text) { Faker::Lorem.sentence }
         let(:content1) do
           <<-XML
-            <content content-type="if" condition="isEditable">
-              <content content-type="paragraph-input" value-type="html">
+            <If condition="isEditable">
+              <ParagraphInput value-type="html">
                 <text>This is the THEN branch of an IF condition.</text>
-              </content>
-              <content content-type="short-input" value-type="text">
+              </ParagraphInput>
+              <ShortInput value-type="text">
                 <text>This is the ELSE branch of an IF condition.</text>
-              </content>
-            </content>
+              </ShortInput>
+            </If>
           XML
         end
 
@@ -390,10 +389,10 @@ describe XmlCardLoader do
       context 'dropdown' do
         let(:content1) do
           <<-XML
-            <content ident='foo' value-type='text' content-type='dropdown' required-field="false">
+            <Dropdown ident="foo" value-type="text" required-field="false">
               <text>Question!</text>
               <possible-value label="one" value="1"/>
-            </content>
+            </Dropdown>
           XML
         end
 

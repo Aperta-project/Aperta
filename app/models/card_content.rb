@@ -202,8 +202,10 @@ class CardContent < ActiveRecord::Base
 
   # recursively traverse nested card_contents
   def traverse(visitor)
+    visitor.enter(self)
     visitor.visit(self)
     children.each { |card_content| card_content.traverse(visitor) }
+    visitor.leave(self)
   end
 
   # Return the ids of the children. If quick_children has been set, use that,

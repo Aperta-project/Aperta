@@ -24,6 +24,16 @@ class CorrespondenceController < ApplicationController
     render json: correspondence, status: :ok
   end
 
+  def update
+    correspondence = Correspondence.find(params[:id])
+    if correspondence.external? && correspondence.update(correspondence_params)
+      Activity.correspondence_edited! correspondence, user: current_user
+      render json: correspondence, status: :ok
+    else
+      respond_with correspondence, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def correspondence_params

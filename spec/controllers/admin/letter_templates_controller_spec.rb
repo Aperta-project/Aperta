@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 describe Admin::LetterTemplatesController, redis: true do
-  let(:journal) { create(:journal, :with_admin_roles) }
+  let!(:journal) { create(:journal, :with_admin_roles) }
   let(:user) do
     ja = create(:user, first_name: 'Steve')
     assign_journal_role(journal, ja, :admin)
     ja
   end
-  let(:letter_template) { create(:letter_template) }
+  let!(:letter_template) { create(:letter_template, journal: journal) }
 
   describe '#index' do
     subject :do_request do
@@ -34,7 +34,7 @@ describe Admin::LetterTemplatesController, redis: true do
 
         context "when there's a query in the params" do
           it "finds letter templates for that journal" do
-            expect(LetterTemplate).to receive(:where).with(journal_id: journal.id)
+            expect(LetterTemplate).to receive(:related_to_journal).with(journal.id)
             get :index, format: 'json', journal_id: journal.id
           end
         end

@@ -11,18 +11,20 @@ class CreateTaskBehavior < Behavior
 
     task_attrs = get_task_attrs(card)
     return if disallowed_duplicate?(event, task_attrs[:name])
-    phase_id = event.paper.phases.first.id
 
-    task_opts = {
+    task_opts = create_task_opts(event, card, task_attrs)
+    TaskFactory.create(task_attrs[:class], task_opts)
+  end
+
+  def create_task_opts(event, card, task_attrs)
+    {
       "completed" => false,
       "title" => task_attrs[:name],
-      "phase_id" => phase_id,
+      "phase_id" => event.paper.phases.first.id,
       "body" => [],
       'paper' => event.paper,
       'card_version' => card.latest_published_card_version
     }
-
-    TaskFactory.create(task_attrs[:class], task_opts)
   end
 
   def get_task_attrs(card)

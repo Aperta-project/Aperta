@@ -42,8 +42,7 @@ moduleForComponent('paper-control-bar', 'Integration | Component | Paper Control
 });
 
 
-test('can manage workflow, correspondence enabled, all icons show', function(assert) {
-  FactoryGuy.make('feature-flag', {id: 1, name: 'CORRESPONDENCE', active: true});
+test('can manage workflow, all icons show', function(assert) {
   const can = FakeCanService.create().allowPermission('manage_workflow', paper);
   this.register('service:can', can.asService());
 
@@ -55,17 +54,6 @@ test('can manage workflow, correspondence enabled, all icons show', function(ass
   });
 });
 
-test('can manage workflow, correspondence disabled, no correspondence icon', function(assert) {
-  const can = FakeCanService.create().allowPermission('manage_workflow', paper);
-  this.register('service:can', can.asService());
-
-  this.render(template);
-  return wait().then(() => {
-    assert.equal(this.$('#nav-correspondence').length, 0);
-    assert.equal(this.$('#nav-workflow').length, 1);
-    assert.equal(this.$('#nav-manuscript').length, 1);
-  });
-});
 
 test('can not manage workflow, correspondence enabled, no nav icons', function(assert) {
   const can = FakeCanService.create();

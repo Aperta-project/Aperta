@@ -107,7 +107,6 @@ class CardContent < ActiveRecord::Base
   def content_attrs
     {
       'ident' => ident,
-      'content-type' => content_type,
       'value-type' => value_type,
       'child-tag' => child_tag,
       'custom-class' => custom_class,
@@ -176,7 +175,8 @@ class CardContent < ActiveRecord::Base
 
   # rubocop:disable Metrics/AbcSize
   def to_xml(options = {})
-    setup_builder(options).tag!('content', content_attrs) do |xml|
+    tag_name = content_type.underscore.camelize
+    setup_builder(options).tag!(tag_name, content_attrs) do |xml|
       render_tag(xml, 'instruction-text', instruction_text)
       render_raw(xml, 'text', text)
       render_tag(xml, 'label', label)

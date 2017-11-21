@@ -8,7 +8,7 @@ class XmlCardDocument
 
   SCHEMA_FILE = Rails.root.join('config', 'card.rng').freeze
   CARD_XPATH = "/card".freeze
-  CONTENT_XPATH = "/card/content".freeze
+  CONTENT_XPATH = "/card/*".freeze
 
   # custom exception class wraps list of errors, each with positional info
   class XmlValidationError < StandardError

@@ -1,10 +1,10 @@
 class CreateTaskBehavior < Behavior
-  # has_attributes string: integer: %w[card_id]
-  # validates :task_name, presence: true
+  has_attributes integer: %w[card_id], boolean: %w[duplicates_allowed]
+  validates :card_id, :duplicates_allowed, presence: true
 
   # deal with real time card display
-  # deal with attributes
   # tests
+
   def call(event)
     card_id = entity_attributes.find_by(name: 'card_id').value
     card = Card.find card_id
@@ -50,13 +50,14 @@ end
 # this should be done by rake task
 # b1 = CreateTaskBehavior.create(event_name: "paper.state_changed.submitted", journal_id: Journal.first.id )
 
-# b1.entity_attributes.create(name: 'card_id', value_type:'integer', integer_value: 68)
+# b1.card_id = 68
 
-# b1.entity_attributes.create(name: 'duplicates_allowed', value_type:'boolean', boolean_value: true)
+# b1.duplicates_allowed = true
 
 # b2 = CreateTaskBehavior.create(event_name: "paper.state_changed.submitted", journal_id: Journal.first.id )
 
-# b2.entity_attributes.create(name: 'card_id', value_type:'integer', integer_value: 27)
+# b2.card_id = 27
 
-# b2.entity_attributes.create(name: 'duplicates_allowed', value_type:'boolean', boolean_value: true)
+# b2.duplicates_allowed = true
+
 

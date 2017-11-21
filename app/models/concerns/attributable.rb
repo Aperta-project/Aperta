@@ -32,7 +32,15 @@ module Attributable
 
           define_method("#{name}=") do |new_value|
             content_attribute = send(getter) || send(:entity_attributes).new(name: name, value_type: type)
-            content_attribute.value = new_value.presence
+
+            content_attribute.value =
+              if new_value.in? [true, false]
+                # Boolean does not have a presence method
+                new_value
+              else
+                new_value.presence
+              end
+
             send(setter, content_attribute)
           end
         end

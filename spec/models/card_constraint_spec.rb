@@ -7,16 +7,16 @@ describe Card do
     <<-XML.strip_heredoc
       <?xml version="1.0" encoding="UTF-8"?>
       <card required-for-submission="false" workflow-display-only="false">
-        <content content-type="display-children">
-          <content content-type="display-children">
-            <content ident="Some Stuff 1" content-type="paragraph-input" value-type="html">
+        <DisplayChildren>
+          <DisplayChildren>
+            <ParagraphInput ident="Some Stuff 1" value-type="html">
               <text>This is the THEN branch of an inner IF condition.</text>
-            </content>
-            <content ident="Some Stuff 2" content-type="short-input" value-type="text">
+            </ParagraphInput>
+            <ShortInput ident="Some Stuff 2" value-type="text">
               <text>This is the ELSE branch of an inner IF condition.</text>
-            </content>
-          </content>
-        </content>
+            </ShortInput>
+          </DisplayChildren>
+        </DisplayChildren>
       </card>
     XML
   end
@@ -25,16 +25,16 @@ describe Card do
     <<-XML.strip_heredoc
       <?xml version="1.0" encoding="UTF-8"?>
       <card required-for-submission="false" workflow-display-only="false">
-        <content content-type="display-children">
-          <content content-type="display-children">
-            <content ident="SomeStuff" content-type="paragraph-input" value-type="html">
+        <DisplayChildren>
+          <DisplayChildren>
+            <ParagraphInput ident="SomeStuff" value-type="html">
               <text>This is the THEN branch of an inner IF condition.</text>
-            </content>
-            <content ident="SomeStuff" content-type="short-input" value-type="text">
+            </ParagraphInput>
+            <ShortInput ident="SomeStuff" value-type="text">
               <text>This is the ELSE branch of an inner IF condition.</text>
-            </content>
-          </content>
-        </content>
+            </ShortInput>
+          </DisplayChildren>
+        </DisplayChildren>
       </card>
     XML
   end
@@ -47,12 +47,12 @@ describe Card do
           <content content-type="if" condition="pdfAllowed">
             <content ident="SomeStuff" content-type="paragraph-input" value-type="html">
               <text>This is the THEN branch of an inner IF condition.</text>
-            </content>
-            <content ident="SomeStuff" content-type="short-input" value-type="text">
+            </ParagraphInput>
+            <ShortInput ident="SomeStuff" value-type="text">
               <text>This is the ELSE branch of an inner IF condition.</text>
-            </content>
-          </content>
-        </content>
+            </ShortInput>
+          </If>
+        </DisplayChildren>
       </card>
     XML
   end
@@ -61,12 +61,12 @@ describe Card do
     <<-XML.strip_heredoc
       <?xml version="1.0" encoding="UTF-8"?>
       <card required-for-submission="false" workflow-display-only="false">
-        <content content-type="display-children">
-          <content content-type="if" condition="isEditable">
-            <content ident="SomeStuff" content-type="paragraph-input" value-type="html">
+        <DisplayChildren>
+          <If condition="isEditable">
+            <ParagraphInput ident="SomeStuff" value-type="html">
               <text>This is the THEN branch of an inner IF condition.</text>
-            </content>
-            <content ident="SomeStuff" content-type="short-input" value-type="text">
+            </ParagraphInput>
+            <ShortInput ident="SomeStuff" value-type="text">
               <text>This is the ELSE branch of an inner IF condition.</text>
             </content>
           </content>

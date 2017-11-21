@@ -1,27 +1,47 @@
+@mixin slider-toggle-mixin($button-diameter) {
+  $button-diameter-padded: $button-diameter + 2px;
+
+  height: $button-diameter-padded;
+
+  .slider-button-wrapper {
+    width: calc(100% - #{$button-diameter-padded});
+  }
+
+  .slider-button {
+    height: $button-diameter;
+    width:  $button-diameter;
+  }
+
+  .interior-text {
+    line-height:   $button-diameter-padded;
+    padding-right: $button-diameter-padded + 3px;
+  }
+}
+
 .card-content-toggle-switch {
   .switch {
     position: relative;
     display: inline-block;
     margin: 5px;
 
-    &.preview {
-      width: 30px;
-      height: 18px;
+    &.smaller {
+      @include slider-toggle-mixin(18px);
+      min-width: 34px;
     }
 
     &.small {
-      width: 50px;
-      height: 28px;
+      @include slider-toggle-mixin(26px);
+      min-width: 50px;
     }
 
     &.medium {
-      width: 60px;
-      height: 34px;
+      @include slider-toggle-mixin(32px);
+      min-width: 60px;
     }
 
     &.large {
-      width: 80px;
-      height: 44px;
+      @include slider-toggle-mixin(42px);
+      min-width: 80px;
     }
   }
 
@@ -30,25 +50,39 @@
   .switch input { display: none; }
 
   .slider {
-    position: absolute;
+    position: relative;
+    height: 100%;
     cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
     background-color: $aperta-grey;
+  }
+
+  .slider-button-wrapper {
+    position: absolute;
+    height: 100%;
     transition: .4s;
   }
 
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 83%;
-    width: 46%;
-    left: 3%;
-    bottom: 8%;
+  .slider-button {
+    position: relative;
+    top: 1px;
+    left: 1px;
     background-color: $aperta-white;
-    transition: .4s;
+  }
+
+  .interior-text {
+    height: 100%;
+    padding-left: 5px;
+    color: $aperta-white;
+    white-space: nowrap;
+    visibility: hidden;
+  }
+
+  input:checked + .slider .interior-text {
+    visibility: visible;
+  }
+
+  input:checked + .slider .slider-button-wrapper {
+    transform: translateX(100%);
   }
 
   input:disabled + .slider {
@@ -57,10 +91,6 @@
 
   input:focus + .slider {
     box-shadow: 0 0 1px green;
-  }
-
-  input:checked + .slider:before {
-    transform: translateX(100%);
   }
 
   input:checked + .slider.blue {
@@ -75,11 +105,11 @@
     border-radius: 34px;
   }
 
-  .slider.round:before {
+  .slider.round .slider-button {
     border-radius: 50%;
   }
 
-  .switch .checked-label-text {
+  .checked-label-text {
     position: absolute;
     left: 120%;
     top: 25%;

@@ -43,9 +43,9 @@ describe Card do
     <<-XML.strip_heredoc
       <?xml version="1.0" encoding="UTF-8"?>
       <card required-for-submission="false" workflow-display-only="false">
-        <content content-type="display-children">
-          <content content-type="if" condition="pdfAllowed">
-            <content ident="SomeStuff" content-type="paragraph-input" value-type="html">
+        <DisplayChildren>
+          <If condition="pdfAllowed">
+            <ParagraphInput ident="SomeStuff" value-type="html">
               <text>This is the THEN branch of an inner IF condition.</text>
             </ParagraphInput>
             <ShortInput ident="SomeStuff" value-type="text">
@@ -68,12 +68,12 @@ describe Card do
             </ParagraphInput>
             <ShortInput ident="SomeStuff" value-type="text">
               <text>This is the ELSE branch of an inner IF condition.</text>
-            </content>
-          </content>
-          <content ident="SomeStuff" content-type="short-input" value-type="text">
+            </ShortInput>
+          </If>
+          <ShortInput ident="SomeStuff" value-type="text">
             <text>This is some text with an invalid matching ident.</text>
-          </content>
-        </content>
+          </ShortInput>
+        </DisplayChildren>
       </card>
     XML
   end

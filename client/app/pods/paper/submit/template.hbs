@@ -97,8 +97,11 @@
             <tr>
               <th>Manuscript</th>
               <td>
-                <p><a class="" href={{fileDownloadUrl}}><i class="fa fa-file-pdf-o"></i> Download PDF</a> </p>
-                <p class="muted">Note: Figures and Supplemental Files are included in the PDF.</p>
+                <p><a class="" href={{fileDownloadUrl}}><i class="fa fa-file-pdf-o"></i> Manuscript (review version with figures and supporting information files included)</a> </p>
+                <p class="muted">This is the review version of your manuscript, which includes figures and supplemental information.</p>
+                {{#if (not paper.preprintOptOut) }}
+                 <p class="muted">In your posted preprint, figures will be inserted in the manuscript text and supporting information files will be available via links on the preprint page.</p>
+                {{/if}}
               </td>
             </tr>
             </tbody>

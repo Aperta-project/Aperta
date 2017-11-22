@@ -340,7 +340,7 @@
         <optional>
           <ref name="default-answer-boolean"/>
         </optional>
-        <ref name="instructions-label-required-text"/>
+        <ref name="instructions-label-text"/>
         <zeroOrMore>
           <ref name="content"/>
         </zeroOrMore>

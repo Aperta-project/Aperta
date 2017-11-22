@@ -65,7 +65,6 @@ text-input-attributes =
   & instructions-label-text
   & string-validation*
 
-
 # Inputs
 check-box-input = element CheckBox {
   input-attributes
@@ -137,7 +136,7 @@ tech-check = element TechCheck {
   input-attributes
   & attribute value-type { "boolean" }
   & default-answer-boolean?
-  & instructions-label-required-text
+  & instructions-label-text
   & content*
 }
 

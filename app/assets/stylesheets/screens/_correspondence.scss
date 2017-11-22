@@ -126,3 +126,23 @@
   border-right: 1px solid $aperta-grey-light;
   padding-left: 2rem;
 }
+
+.oneline-history {
+  color: $aperta-grey;
+
+  .history-text { font-style: italic; }
+
+  .actions { 
+    text-align: right;
+
+    span:hover { cursor: pointer; }
+  }
+  
+  a {
+    color: $aperta-grey;
+
+    &:focus, &:hover {
+      text-decoration: none;
+    }    
+  }
+}

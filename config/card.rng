@@ -327,9 +327,6 @@
   <define name="email-editor">
     <element name="EmailEditor">
       <interleave>
-        <attribute name="content-type">
-          <value>email-editor</value>
-        </attribute>
         <ref name="input-attributes"/>
         <optional>
           <attribute name="letter-template"/>

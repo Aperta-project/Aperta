@@ -31,11 +31,8 @@ class CreateTaskBehavior < Behavior
       task_class = card.name.constantize
       task_name = task_class::DEFAULT_TITLE
     else
-      #this doesn't make sense. Research how tasks get made from custom cards
-      task = Task.find_by(title: card.name)
-    binding.pry
-      task_class = task.class
-      task_name = task.title
+      task_class = CustomCardTask
+      task_name = card.name
     end
 
     { class: task_class, name: task_name }

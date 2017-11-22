@@ -218,7 +218,6 @@ content = (
 | sendback-reason
 | short-input
 | tech-check
-| text-input
 | email-editor
 | tech-check-email
 )

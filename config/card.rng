@@ -507,7 +507,6 @@
       <ref name="sendback-reason"/>
       <ref name="short-input"/>
       <ref name="tech-check"/>
-      <ref name="text-input"/>
       <ref name="email-editor"/>
       <ref name="tech-check-email"/>
     </choice>

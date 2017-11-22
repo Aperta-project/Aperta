@@ -33,14 +33,8 @@ let template = hbs`{{card-content/file-uploader
                       preview=preview
                     }}`;
 
-test(`shows an uploader with text and a button`, function(assert) {
+test(`shows an uploader with a button`, function(assert) {
   this.render(template);
-  assert.textPresent(
-    '.description',
-    'Please upload a file',
-    `the content's text is the uploader's description`
-  );
-
   assert.textPresent(
     '.fileinput-button',
     'Upload',
@@ -52,21 +46,11 @@ test(`shows an uploader with text and a button`, function(assert) {
     'fileinput-button',
     'disabling will hide the button unless alwaysShowAddButton is set to true'
   );
-  assert.textPresent(
-    '.description',
-    'Please upload a file',
-    `the description is shown for custom cards`
-  );
 
   this.setProperties({ disabled: false, preview: true });
   assert.elementFound(
     '.button--disabled',
     'preview will also disable the button'
-  );
-  assert.textPresent(
-    '.description',
-    'Please upload a file',
-    `the description shows when the uploader is in preview mode (like on the card editor)`
   );
 
   this.setProperties({ disabled: false, preview: false });

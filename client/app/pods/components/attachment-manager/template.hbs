@@ -1,12 +1,7 @@
-{{#if showDescription}}
-  <p class="description">
-    {{#if (or showDescription (or preview (not disabled)))}}
-      {{{description}}}
-      {{#if content.isRequired}}
-        <span class="required-field">*</span>
-      {{/if}}
-    {{/if}}
-  </p>
+{{#if (or showDescription preview (not disabled))}}
+  <div class="description">
+    {{{description}}}
+  </div>
 {{/if}}
 
 {{#each attachments as |attachment|}}
@@ -29,33 +24,36 @@
     content=content
     fileAdded=(action "clearError")
     uploadError=(action "uploadError")
-    uploadFinished=attrs.updateAttachment}}
+    uploadFinished=attrs.updateAttachment
+  }}
 {{/each}}
 
 {{#each fileUploads as |f|}}
   {{upload-preview upload=f}}
 {{/each}}
 
-<div>
-  {{error-message message=uploadErrorMessage displayIcon=true indent=false}}
-</div>
+{{error-message message=uploadErrorMessage displayIcon=true indent=false}}
 
 {{#if showAddButton}}
   <div class="button-secondary button--green fileinput-button {{if disableAddButton "button--disabled"}}">
-    {{buttonText}}
+    {{{buttonText}}}
+
     <div class="{{if uploadInProgress "hidden"}}">
-      {{file-uploader class="add-new-attachment"
-                         accept=accept
-                         uploaderId=uploaderId
-                         filePrefix=filePath
-                         multiple=multiple
-                         disabled=disableAddButton
-                         content=content
-                         addingFileFailed=(action "uploadError")
-                         progress=(action "uploadProgress")
-                         done=(action "uploadFinished")
-                         start=(action "fileAdded")}}
+      {{file-uploader
+        class="add-new-attachment"
+         accept=accept
+         uploaderId=uploaderId
+         filePrefix=filePath
+         multiple=multiple
+         disabled=disableAddButton
+         content=content
+         addingFileFailed=(action "uploadError")
+         progress=(action "uploadProgress")
+         done=(action "uploadFinished")
+         start=(action "fileAdded")
+       }}
     </div>
   </div>
 {{/if}}
-<div>{{card-content/validation-errors errors=answer.readyIssuesArray hideErrors=false}}</div>
+
+{{card-content/validation-errors errors=answer.readyIssuesArray hideErrors=false}}

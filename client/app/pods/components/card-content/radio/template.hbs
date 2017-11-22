@@ -1,50 +1,63 @@
-<p class="content-text">{{{content.text}}}
-  {{#if content.isRequired}}
-    <span class="required-field">*</span>
-  {{/if}}
-</p>
-<div>
+{{#if hasText}}
+  <div class="card-form-text">
+    {{{content.text}}}
+  </div>
+{{/if}}
+
   {{#if isText}}
     {{#each content.possibleValues as |opt index|}}
-      <label for="{{guid-id this index}}" class="option">
+    <div class="card-radio">
+      <label class="card-form-element">
         {{radio-button
           selection=answer.value
           value=opt.value
           disabled=disabled
-          id=(guid-id this index)
           content=content
-          action=(action "valueChanged")}}
-        <span class="card-content-radio-label">{{{opt.label}}}</span>
+          action=(action "valueChanged")
+        }}
+
+        <span class="card-form-label">{{{opt.label}}}</span>
+        {{partial "required-field"}}
       </label>
+      </div>
     {{/each}}
   {{else }}
-    <label for="{{guid-id this '0'}}" class="option">
+  <div class="card-radio">
+    <label class="card-form-element">
       {{radio-button
         selection=answer.value
         value=true
-        id=(guid-id this '0')
         disabled=disabled
         content=content
-        action=(action "valueChanged")}}
-      <span class="card-content-radio-label">Yes</span>
+        action=(action "valueChanged")
+      }}
+
+      <span class="card-form-label">Yes</span>
+      {{partial "required-field"}}
     </label>
-    <label  for="{{guid-id this '1'}}" class="option">
+</div>
+<div class="card-radio">
+    <label class="card-form-element">
       {{radio-button
         selection=answer.value
         value=false
-        id=(guid-id this '1')
         disabled=disabled
         content=content
-        action=(action "valueChanged")}}
-      <span class="card-content-radio-label">No</span>
+        action=(action "valueChanged")
+      }}
+
+      <span class="card-form-label">No</span>
+      {{partial "required-field"}}
     </label>
+ </div>
   {{/if}}
-</div>
-<div>{{card-content/validation-errors hideErrors=answer.hideErrors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}</div>
+
+{{card-content/validation-errors hideErrors=answer.hideErrors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
+
 {{card-content/display-children
   content=content
   owner=owner
   disabled=disabled
   repetition=repetition
-  preview=preview}}
-
+  preview=preview
+}}

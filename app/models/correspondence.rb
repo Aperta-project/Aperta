@@ -20,7 +20,13 @@ class Correspondence < ActiveRecord::Base
                              allow_blank: false
   end
 
-  def external?
-    external
+  def activities
+    Activity.feed_for('workflow', self).map do |f|
+      {
+        key: f.activity_key,
+        full_name: f.user.full_name,
+        created_at: f.created_at
+      }
+    end
   end
 end

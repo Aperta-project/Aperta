@@ -20,8 +20,22 @@ describe CorrespondenceSerializer, serializer_test: true do
     end
 
     it 'prints the "Added" message' do
-      added_message = serializer.as_json.dig(:correspondence, :activities).first[:activity_key]
+      added_message = serializer.as_json.dig(:correspondence, :activities).first[:key]
       expect(added_message).to match("correspondence.created")
+    end
+  end
+
+  describe 'after a correespondence is edited' do
+    before { Activity.correspondence_edited! correspondence, user: user }
+
+    it 'adds correspondence activities' do
+      serialized_correspondence = serializer.as_json[:correspondence]
+      expect(serialized_correspondence).to have_key(:activities)
+    end
+
+    it 'prints the "Added" message' do
+      added_message = serializer.as_json.dig(:correspondence, :activities).first[:key]
+      expect(added_message).to match("correspondence.edited")
     end
   end
 end

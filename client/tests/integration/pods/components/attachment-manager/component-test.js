@@ -42,12 +42,6 @@ test(`shows a full attachment manager`, function(assert) {
     'has a file input button');
 });
 
-test(`shows the description when showDescription is true`, function(assert) {
-  this.render(template);
-  assert.textPresent('.description', 'Please upload a file', 'shows description message');
-});
-
-
 test(`displays attachments and has proper action buttons`, function(assert) {
   let attachment = FactoryGuy.make('question-attachment');
   var newReadyIssues = ['incorrect', 'wrong'];

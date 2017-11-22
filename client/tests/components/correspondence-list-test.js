@@ -54,7 +54,7 @@ test('can manage workflow, list appears for correspondence with manuscript versi
 
 test('can manage workflow, list appears for correspondence without manuscript version and status', function(assert) {
   let paper = FactoryGuy.make('paper');
-  let correspondence = FactoryGuy.make('correspondence', 'externalCorrespondence', { paper: paper });
+  let correspondence = FactoryGuy.make('correspondence', { paper: paper });
   const can = FakeCanService.create().allowPermission('manage_workflow', paper);
   this.register('service:can', can.asService());
 
@@ -110,7 +110,7 @@ test('correspondence with activities show the activity atop the entry', function
   let paper = FactoryGuy.make('paper');
   let correspondence = FactoryGuy.make('correspondence', 'externalCorrespondence', {
     activities: [
-      { activity_key: 'correspondence.created', full_name: 'Jim', created_at: '1989-8-19' }
+      { key: 'correspondence.created', full_name: 'Jim', created_at: '1989-8-19' }
     ],
     paper: paper
   });

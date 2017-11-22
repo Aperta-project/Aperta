@@ -6,7 +6,7 @@ class Admin::LetterTemplatesController < ApplicationController
 
   def index
     journal_id = letter_template_params[:journal_id]
-    letter_templates = LetterTemplate.where(journal_id: journal_id)
+    letter_templates = LetterTemplate.related_to_journal(journal_id)
     respond_with(letter_templates, only: [:id, :subject, :name])
   end
 

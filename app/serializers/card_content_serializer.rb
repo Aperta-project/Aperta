@@ -12,7 +12,7 @@ class CardContentSerializer < ActiveModel::Serializer
   # Doing it this way is much faster than hitting each attribute
   def attributes
     hash = super
-    object.content_attributes.each do |attr|
+    object.entity_attributes.each do |attr|
       hash[attr.name.to_sym] = attr.value
     end
     hash

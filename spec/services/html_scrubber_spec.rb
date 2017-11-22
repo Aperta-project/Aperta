@@ -19,4 +19,12 @@ describe HtmlScrubber do
       expect(bad_html.to_html).to eq ''
     end
   end
+
+  describe 'doesn\'t strip off list-style-type?' do
+    let(:value) { Loofah.fragment('<ol style="list-style-type: lower-greek;"></ol>') }
+    it 'list-style-type still remains' do
+      value.scrub! subject
+      expect(value.to_html).to eq '<ol style="list-style-type: lower-greek;"></ol>'
+    end
+  end
 end

@@ -1,9 +1,6 @@
 # A Scrubber that scrubs out bad HTML and text we don't want
 # https://github.com/rails/rails-html-sanitizer for more details
 class HtmlScrubber < Rails::Html::PermitScrubber
-  require 'loofah/whitelist'
-  Loofah.include MonkeyPatch::Loofah::HTML5::WhiteList
-
   BASIC_TAGS    = 'p,br,strong,b,em,i,u,sub,sup,pre'.freeze
   EXTRA_TAGS    = ',a,div,span,code,ol,ul,li,h1,h2,h3,h4,table,thead,tbody,tfoot,tr,th,td'.freeze
   STANDARD_TAGS = Set.new((BASIC_TAGS + EXTRA_TAGS).split(',')).freeze

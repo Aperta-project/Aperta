@@ -87,7 +87,7 @@
       <ref name="html"/>
     </element>
   </define>
-  <define name="instructions-text">
+  <define name="instructions-label-text">
     <interleave>
       <optional>
         <element name="instruction-text">
@@ -99,11 +99,6 @@
           <ref name="html"/>
         </element>
       </optional>
-    </interleave>
-  </define>
-  <define name="instructions-label-text">
-    <interleave>
-      <ref name="instructions-text"/>
       <optional>
         <element name="label">
           <ref name="html"/>
@@ -164,36 +159,13 @@
       <optional>
         <ref name="default-answer-text"/>
       </optional>
-      <ref name="instructions-label-optional-text"/>
+      <ref name="instructions-label-text"/>
       <zeroOrMore>
         <ref name="string-validation"/>
       </zeroOrMore>
     </interleave>
   </define>
   <!-- Inputs -->
-  <define name="radio-input">
-    <element name="Radio">
-      <interleave>
-        <ref name="input-attributes"/>
-        <attribute name="value-type">
-          <choice>
-            <value>text</value>
-            <value>boolean</value>
-          </choice>
-        </attribute>
-        <optional>
-          <ref name="default-answer-text"/>
-        </optional>
-        <ref name="instructions-label-optional-text"/>
-        <zeroOrMore>
-          <ref name="possible-value"/>
-        </zeroOrMore>
-        <zeroOrMore>
-          <ref name="content"/>
-        </zeroOrMore>
-      </interleave>
-    </element>
-  </define>
   <define name="check-box-input">
     <element name="CheckBox">
       <interleave>
@@ -285,7 +257,7 @@
             </choice>
           </attribute>
         </optional>
-        <ref name="instructions-label-optional-text"/>
+        <ref name="instructions-label-text"/>
         <zeroOrMore>
           <ref name="file-validation"/>
         </zeroOrMore>
@@ -311,6 +283,53 @@
       </interleave>
     </element>
   </define>
+  <define name="radio-input">
+    <element name="Radio">
+      <interleave>
+        <ref name="input-attributes"/>
+        <attribute name="value-type">
+          <choice>
+            <value>text</value>
+            <value>boolean</value>
+          </choice>
+        </attribute>
+        <optional>
+          <ref name="default-answer-text"/>
+        </optional>
+        <ref name="instructions-label-text"/>
+        <zeroOrMore>
+          <ref name="possible-value"/>
+        </zeroOrMore>
+        <zeroOrMore>
+          <ref name="content"/>
+        </zeroOrMore>
+      </interleave>
+    </element>
+  </define>
+  <define name="sendback-reason">
+    <element name="SendbackReason">
+      <interleave>
+        <ref name="input-attributes"/>
+        <attribute name="value-type">
+          <value>boolean</value>
+        </attribute>
+        <ref name="instructions-label-text"/>
+        <zeroOrMore>
+          <ref name="content"/>
+        </zeroOrMore>
+      </interleave>
+    </element>
+  </define>
+  <define name="short-input">
+    <element name="ShortInput">
+      <interleave>
+        <ref name="text-input-attributes"/>
+        <attribute name="value-type">
+          <value>text</value>
+        </attribute>
+      </interleave>
+    </element>
+  </define>
   <define name="tech-check">
     <element name="TechCheck">
       <interleave>
@@ -325,30 +344,6 @@
         <zeroOrMore>
           <ref name="content"/>
         </zeroOrMore>
-      </interleave>
-    </element>
-  </define>
-  <define name="sendback-reason">
-    <element name="SendbackReason">
-      <interleave>
-        <ref name="input-attributes"/>
-        <attribute name="value-type">
-          <value>boolean</value>
-        </attribute>
-        <ref name="instructions-label-optional-text"/>
-        <zeroOrMore>
-          <ref name="content"/>
-        </zeroOrMore>
-      </interleave>
-    </element>
-  </define>
-  <define name="short-input">
-    <element name="ShortInput">
-      <interleave>
-        <ref name="text-input-attributes"/>
-        <attribute name="value-type">
-          <value>text</value>
-        </attribute>
       </interleave>
     </element>
   </define>

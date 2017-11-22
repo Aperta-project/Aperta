@@ -6,16 +6,9 @@ describe Behavior do
   let(:paper) { create(:paper, journal: journal) }
 
 
-  #describe 'for CustomCardTask'
-    #describe with  disallowedduplicates
-    #describe without disallowedduplicates
-
-  #describe 'for TahiStandardTask'
-    #describe with  disallowedduplicates
-    #describe without disallowedduplicates
   let(:card) { FactoryGirl.create(:card, journal: journal) }
   let(:event) { Event.new(name: :fake_event, paper: paper, task: nil, user: nil) }
-  let!(:task) { create(:task, paper: paper, title: card.name) }
+  let!(:task) { create(:custom_card_task, paper: paper, title: card.name) }
   subject { build(:create_task_behavior, card_id: card.id, duplicates_allowed: false) }
 
   before(:each) do
@@ -42,7 +35,7 @@ describe Behavior do
 
   it 'should create the correct tasks from the event attributes' do
     expect(TaskFactory).to receive(:create)
-    .with(Task,
+    .with(CustomCardTask,
       { "completed" => false,
         "title" => card.name,
         "phase_id" => event.paper.phases.first.id,
@@ -52,6 +45,4 @@ describe Behavior do
     )
     event.trigger
   end
-
-  describe 'with '
 end

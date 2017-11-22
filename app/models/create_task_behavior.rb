@@ -1,9 +1,9 @@
 class CreateTaskBehavior < Behavior
   has_attributes integer: %w[card_id], boolean: %w[duplicates_allowed]
-  validates :card_id, :duplicates_allowed, presence: true
+  validates :card_id, presence: true
+  validates :duplicates_allowed, inclusion: { in: [true, false] }
 
   # deal with real time card display
-
   def call(event)
     # Handle journal not having card
     card = Card.find card_id

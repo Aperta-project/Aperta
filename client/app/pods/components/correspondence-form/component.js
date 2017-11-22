@@ -19,6 +19,10 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     return start.format('H:mm');
   }),
 
+  dateSent: Ember.computed('model', function() {
+    return moment(this.get('model.date')).format('MM/DD/YYYY');
+  }),
+
   prepareModelDate() {
     let date = this.get('dateSent');
     let time = this.get('timeSent');
@@ -110,7 +114,12 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
       // Setup the association late because, any earlier and this model would
       // be added to the correspondence list as it is being created.
-      model.set('paper', this.get('paper'));
+      // 7 Nov, 2017  This component is now being reused for editing correspondence
+      // thus it is necessary to check that the paper relationship doesn't exist already
+      // before setting it.
+      if (Ember.isEmpty(model.get('paper'))) {
+        model.set('paper', this.get('paper'));
+      }
 
       model.save().then(() => {
         this.clearAllValidationErrors();

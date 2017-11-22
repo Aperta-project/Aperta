@@ -1,11 +1,3 @@
-<div class="row">
-  <div class="col-sm-12">
-    <p>Manually add a correspondence record to the correspondence history, e.g.
-      an email was sent from a personal email and you want to record it in
-      Aperta. <strong>Note: this will NOT send an email</strong></p>
-  </div>
-</div>
-
 <p>
   Fields marked with an <i class="correspondence-asterisk-field">*</i> are required.
 </p>
@@ -202,6 +194,6 @@
     {{#if close}}
       <button class="button-link button--green" {{action close}}>cancel</button>
     {{/if}}
-    <button class="button button--green button-primary correspondence-submit" {{action "submit" model}}>ADD TO HISTORY</button>
+    <button class="button button--green button-primary correspondence-submit" {{action "submit" model}}>{{saveText}}</button>
   </div>
 </div>

@@ -40,6 +40,8 @@ class CardContent < ActiveRecord::Base
       value_type
       visible_with_parent_answer
       wrapper_tag
+      letter_template
+      button_label
     ]
 
   belongs_to :card_version, inverse_of: :card_contents

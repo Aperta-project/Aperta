@@ -35,12 +35,9 @@ html = any-element* & text
 any-attribute = attribute * { text }
 any-element = element * { any-attribute*, html }
 
-instructions-text =
+instructions-label-text =
   element instruction-text { html }?
   & element text { html }?
-
-instructions-label-text =
-  instructions-text
   & element label { html }?
 
 file-validation =
@@ -65,16 +62,15 @@ input-attributes =
 text-input-attributes =
   input-attributes
   & default-answer-text?
-  & instructions-label-optional-text
+  & instructions-label-text
   & string-validation*
-
 
 # Inputs
 radio-input = element Radio {
   input-attributes
   & attribute value-type { "text" | "boolean" }
   & default-answer-text?
-  & instructions-label-optional-text
+  & instructions-label-text
   & possible-value*
   & content*
 }
@@ -113,7 +109,7 @@ file-uploader = element FileUploader {
   & attribute error-message { text }?
   & attribute allow-file-captions    { "true" | "false" }?
   & attribute allow-multiple-uploads { "true" | "false" }?
-  & instructions-label-optional-text
+  & instructions-label-text
   & file-validation*
   & accepted-file-type*
 }
@@ -135,7 +131,7 @@ tech-check = element TechCheck {
 sendback-reason = element SendbackReason {
   input-attributes
   & attribute value-type { "boolean" }
-  & instructions-label-optional-text
+  & instructions-label-text
   & content*
 }
 

@@ -325,7 +325,7 @@
     </element>
   </define>
   <define name="email-editor">
-    <element name="content">
+    <element name="EmailEditor">
       <interleave>
         <attribute name="content-type">
           <value>email-editor</value>

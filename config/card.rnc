@@ -128,9 +128,8 @@ tech-check-email = element TechCheckEmail {
   content*
 }
 
-email-editor = element content {
-  (attribute content-type { "email-editor" }
-  & input-attributes
+email-editor = element EmailEditor {
+  (input-attributes
   & attribute letter-template { text }?
   & attribute button-label { text }?
   & attribute value-type { "html" }),

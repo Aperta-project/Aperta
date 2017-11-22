@@ -4,6 +4,9 @@
 class LetterTemplate < ActiveRecord::Base
   belongs_to :journal
 
+  scope :by_journal_id, ->(journal_id) { where(journal_id: journal_id) }
+  scope :not_including_preprints, -> { where.not(scenario: 'Preprint Decision') }
+
   validates :name, presence: { message: "This field is required" }, uniqueness: {
     scope: [:journal_id],
     case_sensitive: false,
@@ -32,6 +35,11 @@ class LetterTemplate < ActiveRecord::Base
 
   def merge_fields
     scenario_class.merge_fields
+  end
+
+  # temporary until removal of feature flag
+  def self.related_to_journal(journal_id)
+    FeatureFlag[:PREPRINT] ? by_journal_id(journal_id) : by_journal_id(journal_id).not_including_preprints
   end
 
   def scenario_class

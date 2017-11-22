@@ -20,9 +20,9 @@ describe HtmlScrubber do
     end
   end
 
-  describe 'doesn\'t strip off list-style-type?' do
+  describe 'doesn\'t strip off list-style-type' do
     let(:value) { Loofah.fragment('<ol style="list-style-type: lower-greek;"></ol>') }
-    it 'list-style-type still remains' do
+    it 'tests that the list-style-type attributes remains' do
       value.scrub! subject
       expect(value.to_html).to eq '<ol style="list-style-type: lower-greek;"></ol>'
     end

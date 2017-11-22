@@ -3,14 +3,13 @@ class CreateTaskBehavior < Behavior
   validates :card_id, :duplicates_allowed, presence: true
 
   # deal with real time card display
-  # tests
 
   def call(event)
     # Handle journal not having card
     card = Card.find card_id
 
     task_attrs = get_task_attrs(card)
-    return if disallowed_duplicate?(event, task_attrs[:name])
+    return if disallowed_duplicate?(event.paper, task_attrs[:name])
 
     task_opts = create_task_opts(event, card, task_attrs)
     TaskFactory.create(task_attrs[:class], task_opts)
@@ -38,8 +37,7 @@ class CreateTaskBehavior < Behavior
     { class: task_class, name: task_name }
   end
 
-  def disallowed_duplicate?(event, task_name)
-    !duplicates_allowed &&
-    event.paper.tasks.where(title: task_name).any?
+  def disallowed_duplicate?(paper, task_name)
+    !duplicates_allowed && paper.tasks.where(title: task_name).any?
   end
 end

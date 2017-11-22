@@ -7,6 +7,7 @@ $ov--card-breakpoint: 900px;
   justify-content: center;
   overflow-y: scroll;
   padding: 40px 0;
+  display: grid;
 
   // TODO: This needs another home:
   h1 {
@@ -19,7 +20,7 @@ $ov--card-breakpoint: 900px;
     min-height: 25rem;
     width: 112rem;
     border-radius: 5px;
-    margin: auto 75px;
+    margin: auto;
     background-color: #fff;
   }
 }

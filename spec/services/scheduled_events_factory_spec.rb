@@ -73,6 +73,28 @@ describe ScheduledEventFactory do
         it_behaves_like 'templated scheduled events', ScheduledEventTestTask::SCHEDULED_EVENTS_TEMPLATE
       end
 
+      context 'with one inactive event and review due date moved forward' do
+        before do
+          own_events.first.tap do |e|
+            e.dispatch_at = DateTime.now.in_time_zone - 1.hour
+            e.state = 'inactive'
+            e.save!
+          end
+          reviewer_report.due_datetime.tap do |ddt|
+            ddt.originally_due_at = ddt.due_at
+            ddt.due_at = ddt.originally_due_at + 5.days
+          end
+        end
+
+        it 'should reschedule inactive events' do
+          expect(own_events.active.count).to be 2
+          expect { subject }.to change { ScheduledEvent.count }.by(0)
+          expect(own_events.active.count).to be 3
+        end
+
+        it_behaves_like 'templated scheduled events', ScheduledEventTestTask::SCHEDULED_EVENTS_TEMPLATE
+      end
+
       context 'with one completed event and review due date moved backward' do
         before do
           own_events.first.tap do |e|

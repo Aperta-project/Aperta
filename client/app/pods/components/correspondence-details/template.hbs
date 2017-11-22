@@ -1,3 +1,19 @@
+{{#if message.external}}
+  <div class="row oneline-history">
+    <div class="col-sm-9 history-text">
+      {{message.lastActivityMessage}}
+    </div>
+    <div class="col-sm-3 actions">
+      <span class="action-edit">
+        {{#link-to 'paper.correspondence.edit' message.id}}
+          {{fa-icon 'pencil' size="lg"}} <small>Edit</small>
+        {{/link-to}}
+      </span>
+    </div>
+  </div>
+  <hr style="margin-top: 15px;">
+{{/if}}
+
 <div class="row">
   <div class="col-sm-2" style="color:grey;">
     Date Sent:

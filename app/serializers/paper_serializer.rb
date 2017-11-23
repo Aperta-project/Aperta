@@ -2,7 +2,7 @@ class PaperSerializer < LitePaperSerializer
   attributes :abstract, :body, :current_user_roles, :doi, :gradual_engagement,
              :legends_allowed, :links, :manually_similarity_checked,
              :paper_type, :short_title, :submitted_at, :first_submitted_at, :versions_contain_pdf,
-             :preprint_eligible?
+             :preprint_eligible?, :preprint_opt_out?
 
   %i(supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
@@ -54,6 +54,12 @@ class PaperSerializer < LitePaperSerializer
     return [] unless scope
     Role.where(journal_id: object.journal).joins(:assignments)
     .where("assignments.user_id = ?", scope).pluck(:name).uniq
+  end
+
+  def preprint_opt_out?
+    preprint_task = object.tasks.find { |task| task.title == 'Preprint Posting' }
+    return unless preprint_task
+    preprint_task.answers.first.value == '2'
   end
 
   def links

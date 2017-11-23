@@ -16,6 +16,7 @@ describe PaperSerializer do
       processing: true,
       publishing_state: 'unsubmitted',
       role_descriptions_for: [],
+      tasks: [double(Task, title: 'Preprint Posting', answers: [double(Answer, value: '1')])],
       title: 'The great paper'
     )
   end
@@ -70,6 +71,22 @@ describe PaperSerializer do
         it 'is serialized as nil' do
           expect(json).to match hash_including(related_at_date: nil)
         end
+      end
+    end
+
+    describe '#preprint_opt_out?' do
+      it 'returns nil if Preprint Posting card is not present' do
+        allow(paper).to receive(:tasks) { [] }
+        expect(json[:preprint_opt_out]).to be_nil
+      end
+
+      it 'returns true if user opted out for preprint' do
+        allow(paper.tasks.first).to receive(:answers) { [double(Answer, value: '2')] }
+        expect(json[:preprint_opt_out]).to be_truthy
+      end
+
+      it 'returns false if user opted in for preprint' do
+        expect(json[:preprint_opt_out]).to be_falsey
       end
     end
   end

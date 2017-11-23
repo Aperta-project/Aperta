@@ -59,7 +59,7 @@ class PaperSerializer < LitePaperSerializer
   def preprint_opt_out?
     preprint_task = object.tasks.find { |task| task.title == 'Preprint Posting' }
     return unless preprint_task
-    preprint_task.answers.first.value == '2'
+    preprint_task.answers.first.try(:value) == '2'
   end
 
   def links

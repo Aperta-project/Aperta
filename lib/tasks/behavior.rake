@@ -9,5 +9,16 @@ namespace :behavior do
       )
       STDOUT.write("Created #{behavior.inspect}\n")
     end
+
+    desc "Create a new create task behavior."
+    task :create_task, [:journal_id, :event, :card_id, :duplicates_allowed] => [:environment] do |_t, args|
+      behavior = CreateTaskBehavior.create!(
+        journal: Journal.find(args[:journal_id].to_i),
+        event_name: args['event'],
+        card_id: args['card_id'],
+        duplicates_allowed: args['duplicates_allowed']
+      )
+      STDOUT.write("Created #{behavior.inspect}\n")
+    end
   end
 end

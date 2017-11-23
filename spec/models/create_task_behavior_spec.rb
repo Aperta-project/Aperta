@@ -26,9 +26,9 @@ describe Behavior do
       allow(subject).to receive(:card_id).and_return(card.id)
     end
 
-    # it 'should fail validation unless a card_id is set' do
-    #   expect(subject).not_to be_valid
-    # end
+    it 'should pass validation unless a card_id is set' do
+      expect(subject).to be_valid
+    end
 
     it 'should call the behavior' do
       expect(subject).to receive(:call).with(event)
@@ -71,6 +71,34 @@ describe Behavior do
       expect(TaskFactory).to receive(:create)
       .with(CustomCardTask, mock_task_opts(card, event))
       event.trigger
+    end
+  end
+
+  describe 'without a card id ' do
+    subject { build(:create_task_behavior, card_id: nil, duplicates_allowed: true) }
+    let!(:task) { create(:task, paper: paper, title: card.name) }
+
+    before(:each) do
+      allow(subject).to receive(:duplicates_allowed).and_return(true)
+      allow(subject).to receive(:card_id).and_return(nil)
+    end
+
+    it 'should fail validation unless a card_id is set' do
+      expect(subject).not_to be_valid
+    end
+  end
+
+  describe 'without a duplicates allowed property' do
+    subject { build(:create_task_behavior, card_id: card.id, duplicates_allowed: nil) }
+    let!(:task) { create(:task, paper: paper, title: card.name) }
+
+    before(:each) do
+      allow(subject).to receive(:duplicates_allowed).and_return(nil)
+      allow(subject).to receive(:card_id).and_return(card.id)
+    end
+
+    it 'should fail validation unless a card_id is set' do
+      expect(subject).not_to be_valid
     end
   end
 end

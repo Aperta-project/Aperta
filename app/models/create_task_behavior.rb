@@ -1,6 +1,7 @@
 class CreateTaskBehavior < Behavior
   has_attributes integer: %w[card_id], boolean: %w[duplicates_allowed]
   validates :card_id, presence: true
+  validates :duplicates_allowed, presence: true, inclusion: { in: [true, false] }
   validate :card_available_in_journal
 
   def call(event)
@@ -42,6 +43,7 @@ class CreateTaskBehavior < Behavior
   end
 
   def card_available_in_journal
+    return if errors.present?
     card = Card.find card_id
     card.journal_id.in? [journal.id, nil]
   end

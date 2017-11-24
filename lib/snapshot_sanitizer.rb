@@ -8,8 +8,8 @@ module SnapshotSanitizer
     if snapshot.is_a?(Array)
       return snapshot if snapshot.empty?
 
-      check_fields = ['id', 'owner_type', 'owner_id', 'grant_number', 'website', 'additional_comments']
-      ignore_fields = ['name', 'type', 'value']
+      check_fields = ['id', 'owner_type', 'owner_id', 'grant_number', 'website', 'additional_comments', 'funder']
+      ignore_fields = [['name', 'type', 'value'], ['name', 'type', 'children']]
 
       snapshot = clean(snapshot, check_fields, ignore_fields)
 
@@ -28,7 +28,7 @@ module SnapshotSanitizer
   def self.clean(json, check_fields, ignore_fields)
     temp = []
     json.each_with_index do |obj, _index|
-      if obj.keys == ignore_fields
+      if ignore_fields.include?(obj.keys)
         temp << obj if check_fields.include?(obj['name'])
       end
     end

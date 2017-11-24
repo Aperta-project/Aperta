@@ -21,14 +21,20 @@ describe 'SnapshotSanitizer' do
   end
 
   it 'sanitizes a snapshot - deletes all ID properties' do
-    snapshot = { 'id': 123, 'name': 'task1' }
-    expected_snapshot = { 'name': 'task1' }
+    snapshot = { 'id': 123, 'name': 'task1' }.with_indifferent_access
+    expected_snapshot = { 'name': 'task1' }.with_indifferent_access
     expect(SnapshotSanitizer.sanitize(snapshot)).to eq expected_snapshot
   end
 
   it 'sanitizes a snapshot - deletes all ID properties (nested)' do
-    snapshot = { 'id': 123, 'name': 'task1', 'children': { 'id': 123, 'name': 'task2' } }
-    expected_snapshot = { 'name': 'task1', 'children': { 'name': 'task2' } }
+    snapshot = { 'id': 123, 'name': 'task1', 'children': { 'id': 123, 'name': 'task2' } }.with_indifferent_access
+    expected_snapshot = { 'name': 'task1', 'children': { 'name': 'task2' } }.with_indifferent_access
+    expect(SnapshotSanitizer.sanitize(snapshot)).to eq expected_snapshot
+  end
+
+  it 'sanitizes a snapshot - deletes all irelevant nodes' do
+    snapshot = { 'id': 123, 'name': 'task1', 'children': [{ 'name': 'id', 'type': 'text', 'value': 'hello' }] }.with_indifferent_access
+    expected_snapshot = { 'name': 'task1', 'children': [] }.with_indifferent_access
     expect(SnapshotSanitizer.sanitize(snapshot)).to eq expected_snapshot
   end
 end

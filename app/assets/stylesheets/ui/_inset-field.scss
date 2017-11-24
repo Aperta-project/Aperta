@@ -47,6 +47,10 @@
     font-weight: 500;
   }
 
+  &.did-you-mean-search-field>input {
+    margin-left: 7px;
+  }
+
   &.required {
     label { padding-left: 12px; }
 
@@ -55,7 +59,17 @@
       position: absolute;
       top: 4px;
       left: 12px;
-      color: $aperta-green;
+      color: $aperta-red;
+      font-size: 24px;
+      z-index: 1;
+    }
+
+    &.did-you-mean-search-field::before {
+      content: '*';
+      position: absolute;
+      top: 4px;
+      left: 5px;
+      color: $aperta-red;
       font-size: 24px;
       z-index: 1;
     }

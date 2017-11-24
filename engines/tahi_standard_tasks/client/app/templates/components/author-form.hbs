@@ -131,9 +131,10 @@
         {{institution-search value=affiliation
                              institutionSelected="institutionSelected"
                              disabled=isNotEditable
+                             required=true
                              validate=(action "validateField" "affiliation")
                              errors=validationErrors.affiliation
-                             placeholder="* Institution"}}
+                             placeholder="Institution"}}
       </div>
 
       <div class="flex-element author-affiliation {{if validationErrors.secondaryAffiliation "error"}}">
@@ -142,6 +143,7 @@
         {{institution-search value=secondaryAffiliation
                              institutionSelected="secondaryInstitutionSelected"
                              disabled=isNotEditable
+                             required=false
                              placeholder="Secondary Institution"}}
       </div>
     </div>

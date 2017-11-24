@@ -19,7 +19,7 @@ describe Behavior do
   it_behaves_like :behavior_subclass
 
   describe 'basic case' do
-    subject { build(:create_task_behavior, card_id: card.id, duplicates_allowed: false) }
+    subject { build(:create_task_behavior, card_id: card.id, duplicates_allowed: false, journal: journal) }
 
     before(:each) do
       allow(subject).to receive(:duplicates_allowed).and_return(true)
@@ -95,6 +95,22 @@ describe Behavior do
     before(:each) do
       allow(subject).to receive(:duplicates_allowed).and_return(nil)
       allow(subject).to receive(:card_id).and_return(card.id)
+    end
+
+    it 'should fail validation unless a card_id is set' do
+      expect(subject).not_to be_valid
+    end
+  end
+
+  describe 'without a card from another journal' do
+    let(:journal2) { create(:journal) }
+    let(:card2) { FactoryGirl.create(:card, journal: journal2) }
+    subject { build(:create_task_behavior, card_id: card2.id, duplicates_allowed: true, journal: journal) }
+    let!(:task) { create(:task, paper: paper, title: card.name) }
+
+    before(:each) do
+      allow(subject).to receive(:duplicates_allowed).and_return(true)
+      allow(subject).to receive(:card_id).and_return(card2.id)
     end
 
     it 'should fail validation unless a card_id is set' do

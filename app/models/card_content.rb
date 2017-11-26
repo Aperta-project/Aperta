@@ -42,6 +42,7 @@ class CardContent < ActiveRecord::Base
       wrapper_tag
       letter_template
       button_label
+      letter_template_ident
     ]
 
   belongs_to :card_version, inverse_of: :card_contents
@@ -92,7 +93,9 @@ class CardContent < ActiveRecord::Base
       'radio': ['boolean', 'text'],
       'tech-check': ['boolean'],
       'date-picker': ['text'],
-      'sendback-reason': ['boolean']
+      'sendback-reason': ['boolean'],
+      'liquid-template': [nil],
+      'repeat': [nil]
     }.freeze.with_indifferent_access
 
   # Although we want to validate the various combinations of content types
@@ -199,6 +202,10 @@ class CardContent < ActiveRecord::Base
         'letter-template' => letter_template,
         'button-label' => button_label,
         'required-field' => required_field
+      }
+    when 'liquid-template'
+      {
+        'letter-template-ident' => letter_template_ident
       }
     else
       {}

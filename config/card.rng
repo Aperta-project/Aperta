@@ -518,6 +518,7 @@
       <ref name="file-uploader"/>
       <ref name="financial-disclosure-summary"/>
       <ref name="if"/>
+      <ref name="liquid-template"/>
       <ref name="paragraph-input"/>
       <ref name="radio-input"/>
       <ref name="repeat"/>

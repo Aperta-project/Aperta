@@ -224,6 +224,7 @@ content = (
 | file-uploader
 | financial-disclosure-summary
 | if
+| liquid-template
 | paragraph-input
 | radio-input
 | repeat

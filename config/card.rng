@@ -383,6 +383,11 @@
       </interleave>
     </element>
   </define>
+  <define name="liquid-template">
+    <element name="Template">
+      <attribute name="letter-template-ident"/>
+    </element>
+  </define>
   <!-- Contents -->
   <define name="description">
     <element name="Description">

@@ -154,6 +154,10 @@ paragraph-input = element ParagraphInput {
   & attribute editor-style { text }?
 }
 
+liquid-template = element Template {
+  attribute letter-template-ident { text }
+}
+
 # Contents
 description = element Description {
   attribute ident { text }?

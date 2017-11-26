@@ -215,6 +215,7 @@ content = (
 | export-paper
 | file-uploader
 | if
+| liquid-template
 | paragraph-input
 | radio-input
 | repeat

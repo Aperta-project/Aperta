@@ -157,6 +157,10 @@ tech-check-email = element TechCheckEmail {
   content*
 }
 
+liquid-template = element Template {
+  attribute letter-template-ident { text }
+}
+
 # Contents
 description = element Description {
   attribute ident { text }?

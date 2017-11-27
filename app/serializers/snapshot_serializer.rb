@@ -3,6 +3,7 @@ class SnapshotSerializer < ActiveModel::Serializer
 
   def sanitized_contents
     # need to duplicate hash to prevent original contents object from being mutated
+    require 'snapshot_sanitizer'
     SnapshotSanitizer.sanitize(object.contents.deep_dup)
   end
 end

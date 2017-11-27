@@ -10,8 +10,8 @@ class TemplateContext < Liquid::Drop
       'Reviewer Report'   => ReviewerReportScenario,
       'Invitation'        => InvitationScenario,
       'Paper Reviewer'    => InvitationScenario,
-      'Decision' => RegisterDecisionScenario,
-      'Tech Check' => TechCheckScenario
+      'Decision'          => RegisterDecisionScenario,
+      'Tech Check'        => TechCheckScenario
     }.merge(feature_flagged_scenarios)
   end
 
@@ -55,8 +55,10 @@ class TemplateContext < Liquid::Drop
     end
   end
 
-  def self.wraps(klass)
-    @wrapped_type ||= klass
+  def self.wraps(klass = nil)
+    @wrapped_type ||= klass if klass
+
+    @wrapped_type
   end
 
   def self.merge_fields

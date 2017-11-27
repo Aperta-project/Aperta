@@ -7,7 +7,7 @@ namespace :data do
     DESC
 
     task aperta_11974_preprint_preprint_posting: :environment do
-      card_contents = CardContent.where(ident: 'preprint-posting--consent').includes(:content_attributes, :answers).all
+      card_contents = CardContent.where(ident: 'preprint-posting--consent').includes(:entity_attributes, :answers).all
       puts "Converting Card Contents [#{card_contents.size}]"
       card_contents.each do |card_content|
         next unless card_content.value_type == 'text'

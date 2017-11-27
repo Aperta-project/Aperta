@@ -160,22 +160,29 @@ class CommonTest(FrontEndTest):
         if format_ in ('any', 'word'):
             document_type = [dt for dt, count in weighting for i in range(count)]
             format_ = random.choice(document_type)
-    if format_ == 'docx':
-        doc2upload = random.choice(docxs)
-    elif format_ == 'doc':
-        doc2upload = random.choice(docs)
-    elif format_ == 'pdf':
-        doc2upload = random.choice(pdfs)
-    else:
-        logging.error('Unknown format specifier: {0} in method call.'.format(format_))
+        if format_ == 'docx':
+            doc2upload = random.choice(docxs)
+        elif format_ == 'doc':
+            doc2upload = random.choice(docs)
+        elif format_ == 'pdf':
+            doc2upload = random.choice(pdfs)
+        else:
+            logging.error('Unknown format specifier: {0} in method call.'.format(format_))
 
-    fn = os.path.join(current_path, '{0}'.format(doc2upload))
+        fn = os.path.join(current_path, '{0}'.format(doc2upload))
     logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)
     self._driver.find_element_by_id('upload-files').send_keys(fn)
 
+    dashboard._wait_on_lambda(lambda: 'papers' in self._driver.current_url)
+
     # Time needed for script execution.
-    time.sleep(7)
+    active_queries = self._driver.execute_script("return jQuery.active")
+    seconds_to_wait = max(30, int(int(active_queries)))
+    logging.info('Creating submission with document: '
+                 '{0}, active queries: {1}, max_wait: {2}'.format(fn, str(active_queries), str(seconds_to_wait)))
+    dashboard._wait_on_lambda(lambda:
+                         self._driver.execute_script("return jQuery.active") == 0, max_wait=seconds_to_wait)
     # poics = Preprint Overlay In Create Sequence
     poics = self.preprint_overlay_in_create_sequence(journal, type_)
     if poics:

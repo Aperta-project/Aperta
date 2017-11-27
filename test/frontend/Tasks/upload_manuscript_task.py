@@ -6,6 +6,7 @@ import os
 import random
 import time
 
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 from Base.Resources import docs
@@ -36,6 +37,8 @@ class UploadManuscriptTask(BaseTask):
     self._upload_source_file_box = (By.CSS_SELECTOR, 'div.custom-card-task  .card-content-if '
                                                      '+ .card-content-file-uploader '
                                                      '+ .card-content-if')
+    # relative locators
+    self._file_link = (By.TAG_NAME,'a')
 
   # POM Actions
   def validate_styles(self, type_='doc', source_uploaded=False):
@@ -56,7 +59,7 @@ class UploadManuscriptTask(BaseTask):
            'required. If preferred, you may upload those files separately before completing your ' \
            'submission.' in intro_text.text, 'Upload ms message: {0} is not the ' \
                                              'expected copy'.format(intro_text.text)
-    link = intro_text.find_element_by_tag_name('a')
+    link = intro_text.find_element(*self._file_link)
     self.validate_filename_link_style(link)
     replace = intro_text.find_element(*self._upload_manuscript_replace_btn)
     assert 'Replace' == replace.text, replace.text
@@ -190,3 +193,16 @@ class UploadManuscriptTask(BaseTask):
     # Time needed for script execution (file upload).
     time.sleep(7)
     return file_name, hash_file, file_ext
+
+  def assert_link_present(self, locator):
+    """
+    Looks for the existence of 'Replace' link to replace file
+    :param: locator is the relative locator to the file to be downloaded or replaced
+    :return: True if present, else False
+    """
+    try:
+      intro_text = self._get(self._intro_text)
+      intro_text.find_element(*locator)
+    except (ElementDoesNotExistAssertionError, NoSuchElementException) as e:
+      return False
+    return True

@@ -35,7 +35,7 @@ class UploadManuscriptTest(CommonTest):
     dashboard_page.page_ready()
     # create a new manuscript
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True)
+    self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True, format_='word')
     ms_page = ManuscriptViewerPage(self.getDriver())
     ms_page.page_ready_post_create()
     short_doi = ms_page.get_paper_short_doi_from_url()
@@ -49,14 +49,24 @@ class UploadManuscriptTest(CommonTest):
         'The task is opened and must be closed'
     # open to check style
     ms_page.click_task('Upload Manuscript')
-    time.sleep(1)
+    ms_page._wait_on_lambda(lambda: ms_page.is_task_open('Upload Manuscript') == True)
     # check style without source
     upms = UploadManuscriptTask(self.getDriver())
+    upms.task_ready()
     upms.validate_styles()
     upms.click_completion_button()
-    time.sleep(1)
+
+    # Scroll to top to leave the complete button
+    manuscript_id_text = ms_page._get(ms_page._paper_sidebar_manuscript_id)
+    ms_page._scroll_into_view(manuscript_id_text)
+    manuscript_id_text.click()
+
     assert ms_page.is_task_marked_complete('Upload Manuscript'), \
         'The task in not marked as complete and it should be completed'
+    assert not upms.assert_link_present(upms._upload_manuscript_replace_btn), \
+      'The task should not have Replace button for uploaded file in completed state'
+    assert upms.assert_link_present(upms._uploaded_pdf), \
+      'The task should have link to uploaded file in completed state'
 
   def test_upload_pdf_task(self):
     """
@@ -83,11 +93,20 @@ class UploadManuscriptTest(CommonTest):
     # open to check style
     ms_page.complete_task('Title And Abstract')
     ms_page.click_task('Upload Manuscript')
-    time.sleep(1) # this was added as a bug fix so following steps don't fail
+    ms_page._wait_on_lambda(lambda: ms_page.is_task_open('Upload Manuscript') == True)
+    # time.sleep(1) # this was added as a bug fix so following steps don't fail
+
     # check style without source
     upms = UploadManuscriptTask(self.getDriver())
+    upms.task_ready()
     upms.validate_styles(type_='pdf')
     upms.click_completion_button()
+
+    # Scroll to top to leave the complete button
+    manuscript_id_text = ms_page._get(ms_page._paper_sidebar_manuscript_id)
+    ms_page._scroll_into_view(manuscript_id_text)
+    manuscript_id_text.click()
+
     ms_page.click_submit_btn()
     ms_page.confirm_submit_btn()
     ms_page.close_submit_overlay()

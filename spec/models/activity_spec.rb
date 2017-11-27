@@ -565,21 +565,6 @@ describe Activity do
     end
   end
 
-  describe "#state_changed" do
-    subject(:activity) { Activity.state_changed!(paper, to: new_state) }
-    let(:new_state) { 'new_state' }
-    let(:paper) { FactoryGirl.create(:paper) }
-
-    it {
-      is_expected.to have_attributes(
-        feed_name: "forensic",
-        activity_key: "paper.state_changed.#{new_state}",
-        subject: paper,
-        message: "Paper state changed to #{new_state}"
-      )
-    }
-  end
-
   describe '#correspondence_created!' do
     let(:correspondence) { FactoryGirl.create :correspondence }
     subject { Activity.correspondence_created!(correspondence, user: user) }

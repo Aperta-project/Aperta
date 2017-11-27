@@ -216,8 +216,8 @@ test('allows right permissions to view scheduled events', function (assert) {
     { status: 'completed', task: this.task });
   Ember.run(() => {
     this.task.set('reviewerReports', [reviewerReport]);
-    this.task.set('reviewerReports.firstObject.dueAt', new Date('2017-08-19'));
-    this.task.set('reviewerReports.firstObject.scheduledEvents', scheduledEvents);
+    this.task.set('reviewerReports.firstObject.dueDatetime.dueAt', new Date('2017-08-19'));
+    this.task.set('reviewerReports.firstObject.dueDatetime.scheduledEvents', scheduledEvents);
   });
   this.render(hbs`{{front-matter-reviewer-report-task task=task}}`);
   assert.textPresent('.scheduled-events p', 'Reminders');
@@ -232,8 +232,8 @@ test('disallow wrong permissions from viewing scheduled events', function (asser
     { status: 'completed', task: this.task });
   Ember.run(() => {
     this.task.set('reviewerReports', [reviewerReport]);
-    this.task.set('reviewerReports.firstObject.dueAt', new Date('2017-08-19'));
-    this.task.set('reviewerReports.firstObject.scheduledEvents', scheduledEvents);
+    this.task.set('reviewerReports.firstObject.dueDatetime.dueAt', new Date('2017-08-19'));
+    this.task.set('reviewerReports.firstObject.dueDatetime.scheduledEvents', scheduledEvents);
   });
   this.render(hbs`{{reviewer-report-task task=task}}`);
   assert.textNotPresent('.scheduled-events p', 'Reminders');

@@ -28,6 +28,9 @@ export default Ember.Controller.extend({
     return author.get('position') > 1;
   }),
   sortedCoAuthors: Ember.computed.sort('coAuthors', 'coAuthorsSort'),
+  firstAuthor: Ember.computed('paper.authors', function() {
+    return this.get('paper.authors.firstObject');
+  }),
 
   recordPreviousPublishingState: function () {
     this.set('previousPublishingState', this.get('paper.publishingState'));

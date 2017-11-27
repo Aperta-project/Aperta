@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe Behavior do
   let(:args) { { event_name: :fake_event } }
-  let(:journal) { create(:journal) }
-  let(:paper) { create(:paper, :with_phases, journal: journal) }
+  let(:journal) { FactoryGirl.create(:journal) }
+  let(:paper) { FactoryGirl.create(:paper, :with_phases, journal: journal) }
   let(:card) { FactoryGirl.create(:card, journal: journal) }
   let(:event) { Event.new(name: :fake_event, paper: paper, task: nil, user: nil) }
 
@@ -19,11 +19,13 @@ describe Behavior do
   it_behaves_like :behavior_subclass
 
   describe 'basic case' do
-    subject { build(:create_task_behavior, card_id: card.id, duplicates_allowed: false, journal: journal) }
-
-    before(:each) do
-      allow(subject).to receive(:duplicates_allowed).and_return(true)
-      allow(subject).to receive(:card_id).and_return(card.id)
+    subject do
+      FactoryGirl.build(
+        :create_task_behavior,
+        card_id: card.id,
+        duplicates_allowed: true,
+        journal: journal
+      )
     end
 
     it 'should pass validation unless a card_id is set' do
@@ -43,29 +45,26 @@ describe Behavior do
   end
 
   describe 'with disallowed duplicate' do
-    subject { build(:create_task_behavior, card_id: card.id, duplicates_allowed: false) }
-    let!(:task) { create(:task, paper: paper, title: card.name) }
-
-    before(:each) do
-      allow(subject).to receive(:duplicates_allowed).and_return(false)
-      allow(subject).to receive(:card_id).and_return(card.id)
+    subject do
+      FactoryGirl.build(
+        :create_task_behavior,
+        card_id: card.id,
+        duplicates_allowed: false
+      )
     end
 
-    it 'should create the correct tasks from the event attributes' do
+    let!(:task) { FactoryGirl.create(:task, paper: paper, title: card.name) }
+
+    it 'should not create a task' do
       expect(TaskFactory).not_to receive(:create)
       .with(CustomCardTask, mock_task_opts(card, event))
       event.trigger
     end
   end
 
-  describe 'with allowed duplicate' do
-    subject { build(:create_task_behavior, card_id: card.id, duplicates_allowed: true) }
-    let!(:task) { create(:task, paper: paper, title: card.name) }
-
-    before(:each) do
-      allow(subject).to receive(:duplicates_allowed).and_return(true)
-      allow(subject).to receive(:card_id).and_return(card.id)
-    end
+  describe 'with duplicates allowed' do
+    subject { FactoryGirl.build(:create_task_behavior, card_id: card.id, duplicates_allowed: true) }
+    let!(:task) { FactoryGirl.create(:task, paper: paper, title: card.name) }
 
     it 'should create the correct tasks from the event attributes' do
       expect(TaskFactory).to receive(:create)
@@ -75,13 +74,8 @@ describe Behavior do
   end
 
   describe 'without a card id ' do
-    subject { build(:create_task_behavior, card_id: nil, duplicates_allowed: true) }
-    let!(:task) { create(:task, paper: paper, title: card.name) }
-
-    before(:each) do
-      allow(subject).to receive(:duplicates_allowed).and_return(true)
-      allow(subject).to receive(:card_id).and_return(nil)
-    end
+    subject { FactoryGirl.build(:create_task_behavior, card_id: nil, duplicates_allowed: true) }
+    let!(:task) { FactoryGirl.create(:task, paper: paper, title: card.name) }
 
     it 'should fail validation unless a card_id is set' do
       expect(subject).not_to be_valid
@@ -89,13 +83,8 @@ describe Behavior do
   end
 
   describe 'without a duplicates allowed property' do
-    subject { build(:create_task_behavior, card_id: card.id, duplicates_allowed: nil) }
-    let!(:task) { create(:task, paper: paper, title: card.name) }
-
-    before(:each) do
-      allow(subject).to receive(:duplicates_allowed).and_return(nil)
-      allow(subject).to receive(:card_id).and_return(card.id)
-    end
+    subject { FactoryGirl.build(:create_task_behavior, card_id: card.id, duplicates_allowed: nil) }
+    let!(:task) { FactoryGirl.create(:task, paper: paper, title: card.name) }
 
     it 'should fail validation unless a card_id is set' do
       expect(subject).not_to be_valid
@@ -103,15 +92,18 @@ describe Behavior do
   end
 
   describe 'without a card from another journal' do
-    let(:journal2) { create(:journal) }
+    let(:journal2) { FactoryGirl.create(:journal) }
     let(:card2) { FactoryGirl.create(:card, journal: journal2) }
-    subject { build(:create_task_behavior, card_id: card2.id, duplicates_allowed: true, journal: journal) }
-    let!(:task) { create(:task, paper: paper, title: card.name) }
-
-    before(:each) do
-      allow(subject).to receive(:duplicates_allowed).and_return(true)
-      allow(subject).to receive(:card_id).and_return(card2.id)
+    subject do
+      FactoryGirl.build(
+        :create_task_behavior,
+        card_id: card2.id,
+        duplicates_allowed: true,
+        journal: journal
+      )
     end
+
+    let!(:task) { FactoryGirl.create(:task, paper: paper, title: card.name) }
 
     it 'should fail validation unless a card_id is set' do
       expect(subject).not_to be_valid

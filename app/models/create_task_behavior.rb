@@ -39,7 +39,9 @@ class CreateTaskBehavior < Behavior
   end
 
   def disallowed_duplicate?(paper, task_name)
-    !duplicates_allowed && paper.tasks.where(title: task_name).any?
+    return false if duplicates_allowed
+    card_versions = Card.find(card_id).card_versions.pluck :id
+    paper.tasks.where(card_version: card_versions)
   end
 
   def card_available_in_journal
@@ -47,6 +49,6 @@ class CreateTaskBehavior < Behavior
     card = Card.find card_id
 
     return if card.journal_id.in? [journal.id, nil]
-    errors.add(:card_id, "The card added to this behavior is not available for the behavior's jounrnal")
+    errors.add(:card_id, "The card added to this behavior is not available for the behavior's journnal")
   end
 end

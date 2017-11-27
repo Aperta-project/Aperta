@@ -31,12 +31,12 @@ module Attributable
           end
 
           define_method("#{name}=") do |new_value|
-            content_attribute = send(getter) || send(:entity_attributes).new(name: name, value_type: type)
+            entity_attribute = send(getter) || send(:entity_attributes).new(name: name, value_type: type)
 
             # false.presence => nil, work around this
-            content_attribute.value = new_value == false ? false : new_value.presence
+            entity_attribute.value = new_value == false ? false : new_value.presence
 
-            send(setter, content_attribute)
+            send(setter, entity_attribute)
           end
         end
       end

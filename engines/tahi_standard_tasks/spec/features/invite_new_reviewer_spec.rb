@@ -15,6 +15,7 @@ feature "Inviting a new reviewer", js: true do
   before do
     FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE", active: false
     FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
+    FactoryGirl.create :feature_flag, name: "PREPRINT"
 
     assign_journal_role paper.journal, editor, :editor
     assign_handling_editor_role paper, editor

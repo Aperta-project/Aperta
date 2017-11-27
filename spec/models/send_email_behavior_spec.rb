@@ -5,7 +5,7 @@ describe Behavior do
   let(:journal) { create(:journal) }
   let(:paper) { create(:paper, journal: journal) }
   let(:task) { create(:task, paper: paper, title: 'My Task') }
-  let!(:template) { create(:letter_template, journal: journal, ident: 'foo-bar', scenario: 'Preprint Decision') }
+  let!(:template) { create(:letter_template, journal: journal, ident: 'foo-bar', scenario: 'Manuscript') }
   let(:event) { Event.new(name: :fake_event, paper: paper, task: task, user: paper.creator) }
   subject { build(:send_email_behavior, letter_template: 'foo-bar') }
 

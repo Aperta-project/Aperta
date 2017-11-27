@@ -3,7 +3,7 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
-  classNameBindings: ['card-content', 'card-content-email-editor'],
+  classNames: ['card-content', 'card-content-email-editor'],
   restless: Ember.inject.service('restless'),
   flash: Ember.inject.service('flash'),
   propTypes: {

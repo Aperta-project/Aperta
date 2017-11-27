@@ -11,7 +11,7 @@ module SnapshotSanitizer
       snapshot = clean_snapshot(snapshot)
       snapshot.map(&method(:sanitize))
     else
-      snapshot.delete_if { |key| ['id', 'answer_type'].include?(key) }
+      snapshot = snapshot.except('id', 'answer_type')
       snapshot.each do |key, value|
         snapshot[key] = sanitize(value)
       end

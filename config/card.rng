@@ -383,7 +383,7 @@
       </interleave>
     </element>
   </define>
-  <define name="liquid-template">
+  <define name="template">
     <element name="Template">
       <attribute name="letter-template-ident"/>
     </element>
@@ -503,7 +503,6 @@
       <ref name="export-paper"/>
       <ref name="file-uploader"/>
       <ref name="if"/>
-      <ref name="liquid-template"/>
       <ref name="paragraph-input"/>
       <ref name="radio-input"/>
       <ref name="repeat"/>
@@ -512,6 +511,7 @@
       <ref name="tech-check"/>
       <ref name="email-editor"/>
       <ref name="tech-check-email"/>
+      <ref name="template"/>
     </choice>
   </define>
   <start>

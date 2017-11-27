@@ -94,7 +94,7 @@ class CardContent < ActiveRecord::Base
       'tech-check-email': [nil],
       'date-picker': ['text'],
       'sendback-reason': ['boolean'],
-      'liquid-template': [nil],
+      'template': [nil],
       'repeat': [nil]
     }.freeze.with_indifferent_access
 
@@ -203,7 +203,7 @@ class CardContent < ActiveRecord::Base
         'button-label' => button_label,
         'required-field' => required_field
       }
-    when 'liquid-template'
+    when 'template'
       {
         'letter-template-ident' => letter_template_ident
       }

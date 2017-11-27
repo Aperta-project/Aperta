@@ -154,7 +154,7 @@ paragraph-input = element ParagraphInput {
   & attribute editor-style { text }?
 }
 
-liquid-template = element Template {
+template = element Template {
   attribute letter-template-ident { text }
 }
 
@@ -215,7 +215,6 @@ content = (
 | export-paper
 | file-uploader
 | if
-| liquid-template
 | paragraph-input
 | radio-input
 | repeat
@@ -224,6 +223,7 @@ content = (
 | tech-check
 | email-editor
 | tech-check-email
+| template
 )
 
 start = element card {

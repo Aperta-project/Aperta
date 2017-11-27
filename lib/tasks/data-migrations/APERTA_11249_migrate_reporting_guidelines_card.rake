@@ -11,7 +11,7 @@ namespace :data do
         raise Exception, "No card named '#{name}'" unless card
 
         check_boxes = card.card_version(:latest).card_contents.where(content_type: "check-box").all
-        raise Exception, "Card didn't has no check-box questions." unless check_boxes
+        raise Exception, "Card has no check-box questions." unless check_boxes
 
         # rubocop:disable Rails/SkipsModelValidations
         check_boxes.each do |check_box|

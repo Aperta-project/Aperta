@@ -196,7 +196,7 @@ describe Activity do
           activity_key: "invitation.accepted",
           subject: invitation.paper,
           user: activity_user,
-          message: "#{activity_user.username} accepted invitation as #{invitation.invitee_role.capitalize} on behalf of #{invitation.recipient_name}"
+          message: "#{activity_user.full_name} accepted invitation as #{invitation.invitee_role.capitalize} on behalf of #{invitation.recipient_name}"
         )
       }
     end

@@ -148,7 +148,7 @@ class Activity < ActiveRecord::Base
     message = if user == invitation.invitee
                 "#{invitation.recipient_name} accepted invitation as #{invitation.invitee_role.capitalize}"
               else
-                "#{user.username} accepted invitation as #{invitation.invitee_role.capitalize} on behalf of #{invitation.recipient_name}"
+                "#{user.full_name} accepted invitation as #{invitation.invitee_role.capitalize} on behalf of #{invitation.recipient_name}"
               end
     create(
       feed_name: "workflow",

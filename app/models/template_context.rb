@@ -55,6 +55,10 @@ class TemplateContext < Liquid::Drop
     end
   end
 
+  def self.wraps(klass)
+    @wrapped_type ||= klass
+  end
+
   def self.merge_fields
     @merge_fields ||= MergeField.list_for(self)
   end
@@ -64,6 +68,11 @@ class TemplateContext < Liquid::Drop
   end
 
   def initialize(object)
+    expected_type =  self.class.instance_variable_get('@wrapped_type')
+    if expected_type && !object.is_a?(expected_type)
+      raise "#{self.class} expected to wrap a #{expected_type} but got a #{object.class}"
+    end
+
     @object = object
   end
 

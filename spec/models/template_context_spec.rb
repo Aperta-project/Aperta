@@ -60,4 +60,22 @@ describe TemplateContext do
       TemplateContext.subcontexts(:bars, type: :author)
     end
   end
+
+  describe '.wraps' do
+    context 'wraps a type' do
+      it 'raises if constructor is passed an instance of the wrong type' do
+        expect { PaperScenario.new(Task.new) }.to raise_error
+      end
+
+      it 'does not raise if constructor is passed an instance of the right type' do
+        expect { PaperScenario.new(Paper.new) }.to_not raise_error
+      end
+    end
+
+    context 'does not wrap a type' do
+      it 'does not raise if the constructor is passed an unexpected type' do
+        expect { AuthorContext.new(Paper.new) }.to_not raise_error
+      end
+    end
+  end
 end

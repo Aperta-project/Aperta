@@ -1,6 +1,4 @@
 # Used to clean up snapshots from nodes that are irrelevant for comparisons
-require 'json'
-
 module SnapshotSanitizer
   CHECK_FIELDS = ['id', 'owner_type', 'owner_id', 'grant_number', 'website', 'additional_comments', 'funder'].freeze
   IGNORE_FIELDS = [['name', 'type', 'value'], ['children', 'name', 'type']].freeze
@@ -10,9 +8,9 @@ module SnapshotSanitizer
 
     if snapshot.is_a?(Array)
       return snapshot if snapshot.empty?
-      snapshot = clean(snapshot)
+      snapshot = clean_snapshot(snapshot)
       snapshot.map(&method(:sanitize))
-    elsif snapshot.is_a?(Hash)
+    else
       snapshot.delete_if { |key| ['id', 'answer_type'].include?(key) }
       snapshot.each do |key, value|
         snapshot[key] = sanitize(value)
@@ -20,13 +18,10 @@ module SnapshotSanitizer
     end
   end
 
-  def self.clean(content)
-    temp = []
-    content.each_with_index do |obj|
-      if IGNORE_FIELDS.include?(obj.keys.sort)
-        temp << obj if CHECK_FIELDS.include?(obj['name'])
-      end
+  def self.clean_snapshot(content)
+    content.inject([]) do |clean_array, obj|
+      clean_array << obj unless IGNORE_FIELDS.include?(obj.keys.sort) || CHECK_FIELDS.include?(obj['name'])
+      clean_array
     end
-    content - temp
   end
 end

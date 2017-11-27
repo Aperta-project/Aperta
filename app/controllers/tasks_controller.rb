@@ -106,6 +106,7 @@ class TasksController < ApplicationController
       to: letter_template.to,
       task: task
     )
+    task.paper.minor_check!
     head :no_content
   end
 

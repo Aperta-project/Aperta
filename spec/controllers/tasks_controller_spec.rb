@@ -139,6 +139,75 @@ describe TasksController, redis: true do
     end
   end
 
+  describe "PUT #sendback_email" do
+    let(:task_params) do
+      {
+        title: 'Verify Signatures'
+      }
+    end
+
+    let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
+
+    subject(:do_request) do
+      xhr(
+        :patch,
+        :update, format: 'json',
+                 paper_id: paper.to_param,
+                 id: task.to_param, task: task_params
+      )
+    end
+
+
+    it_behaves_like "an unauthenticated json request"
+
+    context "when the user does not have access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_workflow, paper)
+          .and_return false
+      end
+
+      it { is_expected.to responds_with(403) }
+    end
+  end
+# expect(response.body)
+
+
+
+  # describe "PUT #sendback_preview" do
+  #   let(:task_params) do
+  #     {
+  #       type: 'PlosBilling::BillingTask',
+  #       paper_id: paper.to_param,
+  #       phase_id: paper.phases.last.id,
+  #       title: 'Verify Signatures'
+  #     }
+  #   end
+
+  #   subject(:do_request) do
+  #     post :create, format: 'json', task: task_params
+  #   end
+
+  #   it_behaves_like "an unauthenticated json request"
+  #   end
+
+  #   context "when the user does not have access" do
+  #     before do
+  #       stub_sign_in user
+  #       allow(user).to receive(:can?)
+  #         .with(:manage_workflow, paper)
+  #         .and_return false
+  #     end
+
+  #     it { is_expected.to responds_with(403) }
+  #   end
+  # end
+
+
+
+
+
   describe "PATCH #update" do
     let(:task) do
       FactoryGirl.create(:ad_hoc_task, paper: paper, phase: paper.phases.first)

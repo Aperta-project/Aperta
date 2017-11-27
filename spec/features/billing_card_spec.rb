@@ -45,6 +45,7 @@ feature 'Billing card', js: true do
       find('[name=plos_billing--phone_number]').send_keys('415-555-5555')
       find('[name=plos_billing--email]').send_keys('author@plos.org')
       find('.plos_billing--affiliation1 input').send_keys('PLOS')
+      find('.did-you-mean-item').click
       find('[name=plos_billing--address1]').send_keys('address1')
       find('[name=plos_billing--city]').send_keys('city')
       find('[name=plos_billing--postal_code]').send_keys('postal_code')

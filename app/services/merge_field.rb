@@ -2,7 +2,7 @@
 # that we want to publicly advertise to email template admins.
 class MergeField
   def self.subcontexts_for(context_class)
-    @subcontexts_by_parent[context_class] || []
+    @subcontexts_by_parent[context_class] || {}
   end
 
   # Gets the list of merge fields that we want to show to letter template admins.

@@ -7,31 +7,25 @@ module SnapshotSanitizer
 
     if snapshot.is_a?(Array)
       return snapshot if snapshot.empty?
-
       check_fields = ['id', 'owner_type', 'owner_id', 'grant_number', 'website', 'additional_comments', 'funder']
-      ignore_fields = [['name', 'type', 'value'], ['name', 'type', 'children']]
-
+      ignore_fields = [['name', 'type', 'value'], ['children', 'name', 'type']]
       snapshot = clean(snapshot, check_fields, ignore_fields)
-
-      snapshot.each_with_index do |obj, _index|
-        obj = sanitize(obj)
-      end
+      snapshot.map(&method(:sanitize))
     elsif snapshot.is_a?(Hash)
-      snapshot.delete_if { |key, _value| ['id', 'answer_type'].include?(key) }
-
+      snapshot.delete_if { |key| ['id', 'answer_type'].include?(key) }
       snapshot.each do |key, value|
         snapshot[key] = sanitize(value)
       end
     end
   end
 
-  def self.clean(json, check_fields, ignore_fields)
+  def self.clean(content, check_fields, ignore_fields)
     temp = []
-    json.each_with_index do |obj, _index|
-      if ignore_fields.include?(obj.keys)
+    content.each_with_index do |obj|
+      if ignore_fields.include?(obj.keys.sort)
         temp << obj if check_fields.include?(obj['name'])
       end
     end
-    json - temp
+    content - temp
   end
 end

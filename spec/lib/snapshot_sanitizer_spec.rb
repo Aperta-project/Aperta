@@ -32,8 +32,14 @@ describe 'SnapshotSanitizer' do
     expect(SnapshotSanitizer.sanitize(snapshot)).to eq expected_snapshot
   end
 
-  it 'sanitizes a snapshot - deletes all irelevant nodes' do
+  it 'sanitizes a snapshot - deletes all irelevant nodes - option 1' do
     snapshot = { 'id': 123, 'name': 'task1', 'children': [{ 'name': 'id', 'type': 'text', 'value': 'hello' }] }.with_indifferent_access
+    expected_snapshot = { 'name': 'task1', 'children': [] }.with_indifferent_access
+    expect(SnapshotSanitizer.sanitize(snapshot)).to eq expected_snapshot
+  end
+
+  it 'sanitizes a snapshot - deletes all irelevant nodes - option 2' do
+    snapshot = { 'id': 123, 'name': 'task1', 'children': [{ 'name': 'id', 'children': 'text', 'type': 'hello' }] }.with_indifferent_access
     expected_snapshot = { 'name': 'task1', 'children': [] }.with_indifferent_access
     expect(SnapshotSanitizer.sanitize(snapshot)).to eq expected_snapshot
   end

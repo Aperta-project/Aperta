@@ -2,14 +2,15 @@
 require 'json'
 
 module SnapshotSanitizer
+  CHECK_FIELDS = ['id', 'owner_type', 'owner_id', 'grant_number', 'website', 'additional_comments', 'funder'].freeze
+  IGNORE_FIELDS = [['name', 'type', 'value'], ['children', 'name', 'type']].freeze
+
   def self.sanitize(snapshot)
     return snapshot unless snapshot.is_a?(Hash) || snapshot.is_a?(Array)
 
     if snapshot.is_a?(Array)
       return snapshot if snapshot.empty?
-      check_fields = ['id', 'owner_type', 'owner_id', 'grant_number', 'website', 'additional_comments', 'funder']
-      ignore_fields = [['name', 'type', 'value'], ['children', 'name', 'type']]
-      snapshot = clean(snapshot, check_fields, ignore_fields)
+      snapshot = clean(snapshot)
       snapshot.map(&method(:sanitize))
     elsif snapshot.is_a?(Hash)
       snapshot.delete_if { |key| ['id', 'answer_type'].include?(key) }
@@ -19,11 +20,11 @@ module SnapshotSanitizer
     end
   end
 
-  def self.clean(content, check_fields, ignore_fields)
+  def self.clean(content)
     temp = []
     content.each_with_index do |obj|
-      if ignore_fields.include?(obj.keys.sort)
-        temp << obj if check_fields.include?(obj['name'])
+      if IGNORE_FIELDS.include?(obj.keys.sort)
+        temp << obj if CHECK_FIELDS.include?(obj['name'])
       end
     end
     content - temp

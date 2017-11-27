@@ -167,11 +167,15 @@ class TasksController < ApplicationController
     )
   end
 
-  def render_template(template_ident, base_object, scenario_string)
+  def render_template
+    template_ident = params[:ident]
+    base_obj = Task.find params[:taskId]
     paper = base_obj.try(:paper)
     journal = paper.try(:journal) || base_object.try(:journal)
     raise unless journal
-    letter_template = journal.letter_templates.find_by(idnent: template_ident)
+    letter_template = journal.letter_templates.find_by(ident: template_ident)
+    scenario_string = letter_template.scenario.gsub(' ', '') + 'Scenario'
+    binding.pry
     scenario_klass = scenario_string.constantize
     letter_template.render(scenario_klass.new(base_obj))
 

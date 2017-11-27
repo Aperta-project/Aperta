@@ -8,6 +8,7 @@ class Paper < ActiveRecord::Base
   include EventStream::Notifiable
   include PaperTaskFinders
   include AASM
+  include AASMTriggerEvent
   include ActionView::Helpers::SanitizeHelper
   include PgSearch
   include Assignable::Model
@@ -140,6 +141,7 @@ class Paper < ActiveRecord::Base
     state :withdrawn
 
     after_all_transitions :set_state_updated!
+    after_all_transitions :trigger_event
 
     event(:initial_submit) do
       transitions from: :unsubmitted,
@@ -279,6 +281,8 @@ class Paper < ActiveRecord::Base
                           :after_paper_submitted]
     end
   end
+
+  register_events!
 
   # All known paper states
   STATES = aasm.states.map(&:name).freeze
@@ -715,7 +719,6 @@ class Paper < ActiveRecord::Base
 
   def set_state_updated!
     update!(state_updated_at: Time.current.utc)
-    Activity.state_changed! self, to: aasm.to_state
   end
 
   def assign_submitting_user!(submitting_user)
@@ -776,5 +779,10 @@ class Paper < ActiveRecord::Base
                   "changes to your manuscript, you can upload again by " \
                   "clicking the <i>Replace</i> link."
               })
+  end
+
+  def trigger_event(*args)
+    user = args.find { |i| i.is_a? User } # Most events send user as the first arg, but withdraw has a reason first.
+    StateChangeEvent.new(aasm: aasm, instance: self, paper: self, task: nil, user: user).trigger
   end
 end

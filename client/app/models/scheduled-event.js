@@ -6,6 +6,7 @@ export default DS.Model.extend({
   state: DS.attr('string'),
   dispatchAt: DS.attr('date'),
   finished: DS.attr('boolean'),
+  dueDatetime: DS.belongsTo('due_datetime'),
 
   completed: Ember.computed.equal('state', 'completed'),
   errored: Ember.computed.equal('state', 'errored'),

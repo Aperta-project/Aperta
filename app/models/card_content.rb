@@ -10,6 +10,38 @@ class CardContent < ActiveRecord::Base
 
   acts_as_nested_set
 
+  has_attributes \
+    boolean: %w[
+      allow_annotations
+      allow_file_captions
+      allow_multiple_uploads
+      required_field
+    ],
+    json: %w[possible_values],
+    integer: %w[
+      min
+      max
+    ],
+    string: %w[
+      child_tag
+      condition
+      custom_child_class
+      custom_class
+      default_answer_value
+      editor_style
+      error_message
+      instruction_text
+      item_name
+      key
+      label
+      max
+      min
+      text
+      value_type
+      visible_with_parent_answer
+      wrapper_tag
+    ]
+
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
   has_many :card_content_validations, dependent: :destroy
@@ -220,7 +252,7 @@ class CardContent < ActiveRecord::Base
   # an entire traversable tree in one database query.
   # Returns an array of CardContent objects.
   def preload_descendants
-    all = [self] + descendants.includes(:content_attributes, :card_content_validations).to_a
+    all = [self] + descendants.includes(:entity_attributes, :card_content_validations).to_a
     children = all.group_by(&:parent_id)
     all.each do |d|
       d.quick_children = children.fetch(d.id, [])

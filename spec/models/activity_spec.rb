@@ -196,7 +196,7 @@ describe Activity do
           activity_key: "invitation.accepted",
           subject: invitation.paper,
           user: activity_user,
-          message: "#{activity_user.username} accepted invitation as #{invitation.invitee_role.capitalize} on behalf of #{invitation.recipient_name}"
+          message: "#{activity_user.full_name} accepted invitation as #{invitation.invitee_role.capitalize} on behalf of #{invitation.recipient_name}"
         )
       }
     end
@@ -587,6 +587,24 @@ describe Activity do
         feed_name: 'workflow',
         activity_key: 'correspondence.edited',
         subject: correspondence
+      )
+    }
+  end
+
+  describe "#due_datetime_updated!" do
+    let(:due) { FactoryGirl.create :reviewer_report }
+    let(:due_datetime) { FactoryGirl.create :due_datetime, :in_5_days, due: due }
+    subject { Activity.due_datetime_updated!(due_datetime, user: user) }
+
+    it {
+      expected_reviewer_name = due_datetime.due.user.full_name
+      expected_new_date = due_datetime.due_at.strftime('%B %d, %Y')
+
+      is_expected.to have_attributes(
+        feed_name: 'workflow',
+        activity_key: 'duedatetime.updated',
+        subject: due_datetime.due.paper,
+        message: "Due date for Review by #{expected_reviewer_name} was changed to #{expected_new_date}"
       )
     }
   end

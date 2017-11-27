@@ -38,6 +38,7 @@ export default DS.Model.extend({
   key: DS.attr('string'),
   min: DS.attr('number'),
   max: DS.attr('number'),
+  letterTemplateIdent: DS.attr('string'),
   itemName: DS.attr('string'),
   letterTemplate: DS.attr('string'),
   buttonLabel: DS.attr('string'),

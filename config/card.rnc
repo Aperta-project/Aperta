@@ -157,7 +157,7 @@ tech-check-email = element TechCheckEmail {
   content*
 }
 
-liquid-template = element Template {
+template = element Template {
   attribute letter-template-ident { text }
 }
 
@@ -224,7 +224,6 @@ content = (
 | file-uploader
 | financial-disclosure-summary
 | if
-| liquid-template
 | paragraph-input
 | radio-input
 | repeat
@@ -233,6 +232,7 @@ content = (
 | tech-check
 | email-editor
 | tech-check-email
+| template
 )
 
 start = element card {

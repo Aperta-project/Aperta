@@ -213,7 +213,7 @@ Tahi::Application.routes.draw do
       put :send_message, on: :member
       put :send_message_email, on: :member
       put :sendback_email, on: :member
-      put :sendback_preview, on: :member
+      put :render_template, on: :member
       namespace :eligible_users, module: nil do
         get 'admins', to: 'task_eligible_users#admins'
         get 'academic_editors', to: 'task_eligible_users#academic_editors'

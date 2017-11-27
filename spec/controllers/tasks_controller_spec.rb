@@ -13,6 +13,7 @@ describe TasksController, redis: true do
     FactoryGirl.create(
       :paper,
       :with_phases,
+      :submitted,
       creator: user,
       journal: journal
     )
@@ -140,73 +141,92 @@ describe TasksController, redis: true do
   end
 
   describe "PUT #sendback_email" do
-    let(:task_params) do
-      {
-        title: 'Verify Signatures'
-      }
-    end
-
     let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
 
     subject(:do_request) do
       xhr(
-        :patch,
-        :update, format: 'json',
-                 paper_id: paper.to_param,
-                 id: task.to_param, task: task_params
+        :put,
+        :sendback_email,
+        format: 'json',
+        id: task.to_param,
+        task: {}
       )
     end
 
-
     it_behaves_like "an unauthenticated json request"
 
-    context "when the user does not have access" do
+    context "when the user has access" do
       before do
+        FactoryGirl.create(:letter_template, journal: journal, name: 'Sendback Reasons')
+        CardLoader.load("PlosBilling::BillingTask")
         stub_sign_in user
         allow(user).to receive(:can?)
           .with(:manage_workflow, paper)
-          .and_return false
+          .and_return true
+
+        allow(user).to receive(:can?)
+          .with(:view, Task)
+          .and_return true
       end
 
-      it { is_expected.to responds_with(403) }
+      it "succsefully handles the request" do
+        do_request
+        expect(response.status).to eq(204)
+      end
+
+      it "queues an email" do
+        expect { do_request }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
+      end
+
+      it "changes the paper's state to checking" do
+        expect(paper.publishing_state).to eq('submitted')
+        do_request
+        expect(paper.reload.publishing_state).to eq('checking')
+      end
     end
   end
-# expect(response.body)
 
+  describe "PUT #sendback_preview" do
+    let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
 
+    subject(:do_request) do
+      xhr(
+        :put,
+        :sendback_preview,
+        format: 'json',
+        id: task.to_param,
+        task: {}
+      )
+    end
 
-  # describe "PUT #sendback_preview" do
-  #   let(:task_params) do
-  #     {
-  #       type: 'PlosBilling::BillingTask',
-  #       paper_id: paper.to_param,
-  #       phase_id: paper.phases.last.id,
-  #       title: 'Verify Signatures'
-  #     }
-  #   end
+    it_behaves_like "an unauthenticated json request"
 
-  #   subject(:do_request) do
-  #     post :create, format: 'json', task: task_params
-  #   end
+    context "when the user has access" do
+      before do
+        FactoryGirl.create(:letter_template, journal: journal, name: 'Sendback Reasons')
+        CardLoader.load("PlosBilling::BillingTask")
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:manage_workflow, paper)
+          .and_return true
 
-  #   it_behaves_like "an unauthenticated json request"
-  #   end
+        allow(user).to receive(:can?)
+          .with(:view, Task)
+          .and_return true
+      end
 
-  #   context "when the user does not have access" do
-  #     before do
-  #       stub_sign_in user
-  #       allow(user).to receive(:can?)
-  #         .with(:manage_workflow, paper)
-  #         .and_return false
-  #     end
+      it "succsefully handles the request" do
+        do_request
+        expect(response.status).to eq(200)
+      end
 
-  #     it { is_expected.to responds_with(403) }
-  #   end
-  # end
-
-
-
-
+      it "renders the rendered letter template" do
+        do_request
+        expect(res_body.keys).to contain_exactly("to", "subject", "body")
+        expect(res_body.values).not_to include(nil)
+      end
+    end
+  end
 
   describe "PATCH #update" do
     let(:task) do

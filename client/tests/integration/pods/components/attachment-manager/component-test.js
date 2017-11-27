@@ -36,10 +36,9 @@ let template = hbs`{{attachment-manager
 
 test(`shows a full attachment manager`, function(assert) {
   this.render(template);
-  assert.elementFound('.attachment-manager',
-    'element was rendered');
-  assert.elementFound('.fileinput-button',
-    'has a file input button');
+  assert.elementFound('.attachment-manager', 'element was rendered');
+  assert.elementFound('.fileinput-button', 'has a file input button');
+  assert.elementFound('.description', 'has a description');
 });
 
 test(`displays attachments and has proper action buttons`, function(assert) {

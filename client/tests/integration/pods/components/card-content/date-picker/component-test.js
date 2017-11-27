@@ -23,6 +23,11 @@ content=content
 valueChanged=(action actionStub)
 }}`;
 
+test(`it renders a date picker`, function(assert) {
+  this.render(template);
+  assert.elementFound('input.datepicker');
+});
+
 test('includes the ident in the name', function(assert) {
   this.set('content', Ember.Object.create({ ident: 'test' }));
   this.render(template);

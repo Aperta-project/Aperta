@@ -57,9 +57,9 @@ class PaperSerializer < LitePaperSerializer
   end
 
   def preprint_opt_out?
-    preprint_task = object.tasks.find { |task| task.title == 'Preprint Posting' }
+    preprint_task = object.tasks.where(title: 'Preprint Posting').first
     return unless preprint_task
-    preprint_task.answers.first.try(:value) == '2'
+    preprint_task.answers.find { |answer| answer.ident == 'preprint-posting--consent' }.try(:value) == '2'
   end
 
   def links

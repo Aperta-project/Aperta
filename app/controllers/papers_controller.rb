@@ -21,8 +21,7 @@ class PapersController < ApplicationController
   def show
     paper = Paper.eager_load(
       :supporting_information_files,
-      :journal,
-      :tasks
+      :journal
     ).find_by_id_or_short_doi(params[:id])
 
     if current_user.unaccepted_and_invited_to?(paper: paper)

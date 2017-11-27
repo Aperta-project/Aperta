@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe PaperSerializer do
   subject(:serializer) { described_class.new(paper, user: user, root: :paper) }
-  let(:paper) { FactoryGirl.build_stubbed(Paper) }
   let(:user) { FactoryGirl.build_stubbed(:user) }
 
   before do
@@ -16,7 +15,6 @@ describe PaperSerializer do
       processing: true,
       publishing_state: 'unsubmitted',
       role_descriptions_for: [],
-      tasks: [double(Task, title: 'Preprint Posting', answers: [double(Answer, value: '1')])],
       title: 'The great paper'
     )
   end
@@ -75,13 +73,16 @@ describe PaperSerializer do
     end
 
     describe '#preprint_opt_out?' do
+      let(:paper) { FactoryGirl.create(:paper_with_task, task_params: { title: 'Preprint Posting', type: 'PlosBilling::BillingTask', answers: [answer] }) }
+      let(:answer) { FactoryGirl.create(:answer, value: '1', card_content: FactoryGirl.create(:card_content, ident: 'preprint-posting--consent')) }
+
       it 'returns nil if Preprint Posting card is not present' do
-        allow(paper).to receive(:tasks) { [] }
+        paper.tasks[0].update(title: 'Billing')
         expect(json[:preprint_opt_out]).to be_nil
       end
 
       it 'returns true if user opted out for preprint' do
-        allow(paper.tasks.first).to receive(:answers) { [double(Answer, value: '2')] }
+        answer.update(value: '2')
         expect(json[:preprint_opt_out]).to be_truthy
       end
 

@@ -121,7 +121,9 @@ export default DS.Model.extend({
     let defaultAnswerValue = this.get('defaultAnswerValue');
     if(!defaultAnswerValue) { return; }
 
-    if(this.get('valueType') === 'text')  {
+    // If the valueType is text or html, it will return it, otherwise (boolean) it will
+    // cast it will typecast it to boolean
+    if(this.get('valueType') === 'text' || this.get('valueType') === 'html')  {
       return defaultAnswerValue;
     } else {
       return JSON.parse(defaultAnswerValue);

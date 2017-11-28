@@ -93,6 +93,6 @@ test(`it renders a radio button for Yes and No when value type is boolean`, func
 test(`it renders the supplied true and false labels when value type is boolean`, function(assert) {
   this.set('content', this.radioBooleanLabeledContent);
   this.render(template);
-  assert.textPresent('.option', 'Why Yes');
-  assert.textPresent('.option', 'Oh No');
+  assert.textPresent('.card-form-label', 'Why Yes');
+  assert.textPresent('.card-form-label', 'Oh No');
 });

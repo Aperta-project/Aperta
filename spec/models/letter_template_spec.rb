@@ -119,6 +119,40 @@ describe LetterTemplate do
     end
   end
 
+  describe '::related_to_journal' do
+    let(:journal) { FactoryGirl.create(:journal) }
+    let!(:non_preprint_letter_template) do
+      FactoryGirl.create(:letter_template,
+        name: 'one',
+        scenario: 'Reviewer Report',
+        journal: journal)
+    end
+    let!(:preprint_letter_template) do
+      FactoryGirl.create(:letter_template,
+        name: 'two',
+        scenario: 'Preprint Decision',
+        journal: journal)
+    end
+    let!(:tech_check_letter_template) do
+      FactoryGirl.create(:letter_template,
+        name: 'three',
+        scenario: 'Tech Check',
+        journal: journal)
+    end
+
+    it 'returns all scenarios if preprint and card configuration feature flags are enabled' do
+      FeatureFlag.create(name: 'PREPRINT', active: true)
+      FeatureFlag.create(name: 'CARD_CONFIGURATION', active: true)
+      templates = LetterTemplate.related_to_journal(journal.id)
+      expect(templates.map(&:scenario)).to match_array(['Reviewer Report', 'Preprint Decision', 'Tech Check'])
+    end
+
+    it 'returns all scenarios except preprint and card configuration ones if their feature flags are disabled' do
+      templates = LetterTemplate.related_to_journal(journal.id)
+      expect(templates.map(&:scenario)).to match_array(['Reviewer Report'])
+    end
+  end
+
   describe "letter template seed" do
     before :all do
       Rake::Task.define_task(:environment)

@@ -5,26 +5,14 @@ class Admin::JournalsController < ApplicationController
 
   def index
     journals = current_user.administered_journals do |journal_query|
-      journal_query.includes(
-        :journal_task_types,
-        manuscript_manager_templates: {
-          phase_templates: {
-            task_templates: :journal_task_type
-          }
-        }
-      )
+      journal_query.includes(*relationships)
     end
     respond_with journals, each_serializer: AdminJournalSerializer, root: 'admin_journals'
   end
 
   def show
-    j = Journal.where(id: journal.id).includes(:journal_task_types,
-      manuscript_manager_templates:
-      {
-        phase_templates: { task_templates: :journal_task_type }
-      }).first!
-    requires_user_can(:administer, j)
-    respond_with(j, serializer: AdminJournalSerializer, root: 'admin_journal')
+    requires_user_can(:administer, journal)
+    respond_with(journal, serializer: AdminJournalSerializer, root: 'admin_journal')
   end
 
   def authorization
@@ -33,7 +21,8 @@ class Admin::JournalsController < ApplicationController
   end
 
   def create
-    requires_user_can(:administer, journal)
+    requires_user_can(:administer, Journal)
+    @journal = JournalFactory.create(journal_params)
     journal.save!
     process_pending_logo(params[:admin_journal][:logo_url])
     respond_with(journal, serializer: AdminJournalSerializer, root: 'admin_journal')
@@ -46,17 +35,10 @@ class Admin::JournalsController < ApplicationController
     respond_with(journal, serializer: AdminJournalSerializer, root: 'admin_journal')
   end
 
-
   private
 
   def journal
-    @journal ||= begin
-      if params[:id].present?
-        Journal.find(params[:id])
-      elsif params[:admin_journal].present?
-        JournalFactory.create(journal_params)
-      end
-    end
+    @journal ||= Journal.includes(*relationships).find(params[:id])
   end
 
   def journal_params
@@ -72,11 +54,19 @@ class Admin::JournalsController < ApplicationController
   end
 
   def process_pending_logo(url)
-    return unless url.present?
+    return if url.blank? || !url.include?("/pending/")
+    # logo is waiting to be processed in s3 pending bucket
+    DownloadJournalLogoWorker.perform_async(journal.id, url)
+  end
 
-    if url.include?("/pending/")
-      # logo is waiting to be processed in s3 pending bucket
-      DownloadJournalLogoWorker.perform_async(journal.id, url)
-    end
+  def relationships
+    [
+      :journal_task_types,
+      manuscript_manager_templates: {
+        phase_templates: {
+          task_templates: :journal_task_type
+        }
+      }
+    ]
   end
 end

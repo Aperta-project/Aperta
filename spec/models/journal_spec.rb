@@ -237,4 +237,15 @@ describe Journal do
       end
     end
   end
+
+  describe '#letter_templates' do
+    it 'excludes flagged letter templates' do
+      journal = FactoryGirl.create(:journal)
+      journal.letter_templates.create!(scenario: 'Unwanted', name: 'foo', subject: 'foo', body: 'foo')
+      expect(journal.letter_templates.pluck(:scenario)).to eq ['Unwanted']
+
+      allow(LetterTemplate).to receive(:hidden_scenarios).and_return(['Unwanted'])
+      expect(journal.letter_templates.reload).to be_empty
+    end
+  end
 end

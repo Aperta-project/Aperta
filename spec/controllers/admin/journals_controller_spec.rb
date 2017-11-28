@@ -32,7 +32,7 @@ describe Admin::JournalsController, redis: true do
         stub_sign_in user
         allow(user).to receive(:can?) do |action, object|
           expect(action).to eq(:administer)
-          expect(object).to be_kind_of(Journal)
+          expect(object).to(controller.action_name == 'create' ? be(Journal) : be_kind_of(Journal))
           true
         end
       end
@@ -80,7 +80,7 @@ describe Admin::JournalsController, redis: true do
         stub_sign_in user
         allow(user).to receive(:can?) do |action, object|
           expect(action).to eq(:administer)
-          expect(object).to be_kind_of(Journal)
+          expect(object).to(controller.action_name == 'create' ? be(Journal) : be_kind_of(Journal))
           false
         end
       end
@@ -137,6 +137,15 @@ describe Admin::JournalsController, redis: true do
         do_request
         expect(response.status).to eq 403
       end
+    end
+  end
+
+  describe '#show' do
+    subject(:do_request) { get :show, format: 'json', id: '', admin_journal: { foo: 'bar' } }
+    it 'should not call JournalFactory#create' do
+      stub_sign_in user
+      expect(JournalFactory).to_not receive(:create)
+      do_request
     end
   end
 end

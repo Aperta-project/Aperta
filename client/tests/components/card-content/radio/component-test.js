@@ -18,6 +18,12 @@ moduleForComponent(
         text: `<b class='bar'>Bar</b>`,
         valueType: 'boolean'
       };
+
+      this.radioBooleanLabeledContent = {
+        text: `<b class='foo'>Foo</b>`,
+        valueType: 'boolean',
+        possibleValues: [{ label: 'Why Yes', value: true }, { label: 'Oh No', value: false}]
+      };
     }
   }
 );
@@ -82,4 +88,11 @@ test(`it renders a radio button for Yes and No when value type is boolean`, func
   this.render(template);
   assert.textPresent('.card-form-element', 'Yes');
   assert.textPresent('.card-form-element', 'No');
+});
+
+test(`it renders the supplied true and false labels when value type is boolean`, function(assert) {
+  this.set('content', this.radioBooleanLabeledContent);
+  this.render(template);
+  assert.textPresent('.option', 'Why Yes');
+  assert.textPresent('.option', 'Oh No');
 });

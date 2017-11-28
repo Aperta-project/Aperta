@@ -88,6 +88,7 @@ test(`'Add Correspondence' opens a form overlay`, (assert) => {
   return andThen(() => {
     assert.textPresent('.correspondence-overlay', 'Add Correspondence to History');
     assert.equal(currentURL(), '/papers/' + doi + '/correspondence/new');
+    assert.equal(find('.attachment-manager').length, 1);
   });
 });
 
@@ -165,6 +166,26 @@ test('click cancel from correspondence edit returns to view correspondence', (as
   });
 });
 
+test('Deleting attachment reduces count from 2 to 1', (assert) => {
+  const correspondenceEditUrl = '/papers/' + paper.get('shortDoi') + '/correspondence/' + correspondence.get('id') + '/edit';
+  const attachmentId = correspondence.get('attachments.firstObject.id');
+  $.mockjax({
+    url: `/api/papers/${paper.get('id')}/correspondence/${correspondence.get('id')}/attachments/${attachmentId}`,
+    type: 'DELETE',
+    status: 204
+  });
+
+  visit(correspondenceEditUrl);
+  andThen(() => {
+    assert.equal(find('.attachment-manager .file-link').length, 2);
+    click('.delete-attachment:first');
+
+    andThen(() => {
+      assert.equal(find('.attachment-manager .file-link').length, 1);
+    });
+  });
+});
+
 test('user is able to edit an external correspondence', (assert) => {
   const editCorrepondence = '/papers/' + paper.get('shortDoi') + '/correspondence/' + correspondence.get('id') + '/edit';
   const viewCorrespondence = '/papers/' + paper.get('shortDoi') + '/correspondence/viewcorrespondence/' + correspondence.get('id');
@@ -189,7 +210,7 @@ test('user is able to edit an external correspondence', (assert) => {
   fillIn('.correspondence-body', 'This is a very long body message~~~~');
 
   click('.correspondence-submit');
-  
+
   andThen(() => {
     assert.equal(currentURL(), viewCorrespondence);
   });

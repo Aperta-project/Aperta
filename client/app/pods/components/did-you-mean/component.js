@@ -96,10 +96,6 @@ export default Component.extend({
       this.set('previousSearch', null);
     },
 
-    selectUnknownItem() {
-      this.selectUnknown();
-    },
-
     focus() {
       this.set('focused', true);
     }

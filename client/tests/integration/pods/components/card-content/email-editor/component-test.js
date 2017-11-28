@@ -15,7 +15,6 @@ moduleForComponent('card-content/email-editor', 'Integration | Component | card 
     this.set('owner', owner);
     this.set('answer', answer);
     this.set('disabled', false);
-    this.set('repetition', null);
     this.set('actionStub', function() {});
     this.set('preview', true);
     this.set('content', Ember.Object.create({
@@ -35,7 +34,7 @@ valueChanged=(action actionStub)
 }}`;
 
 test(`it renders an email-editor initialized by the template`, function(assert) {
-  this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+  this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
   $.mockjax({url: '/api/tasks/1/load_email_template', type: 'get', status: 200, responseText: '{"to": "test@example.com", "subject":"hello world", "body": "some text"}'});
 
   this.render(template);

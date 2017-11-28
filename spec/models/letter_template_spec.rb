@@ -144,7 +144,8 @@ describe LetterTemplate do
       FeatureFlag.create(name: 'PREPRINT', active: true)
       FeatureFlag.create(name: 'CARD_CONFIGURATION', active: true)
       templates = LetterTemplate.related_to_journal(journal.id)
-      expect(templates.map(&:scenario)).to match(['Reviewer Report', 'Preprint Decision', 'Tech Check'])
+      binding.pry
+      expect(templates.map(&:scenario).sort).to match(['Preprint Decision', 'Reviewer Report', 'Tech Check'])
     end
 
     it 'returns all scenarios except preprint and card configuration ones if their feature flags are disabled' do

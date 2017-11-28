@@ -158,15 +158,7 @@ describe TasksController, redis: true do
     context "when the user has access" do
       before do
         FactoryGirl.create(:letter_template, journal: journal, name: 'Sendback Reasons')
-        CardLoader.load("PlosBilling::BillingTask")
         stub_sign_in user
-        allow(user).to receive(:can?)
-          .with(:manage_workflow, paper)
-          .and_return true
-
-        allow(user).to receive(:can?)
-          .with(:view, Task)
-          .and_return true
       end
 
       it "succsefully handles the request" do
@@ -204,15 +196,7 @@ describe TasksController, redis: true do
     context "when the user has access" do
       before do
         FactoryGirl.create(:letter_template, journal: journal, name: 'Sendback Reasons')
-        CardLoader.load("PlosBilling::BillingTask")
         stub_sign_in user
-        allow(user).to receive(:can?)
-          .with(:manage_workflow, paper)
-          .and_return true
-
-        allow(user).to receive(:can?)
-          .with(:view, Task)
-          .and_return true
       end
 
       it "succsefully handles the request" do

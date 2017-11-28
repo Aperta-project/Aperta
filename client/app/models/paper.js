@@ -91,7 +91,7 @@ export default DS.Model.extend({
   legendsAllowed: attr('boolean'),
   currentUserRoles: attr(),
   manuallySimilarityChecked: attr('boolean'),
-  optToPreprint: attr('boolean'),
+  optedToPreprint: attr('boolean'),
   preprintEligible: attr('boolean'),
   preprintDashboard: attr('boolean'),
 

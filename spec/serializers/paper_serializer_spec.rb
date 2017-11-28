@@ -72,22 +72,22 @@ describe PaperSerializer do
       end
     end
 
-    describe '#opt_to_preprint?' do
+    describe '#opted_to_preprint?' do
       let(:paper) { FactoryGirl.create(:paper_with_task, task_params: { title: 'Preprint Posting', type: 'PlosBilling::BillingTask', answers: [answer] }) }
       let(:answer) { FactoryGirl.create(:answer, value: true, card_content: FactoryGirl.create(:card_content, ident: 'preprint-posting--consent')) }
 
       it 'returns nil if Preprint Posting card is not present' do
         paper.tasks[0].update(title: 'Billing')
-        expect(json[:opt_to_preprint]).to be_nil
+        expect(json[:opted_to_preprint]).to be_falsey
       end
 
       it 'returns true if user opted in for preprint' do
-        expect(json[:opt_to_preprint]).to be_truthy
+        expect(json[:opted_to_preprint]).to be_truthy
       end
 
       it 'returns false if user opted out for preprint' do
-        answer.update(value: false)
-        expect(json[:opt_to_preprint]).to be == 'f'
+        answer.update(value: 'f')
+        expect(json[:opted_to_preprint]).to be == 'f'
       end
     end
   end

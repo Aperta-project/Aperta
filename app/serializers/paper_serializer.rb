@@ -2,7 +2,7 @@ class PaperSerializer < LitePaperSerializer
   attributes :abstract, :body, :current_user_roles, :doi, :gradual_engagement,
              :legends_allowed, :links, :manually_similarity_checked,
              :paper_type, :short_title, :submitted_at, :first_submitted_at, :versions_contain_pdf,
-             :preprint_eligible?, :opt_to_preprint?
+             :preprint_eligible?, :opted_to_preprint?
 
   %i(supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
@@ -56,9 +56,9 @@ class PaperSerializer < LitePaperSerializer
     .where("assignments.user_id = ?", scope).pluck(:name).uniq
   end
 
-  def opt_to_preprint?
+  def opted_to_preprint?
     preprint_task = object.tasks.where(title: 'Preprint Posting').first
-    return unless preprint_task
+    return false unless preprint_task
     preprint_task.answers.find { |answer| answer.ident == 'preprint-posting--consent' }.try(:value)
   end
 

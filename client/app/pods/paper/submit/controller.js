@@ -14,8 +14,7 @@ export default Ember.Controller.extend({
   paper: Ember.computed.alias('model.paper'),
   tasks: Ember.computed.alias('model.tasks'),
 
-  preprintOptOut: Ember.computed.alias('paper.optToPreprint'),
-  preprintOptIn: Ember.computed.alias('paper.optToPreprint'),
+  optedToPreprint: Ember.computed.alias('paper.optedToPreprint'),
 
   fileDownloadUrl: Ember.computed('paper', function() {
     return paperDownloadPath({ paperId: this.get('paper.id'), format: 'pdf_with_attachments' });

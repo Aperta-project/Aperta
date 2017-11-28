@@ -144,12 +144,12 @@ describe LetterTemplate do
       FeatureFlag.create(name: 'PREPRINT', active: true)
       FeatureFlag.create(name: 'CARD_CONFIGURATION', active: true)
       templates = LetterTemplate.related_to_journal(journal.id)
-      expect(templates.map(&:scenario).sort).to match(['Preprint Decision', 'Reviewer Report', 'Tech Check'])
+      expect(templates.map(&:scenario)).to match_array(['Preprint Decision', 'Reviewer Report', 'Tech Check'])
     end
 
     it 'returns all scenarios except preprint and card configuration ones if their feature flags are disabled' do
       templates = LetterTemplate.related_to_journal(journal.id)
-      expect(templates.map(&:scenario)).to match(['Reviewer Report'])
+      expect(templates.map(&:scenario)).to match_array(['Reviewer Report'])
     end
   end
 
@@ -178,8 +178,7 @@ describe LetterTemplate do
       orig_ident = letter_template.ident
       letter_template.update(ident: nil)
       Rake.application.invoke_task 'seed:letter_templates:populate'
-      letter_template.reload
-      expect(letter_template.ident).to eq(orig_ident)
+      expect(LetterTemplate.where(ident: orig_ident)).to exist
     end
   end
 end

@@ -187,7 +187,7 @@ test('Deleting attachment reduces count from 2 to 1', (assert) => {
 });
 
 test('user is able to edit an external correspondence', (assert) => {
-  const editCorrepondence = '/papers/' + paper.get('shortDoi') + '/correspondence/' + correspondence.get('id') + '/edit';
+  const editCorrespondence = '/papers/' + paper.get('shortDoi') + '/correspondence/' + correspondence.get('id') + '/edit';
   const viewCorrespondence = '/papers/' + paper.get('shortDoi') + '/correspondence/viewcorrespondence/' + correspondence.get('id');
 
   $.mockjax({
@@ -199,7 +199,7 @@ test('user is able to edit an external correspondence', (assert) => {
     }
   });
 
-  visit(editCorrepondence);
+  visit(editCorrespondence);
 
   fillIn('.correspondence-description', 'Modified Description');
   fillIn('.correspondence-from', 'niceguy@example.com');

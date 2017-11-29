@@ -87,8 +87,7 @@
         {{#if (can "manage_workflow" message.paper)}}
            {{attachment-item accept=accept
                     attachment=attachment
-                    disabled=true
-                    filePath="correspondence_attachments"}}
+                    disabled=true}}
         {{else}}
           <span class="attachment-item">{{attachment.filename}}</span>
         {{/if}}

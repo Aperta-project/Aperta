@@ -51,10 +51,6 @@ Subscriptions.configure do
   add 'attachment:updated', stream_to_paper_channel
   add 'attachment:destroyed', stream_to_everyone
 
-  add 'correspondence_attachment:created', stream_to_paper_channel
-  add 'correspondence_attachment:updated', stream_to_paper_channel
-  add 'correspondence_attachment:destroyed', stream_to_everyone
-
   add 'decision:created', stream_to_paper_channel
   add 'decision:updated', stream_to_paper_channel
   add 'decision:destroyed', stream_to_everyone

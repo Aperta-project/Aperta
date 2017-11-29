@@ -22,12 +22,6 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     return moment(this.get('model.date')).format('MM/DD/YYYY');
   }),
 
-  attachmentsPath: Ember.computed('model.id', function() {
-    let paperId = this.get('model.paper.id');
-    let correspondenceId = this.get('model.id');
-    return `/api/papers/${paperId}/correspondence/${correspondenceId}/attachments`;
-  }),
-
   prepareModelDate() {
     let date = this.get('dateSent');
     let time = this.get('timeSent');

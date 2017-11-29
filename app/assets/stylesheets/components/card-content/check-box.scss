@@ -13,13 +13,15 @@
 
 .card-checkbox {
   .card-form-element {
-   margin:0;
-  }
+    display: flex;
 
-  .card-form-label {
-    display: inline;
-    font-size: 14px;
-    font-weight: normal;
-    margin-left: 5px;
+    input {
+      margin-right: 5px;
+    }
+
+    .card-form-label {
+      font-size: 14px;
+      font-weight: normal;
+    }
   }
 }

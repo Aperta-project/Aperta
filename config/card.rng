@@ -324,6 +324,25 @@
       </zeroOrMore>
     </element>
   </define>
+  <define name="email-editor">
+    <element name="EmailEditor">
+      <interleave>
+        <ref name="input-attributes"/>
+        <optional>
+          <attribute name="letter-template"/>
+        </optional>
+        <optional>
+          <attribute name="button-label"/>
+        </optional>
+        <attribute name="value-type">
+          <value>html</value>
+        </attribute>
+      </interleave>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
   <define name="sendback-reason">
     <element name="SendbackReason">
       <interleave>
@@ -485,6 +504,7 @@
       <ref name="sendback-reason"/>
       <ref name="short-input"/>
       <ref name="tech-check"/>
+      <ref name="email-editor"/>
       <ref name="tech-check-email"/>
     </choice>
   </define>

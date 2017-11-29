@@ -10,7 +10,7 @@ class TemplateContext < Liquid::Drop
       'Reviewer Report'   => ReviewerReportScenario,
       'Invitation'        => InvitationScenario,
       'Paper Reviewer'    => InvitationScenario,
-      'Decision' => RegisterDecisionScenario
+      'Decision'          => RegisterDecisionScenario
     }.merge(feature_flagged_scenarios)
   end
 
@@ -57,6 +57,12 @@ class TemplateContext < Liquid::Drop
     end
   end
 
+  def self.wraps(klass = nil)
+    @wrapped_type ||= klass if klass
+
+    @wrapped_type
+  end
+
   def self.merge_fields
     @merge_fields ||= MergeField.list_for(self)
   end
@@ -66,6 +72,11 @@ class TemplateContext < Liquid::Drop
   end
 
   def initialize(object)
+    expected_type =  self.class.instance_variable_get('@wrapped_type')
+    if expected_type && !object.is_a?(expected_type)
+      raise "#{self.class} expected to wrap a #{expected_type} but got a #{object.class}"
+    end
+
     @object = object
   end
 

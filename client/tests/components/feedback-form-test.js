@@ -20,6 +20,7 @@ moduleForComponent('feedback-form', 'Integration | Component | feedback form', {
 test('it renders the Attach files section by default', function(assert) {
   let template = hbs`{{feedback-form}}`;
   this.render(template);
+  this.$('.feedback-button').click();
   assert.elementFound('.fileinput-button', 'displays the input button');
 
 });
@@ -45,6 +46,7 @@ test(
     let template = hbs`{{feedback-form close=(action actionStub)}}`;
     this.set('actionStub', () => {});
     this.render(template);
+    this.$('.feedback-button').click();
     assert.textPresent('button', 'cancel');
 });
 
@@ -72,6 +74,7 @@ test('it calls the feedback service on submit', function(assert) {
   this.set('fakeService', fakeService);
   let template = hbs`{{feedback-form feedbackService=fakeService}}`;
   this.render(template);
+  this.$('.feedback-button').click();
   Ember.run(() => {
     this.$('.feedback-form-submit').click();
   });

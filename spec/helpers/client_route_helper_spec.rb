@@ -32,4 +32,20 @@ describe ClientRouteHelper do
 
     pending "handle params"
   end
+
+  describe '#client_show_invitation_url' do
+    let(:invitation) { double('task', token: 'hhf287gf278ogf87g4f4') }
+    it 'generates the url to an invitation' do
+      url = client_show_invitation_url(token: invitation.token)
+      expect(url).to eq("http://test.host/invitations/#{invitation.token}")
+    end
+  end
+
+  describe "#client_show_correspondence_url" do
+    let(:correspondence) { create :correspondence }
+    it "generates the url to a correspondence" do
+      url = client_show_correspondence_url(correspondence)
+      expect(url).to include "/#{correspondence.paper.short_doi}/correspondence/viewcorrespondence/#{correspondence.id}"
+    end
+  end
 end

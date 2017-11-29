@@ -22,15 +22,18 @@ export default Ember.Route.extend(EmberPusher.Bindings, {
   notifications: Ember.inject.service(),
   pusher: Ember.inject.service(),
   fullStory: Ember.inject.service(),
+  isLoggedIn: Ember.computed.notEmpty('currentUser'),
 
   beforeModel() {
     Ember.assert('Application name is required for proper display', window.appName);
     this.wirePusher();
-    this.store.findAll('journal').then( (journals) => {
-      let controller = this.controllerFor('application');
-      controller.set('journals', journals);
-      controller.setCanViewPaperTracker();
-    });
+    if (this.get('isLoggedIn')) {
+      this.store.findAll('journal').then( (journals) => {
+        let controller = this.controllerFor('application');
+        controller.set('journals', journals);
+        controller.setCanViewPaperTracker();
+      });
+    }
   },
 
   wirePusher() {

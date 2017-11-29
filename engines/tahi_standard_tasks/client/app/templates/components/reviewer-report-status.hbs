@@ -11,7 +11,7 @@
   <strong>{{reviewerStatus}}:</strong> {{statusMessage}}
   {{#if (and canEditDueDate
              (eq reviewerStatus 'Pending')
-             report.dueAt)}}
+             dueDatetime.dueAt)}}
     {{date-picker-link
       linkText="Change due date"
       dateChanged="changeDueDate"

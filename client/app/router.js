@@ -7,6 +7,8 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+  this.route('invitations', { path: '/invitations/:token'});
+
   this.route('dashboard', { path: '/' }, function() {});
 
   this.route('paper_tracker', function() {});
@@ -22,6 +24,7 @@ Router.map(function() {
     this.route('versions', { path: '/versions' });
 
     this.route('correspondence', { path: '/correspondence' }, function() {
+      this.route('edit', { path: '/:correspondence_id/edit' });
       this.route('viewcorrespondence',  { path: '/viewcorrespondence/:id' });
       this.route('new', { path: '/new' });
       this.route('discussions', function() {

@@ -1,3 +1,19 @@
+{{#if message.external}}
+  <div class="row oneline-history">
+    <div class="col-sm-9 history-text">
+      {{message.lastActivityMessage}}
+    </div>
+    <div class="col-sm-3 actions">
+      <span class="action-edit">
+        {{#link-to 'paper.correspondence.edit' message.id}}
+          {{fa-icon 'pencil' size="lg"}} <small>Edit</small>
+        {{/link-to}}
+      </span>
+    </div>
+  </div>
+  <hr style="margin-top: 15px;">
+{{/if}}
+
 <div class="row">
   <div class="col-sm-2" style="color:grey;">
     Date Sent:
@@ -86,3 +102,17 @@
     <iframe srcdoc={{break-to-tag message.body}} width="100%" height="400px" frameborder="0"></iframe>
   </div>
 </div>
+
+{{#if message.hasActivities}}
+  <hr>
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 class='history-heading'>History</h1>
+    </div>
+    {{#each message.activityMessages as |activity|}}
+    <div class="col-sm-12 history-entry">
+      {{activity}}
+    </div>
+    {{/each}}
+  </div>
+{{/if}}

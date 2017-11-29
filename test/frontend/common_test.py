@@ -13,8 +13,8 @@ from selenium.common.exceptions import TimeoutException
 
 from Base.FrontEndTest import FrontEndTest
 from Base.PostgreSQL import PgSQL
-from Base.Resources import login_valid_pw, docs, users, editorial_users, external_editorial_users, \
-    au_login, co_login, rv_login, ae_login, he_login, fm_login, oa_login, pdfs
+from Base.Resources import login_valid_pw, docs, docxs, pdfs, users, editorial_users, external_editorial_users, \
+    au_login, co_login, rv_login, ae_login, he_login, fm_login, oa_login, production_urls
 from .Pages.login_page import LoginPage
 from .Pages.akita_login_page import AkitaLoginPage
 from .Pages.dashboard import DashboardPage
@@ -151,13 +151,25 @@ class CommonTest(FrontEndTest):
     if document:
       fn = os.path.join(current_path, '{0}'.format(document))
     else:
-      if format_ == 'word':
+        if format_ == 'any':
+            # polled attachments of type SourceFileAttachment between 6/1/2017 and 11/14/2017 to come up with
+            # this approximate breakdown
+            weighting = [('docx', 7), ('doc', 1), ('pdf', 8)]
+        elif format_ == 'word':
+            weighting = [('docx', 7), ('doc', 1)]
+        if format_ in ('any', 'word'):
+            document_type = [dt for dt, count in weighting for i in range(count)]
+            format_ = random.choice(document_type)
+    if format_ == 'docx':
+        doc2upload = random.choice(docxs)
+    elif format_ == 'doc':
         doc2upload = random.choice(docs)
-      elif format_ == 'pdf':
+    elif format_ == 'pdf':
         doc2upload = random.choice(pdfs)
-      elif format_ == 'any':
-        doc2upload = random.choice(docs + pdfs)
-      fn = os.path.join(current_path, '{0}'.format(doc2upload))
+    else:
+        logging.error('Unknown format specifier: {0} in method call.'.format(format_))
+
+    fn = os.path.join(current_path, '{0}'.format(doc2upload))
     logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)
     self._driver.find_element_by_id('upload-files').send_keys(fn)
@@ -438,7 +450,7 @@ class CommonTest(FrontEndTest):
       """
       current_env = os.getenv('WEBDRIVER_TARGET_URL', '')
       logging.info(current_env)
-      if current_env in ('https://www.aperta.tech', 'https://aperta:ieeetest@ieee.aperta.tech'):
+      if current_env in production_urls:
         return False
       pp_ff = PgSQL().query('SELECT active FROM feature_flags WHERE name = \'PREPRINT\';')[0][0]
       if not pp_ff:

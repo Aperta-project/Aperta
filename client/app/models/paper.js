@@ -62,7 +62,7 @@ export default DS.Model.extend({
   shortDoi: attr('string'),
   aarxDoi: attr('string'),
   aarxLink: attr('string'),
-  preprintPosted: attr('boolean'),
+  preprintDoiSuffix: attr('string'),
   doi: attr('string'),
   editable: attr('boolean'),
   editorMode: attr('string', { defaultValue: 'html' }),
@@ -93,6 +93,7 @@ export default DS.Model.extend({
   manuallySimilarityChecked: attr('boolean'),
   preprintOptOut: attr('boolean'),
   preprintEligible: attr('boolean'),
+  preprintDashboard: attr('boolean'),
 
   reviewDueAt: attr('date'),
   reviewOriginallyDueAt: attr('date'),

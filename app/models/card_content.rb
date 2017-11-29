@@ -10,9 +10,44 @@ class CardContent < ActiveRecord::Base
 
   acts_as_nested_set
 
+  has_attributes \
+    boolean: %w[
+      allow_annotations
+      allow_file_captions
+      allow_multiple_uploads
+      required_field
+    ],
+    json: %w[possible_values],
+    integer: %w[
+      min
+      max
+    ],
+    string: %w[
+      child_tag
+      condition
+      custom_child_class
+      custom_class
+      default_answer_value
+      editor_style
+      error_message
+      instruction_text
+      item_name
+      key
+      label
+      max
+      min
+      text
+      value_type
+      visible_with_parent_answer
+      wrapper_tag
+    ]
+
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
   has_many :card_content_validations, dependent: :destroy
+  has_many :repetitions, inverse_of: :card_content, dependent: :destroy
+  has_many :answers, inverse_of: :card_content, dependent: :destroy
+
   validates :card_version, presence: true
 
   validates :parent_id,
@@ -22,7 +57,6 @@ class CardContent < ActiveRecord::Base
             },
             if: -> { root? }
 
-  has_many :answers
 
   # -- Card Content Validations
   # Note that the checks present here work in concert with the xml validations
@@ -45,7 +79,8 @@ class CardContent < ActiveRecord::Base
   # can either be boolean or text.
   # Content types that don't store answers ('display-children, etc') are omitted from this check
   VALUE_TYPES_FOR_CONTENT =
-    { 'dropdown': ['text', 'boolean'],
+    {
+      'dropdown': ['text', 'boolean'],
       'short-input': ['text'],
       'check-box': ['boolean'],
       'file-uploader': ['attachment', 'manuscript', 'sourcefile'],
@@ -54,7 +89,10 @@ class CardContent < ActiveRecord::Base
       'tech-check': ['boolean'],
       'tech-check-email': [nil],
       'date-picker': ['text'],
-      'sendback-reason': ['boolean'] }.freeze.with_indifferent_access
+      'sendback-reason': ['boolean'],
+      'repeat': [nil]
+    }.freeze.with_indifferent_access
+
   # Although we want to validate the various combinations of content types
   # and value types, many of the CardContent records that have been created
   # via the CardLoader don't have a content_type set at all, so we'll skip
@@ -100,7 +138,6 @@ class CardContent < ActiveRecord::Base
   def content_attrs
     {
       'ident' => ident,
-      'content-type' => content_type,
       'value-type' => value_type,
       'child-tag' => child_tag,
       'custom-class' => custom_class,
@@ -145,10 +182,15 @@ class CardContent < ActiveRecord::Base
       {
         'required-field' => required_field
       }
-
     when 'error-message'
       {
         'key' => key
+      }
+    when 'repeat'
+      {
+        'min' => min,
+        'max' => max,
+        'item-name' => item_name
       }
     else
       {}
@@ -158,7 +200,8 @@ class CardContent < ActiveRecord::Base
 
   # rubocop:disable Metrics/AbcSize
   def to_xml(options = {})
-    setup_builder(options).tag!('content', content_attrs) do |xml|
+    tag_name = content_type.underscore.camelize
+    setup_builder(options).tag!(tag_name, content_attrs) do |xml|
       render_tag(xml, 'instruction-text', instruction_text)
       render_raw(xml, 'text', text)
       render_tag(xml, 'label', label)
@@ -184,8 +227,10 @@ class CardContent < ActiveRecord::Base
 
   # recursively traverse nested card_contents
   def traverse(visitor)
+    visitor.enter(self)
     visitor.visit(self)
     children.each { |card_content| card_content.traverse(visitor) }
+    visitor.leave(self)
   end
 
   # Return the ids of the children. If quick_children has been set, use that,
@@ -207,7 +252,7 @@ class CardContent < ActiveRecord::Base
   # an entire traversable tree in one database query.
   # Returns an array of CardContent objects.
   def preload_descendants
-    all = [self] + descendants.includes(:content_attributes, :card_content_validations).to_a
+    all = [self] + descendants.includes(:entity_attributes, :card_content_validations).to_a
     children = all.group_by(&:parent_id)
     all.each do |d|
       d.quick_children = children.fetch(d.id, [])

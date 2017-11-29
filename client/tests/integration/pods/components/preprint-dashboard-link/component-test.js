@@ -12,7 +12,7 @@ moduleForComponent(
       registerCustomAssertions();
       manualSetup(this.container);
       let attrs = { roles: ['Author'],
-        aarxDoi: '1111111',
+        preprintDoiSuffix: '1111111',
         aarxLink: 'http://a-link.co' };
       let paper = make('paper', attrs);
       this.set('paper', paper);

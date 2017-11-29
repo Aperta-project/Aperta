@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<card required-for-submission="true" workflow-display-only="false">
+  <DisplayChildren>
+    <Description>
+      <text>
+        A copy of your uncorrected proof will be published online ahead of the final version of your manuscript, should your manuscript be accepted.
+        If you do NOT consent to having an early version of your paper published online, please uncheck the box below.
+        Please note, if you change your mind, you may choose to opt out up until final acceptance.
+      </text>
+    </Description>
+    <CheckBox ident="early-posting--consent" value-type="boolean">
+      <default-answer-value>
+        true
+      </default-answer-value>
+      <label>Yes, I agree to publish an early version of my article</label>
+    </CheckBox>
+  </DisplayChildren>
+</card>

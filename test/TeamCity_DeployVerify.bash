@@ -3,20 +3,6 @@
 export PATH="$HOME/bin:$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
-# Command Line script for TeamCity build job for test run
-# Depends on
-# env.APERTA_PSQL_DBNAME
-# env.APERTA_PSQL_HOST
-# env.APERTA_PSQL_PORT
-# env.APERTA_PSQL_PW
-# env.APERTA_PSQL_USER
-# env.DISPLAY
-# env.SELENIUM_GRID_URL
-# env.WEBDRIVER_TARGET_URL
-# being set as Environment Variables
-
-# Stop the script if any single command fails
-set -e
 rm geckodriver-v0.18.0-linux32.tar.gz
 
 wget https://github.com/mozilla/geckodriver/releases/download/v0.18.0/geckodriver-v0.18.0-linux32.tar.gz
@@ -42,14 +28,13 @@ fi
 rm $TESTING_ASSETS
 cd $SCRIPT_DIR
 
-# Reverses 'set -e'. Allows the script to continue through failures.
-set +e
-
 rm Output/*.png
 rm Base/*.pyc
 rm frontend/*.pyc
 rm frontend/Pages/*.pyc
 
-python -m frontend.test_deploy_verify
+pytest -v -m 'deploy_verify' -n auto -l --timeout=600 --teamcity frontend
+
+pkill firefox
 pyenv deactivate
 pyenv version

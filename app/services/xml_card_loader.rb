@@ -73,13 +73,14 @@ class XmlCardLoader
     # TODO; Once APERTA-11091 is done, this can be removed
     allowed_attributes = CardContent.attribute_names.map(&:to_sym) + [:card_version]
     attributes = attributes.delete_if { |key, value| value.nil? && !allowed_attributes.member?(key) }
+    attributes[:content_type] = content.element_name.underscore.dasherize
 
     CardContent.new(attributes).tap do |root|
       # assign any validations
       root.card_content_validations << build_card_content_validations(content)
       root.card_content_validations << maybe_build_required_field_validation(root)
       # recursively create any nested child content
-      content.child_elements('content').each do |child|
+      content.child_content_elements.each do |child|
         root.children << build_card_content(child, card_version)
       end
       raise XmlCardDocument::XmlValidationError, root.errors if root.invalid?
@@ -132,7 +133,10 @@ class XmlCardLoader
       condition: content.attr_value('condition'),
       value_type: content.attr_value('value-type'),
       visible_with_parent_answer: content.attr_value('visible-with-parent-answer'),
-      key: content.attr_value('key')
+      key: content.attr_value('key'),
+      min: content.attr_value('min'),
+      max: content.attr_value('max'),
+      item_name: content.attr_value('item-name')
     }
   end
   # rubocop:enable MethodLength, AbcSize

@@ -1,5 +1,6 @@
 import DS from 'ember-data';
 import Ember from 'ember';
+import formatDate from 'tahi/lib/format-date';
 
 export default DS.Model.extend({
   paper: DS.belongsTo('paper', { async: false }),
@@ -17,17 +18,36 @@ export default DS.Model.extend({
   sentAt: DS.attr('date'),
   manuscriptVersion: DS.attr('string'),
   manuscriptStatus: DS.attr('string'),
+  activities: DS.attr(), // array?
 
   manuscriptVersionStatus: Ember.computed('manuscriptVersion','manuscriptStatus', function() {
-    if (!this.get('manuscriptVersion') || !this.get('manuscriptStatus')) {
+    let version_status = this.get('manuscriptVersion') + ' ' + this.get('manuscriptStatus');
+    version_status = version_status.replace('null','').trim();
+
+    if (version_status === 'null') {
       return 'Unavailable';
     }
     else {
-      return this.get('manuscriptVersion') + ' ' + this.get('manuscriptStatus');
+      return version_status;
     }
   }),
 
   hasAnyAttachment: Ember.computed('attachments', function() {
     return (this.get('attachments').length !== 0);
-  })
+  }),
+
+  hasActivities: Ember.computed.notEmpty('activities'),
+
+  activityNames: {
+    'correspondence.created': 'Added',
+    'correspondence.edited': 'Edited'
+  },
+
+  activityMessages: Ember.computed.map('activities', function(activity) {
+    return `${this.get('activityNames')[activity.key]} by ${activity.full_name} on ${formatDate(activity.created_at, { format: 'MMMM DD, YYYY H:mm' })}`;
+  }),
+
+  lastActivityMessage: Ember.computed('activityMessages', function(){
+    return this.get('activityMessages.firstObject');
+  }),
 });

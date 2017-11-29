@@ -9,12 +9,12 @@ export default Ember.Component.extend({
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool,
     owner: PropTypes.EmberObject.isRequired,
+    repetition: PropTypes.oneOfType([PropTypes.null, PropTypes.EmberObject]).isRequired,
     preview: PropTypes.bool
   },
 
   init() {
     this._super(...arguments);
-
     if(this.get('isText')) {
       Ember.assert(
         `the content must define an array of possibleValues
@@ -22,6 +22,25 @@ export default Ember.Component.extend({
         Ember.isPresent(this.get('content.possibleValues'))
       );
     }
+  },
+
+  trueLabel: Ember.computed('content.possibleValues', function () {
+    return this.findLabelByValue(true) || 'Yes';
+  }),
+
+  falseLabel: Ember.computed('content.possibleValues', function () {
+    return this.findLabelByValue(false) || 'No';
+  }),
+
+  findLabelByValue: function (match) {
+    let list = this.get('content.possibleValues');
+    if (list && list.length > 0) {
+      let items = list.filter(each => each.value === match);
+      if (items.length === 1) {
+        return items[0].label;
+      }
+    }
+    return null;
   },
 
   isText: Ember.computed('content.valueType', function() {

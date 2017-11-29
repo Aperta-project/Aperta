@@ -176,10 +176,11 @@ class DashboardPage(AuthenticatedPage):
     else:
       raise(ValueError(u'Title {0} not found'.format(title)))
 
-  def accept_or_reject_invitation(self, title):
+  def accept_or_reject_invitation(self, title, role):
     """
     Returns a random response to a given invitation
     :param title: Title of the publication for the invitation
+    :param role: The role to accept or reject invitation, string: 'Reviewer' or 'Academic Editor'
     :return: A tuple with the first element a string with the the decision and the second
     element there is a tuple with two elements and ID for reasons an ID for suggestions
     """
@@ -200,7 +201,7 @@ class DashboardPage(AuthenticatedPage):
         else:
           listing.find_element(*self._invite_no_btn).click()
           time.sleep(1)
-          self.validate_reviewer_invitation_response_styles(title)
+          self.validate_reviewer_invitation_response_styles(title, role)
           # Enter reason and suggestions
           reasons = generate_paragraph()[2]
           suggestions = 'Name Lastname, email@domain.com, INSTITUTE'
@@ -348,14 +349,14 @@ class DashboardPage(AuthenticatedPage):
     assert cns_btn.text.lower() == 'create new submission'
     self.validate_primary_big_green_button_style(cns_btn)
 
-  def validate_reviewer_invitation_response_styles(self, paper_title):
+  def validate_reviewer_invitation_response_styles(self, paper_title, role):
     """
     Validates elements in feedback form of reviewer_invitation_response
     :param paper_title: Title of the submitted paper
     """
     # TODO: Validate these asserts with ST
     fb_modal_title = self._get(self._rim_title)
-    assert 'Reviewer Invitation' in fb_modal_title.text, fb_modal_title.text
+    assert '{0} Invitation'.format(role) in fb_modal_title.text, fb_modal_title.text
     # Disable due APERTA-7212
     #self.validate_modal_title_style(fb_modal_title)
     # paper_title
@@ -365,8 +366,8 @@ class DashboardPage(AuthenticatedPage):
     # Disable due APERTA-7212
     #self.validate_X_style(rim_ms_title)
     rim_ms_decline_notice = self._get(self._rim_ms_decline_notice)
-    assert 'You\'ve successfully declined the invitation to be the Reviewer for ' in rim_ms_decline_notice.text, \
-        rim_ms_decline_notice.text
+    assert 'You\'ve successfully declined the invitation to be the {0} for '.format(role) \
+           in rim_ms_decline_notice.text, rim_ms_decline_notice.text
     assert ' We\'re always trying to improve our invitation process and would appreciate your feedback ' \
         'below.' in rim_ms_decline_notice.text, rim_ms_decline_notice.text
     # Disable due APERTA-7212
@@ -376,9 +377,12 @@ class DashboardPage(AuthenticatedPage):
         labels[0].text
     # Disable due APERTA-7212
     #self.validate_X_style(labels[0])
-    assert labels[1].text.rstrip() == "We would value your suggestions of alternative reviewers for this " \
-                             "manuscript. Please provide reviewers' names, institutions, and " \
-                             "email addresses if known.", labels[1].text.rstrip()
+    role_name1 = "reviewers" if role == 'Reviewer' else "Academic Editors"
+    role_name2 = "reviewers'" if role == 'Reviewer' else "editors’"
+    assert labels[1].text.rstrip() == "We would value your suggestions of alternative {0} " \
+                                      "for this manuscript. Please provide {1} names, institutions, " \
+                                      "and email addresses if known.".format(role_name1,role_name2), \
+                                      labels[1].text.rstrip()
     # Disable due APERTA-7212
     #self.validate_X_style(labels[1])
     return None
@@ -1033,9 +1037,10 @@ class DashboardPage(AuthenticatedPage):
     """Method for debugging purposes only"""
     return self._get(self._cns_base_overlay_div)
 
-  def page_ready(self):
+  def page_ready_dashboard_test(self):
     """
-    A fuction to validate that the dashboard page is loaded before interacting with it
+    A function to validate that the dashboard page is loaded before interacting with it
+    for dashboard test
     """
     self.set_timeout(5)
     try:
@@ -1047,3 +1052,9 @@ class DashboardPage(AuthenticatedPage):
         #self._wait_for_element(self._get(self._dashboard_info_text))
         self._wait_on_lambda(lambda: self._get(self._dashboard_info_text))
     self.restore_timeout()
+
+  def page_ready(self):
+    """
+    A function to validate that the dashboard page is loaded before interacting with it
+    """
+    self._wait_on_lambda(lambda: len(self._gets(self._dashboard_invite_title)) >= 1)

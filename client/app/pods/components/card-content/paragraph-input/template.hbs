@@ -8,25 +8,25 @@
     editorStyle=content.editorStyle
     name=content.ident
     data-editor=content.ident
-    value=answerValue
+    value=(readonly answerProxy)
     hasErrors=answer.hasErrors
     errorMessages=answer.readyIssuesArray
     onContentsChanged=(action "valueChanged")
-    focusOut=(action "validate")
+    focusOut=(action "displayErrors")
     class=inputClassNames
     disabled=disabled
     hideError=hideError
   }}
 {{else}}
   {{textarea
-      value=(readonly answerValue)
+      value=(readonly answerProxy)
       class="form-control"
       change=(action "valueChanged")
       input=(action "valueChanged")
-      focusOut=(action "validate")
+      focusOut=(action "displayErrors")
       disabled=disabled
       id=content.ident
   }}
-  {{card-content/validation-errors errors=answer.readyIssuesArray}}
+  {{card-content/validation-errors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
 {{/if}}
 

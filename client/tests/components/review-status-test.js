@@ -23,7 +23,9 @@ moduleForComponent('review-status', 'Integration | Component | review status', {
       status: 'not_invited',
       revision: 'v99.0',
       statusDatetime: new Date(2020, 0, 1),
-      dueAt: dueDate,
+      dueDatetime:{
+        dueAt: dueDate,
+      },
       originallyDueAt: dueDate,
       task: task
     });

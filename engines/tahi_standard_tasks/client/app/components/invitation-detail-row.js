@@ -125,11 +125,15 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     return this.get('notClosedState') && this.get('currentRound') && this.get('canManageInvitations') && (this.get('invitation.invited') || this.get('invitation.accepted'));
   }),
   // similar to rescind button but only if its for a reviewer and if there's an invitee
-  displayAcceptOnBehalfButton: and('invitation.{invited,reviewer}', 'notClosedState', 'currentRound', 'invitee.id', 'canManageInvitations'),
+  displayAcceptOnBehalfButton: and('invitation.{invited,reviewer}', 'notClosedState', 'currentRound', 'canManageInvitations'),
 
   notAcceptedByInvitee: not('invitation.isAcceptedByInvitee'),
 
   destroyDisabled: or('disabled', 'invitation.isPrimary'),
+
+  displayAcceptFields: false,
+
+  invitationLoading: false,
 
   uiState: computed('invitation', 'activeInvitation', 'activeInvitationState', function() {
     if (this.get('invitation') !== this.get('activeInvitation')) {
@@ -169,6 +173,12 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     yield timeout(200); // agreed timeout time for cards
     this.get('saveInvite')(invitation);
   }).restartable(),
+
+  acceptInvitation: concurrencyTask(function * (data) {
+    this.set('invitationLoading', true);
+    yield this.get('invitation').accept(data);
+    this.setProperties({displayAcceptFields: false, invitationLoading: false});
+  }).drop(),
 
   actions: {
     updateContents(contents) {
@@ -253,9 +263,15 @@ export default Component.extend(DragNDrop.DraggableMixin, {
       this.get('sendInvitation').perform(invitation);
     },
 
-    acceptInvitation(invitation) {
-      // pass in fname and lname for invitations w/o accounts
-      invitation.accept();
+    acceptInvitation() {
+      if (this.get('invitee.id')) {
+        this.get('acceptInvitation').perform();
+      } else {
+        this.toggleProperty('displayAcceptFields');
+      }
+    },
+    cancelAccept(){
+      this.toggleProperty('displayAcceptFields');
     }
   }
 });

@@ -8,6 +8,7 @@ class Paper < ActiveRecord::Base
   include EventStream::Notifiable
   include PaperTaskFinders
   include AASM
+  include AASMTriggerEvent
   include ActionView::Helpers::SanitizeHelper
   include PgSearch
   include Assignable::Model
@@ -140,6 +141,7 @@ class Paper < ActiveRecord::Base
     state :withdrawn
 
     after_all_transitions :set_state_updated!
+    after_all_transitions :trigger_event
 
     event(:initial_submit) do
       transitions from: :unsubmitted,
@@ -280,6 +282,8 @@ class Paper < ActiveRecord::Base
     end
   end
 
+  register_events!
+
   # All known paper states
   STATES = aasm.states.map(&:name).freeze
   # States which should generally be editable by the creator
@@ -316,6 +320,10 @@ class Paper < ActiveRecord::Base
   def self.find_by_id_or_short_doi(id)
     return find_by_short_doi(id) if id.to_s =~ Journal::SHORT_DOI_FORMAT
     find(id)
+  end
+
+  def preprint_opt_out?
+    answer_for('preprint-posting--consent').try(:value).to_i == 2
   end
 
   def inactive?
@@ -379,6 +387,17 @@ class Paper < ActiveRecord::Base
       alert_duplicate_file(attachment, uploaded_by)
       # No need to process attachment, mark the paper record as "done"
       update(processing: false)
+    elsif attachment.file_type == 'pdf'
+      # sleep for long enough to allow the subscription to paper update events take place
+      # TODO: this is a temporary solution and should be removed after this timing issue is resolved
+      sleep(3)
+      # bypass ihat for PDFs, and update paper and associated versioned_text object
+      # NOTE: although PDF manuscripts don't store content in the body, it must
+      # be updated anyway since the versioned text object is created
+      # as a side effect of that call
+      attachment.paper.update!(body: '', processing: false)
+    else
+      ProcessManuscriptWorker.perform_async(attachment.id)
     end
   end
 
@@ -655,6 +674,21 @@ class Paper < ActiveRecord::Base
     !uses_research_article_reviewer_report?
   end
 
+  def manuscript_manager_template
+    ManuscriptManagerTemplate.find_by(journal: journal, paper_type: paper_type)
+  end
+
+  def review_duration_period
+    default = 10
+    if FeatureFlag[:REVIEW_DUE_DATE]
+      setting = manuscript_manager_template
+        .try(:task_template_by_kind, "TahiStandardTasks::PaperReviewerTask")
+        .try(:setting, 'review_duration_period')
+      return setting.value if setting.present?
+    end
+    default
+  end
+
   private
 
   def new_major_version!
@@ -688,7 +722,6 @@ class Paper < ActiveRecord::Base
 
   def set_state_updated!
     update!(state_updated_at: Time.current.utc)
-    Activity.state_changed! self, to: aasm.to_state
   end
 
   def assign_submitting_user!(submitting_user)
@@ -749,5 +782,10 @@ class Paper < ActiveRecord::Base
                   "changes to your manuscript, you can upload again by " \
                   "clicking the <i>Replace</i> link."
               })
+  end
+
+  def trigger_event(*args)
+    user = args.find { |i| i.is_a? User } # Most events send user as the first arg, but withdraw has a reason first.
+    StateChangeEvent.new(aasm: aasm, instance: self, paper: self, task: nil, user: user).trigger
   end
 end

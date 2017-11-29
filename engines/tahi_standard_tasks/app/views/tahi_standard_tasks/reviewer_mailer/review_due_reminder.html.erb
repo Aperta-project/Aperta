@@ -1,7 +1,7 @@
 <%= @body.html_safe %>
 
 <%= render partial: 'email/button', locals: {
-  href: client_paper_url(@paper),
+  href: invitation_accept_url({ token: @invitation.token }),
   text: 'View Manuscript'
 } %>
 

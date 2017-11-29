@@ -39,8 +39,12 @@ class InitialDecisionCard(BaseCard):
     card_title = self._get(self._card_title)
     assert card_title.text == 'Initial Decision'
     self.validate_overlay_card_title_style(card_title)
-    self._get(self._invite_radio_button).click()
-    time.sleep(1) # added as a bug fix to give previous step time
+    invite_radio = self._get(self._invite_radio_button)
+    # This is totally stupid, but the initial click is not actually always registering only when using Marionette.
+    # Adding a repeat click seems to solidify this. Hacky but true.
+    invite_radio.click()
+    invite_radio.click()
+    self._wait_for_element(self._get(self._intro_text))
     intro_text = self._get(self._intro_text)
     # APERTA-8902
     # self.validate_application_body_text(intro_text)

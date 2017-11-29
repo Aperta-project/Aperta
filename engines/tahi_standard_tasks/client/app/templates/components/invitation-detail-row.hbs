@@ -27,8 +27,8 @@
               <span>Completed {{format-date invitation.reviewerReport.statusDatetime format="MMM D, YYYY"}}</span>
             {{else}}
               <span>
-                {{#if invitation.reviewerReport.dueAt}}
-                  <p>Review due {{format-date invitation.reviewerReport.dueAt format="MMM D, YYYY"}}</p>
+                {{#if invitation.reviewerReport.dueDatetime.dueAt}}
+                  <p>Review due {{format-date invitation.reviewerReport.dueDatetime.dueAt format="MMM D, YYYY"}}</p>
                 {{else}}
                   <p>Review pending</p>
                 {{/if}}
@@ -77,7 +77,7 @@
         </span>
       {{/if}}
       {{#if displayAcceptOnBehalfButton}}
-        <span class="invitation-item-action invitation-item-action-accept" {{action "acceptInvitation" invitation bubbles=false}}>
+        <span class="invitation-item-action invitation-item-action-accept" {{action "acceptInvitation" bubbles=false}}>
           {{fa-icon icon="check-circle-o"}}
           Accept invitation for reviewer
         </span>
@@ -120,6 +120,12 @@
 
 {{#if (eq uiState "show")}}
   <div class="invitation-item-details">
+    {{invitation-detail-row-accept-fields
+      invitation=invitation
+      displayAcceptFields=displayAcceptFields
+      cancelAccept=(action 'cancelAccept')
+      loading=invitationLoading
+      acceptInvitation=(perform acceptInvitation)}}
     <div class="invitation-item-state-and-date">
       {{#if invitation.accepted}}
         <span>Accepted {{format-date invitation.acceptedAt format="LLL"}}</span>

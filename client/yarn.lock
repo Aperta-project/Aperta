@@ -2827,9 +2827,9 @@ ember-cli-qunit@^4.0.0:
     resolve "^1.4.0"
     silent-error "^1.1.0"
 
-ember-cli-rails-addon@0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/ember-cli-rails-addon/-/ember-cli-rails-addon-0.7.1.tgz#6832b9b7e52762811c833916fe72fa83b27d5cb5"
+ember-cli-rails-addon@0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-rails-addon/-/ember-cli-rails-addon-0.10.0.tgz#cf1089aecf08e257b17ddf89650759f6e1f98399"
 
 ember-cli-release@^0.2.9:
   version "0.2.9"
@@ -3056,9 +3056,9 @@ ember-data-filter@1.13.0:
   dependencies:
     ember-cli-babel "^5.0.0"
 
-ember-data@2.12.2:
-  version "2.12.2"
-  resolved "https://registry.yarnpkg.com/ember-data/-/ember-data-2.12.2.tgz#45369001847b59e7d0ca8b183e9f57cb1f339260"
+ember-data@2.11.3:
+  version "2.11.3"
+  resolved "https://registry.yarnpkg.com/ember-data/-/ember-data-2.11.3.tgz#46ba0e8411dce6dbb52cc02a29194f265b747ef9"
   dependencies:
     amd-name-resolver "0.0.5"
     babel-plugin-feature-flags "^0.2.1"

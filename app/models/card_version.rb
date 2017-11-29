@@ -5,7 +5,7 @@
 class CardVersion < ActiveRecord::Base
   belongs_to :card, inverse_of: :card_versions
   belongs_to :published_by, class_name: 'User'
-  has_many :card_contents, -> {includes(:content_attributes, :card_content_validations)}, inverse_of: :card_version, dependent: :destroy
+  has_many :card_contents, -> { includes(:entity_attributes, :card_content_validations) }, inverse_of: :card_version, dependent: :destroy
 
   validates :card, presence: true
   validates :card_contents, presence: true
@@ -30,16 +30,6 @@ class CardVersion < ActiveRecord::Base
 
   def traverse(visitor)
     card_contents.each { |card_content| card_content.traverse(visitor) }
-  end
-
-  def create_default_answers(task)
-    card_contents.select { |content| content.default_answer_value.present? }.each do |content|
-      task.answers.create!(
-        card_content: content,
-        paper: task.paper,
-        value: content.default_answer_value
-      )
-    end
   end
 
   private

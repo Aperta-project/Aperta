@@ -42,7 +42,7 @@
   &.required::after {
     content: ' *';
     margin: 0 3px 0 -3px;
-    color: $aperta-green;
+    color: $aperta-red;
   }
 
   p {

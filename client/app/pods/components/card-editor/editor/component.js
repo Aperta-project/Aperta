@@ -14,6 +14,20 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
   showArchiveOverlay: false,
   showDeleteOverlay: false,
 
+  actionIsRunning: Ember.computed.or('saveCard.isRunning', 'publishCard.isRunning', 'revertCard.isRunning'),
+
+  disableRevert: Ember.computed('actionIsRunning', 'editorIsDirty', function() {
+    return this.get('editorIsDirty') || this.get('actionIsRunning');
+  }),
+
+  disableSave: Ember.computed('actionIsRunning', 'editorIsDirty', function() {
+    return !this.get('editorIsDirty') || this.get('actionIsRunning');
+  }),
+
+  disablePublish: Ember.computed('actionIsRunning', 'editorIsDirty', 'card.publishable', function() {
+    return this.get('editorIsDirty') || !(this.get('card.publishable')) || this.get('actionIsRunning');
+  }),
+
   historyEntryBlank: Ember.computed.empty('card.historyEntry'),
 
   classNames: ['card-editor-editor'],
@@ -59,7 +73,7 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
       yield card.archive();
       this.set('errors', []);
       let journalID = yield card.get('journal.id');
-      this.get('routing').transitionTo('admin.journals.cards', journalID);
+      this.get('routing').transitionTo('admin.journals.cards', [journalID]);
     } catch (e) {
       this.set('errors', e.errors);
     }
@@ -72,7 +86,7 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
       let journalID = yield card.get('journal.id');
       yield card.destroyRecord();
       this.set('errors', []);
-      this.get('routing').transitionTo('admin.journals.cards', journalID);
+      this.get('routing').transitionTo('admin.journals.cards', [journalID]);
     } catch (e) {
       this.set('errors', e.errors);
     }

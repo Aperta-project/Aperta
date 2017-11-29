@@ -567,7 +567,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'Sendback Reasons', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'TechCheckScenario'
+        lt.scenario = 'Tech Check'
         lt.subject = 'Manuscript Sendback Reasons'
         lt.to = '{{author.email}}'
         lt.body = <<-TEXT.strip_heredoc
@@ -590,7 +590,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'Editor Decision - Reject After Review', category: 'reject', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'TahiStandardTasks::RegisterDecisionScenario'
+        lt.scenario = 'Decision'
         lt.subject = 'Your {{ journal.name }} submission'
         lt.to = author_emails
         lt.body = <<-TEXT.strip_heredoc
@@ -613,7 +613,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'Editor Decision - Reject After Review CJs', category: 'reject', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'TahiStandardTasks::RegisterDecisionScenario'
+        lt.scenario = 'Decision'
         lt.subject = 'Your {{ journal.name }} submission'
         lt.to = author_emails
         lt.body = <<-TEXT.strip_heredoc
@@ -640,7 +640,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'Editor Decision - Reject After Review ONE', category: 'reject', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'TahiStandardTasks::RegisterDecisionScenario'
+        lt.scenario = 'Decision'
         lt.subject = 'Your {{ journal.name }} submission'
         lt.to = author_emails
         lt.body = <<-TEXT.strip_heredoc
@@ -667,7 +667,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'Reject After Review ONE', category: 'reject', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'TahiStandardTasks::RegisterDecisionScenario'
+        lt.scenario = 'Decision'
         lt.subject = 'Your {{ journal.name }} submission'
         lt.to = author_emails
         lt.body = <<-TEXT.strip_heredoc
@@ -695,7 +695,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'Reject After Revision and Re-review ONE', category: 'reject', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'TahiStandardTasks::RegisterDecisionScenario'
+        lt.scenario = 'Decision'
         lt.subject = 'Your {{ journal.name }} submission'
         lt.to = author_emails
         lt.body = <<-TEXT.strip_heredoc
@@ -725,7 +725,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'RA Major Revision', category: 'major_revision', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'TahiStandardTasks::RegisterDecisionScenario'
+        lt.scenario = 'Decision'
         lt.subject = 'A decision has been registered on the manuscript, "{{ manuscript.title }}"'
         lt.to = author_emails
         lt.body = <<-TEXT.strip_heredoc
@@ -759,7 +759,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'RA Minor Revision', category: 'minor_revision', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'TahiStandardTasks::RegisterDecisionScenario'
+        lt.scenario = 'Decision'
         lt.subject = 'Your {{ journal.name }} submission'
         lt.to = author_emails
         lt.body = <<-TEXT.strip_heredoc
@@ -790,7 +790,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'RA Accept', category: 'accept', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'TahiStandardTasks::RegisterDecisionScenario'
+        lt.scenario = 'Decision'
         lt.subject = 'Your {{ journal.name }} submission'
         lt.to = author_emails
         lt.body = <<-TEXT.strip_heredoc
@@ -825,7 +825,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'Review Reminder - Before Due', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'ReviewerReportScenario'
+        lt.scenario = 'Reviewer Report'
         lt.subject = 'Your review for {{ journal.name }} is due soon'
         lt.body = <<-TEXT.strip_heredoc
           <p>Dear Dr. {{ reviewer.last_name }}</p>
@@ -843,7 +843,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'Review Reminder - First Late', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'ReviewerReportScenario'
+        lt.scenario = 'Reviewer Report'
         lt.subject = 'Late Review for {{ journal.name }}'
         lt.body = <<-TEXT.strip_heredoc
           <p>Dear Dr. {{ reviewer.last_name }}</p>
@@ -862,7 +862,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'Review Reminder - Second Late', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'ReviewerReportScenario'
+        lt.scenario = 'Reviewer Report'
         lt.subject = 'Reminder of Late Review for {{ journal.name }}'
         lt.body = <<-TEXT.strip_heredoc
           <p>Dear Dr. {{ reviewer.last_name }}</p>
@@ -881,7 +881,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'Reviewer Appreciation', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'ReviewerReportScenario'
+        lt.scenario = 'Reviewer Report'
         lt.subject = 'Thank you for reviewing for {{ journal.name }}'
         lt.body = <<-TEXT.strip_heredoc
           <p>Dear {{ reviewer.first_name }} {{ reviewer.last_name }},</p>
@@ -901,7 +901,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'Preprint Accept', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'TahiStandardTasks::PreprintDecisionScenario'
+        lt.scenario = 'Preprint Decision'
         lt.subject = 'Manuscript Accepted for ApertarXiv'
         lt.to = '{creator email}'
         lt.body = <<-TEXT.strip_heredoc
@@ -925,7 +925,7 @@ class JournalFactory
     unless LetterTemplate.exists?(journal: @journal, ident: ident)
       LetterTemplate.where(name: 'Preprint Reject', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
-        lt.scenario = 'TahiStandardTasks::PreprintDecisionScenario'
+        lt.scenario = 'Preprint Decision'
         lt.subject = 'Manuscript Declined for ApertarXiv'
         lt.to = '{creator email}'
         lt.body = <<-TEXT.strip_heredoc

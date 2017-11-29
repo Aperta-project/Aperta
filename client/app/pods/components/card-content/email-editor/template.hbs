@@ -74,7 +74,11 @@
       </button>
       {{#if content.isRequired}}
         <span class="required-field">*</span>
-        {{card-content/validation-errors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
+        {{#unless answer.hideErrors}}
+          {{#if answer.readyIssuesArray.[0]}}
+            <span>A registered decision is required</span>
+          {{/if}}
+        {{/unless}}
       {{/if}}
     {{/unless}}
   </div>

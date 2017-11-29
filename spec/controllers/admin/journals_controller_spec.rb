@@ -30,11 +30,7 @@ describe Admin::JournalsController, redis: true do
     context 'when the user has access' do
       before do
         stub_sign_in user
-        allow(user).to receive(:can?) do |action, object|
-          expect(action).to eq(:administer)
-          expect(object).to(controller.action_name == 'create' ? be(Journal) : be_kind_of(Journal))
-          true
-        end
+        expect(user).to receive(:site_admin?).and_return(true)
       end
 
       it 'creates a journal' do
@@ -78,11 +74,7 @@ describe Admin::JournalsController, redis: true do
     context "when the user does not have access" do
       before do
         stub_sign_in user
-        allow(user).to receive(:can?) do |action, object|
-          expect(action).to eq(:administer)
-          expect(object).to(controller.action_name == 'create' ? be(Journal) : be_kind_of(Journal))
-          false
-        end
+        expect(user).to receive(:site_admin?).and_return(false)
       end
 
       it "renders status 403" do

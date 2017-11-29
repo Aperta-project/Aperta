@@ -21,9 +21,8 @@ class Admin::JournalsController < ApplicationController
   end
 
   def create
-    requires_user_can(:administer, Journal)
+    raise AuthorizationError unless current_user.site_admin?
     @journal = JournalFactory.create(journal_params)
-    journal.save!
     process_pending_logo(params[:admin_journal][:logo_url])
     respond_with(journal, serializer: AdminJournalSerializer, root: 'admin_journal')
   end

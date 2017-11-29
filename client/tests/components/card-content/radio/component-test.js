@@ -19,6 +19,10 @@ moduleForComponent(
         valueType: 'boolean'
       };
 
+      this.radioWithoutText = {
+        valueType: 'boolean'
+      };
+
       this.radioBooleanLabeledContent = {
         text: `<b class='foo'>Foo</b>`,
         valueType: 'boolean',
@@ -88,6 +92,18 @@ test(`it renders a radio button for Yes and No when value type is boolean`, func
   this.render(template);
   assert.textPresent('.card-form-element', 'Yes');
   assert.textPresent('.card-form-element', 'No');
+});
+
+test(`it renders no text if absent`, function(assert) {
+  this.set('content', this.radioWithoutText);
+  this.render(template);
+  assert.elementNotFound('.card-form-text');
+});
+
+test(`it renders text when supplied`, function(assert) {
+  this.set('content', this.radioBooleanContent);
+  this.render(template);
+  assert.elementFound('.card-form-text');
 });
 
 test(`it renders the supplied true and false labels when value type is boolean`, function(assert) {

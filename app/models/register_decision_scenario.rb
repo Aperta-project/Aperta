@@ -1,4 +1,5 @@
 class RegisterDecisionScenario < TemplateContext
+  wraps Paper
   subcontext  :journal
   subcontext  :manuscript, type: :paper, source: :object
   subcontexts :reviews,    type: :reviewer_report

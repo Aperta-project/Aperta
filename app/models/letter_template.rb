@@ -44,11 +44,11 @@ class LetterTemplate < ActiveRecord::Base
     by_journal_id(journal_id).not_including_scenarios(excluding_scenarios)
   end
 
-  private
-
   def scenario_class
     TemplateContext.scenarios[scenario]
   end
+
+  private
 
   def render_attr(template, context, sanitize: false, check_blanks: false)
     raw = Liquid::Template.parse(template)

@@ -22,8 +22,8 @@ namespace :behavior do
     end
 
     desc "Create a new autocomplete task behavior."
-    task :create_task, [:journal_id, :event, :card_id, :change_to] => [:environment] do |_t, args|
-      behavior = CreateTaskBehavior.create!(
+    task :task_completion, [:journal_id, :event, :card_id, :change_to] => [:environment] do |_t, args|
+      behavior = TaskCompletionBehavior.create!(
         journal: Journal.find(args[:journal_id].to_i),
         event_name: args['event'],
         card_id: args['card_id'],

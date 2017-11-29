@@ -154,6 +154,10 @@ paragraph-input = element ParagraphInput {
   & attribute editor-style { text }?
 }
 
+template = element Template {
+  attribute letter-template-ident { text }
+}
+
 # Contents
 description = element Description {
   attribute ident { text }?
@@ -219,6 +223,7 @@ content = (
 | tech-check
 | email-editor
 | tech-check-email
+| template
 )
 
 start = element card {

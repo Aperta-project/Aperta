@@ -125,6 +125,7 @@ class XmlCardLoader
       error_message: content.attr_value('error-message'),
       ident: content.attr_value('ident'),
       required_field: content.attr_value('required-field'),
+      letter_template_ident: content.attr_value('letter-template-ident'),
       label: content.tag_text('label'),
       instruction_text: content.tag_text('instruction-text'),
       possible_values: content.fetch_values('possible-value', [:label, :value]),

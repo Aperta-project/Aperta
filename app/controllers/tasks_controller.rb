@@ -167,13 +167,32 @@ class TasksController < ApplicationController
     )
   end
 
+  def render_template
+    template_ident = params[:ident]
+    base_obj = Task.find params[:taskId]
+    paper = base_obj.try(:paper)
+    journal = paper.try(:journal) || base_object.try(:journal)
+    raise unless journal
+    letter_template = journal.letter_templates.find_by(ident: template_ident)
+    scenario_string = letter_template.scenario.gsub(' ', '') + 'Scenario'
+    binding.pry
+    scenario_klass = scenario_string.constantize
+    letter_template.render(scenario_klass.new(base_obj))
+
+    render json: {
+      to: letter_template.to,
+      subject: letter_template.subject,
+      body: letter_template.body
+    }
+  end
+
   private
 
-  def render_sendback_template(task_obj)
+  def render_sendback_template(task)
     paper = task_obj.paper
     journal = paper.journal
     letter_template = journal.letter_templates.find_by(name: 'Sendback Reasons')
-    letter_template.render(TechCheckScenario.new(task_obj), check_blanks: false)
+    letter_template.render(TechCheckScenario.new(task), check_blanks: false)
   end
 
   def render_email_template(paper, template_name)

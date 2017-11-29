@@ -169,16 +169,41 @@ class TasksController < ApplicationController
   end
 
   def render_template
-    template_ident = params[:ident]
-    base_obj = Task.find params[:taskId]
-    paper = base_obj.try(:paper)
-    journal = paper.try(:journal) || base_object.try(:journal)
+    # figure out what objects we have
+
+    # so what do you do with an invitation object
+
+    task = Task.find params[:taskId]
+    paper = task.paper
+    journal = task.journal
+
+    alternate_object = params[:alternate_object_id]
     raise unless journal
+
+    # get the template and scenario class
+    template_ident = params[:ident]
     letter_template = journal.letter_templates.find_by(ident: template_ident)
-    scenario_string = letter_template.scenario.gsub(' ', '') + 'Scenario'
-    binding.pry
-    scenario_klass = scenario_string.constantize
-    letter_template.render(scenario_klass.new(base_obj))
+    scenario_class = letter_template.scenario_class
+
+    # get the scenario object
+    # do this in a way where the base class raises a not implemented error if info not present
+    # probably throw this on service class or priviate method
+    # how to verify this at the xml level
+
+    if scenario_class.wraps == Paper
+      scenario_object = paper
+    elsif scenario_class.wraps == Task
+      scenario_object = task
+    elsif scenario_class.wraps == Journal
+      scenario_object = journal
+    else
+      alternate_object_type = params[:alternate_object_type]
+      alternate_object_class = alternate_object_type.safe_constantize
+      alternate_object_id = params[:alternate_object_id]
+      scenario_object = alternate_object_class.find(alternate_object_id)
+    end
+
+    letter_template.render(scenario_class.new(scenario_object))
 
     render json: {
       to: letter_template.to,

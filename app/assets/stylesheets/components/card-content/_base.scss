@@ -17,14 +17,18 @@
 .card-content {
     .question-text, .content-text {
         font-size: 16px;
-        line-height:20px;
+        line-height: 20px;
     }
 }
 
 .card-form-element {
-  width:100%;
+  width: 100%;
 }
 
 .card-form-label {
-  display:block;
+  display: block;
+}
+
+.card-form-text {
+  margin-bottom: 10px;
 }

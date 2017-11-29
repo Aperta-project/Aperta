@@ -2,6 +2,7 @@
   .content-text {
     margin-top: 10px;
   }
+
   label {
     .required-field {
         position: inherit;
@@ -12,12 +13,13 @@
 
 .card-checkbox {
   .card-form-element {
-   margin:0; 
+   margin:0;
   }
+
   .card-form-label {
-    display:inline;
-    font-size:14px;
-    font-weight:normal;
-    margin-left:5px;
+    display: inline;
+    font-size: 14px;
+    font-weight: normal;
+    margin-left: 5px;
   }
 }

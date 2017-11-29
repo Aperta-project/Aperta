@@ -133,14 +133,21 @@ describe LetterTemplate do
         scenario: 'Preprint Decision',
         journal: journal)
     end
-    it 'returns all scenarios if preprint feature flag is enabled' do
-      FeatureFlag.create(name: 'PREPRINT', active: true)
-      templates = LetterTemplate.related_to_journal(journal.id)
-      expect(templates.map(&:scenario)).to match(['Reviewer Report', 'Preprint Decision'])
+    let!(:tech_check_letter_template) do
+      FactoryGirl.create(:letter_template,
+        name: 'three',
+        scenario: 'Tech Check',
+        journal: journal)
     end
 
-    it 'returns all scenarios except preprint ones if feature flag is disabled' do
-      FeatureFlag.create(name: 'PREPRINT', active: false)
+    it 'returns all scenarios if preprint and card configuration feature flags are enabled' do
+      FeatureFlag.create(name: 'PREPRINT', active: true)
+      FeatureFlag.create(name: 'CARD_CONFIGURATION', active: true)
+      templates = LetterTemplate.related_to_journal(journal.id)
+      expect(templates.map(&:scenario)).to match(['Reviewer Report', 'Preprint Decision', 'Tech Check'])
+    end
+
+    it 'returns all scenarios except preprint and card configuration ones if their feature flags are disabled' do
       templates = LetterTemplate.related_to_journal(journal.id)
       expect(templates.map(&:scenario)).to match(['Reviewer Report'])
     end

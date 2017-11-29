@@ -128,6 +128,14 @@ tech-check-email = element TechCheckEmail {
   content*
 }
 
+email-editor = element EmailEditor {
+  (input-attributes
+  & attribute letter-template { text }?
+  & attribute button-label { text }?
+  & attribute value-type { "html" }),
+  content*
+}
+
 sendback-reason = element SendbackReason {
   input-attributes
   & attribute value-type { "boolean" }
@@ -209,6 +217,7 @@ content = (
 | sendback-reason
 | short-input
 | tech-check
+| email-editor
 | tech-check-email
 )
 

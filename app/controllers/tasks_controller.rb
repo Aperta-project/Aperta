@@ -73,6 +73,18 @@ class TasksController < ApplicationController
     respond_with(task)
   end
 
+  def load_email_template
+    requires_user_can :edit, task
+    @task = Task.find(params[:id])
+    template_name = params[:letter_template_name]
+    @letter_template = render_email_template(@task.paper, template_name)
+    render json:  {
+      to: @letter_template.to,
+      subject: @letter_template.subject,
+      body: @letter_template.body
+    }
+  end
+
   def send_message
     requires_user_can :edit, task
     users = User.where(id: task_email_params[:recipients])
@@ -85,6 +97,32 @@ class TasksController < ApplicationController
       )
     end
     head :no_content
+  end
+
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
+  def send_message_email
+    requires_user_can :edit, task
+    users = User.where(email: params[:recipients])
+    sent_to_users = []
+    users.each do |user|
+      sent_to_users << user.email
+      GenericMailer.delay.send_email(
+        subject: params[:subject],
+        body: params[:body],
+        to: user.email,
+        task: task
+      )
+    end
+    d = Time.now.getlocal
+    initiator = current_user.email
+    render json:  {
+      to: sent_to_users,
+      from: initiator,
+      date: d.strftime("%h %d, %Y %r"),
+      subject: params[:subject],
+      body: params[:body]
+    }
   end
 
   def sendback_preview
@@ -136,6 +174,12 @@ class TasksController < ApplicationController
     journal = paper.journal
     letter_template = journal.letter_templates.find_by(name: 'Sendback Reasons')
     letter_template.render(TechCheckScenario.new(task_obj), check_blanks: false)
+  end
+
+  def render_email_template(paper, template_name)
+    journal = paper.journal
+    letter_template = journal.letter_templates.find_by(ident: template_name)
+    letter_template.render(letter_template.scenario_class.new(paper), check_blanks: false)
   end
 
   def paper

@@ -8,22 +8,16 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   isUploading: false,
   restless: Ember.inject.service(),
 
-  timeSent: Ember.computed('model', function() {
-    if(Ember.isBlank(this.get('model.sentAt'))) {
-      let start = moment();
-      // rounding down the minutes to the nearest half-hour
-      if (start.minutes() < 30) {
-        start.minutes(0);
-      } else {
-        start.minutes(30);
-      }
-      return start.format('H:mm');
-    }
-    return moment.utc(this.get('model.sentAt')).format('H:mm');
+  timeSent: Ember.computed('model.sentAt', function() {
+    let sentAt = this.get('model.sentAt');
+    let time = Ember.isBlank(sentAt) ? moment.utc() : moment.utc(sentAt);
+    return time.format('H:mm');
   }),
 
   dateSent: Ember.computed('model', function() {
-    return moment(this.get('model.sentAt')).format('MM/DD/YYYY');
+    let sentAt = this.get('model.sentAt');
+    let date = Ember.isBlank(sentAt) ? moment.utc() : moment.utc(sentAt);
+    return date.format('MM/DD/YYYY');
   }),
 
   prepareModelDate() {

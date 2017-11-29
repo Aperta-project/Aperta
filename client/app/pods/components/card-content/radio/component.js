@@ -24,6 +24,10 @@ export default Ember.Component.extend({
     }
   },
 
+  hasText: Ember.computed('content.text', function () {
+    return Ember.isPresent(this.get('content.text'));
+  }),
+
   trueLabel: Ember.computed('content.possibleValues', function () {
     return this.findLabelByValue(true) || 'Yes';
   }),

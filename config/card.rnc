@@ -35,6 +35,13 @@ html = any-element* & text
 any-attribute = attribute * { text }
 any-element = element * { any-attribute*, html }
 
+file-validation =
+  element validation {
+    attribute validation-type { "file-name" }
+    & element error-message { text }
+    & element validator { text }
+  }
+
 instructions-label-required-text =
   element instruction-text { html }?
   & element label { html }?
@@ -45,12 +52,11 @@ instructions-label-optional-text =
   & element label { html }?
   & element text { html }?
 
-file-validation =
-  element validation {
-    attribute validation-type { "file-name" }
-    & element error-message { text }
-    & element validator { text }
-  }
+
+input-attributes =
+  attribute ident { text }?
+  & required-field?
+  & allow-annotations?
 
 string-validation =
   element validation {
@@ -58,11 +64,6 @@ string-validation =
     & element error-message { text }
     & element validator { text }
   }
-
-input-attributes =
-  attribute ident { text }?
-  & required-field?
-  & allow-annotations?
 
 text-input-attributes =
   input-attributes
@@ -72,14 +73,7 @@ text-input-attributes =
 
 
 # Inputs
-radio-input = element Radio {
-  input-attributes
-  & attribute value-type { "text" | "boolean" }
-  & default-answer-text?
-  & instructions-label-optional-text
-  & possible-value*
-  & content*
-}
+# Please keep these in alphabetical order.
 
 check-box-input = element CheckBox {
   input-attributes
@@ -87,17 +81,6 @@ check-box-input = element CheckBox {
   & default-answer-boolean?
   & instructions-label-optional-text
   & content*
-}
-
-file-uploader = element FileUploader {
-  input-attributes
-  & attribute value-type { "attachment" | "manuscript" | "sourcefile" }
-  & attribute error-message { text }?
-  & attribute allow-file-captions    { "true" | "false" }?
-  & attribute allow-multiple-uploads { "true" | "false" }?
-  & instructions-label-optional-text
-  & file-validation*
-  & accepted-file-type*
 }
 
 date-picker = element DatePicker {
@@ -115,25 +98,38 @@ dropdown-input = element Dropdown {
   & content*
 }
 
-tech-check = element TechCheck {
-  input-attributes
-  & attribute value-type { "boolean" }
-  & default-answer-boolean?
-  & instructions-label-required-text
-  & content*
-}
-
-tech-check-email = element TechCheckEmail {
-  attribute ident { text }?,
-  content*
-}
-
 email-editor = element EmailEditor {
   (input-attributes
   & attribute letter-template { text }?
   & attribute button-label { text }?
   & attribute value-type { "html" }),
   content*
+}
+
+file-uploader = element FileUploader {
+  input-attributes
+  & attribute value-type { "attachment" | "manuscript" | "sourcefile" }
+  & attribute error-message { text }?
+  & attribute allow-file-captions    { "true" | "false" }?
+  & attribute allow-multiple-uploads { "true" | "false" }?
+  & instructions-label-optional-text
+  & file-validation*
+  & accepted-file-type*
+}
+
+paragraph-input = element ParagraphInput {
+  text-input-attributes
+  & attribute value-type { "text" | "html" }
+  & attribute editor-style { text }?
+}
+
+radio-input = element Radio {
+  input-attributes
+  & attribute value-type { "text" | "boolean" }
+  & default-answer-text?
+  & instructions-label-optional-text
+  & possible-value*
+  & content*
 }
 
 sendback-reason = element SendbackReason {
@@ -148,10 +144,17 @@ short-input = element ShortInput {
   & attribute value-type { "text" }
 }
 
-paragraph-input = element ParagraphInput {
-  text-input-attributes
-  & attribute value-type { "text" | "html" }
-  & attribute editor-style { text }?
+tech-check = element TechCheck {
+  input-attributes
+  & attribute value-type { "boolean" }
+  & default-answer-boolean?
+  & instructions-label-required-text
+  & content*
+}
+
+tech-check-email = element TechCheckEmail {
+  attribute ident { text }?,
+  content*
 }
 
 # Contents

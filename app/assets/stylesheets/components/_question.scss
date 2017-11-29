@@ -36,8 +36,8 @@
 
 .question-text {
   margin-bottom: 10px;
-  font-size: 1.4em;
-  line-height: 1.2em;
+  font-size: 16px;
+  line-height: 20px;
 
   &.required::after {
     content: ' *';

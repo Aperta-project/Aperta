@@ -25,8 +25,8 @@
       top: -0.1rem;
       right: -1.15rem;
       content: '*';
-      color: $aperta-green;
-      font-size: 24px;
+      color: $aperta-red;
+      font-size: inherit;
     }
   }
 }
@@ -38,8 +38,6 @@
 .inset-form-control {
   position: relative;
   margin-bottom: 15px;
-
-  label { color: $aperta-grey; }
 
   .rich-text-label {
     font-size: 14pt;

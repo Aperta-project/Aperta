@@ -74,12 +74,13 @@ class CardContent < ActiveRecord::Base
   SUPPORTED_VALUE_TYPES = %w[attachment boolean question-set text html].freeze
 
   # Note that value_type really refers to the value_type of answers associated
-  # with this piece of card content. In the old NestedQuestion world, both
-  # NestedQuestionAnswer and NestedQuestion had a value_type column, and the
-  # value_type was duplicated between them. In the hash below, we say that the
+  # with this piece of card content. In the hash below, we say that the
   # 'short-input' answers will have a 'text' value type, while 'radio' answers
   # can either be boolean or text.
-  # Content types that don't store answers ('display-children, etc') are omitted from this check
+  #
+  # Content types that don't store answers ('display-children, etc') are omitted
+  # from this check, meaning 'foo': [nil] is not necessary to spell out for the
+  # validation.
   VALUE_TYPES_FOR_CONTENT =
     {
       'dropdown': ['text', 'boolean'],
@@ -90,10 +91,8 @@ class CardContent < ActiveRecord::Base
       'email-editor': ['html'],
       'radio': ['boolean', 'text'],
       'tech-check': ['boolean'],
-      'tech-check-email': [nil],
       'date-picker': ['text'],
-      'sendback-reason': ['boolean'],
-      'repeat': [nil]
+      'sendback-reason': ['boolean']
     }.freeze.with_indifferent_access
 
   # Although we want to validate the various combinations of content types

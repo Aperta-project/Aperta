@@ -7,6 +7,11 @@
       margin-left: 0px;
     }
   }
+  .mce-statusbar {
+    .mce-container-body {
+      height: 1.5rem;
+    }
+  }
 }
 
 .read-only .rich-text-editor {

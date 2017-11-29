@@ -20,10 +20,7 @@ class LetterTemplate < ActiveRecord::Base
   before_validation :canonicalize_email_addresses
 
   def self.hidden_scenarios
-    scenarios = []
-    scenarios.push('Tech Check')        unless FeatureFlag[:CARD_CONFIGURATION]
-    scenarios.push('Preprint Decision') unless FeatureFlag[:PREPRINT]
-    scenarios
+    TemplateContext.feature_flagged_scenarios.keys
   end
 
   def render(context, check_blanks: false)

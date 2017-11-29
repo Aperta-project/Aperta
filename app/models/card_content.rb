@@ -40,6 +40,8 @@ class CardContent < ActiveRecord::Base
       value_type
       visible_with_parent_answer
       wrapper_tag
+      letter_template
+      button_label
     ]
 
   belongs_to :card_version, inverse_of: :card_contents
@@ -85,6 +87,7 @@ class CardContent < ActiveRecord::Base
       'check-box': ['boolean'],
       'file-uploader': ['attachment', 'manuscript', 'sourcefile'],
       'paragraph-input': ['text', 'html'],
+      'email-editor': ['html'],
       'radio': ['boolean', 'text'],
       'tech-check': ['boolean'],
       'tech-check-email': [nil],
@@ -191,6 +194,12 @@ class CardContent < ActiveRecord::Base
         'min' => min,
         'max' => max,
         'item-name' => item_name
+      }
+    when 'email-editor'
+      {
+        'letter-template' => letter_template,
+        'button-label' => button_label,
+        'required-field' => required_field
       }
     else
       {}

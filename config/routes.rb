@@ -208,7 +208,9 @@ Tahi::Application.routes.draw do
       resources :questions, only: [:index]
       resources :repetitions, only: [:index]
       resources :snapshots, only: [:index]
+      get :load_email_template, on: :member
       put :send_message, on: :member
+      put :send_message_email, on: :member
       put :sendback_email, on: :member
       put :sendback_preview, on: :member
       namespace :eligible_users, module: nil do

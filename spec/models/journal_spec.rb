@@ -244,7 +244,7 @@ describe Journal do
       journal.letter_templates.create!(scenario: 'Unwanted', name: 'foo', subject: 'foo', body: 'foo')
       expect(journal.letter_templates.pluck(:scenario)).to eq ['Unwanted']
 
-      allow(TemplateContext).to receive(:feature_flagged_scenarios).and_return('Unwanted' => Object)
+      allow(TemplateContext).to receive(:feature_inactive_scenarios).and_return(['Unwanted'])
       expect(journal.letter_templates.reload).to be_empty
     end
   end

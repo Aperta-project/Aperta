@@ -19,10 +19,6 @@ class LetterTemplate < ActiveRecord::Base
   validate :bcc_ok?
   before_validation :canonicalize_email_addresses
 
-  def self.hidden_scenarios
-    TemplateContext.feature_flagged_scenarios.keys
-  end
-
   def render(context, check_blanks: false)
     tap do |my|
       # This is just an in-memory edit (render) of the letter template

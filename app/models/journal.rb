@@ -16,7 +16,7 @@ class Journal < ActiveRecord::Base
   has_many :roles, inverse_of: :journal
   has_many :assignments, as: :assigned_to
   has_many :discussion_topics, through: :papers, inverse_of: :journal
-  has_many :letter_templates, -> { where.not(scenario: LetterTemplate.hidden_scenarios) }
+  has_many :letter_templates, -> { where.not(scenario: TemplateContext.feature_inactive_scenarios) }
 
   has_many :manuscript_manager_templates, dependent: :destroy
   has_many :journal_task_types, inverse_of: :journal, dependent: :destroy

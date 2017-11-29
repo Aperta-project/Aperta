@@ -29,7 +29,7 @@ module DataTransformation
     end
 
     def fix_unclosed_ols
-      card_contents = CardContent.joins(:content_attributes).where(ident: 'competing_interests--has_competing_interests')
+      card_contents = CardContent.joins(:entity_attributes).where(ident: 'competing_interests--has_competing_interests')
       assert(
         card_contents.present?,
         'expected at least one card content to be present - was the card content deleted?'

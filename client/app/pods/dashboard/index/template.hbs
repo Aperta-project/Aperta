@@ -119,10 +119,10 @@
             <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
               <thead class="manuscript-list-heading {{if inactivePapersVisible "gray-line"}} inactive-papers" {{action "toggleInactiveContainer"}}>
                 <tr>
-                  <th class="col-xs-9 hug-left">{{inactiveManuscriptsHeading}}</th>
+                  <th class="col-xs-8 hug-left">{{inactiveManuscriptsHeading}}</th>
                   {{#if inactivePapersVisible}}
-                    <th class="col-xs-1 text-center">Role</th>
-                    <th class="col-xs-2 text-center">Status</th>
+                    <th class="col-xs-2 hug-left">Role</th>
+                    <th class="col-xs-2">Status</th>
                   {{/if}}
                 </tr>
               </thead>

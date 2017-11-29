@@ -26,6 +26,7 @@ class CorrespondenceController < ApplicationController
 
   def update
     correspondence = Correspondence.find(params[:id])
+    correspondence.sent_at = params.dig(:correspondence, :date)
     if correspondence.external? && correspondence.update(correspondence_params)
       Activity.correspondence_edited! correspondence, user: current_user
       render json: correspondence, status: :ok

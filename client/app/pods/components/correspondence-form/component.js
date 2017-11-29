@@ -9,18 +9,21 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   restless: Ember.inject.service(),
 
   timeSent: Ember.computed('model', function() {
-    let start = moment();
-    // rounding down the minutes to the nearest half-hour
-    if (start.minutes() < 30) {
-      start.minutes(0);
-    } else {
-      start.minutes(30);
+    if(Ember.isBlank(this.get('model.sentAt'))) {
+      let start = moment();
+      // rounding down the minutes to the nearest half-hour
+      if (start.minutes() < 30) {
+        start.minutes(0);
+      } else {
+        start.minutes(30);
+      }
+      return start.format('H:mm');
     }
-    return start.format('H:mm');
+    return moment.utc(this.get('model.sentAt')).format('H:mm');
   }),
 
   dateSent: Ember.computed('model', function() {
-    return moment(this.get('model.date')).format('MM/DD/YYYY');
+    return moment(this.get('model.sentAt')).format('MM/DD/YYYY');
   }),
 
   prepareModelDate() {

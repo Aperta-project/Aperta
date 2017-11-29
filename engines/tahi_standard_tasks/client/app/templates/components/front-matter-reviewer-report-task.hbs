@@ -9,7 +9,7 @@
                          dueDate=currentReviewerReport.dueDatetime.dueAt}}
     {{/if}}
     {{#if task.isSubmitted}}
-      {{front-matter-reviewer-report-questions report=currentReviewerReport readOnly=true}}
+      {{front-matter-reviewer-report-questions report=currentReviewerReport readOnly=noActiveAdminEdit}}
       {{reviewer-report-edit-notes currentReviewerReport=currentReviewerReport}}
     {{else}}
       {{front-matter-reviewer-report-questions report=currentReviewerReport readOnly=isNotEditable}}

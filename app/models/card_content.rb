@@ -10,6 +10,40 @@ class CardContent < ActiveRecord::Base
 
   acts_as_nested_set
 
+  has_attributes \
+    boolean: %w[
+      allow_annotations
+      allow_file_captions
+      allow_multiple_uploads
+      required_field
+    ],
+    json: %w[possible_values],
+    integer: %w[
+      min
+      max
+    ],
+    string: %w[
+      child_tag
+      condition
+      custom_child_class
+      custom_class
+      default_answer_value
+      editor_style
+      error_message
+      instruction_text
+      item_name
+      key
+      label
+      max
+      min
+      text
+      value_type
+      visible_with_parent_answer
+      wrapper_tag
+      letter_template
+      button_label
+    ]
+
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
   has_many :card_content_validations, dependent: :destroy
@@ -40,12 +74,13 @@ class CardContent < ActiveRecord::Base
   SUPPORTED_VALUE_TYPES = %w[attachment boolean question-set text html].freeze
 
   # Note that value_type really refers to the value_type of answers associated
-  # with this piece of card content. In the old NestedQuestion world, both
-  # NestedQuestionAnswer and NestedQuestion had a value_type column, and the
-  # value_type was duplicated between them. In the hash below, we say that the
+  # with this piece of card content. In the hash below, we say that the
   # 'short-input' answers will have a 'text' value type, while 'radio' answers
   # can either be boolean or text.
-  # Content types that don't store answers ('display-children, etc') are omitted from this check
+  #
+  # Content types that don't store answers ('display-children, etc') are omitted
+  # from this check, meaning 'foo': [nil] is not necessary to spell out for the
+  # validation.
   VALUE_TYPES_FOR_CONTENT =
     {
       'dropdown': ['text', 'boolean'],
@@ -53,12 +88,11 @@ class CardContent < ActiveRecord::Base
       'check-box': ['boolean'],
       'file-uploader': ['attachment', 'manuscript', 'sourcefile'],
       'paragraph-input': ['text', 'html'],
+      'email-editor': ['html'],
       'radio': ['boolean', 'text'],
       'tech-check': ['boolean'],
-      'tech-check-email': [nil],
       'date-picker': ['text'],
-      'sendback-reason': ['boolean'],
-      'repeat': [nil]
+      'sendback-reason': ['boolean']
     }.freeze.with_indifferent_access
 
   # Although we want to validate the various combinations of content types
@@ -106,7 +140,6 @@ class CardContent < ActiveRecord::Base
   def content_attrs
     {
       'ident' => ident,
-      'content-type' => content_type,
       'value-type' => value_type,
       'child-tag' => child_tag,
       'custom-class' => custom_class,
@@ -161,6 +194,12 @@ class CardContent < ActiveRecord::Base
         'max' => max,
         'item-name' => item_name
       }
+    when 'email-editor'
+      {
+        'letter-template' => letter_template,
+        'button-label' => button_label,
+        'required-field' => required_field
+      }
     else
       {}
     end
@@ -169,7 +208,8 @@ class CardContent < ActiveRecord::Base
 
   # rubocop:disable Metrics/AbcSize
   def to_xml(options = {})
-    setup_builder(options).tag!('content', content_attrs) do |xml|
+    tag_name = content_type.underscore.camelize
+    setup_builder(options).tag!(tag_name, content_attrs) do |xml|
       render_tag(xml, 'instruction-text', instruction_text)
       render_raw(xml, 'text', text)
       render_tag(xml, 'label', label)
@@ -195,8 +235,10 @@ class CardContent < ActiveRecord::Base
 
   # recursively traverse nested card_contents
   def traverse(visitor)
+    visitor.enter(self)
     visitor.visit(self)
     children.each { |card_content| card_content.traverse(visitor) }
+    visitor.leave(self)
   end
 
   # Return the ids of the children. If quick_children has been set, use that,
@@ -218,7 +260,7 @@ class CardContent < ActiveRecord::Base
   # an entire traversable tree in one database query.
   # Returns an array of CardContent objects.
   def preload_descendants
-    all = [self] + descendants.includes(:content_attributes, :card_content_validations).to_a
+    all = [self] + descendants.includes(:entity_attributes, :card_content_validations).to_a
     children = all.group_by(&:parent_id)
     all.each do |d|
       d.quick_children = children.fetch(d.id, [])

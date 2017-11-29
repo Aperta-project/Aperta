@@ -86,6 +86,7 @@ feature "Dashboard", js: true do
     before do
       FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
       FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
+      FactoryGirl.create :feature_flag, name: "PREPRINT"
 
       paper.draft_decision.invitations << invitation
       ReviewerReportTaskCreator.new(

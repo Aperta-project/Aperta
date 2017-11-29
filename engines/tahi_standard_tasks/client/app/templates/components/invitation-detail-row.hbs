@@ -27,8 +27,8 @@
               <span>Completed {{format-date invitation.reviewerReport.statusDatetime format="MMM D, YYYY"}}</span>
             {{else}}
               <span>
-                {{#if invitation.reviewerReport.dueAt}}
-                  <p>Review due {{format-date invitation.reviewerReport.dueAt format="MMM D, YYYY"}}</p>
+                {{#if invitation.reviewerReport.dueDatetime.dueAt}}
+                  <p>Review due {{format-date invitation.reviewerReport.dueDatetime.dueAt format="MMM D, YYYY"}}</p>
                 {{else}}
                   <p>Review pending</p>
                 {{/if}}

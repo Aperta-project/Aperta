@@ -10,10 +10,18 @@ class TemplateContext < Liquid::Drop
       'Reviewer Report'   => ReviewerReportScenario,
       'Invitation'        => InvitationScenario,
       'Paper Reviewer'    => InvitationScenario,
-      'Preprint Decision' => PaperScenario,
-      'Decision'          => RegisterDecisionScenario,
-      'Tech Check'        => TechCheckScenario
-    }
+      'Decision'          => RegisterDecisionScenario
+    }.merge(feature_flagged_scenarios)
+  end
+
+  # temporary added for https://jira.plos.org/jira/browse/APERTA-11721
+  # we should remove this once the preprint feature flag is removed
+  # and move these scenarios back into ::scenarios
+  def self.feature_flagged_scenarios
+    scenarios = {}
+    scenarios['Preprint Decision'] = PaperScenario if FeatureFlag[:PREPRINT]
+    scenarios['Tech Check'] = TechCheckScenario if FeatureFlag[:CARD_CONFIGURATION]
+    scenarios
   end
 
   # Unless already defined, this defines a method which returns a TemplateContext.
@@ -49,6 +57,12 @@ class TemplateContext < Liquid::Drop
     end
   end
 
+  def self.wraps(klass = nil)
+    @wrapped_type ||= klass if klass
+
+    @wrapped_type
+  end
+
   def self.merge_fields
     @merge_fields ||= MergeField.list_for(self)
   end
@@ -58,6 +72,11 @@ class TemplateContext < Liquid::Drop
   end
 
   def initialize(object)
+    expected_type =  self.class.instance_variable_get('@wrapped_type')
+    if expected_type && !object.is_a?(expected_type)
+      raise "#{self.class} expected to wrap a #{expected_type} but got a #{object.class}"
+    end
+
     @object = object
   end
 

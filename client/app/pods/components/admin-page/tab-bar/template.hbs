@@ -21,12 +21,10 @@
 
   {{/if}}
 
-  {{#if (feature-flag "EMAIL_TEMPLATE")}}
-    {{#link-to 'admin.journals.emailtemplates' class='admin-nav-emails'}}
-      {{fa-icon "envelope"}}
-      Emails
-    {{/link-to}}
-  {{/if}}
+  {{#link-to 'admin.journals.emailtemplates' class='admin-nav-emails'}}
+    {{fa-icon "envelope"}}
+    Emails
+  {{/link-to}}
 
   {{#link-to 'admin.journals.users' class='admin-nav-users'}}
     {{fa-icon "users"}}

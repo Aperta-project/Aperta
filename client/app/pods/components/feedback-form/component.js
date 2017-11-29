@@ -7,6 +7,7 @@ export default Ember.Component.extend({
   close: null, //passed-in action
   remarks: null,
   allowUploads: true,
+  displayFeedbackForm: false,
   showSuccessCheckmark: true,
 
   screenshots: Ember.computed(() => []),
@@ -24,6 +25,10 @@ export default Ember.Component.extend({
       ).then(()=> {
         this.set('feedbackSubmitted', true);
       });
+    },
+
+    toggleForm() {
+      this.toggleProperty('displayFeedbackForm');
     },
 
     uploadFinished(data, filename) {

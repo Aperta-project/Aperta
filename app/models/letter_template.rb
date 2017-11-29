@@ -4,6 +4,9 @@
 class LetterTemplate < ActiveRecord::Base
   belongs_to :journal
 
+  scope :by_journal_id, ->(journal_id) { where(journal_id: journal_id) }
+  scope :not_including_scenarios, ->(scenarios) { where.not(scenario: scenarios) }
+
   validates :name, presence: { message: "This field is required" }, uniqueness: {
     scope: [:journal_id],
     case_sensitive: false,
@@ -34,11 +37,18 @@ class LetterTemplate < ActiveRecord::Base
     scenario_class.merge_fields
   end
 
-  private
+  # temporary until removal of feature flag
+  def self.related_to_journal(journal_id)
+    # not_including_scenarios scope does not affect by_journal_id query
+    # if excluding_scenarios array is empty
+    by_journal_id(journal_id).not_including_scenarios(excluding_scenarios)
+  end
 
   def scenario_class
     TemplateContext.scenarios[scenario]
   end
+
+  private
 
   def render_attr(template, context, sanitize: false, check_blanks: false)
     raw = Liquid::Template.parse(template)
@@ -92,5 +102,12 @@ class LetterTemplate < ActiveRecord::Base
       .map(&:strip)                            # Git rid of surrounding whitespace
       .map { |a| a.gsub(/.*<(.+)>$/, '\1') }   # Strip angle brackets and any leading friendly names that weren't quoted
       .join(',')                               # ...and join them back together with the Tahi standard email separator
+  end
+
+  def self.excluding_scenarios
+    scenarios = []
+    scenarios.push('Tech Check') unless FeatureFlag[:CARD_CONFIGURATION]
+    scenarios.push('Preprint Decision') unless FeatureFlag[:PREPRINT]
+    scenarios
   end
 end

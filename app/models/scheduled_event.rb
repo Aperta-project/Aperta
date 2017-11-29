@@ -13,13 +13,13 @@ class ScheduledEvent < ActiveRecord::Base
   scope :completed, -> { where(state: 'completed') }
   scope :passive, -> { where(state: 'passive') }
   scope :due_to_trigger, -> { active.where('dispatch_at < ?', DateTime.now.in_time_zone) }
-  scope :serviceable, -> { where(state: ['passive', 'active', 'completed']) }
+  scope :serviceable, -> { where(state: ['passive', 'active', 'completed', 'inactive']) }
 
   before_save :deactivate, if: :should_deactivate?
   before_save :reactivate, if: :should_reactivate?
 
   def should_deactivate?
-    dispatch_at && dispatch_at < DateTime.now.in_time_zone && active?
+    dispatch_at && dispatch_at < DateTime.now.in_time_zone && (active? || passive?)
   end
 
   def should_reactivate?
@@ -44,7 +44,7 @@ class ScheduledEvent < ActiveRecord::Base
     end
 
     event(:deactivate) do
-      transitions from: :active, to: :inactive
+      transitions from: [:active, :passive], to: :inactive
     end
 
     event(:switch_off) do

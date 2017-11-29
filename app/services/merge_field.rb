@@ -37,4 +37,8 @@ class MergeField
     @subcontexts_by_parent[parent_context] ||= {}
     @subcontexts_by_parent[parent_context][subcontext_name] = props
   end
+
+  def self.subcontexts_for(context_class)
+    @subcontexts_by_parent[context_class] || {}
+  end
 end

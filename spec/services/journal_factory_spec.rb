@@ -875,6 +875,7 @@ describe JournalFactory do
             [
               'assign_roles',
               'edit',
+              'edit_answers',
               'edit_authors',
               'edit_related_articles',
               'manage_collaborators',
@@ -1105,6 +1106,7 @@ describe JournalFactory do
               'assign_roles',
               'edit',
               'edit_authors',
+              'edit_answers',
               'edit_related_articles',
               'manage_collaborators',
               'manage_paper_authors',

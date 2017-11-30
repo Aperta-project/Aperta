@@ -5,8 +5,25 @@
 {{else}}
   <div class='long-status'>
   {{#if (eq report.status 'completed')}}
-  <h3>{{report.revision}} Review</h3>
+    <h3>
+      {{report.revision}} Review
+      {{#if (can 'edit_answers' report.task.paper)}}
+        <span id="edit-reviewer-report" {{action "editReport"}} class="{{editingClass}}">
+          {{fa-icon icon="pencil"}}
+          Edit
+        </span>
+        {{#if report.editWaiting}}
+          {{progress-spinner visible=true size="mini"}}
+        {{/if}}
+
+      {{/if}}
+    </h3>
     Completed {{statusDate}}
+    {{#each inactiveAdminEdits as |edit|}}
+      <div class="report-edit-description">
+        <span><em>Edited by {{edit.user.name}} on {{format-date edit.updatedAt}}:</em> {{edit.notes}}</span>
+      </div>
+    {{/each}}
   {{else}}
   <strong>{{reviewerStatus}}:</strong> {{statusMessage}}
   {{#if (and canEditDueDate

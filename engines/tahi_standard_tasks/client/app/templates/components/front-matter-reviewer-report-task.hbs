@@ -9,9 +9,10 @@
                          dueDate=currentReviewerReport.dueDatetime.dueAt}}
     {{/if}}
     {{#if task.isSubmitted}}
-      {{front-matter-reviewer-report-questions model=currentReviewerReport readOnly=true}}
+      {{front-matter-reviewer-report-questions report=currentReviewerReport readOnly=noActiveAdminEdit}}
+      {{reviewer-report-edit-notes currentReviewerReport=currentReviewerReport}}
     {{else}}
-      {{front-matter-reviewer-report-questions model=currentReviewerReport readOnly=isNotEditable}}
+      {{front-matter-reviewer-report-questions report=currentReviewerReport readOnly=isNotEditable}}
 
       {{#if currentReviewerReport.needsSubmission }}
       <div class="reviewer-report-confirmation">
@@ -46,7 +47,7 @@
             <div id="collapse-{{unbound report.decision.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="decision-{{unbound report.decision.id}}">
               <div class="panel-body">
                 {{reviewer-report-status report=report}}
-                {{front-matter-reviewer-report-questions model=report readOnly=true}}
+                {{front-matter-reviewer-report-questions report=report readOnly=true}}
               </div>
             </div>
           </div>

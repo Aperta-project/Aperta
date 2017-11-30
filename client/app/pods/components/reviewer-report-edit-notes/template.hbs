@@ -1,0 +1,16 @@
+{{#if currentReviewerReport.activeAdminEdit}}
+  <div class="card-content-field-set">
+    <h4>Please document the edits you've made</h4>
+    <div class="required-standalone">
+      <span class="required-label">Editor Note</span>
+      {{textarea class=notesClass value=activeEdit.notes focusIn=(action 'clearNotesError')}}
+      {{#if notesEmpty}}
+        <span class="error">{{fa-icon 'warning'}} This field is required.</span>
+      {{/if}}
+    </div>
+  </div>
+  <div class="right-align-contents">
+    <button class="button-secondary display-while-disabled" {{action "cancelEdit"}}>cancel</button>
+    <button class="button-primary button--green display-while-disabled" {{action "saveEdit"}}>save</button>
+  </div>
+{{/if}}

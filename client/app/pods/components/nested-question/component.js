@@ -99,7 +99,7 @@ export default Component.extend({
   }).keepLatest(),
 
   _saveAnswer(answer){
-    if(answer.get('owner.isNew')){
+    if(answer.get('owner.isNew') || answer.get('owner.cancelPendingAnswerSaves')){
       // no-op
     } else if(answer.get('wasAnswered')){
       // Handle the edge case where an answer was deleted in the UI, and two inputs get posted

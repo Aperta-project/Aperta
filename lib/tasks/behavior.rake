@@ -16,7 +16,7 @@ namespace :behavior do
         journal: Journal.find(args[:journal_id].to_i),
         event_name: args['event'],
         card_id: args['card_id'],
-        duplicates_allowed: args['duplicates_allowed']
+        duplicates_allowed: ActiveRecord::Type::Boolean.new.type_cast_from_user(args['duplicates_allowed'])
       )
       STDOUT.write("Created #{behavior.inspect}\n")
     end

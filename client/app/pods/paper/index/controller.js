@@ -5,7 +5,8 @@ import Discussions from 'tahi/mixins/discussions/route-paths';
 
 const {
   computed,
-  computed: { equal }
+  computed: { equal },
+  observer,
 } = Ember;
 
 export default Controller.extend(PaperBase, Discussions, {
@@ -62,6 +63,10 @@ export default Controller.extend(PaperBase, Discussions, {
   }),
 
   showPaperSubmitOverlay: false,
+
+  fileChanged: observer('paper.file.fileHash', function() {
+    this.set('paper.processing', false);
+  }),
 
   actions: {
     toggleSubmissionProcess() {

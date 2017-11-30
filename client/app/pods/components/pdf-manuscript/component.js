@@ -3,10 +3,6 @@ import LazyLoader from 'tahi/lib/lazy-loader';
 import ENV from 'tahi/config/environment';
 import { paperDownloadPath } from 'tahi/utils/api-path-helpers';
 
-const {
-  observer,
-} = Ember;
-
 // The template for this component comes from the pdf.js viewer template
 // (viewer.html). It was copied into the template and then edited to suit our
 // needs. The differences are primarily in the toolbar. We have removed some of
@@ -21,10 +17,6 @@ export default Ember.Component.extend({
     this._super(...arguments);
     Ember.run.scheduleOnce('afterRender', this, this.refreshPdf);
   },
-
-  fileChanged: observer('paper.file.fileHash', function() {
-    this.refreshPdf();
-  }),
 
   loadPdf: function() {
     const url = paperDownloadPath({

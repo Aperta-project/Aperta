@@ -25,7 +25,7 @@ moduleForComponent(
 
       this.radioBooleanLabeledContent = {
         text: `<b class='foo'>Foo</b>`,
-        valueType: 'boolean',
+        valueType: 'text',
         possibleValues: [{ label: 'Why Yes', value: 'true' }, { label: 'Oh No', value: 'false'}]
       };
     }

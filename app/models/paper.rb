@@ -322,12 +322,8 @@ class Paper < ActiveRecord::Base
     find(id)
   end
 
-  def preprint_opt_in?
-    answer_for('preprint-posting--consent').try(:value) == true
-  end
-
   def preprint_opt_out?
-    !preprint_opt_in?
+    answer_for('preprint-posting--consent').try(:value).to_i == 2
   end
 
   def inactive?

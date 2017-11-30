@@ -45,6 +45,7 @@ module TahiStandardTasks
         current_user
       )
 
+      attachment.reload
       render json: attachment,
              status: paper_attachment.existing_file ? 200 : 201,
              root: 'attachment',

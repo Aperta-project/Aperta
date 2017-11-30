@@ -19,17 +19,13 @@ class DownloadManuscriptWorker
       raise(ArgumentError, "Url must be provided (received a blank value)")
     end
     paper.update_attribute(:processing, true)
-    perform_async(
-      paper.id,
-      url,
-      current_user.id
-    )
+    perform(paper.id, url, current_user.id)
   end
 
   # +perform+ should not be called directly, but by the background job
   # processor. Use the DownloadManuscriptWorker.download
   # instead when calling from application code.
-  def perform(paper_id, download_url, current_user_id)
+  def self.perform(paper_id, download_url, current_user_id)
     paper = Paper.find(paper_id)
     uploaded_by = current_user_id.present? ? User.find(current_user_id) : nil
     paper.download_manuscript!(download_url, uploaded_by: uploaded_by)

@@ -392,13 +392,6 @@ class Paper < ActiveRecord::Base
       # No need to process attachment, mark the paper record as "done"
       update(processing: false)
     elsif attachment.file_type == 'pdf'
-      # sleep for long enough to allow the subscription to paper update events take place
-      # TODO: this is a temporary solution and should be removed after this timing issue is resolved
-      sleep(3)
-      # bypass ihat for PDFs, and update paper and associated versioned_text object
-      # NOTE: although PDF manuscripts don't store content in the body, it must
-      # be updated anyway since the versioned text object is created
-      # as a side effect of that call
       attachment.paper.update!(body: '', processing: false)
     else
       ProcessManuscriptWorker.perform_async(attachment.id)

@@ -69,7 +69,7 @@ module TahiStandardTasks
     private
 
     def needs_preprint_doi?
-      destination == 'preprint' && paper.preprint_opt_in?
+      destination == 'preprint' && !paper.preprint_opt_out?
     end
 
     def while_notifying_delivery

@@ -4,7 +4,7 @@ describe Behavior do
   let(:args) { { event_name: :fake_event } }
   let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) { FactoryGirl.create(:paper, :with_phases, journal: journal) }
-  let(:card) { FactoryGirl.create(:card, journal: journal) }
+  let(:card) { FactoryGirl.create(:card, :versioned, journal: journal) }
   let(:event) { Event.new(name: :fake_event, paper: paper, task: nil, user: nil) }
 
   before(:each) do
@@ -53,7 +53,7 @@ describe Behavior do
       )
     end
 
-    let!(:task) { FactoryGirl.create(:task, paper: paper, title: card.name) }
+    let!(:task) { FactoryGirl.create(:task, paper: paper, title: card.name, card_version: card.card_versions.first) }
 
     it 'should not create a task' do
       expect(TaskFactory).not_to receive(:create)

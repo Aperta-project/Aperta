@@ -8,7 +8,7 @@ class CreateTaskBehavior < Behavior
     card = Card.find card_id
 
     task_attrs = get_task_attrs(card)
-    return if disallowed_duplicate?(event.paper, task_attrs[:name])
+    return if disallowed_duplicate?(event.paper)
 
     task_opts = create_task_opts(event, card, task_attrs)
     TaskFactory.create(task_attrs[:class], task_opts)
@@ -38,10 +38,11 @@ class CreateTaskBehavior < Behavior
     { class: task_class, name: task_name }
   end
 
-  def disallowed_duplicate?(paper, task_name)
+  def disallowed_duplicate?(paper)
     return false if duplicates_allowed
-    card_versions = Card.find(card_id).card_versions.pluck :id
-    paper.tasks.where(card_version: card_versions)
+    Task.joins(card_version: :card)
+      .where(cards: { id: card_id })
+      .where(paper: paper).exists?
   end
 
   def card_available_in_journal

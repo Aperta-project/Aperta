@@ -130,13 +130,14 @@ describe TahiStandardTasks::ExportService do
         :card_content,
         parent: task.card.content_root_for_version(:latest),
         ident: 'preprint-posting--consent',
+        value_type: 'boolean',
         content_type: 'radio'
       )
     }
 
     context "the paper has not opted out of preprint" do
       before do
-        task.find_or_build_answer_for(card_content: card_content, value: 'true').save
+        task.find_or_build_answer_for(card_content: card_content, value: true).save
       end
 
       it "for a preprint export it needs a preprint doi" do
@@ -144,7 +145,7 @@ describe TahiStandardTasks::ExportService do
         expect(service.send(:needs_preprint_doi?)).to eq(true)
       end
 
-      it "for an apex export it needs a preprint doi" do
+      it "for a non-preprint export it does not need a doi" do
         export_delivery.destination = "apex"
         expect(service.send(:needs_preprint_doi?)).to eq(false)
       end
@@ -152,9 +153,9 @@ describe TahiStandardTasks::ExportService do
 
     context "the paper has opted out of preprint" do
       before do
-        task.find_or_build_answer_for(card_content: card_content, value: 'false').save
+        task.find_or_build_answer_for(card_content: card_content, value: false).save
       end
-      it "does not ensure a need doi" do
+      it "does not need a doi" do
         export_delivery.destination = "preprint"
         expect(service.send(:needs_preprint_doi?)).to eq(false)
       end

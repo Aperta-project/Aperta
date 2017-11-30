@@ -84,9 +84,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       var emailMessage = {
         recipients: [this.get('emailToField')],
         subject: this.get('emailToSubject'),
-        body: this.get('emailToBody'),
-        event_name: this.get('buttonLabel')
-      };
+        body: this.get('emailToBody')};
 
       if(!this.get('emailToField') || !this.get('emailToSubject') || !this.get('emailToBody')) {
         return;

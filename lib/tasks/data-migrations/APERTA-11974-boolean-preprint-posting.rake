@@ -6,30 +6,28 @@ namespace :data do
       and its card_content value_type from text to boolean.
     DESC
 
-    # rubocop:disable Rails/SkipsModelValidations  This is necessary.
+    def truthy(value)
+      value.in?([true, 'true', 1, '1']) ? 'true' : 'false'
+    end
 
     task aperta_11974_preprint_preprint_posting: :environment do
       card_contents = CardContent.where(ident: 'preprint-posting--consent').includes(:entity_attributes, :answers).all
       puts "Converting Card Contents [#{card_contents.size}]"
       card_contents.each do |card_content|
-        next unless card_content.value_type == 'text'
-
-        card_content.update_attribute(:value_type, 'boolean')
-        card_content.reload
-
         values = card_content.possible_values
-        values.each { |each| each['value'] = each['value'].to_i == 1 } # 1 => true, 2 => false
+        values.each { |each| each['value'] = truthy(each['value']) } # 1 => true, 2 => false
         card_content.possible_values = values
+        card_content.value_type = "text"
         card_content.save
 
-        eav = card_content.entity_attributes.where(name: 'default_answer_value').first
-        eav.update_attributes(value_type: 'boolean', boolean_value: eav.string_value == '1', string_value: nil)
+        card_content.default_answer_value = truthy(card_content.default_answer_value)
         card_content.reload
 
         answers = card_content.answers
         puts "Converting Answers [#{answers.size}]"
         answers.each do |answer|
-          answer.update_attribute(:value, answer[:value] == '1')
+          answer.value = truthy(answer[:value])
+          answer.save
         end
       end
     end

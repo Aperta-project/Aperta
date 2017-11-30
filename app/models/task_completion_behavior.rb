@@ -19,10 +19,9 @@ class TaskCompletionBehavior < Behavior
       task.completed = true
     when "incomplete"
       task.completed = false
-    else
-      return
     end
 
+    task.notify_requester = true
     task.save!
   end
 end

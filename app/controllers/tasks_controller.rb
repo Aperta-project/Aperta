@@ -172,7 +172,6 @@ class TasksController < ApplicationController
   private
 
   def trigger_email_sent_event(task_obj)
-    Event.register('paper.email_sent')
     paper = task_obj.paper
     event = Event.new(name: 'paper.email_sent', paper: paper, task: task_obj, user: current_user)
     event.trigger

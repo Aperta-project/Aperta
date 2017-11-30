@@ -284,6 +284,9 @@ class Paper < ActiveRecord::Base
 
   register_events!
 
+  # Registers custom events using the new Event Behavior model
+  Event.register('paper.email_sent')
+
   # All known paper states
   STATES = aasm.states.map(&:name).freeze
   # States which should generally be editable by the creator

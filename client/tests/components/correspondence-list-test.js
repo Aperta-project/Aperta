@@ -43,7 +43,7 @@ test('can manage workflow, list appears for correspondence with manuscript versi
   return wait().then(() => {
     assert.equal(this.$('.correspondence-table').length, 1);
     assert.equal(this.$('tbody').length, 1);
-    assert.textPresent('tr:last td:nth-child(1)', formatDate(correspondence.get('sentAt'), {}));
+    assert.textPresent('tr:last td:nth-child(1)', formatDate(correspondence.get('utcSentAt'), {}));
     assert.textPresent('tr:last td:nth-child(2)', correspondence.get('subject'));
     assert.textPresent('tr:last td:nth-child(3)', correspondence.get('recipient'));
     assert.equal(this.$('tr:last td:nth-child(4)').length, 1, 'v0.0 rejected');
@@ -65,7 +65,7 @@ test('can manage workflow, list appears for correspondence without manuscript ve
     assert.equal(this.$('.correspondence-table .most-recent-activity').length, 0);
     assert.equal(this.$('.correspondence-table').length, 1);
     assert.equal(this.$('tbody').length, 1);
-    assert.textPresent('tr:last td:nth-child(1)', formatDate(correspondence.get('sentAt'), {}));
+    assert.textPresent('tr:last td:nth-child(1)', formatDate(correspondence.get('utcSentAt'), {}));
     assert.textPresent('tr:last td:nth-child(2)', correspondence.get('subject'));
     assert.textPresent('tr:last td:nth-child(3)', correspondence.get('recipient'));
     assert.equal(this.$('tr:last td:nth-child(4)').length, 1, 'Unavailable');
@@ -86,7 +86,7 @@ test('can manage workflow, for correspondence with only manuscript version', fun
   return wait().then(() => {
     assert.equal(this.$('.correspondence-table').length, 1);
     assert.equal(this.$('tbody').length, 1);
-    assert.textPresent('tr:last td:nth-child(1)', formatDate(correspondence.get('sentAt'), {}));
+    assert.textPresent('tr:last td:nth-child(1)', formatDate(correspondence.get('utcSentAt'), {}));
     assert.textPresent('tr:last td:nth-child(2)', correspondence.get('subject'));
     assert.textPresent('tr:last td:nth-child(3)', correspondence.get('recipient'));
     assert.equal(this.$('tr:last td:nth-child(4)').length, 1, 'v0.0');

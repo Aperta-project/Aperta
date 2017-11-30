@@ -126,24 +126,25 @@ class TasksController < ApplicationController
   end
 
   def sendback_preview
-    @task = Task.find(params[:id])
-    @letter_template = render_sendback_template(@task)
+    task = Task.find(params[:id])
+    letter_template = render_sendback_template(task)
     render json:  {
-      to: @letter_template.to,
-      subject: @letter_template.subject,
-      body: @letter_template.body
+      to: letter_template.to,
+      subject: letter_template.subject,
+      body: letter_template.body
     }
   end
 
   def sendback_email
-    @task = Task.find(params[:id])
-    @letter_template = render_sendback_template(@task)
+    task = Task.find(params[:id])
+    letter_template = render_sendback_template(task)
     GenericMailer.delay.send_email(
-      subject: @letter_template.subject,
-      body: @letter_template.body,
-      to: @letter_template.to,
-      task: @task
+      subject: letter_template.subject,
+      body: letter_template.body,
+      to: letter_template.to,
+      task: task
     )
+    task.paper.minor_check!
     head :no_content
   end
 

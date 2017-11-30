@@ -49,11 +49,19 @@ class AuthorsCard(BaseCard):
     self._author_contrib_lbl = (By.CSS_SELECTOR, 'h4.required')
     self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'span.author-form-buttons a')
     self._add_author_add_btn = (By.CSS_SELECTOR, 'span.author-form-buttons button')
-    self._author_items = (By.CSS_SELECTOR, 'div.authors-overlay-item')
+    self._author_items = (By.CSS_SELECTOR, 'div.author-task-item')
     self._delete_author_div = (By.CLASS_NAME, 'authors-overlay-item--delete')
     self._edit_author = (By.CLASS_NAME, 'fa-pencil')
     self._corresponding = (
         By.XPATH, ".//input[@name='author--published_as_corresponding_author']")
+
+    # co-author related locators
+    self._coauthor_confirm_lbl = (By.CLASS_NAME, 'confirm-coauthor-label')
+    self._coauthor_decline_lbl = (By.CLASS_NAME, 'decline-coauthor-label')
+    self._no_response_lbl = (By.CLASS_NAME, 'no-response-coauthor-label')
+    self._coauthor_last_mod_info = (By.CLASS_NAME, 'coauthor-status-modified-by')
+    self._coauthor_status_info = (By.CSS_SELECTOR, 'div[data-test-selector="coauthor-radio-controls"] + div.flex-group')
+
 
   # POM Actions
   def click_task_completed_checkbox(self):
@@ -225,3 +233,22 @@ class AuthorsCard(BaseCard):
     add_author_add_btn.click()
     time.sleep(.2)
     self._get(self._close_button).click()
+
+  def update_coauthor_status(self, confirm=True):
+    """
+    Selects a radio button option to either confirm or decline co-authorship status. This assumes that the 
+    co-author has not already submitted confirmed/declined via email (we are not able to test that piece yet).
+    Note: only staff users should be able to confirm/decline co-authorship status on the authors card.
+    :return: void function
+    """
+    author_items = self._gets(self._author_items)
+    coauthor_item = author_items[1]
+    coauthor_item.click()
+
+    if confirm:
+      self._get(self._coauthor_confirm_lbl).click()
+    else:
+      self._get(self._coauthor_decline_lbl).click()
+
+  def validate_coauthor_status(self, confirm=True):
+    pass

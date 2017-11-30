@@ -43,6 +43,7 @@ class CardContent < ActiveRecord::Base
       letter_template
       button_label
       letter_template_ident
+      alternate_object_id
     ]
 
   belongs_to :card_version, inverse_of: :card_contents
@@ -205,7 +206,8 @@ class CardContent < ActiveRecord::Base
       }
     when 'template'
       {
-        'letter-template-ident' => letter_template_ident
+        'letter-template-ident' => letter_template_ident,
+        'alternate-object-id' => alternate_object_id
       }
     else
       {}

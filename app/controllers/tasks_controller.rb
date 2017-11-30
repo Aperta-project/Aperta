@@ -197,10 +197,8 @@ class TasksController < ApplicationController
     elsif scenario_class.wraps == Journal
       scenario_object = journal
     else
-      alternate_object_type = params[:alternate_object_type]
-      alternate_object_class = alternate_object_type.safe_constantize
       alternate_object_id = params[:alternate_object_id]
-      scenario_object = alternate_object_class.find(alternate_object_id)
+      scenario_object = scenario_class.find(alternate_object_id)
     end
 
     letter_template.render(scenario_class.new(scenario_object))

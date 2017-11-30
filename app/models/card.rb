@@ -24,7 +24,7 @@ class Card < ActiveRecord::Base
       MSG
     }
 
-  validate :check_nested_errors, :check_semantics
+  validate :check_nested_errors, :check_semantics, :check_templates
   before_destroy :check_destroyable
   after_destroy :clean_permissions
 
@@ -136,6 +136,17 @@ class Card < ActiveRecord::Base
       visitor.visit(version)
       collect_errors_from(visitor)
     end
+  end
+
+  def check_templates
+    template_cards = latest_card_version.card_contents.where(content_type: 'template')
+    template_idents = template_cards.map(&:letter_template_ident)
+    valid_idents = LetterTemplate.all.map(&:ident)
+
+    invalid_idents = template_idents - valid_idents
+    return if invalid_idents.empty?
+    ident_error_string = invalid_idents.join(', ')
+    errors.add(:detail, message: "Non existent template idents: #{ident_error_string}")
   end
 
   # evaluate card semantics

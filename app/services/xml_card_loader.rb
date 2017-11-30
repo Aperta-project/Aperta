@@ -116,6 +116,7 @@ class XmlCardLoader
       allow_file_captions: content.attr_value('allow-file-captions'),
       allow_multiple_uploads: content.attr_value('allow-multiple-uploads'),
       allow_annotations: content.attr_value('allow-annotations'),
+      alternate_object_id: content.attr_value('alternate-object-id'),
       child_tag: content.attr_value('child-tag'),
       custom_class: content.attr_value('custom-class'),
       custom_child_class: content.attr_value('custom-child-class'),

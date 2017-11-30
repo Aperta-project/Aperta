@@ -1,9 +1,5 @@
 module TahiStandardTasks
   class PreprintDecisionScenario < PaperScenario
-    def self.object_class
-      Task
-    end
-
     def author
       UserContext.new(task.paper.creator)
     end

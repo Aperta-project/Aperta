@@ -26,7 +26,7 @@
         <div class="task-main-content">
           <h1 class="overlay-body-title">Review Your Submission</h1>
           <p>You are about to submit your manuscript to {{paper.journal.name}}. Please verify that the information below is correct.</p>
-          {{#if optedToPreprint }}
+          {{#if preprintOptIn }}
             <p>This information will also appear with the preprint you have elected to post on apertarxiv.org.</p>
           {{/if}}
           <table class="table table-hover">
@@ -53,7 +53,7 @@
               <td>
                 <dl>
                   <dt>Would you like to post this paper as a preprint?</dt>
-                  <dd>{{#if optedToPreprint}}<b>Yes</b>, I want to post a preprint.{{else}}<b>No</b>, I don't want to post a preprint.{{/if}}</dd>
+                  <dd>{{#if preprintOptIn}}<b>Yes</b>, I want to post a preprint.{{else}}<b>No</b>, I don't want to post a preprint.{{/if}}</dd>
                 </dl>
               </td>
             </tr>
@@ -99,7 +99,7 @@
               <td>
                 <p><a class="" href={{fileDownloadUrl}}><i class="fa fa-file-pdf-o"></i> Manuscript (review version with figures and supporting information files included)</a> </p>
                 <p class="muted">This is the review version of your manuscript, which includes figures and supplemental information.</p>
-                {{#if optedToPreprint }}
+                {{#if preprintOptIn }}
                  <p class="muted">In your posted preprint, figures will be inserted in the manuscript text and supporting information files will be available via links on the preprint page.</p>
                 {{/if}}
               </td>

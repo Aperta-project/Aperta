@@ -50,6 +50,6 @@ class CreateTaskBehavior < Behavior
     card = Card.find card_id
 
     return if card.journal_id.in? [journal.id, nil]
-    errors.add(:card_id, "The card added to this behavior is not available for the behavior's journnal")
+    errors.add(:card_id, "The card added to this behavior is not available for the behavior's journal")
   end
 end

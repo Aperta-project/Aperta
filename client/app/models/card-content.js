@@ -93,7 +93,7 @@ export default DS.Model.extend({
         childCC.get('answers').filterBy('owner', owner).filterBy('repetition', repetition).invoke('destroyRecord');
 
         if(childCC.get('repetitions').includes(repetition)) {
-          repetition.destroyRecord();
+          repetition.destroyRecord({ adapterOptions: { destroyingAll: true } });
         }
       } else {
         childCC.get('answers').filterBy('owner', owner).invoke('destroyRecord');

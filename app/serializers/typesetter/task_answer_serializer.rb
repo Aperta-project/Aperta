@@ -62,5 +62,15 @@ module Typesetter
       end
       title_caption
     end
+
+    def answers
+      @answers ||= object.answers.includes(:card_content, :repetition)
+    end
+
+    def answer_for(ident, repetition)
+      answers.detect { |answer|
+        answer.card_content.ident == ident && answer.repetition == repetition
+      }.try!(:value)
+    end
   end
 end

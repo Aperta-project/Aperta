@@ -477,6 +477,9 @@
     <element name="Repeat">
       <interleave>
         <optional>
+          <attribute name="ident"/>
+        </optional>
+        <optional>
           <attribute name="min"/>
         </optional>
         <optional>
@@ -487,6 +490,13 @@
           <ref name="content"/>
         </oneOrMore>
       </interleave>
+    </element>
+  </define>
+  <define name="financial-disclosure-summary">
+    <element name="FinancialDisclosureSummary">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
     </element>
   </define>
   <define name="content">
@@ -500,6 +510,7 @@
       <ref name="error-message"/>
       <ref name="export-paper"/>
       <ref name="file-uploader"/>
+      <ref name="financial-disclosure-summary"/>
       <ref name="if"/>
       <ref name="paragraph-input"/>
       <ref name="radio-input"/>

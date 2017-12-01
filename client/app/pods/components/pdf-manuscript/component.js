@@ -23,9 +23,7 @@ export default Ember.Component.extend({
   },
 
   fileChanged: observer('paper.file.fileHash', function() {
-    if (this.get('paper.latestVersionedText.fileType') === 'pdf') {
-      this.refreshPdf();
-    }
+    this.refreshPdf();
   }),
 
   loadPdf: function() {

@@ -139,10 +139,10 @@ describe LetterTemplate do
       expect(letter_template.name).to eq('spec')
     end
 
-    it "sets idents if they were nil and template name is known" do
+    it "reset ident if it was nil and template name is known" do
       letter_template = LetterTemplate.first
       orig_ident = letter_template.ident
-      letter_template.update(ident: nil)
+      letter_template.update!(ident: nil)
       expect(LetterTemplate.where(ident: orig_ident)).not_to exist
       Rake.application.invoke_task 'seed:letter_templates:populate'
       expect(LetterTemplate.where(ident: orig_ident)).to exist

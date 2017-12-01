@@ -113,7 +113,7 @@ describe EligibleUserService, pristine_roles_and_permissions: true do
       end
 
       it 'returns all users in the system regardless of role' do
-        expect(service.eligible_users).to contain_exactly(bob, fay, ray)
+        expect(service.eligible_users).to match_array([bob, fay, ray])
       end
 
       it "doesn't include users already assigned as academic_editor_role" do

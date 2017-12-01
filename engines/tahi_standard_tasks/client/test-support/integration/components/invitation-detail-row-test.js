@@ -353,3 +353,29 @@ test('that dragging text does not trigger invite dragging when dragging is disab
   invitationBody.trigger('dragstart', ['custom', 'shit']);
   assert.spyNotCalled(spy, 'dragging should not have started');
 });
+
+test('the invitation is accepted, and the reviewer report is pending', function(assert) {
+  this.setProperties({
+    'invitation.state': 'accepted',
+    currentRound: true,
+    uiState: 'show',
+    'invitation.reviewerReport.status': 'pending'
+  });
+
+  this.render(openTemplate);
+
+  assert.elementFound('.invitation-item-action-rescind', 'rescind button is displayed');
+});
+
+test('the invitation is accepted, and the reviewer report is completed', function(assert) {
+  this.setProperties({
+    'invitation.state': 'accepted',
+    currentRound: true,
+    uiState: 'show',
+    'invitation.reviewerReport.status': 'completed'
+  });
+
+  this.render(openTemplate);
+
+  assert.elementNotFound('.invitation-item-action-rescind', 'rescind button is not displayed');
+});

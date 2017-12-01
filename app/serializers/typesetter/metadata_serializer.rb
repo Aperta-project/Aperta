@@ -75,7 +75,7 @@ module Typesetter
     end
 
     def financial_disclosure
-      task('TahiStandardTasks::FinancialDisclosureTask')
+      custom_task('Financial Disclosure')
     end
 
     def data_availability

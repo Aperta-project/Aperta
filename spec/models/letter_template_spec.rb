@@ -119,33 +119,6 @@ describe LetterTemplate do
     end
   end
 
-  describe '::related_to_journal' do
-    let(:journal) { FactoryGirl.create(:journal) }
-    let!(:non_preprint_letter_template) do
-      FactoryGirl.create(:letter_template,
-        name: 'one',
-        scenario: 'Reviewer Report',
-        journal: journal)
-    end
-    let!(:preprint_letter_template) do
-      FactoryGirl.create(:letter_template,
-        name: 'two',
-        scenario: 'Preprint Decision',
-        journal: journal)
-    end
-    it 'returns all scenarios if preprint feature flag is enabled' do
-      FeatureFlag.create(name: 'PREPRINT', active: true)
-      templates = LetterTemplate.related_to_journal(journal.id)
-      expect(templates.map(&:scenario)).to match(['Reviewer Report', 'Preprint Decision'])
-    end
-
-    it 'returns all scenarios except preprint ones if feature flag is disabled' do
-      FeatureFlag.create(name: 'PREPRINT', active: false)
-      templates = LetterTemplate.related_to_journal(journal.id)
-      expect(templates.map(&:scenario)).to match(['Reviewer Report'])
-    end
-  end
-
   describe "letter template seed" do
     before :all do
       Rake::Task.define_task(:environment)
@@ -170,9 +143,9 @@ describe LetterTemplate do
       letter_template = LetterTemplate.first
       orig_ident = letter_template.ident
       letter_template.update(ident: nil)
+      expect(LetterTemplate.where(ident: orig_ident)).not_to exist
       Rake.application.invoke_task 'seed:letter_templates:populate'
-      letter_template.reload
-      expect(letter_template.ident).to eq(orig_ident)
+      expect(LetterTemplate.where(ident: orig_ident)).to exist
     end
   end
 end

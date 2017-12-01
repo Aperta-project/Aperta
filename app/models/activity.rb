@@ -148,7 +148,7 @@ class Activity < ActiveRecord::Base
     message = if user == invitation.invitee
                 "#{invitation.recipient_name} accepted invitation as #{invitation.invitee_role.capitalize}"
               else
-                "#{user.username} accepted invitation as #{invitation.invitee_role.capitalize} on behalf of #{invitation.recipient_name}"
+                "#{user.full_name} accepted invitation as #{invitation.invitee_role.capitalize} on behalf of #{invitation.recipient_name}"
               end
     create(
       feed_name: "workflow",
@@ -370,6 +370,19 @@ class Activity < ActiveRecord::Base
       subject: correspondence,
       user: user,
       message: "A <a href='#{correspondence_url}'>correspondence entry</a> was edited"
+    )
+  end
+
+  def self.due_datetime_updated!(due_datetime, user:)
+    new_due_date = due_datetime.due_at.strftime('%B %d, %Y')
+    reviewer_name = due_datetime.due.user.full_name
+    msg = "Due date for Review by #{reviewer_name} was changed to #{new_due_date}"
+    create(
+      feed_name: 'workflow',
+      activity_key: 'duedatetime.updated',
+      subject: due_datetime.due.paper,
+      user: user,
+      message: msg
     )
   end
 end

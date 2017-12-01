@@ -4,7 +4,7 @@
     <li class="question">
       {{nested-question-radio-decision
         ident="reviewer_report--decision_term"
-        owner=model
+        owner=report
         readOnly=readOnly
       }}
     </li>
@@ -12,7 +12,7 @@
     <li class="question">
       {{nested-question-radio
         ident="reviewer_report--competing_interests"
-        owner=model
+        owner=report
         displayContent=true
         readOnly=readOnly
         helpText=(concat
@@ -23,7 +23,7 @@
       {{nested-question-textarea
         ident="reviewer_report--competing_interests--detail"
         editorStyle='expanded'
-        owner=model
+        owner=report
         disabled=readOnly
         displayQuestionText=false
         inputClassNames="reviewer_report--competing_interests--detail"
@@ -34,7 +34,7 @@
       {{nested-question-textarea
         ident="reviewer_report--identity"
         editorStyle='expanded'
-        owner=model
+        owner=report
         displayContent=true
         disabled=readOnly
         inputClassNames="reviewer_report--identity"
@@ -46,7 +46,7 @@
       {{nested-question-textarea
         ident="reviewer_report--comments_for_author"
         editorStyle='expanded'
-        owner=model
+        owner=report
         displayContent=true
         disabled=readOnly
         inputClassNames="taller reviewer_report--comments_for_author"
@@ -61,7 +61,7 @@
     <li class="question">
       {{nested-question-textarea
         ident="reviewer_report--additional_comments"
-        owner=model
+        owner=report
         disabled=readOnly
         displayContent=true
         inputClassNames="reviewer_report--additional_comments"
@@ -74,7 +74,7 @@
     <li class="question">
       {{nested-question-radio
         ident="reviewer_report--suitable_for_another_journal"
-        owner=model
+        owner=report
         readOnly=readOnly
         helpText=(concat "If so, please specify which PLOS journal and whether you will be willing to continue there as reviewer on this manuscript. To reduce redundant review cycles, <em>PLOS Biology</em> is committed to facilitating the transfer of suitable manuscripts between journals, and we appreciate your support.")
       }}
@@ -82,7 +82,7 @@
       {{nested-question-textarea
         ident="reviewer_report--suitable_for_another_journal--journal"
         editorStyle='expanded'
-        owner=model
+        owner=report
         inputClassNames="reviewer_report--suitable_for_another_journal--journal"
         displayQuestionText=false
         disabled=readOnly
@@ -94,7 +94,7 @@
                          buttonText="upload file"
                          hasCaption=false
                          multiple=true
-                         owner=model
+                         owner=report
                          disabled=readOnly}}
     </li>
   </ol>

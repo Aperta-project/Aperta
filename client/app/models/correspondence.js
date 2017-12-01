@@ -19,6 +19,12 @@ export default DS.Model.extend({
   manuscriptVersion: DS.attr('string'),
   manuscriptStatus: DS.attr('string'),
   activities: DS.attr(), // array?
+  
+  utcSentAt: Ember.computed('sentAt', function() {
+    let sentAt = this.get('sentAt');
+    let time = Ember.isBlank(sentAt) ? moment.utc() : moment.utc(sentAt);
+    return time.format('MMMM D, YYYY HH:mm');
+  }),
 
   manuscriptVersionStatus: Ember.computed('manuscriptVersion','manuscriptStatus', function() {
     let version_status = this.get('manuscriptVersion') + ' ' + this.get('manuscriptStatus');

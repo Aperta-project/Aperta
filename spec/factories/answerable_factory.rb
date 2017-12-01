@@ -1,10 +1,9 @@
 # Convenience factory for creating CardContent with answers
 class AnswerableFactory
   class << self
-    def create(owner, questions:)
-      card_name = owner.class.name
-      card = Card.find_by(name: card_name) ||
-        FactoryGirl.create(:card, :versioned, name: card_name)
+    def create(owner, questions:, card: nil)
+      card = card.presence || Card.find_by(name: owner.class.name) ||
+        FactoryGirl.create(:card, :versioned, name: owner.class.name)
       create_questions(questions, owner: owner, card: card, parent: card.content_root_for_version(:latest))
       owner
     end
@@ -42,7 +41,9 @@ class AnswerableFactory
         :answer,
         card_content: question,
         owner: owner,
-        value: question_hash[:answer]
+        value: question_hash[:answer],
+        repetition: question_hash[:repetition],
+        paper: owner.paper
       )
     end
   end

@@ -34,6 +34,7 @@ moduleForAcceptance('Integration: Feedback Form', {
 test('clicking the feedback button sends feedback', function(assert) {
   visit('/');
   click('#nav-give-feedback');
+  click('.feedback-button');
   click('a:contains(Feedback)');
   fillIn('.overlay textarea', 'My feedback');
   click('.overlay-footer-content .button-primary');

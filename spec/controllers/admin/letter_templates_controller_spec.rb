@@ -34,7 +34,7 @@ describe Admin::LetterTemplatesController, redis: true do
 
         context "when there's a query in the params" do
           it "finds letter templates for that journal" do
-            expect(LetterTemplate).to receive(:related_to_journal).with(journal.id)
+            expect_any_instance_of(Journal).to receive(:letter_templates)
             get :index, format: 'json', journal_id: journal.id
           end
         end

@@ -93,8 +93,7 @@
               </tbody>
             </table>
           {{/if}}
-
-          {{#if hasPostedPreprints}}
+          {{#if (and hasPostedPreprints (feature-flag "PREPRINT"))}}
             <table summary="This table displays papers that are posted to preprint" class="table-borderless top-margin">
               <thead class="manuscript-list-heading {{if
             preprintsVisible "gray-line" }} active-papers" {{action "togglePreprintContainer"}}>

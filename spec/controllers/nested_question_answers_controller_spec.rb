@@ -169,6 +169,52 @@ describe NestedQuestionAnswersController do
     end
   end
 
+  describe "#update for reviewer report" do
+    report = FactoryGirl.create(:reviewer_report)
+    let!(:answer) { FactoryGirl.create(:answer, value: "Hi", card_content: card_content, owner: report) }
+    let(:card_content) { FactoryGirl.create(:card_content) }
+
+    subject(:do_request) do
+      put_params = {
+        format: 'json',
+        id: answer.to_param,
+        nested_question_id: card_content.to_param,
+        nested_question_answer: {
+          value: "Bye",
+          owner_id: report.id,
+          owner_type: report.class.name
+        }
+      }
+      put(:update, put_params)
+    end
+
+    context "when the user has access to edit paper answers" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:edit, report.task)
+          .and_return true
+        allow(user).to receive(:can?)
+          .with(:edit_answers, report.paper)
+          .and_return true
+      end
+
+      it "updates the answer for the question when no active AdminEdit record is present" do
+        do_request
+        answer.reload
+        expect(answer.value).to eq("Bye")
+      end
+
+      it "updates additional_data when an active AdminEdit record is present" do
+        AdminEdit.edit_for(report)
+        do_request
+        answer.reload
+        expect(answer.value).to eq("Hi")
+        expect(answer.additional_data["pending_edit"]).to eq("Bye")
+      end
+    end
+  end
+
   describe "#destroy" do
     let!(:answer) { FactoryGirl.create(:answer, value: "Hi", owner: owner) }
     let(:card_content) { FactoryGirl.create(:card_content) }

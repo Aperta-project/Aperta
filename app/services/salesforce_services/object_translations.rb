@@ -85,13 +85,11 @@ module SalesforceServices
           'PFA_Able_to_Pay_R__c'       => float_answer_for("plos_billing--pfa_amount_to_pay"),
           'PFA_Additional_Comments__c' => answer_for("plos_billing--pfa_additional_comments"),
           'PFA_Supporting_Docs__c'     => answer_for("plos_billing--pfa_supporting_docs"),
-          'PFA_Funding_Statement__c'   => financial_disclosure_task.try(:funding_statement)
+          'PFA_Funding_Statement__c'   => funding_statement
         }
       end
 
       private
-
-      delegate :financial_disclosure_task, to: :@paper, allow_nil: true
 
       def answer_for(ident)
         @paper.answer_for(ident).try(:value)
@@ -110,6 +108,16 @@ module SalesforceServices
       def yes_no_answer_for(ident)
         value_or_nil(ident) { |value| value == true ? 'Yes' : 'No' }
       end
+
+      # rubocop:disable Style/GuardClause
+      def funding_statement
+        financial_disclosure_statement = FinancialDisclosureStatement.new(@paper)
+
+        if financial_disclosure_statement.asked?
+          financial_disclosure_statement.funding_statement
+        end
+      end
+      # rubocop:enable Style/GuardClause
     end
   end
 end

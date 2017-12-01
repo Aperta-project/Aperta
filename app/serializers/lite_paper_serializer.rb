@@ -2,8 +2,7 @@ class LitePaperSerializer < ActiveModel::Serializer
   attributes :aarx_doi, :active, :created_at, :editable, :file_type, :id, :journal_id, :manuscript_id,
              :processing, :publishing_state, :related_at_date, :roles, :short_doi, :aarx_link,
              :preprint_doi_suffix, :title, :updated_at, :review_due_at, :review_originally_due_at,
-             :preprint_posted?
-
+             :preprint_dashboard?
 
   def related_at_date
     return unless scoped_user.present?
@@ -25,6 +24,12 @@ class LitePaperSerializer < ActiveModel::Serializer
     # originally_due_at is only returned if it needs to be displayed
     return if reviewer_report.originally_due_at == review_due_at
     reviewer_report.originally_due_at
+  end
+
+  # Only authors of a paper can see the 'preprints' section in the dashboard.
+  # We then check if the preprint_posted flag is true and if the current user is also an author of the paper.
+  def preprint_dashboard?
+    object.preprint_posted? && object.authors.map(&:user_id).include?(current_user.id)
   end
 
   private

@@ -29,8 +29,8 @@ export default AuthorizedRoute.extend({
     // default value which is false
     if(prePrintTask) {
       prePrintTask.get('answers').then((answers) => {
-        let value = answers.get('firstObject').get('value');
-        model.paper.set('preprintOptOut', (value === '2'));
+        let answer = answers.get('firstObject.value');
+        model.paper.set('preprintOptOut', answer === true);
       });
     }
   },

@@ -30,6 +30,14 @@ class Card < ActiveRecord::Base
 
   scope :archived, -> { where.not(archived_at: nil) }
 
+  # temporarly added for https://jira.plos.org/jira/browse/APERTA-10345
+  # we should remove this once the preprint feature flag is removed
+  def self.feature_inactive_cards
+    [].tap do |cards|
+      cards << 'Preprint Decision' unless FeatureFlag[:PREPRINT]
+    end
+  end
+
   # A given card can have several states, but be mindful that the 'state' of a
   # given card also implies something about that card's card_versions.
   # * 'draft': the latest version is a draft and there are no published

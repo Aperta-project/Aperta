@@ -388,12 +388,7 @@
   </define>
   <define name="template">
     <element name="Template">
-      <interleave>
-        <attribute name="letter-template-ident"/>
-        <optional>
-          <attribute name="alternate-object-id"/>
-        </optional>
-      </interleave>
+      <attribute name="letter-template-ident"/>
     </element>
   </define>
   <!-- Contents -->

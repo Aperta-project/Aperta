@@ -176,8 +176,6 @@ class TasksController < ApplicationController
     task = Task.find params[:taskId]
     paper = task.paper
     journal = task.journal
-
-    alternate_object = params[:alternate_object_id]
     raise unless journal
 
     # get the template and scenario class
@@ -190,15 +188,20 @@ class TasksController < ApplicationController
     # probably throw this on service class or priviate method
     # how to verify this at the xml level
 
+
+    # assume the scenario_class
     if scenario_class.wraps == Paper
       scenario_object = paper
     elsif scenario_class.wraps == Task
+      # does this even make sense?
       scenario_object = task
     elsif scenario_class.wraps == Journal
       scenario_object = journal
     else
-      alternate_object_id = params[:alternate_object_id]
-      scenario_object = scenario_class.find(alternate_object_id)
+      object_type = scenario_class.wraps
+      binding.pry
+
+      scenario_object = object_type.first
     end
 
     letter_template.render(scenario_class.new(scenario_object))

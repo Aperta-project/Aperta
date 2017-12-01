@@ -54,6 +54,7 @@ class Paper < ActiveRecord::Base
   has_many :related_articles, dependent: :destroy
   has_many :withdrawals, dependent: :destroy
   has_many :correspondence
+  has_many :reviewer_reports, through: :tasks
   has_many :export_deliveries, class_name: 'TahiStandardTasks::ExportDelivery'
 
   has_many :authors,

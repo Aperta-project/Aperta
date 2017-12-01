@@ -15,7 +15,6 @@ export default DS.Model.extend({
 
   allowMultipleUploads: DS.attr('boolean'),
   allowFileCaptions: DS.attr('boolean'),
-  alternateObjectId: DS.attr('string'),
   requiredField: DS.attr('boolean'),
   contentType: DS.attr('string'),
   ident: DS.attr('string'),

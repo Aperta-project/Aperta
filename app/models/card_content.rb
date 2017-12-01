@@ -207,7 +207,6 @@ class CardContent < ActiveRecord::Base
     when 'template'
       {
         'letter-template-ident' => letter_template_ident,
-        'alternate-object-id' => alternate_object_id
       }
     else
       {}

@@ -13,14 +13,19 @@ namespace :data do
         raise Exception, "No cards named 'Preprint Posting' were found" if cards.blank?
 
         cards.each do |card|
-          radio = card.card_version(:latest).card_contents.where(content_type: "radio").where.not(ident: ident).first
-          if radio
-            result = radio.update_attributes(ident: ident)
-            raise Exception, "Failed to update Card Content #{radio.id} #{radio.errors.full_messages}" unless result
-            count += 1
-            puts "Card Content #{radio.id} updated with '#{ident}'"
-          else
-            puts "#{card.name} card #{card.id} does not have a radio button question; ident not applied."
+          card.card_versions.each do |card_version|
+            radio = card_version.card_contents.where(content_type: "radio").first
+            if radio
+              result = radio.update_attributes(ident: ident)
+              if result
+                count += 1
+                puts "Card Content #{radio.id} version #{card_version.id} updated with '#{ident}'"
+              else
+                puts "Failed to update Card Content #{radio.id} #{radio.errors.full_messages}"
+              end
+            else
+              puts "#{card.name} card #{card.id} does not have a radio button question; ident not applied."
+            end
           end
         end
       end

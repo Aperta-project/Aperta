@@ -10,7 +10,7 @@ namespace :data do
       value.in?([true, 'true', 1, '1']) ? 'true' : 'false'
     end
 
-    task aperta_11974_preprint_preprint_posting: :environment do
+    task aperta_11974_boolean_preprint_posting: :environment do
       card_contents = CardContent.where(ident: 'preprint-posting--consent').includes(:entity_attributes, :answers).all
       puts "Converting Card Contents [#{card_contents.size}]"
 

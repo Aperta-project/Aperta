@@ -200,7 +200,8 @@ class Paper < ActiveRecord::Base
                   to: :submitted,
                   after: [:assign_submitting_user!,
                           :prevent_edits!,
-                          :new_minor_version!]
+                          :new_minor_version!,
+                          :tech_check_fixed_log!]
     end
 
     event(:minor_revision) do
@@ -782,6 +783,19 @@ class Paper < ActiveRecord::Base
                   "changes to your manuscript, you can upload again by " \
                   "clicking the <i>Replace</i> link."
               })
+  end
+
+  def tech_check_fixed_log!(submitting_user)
+    Activity.tech_check_fixed! self, user: submitting_user
+    increment_initial_tech_check_round!
+  end
+
+  def increment_initial_tech_check_round!
+    initial_tech_check_tasks.map(&:increment_round!)
+  end
+
+  def initial_tech_check_tasks
+    tasks.where(type: PlosBioTechCheck::InitialTechCheckTask)
   end
 
   def trigger_event(*args)

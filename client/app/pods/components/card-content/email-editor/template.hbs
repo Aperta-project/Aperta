@@ -74,11 +74,9 @@
       </button>
       {{#if content.isRequired}}
         <span class="required-field">*</span>
-        {{#unless answer.hideErrors}}
-          {{#if answer.readyIssuesArray.[0]}}
-            <span>A registered decision is required</span>
-          {{/if}}
-        {{/unless}}
+        {{#if answer.shouldShowErrors}}
+          <span>A registered decision is required</span>
+        {{/if}}
       {{/if}}
     {{/unless}}
   </div>

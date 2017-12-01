@@ -46,26 +46,14 @@ export default Component.extend({
     const textForInput = this.itemNameFunction(item);
 
     this.set('resultText', textForInput);
+    // The institution is recognized if it has an institution-id
+    this.set('recognized',  !!item['institution-id']);
     this.set('searchResults', null);
-    this.set('recognized',  true);
   },
 
-  findPerfectMatch() {
-    const lookingFor = this.get('resultText').toLowerCase();
-    const lookingIn  = this.get('searchResults');
-    const found = _.find(lookingIn, (item) => {
-      return lookingFor === this.get('itemNameFunction')(item).toLowerCase();
-    });
-    if (found) {
-      this.selectItem(found);
-    }
-  },
-
-  selectUnknown() {
-    this.selectItem(
-      this.get('unknownItemFunction')(
-        this.get('resultText')));
-    this.set('recognized', false);
+  keyDown() {
+    // This is a hack that removes the results when the search field is empty
+    this.set('searchResults', null);
   },
 
   search: task(function * (url, data) {
@@ -73,14 +61,12 @@ export default Component.extend({
 
     const response = yield this.get('getData').perform(url, data);
     const results  = this.get('parseResponseFunction')(response);
-
-    if (isEmpty(results)) {
-      this.selectUnknown();
-    } else {
-      this.set('searchResults', results);
+    // Add the search param to the results if it doesn't already exist 
+    // so its available for the user to click
+    if (!results.isAny('name', data.query)) {
+      results.push({ name: data.query });
     }
-
-    this.findPerfectMatch();
+    this.set('searchResults', results);
   }).restartable(),
 
   getData: getJSONTask,
@@ -106,10 +92,6 @@ export default Component.extend({
       if (this.get('disabled')) { return; }
       this.set('selectedItem', null);
       this.set('previousSearch', null);
-    },
-
-    selectUnknownItem() {
-      this.selectUnknown();
     },
 
     focus() {

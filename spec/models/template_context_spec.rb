@@ -60,4 +60,42 @@ describe TemplateContext do
       TemplateContext.subcontexts(:bars, type: :author)
     end
   end
+
+  describe '.wraps' do
+    context 'specifies a wrapped type' do
+      it 'returns the wrapped type' do
+        expect(PaperScenario.wraps).to eq Paper
+      end
+
+      it 'raises when constructor is passed an instance of the wrong type' do
+        expect { PaperScenario.new(Task.new) }.to raise_error "PaperScenario expected to wrap a Paper but got a Task"
+      end
+
+      it 'does not raise when constructor is passed an instance of the right type' do
+        expect { PaperScenario.new(Paper.new) }.to_not raise_error
+      end
+    end
+
+    context 'does not specify a wrapped type' do
+      it 'returns nil' do
+        expect(AuthorContext.wraps).to be_nil
+      end
+
+      it 'does not raise when the constructor is passed an unexpected type' do
+        expect { AuthorContext.new(Paper.new) }.to_not raise_error
+      end
+    end
+  end
+
+  describe '.feature_inactive_scenarios' do
+    it 'looks at feature flags' do
+      FeatureFlag.create!(name: 'PREPRINT', active: false)
+      expect(TemplateContext.feature_inactive_scenarios).to include('Preprint Decision')
+      expect(TemplateContext.scenarios).to_not include('Preprint Decision')
+
+      FeatureFlag.find_by(name: 'PREPRINT').update(active: true)
+      expect(TemplateContext.feature_inactive_scenarios).to_not include('Preprint Decision')
+      expect(TemplateContext.scenarios).to include('Preprint Decision')
+    end
+  end
 end

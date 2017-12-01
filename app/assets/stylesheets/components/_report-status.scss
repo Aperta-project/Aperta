@@ -11,6 +11,17 @@
     margin-bottom: 25px;
     font-size: 1.4em;
     line-height: 1.2em;
+
+    #edit-reviewer-report {
+      cursor: pointer;
+      color: $aperta-green;
+      margin-left: 15px;
+      font-size: 14px;
+
+      &.editing {
+        color: $aperta-grey;
+      }
+    }
   }
 
   .sub-message {

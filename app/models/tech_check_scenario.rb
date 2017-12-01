@@ -1,5 +1,6 @@
 # Provides a template context for the Sendback Reasons Letter Template
 class TechCheckScenario < TemplateContext
+  wraps Task
   subcontext  :journal,                        source: [:object, :paper, :journal]
   subcontext  :manuscript,       type: :paper, source: [:object, :paper]
   subcontext  :author,           type: :user,  source: [:object, :paper, :creator]

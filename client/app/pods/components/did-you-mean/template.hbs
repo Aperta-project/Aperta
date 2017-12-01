@@ -8,7 +8,9 @@
   </div>
 {{else}}
 
-  <div class="form-control did-you-mean-input {{if focused "did-you-mean-focused"}} {{if searchResults "did-you-mean-input-expanded"}}">
+  <div class="form-control did-you-mean-input inset-form-control {{if required "required"}} did-you-mean-search-field {{if focused "did-you-mean-focused"}} {{if searchResults "did-you-mean-input-expanded"}}">
+    <div class="inset-form-control-text">
+    </div>
     {{input value=resultText
             bubbles=true
             placeholder=placeholder
@@ -16,7 +18,6 @@
             enter="search"
             key-up="search"
             focus-in="focus"
-            focus-out="search"
             disabled=disabled}}
 
     {{#if search.isRunning}}
@@ -37,9 +38,6 @@
             {{yield result}}
           </div>
         {{/each}}
-      </div>
-      <div class="did-you-mean-no-thanks" {{action "selectUnknownItem"}}>
-        No thanks, I meant "{{ resultText }}".
       </div>
     </div>
   {{/if}}

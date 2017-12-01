@@ -24,10 +24,6 @@ describe PlosBillingLogExportWorker do
     )
   end
 
-  let(:financial_disclosure_task) do
-    FactoryGirl.create(:financial_disclosure_task, paper: paper)
-  end
-
   let(:final_tech_check_task) do
     FactoryGirl.create(:final_tech_check_task, paper: paper)
   end
@@ -38,7 +34,6 @@ describe PlosBillingLogExportWorker do
     paper.phases.first.tasks.concat(
       [
         billing_task,
-        financial_disclosure_task,
         final_tech_check_task
       ]
     )

@@ -1,24 +1,26 @@
-{{#if hasBlock}}
-  {{yield (hash
-  content=content
-  disabled=disabled
-  owner=owner
-  answer=answer
-  preview=preview
-  scenario=computedScenario
-  answerChanged=answerChanged
-  repetition=repetition
-  valueChanged=(action 'updateAnswer'))}}
-{{else}}
-  {{component
-  templateName
-  content=content
-  disabled=disabled
-  owner=owner
-  answer=answer
-  scenario=computedScenario
-  preview=preview
-  answerChanged=answerChanged
-  repetition=repetition
-  valueChanged=(action 'updateAnswer')}}
-{{/if}}
+  {{#if hasBlock}}
+    {{yield (hash
+    content=content
+    disabled=disabled
+    owner=owner
+    name=name
+    answer=answer
+    preview=preview
+    scenario=computedScenario
+    answerChanged=answerChanged
+    repetition=repetition
+    valueChanged=(action 'updateAnswer'))}}
+  {{else}}
+    {{component
+    templateName
+    content=content
+    disabled=disabled
+    owner=owner
+    name=name
+    answer=answer
+    scenario=computedScenario
+    preview=preview
+    answerChanged=answerChanged
+    repetition=repetition
+    valueChanged=(action 'updateAnswer')}}
+  {{/if}}

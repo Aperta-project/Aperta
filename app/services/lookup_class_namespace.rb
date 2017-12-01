@@ -17,7 +17,6 @@ class LookupClassNamespace
     "AuthorsTask"                    =>     "TahiStandardTasks::AuthorsTask",
     "DataAvailabilityTask"           =>     "TahiStandardTasks::DataAvailabilityTask",
     "FigureTask"                     =>     "TahiStandardTasks::FigureTask",
-    "FinancialDisclosureTask"        =>     "TahiStandardTasks::FinancialDisclosureTask",
     "FrontMatterReviewerReportTask"  =>     "TahiStandardTasks::FrontMatterReviewerReportTask",
     "InitialDecisionTask"            =>     "TahiStandardTasks::InitialDecisionTask",
     "PaperEditorTask"                =>     "TahiStandardTasks::PaperEditorTask",
@@ -34,7 +33,6 @@ class LookupClassNamespace
     "TitleAndAbstractTask"           =>     "TahiStandardTasks::TitleAndAbstractTask",
     "UploadManuscriptTask"           =>     "TahiStandardTasks::UploadManuscriptTask",
     # The Rest
-    "Funder"                         =>     "TahiStandardTasks::Funder",
     "ReviewerRecommendation"         =>     "TahiStandardTasks::ReviewerRecommendation"
   }.freeze
 

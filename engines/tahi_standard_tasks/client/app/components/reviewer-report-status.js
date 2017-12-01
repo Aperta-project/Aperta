@@ -2,8 +2,24 @@ import Ember from 'ember';
 import moment from 'moment';
 
 export default Ember.Component.extend({
+  store: Ember.inject.service(),
+  restless: Ember.inject.service('restless'),
+
   classNames: ['report-status'],
   readOnly: false,
+
+  inactiveAdminEdits: Ember.computed('report.adminEdits.[]', function() {
+    let edits = this.get('report.adminEdits');
+    if (Ember.isPresent(edits)) {
+      return edits.filterBy('active', false).sortBy('updated_at');
+    }
+  }),
+
+
+  editingClass: Ember.computed('report.activeAdminEdit', function() {
+    return this.get('report.activeAdminEdit') ? 'editing' : '';
+  }),
+
   shortStatus: Ember.computed.reads('short'),
 
   dueDatetime: Ember.computed.alias('report.dueDatetime'),
@@ -81,8 +97,16 @@ export default Ember.Component.extend({
     changeDueDate(newDate) {
       var hours = this.get('dueDatetime.dueAt').getHours();
       newDate.setHours(hours);
-      this.set('dueDatetime.dueAt', newDate);
-      this.get('dueDatetime').save();
+      this.get('report').save();
+    },
+
+    editReport() {
+      let report = this.get('report');
+      report.set('editWaiting', true);
+      this.get('store').createRecord('admin-edit', {reviewerReport: report}).save().then(function() {
+        report.set('editWaiting', false);
+        report.set('activeAdminEdit', true);
+      });
     }
   }
 });

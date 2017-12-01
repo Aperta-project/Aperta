@@ -19,5 +19,7 @@ export default NestedQuestionOwner.extend(Answerable, {
     var status = this.get('status');
     return !this.get('submitted') && status === 'pending';
   }),
-  scheduledEvents: DS.hasMany('scheduled-event')
+  scheduledEvents: DS.hasMany('scheduled-event'),
+  adminEdits: DS.hasMany('admin-edit'),
+  activeAdminEdit: DS.attr('boolean')
 });

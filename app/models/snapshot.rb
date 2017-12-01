@@ -39,7 +39,28 @@ class Snapshot < ActiveRecord::Base
     end.try(:fetch, "value")
   end
 
+  def sanitized_contents
+    sanitize(contents)
+  end
+
   private
+
+  CHECK_FIELDS = ['id', 'owner_type', 'owner_id', 'grant_number', 'website', 'additional_comments', 'funder'].freeze
+  IGNORE_FIELDS = [['name', 'type', 'value'], ['children', 'name', 'type']].freeze
+
+  def sanitize(data)
+    return data unless data.is_a?(Hash) || data.is_a?(Array)
+    if data.is_a?(Array)
+      return data if data.empty?
+      data = data.select { |obj| !IGNORE_FIELDS.include?(obj.keys.sort) || !CHECK_FIELDS.include?(obj['name']) }
+      data.map(&method(:sanitize))
+    else
+      data = data.except('id', 'answer_type')
+      data.each do |key, value|
+        data[key] = sanitize(value)
+      end
+    end
+  end
 
   def set_key
     self.key = source.try(:snapshot_key)

@@ -23,8 +23,14 @@ class NestedQuestionAnswersController < ApplicationController
 
   def fetch_and_update_answer
     answer = fetch_or_create_answer
-    answer.value = answer_params[:value]
-    answer.additional_data = answer_params[:additional_data]
+    if admin_edit?
+      additional = answer_params[:additional_data] || {}
+      additional[:pending_edit] = answer_params[:value]
+      answer.additional_data = additional
+    else
+      answer.value = answer_params[:value]
+      answer.additional_data = answer_params[:additional_data]
+    end
     answer.save!
     answer
   end
@@ -78,5 +84,9 @@ class NestedQuestionAnswersController < ApplicationController
       :edit,
       fetch_or_create_answer.task
     )
+  end
+
+  def admin_edit?
+    owner.class == ReviewerReport && owner.active_admin_edit? && current_user.can?(:edit_answers, owner.paper)
   end
 end

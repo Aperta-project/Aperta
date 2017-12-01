@@ -12,6 +12,7 @@ class ReviewerReport < ActiveRecord::Base
   belongs_to :user
   belongs_to :decision
   has_one :paper, through: :task
+  has_many :admin_edits
 
   validates :task,
     uniqueness: { scope: [:task_id, :user_id, :decision_id],
@@ -139,6 +140,10 @@ class ReviewerReport < ActiveRecord::Base
     return :minus if inactive.include? status
     return :active_check if status == "completed"
     :check
+  end
+
+  def active_admin_edit?
+    admin_edits.active.present?
   end
 
   private

@@ -14,6 +14,7 @@ class ScheduledEvent < ActiveRecord::Base
   scope :passive, -> { where(state: 'passive') }
   scope :due_to_trigger, -> { active.where('dispatch_at < ?', DateTime.now.in_time_zone) }
   scope :serviceable, -> { where(state: ['passive', 'active', 'completed', 'inactive']) }
+  scope :cancelable, -> { where(state: ['passive', 'active']) }
 
   before_save :deactivate, if: :should_deactivate?
   before_save :reactivate, if: :should_reactivate?
@@ -68,7 +69,7 @@ class ScheduledEvent < ActiveRecord::Base
     end
 
     event(:cancel) do
-      transitions from: :active, to: :canceled
+      transitions from: [:active, :passive], to: :canceled
     end
   end
 

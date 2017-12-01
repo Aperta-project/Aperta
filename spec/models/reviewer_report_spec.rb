@@ -161,4 +161,23 @@ describe ReviewerReport do
       expect { subject.set_due_datetime }.to change { subject.scheduled_events.count }.by(3)
     end
   end
+
+  describe '#cancel_reminders' do
+    before do
+      FactoryGirl.create(:feature_flag, name: 'REVIEW_DUE_AT')
+      FactoryGirl.create(:feature_flag, name: 'REVIEW_DUE_DATE')
+      FactoryGirl.create :review_duration_period_setting_template
+    end
+
+    it 'cancels all events with passive or active state' do
+      subject.set_due_datetime # makes 3 scheduled events with active state
+      subject.scheduled_events.first.switch_off! # passive state
+      subject.scheduled_events.last.deactivate! # inactive state
+      subject.scheduled_events.each do |event|
+        count = event.inactive? ? 0 : 1
+        expect(event).to receive(:cancel!).exactly(count).times
+      end
+      subject.send(:cancel_reminders)
+    end
+  end
 end

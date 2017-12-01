@@ -3,7 +3,7 @@
     <li class="question">
       {{nested-question-radio-decision
         ident="front_matter_reviewer_report--decision_term"
-        owner=model
+        owner=report
         readOnly=readOnly
       }}
     </li>
@@ -12,7 +12,7 @@
       {{nested-question-textarea
         ident="front_matter_reviewer_report--competing_interests"
         editorStyle='expanded'
-        owner=model
+        owner=report
         displayContent=true
         disabled=readOnly
         helpText=(concat "
@@ -24,7 +24,7 @@
     <li class="question">
         {{#nested-question-radio
           ident="front_matter_reviewer_report--suitable"
-          owner=model
+          owner=report
           wrapperClass="yes-no-with-comments"
           helpText="Do you think this manuscript is suitable, in principle, for the magazine section of <em>PLOS Biology</em>? What recommendations do you have for revisions that might make the manuscript suitable?
           <p><strong>Please refer to our <a href='http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-reviewing-magazine-submissions' target='_blank'>reviewer guidelines</a> and information on our <a href='http://journals.plos.org/plosbiology/s/other-article-types' target='_blank'>article types</a>.</strong></p><p>Your review comments will be communicated to the authors.</p>"
@@ -34,7 +34,7 @@
             {{nested-question-textarea
               ident="front_matter_reviewer_report--suitable--comment"
               editorStyle='expanded'
-              owner=model
+              owner=report
               displayQuestionText=false
               displayContent=true
               noResponseText=""
@@ -47,7 +47,7 @@
     <li class="question">
       {{#nested-question-radio
         ident="front_matter_reviewer_report--includes_unpublished_data"
-        owner=model
+        owner=report
         unwrappedHelpText="<ul class=\"question-help\"><li>The data have been generated rigorously with relevant controls, replication and sample sizes, if applicable.</li><li>The data provided support the conclusions that are drawn.</li></ul><div class=\"question-help\">These comments will be communicated to the authors.</div>"
         wrapperClass="yes-no-with-comments"
         readOnly=readOnly
@@ -57,7 +57,7 @@
           {{nested-question-textarea
             ident="front_matter_reviewer_report--includes_unpublished_data--explanation"
             editorStyle='expanded'
-            owner=model
+            owner=report
             noResponseText=""
             displayQuestionText=false
             displayContent=true
@@ -69,7 +69,7 @@
     <li class="question">
       {{nested-question-textarea
         ident="front_matter_reviewer_report--additional_comments"
-        owner=model
+        owner=report
         displayContent=true
         helpText="Additional comments may include concerns about dual publication, research or publication ethics."
         disabled=readOnly
@@ -80,7 +80,7 @@
       {{nested-question-textarea
         ident="front_matter_reviewer_report--identity"
         editorStyle='expanded'
-        owner=model
+        owner=report
         displayContent=true
         helpText="Your name and review will not be published with the manuscript."
         disabled=readOnly
@@ -92,7 +92,7 @@
                          buttonText="upload file"
                          hasCaption=false
                          multiple=true
-                         owner=model
+                         owner=report
                          disabled=readOnly}}
     </li>
   </ol>

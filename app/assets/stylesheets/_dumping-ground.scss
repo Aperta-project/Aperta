@@ -69,6 +69,20 @@
   display: inline-block;
 }
 
+.right-align-contents {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.required-standalone {
+  .required-label::after {
+    content: "*";
+    margin-left: 3px;
+    color: $aperta-red;
+    font-size: 18px;
+  }
+  textarea.error { border-color: $aperta-red; }
+}
 
 /*
 ------------------------------------------------------------------------------

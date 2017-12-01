@@ -197,10 +197,15 @@ error-message = element ErrorMessage {
 }
 
 repeat = element Repeat {
-  attribute min { text }?
+  attribute ident { text }?
+  & attribute min { text }?
   & attribute max { text }?
   & attribute item-name { text }
   & content+
+}
+
+financial-disclosure-summary = element FinancialDisclosureSummary {
+  attribute ident { text }?
 }
 
 content = (
@@ -213,6 +218,7 @@ content = (
 | error-message
 | export-paper
 | file-uploader
+| financial-disclosure-summary
 | if
 | paragraph-input
 | radio-input

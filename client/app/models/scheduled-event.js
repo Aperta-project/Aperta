@@ -18,8 +18,9 @@ export default DS.Model.extend({
 
   updateState: function(newState) {
     const url = `/api/scheduled_events/${this.get('id')}/update_state`;
-    return this.get('restless').put(url, {state: newState}).then(() => {
-      this.set('state', newState);
+    return this.get('restless').put(url, {state: newState}).then((data) => {
+      this.store.pushPayload(data);
+      return this;
     });
   }
 

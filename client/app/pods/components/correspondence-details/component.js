@@ -8,7 +8,7 @@ export default Ember.Component.extend(RunMixin, {
   },
 
   reloadPendingAttachments() {
-    let pending = this.get('message.attachments').filter(attachment => attachment.get('status') !== 'done');
+    let pending = this.get('message.attachments').filterBy('status', 'processing');
     pending.forEach(attachment => {
       attachment.reload();
     });

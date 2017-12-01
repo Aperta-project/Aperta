@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import hashlib
 import logging
@@ -6,7 +6,6 @@ import os
 import random
 import time
 
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 from Base.Resources import docs
@@ -34,11 +33,12 @@ class UploadManuscriptTask(BaseTask):
                                    '+ div.ember-view div.error-message i.fa-exclamation-triangle')
     self._uploaded_pdf = (By.CSS_SELECTOR, 'a.file-link')
     self._upload_source_file_button = (By.ID, 'upload-files')
+    self._uploaded_file_box = (By.CSS_SELECTOR, 'div.task-main-content>.card-content-file-uploader')
     self._upload_source_file_box = (By.CSS_SELECTOR, 'div.custom-card-task  .card-content-if '
                                                      '+ .card-content-file-uploader '
                                                      '+ .card-content-if')
-    # relative locators
-    self._file_link = (By.TAG_NAME,'a')
+    self._link_to_file = (By.CSS_SELECTOR, 'div.attachment-item>a.file-link')
+    self._link_to_source_file = (By.CSS_SELECTOR, 'div.card-content-if a.file-link')
 
   # POM Actions
   def validate_styles(self, type_='doc', source_uploaded=False):
@@ -61,7 +61,7 @@ class UploadManuscriptTask(BaseTask):
                                              'expected copy'.format(intro_text.text)
     link = intro_text.find_element(*self._file_link)
     self.validate_filename_link_style(link)
-    replace = intro_text.find_element(*self._upload_manuscript_replace_btn)
+    replace = intro_text.find_element(*self._replace_file_link)
     assert 'Replace' == replace.text, replace.text
     replace_icon = replace.find_element_by_tag_name('i')
     assert 'fa-refresh' in replace_icon.get_attribute('class'), \
@@ -74,9 +74,9 @@ class UploadManuscriptTask(BaseTask):
              in source_file_box.text, source_file_box.text
       if source_uploaded:
         # It is inadvisable to use find by method, the correct way to do this is do an _get()
-        link = source_file_box.find_element_by_tag_name('a')
+        link = source_file_box.find_element(*self._file_link)
         self.validate_filename_link_style(link)
-        replace = source_file_box.find_element(*self._upload_manuscript_replace_btn)
+        replace = source_file_box.find_element(*self._replace_file_link)
         assert 'Replace' == replace.text, replace.text
         # It is inadvisable to use find by method, the correct way to do this is do an _get()
         replace_icon = replace.find_element_by_tag_name('i')
@@ -102,7 +102,9 @@ class UploadManuscriptTask(BaseTask):
       fn = os.path.join(os.getcwd(), doc)
     logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)
-    self._driver.find_element_by_id('upload-files').send_keys(fn)
+    source_input = self._get(self._upload_manuscript_input)
+    source_input.send_keys(fn)
+    self._wait_for_text_be_present_in_element(self._link_to_file, fn.split('/')[-1])
     self.set_timeout(3)
     try:
       upload_ms_btn = self._get(self._upload_manuscript_btn)
@@ -110,6 +112,7 @@ class UploadManuscriptTask(BaseTask):
       upload_ms_btn = self._get(self._upload_manuscript_replace_btn)
     self.restore_timeout()
     upload_ms_btn.click()
+    self._wait_for_text_be_present_in_element(self._link_to_file, fn.split('/')[-1])
     # Time needed for script execution.
     time.sleep(7)
 
@@ -137,6 +140,7 @@ class UploadManuscriptTask(BaseTask):
     if not skip_source_upload:
       self._scroll_into_view(upload_source_file_btn)
       upload_source_file_btn.send_keys(fn)
+      self._wait_for_text_be_present_in_element(self._link_to_source_file, fn.split('/')[-1])
       # Time needed for script execution.
       time.sleep(10)
 
@@ -179,30 +183,19 @@ class UploadManuscriptTask(BaseTask):
         hash_file = hashlib.sha256(fh.read()).hexdigest()
       logging.info('Sending document: {0}'.format(fn))
       time.sleep(1)
-      # We need to fix these calls - we should not be calling into driver here - just do a _get()
-      self._driver.find_element_by_id('upload-files').send_keys(fn)
+      source_input = self._get(self._upload_manuscript_input)
+      source_input.send_keys(fn)
       file_ext = 'doc'
     except IOError:
       with open(fn_docx, 'rb') as fh:
         hash_file = hashlib.sha256(fh.read()).hexdigest()
       logging.info('Sending document: {0}'.format(fn_docx))
       time.sleep(1)
-      # We need to fix these calls - we should not be calling into driver here - just do a _get()
-      self._driver.find_element_by_id('upload-files').send_keys(fn_docx)
+      source_input = self._get(self._upload_manuscript_input)
+      source_input.send_keys(fn_docx)
       file_ext = 'docx'
     # Time needed for script execution (file upload).
+    name_without_ext = ((fn.split('/')[-1])).split('.')[0]
+    self._wait_for_text_be_present_in_element(self._link_to_source_file, name_without_ext)
     time.sleep(7)
     return file_name, hash_file, file_ext
-
-  def assert_link_present(self, locator):
-    """
-    Looks for the existence of 'Replace' link to replace file
-    :param: locator is the relative locator to the file to be downloaded or replaced
-    :return: True if present, else False
-    """
-    try:
-      intro_text = self._get(self._intro_text)
-      intro_text.find_element(*locator)
-    except (ElementDoesNotExistAssertionError, NoSuchElementException) as e:
-      return False
-    return True

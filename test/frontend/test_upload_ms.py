@@ -5,7 +5,6 @@ This test case validates the upload manuscript
 """
 import logging
 import random
-import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users
@@ -49,10 +48,13 @@ class UploadManuscriptTest(CommonTest):
         'The task is opened and must be closed'
     # open to check style
     ms_page.click_task('Upload Manuscript')
-    ms_page._wait_on_lambda(lambda: ms_page.is_task_open('Upload Manuscript') == True)
+    ms_page._wait_on_lambda(lambda: bool(ms_page.is_task_open('Upload Manuscript')))
     # check style without source
     upms = UploadManuscriptTask(self.getDriver())
     upms.task_ready()
+    # check uploaded file links visibility
+    upms.validate_upload_file_links(upms._uploaded_file_box, task_editable=True, check_delete_link=False)
+
     upms.validate_styles()
     upms.click_completion_button()
 
@@ -63,10 +65,8 @@ class UploadManuscriptTest(CommonTest):
 
     assert ms_page.is_task_marked_complete('Upload Manuscript'), \
         'The task in not marked as complete and it should be completed'
-    assert not upms.assert_link_present(upms._upload_manuscript_replace_btn), \
-      'The task should not have Replace button for uploaded file in completed state'
-    assert upms.assert_link_present(upms._uploaded_pdf), \
-      'The task should have link to uploaded file in completed state'
+    # check uploaded file links visibility
+    upms.validate_upload_file_links(upms._uploaded_file_box, task_editable=False, check_delete_link=False)
 
   def test_upload_pdf_task(self):
     """
@@ -93,20 +93,12 @@ class UploadManuscriptTest(CommonTest):
     # open to check style
     ms_page.complete_task('Title And Abstract')
     ms_page.click_task('Upload Manuscript')
-    ms_page._wait_on_lambda(lambda: ms_page.is_task_open('Upload Manuscript') == True)
-    # time.sleep(1) # this was added as a bug fix so following steps don't fail
-
+    ms_page._wait_on_lambda(lambda: bool(ms_page.is_task_open('Upload Manuscript')))
     # check style without source
     upms = UploadManuscriptTask(self.getDriver())
     upms.task_ready()
     upms.validate_styles(type_='pdf')
     upms.click_completion_button()
-
-    # Scroll to top to leave the complete button
-    manuscript_id_text = ms_page._get(ms_page._paper_sidebar_manuscript_id)
-    ms_page._scroll_into_view(manuscript_id_text)
-    manuscript_id_text.click()
-
     ms_page.click_submit_btn()
     ms_page.confirm_submit_btn()
     ms_page.close_submit_overlay()
@@ -145,9 +137,16 @@ class UploadManuscriptTest(CommonTest):
     upms.validate_styles(type_='pdf', source_uploaded=True)
     upms._wait_for_element(upms._get(upms._completion_button))
     upms.click_completion_button()
-    time.sleep(1)
+    # Scroll to top to leave the complete button
+    manuscript_id_text = ms_page._get(ms_page._paper_sidebar_manuscript_id)
+    ms_page._scroll_into_view(manuscript_id_text)
+    manuscript_id_text.click()
+
     completed = ms_page.is_task_marked_complete('Upload Manuscript')
     assert completed, 'The task should be marked as completed and is not'
+    # check uploaded file links visibility in completed state
+    upms.validate_upload_file_links(upms._uploaded_file_box, task_editable=False, check_delete_link=False)
+    upms.validate_upload_file_links(upms._upload_source_file_box, task_editable=False, check_delete_link=False)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

@@ -130,13 +130,14 @@ describe TahiStandardTasks::ExportService do
         :card_content,
         parent: task.card.content_root_for_version(:latest),
         ident: 'preprint-posting--consent',
+        value_type: 'boolean',
         content_type: 'radio'
       )
     }
 
     context "the paper has not opted out of preprint" do
       before do
-        task.find_or_build_answer_for(card_content: card_content, value: '1').save
+        task.find_or_build_answer_for(card_content: card_content, value: true).save
       end
 
       it "for a preprint export it needs a preprint doi" do

@@ -172,9 +172,9 @@ describe ReviewerReport do
     it 'cancels all events with passive or active state' do
       subject.set_due_datetime # makes 3 scheduled events with active state
       subject.scheduled_events.first.switch_off! # passive state
-      subject.scheduled_events.last.deactivate! # inactive state
+      subject.scheduled_events.last.cancel! # canceled state
       subject.scheduled_events.each do |event|
-        count = event.inactive? ? 0 : 1
+        count = event.canceled? ? 0 : 1
         expect(event).to receive(:cancel!).exactly(count).times
       end
       subject.send(:cancel_reminders)

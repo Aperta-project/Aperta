@@ -131,6 +131,7 @@ describe TahiStandardTasks::ExportService do
         value_type: 'boolean',
         parent: task.card.content_root_for_version(:latest),
         ident: 'preprint-posting--consent',
+        value_type: 'boolean',
         content_type: 'radio'
       )
     }

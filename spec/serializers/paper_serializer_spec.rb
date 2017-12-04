@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe PaperSerializer do
   subject(:serializer) { described_class.new(paper, user: user, root: :paper) }
-  let(:paper) { FactoryGirl.build_stubbed(Paper) }
   let(:user) { FactoryGirl.build_stubbed(:user) }
 
   before do

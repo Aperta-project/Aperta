@@ -27,6 +27,7 @@ class LetterTemplate < ActiveRecord::Base
       my.subject = render_attr(subject, context, sanitize: true, check_blanks: check_blanks)
       my.to = render_attr(to, context, sanitize: true, check_blanks: check_blanks)
       my.body = render_attr(body, context, check_blanks: check_blanks)
+      check_internal_errors
     end
   end
 
@@ -36,6 +37,14 @@ class LetterTemplate < ActiveRecord::Base
 
   def scenario_class
     TemplateContext.scenarios[scenario]
+  end
+
+  def check_internal_errors?
+    add_parse_error if (body =~ /Liquid error:/).present?
+  end
+
+  def add_parse_error
+    errors.add(:base, 'Template not renderable')
   end
 
   private

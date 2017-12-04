@@ -169,19 +169,46 @@ class TasksController < ApplicationController
     )
   end
 
-  private
+  def render_template
+    task = Task.find params[:taskId]
+    paper = task.paper
+    journal = task.journal
 
-  def trigger_email_sent_event(task_obj)
-    paper = task_obj.paper
-    event = Event.new(name: 'paper.email_sent', paper: paper, task: task_obj, user: current_user)
-    event.trigger
+    # get the template and scenario class
+    template_ident = params[:ident]
+    letter_template = journal.letter_templates.find_by(ident: template_ident)
+    scenario_class = letter_template.scenario_class
+
+    if scenario_class.wraps == Paper
+      scenario_object = paper
+    elsif scenario_class.wraps == Task
+      scenario_object = task
+    else
+      letter_template.add_parse_error
+    end
+
+    letter_template.render(scenario_class.new(scenario_object))
+
+    render json: {
+      to: letter_template.to,
+      subject: letter_template.subject,
+      body: letter_template.body
+    }
   end
 
-  def render_sendback_template(task_obj)
-    paper = task_obj.paper
+  private
+
+  def render_sendback_template(task)
+    paper = task.paper
     journal = paper.journal
     letter_template = journal.letter_templates.find_by(name: 'Sendback Reasons')
-    letter_template.render(TechCheckScenario.new(task_obj), check_blanks: false)
+    letter_template.render(TechCheckScenario.new(task), check_blanks: false)
+  end
+
+  def trigger_email_sent_event(task)
+    paper = task.paper
+    event = Event.new(name: 'paper.email_sent', paper: paper, task: task, user: current_user)
+    event.trigger
   end
 
   def render_email_template(paper, template_name)

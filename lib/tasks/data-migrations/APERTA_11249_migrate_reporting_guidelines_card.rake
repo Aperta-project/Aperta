@@ -5,22 +5,25 @@ namespace :data do
     DESC
 
     task aperta_11249_migrate_reporting_guidelines_card: :environment do
-      cards = ['Additional Information', 'Reporting Guidelines']
-      cards.each do |name|
-        CardContent.transaction do
-          card = Card.where(name: name).first
-          raise Exception, "No card named '#{name}'" unless card
+      names = ['Additional Information', 'Reporting Guidelines']
 
-          check_boxes = card.card_version(:latest).card_contents.where(content_type: "check-box").all
-          raise Exception, "Card has no check-box questions." unless check_boxes
+      Card.transaction do
+        cards = Card.where(name: names).all
+        cards.each do |card|
+          card.card_versions.each do |card_version|
+            version = "#{card.journal.try(:name)} #{card.name} version #{card_version.version}"
+            check_boxes = card_version.card_contents.where(content_type: "check-box").all
+            puts "#{version}: has no check-box questions." if check_boxes.none?
 
-          # rubocop:disable Rails/SkipsModelValidations
-          check_boxes.each do |check_box|
-            check_box.entity_attributes.where(name: 'text').update_all(name: 'label')
+            # rubocop:disable Rails/SkipsModelValidations
+            check_boxes.each do |check_box|
+              texts = check_box.entity_attributes.where(name: 'text')
+              puts "#{version}: Check box #{check_box.id} has no 'text' attributes" if texts.none?
+              texts.update_all(name: 'label')
+            end
+            # rubocop:enable Rails/SkipsModelValidations
+            puts "#{version}: #{check_boxes.size} check-box text attributes(s) migrated to labels."
           end
-          # rubocop:enable Rails/SkipsModelValidations
-
-          p "#{name}: #{check_boxes.size} check-box text element(s) migrated to labels."
         end
       end
     end

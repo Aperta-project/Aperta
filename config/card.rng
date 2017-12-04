@@ -386,6 +386,13 @@
       </zeroOrMore>
     </element>
   </define>
+  <define name="tech-check-email-view">
+    <element name="TechCheckEmailView">
+      <attribute name="value-type">
+        <value>text</value>
+      </attribute>
+    </element>
+  </define>
   <!-- Contents -->
   <define name="description">
     <element name="Description">
@@ -520,6 +527,7 @@
       <ref name="tech-check"/>
       <ref name="email-editor"/>
       <ref name="tech-check-email"/>
+      <ref name="tech-check-email-view"/>
     </choice>
   </define>
   <start>

@@ -128,6 +128,7 @@ describe TahiStandardTasks::ExportService do
     let!(:card_content) {
       FactoryGirl.create(
         :card_content,
+        value_type: 'boolean',
         parent: task.card.content_root_for_version(:latest),
         ident: 'preprint-posting--consent',
         content_type: 'radio'
@@ -136,7 +137,7 @@ describe TahiStandardTasks::ExportService do
 
     context "the paper has not opted out of preprint" do
       before do
-        task.find_or_build_answer_for(card_content: card_content, value: '1').save
+        task.find_or_build_answer_for(card_content: card_content, value: true).save
       end
 
       it "for a preprint export it needs a preprint doi" do
@@ -152,7 +153,7 @@ describe TahiStandardTasks::ExportService do
 
     context "the paper has opted out of preprint" do
       before do
-        task.find_or_build_answer_for(card_content: card_content, value: '2').save
+        task.find_or_build_answer_for(card_content: card_content, value: false).save
       end
       it "does not ensure a need doi" do
         export_delivery.destination = "preprint"

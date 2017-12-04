@@ -285,6 +285,9 @@ class Paper < ActiveRecord::Base
 
   register_events!
 
+  # Registers custom events using the new Event Behavior model
+  Event.register('paper.email_sent')
+
   # All known paper states
   STATES = aasm.states.map(&:name).freeze
   # States which should generally be editable by the creator
@@ -323,8 +326,12 @@ class Paper < ActiveRecord::Base
     find(id)
   end
 
+  def preprint_opt_in?
+    answer_for('preprint-posting--consent').try(:value).to_s == 'true'
+  end
+
   def preprint_opt_out?
-    answer_for('preprint-posting--consent').try(:value).to_i == 2
+    !preprint_opt_in?
   end
 
   def inactive?

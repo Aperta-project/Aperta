@@ -114,6 +114,7 @@ class TasksController < ApplicationController
         task: task
       )
     end
+    trigger_email_sent_event(task)
     d = Time.now.getlocal
     initiator = current_user.email
     render json:  {
@@ -169,6 +170,12 @@ class TasksController < ApplicationController
   end
 
   private
+
+  def trigger_email_sent_event(task_obj)
+    paper = task_obj.paper
+    event = Event.new(name: 'paper.email_sent', paper: paper, task: task_obj, user: current_user)
+    event.trigger
+  end
 
   def render_sendback_template(task_obj)
     paper = task_obj.paper

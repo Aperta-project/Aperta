@@ -29,6 +29,7 @@ class Card < ActiveRecord::Base
   after_destroy :clean_permissions
 
   scope :archived, -> { where.not(archived_at: nil) }
+  scope :active_cards, -> { where.not(name: Card.feature_inactive_cards) }
 
   # temporarly added for https://jira.plos.org/jira/browse/APERTA-10345
   # we should remove this once the preprint feature flag is removed

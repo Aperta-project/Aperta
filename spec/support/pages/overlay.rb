@@ -3,7 +3,7 @@ class CardOverlay < Page
 
   def dismiss
     session.all('.overlay .overlay-close-button').first.click
-    synchronize_no_content!("CLOSE")
+    expect(page).to have_no_css('.overlay')
   end
 
   text_assertions :assignee, '.chosen-assignee.chosen-container', ->(name){ name.upcase }

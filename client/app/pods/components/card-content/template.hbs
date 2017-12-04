@@ -1,6 +1,8 @@
-{{!--This card-content component will be rendered
-for every node in the tree, wrapping a more specific
-inner component that depends on the type of the content--}}
+{{!--
+  This card-content component will be rendered
+  for every node in the tree, wrapping a more specific
+  inner component that depends on the type of the content
+--}}
 
 {{#if (and answer keepAnswerContainer)}}
   <div class="answer-container">
@@ -11,11 +13,12 @@ inner component that depends on the type of the content--}}
     <div class="additional-text">
       {{#if content.hasAdditionalText}}
         {{card-content/tabbed-textarea
-                annotationChanged=(action 'updateAnnotation')
-                showAnnotation=content.allowAnnotations
-                annotation=answer.annotation
-                instructionText=content.instructionText
-                disabled=disabled}}
+          annotationChanged=(action 'updateAnnotation')
+          showAnnotation=content.allowAnnotations
+          annotation=answer.annotation
+          instructionText=content.instructionText
+          disabled=disabled
+        }}
       {{/if}}
     </div>
   </div>

@@ -39,6 +39,8 @@ export default DS.Model.extend({
   min: DS.attr('number'),
   max: DS.attr('number'),
   itemName: DS.attr('string'),
+  letterTemplate: DS.attr('string'),
+  buttonLabel: DS.attr('string'),
 
 
   // The unusual nature of the sendback component (being reliant on other card-content within the context
@@ -91,7 +93,7 @@ export default DS.Model.extend({
         childCC.get('answers').filterBy('owner', owner).filterBy('repetition', repetition).invoke('destroyRecord');
 
         if(childCC.get('repetitions').includes(repetition)) {
-          repetition.destroyRecord();
+          repetition.destroyRecord({ adapterOptions: { destroyingAll: true } });
         }
       } else {
         childCC.get('answers').filterBy('owner', owner).invoke('destroyRecord');
@@ -121,7 +123,9 @@ export default DS.Model.extend({
     let defaultAnswerValue = this.get('defaultAnswerValue');
     if(!defaultAnswerValue) { return; }
 
-    if(this.get('valueType') === 'text')  {
+    // If the valueType is text or html, it will return it, otherwise (boolean) it will
+    // cast it will typecast it to boolean
+    if(this.get('valueType') === 'text' || this.get('valueType') === 'html')  {
       return defaultAnswerValue;
     } else {
       return JSON.parse(defaultAnswerValue);

@@ -21,10 +21,6 @@ describe Typesetter::BillingLogSerializer do
     FactoryGirl.create(:billing_task, :with_loaded_card, :with_card_content, paper: paper)
   end
 
-  let(:financial_disclosure_task) do
-    FactoryGirl.create(:financial_disclosure_task, :with_loaded_card, paper: paper)
-  end
-
   let(:final_tech_check_task) do
     FactoryGirl.create(:final_tech_check_task, :with_loaded_card, paper: paper)
   end
@@ -32,8 +28,8 @@ describe Typesetter::BillingLogSerializer do
   let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
   before do
     paper.phases.first.tasks.push(*[billing_task,
-                                    financial_disclosure_task,
                                     final_tech_check_task])
+    allow_any_instance_of(FinancialDisclosureStatement).to receive(:funding_statement).and_return("amazing funding statement")
   end
 
   describe 'doi' do
@@ -75,6 +71,29 @@ describe Typesetter::BillingLogSerializer do
     end
   end
 
+  describe 'pulls from financial disclosure answers' do
+    context 'with financial disclosure questions' do
+      before do
+        allow_any_instance_of(FinancialDisclosureStatement).to receive(:asked?).and_return(true)
+        allow_any_instance_of(FinancialDisclosureStatement).to receive(:funding_statement).and_return("amazing funding statement")
+      end
+
+      it "has a funding statement" do
+        expect(output[:fundRef]).to eq('amazing funding statement')
+      end
+    end
+
+    context 'without financial disclosure questions' do
+      before do
+        allow_any_instance_of(FinancialDisclosureStatement).to receive(:asked?).and_return(false)
+      end
+
+      it "has a funding statement" do
+        expect(output[:fundRef]).to be_blank
+      end
+    end
+  end
+
   context 'pulls from corresponding billing task that' do
     it 'has middlename if the field exists' do
       # This spec will fail if middle_name becomes a field on the billing task
@@ -102,8 +121,6 @@ describe Typesetter::BillingLogSerializer do
 
         expect(output[:direct_bill_response]).to be_nil, 'does not have a direct_bill_response when the payment method is not institutional'
         expect(output[:gpi_response]).to be_nil, 'does not have a gpi_response when the payment method is not gpi'
-
-        expect(output[:fundRef]).to eq(financial_disclosure_task.funding_statement), 'has fundRef'
 
         expect(paper.manuscript_id.split('.').count).to eq(2), 'the paper manuscript id needs to have 2 parts for this next expectation'
         expect(output[:pubdnumber]).to eq(paper.manuscript_id), 'has pubdnumber which is the same as the manuscript_id of the paper'

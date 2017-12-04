@@ -18,7 +18,7 @@ class DownloadManuscriptWorker
     if url.blank?
       raise(ArgumentError, "Url must be provided (received a blank value)")
     end
-    paper.update_attribute(:processing, Attachment.file_type(url) != 'pdf')
+    paper.update_attribute(:processing, true)
     perform_async(
       paper.id,
       url,

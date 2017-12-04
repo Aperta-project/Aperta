@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171115185224) do
+ActiveRecord::Schema.define(version: 20171127213335) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,18 @@ ActiveRecord::Schema.define(version: 20171115185224) do
   add_index "activities", ["subject_id"], name: "index_activities_on_subject_id", using: :btree
   add_index "activities", ["subject_type"], name: "index_activities_on_subject_type", using: :btree
   add_index "activities", ["user_id"], name: "index_activities_on_user_id", using: :btree
+
+  create_table "admin_edits", force: :cascade do |t|
+    t.integer  "reviewer_report_id"
+    t.integer  "user_id"
+    t.string   "notes"
+    t.boolean  "active"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "admin_edits", ["reviewer_report_id"], name: "index_admin_edits_on_reviewer_report_id", using: :btree
+  add_index "admin_edits", ["user_id"], name: "index_admin_edits_on_user_id", using: :btree
 
   create_table "affiliations", force: :cascade do |t|
     t.integer  "user_id"

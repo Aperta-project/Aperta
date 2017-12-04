@@ -10,15 +10,15 @@ describe SalesforceServices::BillingSync do
       Paper,
       id: 99,
       billing_task: billing_task,
-      financial_disclosure_task: financial_disclosure_task,
       salesforce_manuscript_id: 'abc123'
     )
   end
   let(:billing_task) { instance_double(PlosBilling::BillingTask) }
-  let(:financial_disclosure_task) do
-    instance_double(TahiStandardTasks::FinancialDisclosureTask)
-  end
   let(:salesforce_api) { class_double(SalesforceServices::API) }
+
+  before do
+    allow_any_instance_of(FinancialDisclosureStatement).to receive(:asked?).and_return(true)
+  end
 
   describe 'validations' do
     it { is_expected.to be_valid }
@@ -38,9 +38,15 @@ describe SalesforceServices::BillingSync do
       expect(billing_sync.valid?).to be(false)
     end
 
-    it 'requires a financial disclosure task' do
-      allow(paper).to receive(:financial_disclosure_task).and_return nil
-      expect(billing_sync.valid?).to be(false)
+    context 'without a financial disclosure summary' do
+      before do
+        allow_any_instance_of(FinancialDisclosureStatement).to receive(:asked?).and_return(false)
+      end
+
+      it 'requires financial disclosure question to be on the paper' do
+        expect(billing_sync.valid?).to be(false)
+        expect { billing_sync.sync! }.to raise_error.with_message(/financial disclosure does not exist/)
+      end
     end
   end
 

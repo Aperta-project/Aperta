@@ -14,7 +14,8 @@ export default Ember.Component.extend({
   },
 
   _templateConfig(endpoint) {
-    let task_id = '293';
+    let task_id = this.get('owner.answers.firstObject.value');
+
     return {
       url: `/api/tasks/${task_id}/${endpoint}`
     };

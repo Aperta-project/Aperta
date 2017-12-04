@@ -170,11 +170,12 @@ class TasksController < ApplicationController
 
   private
 
-  def render_sendback_template(task_obj)
-    paper = task_obj.paper
+  # just task
+  def render_sendback_template(task)
+    paper = task.paper
     journal = paper.journal
     letter_template = journal.letter_templates.find_by(name: 'Sendback Reasons')
-    letter_template.render(TechCheckScenario.new(task_obj), check_blanks: false)
+    letter_template.render(TechCheckScenario.new(task), check_blanks: false)
   end
 
   def render_email_template(paper, template_name)

@@ -54,6 +54,7 @@ export default Ember.Component.extend({
   }),
 
   _templateConfig(endpoint) {
+    //intro and footer almost def uncessary
     return {
       url: `/api/tasks/${this.get('owner.id')}/${endpoint}`,
       data: {

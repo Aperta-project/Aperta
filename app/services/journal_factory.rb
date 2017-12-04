@@ -75,7 +75,7 @@ class JournalFactory
 
       # Creator(s) only get access to the submission task types
       task_klasses = SUBMISSION_TASKS
-      task_klasses += [PlosBioTechCheck::ChangesForAuthorTask, AdHocForAuthorsTask]
+      task_klasses += [AdHocForAuthorsTask]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
@@ -519,7 +519,6 @@ class JournalFactory
       # ReviewerReportTask(s) and its descendants, but cannot edit them.
       task_klasses -= [
         PlosBilling::BillingTask,
-        PlosBioTechCheck::ChangesForAuthorTask,
         TahiStandardTasks::RegisterDecisionTask
       ]
       task_klasses += [TahiStandardTasks::ReviewerReportTask]

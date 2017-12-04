@@ -170,7 +170,7 @@ describe NestedQuestionAnswersController do
   end
 
   describe "#update for reviewer report" do
-    report = FactoryGirl.create(:reviewer_report)
+    let(:report)  { FactoryGirl.create(:reviewer_report) }
     let!(:answer) { FactoryGirl.create(:answer, value: "Hi", card_content: card_content, owner: report) }
     let(:card_content) { FactoryGirl.create(:card_content) }
 

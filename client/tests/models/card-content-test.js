@@ -60,3 +60,33 @@ test('answerForOwner creates an unsaved default answer that is associated to a r
     assert.equal(answer.get('repetition'), repetition);
   });
 });
+
+test('parsedDefaultAnswerValue returns the answer string if the valueType is text', function (assert) {
+  let cardContent = make('card-content');
+  Ember.run(() => {
+    cardContent.set('defaultAnswerValue', 'TEXT ANSWER');
+    cardContent.set('valueType', 'text');
+
+    assert.equal(cardContent.parsedDefaultAnswerValue(), 'TEXT ANSWER');
+  });
+});
+
+test('parsedDefaultAnswerValue returns the answer string if the valueType is html', function (assert) {
+  let cardContent = make('card-content');
+  Ember.run(() => {
+    cardContent.set('defaultAnswerValue', 'TEXT ANSWER');
+    cardContent.set('valueType', 'html');
+
+    assert.equal(cardContent.parsedDefaultAnswerValue(), 'TEXT ANSWER');
+  });
+});
+
+test('parsedDefaultAnswerValue returns the answer boolean if the valuetype is different from text or html', function (assert) {
+  let cardContent = make('card-content');
+  Ember.run(() => {
+    cardContent.set('defaultAnswerValue', 'true');
+    cardContent.set('valueType', 'boolean');
+
+    assert.equal(cardContent.parsedDefaultAnswerValue(), true);
+  });
+});

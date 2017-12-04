@@ -5,11 +5,14 @@ describe DiscussionTopicSerializer, serializer_test: true do
     FactoryGirl.create(
       :discussion_topic,
       participants: [user],
-      discussion_replies: [reply])
+      discussion_replies: [reply],
+      discussion_participants: [discussion_participant]
+    )
   end
   let(:reply) { FactoryGirl.create(:discussion_reply, replier: user) }
   let(:user) { FactoryGirl.create(:user) }
   let(:object_for_serializer) { discussion }
+  let(:discussion_participant) { FactoryGirl.create(:discussion_participant, user: user) }
 
   it 'serializes the topic' do
     expect(deserialized_content)
@@ -27,7 +30,8 @@ describe DiscussionTopicSerializer, serializer_test: true do
     subject(:discussion) do
       FactoryGirl.create(
         :discussion_topic,
-        discussion_replies: [reply])
+        discussion_replies: [reply]
+      )
     end
 
     it 'serializes all repliers although they may not be participants' do
@@ -39,5 +43,9 @@ describe DiscussionTopicSerializer, serializer_test: true do
     it 'serializes the user only once' do
       expect(deserialized_content).to match(hash_including(users: contain_exactly(hash_including(id: user.id))))
     end
+  end
+
+  it 'includes email addresses for a discussion participant who is also a paper participant' do
+    expect(deserialized_content).to match(hash_including(users: include(hash_including(email: user.email))))
   end
 end

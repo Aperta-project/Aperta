@@ -173,13 +173,8 @@ describe ReviewerReport do
       subject.set_due_datetime # makes 3 scheduled events with active state
       subject.scheduled_events.first.switch_off! # passive state
       subject.scheduled_events.last.cancel! # cancel state
-      cancelable = subject.scheduled_events.select(&:may_cancel?) # omg it compares object ids and not row id.
-      allow(subject.scheduled_events).to receive(:cancelable).and_return(cancelable)
-      subject.scheduled_events.each do |event|
-        count = event.canceled? ? 0 : 1
-        expect(event).to receive(:cancel!).exactly(count).times
-      end
       subject.send(:cancel_reminders)
+      expect(subject.scheduled_events.all?(&:canceled?)).to be(true)
     end
   end
 end

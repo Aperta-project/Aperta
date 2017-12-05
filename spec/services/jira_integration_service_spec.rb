@@ -3,11 +3,6 @@ require 'rails_helper'
 describe JIRAIntegrationService do
   subject { described_class }
 
-  before do
-    allow_any_instance_of(TahiEnv).to receive(:jira_authenticate_url).and_return 'https://jira.plos.org/jira/rest/auth/1/session'
-    allow_any_instance_of(TahiEnv).to receive(:jira_create_issue_url).and_return 'https://example.com'
-  end
-
   describe '#build_payload' do
     let(:params) { { remarks: 'talks' } }
     it 'should return a properly formatted hash' do

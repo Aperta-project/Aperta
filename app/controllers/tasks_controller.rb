@@ -183,6 +183,8 @@ class TasksController < ApplicationController
       scenario_object = paper
     elsif scenario_class.wraps == Task
       scenario_object = task
+    elsif scenario_class.wraps == Journal
+      scenario_object = journal
     else
       letter_template.add_render_error
     end

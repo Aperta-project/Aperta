@@ -518,6 +518,7 @@ class JournalFactory
       # Changes For Author tasks. However, AEs can view all
       # ReviewerReportTask(s) and its descendants, but cannot edit them.
       task_klasses -= [
+        PlosBioTechCheck::ChangesForAuthorTask,
         PlosBilling::BillingTask,
         TahiStandardTasks::RegisterDecisionTask
       ]

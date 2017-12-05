@@ -1530,6 +1530,59 @@ describe Paper do
     end
   end
 
+  context 'User opted or not to preprint' do
+    let!(:task) {
+      FactoryGirl.create(
+        :custom_card_task,
+        :with_card,
+        paper: paper
+      )
+    }
+    let!(:card_content) {
+      FactoryGirl.create(
+        :card_content,
+        parent: task.card.content_root_for_version(:latest),
+        ident: 'preprint-posting--consent',
+        value_type: 'boolean',
+        content_type: 'radio'
+      )
+    }
+
+    describe '#preprint_opt_in?' do
+      it 'returns true if user opted in to preprint' do
+        task.find_or_build_answer_for(card_content: card_content, value: true).save
+        expect(paper.preprint_opt_in?).to be_truthy
+      end
+
+      it 'returns false if user did not opt in to preprint' do
+        task.find_or_build_answer_for(card_content: card_content, value: false).save
+        expect(paper.preprint_opt_in?).to be_falsey
+      end
+
+      it 'returns false if preprint card is not present' do
+        card_content.update(ident: 'fake-ident')
+        expect(paper.preprint_opt_in?).to be_falsey
+      end
+    end
+
+    describe '#preprint_opt_out?' do
+      it 'returns true if user opted out to preprint' do
+        task.find_or_build_answer_for(card_content: card_content, value: false).save
+        expect(paper.preprint_opt_out?).to be_truthy
+      end
+
+      it 'returns false if user did not opt out to preprint' do
+        task.find_or_build_answer_for(card_content: card_content, value: true).save
+        expect(paper.preprint_opt_out?).to be_falsey
+      end
+
+      it 'returns true if preprint card is not present' do
+        card_content.update(ident: 'fake-ident')
+        expect(paper.preprint_opt_out?).to be_truthy
+      end
+    end
+  end
+
   describe "#abstract" do
     before do
       paper.update(body: "a bunch of words")

@@ -39,11 +39,11 @@ class LetterTemplate < ActiveRecord::Base
     TemplateContext.scenarios[scenario]
   end
 
-  def check_internal_errors?
-    add_parse_error if (body =~ /Liquid error:/).present?
+  def check_internal_errors
+    add_render_error if (body =~ /Liquid error:/).present?
   end
 
-  def add_parse_error
+  def add_render_error
     errors.add(:base, 'Template not renderable')
   end
 

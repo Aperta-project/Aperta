@@ -184,7 +184,7 @@ class TasksController < ApplicationController
     elsif scenario_class.wraps == Task
       scenario_object = task
     else
-      letter_template.add_parse_error
+      letter_template.add_render_error
     end
 
     letter_template.render(scenario_class.new(scenario_object))

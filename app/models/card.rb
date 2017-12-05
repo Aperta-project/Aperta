@@ -143,13 +143,12 @@ class Card < ActiveRecord::Base
 
   # for cards that render templates, make sure the template exists
   def check_templates
-    return true unless latest_card_version
+    return unless latest_card_version
     template_cards = latest_card_version.card_contents.where(content_type: 'template')
     template_idents = template_cards.map(&:letter_template_ident)
-    valid_idents = LetterTemplate.all.map(&:ident)
-
-    invalid_idents = template_idents - valid_idents
+    invalid_idents = template_idents - LetterTemplate.all.map(&:ident)
     return if invalid_idents.empty?
+
     ident_error_string = invalid_idents.join(', ')
     errors.add(:detail, message: "Non existent template ident(s): #{ident_error_string}")
   end

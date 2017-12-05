@@ -188,6 +188,8 @@ class TasksController < ApplicationController
     end
 
     letter_template.render(scenario_class.new(scenario_object))
+    # thoughts on this ??
+    head 404 if letter_template.errors.present?
 
     render json: {
       to: letter_template.to,

@@ -169,6 +169,7 @@ class TasksController < ApplicationController
     )
   end
 
+  # does this belong here? seperate templates controller? somewhere else?
   def render_template
     task = Task.find params[:taskId]
     paper = task.paper

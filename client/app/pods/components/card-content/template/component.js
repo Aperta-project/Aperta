@@ -11,7 +11,6 @@ export default Ember.Component.extend({
       url: `/api/tasks/${this.get('owner.id')}/${endpoint}`,
       data: {
         ident: this.get('content.letterTemplateIdent'),
-        taskId: this.get('owner.id')
       }
     };
   },
@@ -19,7 +18,7 @@ export default Ember.Component.extend({
   didRender() {
     const config = this._templateConfig('render_template');
     this.get('restless').put(config.url, config.data).then((data)=> {
-      this.set('body', data.body);
+      this.set('body', data.letter_template.body);
     });
   }
 });

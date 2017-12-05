@@ -73,18 +73,6 @@ class TasksController < ApplicationController
     respond_with(task)
   end
 
-  def load_email_template
-    requires_user_can :edit, task
-    @task = Task.find(params[:id])
-    template_name = params[:letter_template_name]
-    @letter_template = render_email_template(@task.paper, template_name)
-    render json:  {
-      to: @letter_template.to,
-      subject: @letter_template.subject,
-      body: @letter_template.body
-    }
-  end
-
   def send_message
     requires_user_can :edit, task
     users = User.where(id: task_email_params[:recipients])
@@ -126,18 +114,7 @@ class TasksController < ApplicationController
     }
   end
 
-  def sendback_preview
-    task = Task.find(params[:id])
-    letter_template = render_sendback_template(task)
-    render json:  {
-      to: letter_template.to,
-      subject: letter_template.subject,
-      body: letter_template.body
-    }
-  end
-
   def sendback_email
-    task = Task.find(params[:id])
     letter_template = render_sendback_template(task)
     GenericMailer.delay.send_email(
       subject: letter_template.subject,
@@ -169,36 +146,38 @@ class TasksController < ApplicationController
     )
   end
 
+  def load_email_template
+    requires_user_can :edit, task
+    template_name = params[:letter_template_name]
+    template = render_email_template(task.paper, template_name)
+    render json: template
+  end
+
+  def sendback_preview
+    template = render_sendback_template(task)
+    render json: template
+  end
+
   # does this belong here? seperate templates controller? somewhere else?
   def render_template
-    task = Task.find params[:taskId]
-    paper = task.paper
-    journal = task.journal
-
-    # get the template and scenario class
-    template_ident = params[:ident]
-    letter_template = journal.letter_templates.find_by(ident: template_ident)
-    scenario_class = letter_template.scenario_class
+    templates = task.journal.letter_templates
+    template = templates.find_by(ident: params[:ident])
+    scenario_class = template.scenario_class
 
     if scenario_class.wraps == Paper
       scenario_object = paper
     elsif scenario_class.wraps == Task
       scenario_object = task
     elsif scenario_class.wraps == Journal
-      scenario_object = journal
+      scenario_object = task.journal
     else
-      letter_template.add_render_error
+      template.add_render_error
     end
 
-    letter_template.render(scenario_class.new(scenario_object))
+    template.render(scenario_class.new(scenario_object))
     # thoughts on this ??
-    head 404 if letter_template.errors.present?
-
-    render json: {
-      to: letter_template.to,
-      subject: letter_template.subject,
-      body: letter_template.body
-    }
+    head 404 if template.errors.present?
+    render json: template
   end
 
   private

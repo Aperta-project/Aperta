@@ -68,7 +68,7 @@ export default Ember.Component.extend({
       const config = this._templateConfig('sendback_preview');
 
       this.get('restless').put(config.url, config.data).then((data)=> {
-        this.set('emailPreview', data.body);
+        this.set('emailPreview', data.letter_template.body);
         this.set('showEmailPreview', true);
       });
     },

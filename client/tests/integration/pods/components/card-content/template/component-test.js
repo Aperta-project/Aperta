@@ -9,24 +9,21 @@ moduleForComponent(
   {
     integration: true,
     beforeEach() {
-      this.set('actionStub', function() {});
       this.set('owner', Ember.Object.create({ id: 1 }));
       this.set('content', Ember.Object.create({ letterTemplateident: 'test' }));
     }
   }
 );
 
-let template = hbs`{{card-content/template
+const template = hbs`{{card-content/template
 content=content
-disabled=disabled
 owner=owner
-answer=answer
-preview=preview
-valueChanged=(action actionStub)
 }}`;
 
+const templateJSON = '{"letter_template": {"body": "<p>test</p>"}}';
+
 test(`it displays the body of the template as markup`, function(assert) {
-  $.mockjax({url: '/api/tasks/1/render_template', type: 'PUT', status: 201, responseText: '{"body": "<p>test</p>"}'});
+  $.mockjax({url: '/api/tasks/1/render_template', type: 'PUT', status: 201, responseText: templateJSON});
   this.render(template);
   assert.elementFound('.card-content-template');
 

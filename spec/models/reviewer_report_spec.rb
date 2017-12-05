@@ -174,7 +174,7 @@ describe ReviewerReport do
       subject.scheduled_events.first.switch_off! # passive state
       subject.scheduled_events.last.cancel! # cancel state
       subject.send(:cancel_reminders)
-      expect(subject.scheduled_events.all?(&:canceled?)).to be(true)
+      expect(subject.scheduled_events.none?(&:may_cancel?)).to be(true)
     end
   end
 end

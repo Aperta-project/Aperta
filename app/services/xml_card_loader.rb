@@ -32,6 +32,7 @@ class XmlCardLoader
       # Workaround for a bug on AANS gem, where the order of the destroy
       # elements doesn't meet the Foreign Key Constraint. It was trying to
       # delete CardContents before the CardContentValidations
+      # Open Bug: https://github.com/collectiveidea/awesome_nested_set/issues/306
       card.latest_card_version.card_contents.each do |cc|
         cc.card_content_validations.try(:destroy_all)
         cc.entity_attributes.try(:destroy_all)

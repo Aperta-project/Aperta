@@ -57,7 +57,7 @@ gem 'premailer-rails'
 gem 'puma'
 gem 'pusher'
 gem 'rack-timeout'
-gem 'rails', '~>4.2.7'
+gem 'rails', '~>4.2.10'
 gem 'rbtrace'
 gem 'render_anywhere', require: nil
 gem 'request_store'

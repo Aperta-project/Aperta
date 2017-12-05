@@ -1,13 +1,11 @@
 class AssignTeamOverlay < CardOverlay
   def self.visit(assign_team_task, &blk)
     page.visit "/papers/#{assign_team_task.paper.id}/tasks/#{assign_team_task.id}"
-    wait_for_ajax
 
     new.tap do |overlay|
       if block_given?
         page.assert_selector(".overlay-container .overlay-body")
         blk.call overlay
-        wait_for_ajax
         overlay.dismiss
       end
     end
@@ -17,10 +15,8 @@ class AssignTeamOverlay < CardOverlay
     page.assert_selector(".assign-team-content")
 
     select2 role_name, from: "Role"
-    wait_for_ajax
 
     select2 user.full_name, css: '.assignment-user-input', search: true
-    wait_for_ajax
 
     click_button "Assign"
   end
@@ -28,6 +24,5 @@ class AssignTeamOverlay < CardOverlay
   def unassign_user(user)
     trash_icon = find(".invitation", text: user.full_name).find(".invite-remove")
     trash_icon.click
-    wait_for_ajax
   end
 end

@@ -114,6 +114,7 @@ class TasksController < ApplicationController
         task: task
       )
     end
+    trigger_email_sent_event(task)
     d = Time.now.getlocal
     initiator = current_user.email
     render json:  {
@@ -126,24 +127,25 @@ class TasksController < ApplicationController
   end
 
   def sendback_preview
-    @task = Task.find(params[:id])
-    @letter_template = render_sendback_template(@task)
+    task = Task.find(params[:id])
+    letter_template = render_sendback_template(task)
     render json:  {
-      to: @letter_template.to,
-      subject: @letter_template.subject,
-      body: @letter_template.body
+      to: letter_template.to,
+      subject: letter_template.subject,
+      body: letter_template.body
     }
   end
 
   def sendback_email
-    @task = Task.find(params[:id])
-    @letter_template = render_sendback_template(@task)
+    task = Task.find(params[:id])
+    letter_template = render_sendback_template(task)
     GenericMailer.delay.send_email(
-      subject: @letter_template.subject,
-      body: @letter_template.body,
-      to: @letter_template.to,
-      task: @task
+      subject: letter_template.subject,
+      body: letter_template.body,
+      to: letter_template.to,
+      task: task
     )
+    task.paper.minor_check!
     head :no_content
   end
 
@@ -168,6 +170,12 @@ class TasksController < ApplicationController
   end
 
   private
+
+  def trigger_email_sent_event(task_obj)
+    paper = task_obj.paper
+    event = Event.new(name: 'paper.email_sent', paper: paper, task: task_obj, user: current_user)
+    event.trigger
+  end
 
   def render_sendback_template(task_obj)
     paper = task_obj.paper

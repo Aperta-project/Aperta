@@ -19,7 +19,7 @@
     Date Sent:
   </div>
   <div class="col-sm-10 correspondence-date">
-    {{format-date message.date}}
+    {{message.utcSentAt}}
   </div>
 </div>
 <div class="row hide">
@@ -87,8 +87,7 @@
         {{#if (can "manage_workflow" message.paper)}}
            {{attachment-item accept=accept
                     attachment=attachment
-                    disabled=true
-                    filePath=attachment.src}}
+                    disabled=true}}
         {{else}}
           <span class="attachment-item">{{attachment.filename}}</span>
         {{/if}}

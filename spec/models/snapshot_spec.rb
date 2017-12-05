@@ -108,4 +108,42 @@ describe Snapshot, type: :model do
       end
     end
   end
+
+  describe "#sanitized_contents" do
+    it 'sanitizes a snapshot - non comform data types - integer' do
+      snapshot.contents = 123
+      expected_sanitized_contents = 123
+      expect(snapshot.sanitized_contents).to eq expected_sanitized_contents
+    end
+
+    it 'sanitizes a snapshot - non comform data types - string' do
+      snapshot.contents = "hello world"
+      expected_sanitized_contents = nil
+      expect(snapshot.sanitized_contents).to eq expected_sanitized_contents
+    end
+
+    it 'sanitizes a snapshot - deletes all ID properties' do
+      snapshot.contents = { 'id' => 123, 'name' => 'task1' }
+      expected_sanitized_contents = { 'name' => 'task1' }
+      expect(snapshot.sanitized_contents).to eq expected_sanitized_contents
+    end
+
+    it 'sanitizes a snapshot - deletes all ID properties (nested)' do
+      snapshot.contents = { 'id' => 123, 'name' => 'task1', 'children' => { 'id' => 123, 'name' => 'task2' } }
+      expected_sanitized_contents = { 'name' => 'task1', 'children' => { 'name' => 'task2' } }
+      expect(snapshot.sanitized_contents).to eq expected_sanitized_contents
+    end
+
+    it 'sanitizes a snapshot - deletes all irelevant nodes - option 1' do
+      snapshot.contents = { 'id' => 123, 'name' => 'task1', 'children' => [{ 'name' => 'id', 'type' => 'text', 'value' => 'hello' }] }
+      expected_sanitized_contents = { 'name' => 'task1', 'children' => [] }
+      expect(snapshot.sanitized_contents).to eq expected_sanitized_contents
+    end
+
+    it 'sanitizes a snapshot - deletes all irelevant nodes - option 2' do
+      snapshot.contents = { 'id' => 123, 'name' => 'task1', 'children' => [{ 'name' => 'id', 'children' => 'text', 'type' => 'hello' }] }
+      expected_sanitized_contents = { 'name' => 'task1', 'children' => [] }
+      expect(snapshot.sanitized_contents).to eq expected_sanitized_contents
+    end
+  end
 end

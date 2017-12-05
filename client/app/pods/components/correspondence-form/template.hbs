@@ -138,28 +138,16 @@
 </div>
 <div class="row">
   <div class="col-sm-12">
-    {{#if isUploading}}
-      <p>Uploading...</p>
-    {{/if}}
-    {{#if doneUploading}}
-      <p>
-        <i class="fa fa-file-o"></i>&nbsp;
-        <a>{{attachment.filename}}</a>&nbsp;&nbsp;
-        <span class="fileinput-buton" {{action 'removeAttachment'}}>
-          <i class="fa fa-trash"></i>
-          <span>Delete</span>
-        </span>
-      </p>
-    {{/if}}
-  </div>
-  <div class="col-sm-12">
-    <div class="button-secondary button--green correspondence-attachment fileinput-button">
-      <i class="fa fa-paperclip"></i>&nbsp;Attach Files
-      {{file-uploader accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.pdf,.docx,.doc,.pages"
-                      start=(action "uploadStarted")
-                      done=(action "uploadFinished")
-                      filePrefix="correspondence_attachment"}}
-    </div>
+      {{attachment-manager accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.pdf,.docx,.doc,.pages"
+                           filePath="correspondence_attachment"
+                           attachments=attachments
+                           multiple=true
+                           disabled=false
+                           hasCaption=false
+                           buttonText="Attach Files"
+                           showDescription=false
+                           uploadFinished=(action "createAttachment")
+                           updateAttachment=(action "updateAttachment") }}
   </div>
 </div>
 <div class="row">

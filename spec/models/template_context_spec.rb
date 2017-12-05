@@ -86,4 +86,16 @@ describe TemplateContext do
       end
     end
   end
+
+  describe '.feature_inactive_scenarios' do
+    it 'looks at feature flags' do
+      FeatureFlag.create!(name: 'PREPRINT', active: false)
+      expect(TemplateContext.feature_inactive_scenarios).to include('Preprint Decision')
+      expect(TemplateContext.scenarios).to_not include('Preprint Decision')
+
+      FeatureFlag.find_by(name: 'PREPRINT').update(active: true)
+      expect(TemplateContext.feature_inactive_scenarios).to_not include('Preprint Decision')
+      expect(TemplateContext.scenarios).to include('Preprint Decision')
+    end
+  end
 end

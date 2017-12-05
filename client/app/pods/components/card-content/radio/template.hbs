@@ -1,50 +1,57 @@
-<p class="content-text">{{{content.text}}}
-  {{#if content.isRequired}}
-    <span class="required-field">*</span>
-  {{/if}}
-</p>
-<div>
-  {{#if isText}}
-    {{#each content.possibleValues as |opt index|}}
-      <label for="{{guid-id this index}}" class="option">
+{{#if hasText}}
+  <div class="card-form-text">
+    {{{content.text}}}
+  </div>
+{{/if}}
+
+{{#if isText}}
+  {{#each content.possibleValues as |opt index|}}
+    <div class="card-radio">
+      <label class="card-form-element">
         {{radio-button
           selection=answer.value
           value=opt.value
           disabled=disabled
-          id=(guid-id this index)
           content=content
-          action=(action "valueChanged")}}
-        <span class="card-content-radio-label">{{{opt.label}}}</span>
+          action=(action "valueChanged")
+        }}
+
+        <span class="card-form-label">{{{opt.label}}}</span>
+        {{partial "required-field"}}
       </label>
-    {{/each}}
-  {{else}}
-    <label for="{{guid-id this '0'}}" class="option">
+    </div>
+  {{/each}}
+{{else }}
+  <div class="card-radio">
+    <label class="card-form-element">
       {{radio-button
         selection=answer.value
         value=true
-        id=(guid-id this '0')
         disabled=disabled
         content=content
         action=(action "valueChanged")
       }}
 
-      <span class="card-content-radio-label">{{{trueLabel}}}</span>
+      <span class="card-form-label">{{{trueLabel}}}</span>
+      {{partial "required-field"}}
     </label>
+  </div>
 
-    <label  for="{{guid-id this '1'}}" class="option">
+  <div class="card-radio">
+    <label class="card-form-element">
       {{radio-button
         selection=answer.value
         value=false
-        id=(guid-id this '1')
         disabled=disabled
         content=content
         action=(action "valueChanged")
       }}
 
-      <span class="card-content-radio-label">{{{falseLabel}}}</span>
+      <span class="card-form-label">{{{falseLabel}}}</span>
+      {{partial "required-field"}}
     </label>
-  {{/if}}
-</div>
+  </div>
+{{/if}}
 
 {{card-content/validation-errors hideErrors=answer.hideErrors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
 
@@ -53,5 +60,5 @@
   owner=owner
   disabled=disabled
   repetition=repetition
-  preview=preview}}
-
+  preview=preview
+}}

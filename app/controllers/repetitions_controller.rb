@@ -24,7 +24,14 @@ class RepetitionsController < ApplicationController
     repetition = Repetition.find(params[:id])
     requires_user_can(:edit, repetition.task)
     repetition.destroy
-    render json: repetition_positions(first: repetition)
+
+    if params[:destroying_all]
+      # client has reported that all repetitions are being destroyed
+      # and does not care about returning a position for reordering
+      head :no_content
+    else
+      render json: repetition_positions(first: repetition)
+    end
   end
 
   private
@@ -48,9 +55,16 @@ class RepetitionsController < ApplicationController
 
   # Return an array of sibling repetitions so that positions can be returned to
   # the client.  Ember expects that when returning an array for a single object
-  # action (create / update / destroy), the first object must be the one that
-  # was modified.
+  # action (create / update), the first object must be the one that
+  # was modified.  In the case of destroy, do not return the deleted model.
   def repetition_positions(first:)
-    [first] + first.siblings
+    rest = Repetition.where(parent_id: first.parent_id, card_content: first.card_content, task: first.task)
+                     .where.not(id: first.id)
+
+    if first.destroyed?
+      rest
+    else
+      [first] + rest
+    end
   end
 end

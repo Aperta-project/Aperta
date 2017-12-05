@@ -32,6 +32,32 @@ describe PaperTrackerController do
     end
   end
 
+  describe '#order_dir' do
+    let(:user) { FactoryGirl.create :user }
+    before { expect(controller).to receive(:params).and_return(orderDir: value) }
+    ['foo', 'asc', 'desc'].each do |val|
+      context "with #{val} param" do
+        let(:value) { val }
+        it "it returns the correct value" do
+          expect(controller.send(:order_dir)).to eql(val == 'desc' ? 'desc' : 'asc')
+        end
+      end
+    end
+  end
+
+  describe '#column' do
+    let(:user) { FactoryGirl.create :user }
+
+    Paper.column_names.dup.push('bogus').each do |val|
+      context "with #{val} param" do
+        it "returns the correct value" do
+          allow(controller).to receive(:params).and_return(orderBy: val)
+          expect(controller.send(:column)).to eql(val == 'bogus' ? 'submitted_at' : val)
+        end
+      end
+    end
+  end
+
   describe 'on GET #index' do
     let(:user) { FactoryGirl.create :user, :site_admin }
 
@@ -169,7 +195,7 @@ describe PaperTrackerController do
         make_matchable_paper(title: 'aaa foo')
         make_matchable_paper(title: 'bbb foo')
         make_matchable_paper(title: 'aaa foo')
-        get :index, format: :json, query: 'foo', orderBy: :title
+        get :index, format: :json, query: 'foo', orderBy: 'title'
         json = JSON.parse(response.body)
         expect(Paper.count).to eq(3)
         expect(json['papers'][0]['title']).to eq('aaa foo')
@@ -184,8 +210,8 @@ describe PaperTrackerController do
         get :index,
             format: :json,
             query: 'foo',
-            orderBy: :title,
-            orderDir: :desc
+            orderBy: 'title',
+            orderDir: 'desc'
         json = JSON.parse(response.body)
         expect(Paper.count).to eq(3)
         expect(json['papers'][0]['title']).to eq('bbb foo')

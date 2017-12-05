@@ -48,7 +48,7 @@
           <div class="row">
             <div class="col-xs-9">
               <div class="form-group">
-                <label for="subject" class="text-bold required-field-label">Subject </label>
+                <label for="subject" class="text-bold required-field-label">Subject <span>{{fa-icon 'asterisk'}}</span></label>
                 <div class="{{if (or subjectErrorPresent  subjectEmpty) 'error'}}">
                   {{input class="form-control template-subject" value=template.subject key-down="handleInputChange" focus-out="checkSubject"}}
                   {{#if subjectEmpty}}

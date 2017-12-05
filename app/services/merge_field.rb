@@ -29,6 +29,7 @@ class MergeField
     @unlisted ||= Hash.new { [] }.tap do |hash|
       hash[PaperContext] = [:url_for, :url_helpers, :preprint_opted_in, :preprint_opted_out]
       hash[ReviewerReportContext] = ActionView::Helpers::SanitizeHelper.public_instance_methods
+      hash[UserContext] = [:title]
     end
   end
 

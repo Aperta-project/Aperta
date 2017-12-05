@@ -1,34 +1,22 @@
-{{#if showTextAndLabel}}
-  <p class="content-text">
-    {{{content.text}}}
-    {{#if content.isRequired}}
-      <span class="required-field">*</span>
-    {{/if}}
-  </p>
-{{/if}}
-{{card-content/validation-errors errors=answer.readyIssuesArray}}
-<div class="checkbox">
-  <label for={{name}}>
+<div class="card-checkbox">
+  {{#card-content/label content=content control-placement='left'}}
     {{check-box
       name=name
-      id=name
       checked=answer.value
       disabled=disabled
       content=content
       answer=answer
-      action="valueChanged"}}
-    <span>{{{if (or showTextAndLabel labelOnly) content.label content.text }}}</span>
-    {{#if (and (not showTextAndLabel) content.isRequired)}}
-      <span class="required-field">*</span>
-    {{/if}}
-  </label>
+      action="valueChanged"
+    }}
+  {{/card-content/label}}
 </div>
-<div>
-  {{card-content/validation-errors errors=answer.readyIssuesArray}}
-</div>
+
+{{card-content/validation-errors errors=answer.readyIssuesArray}}
+
 {{card-content/display-children
   content=content
   owner=owner
   repetition=repetition
   disabled=disabled
-  preview=preview}}
+  preview=preview
+}}

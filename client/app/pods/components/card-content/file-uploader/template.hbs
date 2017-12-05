@@ -13,7 +13,8 @@
     updateAttachment=(action "updateAttachment")
     answer=answer
     content=content
-    showDescription=true}}
+    showDescription=true
+  }}
 {{else}}
   {{paper-attachment-manager
     task=owner
@@ -26,5 +27,6 @@
     buttonText=content.label
     description=content.text
     errorMessage=content.errorMessage
-    accept=acceptedFileTypes}}
+    accept=acceptedFileTypes
+  }}
 {{/if}}

@@ -24,12 +24,16 @@ export default Ember.Component.extend({
     }
   },
 
+  hasText: Ember.computed('content.text', function () {
+    return Ember.isPresent(this.get('content.text'));
+  }),
+
   trueLabel: Ember.computed('content.possibleValues', function () {
-    return this.findLabelByValue(true) || 'Yes';
+    return this.findLabelByValue('true') || 'Yes';
   }),
 
   falseLabel: Ember.computed('content.possibleValues', function () {
-    return this.findLabelByValue(false) || 'No';
+    return this.findLabelByValue('false') || 'No';
   }),
 
   findLabelByValue: function (match) {

@@ -115,7 +115,9 @@ class TasksController < ApplicationController
   end
 
   def sendback_email
-    letter_template = render_sendback_template(task)
+    letter_template = task.journal.letter_templates.find_by(name: 'Sendback Reasons')
+    letter_template.render(TechCheckScenario.new(task), check_blanks: false)
+
     GenericMailer.delay.send_email(
       subject: letter_template.subject,
       body: letter_template.body,
@@ -153,11 +155,6 @@ class TasksController < ApplicationController
     render json: template
   end
 
-  def sendback_preview
-    template = render_sendback_template(task)
-    render json: template
-  end
-
   # does this belong here? seperate templates controller? somewhere else?
   def render_template
     templates = task.journal.letter_templates
@@ -181,13 +178,6 @@ class TasksController < ApplicationController
   end
 
   private
-
-  def render_sendback_template(task)
-    paper = task.paper
-    journal = paper.journal
-    letter_template = journal.letter_templates.find_by(name: 'Sendback Reasons')
-    letter_template.render(TechCheckScenario.new(task), check_blanks: false)
-  end
 
   def trigger_email_sent_event(task)
     paper = task.paper

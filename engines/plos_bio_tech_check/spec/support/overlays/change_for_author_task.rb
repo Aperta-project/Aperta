@@ -5,7 +5,7 @@ class ChangesForAuthorOverlay < CardOverlay
     expect(page).to have_content('First round author changes')
   end
 
-  def click_changes_have_been_made
-    click_button 'These changes have been made'
+  def click_task_completed
+    click_button 'I AM DONE WITH THIS TASK'
   end
 end

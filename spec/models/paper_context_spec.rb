@@ -58,7 +58,7 @@ describe PaperContext do
       context 'with preprint opt-in' do
         before do
           mmt.update(is_preprint_eligible: true)
-          task.find_or_build_answer_for(card_content: card_content, value: '1').save
+          task.find_or_build_answer_for(card_content: card_content, value: 'true').save
         end
         it 'renders opt-in block' do
           check_render("{% if preprint_opted_in %}opt-in{% endif %}", "opt-in")
@@ -68,7 +68,7 @@ describe PaperContext do
       context 'with preprint opt-out' do
         before do
           mmt.update(is_preprint_eligible: true)
-          task.find_or_build_answer_for(card_content: card_content, value: '2').save
+          task.find_or_build_answer_for(card_content: card_content, value: 'false').save
         end
         it 'renders opt-out block' do
           check_render("{% if preprint_opted_out %}opt-out{% endif %}", "opt-out")

@@ -23,7 +23,7 @@ class PaperContext < TemplateContext
   end
 
   def preprint_opted_in
-    FeatureFlag[:PREPRINT] && @object.manuscript_manager_template.is_preprint_eligible && !@object.preprint_opt_out?
+    FeatureFlag[:PREPRINT] && @object.manuscript_manager_template.is_preprint_eligible && @object.preprint_opt_in?
   end
 
   def preprint_opted_out

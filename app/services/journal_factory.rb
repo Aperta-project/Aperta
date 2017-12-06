@@ -217,6 +217,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
+      role.ensure_permission_exists(:edit_answers, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:manage_paper_authors, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
@@ -277,6 +278,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
+      role.ensure_permission_exists(:edit_answers, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:manage_paper_authors, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
@@ -449,6 +451,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
+      role.ensure_permission_exists(:edit_answers, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:manage_paper_authors, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
@@ -903,16 +906,12 @@ class JournalFactory
         lt.ident = ident
         lt.scenario = 'Preprint Decision'
         lt.subject = 'Manuscript Accepted for ApertarXiv'
-        lt.to = '{creator email}'
+        lt.to = '{{manuscript.creator.email}}'
         lt.body = <<-TEXT.strip_heredoc
-          <p>Dear Dr. {manuscript creator last name},</p>
-          <br/>
-          <p>Your {submitted journal} manuscript, '{ARTICLE TITLE}', has been approved for pre-print publication. Because you have opted in to this opportunity, your manuscript has been forwarded to ApertarXiv for posting. You will receive another message with publication details when the article has posted.</p>
-          <br/>
-          <p>Please note this decision is not related to the decision to publish your manuscript in {submitted journal}. As your manuscript is evaluated for publication you will receive additional communications.</p>
-          <br/>
+          <p>Dear Dr. {{manuscript.creator.last_name}},</p>
+          <p>Your {{journal.name}} manuscript, '{{manuscript.title}}', has been approved for pre-print publication. Because you have opted in to this opportunity, your manuscript has been forwarded to ApertarXiv for posting. You will receive another message with publication details when the article has posted.</p>
+          <p>Please note this decision is not related to the decision to publish your manuscript in {{journal.name}}. As your manuscript is evaluated for publication you will receive additional communications.</p>
           <p>Kind regards,</p>
-          <br/>
           <p>Publication Team</p>
           <p>ApertarXiv</p>
         TEXT
@@ -927,16 +926,12 @@ class JournalFactory
         lt.ident = ident
         lt.scenario = 'Preprint Decision'
         lt.subject = 'Manuscript Declined for ApertarXiv'
-        lt.to = '{creator email}'
+        lt.to = '{{manuscript.creator.email}}'
         lt.body = <<-TEXT.strip_heredoc
-          <p>Dear Dr. {manuscript creator last name},</p>
-          <br/>
-          <p>Your {submitted journal} manuscript, '{ARTICLE TITLE}', has been declined for pre-print publication.</p>
-          <br/>
-          <p>Please note this decision is not related to the decision to publish your manuscript in {submitted journal}. As your manuscript is evaluated for publication you will receive additional communications.</p>
-          <br/>
+          <p>Dear Dr. {{manuscript.creator.last_name}},</p>
+          <p>Your {{journal.name}} manuscript, '{{manuscript.title}}', has been declined for pre-print publication.</p>
+          <p>Please note this decision is not related to the decision to publish your manuscript in {{journal.name}}. As your manuscript is evaluated for publication you will receive additional communications.</p>
           <p>Kind regards,</p>
-          <br/>
           <p>Publication Team</p>
           <p>ApertarXiv</p>
         TEXT

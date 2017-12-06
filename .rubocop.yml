@@ -84,6 +84,9 @@ Rails/Delegate:
   # cannot replace the flagged method.
   Enabled: false
 
+Rails/SaveBang:
+  Enabled: true
+
 Style/ClassAndModuleChildren:
   # Rails autoloading can get us into situations where it is very
   # difficult to disambiguate the long-hand version of

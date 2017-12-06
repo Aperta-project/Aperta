@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<card required-for-submission="false" workflow-display-only="true">
+  <DisplayChildren>
+    <Radio value-type="text" allow-annotations="false" required-field="true">
+      <text>Please make a selection</text>
+      <possible-value label="Accept for Preprint" value="accept"/>
+      <possible-value label="Reject for Preprint" value="reject"/>
+      <Description>
+        <text><br/></text>
+      </Description>
+      <DisplayWithValue visible-with-parent-answer="accept">
+        <EmailEditor ident="preprint-decision--email-accept" value-type="html" letter-template="preprint-accept" button-label="Register preprint decision" required-field="true">
+        </EmailEditor>
+      </DisplayWithValue>
+      <DisplayWithValue visible-with-parent-answer="reject">
+        <EmailEditor ident="preprint-decision--email-reject" value-type="html" letter-template="preprint-reject" button-label="Register preprint decision" required-field="true">
+        </EmailEditor>
+      </DisplayWithValue>
+    </Radio>
+  </DisplayChildren>
+</card>

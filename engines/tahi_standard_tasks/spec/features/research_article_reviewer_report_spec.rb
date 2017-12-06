@@ -14,7 +14,9 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
   let(:task) { FactoryGirl.create :paper_reviewer_task, :with_loaded_card, paper: paper }
 
   let(:paper_page) { PaperPage.new }
+  let(:workflow_page) { PaperWorkflowPage.new }
   let!(:reviewer) { create :user }
+  let(:journal_admin) { FactoryGirl.create(:user) }
 
   let!(:inviter) { create :user }
 
@@ -39,6 +41,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
   before do
     assign_reviewer_role paper, reviewer
+    assign_journal_role(journal, journal_admin, :admin)
     FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
     FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
     FactoryGirl.create :feature_flag, name: "PREPRINT"
@@ -203,5 +206,39 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     attach_file 'file', file_path, visible: false
 
     expect(page).to have_css('.attachment-item')
+  end
+
+  scenario 'A journal admin can edit a submitted reviewer report' do
+    create_reviewer_invitation(paper)
+    reviewer_report_task = create_reviewer_report_task
+    report = reviewer_report_task.reviewer_reports.first
+    Page.view_paper paper
+    t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
+    wait_for_editors
+    t.fill_in_report 'reviewer_report--competing_interests--detail' => 'I have no competing interests'
+    t.submit_report
+    t.confirm_submit_report
+    wait_for_ajax
+
+    logout
+    login_as(journal_admin, scope: :user)
+    workflow_page.view_task(reviewer_report_task)
+    find('#edit-reviewer-report').click
+    wait_for_editors
+    set_rich_text editor: 'reviewer_report--competing_interests--detail', text: 'revert this'
+    wait_for_ajax
+    click_button("cancel")
+    expect(page).to have_selector('.answer-text', text: 'I have no competing interests')
+
+    find('#edit-reviewer-report').click
+    wait_for_editors
+    set_rich_text editor: 'reviewer_report--competing_interests--detail', text: 'save this'
+    find('.required-standalone textarea').set 'Edit notes'
+    wait_for_ajax
+    expect(Answer.first.value).to eq '<p>I have no competing interests</p>'
+    click_button("save")
+    wait_for_ajax
+    expect(Answer.first.value).to eq '<p>save this</p>'
+    expect(page).to have_selector('.answer-text', text: 'save this')
   end
 end

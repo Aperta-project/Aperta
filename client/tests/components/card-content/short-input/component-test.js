@@ -23,16 +23,6 @@ content=content
 disabled=disabled
 valueChanged=(action actionStub)
 }}`;
-test(`it displays the text from content.text in a <label>`, function(assert) {
-  this.set('content', Ember.Object.create({ text: 'Foo' }));
-  this.render(template);
-  assert.textPresent('.content-text', 'Foo');
-});
-test(`it displays unescaped html text`, function(assert) {
-  this.set('content', Ember.Object.create({ text: '<b class="foo">Foo</b>' }));
-  this.render(template);
-  assert.elementFound('b.foo');
-});
 test(`it disables the input if disabled=true`, function(assert) {
   this.set('disabled', true);
   this.render(template);
@@ -75,12 +65,12 @@ test('hides errors on init and displays error messages if appropriate', function
   assert.equal(this.$('.validation-error').length, 2, 'Two errors are present');
 
   assert.equal(
-    this.$('.validation-error').eq(0).text(),
+    this.$('.validation-error').eq(0).text().trim(),
     errorsArr[0],
     'First error text matches'
   );
   assert.equal(
-    this.$('.validation-error').eq(1).text(),
+    this.$('.validation-error').eq(1).text().trim(),
     errorsArr[1],
     'Second error text matches'
   );

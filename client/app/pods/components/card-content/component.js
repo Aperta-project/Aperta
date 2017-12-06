@@ -47,6 +47,11 @@ export default Ember.Component.extend({
     return findNearestProperty(this, 'scenario');
   }),
 
+  name: Ember.computed('content.ident', function() {
+    let ident = this.get('content.ident');
+    return Ember.isEmpty(ident) ? Ember.guidFor(this) : ident;
+  }),
+
   init() {
     this._super(...arguments);
     Ember.assert(

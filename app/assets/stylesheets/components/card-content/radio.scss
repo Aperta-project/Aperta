@@ -1,5 +1,5 @@
 .card-content-radio {
-  margin-top: 15px;
+  margin: 10px 0;
   .option {
     display: block;
     margin-left: 2.7rem;
@@ -14,5 +14,17 @@
   }
   textarea{
     margin: 0.5em 0;
+  }
+}
+
+.card-radio {
+  .card-form-element {
+   margin-bottom:0; 
+  }
+  .card-form-label {
+    display:inline;
+    font-size:14px;
+    font-weight:normal;
+    margin-left:5px;
   }
 }

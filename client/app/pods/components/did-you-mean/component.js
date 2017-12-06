@@ -51,11 +51,9 @@ export default Component.extend({
     this.set('searchResults', null);
   },
 
-  selectUnknown() {
-    this.selectItem(
-      this.get('unknownItemFunction')(
-        this.get('resultText')));
-    this.set('recognized', false);
+  keyDown() {
+    // This is a hack that removes the results when the search field is empty
+    this.set('searchResults', null);
   },
 
   search: task(function * (url, data) {
@@ -94,10 +92,6 @@ export default Component.extend({
       if (this.get('disabled')) { return; }
       this.set('selectedItem', null);
       this.set('previousSearch', null);
-    },
-
-    selectUnknownItem() {
-      this.selectUnknown();
     },
 
     focus() {

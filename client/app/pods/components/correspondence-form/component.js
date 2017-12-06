@@ -2,25 +2,21 @@ import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
-  attachment: null,
   close: null,
-  doneUploading: false,
-  isUploading: false,
   restless: Ember.inject.service(),
+  store: Ember.inject.service(),
+  attachments: Ember.computed.reads('model.attachments'),
 
-  timeSent: Ember.computed('model', function() {
-    let start = moment();
-    // rounding down the minutes to the nearest half-hour
-    if (start.minutes() < 30) {
-      start.minutes(0);
-    } else {
-      start.minutes(30);
-    }
-    return start.format('H:mm');
+  timeSent: Ember.computed('model.sentAt', function() {
+    let sentAt = this.get('model.sentAt');
+    let time = Ember.isBlank(sentAt) ? moment.utc() : moment.utc(sentAt);
+    return time.format('H:mm');
   }),
 
   dateSent: Ember.computed('model', function() {
-    return moment(this.get('model.date')).format('MM/DD/YYYY');
+    let sentAt = this.get('model.sentAt');
+    let date = Ember.isBlank(sentAt) ? moment.utc() : moment.utc(sentAt);
+    return date.format('MM/DD/YYYY');
   }),
 
   prepareModelDate() {
@@ -80,26 +76,21 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       this.set('model.body', contents);
     },
 
-    removeAttachment() {
-      this.setProperties({
-        doneUploading: false,
-        attachment: null
-      });
+    updateAttachment(s3Url, file, attachment) {
+      attachment.set('src', s3Url);
+      attachment.set('filename', file.name);
+      attachment.set('title', file.name);
+      if (Ember.isPresent(attachment.get('id'))) {
+        attachment.save();
+      }
     },
 
-    uploadStarted() {
-      this.set('isUploading', true);
-    },
-
-    uploadFinished(_data, _filename) {
-      this.setProperties({
-        isUploading: false,
-        doneUploading: true,
-        attachment: {
-          data: _data,
-          filename: _filename
-        }
+    createAttachment(s3Url, file) {
+      let attachment = this.get('store').createRecord('correspondence-attachment', {
+        src: s3Url,
+        filename: file.name
       });
+      this.get('attachments').pushObject(attachment);
     },
 
     submit(model) {
@@ -123,17 +114,10 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
       model.save().then(() => {
         this.clearAllValidationErrors();
-
-        if (this.get('attachment')) {
-          let paperId = this.get('model.paper.id');
-          let correspondenceId = this.get('model.id');
-          let postUrl = `/api/papers/${paperId}/correspondence/${correspondenceId}/attachments`;
-          this.get('restless').post(postUrl, {
-            url: this.get('attachment.data')
-          }).then(function () {
-            model.reload();
-          });
-        }
+        let attachments = this.get('attachments').filterBy('id', null);
+        attachments.forEach(attachment => {
+          attachment.save();
+        });
 
         this.sendAction('close');
       }, (failure) => {

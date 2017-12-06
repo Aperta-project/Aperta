@@ -3,6 +3,10 @@ import Ember from 'ember';
 
 export default TaskComponent.extend({
   flash: Ember.inject.service(),
+  activeEdit: Ember.computed('currentReviewerReport.adminEdits.[]', function() {
+    return this.get('currentReviewerReport.adminEdits').findBy('active', true);
+  }),
+  noActiveAdminEdit: Ember.computed.not('currentReviewerReport.activeAdminEdit'),
   currentReviewerReport: Ember.computed.alias('task.reviewerReports.firstObject'),
   previousReviewerReports: Ember.computed('task.reviewerReports.@each.reviewerReport', 'task.paper.decision', function(){
     if (this.get('currentReviewerReport.decision.draft')) {
@@ -11,6 +15,10 @@ export default TaskComponent.extend({
       return this.get('task.reviewerReports');
     }
   }),
+  notesClass: Ember.computed('notesEmpty', function() {
+    return this.get('notesEmpty') ? 'form-control error' : 'form-control';
+  }),
+
   // this property is responsible for displaying (or not) the 'Make changes to this Task' button.
   // It can be modified later to depend on permissions
   taskStateToggleable: false,

@@ -10,18 +10,19 @@ class TemplateContext < Liquid::Drop
       'Reviewer Report'   => ReviewerReportScenario,
       'Invitation'        => InvitationScenario,
       'Paper Reviewer'    => InvitationScenario,
-      'Decision'          => RegisterDecisionScenario
-    }.merge(feature_flagged_scenarios)
+      'Decision'          => RegisterDecisionScenario,
+      'Preprint Decision' => PaperScenario,
+      'Tech Check'        => TechCheckScenario
+    }.except(*feature_inactive_scenarios)
   end
 
   # temporary added for https://jira.plos.org/jira/browse/APERTA-11721
   # we should remove this once the preprint feature flag is removed
-  # and move these scenarios back into ::scenarios
-  def self.feature_flagged_scenarios
-    scenarios = {}
-    scenarios['Preprint Decision'] = PaperScenario if FeatureFlag[:PREPRINT]
-    scenarios['Tech Check'] = TechCheckScenario if FeatureFlag[:CARD_CONFIGURATION]
-    scenarios
+  def self.feature_inactive_scenarios
+    [].tap do |scenarios|
+      scenarios << 'Preprint Decision' unless FeatureFlag[:PREPRINT]
+      scenarios << 'Tech Check'        unless FeatureFlag[:CARD_CONFIGURATION]
+    end
   end
 
   # Unless already defined, this defines a method which returns a TemplateContext.

@@ -1,24 +1,20 @@
-<label class="content-text" for="{{content.ident}}">{{{content.text}}}
-  {{#if content.isRequired}}
-    <span class="required-field">*</span>
-  {{/if}}</label>
-
-{{#if isRichText}}
-  {{rich-text-editor
-    editorStyle=content.editorStyle
-    name=content.ident
-    data-editor=content.ident
-    value=(readonly answerProxy)
-    hasErrors=answer.hasErrors
-    errorMessages=answer.readyIssuesArray
-    onContentsChanged=(action "valueChanged")
-    focusOut=(action "displayErrors")
-    class=inputClassNames
-    disabled=disabled
-    hideError=hideError
-  }}
-{{else}}
-  {{textarea
+{{#card-content/label content=content}}
+  {{#if isRichText}}
+    {{rich-text-editor
+      editorStyle=content.editorStyle
+      name=content.ident
+      data-editor=content.ident
+      value=(readonly answerProxy)
+      hasErrors=answer.hasErrors
+      errorMessages=answer.readyIssuesArray
+      onContentsChanged=(action "valueChanged")
+      focusOut=(action "displayErrors")
+      class=inputClassNames
+      disabled=disabled
+      hideError=hideError
+    }}
+  {{else}}
+    {{textarea
       value=(readonly answerProxy)
       class="form-control"
       change=(action "valueChanged")
@@ -26,7 +22,8 @@
       focusOut=(action "displayErrors")
       disabled=disabled
       id=content.ident
-  }}
-  {{card-content/validation-errors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
-{{/if}}
+    }}
+  {{/if}}
 
+  {{card-content/validation-errors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
+{{/card-content/label}}

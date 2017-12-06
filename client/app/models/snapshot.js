@@ -16,6 +16,7 @@ export default DS.Model.extend({
   majorVersion: DS.attr('number'),
   minorVersion: DS.attr('number'),
   contents: DS.attr(),
+  sanitizedContents: DS.attr(),
   createdAt: DS.attr('date'),
   fullVersion: Ember.computed('majorVersion', 'minorVersion', function() {
     return `${this.get('majorVersion')}.${this.get('minorVersion')}`;
@@ -43,9 +44,9 @@ export default DS.Model.extend({
       return true;
     }
 
-    let string1 = JSON.stringify(this.get('contents'));
+    let string1 = JSON.stringify(this.get('sanitizedContents'));
     if(otherSnapshot){
-      let string2 = JSON.stringify(otherSnapshot.get('contents'));
+      let string2 = JSON.stringify(otherSnapshot.get('sanitizedContents'));
       return string1 !== string2;
     } else {
       return false;

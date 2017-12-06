@@ -106,9 +106,15 @@ module Typesetter
       object.title
     end
 
+    # rubocop:disable Style/GuardClause
     def fundRef
-      financial_disclosure_task.try(:funding_statement)
+      financial_disclosure_statement = FinancialDisclosureStatement.new(object)
+
+      if financial_disclosure_statement.asked?
+        financial_disclosure_statement.funding_statement
+      end
     end
+    # rubocop:enable Style/GuardClause
 
     def collectionID
       # To reference a Collection
@@ -152,10 +158,6 @@ module Typesetter
     def billing_answer_for(ident)
       answer = task('PlosBilling::BillingTask').answer_for(ident)
       answer.value if answer
-    end
-
-    def financial_disclosure_task
-      task('TahiStandardTasks::FinancialDisclosureTask')
     end
 
     def final_tech_check_task

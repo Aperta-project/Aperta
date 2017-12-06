@@ -35,10 +35,10 @@
     position: relative;
     &::before {
       content: "*";
-      font-size: 24pt;
+      font-size: inherit;
       font-weight: bold;
       position: absolute;
-      color: #5d4aac;
+      color: $aperta-red;
       left: -20px;
     }
   }
@@ -50,8 +50,8 @@
     &::before {
       content: "*";
       margin: 0 3px 0 -3px;
-      color: $aperta-green;
-      font-size: 18pt;
+      color: $aperta-red;
+      font-size: inherit;
       float: left;
     }
   }
@@ -69,6 +69,20 @@
   display: inline-block;
 }
 
+.right-align-contents {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.required-standalone {
+  .required-label::after {
+    content: "*";
+    margin-left: 3px;
+    color: $aperta-red;
+    font-size: 18px;
+  }
+  textarea.error { border-color: $aperta-red; }
+}
 
 /*
 ------------------------------------------------------------------------------

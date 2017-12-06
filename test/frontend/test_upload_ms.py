@@ -34,7 +34,8 @@ class UploadManuscriptTest(CommonTest):
     dashboard_page.page_ready()
     # create a new manuscript
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True, format_='word')
+    self.create_article(title='Testing Upload MS Task - doc test', journal='PLOS Wombat', 
+                        type_='NoCards', random_bit=True, format_='word')
     ms_page = ManuscriptViewerPage(self.getDriver())
     ms_page.page_ready_post_create()
     short_doi = ms_page.get_paper_short_doi_from_url()
@@ -80,7 +81,8 @@ class UploadManuscriptTest(CommonTest):
     dashboard_page.page_ready()
     # create a new manuscript
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True, format_='pdf')
+    self.create_article(title='Testing Upload MS Task - pdf test', journal='PLOS Wombat', 
+                        type_='NoCards', random_bit=True, format_='pdf')
     ms_page = ManuscriptViewerPage(self.getDriver())
     ms_page.page_ready_post_create()
     # get doi

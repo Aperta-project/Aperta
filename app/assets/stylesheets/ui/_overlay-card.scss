@@ -32,6 +32,13 @@ $ov--card-breakpoint: 900px;
   }
 }
 
+// Microsoft Edge styles
+@supports (-ms-ime-align:auto) {
+    .overlay--card .overlay-container {
+      height: 100%; // Fixes APERTA-12000
+    }
+}
+
 // Temporary:
 .overlay--visible {
   display: block;

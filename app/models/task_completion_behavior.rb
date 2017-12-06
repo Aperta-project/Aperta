@@ -5,12 +5,15 @@ class TaskCompletionBehavior < Behavior
   validates :change_to, presence: true, inclusion: { in: %w[completed incomplete toggle] }
 
   def call(event)
+    # load card
+    card = Card.find(card_id)
+
     # load the task
-    task = event.task
+    task = event.paper.tasks.find_by(card_version_id: card.card_versions.pluck(:id))
 
     # test to see if the task is not nil and is an instance of the card
     # registered to be autocompleted
-    return if task.nil? || task.card.id != card_id
+    return if task.nil?
 
     case change_to
     when 'toggle'

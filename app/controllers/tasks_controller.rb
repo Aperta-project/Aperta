@@ -155,8 +155,11 @@ class TasksController < ApplicationController
     render json: template
   end
 
-  # does this belong here? seperate templates controller? somewhere else?
   def render_template
+    # right now this will only work in cases where the scenario wraps paper, task, or journal
+    # AND does not include references to special ident based fields unless the current task
+    # contains those fields. Making object determination for a give task the job of the scenario
+    # could address this in the future
     templates = task.journal.letter_templates
     template = templates.find_by(ident: params[:ident])
     scenario_class = template.scenario_class
@@ -172,7 +175,6 @@ class TasksController < ApplicationController
     end
 
     template.render(scenario_class.new(scenario_object))
-    # thoughts on this ??
     head 404 if template.errors.present?
     render json: template
   end

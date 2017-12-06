@@ -148,7 +148,7 @@ class QueryParser < QueryLanguageParser
   add_two_part_expression('TASK', 'IS UNASSIGNED') do |task, _|
     task_table = Task.arel_table
     task_q = task_table[:title].matches(task) # Returns all the tasks that matches the title
-    # Returns the papers that doesnt have the task assigned to a user or doesnt have the task created
+    # Returns the papers that have the task and that task isn't assigned to a user
     paper_table[:id].in(
       task_table.project(:paper_id).where(
         task_q.and(

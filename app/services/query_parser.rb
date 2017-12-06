@@ -158,6 +158,12 @@ class QueryParser < QueryLanguageParser
     )
   end
 
+  add_two_part_expression('TASK', 'IS ASSIGNED TO') do |task, user_query|
+    table = join Task
+    user_ids = get_user_ids(user_query)
+    table[:title].matches(task).and(table[:assigned_user_id].in(user_ids))
+  end
+
   add_two_part_expression('TASK', 'IS ASSIGNED') do |task, _|
     task_table = Task.arel_table
     task_q = task_table[:title].matches(task) # Returns all the tasks that matches the title
@@ -169,12 +175,6 @@ class QueryParser < QueryLanguageParser
         )
       )
     )
-  end
-
-  add_two_part_expression('TASK', 'IS ASSIGNED TO') do |task, user_query|
-    table = join Task
-    user_ids = get_user_ids(user_query)
-    table[:title].matches(task).and(table[:assigned_user_id].in(user_ids))
   end
 
   add_simple_expression('HAS TASK') do |task|

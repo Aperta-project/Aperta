@@ -25,7 +25,7 @@ class CorrespondenceSerializer < ActiveModel::Serializer
 
   def attributes(*args)
     return super unless deleted?
-    super.except(:subject, :sender, :recipient, :recipients, :body, :description, :cc, :bcc, :sent_at)
+    super.except(:subject, :sender, :recipient, :recipients, :body, :description, :cc, :bcc)
   end
 
   def attachments

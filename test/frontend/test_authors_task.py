@@ -117,4 +117,4 @@ class AuthorsTaskTest(CommonTest):
     authors_task.edit_author(user_type)
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

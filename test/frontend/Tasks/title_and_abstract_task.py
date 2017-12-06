@@ -101,8 +101,7 @@ class TitleAbstractTask(BaseTask):
         self.get_rich_text_editor_instance('article-abstract-input')
     self.tmce_clear_rich_text(tinymce_editor_instance_iframe)
     self.tmce_set_rich_text(tinymce_editor_instance_iframe, abstract)
-    # the following ensures there is a blur event without resorting to JavaScript
-    self._get(self._abstract_label).click()
+    self.pause_to_save()
     if not prod:
       db_abstract = PgSQL().query('SELECT abstract '
                                   'FROM papers '

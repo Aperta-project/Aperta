@@ -34,7 +34,7 @@ class UploadManuscriptTest(CommonTest):
     dashboard_page.page_ready()
     # create a new manuscript
     dashboard_page.click_create_new_submission_button()
-    self.create_article(title='Testing Upload MS Task - doc test', journal='PLOS Wombat', 
+    self.create_article(title='Testing Upload MS Task - doc test', journal='PLOS Wombat',
                         type_='NoCards', random_bit=True, format_='word')
     ms_page = ManuscriptViewerPage(self.getDriver())
     ms_page.page_ready_post_create()
@@ -81,7 +81,7 @@ class UploadManuscriptTest(CommonTest):
     dashboard_page.page_ready()
     # create a new manuscript
     dashboard_page.click_create_new_submission_button()
-    self.create_article(title='Testing Upload MS Task - pdf test', journal='PLOS Wombat', 
+    self.create_article(title='Testing Upload MS Task - pdf test', journal='PLOS Wombat',
                         type_='NoCards', random_bit=True, format_='pdf')
     ms_page = ManuscriptViewerPage(self.getDriver())
     ms_page.page_ready_post_create()
@@ -151,4 +151,4 @@ class UploadManuscriptTest(CommonTest):
     upms.validate_upload_file_links(upms._upload_source_file_box, task_editable=False, check_delete_link=False)
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

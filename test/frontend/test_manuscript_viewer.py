@@ -348,4 +348,4 @@ class ManuscriptViewerTest(CommonTest):
     manuscript_page.validate_download_btn_actions()
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

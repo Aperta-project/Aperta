@@ -256,4 +256,4 @@ class CoverLetterTaskTest(CommonTest):
     cover_letter_card.validate_textarea_text_editing()
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

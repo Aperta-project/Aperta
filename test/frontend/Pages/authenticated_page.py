@@ -1035,3 +1035,13 @@ class AuthenticatedPage(StyledPage):
     except (ElementDoesNotExistAssertionError, NoSuchElementException):
       return False
     return True
+
+  @staticmethod
+  def pause_to_save():
+      """
+      A generic function to pause long enough to ensure we should have saved an entry.
+      The method of committing saves in the Aperta UI recently changed from being based on
+      an on_blur event to a keyboard debounce event. Because Selenium doesn't type like a human
+      being, we have to introduce some fallibility to the process by introducing a pause.
+      """
+      time.sleep(.7)

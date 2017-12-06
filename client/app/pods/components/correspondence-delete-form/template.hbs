@@ -1,0 +1,15 @@
+<div class="required-standalone">
+  <span class="required-label">Please provide the reason for deleting this record.</span>
+  {{textarea class=reasonClass value=reason focusIn=(action 'clearReasonError')}}
+  {{#if reasonEmpty}}
+    <span class="error">{{fa-icon 'warning'}} This field is required.</span>
+  {{/if}}
+</div>
+ <div class="overlay-footer-content correspondence-form-footer-content">
+  <div class="overlay-action-buttons">
+    {{#if close}}
+      <button class="button-link" {{action close}}>cancel</button>
+    {{/if}}
+    <button class="button button-secondary button--green correspondence-submit" {{action "delete" model}}>Delete Forever</button>
+  </div>
+ </div>

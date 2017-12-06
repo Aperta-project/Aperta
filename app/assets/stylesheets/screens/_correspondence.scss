@@ -132,17 +132,40 @@
 
   .history-text { font-style: italic; }
 
-  .actions { 
+  .actions {
     text-align: right;
 
-    span:hover { cursor: pointer; }
+    span {
+      padding-left: 20px;
+      &:hover { cursor: pointer; }
+    }
   }
-  
+
   a {
     color: $aperta-grey;
 
     &:focus, &:hover {
       text-decoration: none;
-    }    
+      color: $aperta-green;
+    }
+  }
+}
+
+.overlay.correspondence-delete {
+  .overlay-container {
+    background: $aperta-green;
+    color: #ddd;
+    height: 100%;
+    width: 70rem;
+    h1 {
+      font-size: 24px;
+    }
+
+    textarea {
+      margin: 5px 0 20px 0;
+      &.error {
+        border-color: $aperta-red;
+      }
+    }
   }
 }

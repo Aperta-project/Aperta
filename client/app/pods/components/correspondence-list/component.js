@@ -7,7 +7,7 @@ export default Ember.Component.extend({
     let dateChanged = moment('February 1, 2017');
     return dateSubmitted < dateChanged;
   }),
-
+  
   actions: {
     toggleHighlight(e) {
       Ember.$(e.target).prev('.most-recent-activity').toggleClass('highlighter');

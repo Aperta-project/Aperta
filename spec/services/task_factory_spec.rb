@@ -74,7 +74,7 @@ describe TaskFactory do
 
         it "uses the latest version of that card" do
           task = TaskFactory.create(klass, paper: paper, phase: phase)
-          expect(task.card_version).to eq(existing_card.latest_card_version(:latest))
+          expect(task.card_version).to eq(existing_card.latest_card_version)
         end
       end
     end

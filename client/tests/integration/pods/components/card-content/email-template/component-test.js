@@ -4,18 +4,23 @@ import Ember from 'ember';
 import wait from 'ember-test-helpers/wait';
 
 moduleForComponent(
-  'card-content/template',
+  'card-content/email-template',
   'Integration | Component | card content | email-template',
   {
     integration: true,
+
     beforeEach() {
       this.set('owner', Ember.Object.create({ id: 1 }));
       this.set('content', Ember.Object.create({ templateIdent: 'test' }));
+    },
+
+    afterEach() {
+      $.mockjax.clear();
     }
   }
 );
 
-const template = hbs`{{card-content/template
+const template = hbs`{{card-content/email-template
 content=content
 owner=owner
 }}`;

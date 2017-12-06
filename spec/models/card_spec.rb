@@ -29,7 +29,7 @@ describe Card do
       let(:content) { FactoryGirl.create(:card_content, :template) }
 
       it 'is valid with an existing template' do
-        FactoryGirl.create(:letter_template)
+        FactoryGirl.create(:letter_template, ident: 'ident')
         card.latest_card_version.content_root.children << content
         card.latest_card_version.card_contents << content
         expect(card).to be_valid

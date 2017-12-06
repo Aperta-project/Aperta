@@ -3,7 +3,6 @@ FactoryGirl.define do
     scenario 'Decision'
     to 'author@example.com'
     subject 'Your [JOURNAL_NAME] submission'
-    ident 'ident'
 
     name 'Some Decision'
     category ''

@@ -40,7 +40,7 @@ export default DS.Model.extend({
   max: DS.attr('number'),
   itemName: DS.attr('string'),
   letterTemplate: DS.attr('string'),
-  letterTemplateIdent: DS.attr('string'),
+  templateIdent: DS.attr('string'),
   buttonLabel: DS.attr('string'),
 
 

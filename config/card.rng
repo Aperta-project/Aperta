@@ -386,9 +386,9 @@
       </zeroOrMore>
     </element>
   </define>
-  <define name="template">
-    <element name="Template">
-      <attribute name="letter-template-ident"/>
+  <define name="email-template">
+    <element name="EmailTemplate">
+      <attribute name="template-ident"/>
     </element>
   </define>
   <!-- Contents -->
@@ -525,7 +525,7 @@
       <ref name="tech-check"/>
       <ref name="email-editor"/>
       <ref name="tech-check-email"/>
-      <ref name="template"/>
+      <ref name="email-template"/>
     </choice>
   </define>
   <start>

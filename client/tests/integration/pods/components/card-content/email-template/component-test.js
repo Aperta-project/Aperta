@@ -5,12 +5,12 @@ import wait from 'ember-test-helpers/wait';
 
 moduleForComponent(
   'card-content/template',
-  'Integration | Component | card content | template',
+  'Integration | Component | card content | email-template',
   {
     integration: true,
     beforeEach() {
       this.set('owner', Ember.Object.create({ id: 1 }));
-      this.set('content', Ember.Object.create({ letterTemplateident: 'test' }));
+      this.set('content', Ember.Object.create({ templateIdent: 'test' }));
     }
   }
 );

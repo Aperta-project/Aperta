@@ -10,7 +10,7 @@ export default Ember.Component.extend({
     return {
       url: `/api/tasks/${this.get('owner.id')}/${endpoint}`,
       data: {
-        ident: this.get('content.letterTemplateIdent'),
+        ident: this.get('content.templateIdent'),
       }
     };
   },

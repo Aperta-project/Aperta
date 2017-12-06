@@ -144,8 +144,8 @@ class Card < ActiveRecord::Base
   # for cards that render templates, make sure the template exists
   def check_templates
     return unless latest_card_version
-    template_cards = latest_card_version.card_contents.where(content_type: 'template')
-    template_idents = template_cards.map(&:letter_template_ident)
+    template_cards = latest_card_version.card_contents.where(content_type: 'email-template')
+    template_idents = template_cards.map(&:template_ident)
     invalid_idents = template_idents - LetterTemplate.all.map(&:ident)
     return if invalid_idents.empty?
 

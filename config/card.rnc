@@ -157,8 +157,8 @@ tech-check-email = element TechCheckEmail {
   content*
 }
 
-template = element Template {
-  attribute letter-template-ident { text }
+email-template = element EmailTemplate {
+  attribute template-ident { text }
 }
 
 # Contents
@@ -232,7 +232,7 @@ content = (
 | tech-check
 | email-editor
 | tech-check-email
-| template
+| email-template
 )
 
 start = element card {

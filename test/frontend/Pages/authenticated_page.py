@@ -11,7 +11,7 @@ import re
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import WebDriverException
+from selenium.common.exceptions import WebDriverException, NoSuchElementException
 
 from loremipsum import generate_paragraph
 
@@ -168,6 +168,9 @@ class AuthenticatedPage(StyledPage):
     self._file_attach_btn = (By.CSS_SELECTOR, 'div.fileinput-button')
     self._file_attach_input = (By.CSS_SELECTOR, 'input.add-new-attachment')
     self._attachments = (By.CSS_SELECTOR, 'div.attachment-item')
+    self._file_link = (By.CSS_SELECTOR, 'a.file-link')
+    self._replace_file_link = (By.CSS_SELECTOR, 'span.replace-attachment')
+    self._delete_file_link = (By.CSS_SELECTOR, 'span.delete-attachment')
     # Add participant
     self._discussion_panel = (By.CLASS_NAME, 'sheet--visible')
     self._add_participant_list = (By.CSS_SELECTOR, 'ember-power-select-options')
@@ -994,3 +997,41 @@ class AuthenticatedPage(StyledPage):
                                .replace('\n', '')
     output_string = input_string.strip()
     return output_string
+
+  def validate_upload_file_links(self, file_box_locator, task_editable, check_delete_link=True):
+    """
+    Looks for the presence of links: to the uploded file, 'Replace' and 'Delete' links
+    :param: file_box_locator is the parent locator to locate links to file to be downloaded, replaced or deleted
+    :param: task_editable:  boolean, True if the task is in editable state, else False
+    :param: check_delete_link: boolean, False if delete link is not needed, like in 'Upload Manuscript' task, else True
+    :return: void function
+    """
+    # file link should be present in any state
+    assert self.file_link_present(file_box_locator, self._file_link), \
+      'The task should have link to uploaded file'
+    if task_editable:
+      assert self.file_link_present(file_box_locator, self._replace_file_link), \
+        'The task should have link to replace uploaded file in editable state'
+      if check_delete_link:
+        assert self.file_link_present(file_box_locator, self._delete_file_link), \
+          'The task should have link to delete uploaded file in editable state'
+    else:
+      assert not self.file_link_present(file_box_locator, self._replace_file_link), \
+        'The task should not have link to replace uploaded file in not editable state'
+      if check_delete_link:
+        assert not self.file_link_present(file_box_locator, self._delete_file_link), \
+          'The task should not have link to delete uploaded file in not editable state'
+
+  def file_link_present(self, parent_locator, relative_locator):
+    """
+    Looks for the existence of 'Replace' link to replace file
+    :param: parent_locator is the anchor locator to locate links to file to be downloaded, replaced or deleted
+    :param: relative_locator is the relative locator to find the file links
+    :return: True if present, else False
+    """
+    try:
+      uploaded_file_box = self._get(parent_locator)
+      uploaded_file_box.find_element(*relative_locator)
+    except (ElementDoesNotExistAssertionError, NoSuchElementException):
+      return False
+    return True

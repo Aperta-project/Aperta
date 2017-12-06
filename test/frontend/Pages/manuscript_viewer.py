@@ -571,6 +571,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         self._scroll_into_view(self._get(self._task_headings))
         for task in tasks:
           if task_name.lower() in task.text.lower():
+            self._scroll_into_view(task)
             self._actions.move_to_element(task).perform()
             task.click()
             return True

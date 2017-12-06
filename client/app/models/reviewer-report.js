@@ -21,5 +21,10 @@ export default NestedQuestionOwner.extend(Answerable, {
   }),
   scheduledEvents: DS.hasMany('scheduled-event'),
   adminEdits: DS.hasMany('admin-edit'),
-  activeAdminEdit: DS.attr('boolean')
+  activeAdminEdit: DS.attr('boolean'),
+  inactiveAdminEdits: Ember.computed('adminEdits.@each.active', function() {
+    if(this.get('adminEdits.length')) {
+      return this.get('adminEdits').filterBy('active', false).sortBy('updatedAt').reverse();
+    }
+  })
 });

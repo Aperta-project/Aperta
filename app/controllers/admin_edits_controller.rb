@@ -40,7 +40,7 @@ class AdminEditsController < ApplicationController
     end
 
     admin_edit.update!(admin_edit_params)
-    head :no_content
+    render json: admin_edit
   end
 
   def destroy

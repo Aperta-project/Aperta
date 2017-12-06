@@ -208,6 +208,13 @@ describe QueryParser do
         end
       end
 
+      it 'parses TASK x IS ASSIGNED' do
+        parse = QueryParser.new.parse 'TASK anytask IS ASSIGNED'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "papers"."id" IN (SELECT paper_id FROM "tasks" WHERE "tasks"."title" ILIKE 'anytask' AND "tasks"."assigned_user_id" IS NOT NULL)
+        SQL
+      end
+
       it 'parses ANDed TASK queries as multiple joins' do
         query = 'TASK anytask IS COMPLETE AND TASK someothertask IS INCOMPLETE'
         parse = QueryParser.new.parse query

@@ -158,6 +158,19 @@ class QueryParser < QueryLanguageParser
     )
   end
 
+  add_two_part_expression('TASK', 'IS ASSIGNED') do |task, _|
+    task_table = Task.arel_table
+    task_q = task_table[:title].matches(task) # Returns all the tasks that matches the title
+    # Returns the papers that have the task assigned to anyone
+    paper_table[:id].in(
+      task_table.project(:paper_id).where(
+        task_q.and(
+          task_table[:assigned_user_id].not_eq(nil)
+        )
+      )
+    )
+  end
+
   add_two_part_expression('TASK', 'IS ASSIGNED TO') do |task, user_query|
     table = join Task
     user_ids = get_user_ids(user_query)

@@ -288,7 +288,7 @@ describe Paper do
       it "delete Phases and Tasks" do
         expect(paper).to have_at_least(1).phase
         expect(paper).to have_at_least(1).task
-        paper.destroy
+        paper.destroy!
 
         expect(Phase.where(paper_id: paper.id).count).to be 0
         expect(Task.where(paper_id: paper.id).count).to be 0
@@ -538,7 +538,7 @@ describe Paper do
     let(:academic_editor) { FactoryGirl.create(:user) }
 
     let!(:creator_assignment) do
-      paper.update(creator: user)
+      paper.update!(creator: user)
       paper.assignments.where(role: creator_role).first!
     end
     let!(:collaborator_assignment) do
@@ -697,8 +697,8 @@ describe Paper do
 
       it 'sets the first_submitted_at only once' do
         original_now = Time.current
-        paper.update(publishing_state: 'in_revision',
-                     first_submitted_at: original_now)
+        paper.update!(publishing_state: 'in_revision',
+                      first_submitted_at: original_now)
         Timecop.travel(1.day.from_now) do
           subject
           expect(paper.first_submitted_at).to eq(original_now)
@@ -912,15 +912,27 @@ describe Paper do
       subject { paper.submit_minor_check! user }
 
       it_behaves_like "transitions save state_updated_at",
-        submit_minor_check: proc { paper.submit_minor_check!(paper.creator) }
-      it_behaves_like 'state transitioning'
+        submit_minor_check: proc { paper.submit_minor_check!(paper.creator).with }
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
       end
 
+      let(:user) { FactoryGirl.create(:user) }
+
       before do
         paper.minor_check!
+      end
+
+      it 'transistions from checking to submitted' do
+        expect(paper).to transition_from(:checking).to(:submitted).on_event(:submit_minor_check!, user)
+      end
+
+      it 'Creates the tech check fixed and submit transition activity' do
+        expect { subject }.to change { paper.activities.count }.by(2)
+        activities = paper.activities.map(&:activity_key)
+        expect(activities).to include('paper.state_changed.submitted')
+        expect(activities).to include('paper.tech_fixed')
       end
 
       it "keeps the draft decision from before" do
@@ -1057,7 +1069,7 @@ describe Paper do
 
       let(:paper) do
         create(:paper, :submitted_lite, journal: journal).tap do |p|
-          p.draft_decision.update(verdict: verdict, letter: Faker::Hacker.say_something_smart)
+          p.draft_decision.update!(verdict: verdict, letter: Faker::Hacker.say_something_smart)
           p.draft_decision.register! FactoryGirl.create(:register_decision_task)
         end
       end

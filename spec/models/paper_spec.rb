@@ -912,10 +912,14 @@ describe Paper do
       subject { paper.submit_minor_check! user }
 
       it_behaves_like "transitions save state_updated_at",
-        submit_minor_check: proc { paper.submit_minor_check!(paper.creator).with }
+      submit_minor_check: proc { paper.submit_minor_check!(paper.creator) }
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
+      end
+
+      let!(:initial_tech_check_task) do
+        FactoryGirl.create(:initial_tech_check_task, paper: paper)
       end
 
       let(:user) { FactoryGirl.create(:user) }
@@ -924,8 +928,14 @@ describe Paper do
         paper.minor_check!
       end
 
-      it 'transistions from checking to submitted' do
+      it 'transitions from checking to submitted' do
         expect(paper).to transition_from(:checking).to(:submitted).on_event(:submit_minor_check!, user)
+      end
+
+      it 'does not transition from an invalid state' do
+        expect do
+          expect(paper).not_to transition_from(:submitted).to(:checking).on_event(:submit_minor_check!, user)
+        end.to raise_error(AASM::InvalidTransition, /cannot transition/)
       end
 
       it 'Creates the tech check fixed and submit transition activity' do
@@ -933,6 +943,18 @@ describe Paper do
         activities = paper.activities.map(&:activity_key)
         expect(activities).to include('paper.state_changed.submitted')
         expect(activities).to include('paper.tech_fixed')
+      end
+
+      it 'increments the round of any InitialTechCheckTask(s) on the paper' do
+        expect do
+          subject
+        end.to change { initial_tech_check_task.reload.round }.by(1)
+      end
+
+      it 'does not queue up any emails' do
+        expect do
+          subject
+        end.to_not change { Sidekiq::Extensions::DelayedMailer.jobs.length }
       end
 
       it "keeps the draft decision from before" do

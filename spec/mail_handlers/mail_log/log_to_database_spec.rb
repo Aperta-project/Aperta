@@ -136,10 +136,10 @@ module MailLog::LogToDatabase
         end
       end
 
-      it 'inserts known recipient names' do
+      it 'inserts known recipient names, first known, then unknown' do
         user = FactoryGirl.create(:user, email: mail.to.last)
         interceptor.delivering_email(mail)
-        expect(Correspondence.last.recipients).to eq("#{mail.to.first}, #{user.full_name} <#{mail.to.last}>")
+        expect(Correspondence.last.recipients).to eq("#{user.full_name} <#{mail.to.last}>, #{mail.to.first}")
       end
     end
 

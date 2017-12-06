@@ -11,30 +11,6 @@ export default AuthorizedRoute.extend({
     });
   },
 
-  // After loading the paper and the associated tasks
-  // find the Preprint Posting custom card.
-  // Load the answers on that card and locate the preprintOptOut
-  // field. Set the paper.preprintOptOut field.
-  // FYI - the preprintOptOut field is defined on paper in the
-  // backend data model but is never set by any component. Its set
-  // here in the UI only on load and is not persisted to the backend.
-  //
-
-
-  afterModel(model) {
-    let prePrintTask = model.tasks.findBy('title', 'Preprint Posting');
-
-    // set the model based on the located preprint posting task
-    // if there is no preprint posting task do nothing and use the
-    // default value which is false
-    if(prePrintTask) {
-      prePrintTask.get('answers').then((answers) => {
-        let answer = answers.get('firstObject.value');
-        model.paper.set('preprintOptOut', answer === true);
-      });
-    }
-  },
-
   actions: {
 
     // Required until Ember has routable components.

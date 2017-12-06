@@ -173,6 +173,7 @@ class JournalFactory
       # Reviewer(s) get access to all submission tasks, except a few
       task_klasses = SUBMISSION_TASKS
       task_klasses -= [
+        PlosBioTechCheck::ChangesForAuthorTask,
         PlosBilling::BillingTask,
         TahiStandardTasks::ReviewerRecommendationsTask
       ]

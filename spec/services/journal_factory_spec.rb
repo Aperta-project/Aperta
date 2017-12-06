@@ -1220,6 +1220,7 @@ describe JournalFactory do
           end
           let(:inaccessible_task_klasses) do
             [
+              PlosBioTechCheck::ChangesForAuthorTask,
               PlosBilling::BillingTask,
               TahiStandardTasks::ReviewerRecommendationsTask,
               CustomCardTask

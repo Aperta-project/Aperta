@@ -1,8 +1,12 @@
 namespace :behavior do
-  desc "List all extand behaviors"
+  desc "List all existing behaviors."
   task list: :environment do |_t, _args|
-    Behavior.all.find_each do |behavior|
-      STDOUT.write("#{behavior.inspect}\n")
+    if Behavior.count.zero?
+      STDOUT.write("No behaviors found\n")
+    else
+      Behavior.all.find_each do |behavior|
+        STDOUT.write("#{behavior.inspect}\n")
+      end
     end
   end
 

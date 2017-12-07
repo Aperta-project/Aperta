@@ -4,11 +4,12 @@ describe JIRAIntegrationService do
   subject { described_class }
 
   describe '#build_payload' do
+    let(:user) { FactoryGirl.create(:user, first_name: 'Barbara', last_name: 'Foo') }
     let(:params) { { remarks: 'talks' } }
     it 'should return a properly formatted hash' do
-      payload = subject.build_payload('tim', params)
-      expect(payload.dig(:fields, :summary)).to match(/tim/)
-      expect(payload.dig(:fields, :description)).to eq('talks')
+      payload = subject.build_payload(user, params)
+      expect(payload.dig(:fields, :summary)).to include(user.full_name)
+      expect(payload.dig(:fields, :description)).to include('talks')
     end
 
     context 'with one attachment' do
@@ -21,7 +22,7 @@ describe JIRAIntegrationService do
         }
       end
       it 'should attach a link to the attachment' do
-        payload = subject.build_payload('tim', params)
+        payload = subject.build_payload(user, params)
         expect(payload.dig(:fields, :description)).to match(/awesomeness\.gif/)
       end
     end
@@ -38,7 +39,7 @@ describe JIRAIntegrationService do
       end
 
       it 'should attach the links to the attachments' do
-        payload = subject.build_payload('tim', params_with_multiple_attachments)
+        payload = subject.build_payload(user, params_with_multiple_attachments)
         expect(payload.dig(:fields, :description)).to match(/awesomeness\.gif/)
         expect(payload.dig(:fields, :description)).to match(/ssenemosewa\.gif/)
       end

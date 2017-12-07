@@ -1,7 +1,7 @@
 class JIRAIntegrationWorker
   include Sidekiq::Worker
 
-  def perform(user_full_name, feedback_params)
-    JIRAIntegrationService.create_issue(user_full_name, feedback_params)
+  def perform(user_id, feedback_params)
+    JIRAIntegrationService.create_issue(user_id, feedback_params)
   end
 end

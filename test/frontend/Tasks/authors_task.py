@@ -142,17 +142,6 @@ class AuthorsTask(BaseTask):
     # Form Action Buttons
     self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'a.author-cancel')
     self._add_author_add_btn = (By.CSS_SELECTOR, 'div.author-form-buttons > button')
-    self._no_thanks = (By.CSS_SELECTOR, '.did-you-mean .did-you-mean-no-thanks')
-    #self._cb = (By.CSS_SELECTOR, 'button.task-completed')
-    #self._task_completed_section = (By.CLASS_NAME, 'task-completed-section')
-    # ## gt
-    # # institution
-    # self._institution_div = (By.CLASS_NAME, 'did-you-mean-input')
-    # self._institution_expanded = (By.CLASS_NAME, 'did-you-mean-expanded')
-    # self._institution_question = (By.CLASS_NAME,'did-you-mean-question')
-    # self._institution_options = (By.CLASS_NAME,'did-you-mean-options') # parent
-    # self._institution_items = (By.CLASS_NAME,'did-you-mean-item')
-    # self._institution_chosen = (By.CLASS_NAME, 'did-you-mean-what-you-meant')
 
   # POM Actions
   def validate_author_task_styles(self):

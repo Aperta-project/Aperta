@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import logging
 import os
@@ -70,7 +70,6 @@ class ProfilePage(AuthenticatedPage):
                                                'div.affiliations-form > div.error-message')
     self._add_affiliation_institution_input = (By.CSS_SELECTOR,
                                                'div.affiliations-form div div input')
-    self._add_affiliation_institution_yes_dammit = (By.CSS_SELECTOR, 'div.did-you-mean-no-thanks')
     self._institution_parent = (By.CLASS_NAME, 'affiliation-field-institution')
     self._add_affiliation_department_label = (By.CSS_SELECTOR, 'div.department > div > label')
     self._add_affiliation_department_field = (By.CSS_SELECTOR, 'div.department > input')
@@ -424,11 +423,6 @@ class ProfilePage(AuthenticatedPage):
       self.select_institution(institution_parent_element, 'Trump University')
       affiliation_list.append('Trump University')
     self.set_timeout(4)
-    try:
-      yesferchrissakes = self._get(self._add_affiliation_institution_yes_dammit)
-      yesferchrissakes.click()
-    except ElementDoesNotExistAssertionError:
-      pass
     self.restore_timeout()
     department_field = self._get(self._add_affiliation_department_field)
     if user['affiliation-dept']:

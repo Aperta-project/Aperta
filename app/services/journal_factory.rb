@@ -596,7 +596,7 @@ class JournalFactory
         lt.to = '{{author.email}}'
         lt.body = <<-TEXT.strip_heredoc
         <ol>
-          {% for reason in paperwide_sendback_reasons %}
+          {% for reason in paper_active_sendback_reasons %}
             <li>{{reason.value}}</li>
           {% endfor %}
         </ol>

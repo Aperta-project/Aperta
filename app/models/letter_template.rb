@@ -31,6 +31,20 @@ class LetterTemplate < ActiveRecord::Base
     end
   end
 
+  def object_for_task(task)
+    if scenario_class.wraps == Paper
+      task.paper
+    elsif scenario_class.wraps == Task
+      task
+    elsif scenario_class.wraps == Journal
+      task.journal
+    else
+      raise UnrenderableForObjectError, <<-ERROR.strip_heredoc
+        Scenarios that wrap something other than Task, Paper or Journal cannot be dynamically rendered
+      ERROR
+    end
+  end
+
   def merge_fields
     scenario_class.merge_fields
   end

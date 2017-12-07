@@ -156,24 +156,13 @@ class TasksController < ApplicationController
   end
 
   def render_template
-    # right now this will only work in cases where the scenario wraps paper, task, or journal
-    # AND does not include references to special ident based fields unless the current task
-    # contains those fields. Making object determination for a give task the job of the scenario
-    # could address this in the future
+    # This can only render templates whose scenarios wrap Task, Paper, or Journal as is
+    # In the future LetterTemplates could define their own custom object selection mechanisms
+    # Which would allow them to be rendered for custom objects
     templates = task.journal.letter_templates
     template = templates.find_by(ident: params[:ident])
     scenario_class = template.scenario_class
-
-    if scenario_class.wraps == Paper
-      scenario_object = paper
-    elsif scenario_class.wraps == Task
-      scenario_object = task
-    elsif scenario_class.wraps == Journal
-      scenario_object = task.journal
-    else
-      template.add_render_error
-    end
-
+    scenario_object = template.object_for_task(task)
     template.render(scenario_class.new(scenario_object))
     head 404 if template.errors.present?
     render json: template

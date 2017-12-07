@@ -22,13 +22,17 @@ export default ActiveModelAdapter.extend({
                    to use register a stub for the pusher service.  You can do that like this in the beforeEach hook:
                    this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
                  `, pusher);
-    return {
-      namespace: 'api',
-      // Weird capitalization and hyphens are intentional since this is is an
-      // HTTP header name. Whatever you do, DO NOT add underscores to the header
-      // name because nginx will start to ignore it.
-      'Pusher-Socket-ID': socket
-    };
+    if (socket) {
+      return {
+        namespace: 'api',
+        // Weird capitalization and hyphens are intentional since this is is an
+        // HTTP header name. Whatever you do, DO NOT add underscores to the header
+        // name because nginx will start to ignore it.
+        'Pusher-Socket-ID': socket
+      };
+    } else {
+      return {namespace: 'api'};
+    }
   }.property().volatile(),
 
   handleResponse(status) {

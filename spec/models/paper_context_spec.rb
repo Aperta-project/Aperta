@@ -5,11 +5,13 @@ describe PaperContext do
     PaperContext.new(paper)
   end
 
-  let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
+  let!(:journal) { FactoryGirl.create(:journal, :with_creator_role, :with_default_mmt) }
+  let(:mmt) { journal.manuscript_manager_templates.last }
   let(:paper) do
     FactoryGirl.create(
       :paper,
       abstract: 'abstract',
+      paper_type: mmt.paper_type,
       journal: journal
     )
   end
@@ -33,6 +35,66 @@ describe PaperContext do
 
     it 'renders a paper type' do
       check_render("{{ paper_type }}", paper.paper_type)
+    end
+
+    context 'with Preprint Enabled' do
+      let!(:preprint_flag) { FactoryGirl.create :feature_flag, name: "PREPRINT", active: true }
+      let!(:task) {
+        FactoryGirl.create(
+          :custom_card_task,
+          :with_card,
+          paper: paper
+        )
+      }
+      let!(:card_content) {
+        FactoryGirl.create(
+          :card_content,
+          parent: task.card.content_root_for_version(:latest),
+          ident: 'preprint-posting--consent',
+          content_type: 'radio'
+        )
+      }
+
+      context 'with preprint opt-in' do
+        before do
+          mmt.update(is_preprint_eligible: true)
+          task.find_or_build_answer_for(card_content: card_content, value: 'true').save
+        end
+        it 'renders opt-in block' do
+          check_render("{% if preprint_opted_in %}opt-in{% endif %}", "opt-in")
+        end
+      end
+
+      context 'with preprint opt-out' do
+        before do
+          mmt.update(is_preprint_eligible: true)
+          task.find_or_build_answer_for(card_content: card_content, value: 'false').save
+        end
+        it 'renders opt-out block' do
+          check_render("{% if preprint_opted_out %}opt-out{% endif %}", "opt-out")
+        end
+      end
+    end
+
+    context 'with a creator' do
+      let(:paper) do
+        FactoryGirl.create :paper, :with_creator, journal: journal
+      end
+
+      it 'renders creator first name' do
+        check_render("{{ creator.first_name }}",
+                     paper.creator.first_name)
+      end
+
+      it 'renders creator last name' do
+        check_render("{{ creator.last_name }}",
+                     paper.creator.last_name)
+      end
+
+      it 'renders creator full name' do
+        check_render("{{ creator.full_name }}",
+                     paper.creator.full_name)
+      end
     end
 
     context 'with authors' do

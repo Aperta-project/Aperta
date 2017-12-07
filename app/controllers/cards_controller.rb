@@ -19,7 +19,7 @@ class CardsController < ApplicationController
       journal_ids = journal_ids.select { |j| j == params[:journal_id].to_i }
     end
 
-    respond_with Card.where(journal_id: journal_ids)
+    respond_with Card.active_cards.where(journal_id: journal_ids)
   end
 
   def show

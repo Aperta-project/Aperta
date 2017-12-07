@@ -1,4 +1,22 @@
 namespace :behavior do
+  desc "List all existing behaviors."
+  task list: :environment do |_t, _args|
+    if Behavior.count.zero?
+      STDOUT.write("No behaviors found\n")
+    else
+      Behavior.all.find_each do |behavior|
+        STDOUT.write("#{behavior.inspect}\n")
+      end
+    end
+  end
+
+  desc "Destroy a behavior with a given id. Use rake behavior:list to determine the id."
+  task :destroy, [:behavior_id] => :environment do |_t, args|
+    behavior = Behavior.find(args[:behavior_id].to_i)
+    behavior.destroy!
+    STDOUT.write("Destroyed #{behavior.inspect}\n")
+  end
+
   namespace :create do
     desc "Create a new send email behavior."
     task :send_email, [:journal_id, :event, :letter_template] => [:environment] do |_t, args|

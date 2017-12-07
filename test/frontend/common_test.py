@@ -160,16 +160,19 @@ class CommonTest(FrontEndTest):
         if format_ in ('any', 'word'):
             document_type = [dt for dt, count in weighting for i in range(count)]
             format_ = random.choice(document_type)
-    if format_ == 'docx':
-        doc2upload = random.choice(docxs)
-    elif format_ == 'doc':
-        doc2upload = random.choice(docs)
-    elif format_ == 'pdf':
-        doc2upload = random.choice(pdfs)
-    else:
-        logging.error('Unknown format specifier: {0} in method call.'.format(format_))
 
-    fn = os.path.join(current_path, '{0}'.format(doc2upload))
+    if not document:
+      if format_ == 'docx':
+          doc2upload = random.choice(docxs)
+      elif format_ == 'doc':
+          doc2upload = random.choice(docs)
+      elif format_ == 'pdf':
+          doc2upload = random.choice(pdfs)
+      else:
+          logging.error('Unknown format specifier: {0} in method call.'.format(format_))
+
+      fn = os.path.join(current_path, '{0}'.format(doc2upload))
+
     logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)
     self._driver.find_element_by_id('upload-files').send_keys(fn)

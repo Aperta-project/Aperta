@@ -1060,4 +1060,3 @@ class AuthenticatedPage(StyledPage):
         self._wait_for_element(parent_element.find_element(*self._institution_chosen))
         break
 
-

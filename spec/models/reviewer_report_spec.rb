@@ -173,8 +173,9 @@ describe ReviewerReport do
       subject.set_due_datetime # makes 3 scheduled events with active state
       subject.scheduled_events.first.switch_off! # passive state
       subject.scheduled_events.last.cancel! # cancel state
-      subject.send(:cancel_reminders)
-      expect(subject.scheduled_events.none?(&:may_cancel?)).to be(true)
+      old_states = subject.scheduled_events.map(&:state)
+      new_states = old_states.map { |x| x == 'passive' ? 'deactivated' : 'canceled' }
+      expect { subject.send(:cancel_reminders) }.to change { subject.scheduled_events.reload.map(&:state) }.from(old_states).to(new_states)
     end
   end
 end

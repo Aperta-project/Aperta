@@ -182,10 +182,36 @@ describe QueryParser do
         SQL
       end
 
-      it 'parses TASK x IS UNASSIGNED' do
-        parse = QueryParser.new.parse 'TASK anytask IS UNASSIGNED'
-        expect(parse).to eq(<<-SQL.strip)
-          CASE WHEN (SELECT count(id) FROM \"tasks\" WHERE \"tasks\".\"title\" ILIKE 'anytask') = 0 THEN 1=0 ELSE \"papers\".\"id\" NOT IN (SELECT paper_id FROM \"tasks\" WHERE \"tasks\".\"title\" ILIKE 'anytask' AND \"tasks\".\"assigned_user_id\" IS NOT NULL) END
+      describe 'TASK x is UNASSIGNED' do
+        it 'parses TASK x IS UNASSIGNED' do
+          parse = QueryParser.new.parse 'TASK anytask IS UNASSIGNED'
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+          "papers"."id" IN (SELECT paper_id FROM "tasks" WHERE "tasks"."title" ILIKE 'anytask' AND "tasks"."assigned_user_id" IS NULL)
+        SQL
+        end
+
+        describe 'UNASSIGNED query is commutative with HAS TASK' do
+          it 'parses HAS TASK x AND TASK x IS UNASSIGNED' do
+            parse = QueryParser.new.parse 'HAS TASK anytask AND TASK anytask IS UNASSIGNED'
+            expect(parse.to_sql).to eq(<<-SQL.strip)
+
+          "tasks_0"."title" ILIKE 'anytask' AND "papers"."id" IN (SELECT paper_id FROM "tasks" WHERE "tasks"."title" ILIKE 'anytask' AND "tasks"."assigned_user_id" IS NULL)
+          SQL
+          end
+
+          it 'parses TASK x IS UNASSIGNED AND HAS TASK x' do
+            parse = QueryParser.new.parse 'TASK anytask IS UNASSIGNED AND HAS TASK anytask'
+            expect(parse.to_sql).to eq(<<-SQL.strip)
+          "papers"."id" IN (SELECT paper_id FROM "tasks" WHERE "tasks"."title" ILIKE 'anytask' AND "tasks"."assigned_user_id" IS NULL) AND "tasks_0"."title" ILIKE 'anytask'
+         SQL
+          end
+        end
+      end
+
+      it 'parses TASK x IS ASSIGNED' do
+        parse = QueryParser.new.parse 'TASK anytask IS ASSIGNED'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "papers"."id" IN (SELECT paper_id FROM "tasks" WHERE "tasks"."title" ILIKE 'anytask' AND "tasks"."assigned_user_id" IS NOT NULL)
         SQL
       end
 

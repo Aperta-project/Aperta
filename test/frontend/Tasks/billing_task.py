@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import logging
 import time
@@ -33,14 +33,6 @@ class BillingTask(BaseTask):
     self._zip = (By.NAME, 'plos_billing--postal_code')
     self._payment_option = (By.CSS_SELECTOR, 'div.payment-method a')
     self._affiliation1_parent = (By.CLASS_NAME, 'plos_billing--affiliation1')
-    # # institution
-    # self._institution_div = (By.CLASS_NAME, 'did-you-mean-input')
-    # self._institution_expanded = (By.CLASS_NAME, 'did-you-mean-expanded')
-    # self._institution_question = (By.CLASS_NAME,'did-you-mean-question')
-    # self._institution_options = (By.CLASS_NAME,'did-you-mean-options') # parent
-    # self._institution_items = (By.CLASS_NAME,'did-you-mean-item')
-    # self._institution_chosen = (By.CLASS_NAME, 'did-you-mean-what-you-meant')
-
     # This ID is bogus and dynamic, untrustworthy
     self._payment_prices_ul = (By.CSS_SELECTOR, 'div.task-main-content > div > p + ul')
     self._payment_items_parent = (By.CSS_SELECTOR, 'div.select2-drop-active')
@@ -70,41 +62,20 @@ class BillingTask(BaseTask):
     self._get(self._last_name).send_keys(data['last_name'])
     self._get(self._department).send_keys(data['department'])
     affiliation1 = self._get(self._affiliation1)
-
     affiliation1_parent = self._get(self._affiliation1_parent)
     self.scroll_element_into_view_below_toolbar(self._get(self._department))
     affiliation1.send_keys(data['affiliation'])
     self.select_institution(affiliation1_parent, data['affiliation'])
-    #
-    # self._wait_for_element(self._get(self._institution_expanded))
-    # institution_list = self._gets(self._institution_items)
-    # #did_you_mean_question = self._get(self._institution_question)
-    # #did_you_mean_question.click()
-    # for item in institution_list:
-    #   if item.text == data['affiliation']:
-    #     self._actions.move_to_element(item).perform()
-    #     self._wait_for_element(item)
-    #     item.click()
-    #     #self.click_covered_element(item)
-    #     self._wait_for_element(self._get(self._institution_chosen))
-    #     self._wait_for_text_be_present_in_element(self._institution_chosen, data['affiliation'])
-    #     #time.sleep(1)
-    #     break
-
     self._get(self._phone).send_keys(data['phone'])
     self._get(self._email).send_keys(data['email'])
     self._get(self._address1).send_keys(data['address1'])
     self._get(self._city).send_keys(data['city'])
     self._get(self._zip).send_keys(data['zip'])
     self._wait_for_text_to_be_present_in_element_value(self._zip, data['zip'])
-
     payment_prices = self._get(self._payment_prices_ul)
     self._scroll_into_view(payment_prices)
-    #self._actions.move_to_element(payment_prices).perform()
     self._wait_for_element(self._get(self._payment_option))
     payment_select = self._get(self._payment_option)
-    #self._actions.move_to_element(payment_select).click().perform()
-
     payment_options_arrow = self._get(self._payment_option_arrow)
     payment_options_arrow.click()
     # Grab the items in the select2 dropdown, then make selection

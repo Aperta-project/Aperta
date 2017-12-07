@@ -16,7 +16,7 @@ from .Pages.manuscript_viewer import ManuscriptViewerPage
 from .Pages.correspondence_history import CorrespondenceHistory
 from .Pages.workflow_page import WorkflowPage
 from frontend.common_test import CommonTest
-from Base.Resources import author, group_author, super_admin_login
+from Base.Resources import author, group_author, editorial_users
 
 __author__ = 'achoe@plos.org'
 
@@ -43,22 +43,18 @@ class CoAuthorConfirmationTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
-    mmt = 'Essay'
-    # Per APERTA-10873, co-author confirmation is disabled for non-PLOS Biology journals.
-    self.create_article(journal='PLOS Biology', type_=mmt, random_bit=True)
+    # We need an mmt that has an Authors card - will choose Research for now.
+    mmt = 'Research'
+    self.create_article(journal='PLOS Wombat', type_=mmt, random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     paper_canonical_url = manuscript_page.get_current_url().split('?')[0]
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.complete_task('Title And Abstract')
-    manuscript_page.complete_task('Ethics Statement')
     manuscript_page.complete_task('Cover Letter')
     manuscript_page.complete_task('Figures')
-    manuscript_page.complete_task('Reviewer Candidates')
     manuscript_page.complete_task('Supporting Info')
-    manuscript_page.complete_task('Competing Interests')
-    manuscript_page.complete_task('Financial Disclosure')
     manuscript_page.complete_task('Additional Information')
     manuscript_page.complete_task('Early Version')
     # Now, on the Authors card, we add a co-author
@@ -71,11 +67,11 @@ class CoAuthorConfirmationTest(CommonTest):
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()
 
-    # logout and enter as a site admin - we don't have editorial users seeded for PLOS Biology
+    # logout and login as a staff user
     manuscript_page.logout()
-    site_adm_user = super_admin_login
-    logging.info('Logging in as {0}'.format(site_adm_user))
-    dashboard_page = self.cas_login(email=site_adm_user['email'])
+    staff_user = random.choice(editorial_users)
+    logging.info('Logging in as {0}'.format(staff_user))
+    dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
@@ -107,9 +103,9 @@ class CoAuthorConfirmationTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
-    mmt = 'Essay'
-    # Per APERTA-10873, co-author confirmation is disabled for non-PLOS Biology journals.
-    self.create_article(journal='PLOS Biology', type_=mmt, random_bit=True)
+    # We need an mmt that has an Authors card - will choose Research for now.
+    mmt = 'Research'
+    self.create_article(journal='PLOS Wombat', type_=mmt, random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     paper_canonical_url = manuscript_page.get_current_url().split('?')[0]
@@ -134,11 +130,11 @@ class CoAuthorConfirmationTest(CommonTest):
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()
 
-    # logout and enter as a site admin - we don't have editorial users seeded for PLOS Biology
+    # logout and login as a staff user
     manuscript_page.logout()
-    site_adm_user = super_admin_login
-    logging.info('Logging in as {0}'.format(site_adm_user))
-    dashboard_page = self.cas_login(email=site_adm_user['email'])
+    staff_user = random.choice(editorial_users)
+    logging.info('Logging in as {0}'.format(staff_user))
+    dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
@@ -151,12 +147,12 @@ class CoAuthorConfirmationTest(CommonTest):
     correspondence_page.page_ready()
     correspondence_page.validate_co_author_confirmation_email()
 
-  def test_individual_co_author_confirmation_by_staff(self):
+  def test_individual_coauthor_confirmation_by_staff(self):
     """
-    Validates the ability of a staff user to confirm or refute co-authorship status in the UI.
+    Validates the ability of a staff user to confirm or refute individual co-authorship status in the UI.
     :return: void function
     """
-    logging.info('Test Co-author Confirmation::individual_co_author_confirmation_by_staff')
+    logging.info('Test Co-author Confirmation::individual_coauthor_confirmation_by_staff')
     current_path = os.getcwd()
     logging.info(current_path)
     # Users logs in and make a submission
@@ -164,22 +160,18 @@ class CoAuthorConfirmationTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
-    mmt = 'Essay'
-    # Per APERTA-10873, co-author confirmation is disabled for non-PLOS Biology journals.
-    self.create_article(journal='PLOS Biology', type_=mmt, random_bit=True)
+    # We need an mmt that has an Authors card - will choose Research for now.
+    mmt = 'Research'
+    self.create_article(journal='PLOS Wombat', type_=mmt, random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     paper_canonical_url = manuscript_page.get_current_url().split('?')[0]
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.complete_task('Title And Abstract')
-    manuscript_page.complete_task('Ethics Statement')
     manuscript_page.complete_task('Cover Letter')
     manuscript_page.complete_task('Figures')
-    manuscript_page.complete_task('Reviewer Candidates')
     manuscript_page.complete_task('Supporting Info')
-    manuscript_page.complete_task('Competing Interests')
-    manuscript_page.complete_task('Financial Disclosure')
     manuscript_page.complete_task('Additional Information')
     manuscript_page.complete_task('Early Version')
     # Now, on the Authors card, we add a co-author
@@ -192,11 +184,11 @@ class CoAuthorConfirmationTest(CommonTest):
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()
 
-    # logout and enter as a site admin - we don't have editorial users seeded for PLOS Biology
+    # logout and login as a staff user
     manuscript_page.logout()
-    site_adm_user = super_admin_login
-    logging.info('Logging in as {0}'.format(site_adm_user))
-    dashboard_page = self.cas_login(email=site_adm_user['email'])
+    staff_user = random.choice(editorial_users)
+    logging.info('Logging in as {0}'.format(staff_user))
+    dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
@@ -208,13 +200,68 @@ class CoAuthorConfirmationTest(CommonTest):
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.page_ready()
     workflow_page.click_authors_card()
-    
+
     authors_card = AuthorsCard(self.getDriver())
     authors_card.click_completion_button()
-    authors_card.update_coauthor_status()
+    authors_card.validate_coauthor_status(staff_user)
 
+  def test_group_coauthor_confirmation_by_staff(self):
+    """
+    Validates the ability of a staff user to confirm or refute group co-authorship status in the UI.
+    :return: void function
+    """
+    logging.info('Test Co-author Confirmation::group_coauthor_confirmation_by_staff')
+    current_path = os.getcwd()
+    logging.info(current_path)
+    # Users logs in and make a submission
+    creator_user = random.choice(users)
+    dashboard_page = self.cas_login(email=creator_user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.click_create_new_submission_button()
+    # We need an mmt that has an Authors card - will choose Research for now.
+    mmt = 'Research'
+    self.create_article(journal='PLOS Wombat', type_=mmt, random_bit=True)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
+    paper_canonical_url = manuscript_page.get_current_url().split('?')[0]
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
+    manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Title And Abstract')
+    manuscript_page.complete_task('Cover Letter')
+    manuscript_page.complete_task('Figures')
+    manuscript_page.complete_task('Supporting Info')
+    manuscript_page.complete_task('Additional Information')
+    manuscript_page.complete_task('Early Version')
+    # Now, on the Authors card, we add a co-author
+    manuscript_page.click_task('Authors')
+    authors_task = AuthorsTask(self.getDriver())
+    authors_task.task_ready()
+    authors_task.add_group_author_task_action()
+    authors_task.edit_author(creator_user)
+    manuscript_page.click_submit_btn()
+    manuscript_page.confirm_submit_btn()
+    manuscript_page.close_modal()
 
+    # logout and login as a staff user
+    manuscript_page.logout()
+    staff_user = random.choice(editorial_users)
+    logging.info('Logging in as {0}'.format(staff_user))
+    dashboard_page = self.cas_login(email=staff_user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.page_ready()
 
+    # go to workflow
+    paper_viewer.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.page_ready()
+    workflow_page.click_authors_card()
+
+    authors_card = AuthorsCard(self.getDriver())
+    authors_card.click_completion_button()
+    authors_card.validate_coauthor_status(staff_user)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

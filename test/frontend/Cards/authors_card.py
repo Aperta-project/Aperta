@@ -4,6 +4,9 @@
 Page object definition for the authors card
 """
 import time
+import random
+import logging
+import datetime
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -54,13 +57,17 @@ class AuthorsCard(BaseCard):
     self._edit_author = (By.CLASS_NAME, 'fa-pencil')
     self._corresponding = (
         By.XPATH, ".//input[@name='author--published_as_corresponding_author']")
+    self._add_author_add_btn = (By.CSS_SELECTOR, 'div.author-form-buttons > button')
+    self._delete_author_item = (By.CLASS_NAME, 'fa-trash')
 
     # co-author related locators
     self._coauthor_confirm_lbl = (By.CLASS_NAME, 'confirm-coauthor-label')
     self._coauthor_decline_lbl = (By.CLASS_NAME, 'decline-coauthor-label')
     self._no_response_lbl = (By.CLASS_NAME, 'no-response-coauthor-label')
     self._coauthor_last_mod_info = (By.CLASS_NAME, 'coauthor-status-modified-by')
-    self._coauthor_status_info = (By.CSS_SELECTOR, 'div[data-test-selector="coauthor-radio-controls"] + div.flex-group')
+    self._coauthor_status_info_no_response = (By.CLASS_NAME, 'author-coauthor-info')
+    self._coauthor_status_info_confirmed = (By.CLASS_NAME, 'author-confirmed')
+    self._coauthor_status_info_declined = (By.CLASS_NAME, 'author-refuted')
 
 
   # POM Actions
@@ -236,19 +243,60 @@ class AuthorsCard(BaseCard):
 
   def update_coauthor_status(self, confirm=True):
     """
-    Selects a radio button option to either confirm or decline co-authorship status. This assumes that the 
+    Selects a radio button option to either confirm or decline co-authorship status. This assumes that the
     co-author has not already submitted confirmed/declined via email (we are not able to test that piece yet).
     Note: only staff users should be able to confirm/decline co-authorship status on the authors card.
+    :param confirm: The decision taken (accept or decline) for co-author confirmation
+    :return: void function
+    """
+    if confirm:
+      self._get(self._coauthor_confirm_lbl).click()
+    else:
+      self._get(self._coauthor_decline_lbl).click()
+
+  def validate_coauthor_status(self, current_user):
+    """
+    Validates the messages that appear on the authors card after confirmation or
+    decline of co-author status by an internal user.
     :return: void function
     """
     author_items = self._gets(self._author_items)
     coauthor_item = author_items[1]
     coauthor_item.click()
 
-    if confirm:
-      self._get(self._coauthor_confirm_lbl).click()
-    else:
-      self._get(self._coauthor_decline_lbl).click()
+    # Before updating, the "No Response" radio button will be selected, with its
+    # corresponding message:
+    expected_no_response_msg = 'When you submit your manuscript, an email will ' \
+     'be sent to this coauthor at the address you provide below to confirm authorship'
+    no_response_info = self._get(self._coauthor_status_info_no_response)
+    assert no_response_info.text == expected_no_response_msg, 'Actual: {0} != Expected: {1}'.format(no_response_info.text, expected_no_response_msg)
 
-  def validate_coauthor_status(self, confirm=True):
-    pass
+    confirm = random.choice([True, False])
+    logging.info('Selecting {0} for coauthor confirmation'.format(confirm))
+    self.update_coauthor_status(confirm)
+    time_confirmed = datetime.datetime.today().strftime('%B %-d, %Y %H:%M')
+
+    if confirm:
+      expected_accept_msg = 'Authorship has been confirmed'
+      accept_msg = self._get(self._coauthor_status_info_confirmed)
+      assert accept_msg.text == expected_accept_msg, 'Actual: {0} != Expected: {1}'.format(accept_msg.text, expected_accept_msg)
+    else:
+      expected_decline_msg = 'Authorship has been refuted'
+      decline_msg = self._get(self._coauthor_status_info_declined)
+      assert decline_msg.text == expected_decline_msg, 'Actual: {0} != Expected: {1}'.format(decline_msg.text, expected_decline_msg)
+
+    self._get(self._add_author_add_btn).click()
+
+    # Now, open the author item for the coauthor and verify that the last modified by info is displayed
+    # Getting the trash can icon, so that there is time to wait for the author item
+    # div to collapse before opening it again, and avoiding a sleep:
+    coauthor_item.find_element(*self._delete_author_item)
+    coauthor_item.click()
+    last_mod_info = self._get(self._coauthor_last_mod_info)
+    if confirm:
+      action = 'Confirmed by'
+    else:
+      action = 'Refuted By'
+
+    expected_last_mod_info = '{0} {1} on {2}'.format(action, current_user['name'], time_confirmed)
+    assert last_mod_info.text == expected_last_mod_info, 'Actual: {0} != Expected: {1}'.format(last_mod_info.text, expected_last_mod_info)

@@ -117,32 +117,6 @@ describe CorrespondenceController do
     end
   end
 
-  describe 'PUT soft_delete' do
-    before do
-      correspondence_rbac true
-    end
-
-    subject(:do_request) do
-      xhr :put, :soft_delete,
-                format: :json,
-                id: correspondence.id,
-                paper_id: correspondence.paper.id,
-                reason: 'test'
-    end
-
-    context 'for external correspondence' do
-      let(:correspondence) { FactoryGirl.create :correspondence, :as_external, paper: paper }
-
-      it 'sets correspondence status to deleted' do
-        expect do
-          do_request
-          expect(response.status).to eq 200
-        end.to change { correspondence.reload.status }
-          .from(correspondence.status).to 'deleted'
-      end
-    end
-  end
-
   context 'for automatically generated correspondence' do
     let(:correspondence) { FactoryGirl.create :correspondence, paper: paper }
 

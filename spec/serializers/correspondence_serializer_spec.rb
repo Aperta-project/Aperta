@@ -47,6 +47,9 @@ describe CorrespondenceSerializer, serializer_test: true do
       Activity.correspondence_deleted! external_correspondence, user: user
     end
 
+    # As a security concern, we are purposefully restricting the serialized fields of a soft-deleted
+    # correspondence record, so that the user can't access it in any way, in case the record was
+    # deleted because it exposed sensitive information, was libelous, etc.
     it 'strips detail fields of correspondence record' do
       serialized_correspondence = serializer.as_json[:correspondence]
       expect(serialized_correspondence).to have_key(:activities)

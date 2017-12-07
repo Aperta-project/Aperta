@@ -20,10 +20,10 @@ export default DS.Model.extend({
   manuscriptStatus: DS.attr('string'),
   activities: DS.attr(),
   status: DS.attr('string'),
-  deleteReason: DS.attr('string'),
+  additionalContext: DS.attr(),
 
   isDeleted: Ember.computed('status', 'external', function() {
-    return this.get('external') && this.get('status') === 'deleted';
+    return this.get('status') === 'deleted';
   }),
   isActive: Ember.computed.not('isDeleted'),
 

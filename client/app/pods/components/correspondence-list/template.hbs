@@ -37,21 +37,21 @@
               <td>{{message.sender}}</td>
             </tr>
           {{else}}
-          <tr onmouseenter={{action "toggleHighlight"}} onmouseleave={{action "toggleHighlight"}}>
-            <td>{{message.utcSentAt}}</td>
-            <td>
-              <div class="correspondence{{message.id}}">
-                {{#link-to 'paper.correspondence.viewcorrespondence' paper message.id }}
-                  {{if message.external "[view details]"}} &nbsp;
-                {{/link-to}}
-              </div>
-            </td>
-            <td>n.a.</td>
-            <td>
-              n.a.
-            </td>
-            <td>n.a.</td>
-          </tr>
+            <tr onmouseenter={{action "toggleHighlight"}} onmouseleave={{action "toggleHighlight"}}>
+              <td>{{message.utcSentAt}}</td>
+              <td>
+                <div class="correspondence{{message.id}}">
+                  {{#link-to 'paper.correspondence.viewcorrespondence' paper message.id }}
+                    {{if message.external "[view details]"}} &nbsp;
+                  {{/link-to}}
+                </div>
+              </td>
+              <td>n.a.</td>
+              <td>
+                n.a.
+              </td>
+              <td>n.a.</td>
+            </tr>
           {{/if}}
         {{/each}}
       </tbody>

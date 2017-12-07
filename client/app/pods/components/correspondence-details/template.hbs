@@ -107,7 +107,7 @@
   {{/if}}
 {{else}}
   <h2>Reason for Deletion</h2>
-  <div class="deleted-reason">{{message.deleteReason}}</div>
+  <div class="deleted-reason">{{message.additionalContext.delete_reason}}</div>
 {{/if}}
 
 {{#if message.hasActivities}}

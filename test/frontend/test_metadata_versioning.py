@@ -43,7 +43,7 @@ class MetadataVersioningTest(CommonTest):
     """
     logging.info('Test Metadata Versioning')
     title = 'For metadata versioning'
-    types = ('Research', 'Research w/Initial Decision Card')
+    types = ('Research w/Initial Decision Card', 'Research w/Initial Decision Card') #('Research', 'Research w/Initial Decision Card')
     paper_type = random.choice(types)
     first_prq = {'q1': 'No', 'q2': 'No', 'q3': [0, 0, 0, 1], 'q4': 'First Collection',
                  'q5': 'First Short Title'}

@@ -72,6 +72,7 @@ class AuthorsTask(BaseTask):
     self._department_lbl = (By.CSS_SELECTOR, 'div.flex-group + div.flex-group div + div div label')
     self._department_input = (By.CSS_SELECTOR, 'input.author-department')
     self._institution_div = (By.CLASS_NAME, 'did-you-mean-input')
+    self._affiliations = (By.CLASS_NAME, 'author-affiliation')
     self._institution_change_link = (By.CLASS_NAME, 'did-you-mean-change')
     self._orcid_connect_div = (By.CLASS_NAME, 'orcid-connect')
     self._author_lbls = (By.CLASS_NAME, 'question-checkbox')
@@ -144,6 +145,14 @@ class AuthorsTask(BaseTask):
     self._no_thanks = (By.CSS_SELECTOR, '.did-you-mean .did-you-mean-no-thanks')
     #self._cb = (By.CSS_SELECTOR, 'button.task-completed')
     #self._task_completed_section = (By.CLASS_NAME, 'task-completed-section')
+    # ## gt
+    # # institution
+    # self._institution_div = (By.CLASS_NAME, 'did-you-mean-input')
+    # self._institution_expanded = (By.CLASS_NAME, 'did-you-mean-expanded')
+    # self._institution_question = (By.CLASS_NAME,'did-you-mean-question')
+    # self._institution_options = (By.CLASS_NAME,'did-you-mean-options') # parent
+    # self._institution_items = (By.CLASS_NAME,'did-you-mean-item')
+    # self._institution_chosen = (By.CLASS_NAME, 'did-you-mean-what-you-meant')
 
   # POM Actions
   def validate_author_task_styles(self):
@@ -234,7 +243,7 @@ class AuthorsTask(BaseTask):
 
     institution_div, sec_institution_div = self._gets(self._institution_div)
     institution_input = institution_div.find_element_by_tag_name('input')
-    assert institution_input.get_attribute('placeholder') == '* Institution', \
+    assert institution_input.get_attribute('placeholder') == 'Institution', \
         institution_input.get_attribute('placeholder')
     institution_icon = institution_div.find_element_by_css_selector('button i')
     assert 'fa-search' in institution_icon.get_attribute('class')
@@ -446,6 +455,8 @@ class AuthorsTask(BaseTask):
     initials_input.send_keys(author['initials'] + Keys.ENTER)
     email_input.send_keys(author['email'] + Keys.ENTER)
     title_input.send_keys(author['title'] + Keys.ENTER)
+
+    self.scroll_element_into_view_below_toolbar(department_input)
     department_input.send_keys(author['department'] + Keys.ENTER)
     # APERTA-10056
     institution_input.send_keys('College of Saint Benedict and Saint John\'s University' + Keys.ENTER)
@@ -455,13 +466,21 @@ class AuthorsTask(BaseTask):
       pass
     else:
       raise AssertionError('Error message fired for institution with quote in name: {0}'.format(error_msg))
+
+    affiliations = self._gets(self._affiliations)
+    # select entered name from 'did-you-mean' list
+    self.select_institution(affiliations[0], 'College of Saint Benedict and Saint John\'s University')
+
     self._get(self._institution_change_link).click()
+
     # next two lines: redefining again here to avoid the dread stale reference exception
     institution_div, sec_institution_div = self._gets(self._institution_div)
     institution_input = institution_div.find_element_by_tag_name('input')
     institution_input.clear()
     institution_input.send_keys(author['1_institution'] + Keys.ENTER)
+    self.select_institution(affiliations[0], author['1_institution'])
     sec_institution_input.send_keys(author['2_institution'] + Keys.ENTER)
+    self.select_institution(affiliations[1], author['2_institution'])
 
     # check one of the boxes in Author Contributions, as this is required
     self._wait_for_element(self._get(self._designed_chkbx))
@@ -475,7 +494,7 @@ class AuthorsTask(BaseTask):
     logging.info('Selecting Gov\'t Choice {0}'.format(govt_choice))
     govt_div = self._get(self._govt_employee_div)
     self._scroll_into_view(govt_div)
-    self._actions.move_to_element(govt_div).perform()
+  #  self._actions.move_to_element(govt_div).perform()
     if govt_choice == 'Yes':
       govt_yes.click()
     else:
@@ -621,8 +640,8 @@ class AuthorsTask(BaseTask):
       time.sleep(2)
       # 'did-you-mean-what-you-meant' - confirm institution name if needed
       if 'expanded' in institution_div.get_attribute('class'):
-        institution_confirm = self._get(self._no_thanks)
-        institution_confirm.click()
+        affiliations = self._gets(self._affiliations)
+        self.select_institution(affiliations[0], author_data['affiliation-name'])
     title_input.clear()
     title_input.send_keys(author_data['affiliation-title'] + Keys.ENTER)
     department_input.clear()

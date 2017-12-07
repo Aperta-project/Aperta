@@ -31,29 +31,17 @@ class AITask(BaseTask):
     self._uploaded_file_description = (By.NAME, 'attachment-caption')
     self._q1_data_editor = 'publishing_related_questions--published_elsewhere--taken_from_manuscripts'
     #2
-    self._q2_title_input = (
-        By.NAME, 'publishing_related_questions--submitted_in_conjunction--corresponding_title')
-    self._q2_corresponding_author_input = (
-        By.NAME, 'publishing_related_questions--submitted_in_conjunction--corresponding_author')
-    self._q2_journal_input = (
-        By.NAME, 'publishing_related_questions--submitted_in_conjunction--corresponding_journal')
     self._q2_handle_together_cb = (
-         By.ID, 'check-box-publishing_related_questions--submitted_in_conjunction--handled_together')
+         By.NAME, 'publishing_related_questions--submitted_in_conjunction--handled_together')
     self._q2_data_editor = 'publishing_related_questions--submitted_in_conjunction--corresponding_title'
-   #3
-    self._q3_previous_interactions_cb = (
-        By.ID, 'check-box-publishing_related_questions--previous_interactions_with_this_manuscript')
-    self._q3_presubmission_cb = (
-        By.ID, 'check-box-publishing_related_questions--presubmission_inquiry')
-    self._q3_other_journal_cb = (
-        By.ID, 'check-box-publishing_related_questions--other_journal_submission')
-    self._q3_previous_editor_cb = (
-        By.ID, 'check-box-publishing_related_questions--author_was_previous_journal_editor')
     #5
     self._q5_data_editor = 'publishing_related_questions--short_title'
     # Version difference
     self._diff_removed = (By.CSS_SELECTOR, 'span.ember-view.text-diff .removed')
     self._diff_added = (By.CSS_SELECTOR, 'span.ember-view.text-diff .added')
+    # relative locators for questions: checkboxes, text fields
+    self._child_checkbox = (By.CSS_SELECTOR, 'input.ember-checkbox')
+    self._child_text_field = (By.CSS_SELECTOR, 'input.card-input')
 
 
   # POM Actions
@@ -116,10 +104,10 @@ class AITask(BaseTask):
       self.tmce_set_rich_text(tinymce_editor_instance_iframe, data['q2_child1_answer'])
 
       # there are no specific attributes for simple text field, using relative locator
-      # having tag name 'input' and class 'form-control'
-      self._wait_for_element(question_2.find_element_by_css_selector('input.form-control'))
+      # having tag name 'input' and class 'card-input'
+      self._wait_for_element(question_2.find_element(*self._child_text_field))
 
-      input_fields = question_2.find_elements_by_css_selector('input.form-control')
+      input_fields = question_2.find_elements(*self._child_text_field)
       if data['q2_child2_answer']:
         self.send_content_to_text_field(input_fields[0], data['q2_child2_answer'])
       if data['q2_child3_answer']:
@@ -143,15 +131,15 @@ class AITask(BaseTask):
       # check boxes parents to find input field
       checkboxes_parents = question_3.find_elements_by_css_selector('.card-content-check-box')
       # check boxes
-      checkboxes = question_3.find_elements_by_css_selector('.card-content-check-box .checkbox input')
+      checkboxes = question_3.find_elements_by_css_selector('.ember-checkbox')
       self.set_timeout(5)
       for order, cbx in enumerate(q3ans):
         self.select_new_checkbox_value(checkboxes[order], cbx)
         if order != 3 and (cbx == 1) and 'q3_child_answer' in data:
-          self._wait_for_element(checkboxes_parents[order].find_element_by_css_selector('input.form-control'))
+          self._wait_for_element(checkboxes_parents[order].find_element(*self._child_text_field))
           try:
             self.send_content_to_text_field(
-                    checkboxes_parents[order].find_element_by_css_selector('input.form-control'),
+                    checkboxes_parents[order].find_element(*self._child_text_field),
                     data['q3_child_answer'][order])
           except IndexError:
             continue
@@ -162,7 +150,7 @@ class AITask(BaseTask):
     q4ans = data['q4']
     logging.debug('The answers to question 4 is {0}'.format(q4ans))
     if q4ans:
-      self.send_content_to_text_field(question_4.find_element_by_css_selector('input.form-control'), q4ans)
+      self.send_content_to_text_field(question_4.find_element(*self._child_text_field), q4ans)
 
     # Question #5
     self.scroll_element_into_view_below_toolbar(question_4)

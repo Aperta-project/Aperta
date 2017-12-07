@@ -71,6 +71,7 @@ class ProfilePage(AuthenticatedPage):
     self._add_affiliation_institution_input = (By.CSS_SELECTOR,
                                                'div.affiliations-form div div input')
     self._add_affiliation_institution_yes_dammit = (By.CSS_SELECTOR, 'div.did-you-mean-no-thanks')
+    self._institution_parent = (By.CLASS_NAME, 'affiliation-field-institution')
     self._add_affiliation_department_label = (By.CSS_SELECTOR, 'div.department > div > label')
     self._add_affiliation_department_field = (By.CSS_SELECTOR, 'div.department > input')
     self._add_affiliation_title_label = (By.CSS_SELECTOR,
@@ -319,10 +320,13 @@ class ProfilePage(AuthenticatedPage):
     #   field marker
     logging.debug('Adding in an institution to satisfy field requirement')
     institution_field = self._get(self._add_affiliation_institution_input)
+    institution_parent_element = self._get(self._institution_parent)
     if user['affiliation-name']:
       institution_field.send_keys(user['affiliation-name'])
+      self.select_institution(institution_parent_element, user['affiliation-name'])
     else:
       institution_field.send_keys('Tramp University')
+      self.select_institution(institution_parent_element, 'Tramp University')
     # APERTA-8336
     # try:
     #   institution_error = self._get(self._add_affiliation_institution_error)
@@ -410,11 +414,14 @@ class ProfilePage(AuthenticatedPage):
     self._wait_for_element(self._get(self._add_affiliation_form))
     affiliation_list = []
     institution_field = self._get(self._add_affiliation_institution_input)
+    institution_parent_element = self._get(self._institution_parent)
     if user['affiliation-name'] and not transient:
       institution_field.send_keys(user['affiliation-name'])
+      self.select_institution(institution_parent_element, user['affiliation-name'])
       affiliation_list.append(user['affiliation-name'])
     else:
       institution_field.send_keys('Trump University')
+      self.select_institution(institution_parent_element, 'Trump University')
       affiliation_list.append('Trump University')
     self.set_timeout(4)
     try:

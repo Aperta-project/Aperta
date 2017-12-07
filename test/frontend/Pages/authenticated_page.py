@@ -189,6 +189,13 @@ class AuthenticatedPage(StyledPage):
     self._recent_activity_table_user_full_name = (By.CSS_SELECTOR, 'td.activity-feed-overlay-user')
     self._recent_activity_table_user_avatar = (By.CSS_SELECTOR, 'td.activity-feed-overlay-user img')
     self._recent_activity_table_timestamp = (By.CSS_SELECTOR, 'td.activity-feed-overlay-timestamp')
+    # Locator for 'did-you-mean' selection of institution
+    self._institution_div = (By.CLASS_NAME, 'did-you-mean-input')
+    self._institution_expanded = (By.CLASS_NAME, 'did-you-mean-expanded')
+    self._institution_question = (By.CLASS_NAME,'did-you-mean-question')
+    self._institution_options = (By.CLASS_NAME,'did-you-mean-options') # parent
+    self._institution_items = (By.CLASS_NAME,'did-you-mean-item')
+    self._institution_chosen = (By.CLASS_NAME, 'did-you-mean-what-you-meant')
 
   # POM Actions
   def attach_file(self, file_name):
@@ -980,6 +987,23 @@ class AuthenticatedPage(StyledPage):
     finally:
       self.traverse_from_frame()
     return
+
+  def select_institution(self, parent_element, institution_name):
+    """
+    Finds institution name in the 'did-you-mean' list and clicks on it to place in the
+    institution field
+    :param parent_element: the parent webelement to locate list of suggestions and required name
+    :param institution_name: string: institution name to select
+    :return: void function
+    """
+    self._wait_for_element(parent_element.find_element(*self._institution_expanded))
+    institution_list = parent_element.find_elements(*self._institution_items)
+    for item in institution_list:
+      if item.text == institution_name:
+        self._wait_for_element(item)
+        self.click_covered_element(item)
+        self._wait_for_element(parent_element.find_element(*self._institution_chosen))
+        break
 
   @staticmethod
   def strip_tinymce_ptags(input_string):

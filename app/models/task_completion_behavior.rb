@@ -1,8 +1,10 @@
 class TaskCompletionBehavior < Behavior
-  has_attributes integer: %w[card_id], string: %w[change_to]
+  CHANGE_TO = %w[completed incomplete toggle].freeze
 
-  validates :card_id, presence: true
-  validates :change_to, presence: true, inclusion: { in: %w[completed incomplete toggle] }
+  has_attributes integer: %w[card_id], string: %w[change_to]
+  # rubocop:disable Style/FormatStringToken
+  validates :card_id, presence: true, inclusion: { in: ->(_) { Card.pluck(:id) }, message: '%{value} is not a valid card id' }
+  validates :change_to, presence: true, inclusion: { in: CHANGE_TO, message: "%{value} should be one of the following: #{CHANGE_TO}" }
 
   def call(event)
     # load card
@@ -17,7 +19,7 @@ class TaskCompletionBehavior < Behavior
     tasks.each do |task|
       case change_to
       when 'toggle'
-        task.completed = !task.completed
+        task.toggle(:completed)
       when 'completed'
         task.completed = true
       when "incomplete"

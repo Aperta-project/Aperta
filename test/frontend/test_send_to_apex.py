@@ -32,63 +32,7 @@ class SendToApexTest(CommonTest):
     Validate if the data in the frontend match the data in the backend sent to Apex
     """
 
-    def test_send_to_apex_message(self):
-        """
-        test_send_to_apex_message: Validate if the Send to Apex card displays the corresponding
-            messages
-        """
-        logging.info('test_send_to_apex_message')
-        # Create base data - new papers
-        creator_user = random.choice(users)
-        dashboard_page = self.cas_login(email=creator_user['email'])
-        dashboard_page.page_ready()
-        dashboard_page.click_create_new_submission_button()
-        self.create_article(journal='PLOS Wombat', type_='NoCards')
-        manuscript_page = ManuscriptViewerPage(self.getDriver())
-        manuscript_page.page_ready_post_create()
-        # Request title to make sure the required page is loaded
-        short_doi = manuscript_page.get_paper_short_doi_from_url()
-        manuscript_page.complete_task('Upload Manuscript')
-        manuscript_page.complete_task('Title And Abstract')
-        manuscript_page.click_submit_btn()
-        manuscript_page.confirm_submit_btn()
-        manuscript_page.page_ready()
-        manuscript_page.close_modal()
-        manuscript_page.logout()
-        # Enter as Editorial User
-        editorial_user = random.choice(editorial_users)
-        logging.info(editorial_user)
-        dashboard_page = self.cas_login(email=editorial_user['email'])
-        dashboard_page.page_ready()
-        dashboard_page.go_to_manuscript(short_doi)
-        self._driver.navigated = True
-        manuscript_page = ManuscriptViewerPage(self.getDriver())
-        manuscript_page.page_ready()
-        # Disable Upload Manuscript Task
-        manuscript_page.complete_task('Upload Manuscript')
-        manuscript_page.complete_task('Title And Abstract')
-        # go to workflow and open Send to Apex Card
-        manuscript_page.click_workflow_link()
-        workflow_page = WorkflowPage(self.getDriver())
-        workflow_page.page_ready()
-        workflow_page.click_card('send_to_apex')
-        send_to_apex_card = SendToApexCard(self.getDriver())
-        send_to_apex_card.click_send_to_apex_button()
-        send_to_apex_card.click_close_apex()
-        # Open Register Decision Card
-        time.sleep(3)
-        workflow_page.click_card('register_decision')
-        register_decision = RegisterDecisionCard(self.getDriver())
-        register_decision.register_decision('Accept')
-        # Time needed to proceed after closing the RegisterDecisionCard
-        time.sleep(3)
-        card_title = 'Send to Apex'
-        workflow_page.click_card('send_to_apex', card_title)
-        send_to_apex_card = SendToApexCard(self.getDriver())
-        send_to_apex_card.click_send_to_apex_button()
-        send_to_apex_card.validate_send_to_apex_message()
-
-    def test_send_to_apex_card_style(self):
+    def test_smoke_send_to_apex_card_style(self):
         """
         test_send_to_apex_card_style: Validate the styles of Send to Apex Card
         """
@@ -98,11 +42,15 @@ class SendToApexTest(CommonTest):
         dashboard_page = self.cas_login(email=creator_user['email'])
         dashboard_page.page_ready()
         dashboard_page.click_create_new_submission_button()
-        self.create_article(journal='PLOS Wombat', type_='NoCards')
+        self.create_article(journal='PLOS Wombat',
+                            type_='NoCards',
+                            title='Test Send to Apex card Style')
         manuscript_page = ManuscriptViewerPage(self.getDriver())
         manuscript_page.page_ready_post_create()
         # Request title to make sure the required page is loaded
         short_doi = manuscript_page.get_paper_short_doi_from_url()
+        manuscript_page.complete_task('Upload Manuscript')
+        manuscript_page.complete_task('Title And Abstract')
         manuscript_page.click_submit_btn()
         manuscript_page.confirm_submit_btn()
         manuscript_page.page_ready()
@@ -140,9 +88,9 @@ class SendToApexTest(CommonTest):
         send_to_apex_card.click_send_to_apex_button()
         send_to_apex_card.validate_card_elements(short_doi)
 
-    def test_send_to_apex_file(self):
+    def test_smoke_send_to_apex_metadata_file(self):
         """
-        test_send_to_apex_file: Validate if the file sent to apex contains the correct information
+        test_send_to_apex_file: Validate if the metadata file sent to apex contains the correct information
         """
         logging.info('test_send_to_apex_file')
         # Create base data - new papers
@@ -150,14 +98,16 @@ class SendToApexTest(CommonTest):
         dashboard_page = self.cas_login(email=creator_user['email'])
         dashboard_page.page_ready()
         dashboard_page.click_create_new_submission_button()
-        self.create_article(journal='PLOS Wombat', type_='generateCompleteApexData')
+        self.create_article(journal='PLOS Wombat',
+                            type_='generateCompleteApexData',
+                            title='Test Send to Apex Metadata')
         manuscript_page = ManuscriptViewerPage(self.getDriver())
         manuscript_page.page_ready_post_create()
         # Request title to make sure the required page is loaded
         short_doi = manuscript_page.get_paper_short_doi_from_url()
         db_title, db_abstract = PgSQL().query('SELECT title, abstract '
                                               'FROM papers '
-                                              'WHERE short_doi=%s;', (short_doi,))[0]
+                                              'WHERE short_doi= %s;', (short_doi,))[0]
         db_title = str(db_title)
         if db_abstract:
             db_abstract = str(db_abstract)
@@ -210,7 +160,7 @@ class SendToApexTest(CommonTest):
         send_to_apex_card.validate_json_information(json_data, short_doi, db_title, db_abstract,
                                                     directory_path)
 
-    def test_send_to_apex_source_pdf(self):
+    def test_smoke_send_to_apex_source_pdf(self):
         """
         test_send_to_apex_source_PDF: Validate if the source file is sent to apex
                                       when the manuscript is PDF
@@ -221,7 +171,10 @@ class SendToApexTest(CommonTest):
         dashboard_page = self.cas_login(email=creator_user['email'])
         dashboard_page.page_ready()
         dashboard_page.click_create_new_submission_button()
-        self.create_article(journal='PLOS Wombat', type_='NoCards', format_='pdf')
+        self.create_article(journal='PLOS Wombat',
+                            type_='NoCards',
+                            format_='pdf',
+                            title='Test Send to Apex PDF Source')
         manuscript_page = ManuscriptViewerPage(self.getDriver())
         manuscript_page.page_ready_post_create()
         # Request title to make sure the required page is loaded
@@ -267,6 +220,65 @@ class SendToApexTest(CommonTest):
                                                       hash_file,
                                                       short_doi,
                                                       file_ext)
+
+
+    def test_core_send_to_apex_message(self):
+        """
+        test_send_to_apex_message: Validate if the Send to Apex card displays the corresponding
+            messages
+        """
+        logging.info('test_send_to_apex_message')
+        # Create base data - new papers
+        creator_user = random.choice(users)
+        dashboard_page = self.cas_login(email=creator_user['email'])
+        dashboard_page.page_ready()
+        dashboard_page.click_create_new_submission_button()
+        self.create_article(journal='PLOS Wombat',
+                            type_='NoCards',
+                            title='Test Send to Apex processing messages')
+        manuscript_page = ManuscriptViewerPage(self.getDriver())
+        manuscript_page.page_ready_post_create()
+        # Request title to make sure the required page is loaded
+        short_doi = manuscript_page.get_paper_short_doi_from_url()
+        manuscript_page.complete_task('Upload Manuscript')
+        manuscript_page.complete_task('Title And Abstract')
+        manuscript_page.click_submit_btn()
+        manuscript_page.confirm_submit_btn()
+        manuscript_page.page_ready()
+        manuscript_page.close_modal()
+        manuscript_page.logout()
+        # Enter as Editorial User
+        editorial_user = random.choice(editorial_users)
+        logging.info(editorial_user)
+        dashboard_page = self.cas_login(email=editorial_user['email'])
+        dashboard_page.page_ready()
+        dashboard_page.go_to_manuscript(short_doi)
+        self._driver.navigated = True
+        manuscript_page = ManuscriptViewerPage(self.getDriver())
+        manuscript_page.page_ready()
+        # Disable Upload Manuscript Task
+        manuscript_page.complete_task('Upload Manuscript')
+        manuscript_page.complete_task('Title And Abstract')
+        # go to workflow and open Send to Apex Card
+        manuscript_page.click_workflow_link()
+        workflow_page = WorkflowPage(self.getDriver())
+        workflow_page.page_ready()
+        workflow_page.click_card('send_to_apex')
+        send_to_apex_card = SendToApexCard(self.getDriver())
+        send_to_apex_card.click_send_to_apex_button()
+        send_to_apex_card.click_close_apex()
+        # Open Register Decision Card
+        time.sleep(3)
+        workflow_page.click_card('register_decision')
+        register_decision = RegisterDecisionCard(self.getDriver())
+        register_decision.register_decision('Accept')
+        # Time needed to proceed after closing the RegisterDecisionCard
+        time.sleep(3)
+        card_title = 'Send to Apex'
+        workflow_page.click_card('send_to_apex', card_title)
+        send_to_apex_card = SendToApexCard(self.getDriver())
+        send_to_apex_card.click_send_to_apex_button()
+        send_to_apex_card.validate_send_to_apex_message()
 
 
 if __name__ == '__main__':

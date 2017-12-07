@@ -29,7 +29,7 @@ class SendToApexCard(BaseCard):
 
     # Locators - Instance members
     self._apex_button = (By.CLASS_NAME, 'send-to-apex-button')
-    self._apex_message = (By.CLASS_NAME, 'apex-delivery-message')
+    self._apex_message = (By.CLASS_NAME, 'export-delivery-message')
     self._close_apex = (By.CSS_SELECTOR, '.overlay-footer > div + a')
 
   # POM Actions
@@ -43,13 +43,13 @@ class SendToApexCard(BaseCard):
     apex_error, apex_succeed = self._gets(self._apex_message)
     if "530" in apex_succeed.text:
       assert apex_error.text == (
-          "Apex Upload has failed. Paper has not been accepted"), apex_error
+          "Apex Upload has failed. Paper has not been accepted"), apex_error.text
       assert apex_succeed.text == (
-          "Apex Upload has failed. 530 Please login with USER and PASS"), apex_succeed
+          "Apex Upload has failed. 530 Please login with USER and PASS"), apex_succeed.text
     else:
       assert apex_error.text == (
-          "Apex Upload has failed. Paper has not been accepted"), apex_error
-      assert apex_succeed.text == ("Apex Upload succeeded."), apex_succeed
+          "Apex Upload has failed. Paper has not been accepted"), apex_error.text
+      assert apex_succeed.text == ("Apex Upload succeeded."), apex_succeed.text
 
   def click_send_to_apex_button(self):
     """
@@ -67,8 +67,7 @@ class SendToApexCard(BaseCard):
     close_apex = self._get(self._close_apex)
     close_apex.click()
 
-  @staticmethod
-  def validate_card_elements(paper_id):
+  def validate_card_elements(self, paper_id):
     """
     This method validates the styles of the card elements including the common card elements
     :param paper_id: The id of the manuscript
@@ -240,6 +239,6 @@ class SendToApexCard(BaseCard):
     try:
       assert hash_file == hash_file_extracted, "The extracted document is not the same " \
           "that were uploaded as source file: " \
-          "Uploaded hash {0} and extracted hash {1}".format(hash_file,hash_file_extracted) 
+          "Uploaded hash {0} and extracted hash {1}".format(hash_file,hash_file_extracted)
     except AssertionError:
       shutil.rmtree(directory_path)

@@ -627,6 +627,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         base_task.set_timeout(60)
         if task_name == 'Additional Information':
           ai_task = AITask(self._driver)
+          ai_task.task_ready()
           # If the task is read only due to completion state, set read-write
           if ai_task.completed_state():
             ai_task.click_completion_button()
@@ -641,16 +642,19 @@ class ManuscriptViewerPage(AuthenticatedPage):
           self._wait_on_lambda(lambda: self.is_task_open('Additional Information') == False)
         elif task_name == 'Billing':
           billing_task = BillingTask(self._driver)
+          billing_task.task_ready()
           billing_task.complete(data)
           self._wait_for_element(task.find_element_by_css_selector('div.active'))
           self.click_covered_element(task)
           self._wait_on_lambda(lambda: self.is_task_open('Billing') == False)
         elif task_name == 'Review by':
           review_report = ReviewerReportTask(self._driver)
+          review_report.task_ready()
           outdata = review_report.complete_reviewer_report()
           time.sleep(1)
         elif task_name == 'Response to Reviewers':
           revise_manuscript = ReviseManuscriptTask(self._driver)
+          revise_manuscript.task_ready()
           revise_manuscript.validate_styles()
           if data and 'response_number' not in data:
             revise_manuscript.validate_empty_response()
@@ -662,6 +666,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
           time.sleep(3) #This sleep is probably also tinymce... Code after Response to Reviewers was failing because completing it took more time than allowed for.
         elif task_name == 'Supporting Info':
           supporting_info = SITask(self._driver)
+          supporting_info.task_ready()
           supporting_info.validate_styles()
           if data and 'file_name' in data:
             supporting_info.add_file(data['file_name'])
@@ -696,6 +701,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
             # accordion is close it, open it:
             logging.info('Accordion was closed, opening: {0}'.format(task.text))
             task.click()
+          base_task.task_ready()
           # Check completed_check status
           if not base_task.completed_state():
             base_task.move2completion_button(task)
@@ -719,7 +725,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
               # accordion is close it, open it:
               logging.info('Accordion was closed, opening: {0}'.format(task.text))
               task.click()
-              # Check completed_check status
+            base_task.task_ready()
+            # Check completed_check status
             if not base_task.completed_state():
               base_task.move2completion_button(task)
               base_task.click_completion_button()
@@ -729,6 +736,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
           # Complete authors data before mark close
           logging.info('Completing Author Task')
           author_task = AuthorsTask(self._driver)
+          author_task.task_ready()
           author_task.edit_author(author)
           self.click_covered_element(task)
           self._wait_on_lambda(lambda: self.is_task_open('Authors') == False)
@@ -736,6 +744,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
           # Complete New Taxon data before mark close
           logging.info('Completing New Taxon Task')
           new_taxon_task = NewTaxonTask(self._driver)
+          new_taxon_task.task_ready()
           if data:
             new_taxon_task.validate_taxon_questions_action(data)
             outdata = data
@@ -749,6 +758,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
           # Complete T&A data before mark close
           logging.info('Completing Title And Abstract Task')
           title_and_abstract_task = TitleAbstractTask(self._driver)
+          title_and_abstract_task.task_ready()
           short_doi = title_and_abstract_task.get_short_doi()
           if prod:
             title_and_abstract_task.set_abstract(short_doi, prod=True)
@@ -764,6 +774,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
                            'Ethics Statement', 'Reporting Guidelines'):
           # Complete Competing Interest data before mark close
           logging.info('Completing {0} Task'.format(task.text))
+          base_task.task_ready()
           base_task.click_completion_button()
           self.click_covered_element(task)
         else:

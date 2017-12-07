@@ -175,6 +175,6 @@ class ReviewerReport < ActiveRecord::Base
   end
 
   def cancel_reminders
-    scheduled_events.active.map(&:cancel!)
+    scheduled_events.cancelable.each(&:cancel!)
   end
 end

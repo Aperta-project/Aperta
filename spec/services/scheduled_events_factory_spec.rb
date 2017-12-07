@@ -107,7 +107,7 @@ describe ScheduledEventFactory do
           end
         end
 
-        it 'should deactivate events sent to the past' do
+        it 'should disable events sent to the past' do
           subject
           expect(own_events.completed.count).to be 1
           expect(own_events.active.count).to be 2
@@ -123,7 +123,7 @@ describe ScheduledEventFactory do
             ddt.due_at = ddt.originally_due_at - 4.days
           end
         end
-        it 'should deactivate an event' do
+        it 'should disable an event' do
           subject
           expect(own_events.inactive.count).to be 1
           expect(own_events.active.count).to be 2

@@ -102,10 +102,15 @@ class TitleAbstractTask(BaseTask):
     self.tmce_clear_rich_text(tinymce_editor_instance_iframe)
     self.tmce_set_rich_text(tinymce_editor_instance_iframe, abstract)
     self.pause_to_save()
+    db_abstract = None
+    count=0
     if not prod:
-      db_abstract = PgSQL().query('SELECT abstract '
-                                  'FROM papers '
-                                  'WHERE short_doi=%s;', (short_doi,))[0][0]
+        while not db_abstract and count < 50:
+            db_abstract = PgSQL().query('SELECT abstract '
+                                        'FROM papers '
+                                        'WHERE short_doi=%s;', (short_doi,))[0][0]
+            count += 1
+            self.pause_to_save()
 
-      assert abstract in db_abstract, 'Abstract from page: {0} doesn\'t match abstract ' \
-                                      'from db: {1}'.format(abstract, db_abstract)
+        assert abstract in db_abstract, 'Abstract from page: {0} doesn\'t match abstract ' \
+                                        'from db: {1}'.format(abstract, db_abstract)

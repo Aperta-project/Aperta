@@ -756,7 +756,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
             title_and_abstract_task.set_abstract(short_doi)
           # Need a delay to ensure the card state is updated before clicking the completion button.
           # Without this delay, the click of the completion button fails, unfortunately.
-          time.sleep(3)
+          time.sleep(5)
           base_task.click_completion_button()
           self.click_covered_element(task)
           self._wait_on_lambda(lambda: self.is_task_open('Title And Abstract') == False)

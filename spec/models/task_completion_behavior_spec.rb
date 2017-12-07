@@ -116,7 +116,7 @@ describe Behavior do
   end
 
   context "when multiple tasks instances of the same card are on the same paper" do
-    let(:task2) { create(:task, paper: paper, title: 'My Task2', card_version: cardversion, completed: completed) }
+    let!(:task2) { create(:task, paper: paper, title: 'My Task2', card_version: cardversion, completed: completed) }
     context "and change_to is incomplete" do
       let(:change_to) { 'incomplete' }
       let(:card_id) { card.id }
@@ -145,7 +145,7 @@ describe Behavior do
         it "marks the task completed" do
           event.trigger
           expect(task.reload.completed).to be(true)
-          expect(task2.reload.completed).to be(false)
+          expect(task2.reload.completed).to be(true)
         end
       end
       context "and the task incomplete" do
@@ -153,7 +153,7 @@ describe Behavior do
         it "marks the task completed" do
           event.trigger
           expect(task.reload.completed).to be(true)
-          expect(task2.reload.completed).to be(false)
+          expect(task2.reload.completed).to be(true)
         end
       end
     end
@@ -173,7 +173,7 @@ describe Behavior do
         it "marks the task completed" do
           event.trigger
           expect(task.reload.completed).to be(true)
-          expect(task2.reload.completed).to be(false)
+          expect(task2.reload.completed).to be(true)
         end
       end
     end

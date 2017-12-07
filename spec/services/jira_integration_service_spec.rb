@@ -7,9 +7,22 @@ describe JIRAIntegrationService do
     let(:user) { FactoryGirl.create(:user, first_name: 'Barbara', last_name: 'Foo') }
     let(:params) { { remarks: 'talks' } }
     it 'should return a properly formatted hash' do
-      payload = subject.build_payload(user, params)
-      expect(payload.dig(:fields, :summary)).to include(user.full_name)
-      expect(payload.dig(:fields, :description)).to include('talks')
+      fields = subject.build_payload(user, params)[:fields]
+      expect(fields[:summary]).to include(user.full_name)
+      expect(fields[:description]).to include('talks')
+    end
+
+    it 'adds custom jira issue fields' do
+      params.merge!(
+        browser: 'Firefox 42.3',
+        platform: 'Platform 9'
+      )
+
+      fields = subject.build_payload(user, params)[:fields]
+      expect(fields[:customfield_13500]).to eq(user.username)
+      expect(fields[:customfield_13501]).to eq('Firefox 42.3')
+      expect(fields[:customfield_13502]).to eq('Platform 9')
+      expect(fields[:customfield_13503]).to eq('Some Fake DOI')
     end
 
     context 'with one attachment' do

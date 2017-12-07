@@ -4,6 +4,7 @@ describe TechCheckScenario do
   subject(:context) { TechCheckScenario.new(task) }
   let(:paper) { FactoryGirl.create(:paper, journal: FactoryGirl.create(:journal)) }
   let(:task) { FactoryGirl.create(:initial_tech_check_task, paper: paper) }
+  let(:task2) { FactoryGirl.create(:final_tech_check_task, paper: paper) }
 
   describe "rendering a template" do
     it "renders the intro" do
@@ -22,14 +23,29 @@ describe TechCheckScenario do
         .to eq('this is the outro')
     end
 
-    it "renders the sendback reasons" do
-      parent = FactoryGirl.create(:card_content, content_type: 'sendback-reason', value_type: 'boolean')
-      reasons = FactoryGirl.create(:card_content, content_type: 'paragraph-input', parent: parent)
-      task.answers.create!(card_content: reasons, value: 'it is ugly', paper: paper)
-      task.answers.create!(card_content: reasons, value: 'it is wrong', paper: paper)
-      template = "{% for reason in sendback_reasons %}{{ reason.value }}, {% endfor %}"
-      expect(LetterTemplate.new(body: template).render(context).body)
-        .to eq('it is ugly, it is wrong, ')
+    context 'when rendering sendback_reasons' do
+      let(:parent) { FactoryGirl.create(:card_content, content_type: 'sendback-reason', value_type: 'boolean') }
+      let(:reasons) { FactoryGirl.create(:card_content, content_type: 'paragraph-input', parent: parent) }
+
+      it "renders the sendback reasons for the given task" do
+        task.answers.create!(card_content: reasons, value: 'it is ugly', paper: paper)
+        task.answers.create!(card_content: reasons, value: 'it is wrong', paper: paper)
+        template = "{% for reason in sendback_reasons %}{{ reason.value }}, {% endfor %}"
+        expect(LetterTemplate.new(body: template).render(context).body)
+          .to eq('it is ugly, it is wrong, ')
+      end
+
+      context 'when rendering paper_sendback_reasons' do
+        it "renders all sendback reasons for the paper" do
+          task.answers.create!(card_content: reasons, value: 'it is ugly', paper: paper)
+          task.answers.create!(card_content: reasons, value: 'it is wrong', paper: paper)
+          task2.answers.create!(card_content: reasons, value: 'it is the worst', paper: paper)
+          task2.answers.create!(card_content: reasons, value: 'I hate it', paper: paper)
+          template = "{% for reason in paper_sendback_reasons %}{{ reason.value }}, {% endfor %}"
+          expect(LetterTemplate.new(body: template).render(context).body)
+            .to eq('it is ugly, it is wrong, it is the worst, I hate it, ')
+        end
+      end
     end
 
     it "implements the paper context" do

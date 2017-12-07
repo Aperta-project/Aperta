@@ -586,6 +586,25 @@ class JournalFactory
         lt.save!
       end
     end
+
+    ident = 'changes-for-author'
+    unless LetterTemplate.exists?(journal: @journal, ident: ident)
+      LetterTemplate.where(name: 'Changes For Author', journal: @journal).first_or_initialize.tap do |lt|
+        lt.ident = ident
+        lt.scenario = 'Tech Check'
+        lt.subject = 'Manuscript Sendback Reasons'
+        lt.to = '{{author.email}}'
+        lt.body = <<-TEXT.strip_heredoc
+        <ol>
+          {% for reason in paperwide_sendback_reasons %}
+            <li>{{reason.value}}</li>
+          {% endfor %}
+        </ol>
+        TEXT
+
+        lt.save!
+      end
+    end
   end
 
   def seed_register_decision_reject

@@ -164,7 +164,7 @@ class TasksController < ApplicationController
     scenario_class = template.scenario_class
     scenario_object = template.object_for_task(task)
     template.render(scenario_class.new(scenario_object))
-    head 404 if template.errors.present?
+    return head 404 if template.errors.present?
     render json: template
   end
 

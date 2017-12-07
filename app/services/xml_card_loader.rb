@@ -34,8 +34,8 @@ class XmlCardLoader
       # delete CardContents before the CardContentValidations
       # Open Bug: https://github.com/collectiveidea/awesome_nested_set/issues/306
       card.latest_card_version.card_contents.each do |cc|
-        cc.card_content_validations.try(:destroy_all)
-        cc.entity_attributes.try(:destroy_all)
+        cc.card_content_validations.destroy_all
+        cc.entity_attributes.destroy_all
       end
 
       # remove and decrement latest card_version

@@ -7,7 +7,6 @@ describe Behavior do
   let(:card) { FactoryGirl.create(:card, :versioned) }
   let(:cardversion) { card.latest_published_card_version }
   let(:task) { create(:task, paper: paper, title: 'My Task', card_version: cardversion, completed: completed) }
-  let(:task2) { create(:task, paper: paper, title: 'My Task2', card_version: cardversion, completed: completed) }
   let(:event) { Event.new(name: :fake_event, paper: paper, task: task, user: paper.creator) }
   subject { build(:task_completion_behavior, change_to: change_to, card_id: card_id) }
 
@@ -117,6 +116,7 @@ describe Behavior do
   end
 
   context "when multiple tasks instances of the same card are on the same paper" do
+    let(:task2) { create(:task, paper: paper, title: 'My Task2', card_version: cardversion, completed: completed) }
     context "and change_to is incomplete" do
       let(:change_to) { 'incomplete' }
       let(:card_id) { card.id }

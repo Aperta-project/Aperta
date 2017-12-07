@@ -25,14 +25,14 @@ describe Behavior do
       let(:completed) { true }
       it "marks the task incomplete" do
         event.trigger
-        expect(task.completed).to be(false)
+        expect(task.reload.completed).to be(false)
       end
     end
     context "and the task incomplete" do
       let(:completed) { false }
       it "marks the task incomplete" do
         event.trigger
-        expect(task.completed).to be(false)
+        expect(task.reload.completed).to be(false)
       end
     end
   end
@@ -44,14 +44,14 @@ describe Behavior do
       let(:completed) { true }
       it "marks the task completed" do
         event.trigger
-        expect(task.completed).to be(true)
+        expect(task.reload.completed).to be(true)
       end
     end
     context "and the task incomplete" do
       let(:completed) { false }
       it "marks the task completed" do
         event.trigger
-        expect(task.completed).to be(true)
+        expect(task.reload.completed).to be(true)
       end
     end
   end
@@ -63,14 +63,14 @@ describe Behavior do
       let(:completed) { true }
       it "marks the task incomplete" do
         event.trigger
-        expect(task.completed).to be(false)
+        expect(task.reload.completed).to be(false)
       end
     end
     context "and the task incomplete" do
       let(:completed) { false }
       it "marks the task completed" do
         event.trigger
-        expect(task.completed).to be(true)
+        expect(task.reload.completed).to be(true)
       end
     end
   end
@@ -82,14 +82,14 @@ describe Behavior do
       let(:completed) { true }
       it "marks the task unchanged" do
         event.trigger
-        expect(task.completed).to be(true)
+        expect(task.reload.completed).to be(true)
       end
     end
     context "and the task incomplete" do
       let(:completed) { false }
       it "marks the task unchanged" do
         event.trigger
-        expect(task.completed).to be(false)
+        expect(task.reload.completed).to be(false)
       end
     end
   end
@@ -102,14 +102,14 @@ describe Behavior do
       let(:completed) { true }
       it "marks the task unchanged" do
         event.trigger
-        expect(task.completed).to be(true)
+        expect(task.reload.completed).to be(true)
       end
     end
     context "and the task incomplete" do
       let(:completed) { false }
       it "marks the task unchanged" do
         event.trigger
-        expect(task.completed).to be(false)
+        expect(task.reload.completed).to be(false)
       end
     end
   end

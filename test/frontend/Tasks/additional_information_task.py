@@ -42,7 +42,8 @@ class AITask(BaseTask):
     # relative locators for questions: checkboxes, text fields
     self._child_checkbox = (By.CSS_SELECTOR, 'input.ember-checkbox')
     self._child_text_field = (By.CSS_SELECTOR, 'input.card-input')
-
+    self._input_field = (By.TAG_NAME, 'input')
+    self._checkboxes_parents = (By.CLASS_NAME, 'card-content-check-box')
 
   # POM Actions
   def complete_ai(self, data=None):
@@ -64,8 +65,8 @@ class AITask(BaseTask):
     q1ans = data['q1']
     logging.debug('The answer to question 1 is {0}'.format(q1ans))
     if q1ans == 'Yes':
-      self._wait_for_element(questions[0].find_element_by_tag_name('input'))
-      questions[0].find_elements_by_tag_name('input')[0].click()
+      self._wait_for_element(questions[0].find_element(*self._input_field))
+      questions[0].find_elements(*self._input_field)[0].click()
 
       tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
         self.get_rich_text_editor_instance(self._q1_data_editor)
@@ -87,16 +88,16 @@ class AITask(BaseTask):
           description_text_field.send_keys(q1_file_description)
           time.sleep(.5)
     else:
-      self._wait_for_element(questions[0].find_elements_by_tag_name('input')[1])
-      questions[0].find_elements_by_tag_name('input')[1].click()
+      self._wait_for_element(questions[0].find_elements(*self._input_field)[1])
+      questions[0].find_elements(*self._input_field)[1].click()
 
     # Question #2
     self.scroll_element_into_view_below_toolbar(question_1)
     q2ans = data['q2']
     logging.debug('The answer to question 2 is {0}'.format(q2ans))
     if q2ans == 'Yes':
-      self._wait_for_element(questions[1].find_element_by_tag_name('input')) # radio button
-      questions[1].find_element_by_tag_name('input').click()
+      self._wait_for_element(questions[1].find_element(*self._input_field)) # radio button
+      questions[1].find_element(*self._input_field).click()
       tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
         self.get_rich_text_editor_instance(self._q2_data_editor)
       logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
@@ -120,8 +121,8 @@ class AITask(BaseTask):
       self.select_new_checkbox_value(q2_handle_together, q2c4ans)
 
     else:
-      self._wait_for_element(questions[1].find_elements_by_tag_name('input')[1])
-      questions[1].find_elements_by_tag_name('input')[1].click()
+      self._wait_for_element(questions[1].find_elements(*self._input_field)[1])
+      questions[1].find_elements(*self._input_field)[1].click()
 
     # Question #3
     self.scroll_element_into_view_below_toolbar(question_2)
@@ -129,9 +130,9 @@ class AITask(BaseTask):
     logging.info('The answers to question 3 are {0}'.format(q3ans))
     if q3ans != [0, 0, 0, 0]:
       # check boxes parents to find input field
-      checkboxes_parents = question_3.find_elements_by_css_selector('.card-content-check-box')
+      checkboxes_parents = question_3.find_elements(*self._checkboxes_parents)
       # check boxes
-      checkboxes = question_3.find_elements_by_css_selector('.ember-checkbox')
+      checkboxes = question_3.find_elements(*self._child_checkbox)
       self.set_timeout(5)
       for order, cbx in enumerate(q3ans):
         self.select_new_checkbox_value(checkboxes[order], cbx)
@@ -246,8 +247,8 @@ class AITask(BaseTask):
     :return: True if task is ready to edit and False if it is not
     """
     questions = self._gets(self._questions)
-    self._wait_for_element(questions[0].find_element_by_tag_name('input'))
-    first_input = questions[0].find_element_by_tag_name('input')
+    self._wait_for_element(questions[0].find_element(*self._input_field))
+    first_input = questions[0].find_element(*self._input_field)
     return first_input.is_enabled()
 
   def send_content_to_text_field(self, input_field, text2send):

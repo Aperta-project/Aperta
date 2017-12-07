@@ -9,22 +9,22 @@ class TaskCompletionBehavior < Behavior
     card = Card.find(card_id)
 
     # load the task
-    task = event.paper.tasks.find_by(card_version_id: card.card_versions.pluck(:id))
+    tasks = event.paper.tasks.where(card_version_id: card.card_versions.pluck(:id))
 
-    # test to see if the task is not nil and is an instance of the card
-    # registered to be autocompleted
-    return if task.nil?
+    # test to see if the tasks is empty registered to be autocompleted
+    return if tasks.empty?
 
-    case change_to
-    when 'toggle'
-      task.completed = !task.completed
-    when 'completed'
-      task.completed = true
-    when "incomplete"
-      task.completed = false
+    tasks.each do |task|
+      case change_to
+      when 'toggle'
+        task.completed = !task.completed
+      when 'completed'
+        task.completed = true
+      when "incomplete"
+        task.completed = false
+      end
+      task.notify_requester = true
+      task.save!
     end
-
-    task.notify_requester = true
-    task.save!
   end
 end

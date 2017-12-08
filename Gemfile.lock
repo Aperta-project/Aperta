@@ -681,6 +681,7 @@ GEM
     sshkit (1.8.1)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
+    syslogger (1.6.5)
     test_after_commit (0.4.1)
       activerecord (>= 3.2)
     thin (1.6.3)
@@ -834,6 +835,7 @@ DEPENDENCIES
   sort_alphabetical
   spring
   spring-commands-rspec
+  syslogger
   tahi-assign_team!
   tahi_standard_tasks!
   test_after_commit
@@ -852,4 +854,4 @@ RUBY VERSION
    ruby 2.2.8p477
 
 BUNDLED WITH
-   1.15.4
+   1.16.0

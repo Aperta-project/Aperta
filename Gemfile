@@ -73,6 +73,7 @@ gem 'sidekiq-scheduler'
 gem 'sidekiq-unique-jobs'
 gem 'sinatra', require: nil
 gem 'sort_alphabetical'
+gem 'syslogger'
 gem 'timeliness'
 gem 'tiny_tds'
 gem 'twitter-text'

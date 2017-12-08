@@ -1,3 +1,5 @@
+require 'syslogger'
+
 Tahi::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -41,6 +43,10 @@ Tahi::Application.configure do
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = TahiEnv.force_ssl?
+
+  # Send output to syslog, local3 facility (per Chris H 2017-12-07).
+  syslogger = Syslogger.new("Aperta", Syslog::LOG_PID, Syslog::LOG_LOCAL3)
+  config.logger = ActiveSupport::TaggedLogging.new(syslogger)
 
   # Set to :debug to see everything in the log.
   config.log_level = :info

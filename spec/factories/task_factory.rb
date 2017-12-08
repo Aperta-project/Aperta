@@ -106,7 +106,12 @@ FactoryGirl.define do
       title "Figures"
     end
 
-    factory :financial_disclosure_task, class: 'TahiStandardTasks::FinancialDisclosureTask' do
+    # Can be removed after APERTA-10460 has been moved to production
+    factory :legacy_financial_disclosure_task, class: 'TahiStandardTasks::FinancialDisclosureTask' do
+      title "Financial Disclosure"
+    end
+
+    factory :financial_disclosure_task, class: 'CustomCardTask' do
       title "Financial Disclosure"
     end
 

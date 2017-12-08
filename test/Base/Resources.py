@@ -1025,18 +1025,75 @@ billing_data = {'first': 'Jane',
 # Generally, a random choice is made from among these documents when we create a new manuscript in
 #   the test suite.
 docs = \
+  ['frontend/assets/docs/A_Systematic_Review_and_Meta-analysis_of_the_Efficacy_and_Safety_of_'
+   'Intermittent_.doc',
+   'frontend/assets/docs/A_reappraisal_of_how_to_build_modular_reusable_models_of_biological_'
+   'systems.doc',
+   'frontend/assets/docs/Aedes_hensilli_as_a_Potential_Vector_of_Chikungunya_and_Zika_Viruses.doc',
+   'frontend/assets/docs/Alternative_Immunomodulatory_Strategies_for_Xenotransplantation_'
+   'CD80_CD86-CTLA4_.doc',
+   'frontend/assets/docs/An_In-Depth_Analysis_of_a_Piece_of_Shit_Distribution_of_Schistosoma_'
+   'mansoni_and_.doc',
+   'frontend/assets/docs/Benefit_from_B-lymphocyte_Depletion_using_the_Anti-CD20_Antibody_'
+   'Rituximab_in_Chronic.doc',
+   'frontend/assets/docs/Chemical_Synthesis_of_Bacteriophage_G4.doc',
+   'frontend/assets/docs/Chikungunya_Disease_Infection-Associated_Markers_from_the_Acute_to_the_'
+   'Chronic_Phase_.doc',
+   'frontend/assets/docs/Clinical_trial_data_open_for_all_A_regulators_view.doc',
+   'frontend/assets/docs/Does_conflict_of_interest_disclosure_worsen_bias.doc',
+   'frontend/assets/docs/Dynamic_Modulation_of_Mycobacterium_tuberculosis_Regulatory_Networks_'
+   'During_.doc',
+   'frontend/assets/docs/Genome-wide_diversity_in_the_Levant_reveals_recent_structuring_by_'
+   'culture.doc',
+   'frontend/assets/docs/High_Reinfection_Rate_after_Preventive_Chemotherapy_for_Fishborne_'
+   'Zoonotic_.doc',
+   'frontend/assets/docs/Impairment_of_TrkB-PSD-95_signaling_in_Angelman_Syndrome.doc',
+   'frontend/assets/docs/Improved_glomerular_filtration_rate_estimation_by_artificial_neural_'
+   'network.doc',
+   'frontend/assets/docs/Interplay_between_BRCA1_and_RHAMM_Regulates_Epithelial_Apicobasal_'
+   'Polarization_and_.doc',
+   'frontend/assets/docs/Life_Expectancies_of_South_African_Adults_Starting_Antiretroviral_'
+   'Treatment_.doc',
+   'frontend/assets/docs/Modifier_genes_and_the_plasticity_of_genetic_networks_in_mice.doc',
+   'frontend/assets/docs/Multidrug-resistant_tuberculosis_treatment_regimens_and_patient_'
+   'outcomes.doc',
+   'frontend/assets/docs/Neonatal_mortality_rates_for_193_countries_in_2009_with_trends_since_'
+   '1990_progress_.doc',
+   'frontend/assets/docs/OVARIAN_CANCER_AND_BODY_SIZE.doc',
+   'frontend/assets/docs/Potential_role_of_M._tuberculosis_specific_IFN-_and_IL-2_ELISPOT_'
+   'assays_in_.doc',
+   'frontend/assets/docs/Promoter_sequence_determines_the_relationship_between_expression_level_'
+   'and_noise.doc',
+   'frontend/assets/docs/Reduction_of_the_Cholesterol_Sensor_SCAP_in_the_Brains_of_Mice_Causes_'
+   'Impaired_.doc',
+   'frontend/assets/docs/Relative_impact_of_multimorbid_chronic_conditions_on_health-related_'
+   'quality_of_life-.doc',
+   'frontend/assets/docs/Research_Chimpanzees_May_Get_a_Break.doc',
+   'frontend/assets/docs/Schmallenberg_Virus_Pathogenesis_Tropism_and_Interaction_With_the_Innate_'
+   'Immune_.doc',
+   'frontend/assets/docs/Serological_Evidence_of_Ebola_Virus_Infection_in_Indonesian_'
+   'Orangutans.doc',
+   'frontend/assets/docs/Synergistic_Parasite-Pathogen_Interactions_Mediated_by_Host_Immunity_Can_'
+   'Drive_the_.doc',
+   'frontend/assets/docs/The_Circadian_Clock_Coordinates_Ribosome_Biogenesis_R2.doc',
+   'frontend/assets/docs/The_Relationship_between_Leukocyte_Mitochondrial_DNA_Copy_Number_and_'
+   'Telomere_Length_.doc',
+   'frontend/assets/docs/The_eyes_dont_have_it_Lie_detection_and_Neuro-Linguistic_Programming.doc',
+   'frontend/assets/docs/Twelve_years_of_rabies_surveillance_in_Sri_Lanka_1999-2010.doc',
+   'frontend/assets/docs/Vaccinia_Virus_Protein_C6_is_a_Virulence_Factor_that_Binds_TBK-1_Adaptor_'
+   'Proteins_.doc',
+   'frontend/assets/docs/Word_Document_with_Inserted_Equation.docx',
+  ]
+
+docxs = \
   ['frontend/assets/docs/ANATOMICAL_BRAIN_IMAGES_ALONE_CAN_ACCURATELY_DIAGNOSE_NEUROPSYCHIATRIC_'
    'ILLNESSES.docx',
    'frontend/assets/docs/A_Division_in_PIN-Mediated_Auxin_Patterning_During_Organ_Initiation_in_'
    'Grasses.docx',
    'frontend/assets/docs/A_Novel_Alpha_Kinase_EhAK1_Phosphorylates_Actin_and_Regulates_'
    'Phagocytosis_in_.docx',
-   'frontend/assets/docs/A_Systematic_Review_and_Meta-analysis_of_the_Efficacy_and_Safety_of_'
-   'Intermittent_.doc',
    'frontend/assets/docs/A_laboratory_critical_incident_and_error_reporting_system_for_'
    'experimental_.docx',
-   'frontend/assets/docs/A_reappraisal_of_how_to_build_modular_reusable_models_of_biological_'
-   'systems.doc',
    'frontend/assets/docs/A_unified_framework_for_partitioning_biological_diversity.docx',
    'frontend/assets/docs/Abby_normal_Contextual_Modulation.docx',
    'frontend/assets/docs/Abnormal_Contextual_Modulation_of_Visual_Contour_Detection_in_Patients_'
@@ -1048,30 +1105,19 @@ docs = \
    'Controlled.docx',
    'frontend/assets/docs/Adaptation_to_Temporally_Fluctuating_Environments_by_the_Evolution_of_'
    'Maternal_.docx',
-   'frontend/assets/docs/Aedes_hensilli_as_a_Potential_Vector_of_Chikungunya_and_Zika_Viruses.doc',
    'frontend/assets/docs/AgMicrobiomesSynthesisPaperRevision_2_21_17_IB.docx',
-   'frontend/assets/docs/Alternative_Immunomodulatory_Strategies_for_Xenotransplantation_'
-   'CD80_CD86-CTLA4_.doc',
-   'frontend/assets/docs/An_In-Depth_Analysis_of_a_Piece_of_Shit_Distribution_of_Schistosoma_'
-   'mansoni_and_.doc',
    'frontend/assets/docs/Antibiotic_prescription_for_COPD_exacerbations_admitted_to_hospital_'
    'European_COPD_.docx',
    'frontend/assets/docs/Association_of_Medical_Students_Reports_of_Interactions_with_the_'
    'Pharmaceutical_and_.docx',
-   'frontend/assets/docs/Benefit_from_B-lymphocyte_Depletion_using_the_Anti-CD20_Antibody_'
-   'Rituximab_in_Chronic.doc',
    'frontend/assets/docs/Beyond_the_Whole-Genome_Duplication_Phylogenetic_Evidence_for_an_'
    'Ancient_.docx',
    'frontend/assets/docs/Blue_Marble_Health_A_Call_for_Papers.docx',
    'frontend/assets/docs/Budding_Yeast_a_Simple_Model_for_Complex_Traits.docx',
    'frontend/assets/docs/Caloric_Restriction_Regulates_Stem_Cell_Homeostasis_Promoting_'
    'Enhanced_.docx',
-   'frontend/assets/docs/Chemical_Synthesis_of_Bacteriophage_G4.doc',
-   'frontend/assets/docs/Chikungunya_Disease_Infection-Associated_Markers_from_the_Acute_to_the_'
-   'Chronic_Phase_.doc',
    'frontend/assets/docs/Chromosome_X-wide_association_study_identifies_loci_for_fasting_insulin_'
    'and_height_.docx',
-   'frontend/assets/docs/Clinical_trial_data_open_for_all_A_regulators_view.doc',
    'frontend/assets/docs/Cognitive_Impairment_Induced_by_Delta9-tetrahydrocannabinol_Occurs_'
    'through_.docx',
    'frontend/assets/docs/Correction_Macrophage_Control_of_Phagocytosed_Mycobacteria_Is_Increased_'
@@ -1085,9 +1131,6 @@ docs = \
    'anorectic_.docx',
    'frontend/assets/docs/Discovery_of_covalent_ligands_via_non-covalent_docking_by_dissecting_'
    'covalent_.docx',
-   'frontend/assets/docs/Does_conflict_of_interest_disclosure_worsen_bias.doc',
-   'frontend/assets/docs/Dynamic_Modulation_of_Mycobacterium_tuberculosis_Regulatory_Networks_'
-   'During_.doc',
    'frontend/assets/docs/Effect_of_Heterogeneous_Investments_on_the_Evolution_of_Cooperation_in_'
    'Spatial_.docx',
    'frontend/assets/docs/Epidermal_Growth_Factor_Receptor-dependent_Mutual_Amplification_between_'
@@ -1111,11 +1154,7 @@ docs = \
    'functionality.docx',
    'frontend/assets/docs/Genetic_testing_for_TMEM154_mutations_associated_with_lentivirus_'
    'susceptibility_in.docx',
-   'frontend/assets/docs/Genome-wide_diversity_in_the_Levant_reveals_recent_structuring_by_'
-   'culture.doc',
    'frontend/assets/docs/Here_is_a_test_paper_with_some_Caption-styled_text.docx',
-   'frontend/assets/docs/High_Reinfection_Rate_after_Preventive_Chemotherapy_for_Fishborne_'
-   'Zoonotic_.doc',
    'frontend/assets/docs/HomeRun_Vector_Assembly_System_A_Flexible_and_Standardized_Cloning_'
    'System_for_.docx',
    'frontend/assets/docs/Honing_the_Priorities_and_Making_the_Investment_Case_for_Global_'
@@ -1127,69 +1166,43 @@ docs = \
    'Antigens_that_.docx',
    'frontend/assets/docs/Identification_of_a_Major_Phosphopeptide_in_Human_Tristetraprolin_by_'
    'Phosphopeptide_.docx',
-   'frontend/assets/docs/Impairment_of_TrkB-PSD-95_signaling_in_Angelman_Syndrome.doc',
-   'frontend/assets/docs/Improved_glomerular_filtration_rate_estimation_by_artificial_neural_'
-   'network.doc',
-   'frontend/assets/docs/Interplay_between_BRCA1_and_RHAMM_Regulates_Epithelial_Apicobasal_'
-   'Polarization_and_.doc',
-   'frontend/assets/docs/Life_Expectancies_of_South_African_Adults_Starting_Antiretroviral_'
-   'Treatment_.doc',
    'frontend/assets/docs/Mentalizing_Deficits_Constrain_Belief_in_a_Personal_God.docx',
    'frontend/assets/docs/Microbial_Hub_Taxa_Link_Host_and_Abiotic_Factors_to_Plant_Microbiome_'
    'Variation.docx',
-   'frontend/assets/docs/Modifier_genes_and_the_plasticity_of_genetic_networks_in_mice.doc',
    'frontend/assets/docs/Modulation_of_Cortical_Oscillations_by_Low-Frequency_Direct_Cortical_'
    'Stimulation_is_.docx',
-   'frontend/assets/docs/Multidrug-resistant_tuberculosis_treatment_regimens_and_patient_'
-   'outcomes.doc',
    'frontend/assets/docs/Musical_Training_Modulates_Listening_Strategies_Evidence_for_'
    'Action-based_.docx',
    'frontend/assets/docs/NTDs_V.2.0_Blue_Marble_Health-Neglected_Tropical_Disease_Control_and_'
    'Elimination_in_.docx',
-   'frontend/assets/docs/Neonatal_mortality_rates_for_193_countries_in_2009_with_trends_since_'
-   '1990_progress_.doc',
    'frontend/assets/docs/Neural_phase_locking_predicts_BOLD_response_in_human_auditory_'
    'cortex.docx',
    'frontend/assets/docs/New_material_of_Beelzebufo_a_hyperossified-frog_Amphibia_Anura_from_the_'
    'Late-.docx',
-   'frontend/assets/docs/OVARIAN_CANCER_AND_BODY_SIZE.doc',
    'frontend/assets/docs/Parallel_evolution_of_HIV-1_in_a_long-term_experiment-with_caption_'
    'style_removed.docx',
    'frontend/assets/docs/Polymorphisms_in_genes_involved_in_the_NF-KB_signalling_pathway_are_'
    'associated_with_.docx',
-   'frontend/assets/docs/Potential_role_of_M._tuberculosis_specific_IFN-_and_IL-2_ELISPOT_'
-   'assays_in_.doc',
    'frontend/assets/docs/Preclinical_Applications_of_3-Deoxy-3-18F_Fluorothymidine_in_Oncology-'
    'A_Systematic_.docx',
    'frontend/assets/docs/Probing_the_anti-obesity_effect_of_grape_seed_extracts_reveals_that_'
    'purified_.docx',
-   'frontend/assets/docs/Promoter_sequence_determines_the_relationship_between_expression_level_'
-   'and_noise.doc',
    'frontend/assets/docs/Protonic_Faraday_cage_effect_of_cell_envelopes_protects_microorganisms_'
    'from_.docx',
    'frontend/assets/docs/Rare_species_support_semi-vulnerable_functions_in_high-diversity_'
    'ecosystems.docx',
    'frontend/assets/docs/Rare_species_support_semi-vulnerable_functions_in_high-diversity_'
    'ecosystems_edited.docx',
-   'frontend/assets/docs/Reduction_of_the_Cholesterol_Sensor_SCAP_in_the_Brains_of_Mice_Causes_'
-   'Impaired_.doc',
-   'frontend/assets/docs/Relative_impact_of_multimorbid_chronic_conditions_on_health-related_'
-   'quality_of_life-.doc',
    'frontend/assets/docs/Remotely_sensed_high-resolution_global_cloud_dynamics_for_predicting_'
    'ecosystem_and_.docx',
-   'frontend/assets/docs/Research_Chimpanzees_May_Get_a_Break.doc',
    'frontend/assets/docs/Retraction_Polymorphism_of_9p21.3_Locus_Associated_with_5-Year_Survival_'
    'in_High-.docx',
    'frontend/assets/docs/Retraction_Polymorphism_of_9p21.3_Locus_Associated_with_5-Year_Survival_'
    'in_edited.docx',
    'frontend/assets/docs/Rnf165_Ark2C_Enhances_BMP-Smad_Signaling_to_Mediate_Motor_Axon_'
    'Extension.docx',
-   'frontend/assets/docs/Schmallenberg_Virus_Pathogenesis_Tropism_and_Interaction_With_the_Innate_'
-   'Immune_.doc',
    'frontend/assets/docs/Scientific_Prescription_to_Avoid_Dangerous_Climate_Change_to_Protect_'
    'Young_People_.docx',
-   'frontend/assets/docs/Serological_Evidence_of_Ebola_Virus_Infection_in_Indonesian_'
-   'Orangutans.doc',
    'frontend/assets/docs/Sex-stratified_genome-wide_association_studies_including_270000_'
    'individuals_show_.docx',
    'frontend/assets/docs/Sliding_rocks_on_Racetrack_Playa_Death_Valley_National_Park_first_'
@@ -1203,40 +1216,28 @@ docs = \
    'frontend/assets/docs/Structural_Basis_for_the_Recognition_of_Human_Cytomegalovirus_'
    'Glycoprotein_B_by_a_.docx',
    'frontend/assets/docs/Structural_mechanism_of_ER_retrieval_of_MHC_class_I_by_cowpox.docx',
-   'frontend/assets/docs/Synergistic_Parasite-Pathogen_Interactions_Mediated_by_Host_Immunity_Can_'
-   'Drive_the_.doc',
    'frontend/assets/docs/TOLL-LIKE_RECEPTOR_8_AGONIST_AND_BACTERIA_TRIGGER_POTENT_ACTIVATION_OF_'
    'INNATE_.docx',
    'frontend/assets/docs/Test_Manuscript_for_Disappearing_Figure_Legends.docx',
-   'frontend/assets/docs/The_Circadian_Clock_Coordinates_Ribosome_Biogenesis_R2.doc',
    'frontend/assets/docs/The_Circadian_Clock_Coordinates_Ribosome_Biogenesis_R5.docx',
    'frontend/assets/docs/The_Epidermal_Growth_Factor_Receptor_Critically_Regulates_Endometrial_'
    'Function_.docx',
    'frontend/assets/docs/The_Impact_of_Psychological_Stress_on_Mens_Judgements_of_Female_Body_'
    'Size.docx',
-   'frontend/assets/docs/The_Relationship_between_Leukocyte_Mitochondrial_DNA_Copy_Number_and_'
-   'Telomere_Length_.doc',
    'frontend/assets/docs/The_earliest_evolutionary_stages_of_mitochondrial_adaptation_to_low_'
    'oxygen.docx',
-   'frontend/assets/docs/The_eyes_dont_have_it_Lie_detection_and_Neuro-Linguistic_Programming.doc',
    'frontend/assets/docs/The_internal_organization_of_the_mycobacterial_partition_assembly_does_'
    'the_DNA_wrap_.docx',
    'frontend/assets/docs/The_natural_antimicrobial_carvacrol_inhibits_quorum_sensing_in_'
    'Chromobacterium_.docx',
    'frontend/assets/docs/Thresher_Sharks_Use_Tail-Slaps_as_a_Hunting_Strategy.docx',
-   'frontend/assets/docs/Twelve_years_of_rabies_surveillance_in_Sri_Lanka_1999-2010.doc',
    'frontend/assets/docs/Ubiquitin-mediated_response_to_microsporidia_and_virus_infection_in-'
    'C._elegans.docx',
    'frontend/assets/docs/Uncovering_Treatment_Burden_As_A_Key_Concept_For_Stroke_Care_A_'
    'Systematic_Review_of_.docx',
-   'frontend/assets/docs/Vaccinia_Virus_Protein_C6_is_a_Virulence_Factor_that_Binds_TBK-1_Adaptor_'
-   'Proteins_.doc',
    'frontend/assets/docs/Why_Do_Cuckolded_Males_Provide_Paternal_Care.docx',
    'frontend/assets/docs/Word_Document_with_Inserted_WordArt.docx',
    'frontend/assets/docs/Word_Document_with_Inserted_Text_Box.docx',
-   # APERTA-8505
-   # 'frontend/assets/docs/Word_Document_with_Inserted_Object_ExcelWorksheet.docx',
-   # 'frontend/assets/docs/Word_Document_with_Inserted_Object_ExcelChart.docx',
    'frontend/assets/docs/Word_Document_with_Inserted_Object_Equation.docx',
    'frontend/assets/docs/Word_Document_with_Inserted_File_Movie.docx',
    'frontend/assets/docs/Word_Document_with_Inserted_File_Audio.docx',

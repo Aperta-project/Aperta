@@ -20,7 +20,7 @@ export default Ember.Component.extend({
   initiallyOpen: Ember.computed('defaultPreprintTaskOpen', 'title', function() {
     return this.get('defaultPreprintTaskOpen') &&
       this.get('task.title') === 'Preprint Posting' &&
-      this.get('task.answers.firstObject.value') === '2';
+      this.get('task.answers.firstObject.value') === true;
   }),
 
   actions: {

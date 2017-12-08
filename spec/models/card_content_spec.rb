@@ -79,16 +79,16 @@ describe CardContent do
   end
 
   context '#to_xml' do
-    let!(:card_content) { FactoryGirl.create(:card_content, :with_string_match_validation, ident: 'thing') }
+    let!(:card_content) { FactoryGirl.create(:card_content, :with_string_match_validation, content_type: 'short-input', ident: 'thing') }
     let(:expected_xml) do
       <<-XML.strip_heredoc
         <?xml version="1.0" encoding="UTF-8"?>
-        <content ident="#{card_content.ident}" value-type="text">
+        <ShortInput ident="#{card_content.ident}" value-type="text">
           <validation validation-type="string-match">
             <error-message>oh noes!</error-message>
             <validator>/text/</validator>
           </validation>
-        </content>
+        </ShortInput>
         XML
     end
     it 'generates the expected xml' do

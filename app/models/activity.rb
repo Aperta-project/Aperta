@@ -2,6 +2,7 @@
 # Activities are used to make up a feed for various users in the system. The
 # feed is determined by the feed name assigned to each activity.
 class Activity < ActiveRecord::Base
+  extend ClientRouteHelper
   belongs_to :subject, polymorphic: true
   belongs_to :user
 
@@ -9,6 +10,17 @@ class Activity < ActiveRecord::Base
 
   scope :feed_for, -> (feed_names, subject) do
     where(feed_name: feed_names, subject: subject).order('created_at DESC')
+  end
+
+  def self.for_paper_workflow(subject)
+    where(
+      subject_type: 'Correspondence',
+      subject_id: subject.correspondence_ids
+    )
+    .order('created_at DESC')
+    .concat(feed_for(['manuscript', 'workflow'], subject))
+    .sort_by(&:created_at)
+    .reverse
   end
 
   def self.assignment_created!(assignment, user:)
@@ -136,7 +148,7 @@ class Activity < ActiveRecord::Base
     message = if user == invitation.invitee
                 "#{invitation.recipient_name} accepted invitation as #{invitation.invitee_role.capitalize}"
               else
-                "#{user.username} accepted invitation as #{invitation.invitee_role.capitalize} on behalf of #{invitation.recipient_name}"
+                "#{user.full_name} accepted invitation as #{invitation.invitee_role.capitalize} on behalf of #{invitation.recipient_name}"
               end
     create(
       feed_name: "workflow",
@@ -294,15 +306,6 @@ class Activity < ActiveRecord::Base
     )
   end
 
-  def self.state_changed!(paper, to:)
-    create(
-      feed_name: 'forensic',
-      activity_key: "paper.state_changed.#{to}",
-      subject: paper,
-      message: "Paper state changed to #{to}"
-    )
-  end
-
   def self.reminder_sent!(reminder)
     task_klass = reminder.due_datetime.due.class.name
     task_id = reminder.due_datetime.due.id
@@ -343,6 +346,41 @@ class Activity < ActiveRecord::Base
       feed_name: "workflow",
       activity_key: "task.assigned_user_removed",
       subject: task.paper,
+      user: user,
+      message: msg
+    )
+  end
+
+  def self.correspondence_created!(correspondence, user:)
+    correspondence_url = client_show_correspondence_url(correspondence)
+    create(
+      feed_name: 'workflow',
+      activity_key: 'correspondence.created',
+      subject: correspondence,
+      user: user,
+      message: "A <a href='#{correspondence_url}'>correspondence entry</a> was created"
+    )
+  end
+
+  def self.correspondence_edited!(correspondence, user:)
+    correspondence_url = client_show_correspondence_url(correspondence)
+    create(
+      feed_name: 'workflow',
+      activity_key: 'correspondence.edited',
+      subject: correspondence,
+      user: user,
+      message: "A <a href='#{correspondence_url}'>correspondence entry</a> was edited"
+    )
+  end
+
+  def self.due_datetime_updated!(due_datetime, user:)
+    new_due_date = due_datetime.due_at.strftime('%B %d, %Y')
+    reviewer_name = due_datetime.due.user.full_name
+    msg = "Due date for Review by #{reviewer_name} was changed to #{new_due_date}"
+    create(
+      feed_name: 'workflow',
+      activity_key: 'duedatetime.updated',
+      subject: due_datetime.due.paper,
       user: user,
       message: msg
     )

@@ -6,7 +6,7 @@ class Admin::LetterTemplatesController < ApplicationController
 
   def index
     journal_id = letter_template_params[:journal_id]
-    letter_templates = LetterTemplate.where(journal_id: journal_id)
+    letter_templates = journal_id ? Journal.find(journal_id).letter_templates : []
     respond_with(letter_templates, only: [:id, :subject, :name])
   end
 

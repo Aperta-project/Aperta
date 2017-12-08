@@ -26,7 +26,8 @@ test('it renders the custom card content starting in a non error state', functio
   `);
 
   assert.elementFound('.card-content-short-input', 'found the associated card content');
-  assert.elementFound('.task-completed.button--green', 'renders the task completed button in a non error state');
+  assert.elementFound('.task-completed.button--green', 'non error state button is green');
+  assert.elementNotFound('.task-completed-section .error-message', 'non error state contains no error message');
 });
 
 
@@ -41,5 +42,6 @@ test('if errors are present on submit, the complete button gets an error state',
     {{custom-card-task task=task}}
   `);
 
-  assert.elementFound('.task-completed.button--red', 'renders the task completed button in an error state');
+  assert.elementFound('.task-completed.button--green', 'error state button is green');
+  assert.elementFound('.task-completed-section .error-message', 'error state contains error message');
 });

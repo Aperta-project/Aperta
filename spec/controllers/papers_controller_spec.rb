@@ -656,6 +656,16 @@ describe PapersController do
         end
       end
 
+      context 'Checking to submission' do
+        let(:paper) { FactoryGirl.create(:paper, publishing_state: 'checking') }
+
+        it 'submits the paper' do
+          expect { do_request }.to change { Activity.count }.by(2)
+          expect(response.status).to eq(200)
+          expect(paper.reload.submitted?).to eq true
+        end
+      end
+
       context 'Full submission (not gradual engagement)' do
         it 'submits the paper' do
           do_request

@@ -23,6 +23,8 @@ export default Ember.Component.extend({
     Ember.run.once(this, 'revertChildrenAnswers');
   }),
 
+  hasText: Ember.computed.notEmpty('content.text'),
+
   revertChildrenAnswers() {
     if (!this.get('checkboxAnswer.value')) {
       this.get('textareaAnswer').set('value', this.get('textarea.defaultAnswerValue'));

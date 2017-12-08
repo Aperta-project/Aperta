@@ -20,9 +20,9 @@ class EarlyVersionTask(BaseTask):
     super(EarlyVersionTask, self).__init__(driver)
 
     # Locators - Instance members
-    self._intro_text = (By.CSS_SELECTOR, 'div.card-content.card-content-view-text.ember-view > p')
-    self._accman_consent_checkbox = (By.ID, 'check-box-early-posting--consent')
-    self._accman_consent_label = (By.CSS_SELECTOR, '#check-box-early-posting--consent + span')
+    self._intro_text = (By.CSS_SELECTOR, 'div.card-content.card-content-view-text.ember-view')
+    self._accman_consent_checkbox = (By.NAME, 'early-posting--consent')
+    self._accman_consent_label = (By.CSS_SELECTOR, 'input[name="early-posting--consent"] + span')
 
   # POM Actions
   def validate_styles(self):

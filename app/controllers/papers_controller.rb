@@ -91,8 +91,7 @@ class PapersController < ApplicationController
 
   def workflow_activities
     requires_user_can(:manage_workflow, paper)
-    feeds = ['workflow', 'manuscript']
-    activities = Activity.includes(:user).feed_for(feeds, paper)
+    activities = Activity.includes(:user).for_paper_workflow(paper)
     respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
   end
 
@@ -134,6 +133,8 @@ class PapersController < ApplicationController
       if paper.gradual_engagement? && paper.unsubmitted?
         paper.initial_submit! current_user
         Activity.paper_initially_submitted! paper, user: current_user
+      elsif paper.checking?
+        paper.submit_minor_check! current_user
       else
         paper.submit! current_user
         Activity.paper_submitted! paper, user: current_user

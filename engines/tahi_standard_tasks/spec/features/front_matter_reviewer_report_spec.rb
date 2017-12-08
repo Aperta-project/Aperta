@@ -44,6 +44,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     assign_reviewer_role paper, reviewer
     FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
     FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
+    FactoryGirl.create :feature_flag, name: "PREPRINT"
 
     login_as(reviewer, scope: :user)
     visit "/"
@@ -52,7 +53,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
   scenario "A paper's creator cannot access the Reviewer Report" do
     create_reviewer_invitation(paper)
     reviewer_report_task = create_reviewer_report_task
-
+    wait_for_ajax
     ensure_user_does_not_have_access_to_task(
       user: paper.creator,
       task: reviewer_report_task

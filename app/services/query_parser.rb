@@ -148,24 +148,33 @@ class QueryParser < QueryLanguageParser
   add_two_part_expression('TASK', 'IS UNASSIGNED') do |task, _|
     task_table = Task.arel_table
     task_q = task_table[:title].matches(task) # Returns all the tasks that matches the title
-    count = task_table.where(task_q).project('count(id)') # Counts how many tasks matches the title
-    # Returns the papers that doesnt have the task assigned to a user or doesnt have the task created
-    main = paper_table[:id].not_in(
+    # Returns the papers that have the task and that task isn't assigned to a user
+    paper_table[:id].in(
       task_table.project(:paper_id).where(
         task_q.and(
-          task_table[:assigned_user_id].not_eq(nil)
+          task_table[:assigned_user_id].eq(nil)
         )
       )
     )
-    # When there are no tasks that match the name, return 0 papers, otherwise return the main query.
-    # This is to prevent returning all papers if no tasks match the title.
-    Arel::Nodes::SqlLiteral.new("CASE WHEN (#{count.to_sql}) = 0 THEN 1=0 ELSE #{main.to_sql} END")
   end
 
   add_two_part_expression('TASK', 'IS ASSIGNED TO') do |task, user_query|
     table = join Task
     user_ids = get_user_ids(user_query)
     table[:title].matches(task).and(table[:assigned_user_id].in(user_ids))
+  end
+
+  add_two_part_expression('TASK', 'IS ASSIGNED') do |task, _|
+    task_table = Task.arel_table
+    task_q = task_table[:title].matches(task) # Returns all the tasks that matches the title
+    # Returns the papers that have the task assigned to anyone
+    paper_table[:id].in(
+      task_table.project(:paper_id).where(
+        task_q.and(
+          task_table[:assigned_user_id].not_eq(nil)
+        )
+      )
+    )
   end
 
   add_simple_expression('HAS TASK') do |task|

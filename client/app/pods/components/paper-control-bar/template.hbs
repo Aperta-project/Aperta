@@ -19,12 +19,11 @@
         Workflow
       {{/link-to}}
 
-      {{#if (feature-flag "CORRESPONDENCE")}}
-        {{#link-to "paper.correspondence" paper class="control-bar-button" id="nav-correspondence"}}
-          {{fa-icon icon="envelope-open-o"}}
-          Correspondence
-        {{/link-to}}
-      {{/if}}
+    
+      {{#link-to "paper.correspondence" paper class="control-bar-button" id="nav-correspondence"}}
+        {{fa-icon icon="envelope-open-o"}}
+        Correspondence
+      {{/link-to}}
 
       <div class="control-bar-splitter"></div>
     {{/if}}

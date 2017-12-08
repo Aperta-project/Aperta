@@ -25,14 +25,17 @@
       <div class="base-screen">
         <div class="task-main-content">
           <h1 class="overlay-body-title">Review Your Submission</h1>
-          <p>Please verify that the metadata you entered is correct before completing your submission.</p>
+          <p>You are about to submit your manuscript to {{paper.journal.name}}. Please verify that the information below is correct.</p>
+          {{#if preprintOptIn }}
+            <p>This information will also appear with the preprint you have elected to post on apertarxiv.org.</p>
+          {{/if}}
           <table class="table table-hover">
             <tfoot>
             <tr>
               <td>
                 {{#link-to 'paper.index' paper.shortDoi}}
                   <button id="review-submission-make-changes-button" name="task_completed" class="task-completed task-not-completed button-secondary button--green">
-                    Make changes
+                    Edit Submission
                   </button>
                 {{/link-to}}
               </td>
@@ -50,7 +53,7 @@
               <td>
                 <dl>
                   <dt>Would you like to post this paper as a preprint?</dt>
-                  <dd>{{#if preprintOptOut}}<b>No</b>, I don't want to post a preprint.{{else}}<b>Yes</b>, I want to post a preprint.{{/if}}</dd>
+                  <dd>{{#if preprintOptIn}}<b>Yes</b>, I want to post a preprint.{{else}}<b>No</b>, I don't want to post a preprint.{{/if}}</dd>
                 </dl>
               </td>
             </tr>
@@ -64,18 +67,23 @@
               <th>Author</th>
               <td>
                 <p>
-                  <span>{{paper.authors.firstObject.firstName}} {{paper.authors.firstObject.middleInitial}} {{paper.authors.firstObject.lastName}}{{#if paper.authors.firstObject.affiliation}},&nbsp;&nbsp;{{paper.authors.firstObject.affiliation}}{{/if}}</span>
+                  <span>{{firstAuthor.fullNameWithAffiliations}}</span>
                 </p>
               </td>
             </tr>
             <tr>
-              <th>Co-Authors</th>
+              <th>Coauthors</th>
               <td>
                 <p>
-                  {{#each paper.authors as |author|}}
-                    {{#unless (eq author paper.authors.firstObject)}}
-                      <span>{{author.firstName}} {{author.middleInitial}} {{author.lastName}}{{#if author.affiliation}},&nbsp;&nbsp;{{author.affiliation}}{{/if}}{{#unless (eq author paper.authors.lastObject)}}<br/>{{/unless}}</span>
-                    {{/unless}}
+                  {{#each sortedCoAuthors as |author|}}
+                  <span>
+                    {{#if author.name }}
+                      {{author.name}}
+                    {{else}}
+                      {{author.fullNameWithAffiliations}}
+                    {{/if}}
+                    {{#unless (eq author sortedCoAuthors.lastObject)}}<br/>{{/unless}}
+                  </span>
                   {{/each}}
                 </p>
               </td>
@@ -89,8 +97,11 @@
             <tr>
               <th>Manuscript</th>
               <td>
-                <p><a class="" href={{fileDownloadUrl}}><i class="fa fa-file-pdf-o"></i> Download PDF</a> </p>
-                <p class="muted">Note: Figures and Supplemental Files are included in the PDF.</p>
+                <p><a class="" href={{fileDownloadUrl}}><i class="fa fa-file-pdf-o"></i> Manuscript (review version with figures and supporting information files included)</a> </p>
+                <p class="muted">This is the review version of your manuscript, which includes figures and supplemental information.</p>
+                {{#if preprintOptIn }}
+                 <p class="muted">In your posted preprint, figures will be inserted in the manuscript text and supporting information files will be available via links on the preprint page.</p>
+                {{/if}}
               </td>
             </tr>
             </tbody>

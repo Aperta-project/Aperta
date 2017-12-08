@@ -86,7 +86,6 @@ export default NestedQuestionOwner.extend({
   orcidIdentifier: alias('user.orcidAccount.identifier'),
   confirmedAsCoAuthor: Ember.computed.equal('coAuthorState', 'confirmed'),
   refutedAsCoAuthor: Ember.computed.equal('coAuthorState', 'refuted'),
-
   authorInitial: attr('string'),
   firstName: attr('string'),
   middleInitial: attr('string'),
@@ -123,5 +122,20 @@ export default NestedQuestionOwner.extend({
       this.get('middleInitial'),
       this.get('lastName')
     ].compact().join(' ');
+  }),
+
+  affiliations: Ember.computed('affiliation', 'secondaryAffiliation', function() {
+    let affiliations = [this.get('affiliation'), this.get('secondaryAffiliation')];
+    // Filtering null values. compact filters for null values if no predicate is given.
+    // Return values comma separated in string
+    return affiliations.compact().join(', ');
+  }),
+
+  fullNameWithAffiliations: Ember.computed('displayName', 'affiliation', 'affiliations', function() {
+    if (this.get('affiliation')) {
+      return [this.get('displayName'), this.get('affiliations')].compact().join(', ');
+    } else {
+      return this.get('displayName');
+    }
   })
 });

@@ -35,6 +35,13 @@ html = any-element* & text
 any-attribute = attribute * { text }
 any-element = element * { any-attribute*, html }
 
+file-validation =
+  element validation {
+    attribute validation-type { "file-name" }
+    & element error-message { text }
+    & element validator { text }
+  }
+
 instructions-label-required-text =
   element instruction-text { html }?
   & element label { html }?
@@ -45,12 +52,11 @@ instructions-label-optional-text =
   & element label { html }?
   & element text { html }?
 
-file-validation =
-  element validation {
-    attribute validation-type { "file-name" }
-    & element error-message { text }
-    & element validator { text }
-  }
+
+input-attributes =
+  attribute ident { text }?
+  & required-field?
+  & allow-annotations?
 
 string-validation =
   element validation {
@@ -59,34 +65,49 @@ string-validation =
     & element validator { text }
   }
 
-input-attributes =
-  attribute ident { text }?
-  & required-field?
-  & allow-annotations?
-
-# Inputs
-radio-input = element content {
-  attribute content-type { "radio" }
-  & input-attributes
-  & attribute value-type { "text" | "boolean" }
+text-input-attributes =
+  input-attributes
   & default-answer-text?
   & instructions-label-optional-text
-  & possible-value*
-  & content*
-}
+  & string-validation*
 
-check-box-input = element content {
-  attribute content-type { "check-box" }
-  & input-attributes
+
+# Inputs
+# Please keep these in alphabetical order.
+
+check-box-input = element CheckBox {
+  input-attributes
   & attribute value-type { "boolean" }
   & default-answer-boolean?
   & instructions-label-optional-text
   & content*
 }
 
-file-uploader = element content {
-  attribute content-type { "file-uploader" }
-  & input-attributes
+date-picker = element DatePicker {
+  input-attributes
+  & attribute value-type { "text" }
+  & instructions-label-required-text
+}
+
+dropdown-input = element Dropdown {
+  input-attributes
+  & attribute value-type { "text" | "boolean" }
+  & default-answer-text?
+  & instructions-label-required-text
+  & possible-value+
+  & content*
+}
+
+email-editor = element EmailEditor {
+  (input-attributes
+  & attribute letter-template { text }?
+  & attribute button-label { text }?
+  & attribute value-type { "html" }),
+  content*
+}
+
+file-uploader = element FileUploader {
+  input-attributes
   & attribute value-type { "attachment" | "manuscript" | "sourcefile" }
   & attribute error-message { text }?
   & attribute allow-file-captions    { "true" | "false" }?
@@ -96,67 +117,55 @@ file-uploader = element content {
   & accepted-file-type*
 }
 
-date-picker = element content {
-  attribute content-type { "date-picker" }
-  & input-attributes
-  & attribute value-type { "text" }
-  & instructions-label-required-text
+paragraph-input = element ParagraphInput {
+  text-input-attributes
+  & attribute value-type { "text" | "html" }
+  & attribute editor-style { text }?
 }
 
-dropdown-input = element content {
-  attribute content-type { "dropdown" }
-  & input-attributes
+radio-input = element Radio {
+  input-attributes
   & attribute value-type { "text" | "boolean" }
   & default-answer-text?
-  & instructions-label-required-text
-  & possible-value+
+  & instructions-label-optional-text
+  & possible-value*
   & content*
 }
 
-tech-check = element content {
-  attribute content-type { "tech-check" }
-  & input-attributes
+sendback-reason = element SendbackReason {
+  input-attributes
+  & attribute value-type { "boolean" }
+  & instructions-label-optional-text
+  & content*
+}
+
+short-input = element ShortInput {
+  text-input-attributes
+  & attribute value-type { "text" }
+}
+
+tech-check = element TechCheck {
+  input-attributes
   & attribute value-type { "boolean" }
   & default-answer-boolean?
   & instructions-label-required-text
   & content*
 }
 
-tech-check-email = element content {
+tech-check-email = element TechCheckEmail {
   attribute ident { text }?,
-  attribute content-type { "tech-check-email" },
   content*
 }
 
-sendback-reason = element content {
-  attribute content-type { "sendback-reason" }
-  & input-attributes
-  & attribute value-type { "boolean" }
-  & instructions-label-optional-text
-  & content*
-}
-
-text-input = element content {
-  attribute content-type { "short-input" | "paragraph-input" }
-  & input-attributes
-  & attribute value-type { "text" | "html" }
-  & attribute editor-style { text }?
-  & default-answer-text?
-  & instructions-label-optional-text
-  & string-validation*
-}
-
 # Contents
-description = element content {
-  attribute content-type { "description" }
-  & attribute ident { text }?
+description = element Description {
+  attribute ident { text }?
   & element text { html }
   & content*
 }
 
-display-children-content = element content {
-  attribute content-type { "display-children" }
-  & attribute ident { text }?
+display-children-content = element DisplayChildren {
+  attribute ident { text }?
   & attribute child-tag { 'li' }?
   & attribute custom-class { text }?
   & attribute custom-child-class { text }?
@@ -164,35 +173,43 @@ display-children-content = element content {
   & content*
 }
 
-display-with-value-content = element content {
-  attribute content-type { "display-with-value" }
-  & attribute ident { text }?
+display-with-value-content = element DisplayWithValue {
+  attribute ident { text }?
   & attribute visible-with-parent-answer { text }
   & content*
   }
 
-export-paper = element content {
-  attribute content-type { "export-paper" }
-  & attribute ident { text }?
+export-paper = element ExportPaper {
+  attribute ident { text }?
   & instructions-label-optional-text
 }
 
 # IF requires comma, not interleave '&', to distinguish required THEN content from optional ELSE content.
-if = element content {
-  attribute content-type { "if" },
+if = element If {
   attribute condition { text },
   content,
   content?
 }
 
-error-message = element content {
-  attribute content-type { "error-message" }
-  & attribute key { text }
+error-message = element ErrorMessage {
+  attribute key { text }
   & element text { text }?
 }
 
+repeat = element Repeat {
+  attribute ident { text }?
+  & attribute min { text }?
+  & attribute max { text }?
+  & attribute item-name { text }
+  & content+
+}
+
+financial-disclosure-summary = element FinancialDisclosureSummary {
+  attribute ident { text }?
+}
+
 content = (
-  check-box-input
+ check-box-input
 | date-picker
 | description
 | display-children-content
@@ -201,22 +218,17 @@ content = (
 | error-message
 | export-paper
 | file-uploader
+| financial-disclosure-summary
 | if
+| paragraph-input
 | radio-input
 | repeat
 | sendback-reason
-| tech-check-email
+| short-input
 | tech-check
-| text-input
+| email-editor
+| tech-check-email
 )
-
-repeat = element content {
-                attribute content-type { "repeat" },
-                attribute min { text }?,
-                attribute max { text }?,
-                attribute item-name { text },
-                content+
-}
 
 start = element card {
   attribute required-for-submission { "true" | "false" }

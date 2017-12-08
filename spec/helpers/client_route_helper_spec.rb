@@ -40,4 +40,12 @@ describe ClientRouteHelper do
       expect(url).to eq("http://test.host/invitations/#{invitation.token}")
     end
   end
+
+  describe "#client_show_correspondence_url" do
+    let(:correspondence) { create :correspondence }
+    it "generates the url to a correspondence" do
+      url = client_show_correspondence_url(correspondence)
+      expect(url).to include "/#{correspondence.paper.short_doi}/correspondence/viewcorrespondence/#{correspondence.id}"
+    end
+  end
 end

@@ -100,7 +100,7 @@ class SITaskTest(CommonTest):
     # Edit description
     # Following sleep time is to avoid a Stale Element Reference Exception
     time.sleep(2)
-    edit_icon = supporting_info._get(supporting_info._si_pencil_icon)
+    edit_icon = supporting_info._get(supporting_info.si_pencil_icon)
     edit_icon.click()
     # new data
     data['figure'] = 'S2'
@@ -140,7 +140,7 @@ class SITaskTest(CommonTest):
     # locate elements
     supporting_info = SITask(self._driver)
     # Try delete it
-    del_icon = supporting_info._get(supporting_info._si_trash_icon)
+    del_icon = supporting_info._get(supporting_info.si_trash_icon)
     del_icon.click()
     del_button = supporting_info._get(supporting_info._si_file_del_btn)
     assert del_button.text == 'DELETE FOREVER', del_button.text
@@ -153,7 +153,7 @@ class SITaskTest(CommonTest):
     # Check that is deleted
     supporting_info.set_timeout(2)
     try:
-      supporting_info._get(supporting_info._si_trash_icon)
+      supporting_info._get(supporting_info.si_trash_icon)
       raise(TimeoutError, 'Item not deleted')
     except ElementDoesNotExistAssertionError:
       pass
@@ -184,7 +184,7 @@ class SITaskTest(CommonTest):
     supporting_info.validate_uploads([fn])
     # Do the Replace
     # click edit
-    edit_btn = supporting_info._get(supporting_info._si_pencil_icon)
+    edit_btn = supporting_info._get(supporting_info.si_pencil_icon)
     edit_btn.click()
     time.sleep(1)
     # check for replace symbol
@@ -229,7 +229,7 @@ class SITaskTest(CommonTest):
     supporting_info_card = SICard(self._driver)
     supporting_info_card.validate_upload(fn)
     # make a replacement
-    edit_btn = supporting_info._get(supporting_info._si_pencil_icon)
+    edit_btn = supporting_info._get(supporting_info.si_pencil_icon)
     edit_btn.click()
     replace_div = supporting_info._get(supporting_info._si_replace_div)
     replace_input = replace_div.find_element(*supporting_info._si_replace_input)
@@ -299,4 +299,4 @@ class SITaskTest(CommonTest):
     return None
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

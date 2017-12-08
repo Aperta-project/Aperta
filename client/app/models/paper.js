@@ -7,7 +7,8 @@ const { attr, belongsTo, hasMany } = DS;
 const PAPER_SUBMITTABLE_STATES = [
   'unsubmitted',
   'in_revision',
-  'invited_for_full_submission'
+  'invited_for_full_submission',
+  'checking'
 ];
 
 const TERMINAL_STATES = ['accepted', 'rejected'];
@@ -63,7 +64,6 @@ export default DS.Model.extend({
   aarxDoi: attr('string'),
   aarxLink: attr('string'),
   preprintDoiSuffix: attr('string'),
-  preprintPosted: attr('boolean'),
   doi: attr('string'),
   editable: attr('boolean'),
   editorMode: attr('string', { defaultValue: 'html' }),
@@ -92,8 +92,9 @@ export default DS.Model.extend({
   legendsAllowed: attr('boolean'),
   currentUserRoles: attr(),
   manuallySimilarityChecked: attr('boolean'),
-  preprintOptOut: attr('boolean'),
+  preprintOptIn: attr('boolean'),
   preprintEligible: attr('boolean'),
+  preprintDashboard: attr('boolean'),
 
   reviewDueAt: attr('date'),
   reviewOriginallyDueAt: attr('date'),

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<card required-for-submission="false" workflow-display-only="false">
+  <DisplayChildren>
+    <Radio ident="financial_disclosures--author_received_funding" value-type="boolean" required-field="true">
+      <text>Did any of the authors receive specific funding for this work?</text>
+      <DisplayWithValue visible-with-parent-answer="true">
+        <Description>
+          <text>Please describe all sources of funding that have supported your work.</text>
+        </Description>
+        <Repeat ident="funder--repeat" min="1" item-name="Funder">
+          <ShortInput ident="funder--name" value-type="text">
+            <text>Funder Name:</text>
+          </ShortInput>
+          <ShortInput ident="funder--grant_number" value-type="text">
+            <text>Grant Number:</text>
+          </ShortInput>
+          <ShortInput ident="funder--website" value-type="text">
+            <text>Website:</text>
+          </ShortInput>
+          <ShortInput ident="funder--additional_comments" value-type="text">
+            <text>Additional Comments:</text>
+          </ShortInput>
+          <Radio ident="funder--had_influence" value-type="boolean" required-field="true">
+            <text>Did the funder have a role in study design, data collection and analysis, decision to publish, or preparation of the manuscript?</text>
+            <DisplayWithValue visible-with-parent-answer="true">
+              <ShortInput ident="funder--had_influence--role_description" value-type="text" required-field="true">
+                <text>Role of sponsors or funders:</text>
+              </ShortInput>
+            </DisplayWithValue>
+          </Radio>
+        </Repeat>
+      </DisplayWithValue>
+    </Radio>
+    <DisplayWithValue visible-with-parent-answer="false">
+      <Description>
+        <text>Your Financial Disclosure Statement will appear as: The author(s) received no specific funding for this work.</text>
+      </Description>
+    </DisplayWithValue>
+    <FinancialDisclosureSummary></FinancialDisclosureSummary>
+  </DisplayChildren>
+</card>

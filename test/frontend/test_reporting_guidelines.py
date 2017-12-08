@@ -196,4 +196,4 @@ class ReportingGuidelinesTaskTest(CommonTest):
     reporting_guidelines_task.click_completion_button()
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

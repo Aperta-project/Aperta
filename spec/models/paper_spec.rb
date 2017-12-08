@@ -288,7 +288,7 @@ describe Paper do
       it "delete Phases and Tasks" do
         expect(paper).to have_at_least(1).phase
         expect(paper).to have_at_least(1).task
-        paper.destroy
+        paper.destroy!
 
         expect(Phase.where(paper_id: paper.id).count).to be 0
         expect(Task.where(paper_id: paper.id).count).to be 0
@@ -538,7 +538,7 @@ describe Paper do
     let(:academic_editor) { FactoryGirl.create(:user) }
 
     let!(:creator_assignment) do
-      paper.update(creator: user)
+      paper.update!(creator: user)
       paper.assignments.where(role: creator_role).first!
     end
     let!(:collaborator_assignment) do
@@ -697,8 +697,8 @@ describe Paper do
 
       it 'sets the first_submitted_at only once' do
         original_now = Time.current
-        paper.update(publishing_state: 'in_revision',
-                     first_submitted_at: original_now)
+        paper.update!(publishing_state: 'in_revision',
+                      first_submitted_at: original_now)
         Timecop.travel(1.day.from_now) do
           subject
           expect(paper.first_submitted_at).to eq(original_now)
@@ -912,15 +912,49 @@ describe Paper do
       subject { paper.submit_minor_check! user }
 
       it_behaves_like "transitions save state_updated_at",
-        submit_minor_check: proc { paper.submit_minor_check!(paper.creator) }
-      it_behaves_like 'state transitioning'
+      submit_minor_check: proc { paper.submit_minor_check!(paper.creator) }
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
       end
 
+      let!(:initial_tech_check_task) do
+        FactoryGirl.create(:initial_tech_check_task, paper: paper)
+      end
+
+      let(:user) { FactoryGirl.create(:user) }
+
       before do
         paper.minor_check!
+      end
+
+      it 'transitions from checking to submitted' do
+        expect(paper).to transition_from(:checking).to(:submitted).on_event(:submit_minor_check!, user)
+      end
+
+      it 'does not transition from an invalid state' do
+        expect do
+          expect(paper).not_to transition_from(:submitted).to(:checking).on_event(:submit_minor_check!, user)
+        end.to raise_error(AASM::InvalidTransition, /cannot transition/)
+      end
+
+      it 'Creates the tech check fixed and submit transition activity' do
+        expect { subject }.to change { paper.activities.count }.by(2)
+        activities = paper.activities.map(&:activity_key)
+        expect(activities).to include('paper.state_changed.submitted')
+        expect(activities).to include('paper.tech_fixed')
+      end
+
+      it 'increments the round of any InitialTechCheckTask(s) on the paper' do
+        expect do
+          subject
+        end.to change { initial_tech_check_task.reload.round }.by(1)
+      end
+
+      it 'does not queue up any emails' do
+        expect do
+          subject
+        end.to_not change { Sidekiq::Extensions::DelayedMailer.jobs.length }
       end
 
       it "keeps the draft decision from before" do
@@ -1057,7 +1091,7 @@ describe Paper do
 
       let(:paper) do
         create(:paper, :submitted_lite, journal: journal).tap do |p|
-          p.draft_decision.update(verdict: verdict, letter: Faker::Hacker.say_something_smart)
+          p.draft_decision.update!(verdict: verdict, letter: Faker::Hacker.say_something_smart)
           p.draft_decision.register! FactoryGirl.create(:register_decision_task)
         end
       end
@@ -1530,6 +1564,59 @@ describe Paper do
     end
   end
 
+  context 'User opted or not to preprint' do
+    let!(:task) {
+      FactoryGirl.create(
+        :custom_card_task,
+        :with_card,
+        paper: paper
+      )
+    }
+    let!(:card_content) {
+      FactoryGirl.create(
+        :card_content,
+        parent: task.card.content_root_for_version(:latest),
+        ident: 'preprint-posting--consent',
+        value_type: 'boolean',
+        content_type: 'radio'
+      )
+    }
+
+    describe '#preprint_opt_in?' do
+      it 'returns true if user opted in to preprint' do
+        task.find_or_build_answer_for(card_content: card_content, value: true).save
+        expect(paper.preprint_opt_in?).to be_truthy
+      end
+
+      it 'returns false if user did not opt in to preprint' do
+        task.find_or_build_answer_for(card_content: card_content, value: false).save
+        expect(paper.preprint_opt_in?).to be_falsey
+      end
+
+      it 'returns false if preprint card is not present' do
+        card_content.update(ident: 'fake-ident')
+        expect(paper.preprint_opt_in?).to be_falsey
+      end
+    end
+
+    describe '#preprint_opt_out?' do
+      it 'returns true if user opted out to preprint' do
+        task.find_or_build_answer_for(card_content: card_content, value: false).save
+        expect(paper.preprint_opt_out?).to be_truthy
+      end
+
+      it 'returns false if user did not opt out to preprint' do
+        task.find_or_build_answer_for(card_content: card_content, value: true).save
+        expect(paper.preprint_opt_out?).to be_falsey
+      end
+
+      it 'returns true if preprint card is not present' do
+        card_content.update(ident: 'fake-ident')
+        expect(paper.preprint_opt_out?).to be_truthy
+      end
+    end
+  end
+
   describe "#abstract" do
     before do
       paper.update(body: "a bunch of words")
@@ -1759,5 +1846,33 @@ describe Paper do
       paper.preprint_doi_article_number = '123a567'
       expect(paper).to_not be_valid
     end
+  end
+
+  describe '#trigger_event' do
+    let(:event) { double(StateChangeEvent) }
+
+    it 'should find the user in the args' do
+      expect(event).to receive(:trigger)
+      expect(StateChangeEvent).to receive(:new).with(
+        aasm: paper.aasm, instance: paper, task: nil, paper: paper, user: user
+      ).and_return(event)
+      paper.send(:trigger_event, 1, user, 3)
+    end
+
+    it 'should work if no user is passed' do
+      expect(event).to receive(:trigger)
+      expect(StateChangeEvent).to receive(:new).with(
+        aasm: paper.aasm, instance: paper, task: nil, paper: paper, user: nil
+      ).and_return(event)
+      paper.send(:trigger_event, 1, 2, 3)
+    end
+  end
+
+  context 'aasm trigger' do
+    subject { paper.submit!(user) }
+    let(:model) { paper }
+    let(:to_state) { 'submitted' }
+    let(:state) { paper.publishing_state }
+    it_behaves_like :an_aasm_trigger_model
   end
 end

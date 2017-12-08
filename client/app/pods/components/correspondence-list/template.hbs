@@ -12,8 +12,13 @@
       </thead>
       <tbody>
         {{#each model as |message|}}
-          <tr>
-            <td>{{format-date message.sentAt}}</td>
+          {{#if message.hasActivities}}
+            <tr class="most-recent-activity">
+              <td colspan="5">{{message.lastActivityMessage}}</td>
+            </tr>
+          {{/if}}
+          <tr onmouseenter={{action "toggleHighlight"}} onmouseleave={{action "toggleHighlight"}}>
+            <td>{{message.utcSentAt}}</td>
             <td>
               <div class="correspondence{{message.id}}">
                 {{#link-to 'paper.correspondence.viewcorrespondence' paper message.id }}

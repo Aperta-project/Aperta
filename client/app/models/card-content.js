@@ -19,7 +19,7 @@ export default DS.Model.extend({
   contentType: DS.attr('string'),
   ident: DS.attr('string'),
   possibleValues: DS.attr(),
-  defaultAnswerValue: DS.attr(),
+  defaultAnswerValue: DS.attr('string'),
   order: DS.attr('number'),
   text: DS.attr('string'),
   instructionText: DS.attr('string'),
@@ -39,6 +39,8 @@ export default DS.Model.extend({
   min: DS.attr('number'),
   max: DS.attr('number'),
   itemName: DS.attr('string'),
+  letterTemplate: DS.attr('string'),
+  buttonLabel: DS.attr('string'),
 
 
   // The unusual nature of the sendback component (being reliant on other card-content within the context
@@ -91,7 +93,7 @@ export default DS.Model.extend({
         childCC.get('answers').filterBy('owner', owner).filterBy('repetition', repetition).invoke('destroyRecord');
 
         if(childCC.get('repetitions').includes(repetition)) {
-          repetition.destroyRecord();
+          repetition.destroyRecord({ adapterOptions: { destroyingAll: true } });
         }
       } else {
         childCC.get('answers').filterBy('owner', owner).invoke('destroyRecord');
@@ -121,10 +123,10 @@ export default DS.Model.extend({
     let defaultAnswerValue = this.get('defaultAnswerValue');
     if(!defaultAnswerValue) { return; }
 
-    if(this.get('valueType') === 'text')  {
-      return defaultAnswerValue;
+    if (this.get('valueType') === 'boolean') {
+      return defaultAnswerValue.trim() === 'true';
     } else {
-      return JSON.parse(defaultAnswerValue);
+      return defaultAnswerValue;
     }
   },
 

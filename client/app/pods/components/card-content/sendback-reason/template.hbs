@@ -1,4 +1,10 @@
 <div class="sendback-reason-row">
+  {{#if hasText}}
+    <div class="card-form-text">
+      {{{content.text}}}
+    </div>
+  {{/if}}
+
   {{card-content
     content=checkbox
     disabled=disabled
@@ -6,7 +12,9 @@
     answerChanged=answerChanged
     hasAnswerContainer=false
     repetition=repetition
-    preview=preview}}
+    preview=preview
+  }}
+
   {{#if checkboxAnswer.value}}
     {{#card-content
       content=pencil
@@ -14,8 +22,9 @@
       owner=owner
       repetition=repetition
       hasAnswerContainer=false
-      preview=preview as |cc|}}
-      <i class="fa fa-pencil" {{action 'toggleAnswer' cc.answer}}></i>
+      preview=preview as |cc|
+    }}
+    <i class="fa fa-pencil" {{action 'toggleAnswer' cc.answer}}></i>
     {{/card-content}}
   {{/if}}
 </div>

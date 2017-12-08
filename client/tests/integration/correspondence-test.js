@@ -43,7 +43,7 @@ test('User can view a correspondence record', function(assert) {
   visit('/papers/' + paper.get('shortDoi') + '/correspondence/viewcorrespondence/1');
   return andThen(function() {
     assert.ok(find('.correspondence-overlay'), 'Correspondence Overlay');
-    assert.equal(find('.correspondence-date').text().trim(), formatDate(correspondence.get('date'), {}));
+    assert.equal(find('.correspondence-date').text().trim(), formatDate(correspondence.get('utcSentAt'), {}));
     assert.equal(find('.correspondence-sender').text().trim(), correspondence.get('sender'));
     assert.equal(find('.correspondence-recipient').text().trim(), correspondence.get('recipient'));
     assert.equal(find('.correspondence-subject').text().trim(), correspondence.get('subject'));
@@ -88,6 +88,7 @@ test(`'Add Correspondence' opens a form overlay`, (assert) => {
   return andThen(() => {
     assert.textPresent('.correspondence-overlay', 'Add Correspondence to History');
     assert.equal(currentURL(), '/papers/' + doi + '/correspondence/new');
+    assert.equal(find('.attachment-manager').length, 1);
   });
 });
 
@@ -105,13 +106,13 @@ test('Date and Time [format] are properly validated', (assert) => {
   click('.correspondence-submit');
 
   andThen(() => {
-    assert.equal($($('.correspondence-error .fa-exclamation-triangle').get(0)).attr('title'), 'Invalid Date.');
+    assert.equal($($('.correspondence-error .fa-exclamation-triangle').get(0)).attr('title'), '');
     assert.equal($($('.correspondence-error .fa-exclamation-triangle').get(1)).attr('title'), '');
   });
 
   // Context: Incorrect Date && Incorrect Time
   visit('/papers/' + paper.get('shortDoi') + '/correspondence/new');
-  fillIn('.correspondence-date-sent', 'some date');
+  fillIn('.correspondence-date-sent', '');
   fillIn('.correspondence-time-sent', 'some time');
   fillIn('.correspondence-description', 'Good Description');
   fillIn('.correspondence-from', 'from@example.com');
@@ -150,5 +151,67 @@ test('Invalid Records are not on list when process is aborted', (assert) => {
       // When the form is closed, the filled record should not be on the list
       assert.textNotPresent('.td:nth-child(2)', 'Gooder Description');
     });
+  });
+});
+
+test('click cancel from correspondence edit returns to view correspondence', (assert) => {
+  const correspondenceEditUrl = '/papers/' + paper.get('shortDoi') + '/correspondence/' + correspondence.get('id') + '/edit';
+  const correspondenceViewUrl = '/papers/' + paper.get('shortDoi') + '/correspondence/viewcorrespondence/' + correspondence.get('id');
+
+  visit(correspondenceEditUrl);
+  click('.button-link');
+
+  andThen(() => {
+    assert.equal(currentURL(), correspondenceViewUrl);
+  });
+});
+
+test('Deleting attachment reduces count from 2 to 1', (assert) => {
+  const correspondenceEditUrl = '/papers/' + paper.get('shortDoi') + '/correspondence/' + correspondence.get('id') + '/edit';
+  const attachmentId = correspondence.get('attachments.firstObject.id');
+  $.mockjax({
+    url: `/api/papers/${paper.get('id')}/correspondence/${correspondence.get('id')}/attachments/${attachmentId}`,
+    type: 'DELETE',
+    status: 204
+  });
+
+  visit(correspondenceEditUrl);
+  andThen(() => {
+    assert.equal(find('.attachment-manager .file-link').length, 2);
+    click('.delete-attachment:first');
+
+    andThen(() => {
+      assert.equal(find('.attachment-manager .file-link').length, 1);
+    });
+  });
+});
+
+test('user is able to edit an external correspondence', (assert) => {
+  const editCorrespondence = '/papers/' + paper.get('shortDoi') + '/correspondence/' + correspondence.get('id') + '/edit';
+  const viewCorrespondence = '/papers/' + paper.get('shortDoi') + '/correspondence/viewcorrespondence/' + correspondence.get('id');
+
+  $.mockjax({
+    url: `/api/papers/${paper.get('id')}/correspondence/${correspondence.get('id')}`,
+    type: 'PUT',
+    status: 200,
+    responseText: {
+      correspondence: correspondence.toJSON({includeId: true})
+    }
+  });
+
+  visit(editCorrespondence);
+
+  fillIn('.correspondence-description', 'Modified Description');
+  fillIn('.correspondence-from', 'niceguy@example.com');
+  fillIn('.correspondence-to', 'to@example.com');
+  fillIn('.correspondence-subject', 'Test');
+  fillIn('.correspondence-cc', 'cc@example.com');
+  fillIn('.correspondence-bcc', 'bcc@example.com');
+  fillIn('.correspondence-body', 'This is a very long body message~~~~');
+
+  click('.correspondence-submit');
+
+  andThen(() => {
+    assert.equal(currentURL(), viewCorrespondence);
   });
 });

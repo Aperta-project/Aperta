@@ -1,6 +1,8 @@
 module CustomCardVisitors
   class CustomCardVisitor
+    def enter(card_content); end
     def visit(card_content); end
+    def leave(card_content); end
 
     def to_s
       "#{self.class.name} #{report}"
@@ -15,7 +17,7 @@ module CustomCardVisitors
     end
 
     def visit(card_content)
-      return unless card_content.invalid?
+      return if card_content.valid?
       @errors << card_content.errors.full_messages
     end
 
@@ -41,11 +43,10 @@ module CustomCardVisitors
     end
   end
 
-  # This class does semantic validation on a content hierarchy
-  # - permit an IF component to have the same ident on both legs, but validate those against other components
+  # Idents must be unique within a card, except IF components, which can have the same ident on both legs.
 
-  class CardSemanticValidator < CustomCardVisitor
-    IGNORED = Set.new(%w[if]).freeze
+  class CardIfIdentValidator < CustomCardVisitor
+    COMPONENTS = Set.new(%w[if]).freeze
 
     def initialize
       @idents = Hash.new(0)
@@ -56,7 +57,7 @@ module CustomCardVisitors
       return if remembered?(card_content.object_id)
 
       parent = card_content.parent
-      if parent.present? && IGNORED.member?(parent.content_type)
+      if parent.present? && COMPONENTS.member?(parent.content_type)
         parent.children.map(&:ident).reject(&:blank?).uniq.each { |ident| @idents[ident] += 1 }
         remember(parent.children.map(&:object_id))
       elsif card_content.ident.present?
@@ -75,6 +76,61 @@ module CustomCardVisitors
     def report
       dupes = @idents.select { |_ident, count| count > 1 }
       dupes.map { |ident, count| "Idents must be unique within a card; '#{ident}' occurs #{count} times" }
+    end
+  end
+
+  # IF components that test for isEditable cannot have children with a value-type attribute.
+
+  class CardIfConditionValidator < CustomCardVisitor
+    COMPONENTS = Set.new(%w[if]).freeze
+    CONDITIONS = Set.new(%w[isEditable]).freeze
+
+    def initialize
+      @nesting = 0
+      @errors = 0
+    end
+
+    def enter(card_content)
+      remember if interesting?(card_content)
+    end
+
+    def visit(card_content)
+      return unless nested?
+      return unless answerable?(card_content)
+      @errors += 1
+    end
+
+    def leave(card_content)
+      forget if interesting?(card_content)
+    end
+
+    def report
+      return [] if @errors.zero?
+      components = COMPONENTS.to_a.sort.join(', ')
+      conditions = CONDITIONS.to_a.sort.join(', ')
+      ["#{components} components with #{conditions} conditions may not contain value-type child components"]
+    end
+
+    private
+
+    def nested?
+      @nesting > 0
+    end
+
+    def remember
+      @nesting += 1
+    end
+
+    def forget
+      @nesting -= 1
+    end
+
+    def answerable?(card_content)
+      card_content.value_type.present?
+    end
+
+    def interesting?(card_content)
+      COMPONENTS.member?(card_content.content_type) && CONDITIONS.member?(card_content.condition)
     end
   end
 end

@@ -135,7 +135,7 @@ export default Ember.Component.extend({
 
   fadeIn() {
     const element = this.$('.overlay');
-    const beginProps = { opacity: 0, display: 'flex' };
+    const beginProps = { opacity: 0 };
     const animateToProps = { opacity: 1 };
 
     return $.Velocity.animate(element, animateToProps, {

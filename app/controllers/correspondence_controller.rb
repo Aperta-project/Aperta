@@ -12,6 +12,7 @@ class CorrespondenceController < ApplicationController
     correspondence = @paper.correspondence.build correspondence_params
     correspondence.sent_at = params.dig(:correspondence, :date)
     if correspondence.save
+      Activity.correspondence_created! correspondence, user: current_user
       render json: correspondence, status: :ok
     else
       respond_with correspondence, status: :unprocessable_entity
@@ -21,6 +22,18 @@ class CorrespondenceController < ApplicationController
   def show
     correspondence = Correspondence.find(params[:id])
     render json: correspondence, status: :ok
+  end
+
+  def update
+    correspondence = Correspondence.find(params[:id])
+    if correspondence && correspondence.external?
+      correspondence.sent_at = params.dig(:correspondence, :date)
+      correspondence.update(correspondence_params)
+      Activity.correspondence_edited! correspondence, user: current_user
+      render json: correspondence, status: :ok
+    else
+      respond_with correspondence, status: :unprocessable_entity
+    end
   end
 
   private

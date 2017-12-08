@@ -27,8 +27,9 @@ class MergeField
   # Unlisted fields are excluded from the list
   def self.unlisted
     @unlisted ||= Hash.new { [] }.tap do |hash|
-      hash[PaperContext] = [:url_for, :url_helpers]
+      hash[PaperContext] = [:url_for, :url_helpers, :preprint_opted_in, :preprint_opted_out]
       hash[ReviewerReportContext] = ActionView::Helpers::SanitizeHelper.public_instance_methods
+      hash[UserContext] = [:title]
     end
   end
 
@@ -36,5 +37,9 @@ class MergeField
     @subcontexts_by_parent ||= {}
     @subcontexts_by_parent[parent_context] ||= {}
     @subcontexts_by_parent[parent_context][subcontext_name] = props
+  end
+
+  def self.subcontexts_for(context_class)
+    @subcontexts_by_parent[context_class] || {}
   end
 end

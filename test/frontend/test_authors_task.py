@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This test case validates the Authors Task.
@@ -37,7 +37,7 @@ class AuthorsTaskTest(CommonTest):
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='Research')
+    self.create_article(title='Testing Authors Task', journal='PLOS Wombat', type_='Research', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     manuscript_page.click_task('Authors')
@@ -55,7 +55,8 @@ class AuthorsTaskTest(CommonTest):
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='Research')
+    self.create_article(title='Testing Authors Task - delete author', journal='PLOS Wombat',
+                        type_='Research', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     manuscript_page.click_task('Authors')
@@ -90,7 +91,8 @@ class AuthorsTaskTest(CommonTest):
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='Research')
+    self.create_article('Testing Authors Task - delete group author', journal='PLOS Wombat',
+                        type_='Research', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     manuscript_page.click_task('Authors')
@@ -109,7 +111,8 @@ class AuthorsTaskTest(CommonTest):
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='Research')
+    self.create_article('Testing Authors Task - author editing', journal='PLOS Wombat',
+                        type_='Research', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     manuscript_page.click_task('Authors')
@@ -117,4 +120,4 @@ class AuthorsTaskTest(CommonTest):
     authors_task.edit_author(user_type)
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

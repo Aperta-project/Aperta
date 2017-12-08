@@ -85,4 +85,4 @@ class AdHocCardTest(CommonTest):
     return None
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

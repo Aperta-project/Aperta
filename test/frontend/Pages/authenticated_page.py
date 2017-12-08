@@ -11,7 +11,7 @@ import re
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import WebDriverException
+from selenium.common.exceptions import WebDriverException, NoSuchElementException
 
 from loremipsum import generate_paragraph
 
@@ -169,6 +169,9 @@ class AuthenticatedPage(StyledPage):
     self._file_attach_btn = (By.CSS_SELECTOR, 'div.fileinput-button')
     self._file_attach_input = (By.CSS_SELECTOR, 'input.add-new-attachment')
     self._attachments = (By.CSS_SELECTOR, 'div.attachment-item')
+    self._file_link = (By.CSS_SELECTOR, 'a.file-link')
+    self._replace_file_link = (By.CSS_SELECTOR, 'span.replace-attachment')
+    self._delete_file_link = (By.CSS_SELECTOR, 'span.delete-attachment')
     # Add participant
     self._discussion_panel = (By.CLASS_NAME, 'sheet--visible')
     self._add_participant_list = (By.CSS_SELECTOR, 'ember-power-select-options')
@@ -190,6 +193,13 @@ class AuthenticatedPage(StyledPage):
     self._recent_activity_table_user_full_name = (By.CSS_SELECTOR, 'td.activity-feed-overlay-user')
     self._recent_activity_table_user_avatar = (By.CSS_SELECTOR, 'td.activity-feed-overlay-user img')
     self._recent_activity_table_timestamp = (By.CSS_SELECTOR, 'td.activity-feed-overlay-timestamp')
+    # Locator for 'did-you-mean' selection of institution
+    self._institution_div = (By.CLASS_NAME, 'did-you-mean-input')
+    self._institution_expanded = (By.CLASS_NAME, 'did-you-mean-expanded')
+    self._institution_question = (By.CLASS_NAME,'did-you-mean-question')
+    self._institution_options = (By.CLASS_NAME,'did-you-mean-options') # parent
+    self._institution_items = (By.CLASS_NAME,'did-you-mean-item')
+    self._institution_chosen = (By.CLASS_NAME, 'did-you-mean-what-you-meant')
 
   # POM Actions
   def attach_file(self, file_name):
@@ -1031,3 +1041,68 @@ class AuthenticatedPage(StyledPage):
                                .replace('\n', '')
     output_string = input_string.strip()
     return output_string
+
+  def validate_upload_file_links(self, file_box_locator, task_editable, check_delete_link=True):
+    """
+    Looks for the presence of links: to the uploded file, 'Replace' and 'Delete' links
+    :param: file_box_locator is the parent locator to locate links to file to be downloaded, replaced or deleted
+    :param: task_editable:  boolean, True if the task is in editable state, else False
+    :param: check_delete_link: boolean, False if delete link is not needed, like in 'Upload Manuscript' task, else True
+    :return: void function
+    """
+    # file link should be present in any state
+    assert self.file_link_present(file_box_locator, self._file_link), \
+      'The task should have link to uploaded file'
+    if task_editable:
+      assert self.file_link_present(file_box_locator, self._replace_file_link), \
+        'The task should have link to replace uploaded file in editable state'
+      if check_delete_link:
+        assert self.file_link_present(file_box_locator, self._delete_file_link), \
+          'The task should have link to delete uploaded file in editable state'
+    else:
+      assert not self.file_link_present(file_box_locator, self._replace_file_link), \
+        'The task should not have link to replace uploaded file in not editable state'
+      if check_delete_link:
+        assert not self.file_link_present(file_box_locator, self._delete_file_link), \
+          'The task should not have link to delete uploaded file in not editable state'
+
+  def file_link_present(self, parent_locator, relative_locator):
+    """
+    Looks for the existence of 'Replace' link to replace file
+    :param: parent_locator is the anchor locator to locate links to file to be downloaded, replaced or deleted
+    :param: relative_locator is the relative locator to find the file links
+    :return: True if present, else False
+    """
+    try:
+      uploaded_file_box = self._get(parent_locator)
+      uploaded_file_box.find_element(*relative_locator)
+    except (ElementDoesNotExistAssertionError, NoSuchElementException):
+      return False
+    return True
+
+  def select_institution(self, parent_element, institution_name):
+    """
+    Finds institution name in the 'did-you-mean' list and clicks on it to place in the
+    institution field
+    :param parent_element: the parent web element to locate list of suggestions and required name
+    :param institution_name: string: institution name to select
+    :return: void function
+    """
+    self._wait_for_element(parent_element.find_element(*self._institution_expanded))
+    institution_list = parent_element.find_elements(*self._institution_items)
+    for item in institution_list:
+      if item.text == institution_name:
+        self._wait_for_element(item)
+        self.click_covered_element(item)
+        self._wait_for_element(parent_element.find_element(*self._institution_chosen))
+        break
+
+  @staticmethod
+  def pause_to_save():
+      """
+      A generic function to pause long enough to ensure we should have saved an entry.
+      The method of committing saves in the Aperta UI recently changed from being based on
+      an on_blur event to a keyboard debounce event. Because Selenium doesn't type like a human
+      being, we have to introduce some fallibility to the process by introducing a pause.
+      """
+      time.sleep(.7)

@@ -373,4 +373,4 @@ class CFACardTest(CommonTest):
     assert cfa_complete_state == 'submitted', cfa_complete_state
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

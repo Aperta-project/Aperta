@@ -27,7 +27,7 @@ class MergeField
   # Unlisted fields are excluded from the list
   def self.unlisted
     @unlisted ||= Hash.new { [] }.tap do |hash|
-      hash[PaperContext] = [:url_for, :url_helpers]
+      hash[PaperContext] = [:url_for, :url_helpers, :preprint_opted_in, :preprint_opted_out]
       hash[ReviewerReportContext] = ActionView::Helpers::SanitizeHelper.public_instance_methods
       hash[UserContext] = [:title]
     end

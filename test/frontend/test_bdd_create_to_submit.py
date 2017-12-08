@@ -533,4 +533,4 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     assert sub_data[0][2], sub_data[0][2]
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

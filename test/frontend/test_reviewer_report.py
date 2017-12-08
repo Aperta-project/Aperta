@@ -233,4 +233,4 @@ class ReviewerReportTest(CommonTest):
       reviewer_report_card.validate_reviewer_report(outdata)
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

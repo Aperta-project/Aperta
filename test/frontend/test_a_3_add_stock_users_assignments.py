@@ -59,4 +59,4 @@ class ApertaPopulateUsersTest(CommonTest):
     self.set_freelance_eds_in_db()
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

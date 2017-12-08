@@ -41,4 +41,4 @@ class ApertaPopulateSuperAdmin(CommonTest):
     self.set_site_admin_in_db()
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

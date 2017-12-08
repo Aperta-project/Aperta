@@ -114,4 +114,4 @@ class EarlyVersionTaskTest(CommonTest):
     ev_card.validate_state(selection_state=selection_state)
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

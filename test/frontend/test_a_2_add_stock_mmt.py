@@ -329,4 +329,4 @@ class ApertaSeedJournalMMTTest(CommonTest):
         adm_wf_page = AdminWorkflowsPage(self.getDriver())
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

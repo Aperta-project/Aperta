@@ -28,7 +28,7 @@ describe ReviewerReportsController do
       it 'renders the reviewer report' do
         do_request
         expect(response.status).to eq(200)
-        expect(res_body.keys).to include 'reviewer_reports'
+        expect(res_body.keys).to include 'reviewer_report'
       end
     end
   end

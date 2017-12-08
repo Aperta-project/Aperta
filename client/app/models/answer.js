@@ -6,6 +6,7 @@ export default DS.Model.extend(Readyable, {
   additionalData: DS.attr(),
   value: DS.attr(),
   annotation: DS.attr('string'),
+  createdAt: DS.attr('date'),
 
   attachments: DS.hasMany('question-attachment', { async: false }),
   cardContent: DS.belongsTo('card-content', { async: false }),

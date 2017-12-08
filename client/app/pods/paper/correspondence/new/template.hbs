@@ -5,7 +5,17 @@
   enableClose=false
   wormhole=false
   overlayClass="correspondence-overlay" as |overlay|}}
+
+    <div class="row">
+    <div class="col-sm-12">
+      <p>Manually add a correspondence record to the correspondence history, e.g.
+        an email was sent from a personal email and you want to record it in
+        Aperta. <strong>Note: this will NOT send an email</strong></p>
+    </div>
+  </div>
+  
   {{correspondence-form model=model
                         paper=linkedPaper
+                        saveText='ADD TO HISTORY'
                         close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}

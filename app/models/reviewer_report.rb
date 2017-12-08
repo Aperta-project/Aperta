@@ -12,6 +12,7 @@ class ReviewerReport < ActiveRecord::Base
   belongs_to :user
   belongs_to :decision
   has_one :paper, through: :task
+  has_many :admin_edits
 
   validates :task,
     uniqueness: { scope: [:task_id, :user_id, :decision_id],
@@ -141,6 +142,10 @@ class ReviewerReport < ActiveRecord::Base
     :check
   end
 
+  def active_admin_edit?
+    admin_edits.active.present?
+  end
+
   private
 
   def set_submitted_at
@@ -170,6 +175,6 @@ class ReviewerReport < ActiveRecord::Base
   end
 
   def cancel_reminders
-    scheduled_events.active.map(&:cancel!)
+    scheduled_events.cancelable.each(&:cancel!)
   end
 end

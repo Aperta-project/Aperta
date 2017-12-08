@@ -217,6 +217,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
+      role.ensure_permission_exists(:edit_answers, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:manage_paper_authors, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
@@ -277,6 +278,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
+      role.ensure_permission_exists(:edit_answers, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:manage_paper_authors, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
@@ -449,6 +451,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper)
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
+      role.ensure_permission_exists(:edit_answers, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:manage_paper_authors, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
@@ -558,6 +561,7 @@ class JournalFactory
     seed_register_decision_revise_or_accept
     seed_reviewer_report
     seed_preprint_decision
+    seed_paper_submit
     seed_preprint_sendbacks
   end
 
@@ -903,16 +907,12 @@ class JournalFactory
         lt.ident = ident
         lt.scenario = 'Preprint Decision'
         lt.subject = 'Manuscript Accepted for ApertarXiv'
-        lt.to = '{creator email}'
+        lt.to = '{{manuscript.creator.email}}'
         lt.body = <<-TEXT.strip_heredoc
-          <p>Dear Dr. {manuscript creator last name},</p>
-          <br/>
-          <p>Your {submitted journal} manuscript, '{ARTICLE TITLE}', has been approved for pre-print publication. Because you have opted in to this opportunity, your manuscript has been forwarded to ApertarXiv for posting. You will receive another message with publication details when the article has posted.</p>
-          <br/>
-          <p>Please note this decision is not related to the decision to publish your manuscript in {submitted journal}. As your manuscript is evaluated for publication you will receive additional communications.</p>
-          <br/>
+          <p>Dear Dr. {{manuscript.creator.last_name}},</p>
+          <p>Your {{journal.name}} manuscript, '{{manuscript.title}}', has been approved for pre-print publication. Because you have opted in to this opportunity, your manuscript has been forwarded to ApertarXiv for posting. You will receive another message with publication details when the article has posted.</p>
+          <p>Please note this decision is not related to the decision to publish your manuscript in {{journal.name}}. As your manuscript is evaluated for publication you will receive additional communications.</p>
           <p>Kind regards,</p>
-          <br/>
           <p>Publication Team</p>
           <p>ApertarXiv</p>
         TEXT
@@ -927,16 +927,12 @@ class JournalFactory
         lt.ident = ident
         lt.scenario = 'Preprint Decision'
         lt.subject = 'Manuscript Declined for ApertarXiv'
-        lt.to = '{creator email}'
+        lt.to = '{{manuscript.creator.email}}'
         lt.body = <<-TEXT.strip_heredoc
-          <p>Dear Dr. {manuscript creator last name},</p>
-          <br/>
-          <p>Your {submitted journal} manuscript, '{ARTICLE TITLE}', has been declined for pre-print publication.</p>
-          <br/>
-          <p>Please note this decision is not related to the decision to publish your manuscript in {submitted journal}. As your manuscript is evaluated for publication you will receive additional communications.</p>
-          <br/>
+          <p>Dear Dr. {{manuscript.creator.last_name}},</p>
+          <p>Your {{journal.name}} manuscript, '{{manuscript.title}}', has been declined for pre-print publication.</p>
+          <p>Please note this decision is not related to the decision to publish your manuscript in {{journal.name}}. As your manuscript is evaluated for publication you will receive additional communications.</p>
           <p>Kind regards,</p>
-          <br/>
           <p>Publication Team</p>
           <p>ApertarXiv</p>
         TEXT
@@ -945,6 +941,60 @@ class JournalFactory
       end
     end
   end
+
+  def seed_paper_submit
+    ident = 'notify-initial-submission'
+    unless LetterTemplate.exists?(journal: @journal, ident: ident)
+      LetterTemplate.where(name: 'Notify Initial Submission', journal: @journal).first_or_initialize.tap do |lt|
+        lt.ident = ident
+        lt.scenario = 'Manuscript'
+        lt.subject = "Thank you for submitting to {{ journal.name }}"
+        lt.to = '{{ manuscript.creator.email }}'
+        lt.body = <<-TEXT.strip_heredoc
+          <h1>Thank you for submitting your manuscript, {{ manuscript.title }}, to {{ journal.name }}. Our staff will be in touch with next steps.</h1>
+          <p>Dear {{ manuscript.creator.full_name }},</p>
+          <p>Thank you for your submission to {{ journal.name }}, which will now be assessed by the editors to determine whether your manuscript meets the criteria for peer review. We may seek advice from an Academic Editor with relevant expertise.</p>
+          <p>If our initial evaluation is positive, we will contact you to request statements relating to ethical approval, funding, data and competing interests ahead of initiating peer review. This additional information is required to satisfy PLOS’ policies and will be made available to editors and reviewers. If you anticipate that you will be unavailable during the next week or two, please provide us with an additional person of contact by return email.</p>
+          {% if manuscript.preprint_opted_in %}
+            <p>Thank you for choosing to share your manuscript as a preprint. Our staff will review your submission and contact you if your article complies with our preprint policy. Please refer to the editorial staff of your journal to discuss any concerns.</p>
+          {% endif %}
+          {% if manuscript.preprint_opted_out %}
+            <p>You choose not to share your manuscript as a preprint. If you wish to revisit that decision please contact the editorial staff of your journal.</p>
+            <p>Read more about preprints benefits:</p>
+            <p><a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005473">Ten simple rules to consider regarding preprint submission</p>
+          {% endif %}
+        TEXT
+
+        lt.save!
+      end
+    end
+
+    ident = 'notify-submission'
+    unless LetterTemplate.exists?(journal: @journal, ident: ident)
+      LetterTemplate.where(name: 'Notify Submission', journal: @journal).first_or_initialize.tap do |lt|
+        lt.ident = ident
+        lt.scenario = 'Manuscript'
+        lt.subject = "Thank you for submitting your manuscript to {{ journal.name }}"
+        lt.to = '{{ manuscript.creator.email }}'
+        lt.body = <<-TEXT.strip_heredoc
+          <h1>Thank you for submitting your manuscript, {{ manuscript.title }}, to {{ journal.name }}. Our staff will be in touch with next steps.</h1>
+          <p>Hello {{ manuscript.creator.full_name }},</p>
+          <p>Thank you for submitting your manuscript, {{ manuscript.title }}, to {{ journal.name }}. Your submission is complete, and our staff will be in touch with next steps.</p>
+          {% if manuscript.preprint_opted_in %}
+            <p>Thank you for choosing to share your manuscript as a preprint. Our staff will review your submission and contact you if your article complies with our preprint policy. Please refer to the editorial staff of your journal to discuss any concerns.</p>
+          {% endif %}
+          {% if manuscript.preprint_opted_out %}
+            <p>You choose not to share your manuscript as a preprint. If you wish to revisit that decision please contact the editorial staff of your journal.</p>
+            <p>Read more about preprints benefits:</p>
+            <p><a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005473">Ten simple rules to consider regarding preprint submission</p>
+          {% endif %}
+        TEXT
+
+        lt.save!
+      end
+    end
+  end
+
   # rubocop:enable Style/GuardClause
 
   def author_emails

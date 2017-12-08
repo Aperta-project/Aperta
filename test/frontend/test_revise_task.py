@@ -53,7 +53,7 @@ class ReviseManuscriptTest(CommonTest):
     time.sleep(.5)
     paper_type = 'NoCards'
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
-    self.create_article(title='Testing Discussion Forum notifications',
+    self.create_article(title='Testing Response to Reviewers',
                         journal=journal, type_=paper_type, random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()
@@ -156,4 +156,4 @@ class ReviseManuscriptTest(CommonTest):
     return self
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

@@ -50,7 +50,10 @@ class ScheduledEventFactory
 
   def update_scheduled_events
     template.each do |entry|
-      event = owned_serviceable_events.where(name: entry[:name]).first
+      # try to reschedule an already existing version of this event.
+      # if more than one exist, reschedule the one with with the most recent
+      # dispatch_at date
+      event = owned_serviceable_events.where(name: entry[:name]).order(dispatch_at: :desc).first
       reschedule event, entry if event.present?
     end
   end

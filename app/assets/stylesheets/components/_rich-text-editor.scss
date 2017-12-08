@@ -1,10 +1,21 @@
 .rich-text-editor-container{
   &.error{
     .mce-tinymce{
-      border-color: #CE0B24;
+      border-color: $aperta-red;
     }
     .error-message{
       margin-left: 0px;
     }
   }
+  .mce-statusbar {
+    .mce-container-body {
+      height: 1.5rem;
+    }
+  }
+}
+
+.read-only .rich-text-editor {
+   border:1px solid $aperta-grey-light;
+   border-radius:4px;
+   padding: 4px;
 }

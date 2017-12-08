@@ -14,12 +14,20 @@ export default Ember.Controller.extend({
   paper: Ember.computed.alias('model.paper'),
   tasks: Ember.computed.alias('model.tasks'),
 
-  preprintOptOut: Ember.computed('paper.preprintOptOut', function() {
-    return this.get('paper.preprintOptOut');
-  }),
+  preprintOptIn: Ember.computed.alias('paper.preprintOptIn'),
 
   fileDownloadUrl: Ember.computed('paper', function() {
     return paperDownloadPath({ paperId: this.get('paper.id'), format: 'pdf_with_attachments' });
+  }),
+
+  coAuthorsSort: ['position:asc'],
+  authors: Ember.computed.union('paper.authors', 'paper.groupAuthors'),
+  coAuthors: Ember.computed.filter('authors.@each', function(author) {
+    return author.get('position') > 1;
+  }),
+  sortedCoAuthors: Ember.computed.sort('coAuthors', 'coAuthorsSort'),
+  firstAuthor: Ember.computed('paper.authors', function() {
+    return this.get('paper.authors.firstObject');
   }),
 
   recordPreviousPublishingState: function () {

@@ -1530,6 +1530,59 @@ describe Paper do
     end
   end
 
+  context 'User opted or not to preprint' do
+    let!(:task) {
+      FactoryGirl.create(
+        :custom_card_task,
+        :with_card,
+        paper: paper
+      )
+    }
+    let!(:card_content) {
+      FactoryGirl.create(
+        :card_content,
+        parent: task.card.content_root_for_version(:latest),
+        ident: 'preprint-posting--consent',
+        value_type: 'boolean',
+        content_type: 'radio'
+      )
+    }
+
+    describe '#preprint_opt_in?' do
+      it 'returns true if user opted in to preprint' do
+        task.find_or_build_answer_for(card_content: card_content, value: true).save
+        expect(paper.preprint_opt_in?).to be_truthy
+      end
+
+      it 'returns false if user did not opt in to preprint' do
+        task.find_or_build_answer_for(card_content: card_content, value: false).save
+        expect(paper.preprint_opt_in?).to be_falsey
+      end
+
+      it 'returns false if preprint card is not present' do
+        card_content.update(ident: 'fake-ident')
+        expect(paper.preprint_opt_in?).to be_falsey
+      end
+    end
+
+    describe '#preprint_opt_out?' do
+      it 'returns true if user opted out to preprint' do
+        task.find_or_build_answer_for(card_content: card_content, value: false).save
+        expect(paper.preprint_opt_out?).to be_truthy
+      end
+
+      it 'returns false if user did not opt out to preprint' do
+        task.find_or_build_answer_for(card_content: card_content, value: true).save
+        expect(paper.preprint_opt_out?).to be_falsey
+      end
+
+      it 'returns true if preprint card is not present' do
+        card_content.update(ident: 'fake-ident')
+        expect(paper.preprint_opt_out?).to be_truthy
+      end
+    end
+  end
+
   describe "#abstract" do
     before do
       paper.update(body: "a bunch of words")
@@ -1759,5 +1812,33 @@ describe Paper do
       paper.preprint_doi_article_number = '123a567'
       expect(paper).to_not be_valid
     end
+  end
+
+  describe '#trigger_event' do
+    let(:event) { double(StateChangeEvent) }
+
+    it 'should find the user in the args' do
+      expect(event).to receive(:trigger)
+      expect(StateChangeEvent).to receive(:new).with(
+        aasm: paper.aasm, instance: paper, task: nil, paper: paper, user: user
+      ).and_return(event)
+      paper.send(:trigger_event, 1, user, 3)
+    end
+
+    it 'should work if no user is passed' do
+      expect(event).to receive(:trigger)
+      expect(StateChangeEvent).to receive(:new).with(
+        aasm: paper.aasm, instance: paper, task: nil, paper: paper, user: nil
+      ).and_return(event)
+      paper.send(:trigger_event, 1, 2, 3)
+    end
+  end
+
+  context 'aasm trigger' do
+    subject { paper.submit!(user) }
+    let(:model) { paper }
+    let(:to_state) { 'submitted' }
+    let(:state) { paper.publishing_state }
+    it_behaves_like :an_aasm_trigger_model
   end
 end

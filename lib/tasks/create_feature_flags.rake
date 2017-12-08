@@ -10,9 +10,7 @@ task 'create_feature_flags': :environment do
   #
   FeatureFlag.contain_exactly! [
     "CARD_CONFIGURATION",
-    "EMAIL_TEMPLATE",
     "HEALTH_CHECK",
-    "CORRESPONDENCE",
     "REVIEW_DUE_DATE",
     "REVIEW_DUE_AT",
     "CAS_PHASED_SIGNUP",

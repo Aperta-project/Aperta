@@ -1,9 +1,23 @@
 require 'rails_helper'
 
 describe LitePaperSerializer do
-  subject(:serializer) { described_class.new(paper, user: user, root: :paper) }
+  subject(:serializer) do
+    described_class.new(paper, user: user, root: :paper).tap do |serializer|
+      # The :current_user method is provided by the controller when responding
+      # to a request as it includes the ActionController::Serialization
+      # module into each serializer with a serialization_scope of
+      # :current_user. We need to make #current_user available for this
+      # test.
+      _current_user = current_user
+      serializer.send :define_singleton_method, :current_user do
+        _current_user
+      end
+    end
+  end
+
   let(:paper) { FactoryGirl.build_stubbed(Paper) }
-  let(:user) { FactoryGirl.build_stubbed(:user) }
+  let!(:user) { FactoryGirl.build_stubbed(:user) }
+  let(:current_user) { FactoryGirl.build_stubbed(:user) }
 
   before do
     allow(paper).to receive_messages(
@@ -64,11 +78,44 @@ describe LitePaperSerializer do
       end
 
       context 'when there is no user' do
-        subject(:serializer) { described_class.new(paper, user: nil, root: :paper) }
+        subject(:serializer) do
+          described_class.new(paper, user: nil, root: :paper).tap do |serializer|
+            _current_user = current_user
+            serializer.send :define_singleton_method, :current_user do
+              _current_user
+            end
+          end
+        end
 
         it 'is serialized as nil' do
           expect(json).to match hash_including(related_at_date: nil)
         end
+      end
+    end
+
+    describe '#preprint_dashboard?' do
+      let(:author) { FactoryGirl.build_stubbed(:author) }
+
+      before do
+        allow(paper).to receive(:authors) { [author] }
+      end
+
+      it 'returns true if preprint_posted flag is true and current user is also the author of the paper' do
+        allow(author).to receive(:user_id) { current_user.id }
+        allow(paper).to receive(:preprint_posted?) { true }
+        expect(json[:preprint_dashboard]).to be_truthy
+      end
+
+      it 'returns false if preprint_posted flag is true and current user is not an author of the paper' do
+        allow(paper).to receive(:preprint_posted?) { true }
+        allow(author).to receive(:user_id) { user.id }
+        expect(json[:preprint_dashboard]).to be_falsey
+      end
+
+      it 'returns false if preprint_posted flag is false no matter the rest' do
+        allow(paper).to receive(:preprint_posted?) { false }
+        allow(author).to receive(:user_id) { current_user.id } # current user is author of the paper
+        expect(json[:preprint_dashboard]).to be_falsey
       end
     end
   end

@@ -13,13 +13,16 @@ class ScheduledEvent < ActiveRecord::Base
   scope :completed, -> { where(state: 'completed') }
   scope :passive, -> { where(state: 'passive') }
   scope :due_to_trigger, -> { active.where('dispatch_at < ?', DateTime.now.in_time_zone) }
-  scope :serviceable, -> { where(state: ['passive', 'active', 'completed']) }
+  scope :serviceable, -> { where(state: ['passive', 'active', 'completed', 'inactive']) }
+  scope :cancelable, -> { where(state: ['passive', 'active']) }
 
-  before_save :deactivate, if: :should_deactivate?
+  before_save :disable, if: :should_disable?
   before_save :reactivate, if: :should_reactivate?
 
-  def should_deactivate?
-    dispatch_at && dispatch_at < DateTime.now.in_time_zone && active?
+  FINISHED_STATES = %w[completed inactive canceled errored deactivated].freeze
+
+  def should_disable?
+    dispatch_at && dispatch_at < DateTime.now.in_time_zone && (active? || passive?)
   end
 
   def should_reactivate?
@@ -27,7 +30,7 @@ class ScheduledEvent < ActiveRecord::Base
   end
 
   def finished?
-    state == 'completed' || state == 'inactive' || state == 'canceled' || state == 'errored'
+    FINISHED_STATES.include?(state)
   end
 
   aasm column: :state do
@@ -38,13 +41,14 @@ class ScheduledEvent < ActiveRecord::Base
     state :errored
     state :passive
     state :canceled # Canceled automatically after a qualifying event, e.g., a review is submitted
+    state :deactivated
 
     event(:reactivate) do
       transitions from: [:completed, :inactive], to: :active
     end
 
-    event(:deactivate) do
-      transitions from: :active, to: :inactive
+    event(:disable) do
+      transitions from: [:active, :passive], to: :inactive
     end
 
     event(:switch_off) do
@@ -69,6 +73,7 @@ class ScheduledEvent < ActiveRecord::Base
 
     event(:cancel) do
       transitions from: :active, to: :canceled
+      transitions from: :passive, to: :deactivated
     end
   end
 

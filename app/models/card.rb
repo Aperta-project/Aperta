@@ -29,6 +29,15 @@ class Card < ActiveRecord::Base
   after_destroy :clean_permissions
 
   scope :archived, -> { where.not(archived_at: nil) }
+  scope :active_cards, -> { where.not(name: Card.feature_inactive_cards) }
+
+  # temporarly added for https://jira.plos.org/jira/browse/APERTA-10345
+  # we should remove this once the preprint feature flag is removed
+  def self.feature_inactive_cards
+    [].tap do |cards|
+      cards << 'Preprint Decision' unless FeatureFlag[:PREPRINT]
+    end
+  end
 
   # A given card can have several states, but be mindful that the 'state' of a
   # given card also implies something about that card's card_versions.
@@ -140,7 +149,8 @@ class Card < ActiveRecord::Base
 
   # evaluate card semantics
   def check_semantics
-    traverse(CardSemanticValidator.new)
+    traverse(CardIfIdentValidator.new)
+    traverse(CardIfConditionValidator.new)
   end
 
   # traverse card and its latest children

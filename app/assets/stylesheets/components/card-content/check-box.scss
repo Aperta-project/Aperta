@@ -1,16 +1,28 @@
 .card-content-check-box {
   .content-text {
-    margin-top: 15px;
+    margin-top: 10px;
   }
 
-  label input[type="checkbox"] {
-    margin-right: .5em;
-  }
   label {
-    display: flex;
     .required-field {
         position: inherit;
         margin-left: 5px;
+    }
+  }
+}
+
+.card-checkbox {
+  .card-form-element {
+    display: flex;
+    align-items: flex-start;
+
+    input {
+      margin-right: 8px;
+    }
+
+    .card-form-label {
+      font-size: 14px;
+      font-weight: normal;
     }
   }
 }

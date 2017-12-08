@@ -1,18 +1,16 @@
-<div class="form-group">
-  <p class="picker-title">{{{content.text}}}
-    {{#if content.isRequired}}
-      <span class="required-field">*</span>
-    {{/if}}</p>
-  <div class="inset-form-control {{if validationErrors.publicationDate "error"}}">
+<div class="inset-form-control {{if validationErrors.publicationDate "error"}}">
+  {{#card-content/label content=content}}
     {{date-picker
-        name=name
-        type="text"
-        value=answer.value
-        date=answer.value
-        dateChanged="valueChanged"
-        answer=answer
-        disabled=disabled
-        content=content}}
-    <div>{{card-content/validation-errors content=content hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}</div>
-  </div>
+      name=name
+      type="text"
+      value=answer.value
+      date=answer.value
+      dateChanged="valueChanged"
+      answer=answer
+      disabled=disabled
+      content=content
+    }}
+  {{/card-content/label}}
+
+ {{card-content/validation-errors content=content hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
 </div>

@@ -10,6 +10,7 @@ class PaperTrackerController < ApplicationController
     # show all papers that user is connected to across all journals
     papers = order(QueryParser.new(current_user: current_user)
              .build(params[:query] || '')
+             .includes(:file, :journal)
              .where(journal_id: journal_ids)
              .where.not(publishing_state: :unsubmitted))
              .page(page)
@@ -27,16 +28,11 @@ class PaperTrackerController < ApplicationController
   end
 
   def order(query)
-    unless params[:orderBy].present?
-      return query.reorder("submitted_at #{order_dir}")
+    if ["handling_editor", "cover_editor"].include? params[:orderBy]
+      order_by_role(query, params[:orderBy].titleize)
+    else
+      query.reorder("#{column} #{order_dir}")
     end
-    column = params[:orderBy]
-
-    if ["handling_editor", "cover_editor"].include? column
-      return order_by_role(query, column.titleize)
-    end
-
-    query.reorder("#{column} #{order_dir}")
   end
 
   def order_by_role(query, role)
@@ -57,8 +53,12 @@ class PaperTrackerController < ApplicationController
       .order("users.last_name #{order_dir}")
   end
 
+  def column
+    Paper.column_names.include?(params[:orderBy]) ? params[:orderBy] : 'submitted_at'
+  end
+
   def order_dir
-    params[:orderDir].present? ? params[:orderDir] : :asc
+    params[:orderDir] == 'desc' ? 'desc' : 'asc'
   end
 
   def metadata(papers)
@@ -70,15 +70,11 @@ class PaperTrackerController < ApplicationController
   end
 
   def journal_ids
-    current_user.filter_authorized(
+    @journal_ids ||= current_user.filter_authorized(
       :view_paper_tracker,
       Journal,
       participations_only: false
     ).objects
   end
 
-  def papers_submitted
-    # All papers unless it has not yet been submitted for the first time
-    Paper.where.not(publishing_state: :unsubmitted)
-  end
 end

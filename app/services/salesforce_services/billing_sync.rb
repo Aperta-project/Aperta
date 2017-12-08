@@ -7,9 +7,10 @@ module SalesforceServices
     delegate :financial_disclosure_task, to: :@paper, allow_nil: true
     delegate :salesforce_manuscript_id, to: :@paper, allow_nil: true
 
-    validates :paper, :billing_task, :financial_disclosure_task, presence: true
+    validates :paper, :billing_task, presence: true
     validates :salesforce_api, presence: true
     validates :salesforce_manuscript_id, presence: true
+    validate :financial_disclosure_exists
 
     attr_accessor :paper, :salesforce_api
 
@@ -30,6 +31,16 @@ module SalesforceServices
 
     private
 
+    def financial_disclosure_exists
+      unless financial_disclosure_asked?
+        errors.add(:base, "Financial Disclosure question was not asked on this paper")
+      end
+    end
+
+    def financial_disclosure_asked?
+      @financial_disclosure_asked ||= FinancialDisclosureStatement.new(paper).asked?
+    end
+
     def sync_invalid_message
       <<-MESSAGE.strip_heredoc
         The paper's billing information cannot be sent to Salesforce because it
@@ -39,7 +50,7 @@ module SalesforceServices
 
         The paper was: #{@paper.inspect}
         The billing task was: #{billing_task.inspect}
-        The financial disclosure task was: #{financial_disclosure_task.inspect}
+        The financial disclosure #{financial_disclosure_asked? ? "exists" : "does not exist"}
       MESSAGE
     end
   end

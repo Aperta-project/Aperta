@@ -12,6 +12,7 @@ FactoryGuy.define('card-content', {
     shortInput: {
       contentType: 'short-input',
       valueType: 'text',
+      label: 'Label',
       text: 'A short input question'
     },
     description: {

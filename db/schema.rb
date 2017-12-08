@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171108194319) do
+ActiveRecord::Schema.define(version: 20171205033245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,18 @@ ActiveRecord::Schema.define(version: 20171108194319) do
   add_index "activities", ["subject_id"], name: "index_activities_on_subject_id", using: :btree
   add_index "activities", ["subject_type"], name: "index_activities_on_subject_type", using: :btree
   add_index "activities", ["user_id"], name: "index_activities_on_user_id", using: :btree
+
+  create_table "admin_edits", force: :cascade do |t|
+    t.integer  "reviewer_report_id"
+    t.integer  "user_id"
+    t.string   "notes"
+    t.boolean  "active"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "admin_edits", ["reviewer_report_id"], name: "index_admin_edits_on_reviewer_report_id", using: :btree
+  add_index "admin_edits", ["user_id"], name: "index_admin_edits_on_user_id", using: :btree
 
   create_table "affiliations", force: :cascade do |t|
     t.integer  "user_id"
@@ -154,6 +166,16 @@ ActiveRecord::Schema.define(version: 20171108194319) do
   end
 
   add_index "authors", ["token"], name: "index_authors_on_token", unique: true, using: :btree
+
+  create_table "behaviors", force: :cascade do |t|
+    t.string   "event_name", null: false
+    t.string   "type",       null: false
+    t.integer  "journal_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "behaviors", ["journal_id"], name: "index_behaviors_on_journal_id", using: :btree
 
   create_table "billing_log_reports", force: :cascade do |t|
     t.string   "csv_file"
@@ -294,22 +316,6 @@ ActiveRecord::Schema.define(version: 20171108194319) do
   add_index "comments", ["commenter_id"], name: "index_comments_on_commenter_id", using: :btree
   add_index "comments", ["task_id"], name: "index_comments_on_task_id", using: :btree
 
-  create_table "content_attributes", force: :cascade do |t|
-    t.integer  "card_content_id"
-    t.string   "name"
-    t.string   "value_type"
-    t.boolean  "boolean_value"
-    t.integer  "integer_value"
-    t.string   "string_value"
-    t.jsonb    "json_value"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-  end
-
-  add_index "content_attributes", ["card_content_id"], name: "index_content_attributes_on_card_content_id", using: :btree
-  add_index "content_attributes", ["name"], name: "index_content_attributes_on_name", using: :btree
-  add_index "content_attributes", ["value_type"], name: "index_content_attributes_on_value_type", using: :btree
-
   create_table "credentials", force: :cascade do |t|
     t.string  "provider"
     t.string  "uid"
@@ -406,6 +412,24 @@ ActiveRecord::Schema.define(version: 20171108194319) do
   add_index "email_logs", ["message_id"], name: "index_email_logs_on_message_id", using: :btree
   add_index "email_logs", ["paper_id"], name: "index_email_logs_on_paper_id", using: :btree
   add_index "email_logs", ["task_id"], name: "index_email_logs_on_task_id", using: :btree
+
+  create_table "entity_attributes", force: :cascade do |t|
+    t.integer  "entity_id",     null: false
+    t.string   "name",          null: false
+    t.string   "value_type",    null: false
+    t.boolean  "boolean_value"
+    t.integer  "integer_value"
+    t.string   "string_value"
+    t.jsonb    "json_value"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.string   "entity_type",   null: false
+  end
+
+  add_index "entity_attributes", ["entity_id"], name: "index_entity_attributes_on_entity_id", using: :btree
+  add_index "entity_attributes", ["entity_type"], name: "index_entity_attributes_on_entity_type", using: :btree
+  add_index "entity_attributes", ["name"], name: "index_entity_attributes_on_name", using: :btree
+  add_index "entity_attributes", ["value_type"], name: "index_entity_attributes_on_value_type", using: :btree
 
   create_table "feature_flags", force: :cascade do |t|
     t.string  "name",   null: false
@@ -596,7 +620,6 @@ ActiveRecord::Schema.define(version: 20171108194319) do
     t.boolean  "number_reviewer_reports",               default: false, null: false
     t.boolean  "legends_allowed",                       default: false, null: false
     t.string   "preprint_doi_article_number"
-    t.boolean  "preprint_opt_out",                      default: false, null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

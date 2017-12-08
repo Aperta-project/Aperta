@@ -121,8 +121,13 @@ export default Component.extend(DragNDrop.DraggableMixin, {
 
   displayDestroyButton: and('invitation.pending', 'notClosedState', 'currentRound'),
 
-  displayRescindButton: computed('invitation.{invited,accepted}', 'closedState', 'currentRound','canManageInvitations', function() {
-    return this.get('notClosedState') && this.get('currentRound') && this.get('canManageInvitations') && (this.get('invitation.invited') || this.get('invitation.accepted'));
+  displayRescindButton: computed('invitation.{invited,accepted}',
+    'closedState',
+    'currentRound',
+    'canManageInvitations',
+    'reportSubmitted', function() {
+      return this.get('notClosedState') && this.get('currentRound') && this.get('canManageInvitations') &&
+        ( (this.get('invitation.invited') || this.get('invitation.accepted')) && !this.get('reportSubmitted') );
   }),
   // similar to rescind button but only if its for a reviewer and if there's an invitee
   displayAcceptOnBehalfButton: and('invitation.{invited,reviewer}', 'notClosedState', 'currentRound', 'canManageInvitations'),
@@ -145,6 +150,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
 
   closedState: equal('uiState', 'closed'),
   editState: equal('uiState', 'edit'),
+  reportSubmitted: equal('invitation.reviewerReport.status', 'completed'),
 
   rescindInvitation: concurrencyTask(function * (invitation) {
     try {

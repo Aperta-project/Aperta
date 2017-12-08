@@ -12,12 +12,14 @@ export default NestedQuestionOwner.extend(Answerable, {
   revision: DS.attr('string'),
   createdAt: DS.attr('date'),
   submitted: DS.attr('boolean'),
-  dueAt: DS.attr('date'),
-  dueAtId: DS.attr('string'),
+  dueDatetime: DS.belongsTo('due_datetime', { async: false }),
+
   originallyDueAt: DS.attr('date'),
   needsSubmission: Ember.computed('status', 'submitted', function() {
     var status = this.get('status');
     return !this.get('submitted') && status === 'pending';
   }),
-  scheduledEvents: DS.hasMany('scheduled-event')
+  scheduledEvents: DS.hasMany('scheduled-event'),
+  adminEdits: DS.hasMany('admin-edit'),
+  activeAdminEdit: DS.attr('boolean')
 });

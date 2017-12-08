@@ -421,7 +421,7 @@ FactoryGirl.define do
         )
 
         # Financial Disclosure
-        financial_task = create(:financial_disclosure_task, funders: [], paper: paper)
+        financial_task = create(:custom_card_task, paper: paper)
         AnswerableFactory.create(
           financial_task,
           questions: [

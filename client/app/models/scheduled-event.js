@@ -6,20 +6,12 @@ export default DS.Model.extend({
   state: DS.attr('string'),
   dispatchAt: DS.attr('date'),
   finished: DS.attr('boolean'),
+  dueDatetime: DS.belongsTo('due_datetime'),
 
   completed: Ember.computed.equal('state', 'completed'),
   errored: Ember.computed.equal('state', 'errored'),
   inactive: Ember.computed.equal('state', 'inactive'),
   active: Ember.computed.equal('state', 'active'),
   canceled: Ember.computed.equal('state', 'canceled'),
-
-  restless: Ember.inject.service(),
-
-  updateState: function(newState) {
-    const url = `/api/scheduled_events/${this.get('id')}/update_state`;
-    return this.get('restless').put(url, {state: newState}).then(() => {
-      this.set('state', newState);
-    });
-  }
-
+  deactivated: Ember.computed.equal('state', 'deactivated')
 });

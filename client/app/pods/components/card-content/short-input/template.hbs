@@ -1,19 +1,18 @@
-<label class="content-text">{{{content.text}}}
-  {{#if content.isRequired}}
-  <span class="required-field">*</span>
-  {{/if}}</label>
-
-{{input
-  value=(readonly answerProxy)
-  class="form-control"
-  change=(action "valueChanged")
-  input=(action "valueChanged")
-  focusOut=(action "validate")
-  focusIn=(action "maybeHideError")
-  disabled=disabled
-  required=content.isRequired
-  content=content}}
+{{#card-content/label content=content}}
+  {{input
+    value=(readonly answerProxy)
+    class="card-input"
+    change=(action "valueChanged")
+    input=(action "valueChanged")
+    focusOut=(action "displayErrors")
+    focusIn=(action "maybeHideError")
+    disabled=disabled
+    required=content.isRequired
+    content=content
+  }}
+{{/card-content/label}}
 
 {{#unless hideError}}
   {{card-content/validation-errors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
 {{/unless}}
+

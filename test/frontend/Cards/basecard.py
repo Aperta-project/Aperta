@@ -292,6 +292,7 @@ class BaseCard(AuthenticatedPage):
     :return: Void function
     """
     self._wait_for_element(self._get(self._completion_button), multiplier=2)
+    self.pause_to_save()
 
   def get_issues_text(self):
     """

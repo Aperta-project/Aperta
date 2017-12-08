@@ -10,10 +10,19 @@ class TemplateContext < Liquid::Drop
       'Reviewer Report'   => ReviewerReportScenario,
       'Invitation'        => InvitationScenario,
       'Paper Reviewer'    => InvitationScenario,
-      'Preprint Decision' => PaperScenario,
       'Decision'          => RegisterDecisionScenario,
+      'Preprint Decision' => PaperScenario,
       'Tech Check'        => TechCheckScenario
-    }
+    }.except(*feature_inactive_scenarios)
+  end
+
+  # temporary added for https://jira.plos.org/jira/browse/APERTA-11721
+  # we should remove this once the preprint feature flag is removed
+  def self.feature_inactive_scenarios
+    [].tap do |scenarios|
+      scenarios << 'Preprint Decision' unless FeatureFlag[:PREPRINT]
+      scenarios << 'Tech Check'        unless FeatureFlag[:CARD_CONFIGURATION]
+    end
   end
 
   # Unless already defined, this defines a method which returns a TemplateContext.
@@ -49,6 +58,12 @@ class TemplateContext < Liquid::Drop
     end
   end
 
+  def self.wraps(klass = nil)
+    @wrapped_type ||= klass if klass
+
+    @wrapped_type
+  end
+
   def self.merge_fields
     @merge_fields ||= MergeField.list_for(self)
   end
@@ -58,6 +73,11 @@ class TemplateContext < Liquid::Drop
   end
 
   def initialize(object)
+    expected_type =  self.class.instance_variable_get('@wrapped_type')
+    if expected_type && !object.is_a?(expected_type)
+      raise "#{self.class} expected to wrap a #{expected_type} but got a #{object.class}"
+    end
+
     @object = object
   end
 

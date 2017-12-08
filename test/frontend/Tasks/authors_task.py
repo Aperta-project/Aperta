@@ -483,7 +483,6 @@ class AuthorsTask(BaseTask):
     logging.info('Selecting Gov\'t Choice {0}'.format(govt_choice))
     govt_div = self._get(self._govt_employee_div)
     self._scroll_into_view(govt_div)
-  #  self._actions.move_to_element(govt_div).perform()
     if govt_choice == 'Yes':
       govt_yes.click()
     else:

@@ -185,4 +185,4 @@ class ApertaProfileTest(CommonTest):
     # TODO: Deleting existing linkage
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

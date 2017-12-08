@@ -1047,7 +1047,7 @@ class AuthenticatedPage(StyledPage):
     """
     Finds institution name in the 'did-you-mean' list and clicks on it to place in the
     institution field
-    :param parent_element: the parent webelement to locate list of suggestions and required name
+    :param parent_element: the parent web element to locate list of suggestions and required name
     :param institution_name: string: institution name to select
     :return: void function
     """
@@ -1060,3 +1060,12 @@ class AuthenticatedPage(StyledPage):
         self._wait_for_element(parent_element.find_element(*self._institution_chosen))
         break
 
+  @staticmethod
+  def pause_to_save():
+      """
+      A generic function to pause long enough to ensure we should have saved an entry.
+      The method of committing saves in the Aperta UI recently changed from being based on
+      an on_blur event to a keyboard debounce event. Because Selenium doesn't type like a human
+      being, we have to introduce some fallibility to the process by introducing a pause.
+      """
+      time.sleep(.7)

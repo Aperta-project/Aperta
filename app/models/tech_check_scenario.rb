@@ -19,17 +19,10 @@ class TechCheckScenario < TemplateContext
   end
 
   def paperwide_sendback_reasons
-    tasks = task.paper.tasks.includes(card_version: [card_contents: [:answers]])
-
-    incomplete_tech_checks = tasks.select do |task|
-      check_contents = task.card_version.card_contents.select { |x| x.content_type == 'tech-check' }
-
-      if check_contents.present?
-        check_contents[0].answers[0].value == false
-      else
-        false
-      end
-    end
+    incomplete_tech_checks = task.paper.tasks
+      .joins(card_version: [card_contents: [:answers]])
+      .where(card_contents: { content_type: 'tech-check' })
+      .where(answers: { value: 'f' }).group('id')
 
     incomplete_tech_checks.flat_map { |task| task_sendback_reasons(task) }
   end

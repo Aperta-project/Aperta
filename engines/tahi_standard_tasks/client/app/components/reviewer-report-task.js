@@ -22,6 +22,7 @@ export default TaskComponent.extend({
   // this property is responsible for displaying (or not) the 'Make changes to this Task' button.
   // It can be modified later to depend on permissions
   taskStateToggleable: false,
+  notFrontMatter: Ember.computed.not('frontMatter'),
 
   actions: {
     confirmSubmission() {

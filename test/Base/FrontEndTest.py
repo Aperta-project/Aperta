@@ -58,7 +58,7 @@ class FrontEndTest(unittest.TestCase):
     return self._driver
 
   @staticmethod
-  def _run_tests_randomly():
+  def run_tests_randomly():
     """
     *Static* method for every test suite inheriting this class to be able to run its tests
     in, at least, a non linear fashion.

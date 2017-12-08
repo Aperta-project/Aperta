@@ -11,12 +11,12 @@ describe ScheduledEvent do
     end
 
     it 'can move from active to inactive' do
-      subject.deactivate
+      subject.disable
       expect(subject.inactive?).to be true
     end
 
     it 'can move from inactive to active' do
-      subject.deactivate
+      subject.disable
       subject.reactivate
       expect(subject.active?).to be true
     end
@@ -50,25 +50,25 @@ describe ScheduledEvent do
     end
   end
 
-  describe '#should_deactivate?' do
+  describe '#should_disable?' do
     context 'when dispatch_at is in the past' do
       before do
         subject.dispatch_at = DateTime.now.in_time_zone.beginning_of_minute - 3.days
       end
 
       it 'should be true for only active or passive events' do
-        expect(subject.should_deactivate?).to be true
+        expect(subject.should_disable?).to be true
 
-        subject.deactivate!
-        expect(subject.should_deactivate?).to be false
+        subject.disable!
+        expect(subject.should_disable?).to be false
 
         subject.reactivate!
         subject.trigger!
-        expect(subject.should_deactivate?).to be false
+        expect(subject.should_disable?).to be false
 
         subject.reactivate!
         subject.switch_off!
-        expect(subject.should_deactivate?).to be true
+        expect(subject.should_disable?).to be true
       end
     end
 
@@ -78,7 +78,7 @@ describe ScheduledEvent do
       end
 
       it 'should be false' do
-        expect(subject.should_deactivate?).to be false
+        expect(subject.should_disable?).to be false
       end
     end
   end
@@ -102,7 +102,7 @@ describe ScheduledEvent do
       it 'should be true for only inactive events' do
         expect(subject.should_reactivate?).to be false
 
-        subject.deactivate!
+        subject.disable!
         expect(subject.should_reactivate?).to be true
 
         subject.reactivate!

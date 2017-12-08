@@ -1,4 +1,4 @@
-# Dev ticket - Hi!
+# Dev ticket
 
 :question: Is this a QA Ticket? Please delete everything until `QA Ticket` below
 
@@ -37,6 +37,8 @@ Were there major UI changes? Add a screenshot here -- and please let the QA team
 **Author tasks** (delete tasks that don't apply to your PR, this list should be finished before code review):
 
 - [ ] If I made any UI changes, I've let QA know.
+- [ ] I have set the correct component(s) in the JIRA ticket
+- [ ] I have set an appropriate resolution in the JIRA ticket
 - [ ] If I changed the database schema, I enforced database constraints.
 - [ ] If I created a migration, I updated the base data.yml seeds file. [instructions](https://developer.plos.org/confluence/display/TAHI/Seeds+maintenance)
 - [ ] If I modified `app/services/journal_factory.rb`, I updated the base data.yml seeds file. [instructions](https://developer.plos.org/confluence/display/TAHI/Seeds+maintenance)
@@ -97,7 +99,7 @@ Reviewer tasks:
 - [ ] Does not rely on explicit sleeps except where absolutely necessary or dictated by the
         complexity of working around such use. Comment why when used.
 - [ ] Follows first PLOS style guidelines for Python, then PEP-8
-- [ ] Code is implemented in a Python 2/3 agnostic way
+- [ ] Code is implemented in a Python 3 way
 - [ ] Code follows implementation guidance at: https://confluence.plos.org/confluence/display/FUNC/Implementing+your+python+end-to-end+tests
 
 #### After the Code Review:

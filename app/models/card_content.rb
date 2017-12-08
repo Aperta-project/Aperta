@@ -42,6 +42,7 @@ class CardContent < ActiveRecord::Base
       wrapper_tag
       letter_template
       button_label
+      template_ident
     ]
 
   belongs_to :card_version, inverse_of: :card_contents
@@ -199,6 +200,10 @@ class CardContent < ActiveRecord::Base
         'letter-template' => letter_template,
         'button-label' => button_label,
         'required-field' => required_field
+      }
+    when 'email-template'
+      {
+        'template-ident' => template_ident
       }
     else
       {}

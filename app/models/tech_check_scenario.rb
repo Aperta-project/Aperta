@@ -15,27 +15,40 @@ class TechCheckScenario < TemplateContext
   end
 
   def sendback_reasons
-    reasons = task.answers.select do |answer|
-      content = CardContent.find answer.card_content_id
-      parent = CardContent.find content.parent_id
+    task_sendback_reasons(task)
+  end
 
-      if (parent.content_type == 'sendback-reason') && (content.content_type == 'paragraph-input')
-        targets = parent.children.to_ary
-        # Dont check the display reason editor value. This should be replaced
-        # once we have a tag system for better identifying answers
-        targets.delete_at 1
-        selection = targets.all? { |child| child.answers[0].try(:value) }
-      else
-        selection = false
-      end
-      selection
-    end
+  def paperwide_sendback_reasons
+    incomplete_tech_checks = task.paper.tasks
+      .joins(card_version: [card_contents: [:answers]])
+      .where(card_contents: { content_type: 'tech-check' })
+      .where(answers: { value: 'f' }).group('id')
 
-    reasons.sort_by!(&:card_content_id)
-    reasons.map { |reason| AnswerContext.new(reason) }
+    incomplete_tech_checks.flat_map { |task| task_sendback_reasons(task) }
   end
 
   private
+
+  def task_sendback_reasons(task)
+    reasons = task.answers.includes(:card_content)
+                .where('card_contents.content_type' => 'paragraph-input')
+                .select do |answer|
+
+      parent = answer.card_content.parent
+
+      if parent.content_type == 'sendback-reason'
+        targets = parent.children.to_ary
+        # Dont check the display reason editor value(targets[1]). This should be
+        # replaced once we have a tag system for better identifying answers
+        targets.delete_at 1
+        targets.all? { |child| child.answers[0].try(:value) }
+      else
+        false
+      end
+    end
+
+    reasons.sort_by(&:card_content_id).map { |reason| AnswerContext.new(reason) }
+  end
 
   def task
     object

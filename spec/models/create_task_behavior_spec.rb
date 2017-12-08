@@ -13,7 +13,7 @@ describe Behavior do
   end
 
   after(:each) do
-    Event.deregister(:fake_name)
+    Event.deregister(:fake_event, :paper_submitted)
   end
 
   it_behaves_like :behavior_subclass

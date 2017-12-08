@@ -10,6 +10,7 @@ moduleForComponent(
   'Integration | Component | card content | tech check',
   {
     integration: true,
+
     beforeEach() {
       manualSetup(this.container);
       registerCustomAssertions();
@@ -17,6 +18,10 @@ moduleForComponent(
       this.set('preview', true);
       this.set('content', Ember.Object.create({ ident: 'test' }));
       this.set('answer', Ember.Object.create({ value: null }));
+    },
+
+    afterEach() {
+      $.mockjax.clear();
     }
   }
 );
@@ -206,7 +211,7 @@ test(`tech check email preview`, function(assert) {
 
 
   this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
-  $.mockjax({url: '/api/tasks/1/sendback_preview', type: 'PUT', status: 201, responseText: '{"body": "some text"}'});
+  $.mockjax({url: '/api/tasks/1/render_template', type: 'PUT', status: 201, responseText: '{"letter_template": {"body": "some text"}}'});
 
   this.set('owner', owner);
   this.set('content', tc);

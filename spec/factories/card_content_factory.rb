@@ -14,6 +14,12 @@ FactoryGirl.define do
       value_type nil
     end
 
+    trait :template do
+      value_type nil
+      content_type "email-template"
+      template_ident "ident"
+    end
+
     trait :with_answer do
       transient do
         answer_value nil

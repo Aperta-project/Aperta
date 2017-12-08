@@ -25,8 +25,7 @@ describe Behavior do
     context "and the task was completed" do
       let(:completed) { true }
       it "marks the task incomplete" do
-        event.trigger
-        expect(task.reload.completed).to be(false)
+        expect { event.trigger }.to change { task.reload.completed }.from(true).to(false)
       end
     end
     context "and the task incomplete" do
@@ -44,15 +43,13 @@ describe Behavior do
     context "and the task was completed" do
       let(:completed) { true }
       it "marks the task completed" do
-        event.trigger
         expect(task.reload.completed).to be(true)
       end
     end
     context "and the task incomplete" do
       let(:completed) { false }
       it "marks the task completed" do
-        event.trigger
-        expect(task.reload.completed).to be(true)
+        expect { event.trigger }.to change { task.reload.completed }.from(false).to(true)
       end
     end
   end
@@ -63,15 +60,13 @@ describe Behavior do
     context "and the task was completed" do
       let(:completed) { true }
       it "marks the task incomplete" do
-        event.trigger
-        expect(task.reload.completed).to be(false)
+        expect { event.trigger }.to change { task.reload.completed }.from(true).to(false)
       end
     end
     context "and the task incomplete" do
       let(:completed) { false }
       it "marks the task completed" do
-        event.trigger
-        expect(task.reload.completed).to be(true)
+        expect { event.trigger }.to change { task.reload.completed }.from(false).to(true)
       end
     end
   end

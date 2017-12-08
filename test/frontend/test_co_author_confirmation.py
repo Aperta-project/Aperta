@@ -16,13 +16,16 @@ from .Pages.manuscript_viewer import ManuscriptViewerPage
 from .Pages.correspondence_history import CorrespondenceHistory
 from .Pages.workflow_page import WorkflowPage
 from frontend.common_test import CommonTest
-from Base.Resources import author, group_author, editorial_users
+from Base.Resources import admin_users
 
 __author__ = 'achoe@plos.org'
 
 
 @MultiBrowserFixture
 class CoAuthorConfirmationTest(CommonTest):
+  """
+  Validates the functions of the coauthor confirmation status for both individual and group authors.
+  """
 
   def test_individual_coauthor_confirmation_email(self):
     """
@@ -45,7 +48,7 @@ class CoAuthorConfirmationTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     # We need an mmt that has an Authors card - will choose Research for now.
     mmt = 'Research'
-    self.create_article(journal='PLOS Wombat', type_=mmt, random_bit=True)
+    self.create_article(title='testing individual coauthor confirmation email', journal='PLOS Wombat', type_=mmt, random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     paper_canonical_url = manuscript_page.get_current_url().split('?')[0]
@@ -69,9 +72,9 @@ class CoAuthorConfirmationTest(CommonTest):
 
     # logout and login as a staff user
     manuscript_page.logout()
-    staff_user = random.choice(editorial_users)
-    logging.info('Logging in as {0}'.format(staff_user))
-    dashboard_page = self.cas_login(email=staff_user['email'])
+    admin_user = random.choice(admin_users)
+    logging.info('Logging in as {0}'.format(admin_user))
+    dashboard_page = self.cas_login(email=admin_user['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
@@ -105,7 +108,7 @@ class CoAuthorConfirmationTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     # We need an mmt that has an Authors card - will choose Research for now.
     mmt = 'Research'
-    self.create_article(journal='PLOS Wombat', type_=mmt, random_bit=True)
+    self.create_article(title='testing group coauthor confirmation email', journal='PLOS Wombat', type_=mmt, random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     paper_canonical_url = manuscript_page.get_current_url().split('?')[0]
@@ -132,9 +135,9 @@ class CoAuthorConfirmationTest(CommonTest):
 
     # logout and login as a staff user
     manuscript_page.logout()
-    staff_user = random.choice(editorial_users)
-    logging.info('Logging in as {0}'.format(staff_user))
-    dashboard_page = self.cas_login(email=staff_user['email'])
+    admin_user = random.choice(admin_users)
+    logging.info('Logging in as {0}'.format(admin_user))
+    dashboard_page = self.cas_login(email=admin_user['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
@@ -162,7 +165,7 @@ class CoAuthorConfirmationTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     # We need an mmt that has an Authors card - will choose Research for now.
     mmt = 'Research'
-    self.create_article(journal='PLOS Wombat', type_=mmt, random_bit=True)
+    self.create_article(title='testing individual coauthor confirmation by staff', journal='PLOS Wombat', type_=mmt, random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     paper_canonical_url = manuscript_page.get_current_url().split('?')[0]
@@ -186,9 +189,9 @@ class CoAuthorConfirmationTest(CommonTest):
 
     # logout and login as a staff user
     manuscript_page.logout()
-    staff_user = random.choice(editorial_users)
-    logging.info('Logging in as {0}'.format(staff_user))
-    dashboard_page = self.cas_login(email=staff_user['email'])
+    admin_user = random.choice(admin_users)
+    logging.info('Logging in as {0}'.format(admin_user))
+    dashboard_page = self.cas_login(email=admin_user['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
@@ -203,7 +206,7 @@ class CoAuthorConfirmationTest(CommonTest):
 
     authors_card = AuthorsCard(self.getDriver())
     authors_card.click_completion_button()
-    authors_card.validate_coauthor_status(staff_user)
+    authors_card.validate_coauthor_status(admin_user)
 
   def test_group_coauthor_confirmation_by_staff(self):
     """
@@ -220,7 +223,7 @@ class CoAuthorConfirmationTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     # We need an mmt that has an Authors card - will choose Research for now.
     mmt = 'Research'
-    self.create_article(journal='PLOS Wombat', type_=mmt, random_bit=True)
+    self.create_article(title='testing group coauthor confirmation by staff', journal='PLOS Wombat', type_=mmt, random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     paper_canonical_url = manuscript_page.get_current_url().split('?')[0]
@@ -244,9 +247,9 @@ class CoAuthorConfirmationTest(CommonTest):
 
     # logout and login as a staff user
     manuscript_page.logout()
-    staff_user = random.choice(editorial_users)
-    logging.info('Logging in as {0}'.format(staff_user))
-    dashboard_page = self.cas_login(email=staff_user['email'])
+    admin_user = random.choice(admin_users)
+    logging.info('Logging in as {0}'.format(admin_user))
+    dashboard_page = self.cas_login(email=admin_user['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
@@ -261,7 +264,7 @@ class CoAuthorConfirmationTest(CommonTest):
 
     authors_card = AuthorsCard(self.getDriver())
     authors_card.click_completion_button()
-    authors_card.validate_coauthor_status(staff_user)
+    authors_card.validate_coauthor_status(admin_user)
 
 if __name__ == '__main__':
   CommonTest.run_tests_randomly()

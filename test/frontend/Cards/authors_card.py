@@ -245,7 +245,7 @@ class AuthorsCard(BaseCard):
     """
     Selects a radio button option to either confirm or decline co-authorship status. This assumes that the
     co-author has not already submitted confirmed/declined via email (we are not able to test that piece yet).
-    Note: only staff users should be able to confirm/decline co-authorship status on the authors card.
+    Note: only admin(site/staff) users should be able to confirm/decline co-authorship status on the authors card.
     :param confirm: The decision taken (accept or decline) for co-author confirmation
     :return: void function
     """

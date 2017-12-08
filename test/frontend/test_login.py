@@ -191,4 +191,4 @@ class ApertaORCIDLoginTest(CommonTest):
       orcid_login.validate_orcid_login_elements()
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

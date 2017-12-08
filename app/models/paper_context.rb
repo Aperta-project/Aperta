@@ -7,7 +7,7 @@ class PaperContext < TemplateContext
   subcontexts :authors,               type: :author
   subcontexts :corresponding_authors, type: :author
   subcontext  :editor,                type: :user
-  subcontext  :creator, type: :user
+  subcontext  :creator,               type: :user
 
   def editor
     return if object.handling_editors.empty?
@@ -16,5 +16,17 @@ class PaperContext < TemplateContext
 
   def url
     url_for(:paper, id: object.id).sub("api/", "")
+  end
+
+  def creator
+    UserContext.new(@object.creator)
+  end
+
+  def preprint_opted_in
+    FeatureFlag[:PREPRINT] && @object.manuscript_manager_template.is_preprint_eligible && @object.preprint_opt_in?
+  end
+
+  def preprint_opted_out
+    FeatureFlag[:PREPRINT] && @object.manuscript_manager_template.is_preprint_eligible && @object.preprint_opt_out?
   end
 end

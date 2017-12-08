@@ -1,21 +1,6 @@
 <%= render partial: 'email/journal_logo_or_name', locals: { journal: @paper.journal } %>
-<br><br>
 
-<h1>
-  Thank you for submitting your manuscript,
-  <%= @paper.display_title(sanitized: false) %>, to <%= @journal.name %>.
-  Our staff will be in touch with next steps.
-</h1>
-
-<hr>
-
-<p>Hello <%= @author.full_name %>,</p>
-
-<p>
-  Thank you for submitting your manuscript, "<%= @paper.display_title(sanitized: false) %>",
-  to <%= @journal.name %>.
-  Your submission is complete, and our staff will be in touch with next steps.
-</p>
+<%= @body.html_safe %>
 
 <%= render partial: 'email/button', locals: {
   href: client_dashboard_url,

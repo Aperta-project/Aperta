@@ -27,6 +27,10 @@ describe UserContext do
       check_render("{{ last_name }}", user.last_name)
     end
 
+    it 'renders a full name' do
+      check_render("{{ full_name }}", user.full_name)
+    end
+
     it 'renders an email' do
       check_render("{{ email }}", user.email)
     end

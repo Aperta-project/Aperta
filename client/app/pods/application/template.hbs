@@ -51,7 +51,7 @@
                       outAnimationComplete=(action "hideFeedbackOverlay")
                       overlayClass="feedback-overlay"
                       as |overlay|}}
-    {{feedback-form close=(action overlay.animateOut)}}
+    {{feedback-form displayFeedbackForm=true close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}
 
 <div id="overlay-drop-zone"></div>

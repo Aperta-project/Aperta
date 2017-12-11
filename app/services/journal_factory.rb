@@ -1,3 +1,4 @@
+# coding: utf-8
 # JournalFactory is for creating new journals in Aperta. It gets them all
 # set up: nice and right.
 class JournalFactory
@@ -36,8 +37,8 @@ class JournalFactory
     self.class.setup_default_mmt(@journal)
     ensure_default_roles_and_permissions_exist
     assign_hints
-    assign_default_system_custom_cards
     seed_letter_templates
+    assign_default_system_custom_cards
     @journal
   end
 

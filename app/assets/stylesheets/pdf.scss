@@ -18,3 +18,16 @@ figure {
 .supporting-information-files {
   page-break-before: always;
 }
+
+p {
+  font-family: Lora;
+  line-height: 20px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+// see figure_inserter.rb:84 for reasoning behind this selector
+img.pdf-image-with-caption + p {
+  font-family: Source Sans Pro;
+  line-height: 16px;
+}

@@ -388,7 +388,7 @@
   </define>
   <define name="email-template">
     <element name="EmailTemplate">
-      <attribute name="template-ident"/>
+      <attribute name="letter-template"/>
     </element>
   </define>
   <!-- Contents -->

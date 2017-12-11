@@ -136,7 +136,6 @@ class XmlCardLoader
       required_field: content.attr_value('required-field'),
       label: content.tag_text('label'),
       instruction_text: content.tag_text('instruction-text'),
-      template_ident: content.attr_value('template-ident'),
       possible_values: content.fetch_values('possible-value', [:label, :value]),
       text: content.tag_xml('text'),
       editor_style: content.attr_value('editor-style'),

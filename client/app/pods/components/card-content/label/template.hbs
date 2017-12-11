@@ -9,13 +9,13 @@
     {{#if (eq control-placement "left")}}
       {{yield}}
       <span class="card-form-label">
-      {{{content.label}}} 
-      {{partial "required-field"}}
+        {{{content.label}}}
+        {{partial "required-field"}}
       </span>
-          {{else}}
+    {{else}}
       <span class="card-form-label">
-      {{{content.label}}} 
-      {{partial "required-field"}}
+        {{{content.label}}}
+        {{partial "required-field"}}
       </span>
       {{yield}}
     {{/if}}

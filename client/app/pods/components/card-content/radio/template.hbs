@@ -1,8 +1,5 @@
-{{#if hasText}}
-  <div class="card-form-text">
-    {{{content.text}}}
-  </div>
-{{/if}}
+{{#card-content/label content=content}}
+{{/card-content/label}}
 
 {{#if isText}}
   {{#each content.possibleValues as |opt index|}}
@@ -17,7 +14,6 @@
         }}
 
         <span class="card-form-label">{{{opt.label}}}</span>
-        {{partial "required-field"}}
       </label>
     </div>
   {{/each}}
@@ -33,7 +29,6 @@
       }}
 
       <span class="card-form-label">{{{trueLabel}}}</span>
-      {{partial "required-field"}}
     </label>
   </div>
 
@@ -48,12 +43,11 @@
       }}
 
       <span class="card-form-label">{{{falseLabel}}}</span>
-      {{partial "required-field"}}
     </label>
   </div>
 {{/if}}
 
-{{card-content/validation-errors hideErrors=answer.hideErrors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
+{{card-content/validation-errors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
 
 {{card-content/display-children
   content=content

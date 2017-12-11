@@ -158,7 +158,7 @@ tech-check-email = element TechCheckEmail {
 }
 
 email-template = element EmailTemplate {
-  attribute template-ident { text }
+  attribute letter-template { text }
 }
 
 # Contents

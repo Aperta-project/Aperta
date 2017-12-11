@@ -17,7 +17,7 @@ FactoryGirl.define do
     trait :template do
       value_type nil
       content_type "email-template"
-      template_ident "ident"
+      letter_template "ident"
     end
 
     trait :with_answer do

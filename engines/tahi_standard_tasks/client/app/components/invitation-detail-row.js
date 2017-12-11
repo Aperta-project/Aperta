@@ -111,6 +111,18 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   }),
 
   invitee: reads('invitation.invitee'),
+
+  inviteeNameOrEmail: Ember.computed('invitee.fullName', 'invitation.email', function() {
+    let name = this.get('invitee.fullName');
+    return Ember.isPresent(name) ? name : this.get('invitation.email');
+  }),
+
+  inviteeNameAndEmail: Ember.computed('invitee.fullName', 'invitation.email', function() {
+    let name = this.get('invitee.fullName');
+    let email = this.get('invitation.email');
+    return Ember.isPresent(name) ? '${name} <${email}>' : email;
+  }),
+
   invitationBodyStateBeforeEdit: null,
 
   notClosedState: not('closedState'),
@@ -131,14 +143,12 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   }),
   // similar to rescind button but only if its for a reviewer and if there's an invitee
   displayAcceptOnBehalfButton: and('invitation.{invited,reviewer}', 'notClosedState', 'currentRound', 'canManageInvitations'),
-
   notAcceptedByInvitee: not('invitation.isAcceptedByInvitee'),
-
   destroyDisabled: or('disabled', 'invitation.isPrimary'),
-
   displayAcceptFields: false,
-
   invitationLoading: false,
+  showConfirmAccept: false,
+  showConfirmRescind: false,
 
   uiState: computed('invitation', 'activeInvitation', 'activeInvitationState', function() {
     if (this.get('invitation') !== this.get('activeInvitation')) {
@@ -230,6 +240,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
 
     rescindInvitation(invitation) {
       this.get('rescindInvitation').perform(invitation);
+      this.set('showConfirmRescind', false);
     },
 
     saveDuringType(invitation) {
@@ -275,9 +286,24 @@ export default Component.extend(DragNDrop.DraggableMixin, {
       } else {
         this.toggleProperty('displayAcceptFields');
       }
+      this.set('showConfirmAccept', false);
     },
-    cancelAccept(){
+
+    cancelAccept() {
       this.toggleProperty('displayAcceptFields');
+    },
+
+    confirmAccept() {
+      this.set('showConfirmAccept', true);
+    },
+    hideConfirmAccept() {
+      this.set('showConfirmAccept', false);
+    },
+    confirmRescind() {
+      this.set('showConfirmRescind', true);
+    },
+    hideConfirmRescind() {
+      this.set('showConfirmRescind', false);
     }
   }
 });

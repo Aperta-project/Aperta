@@ -32,31 +32,32 @@ class JIRAIntegrationService
     end
 
     def build_payload(user, feedback_params)
+      doi = Paper.find_by(id: feedback_params[:paper_id]).try(:doi)
       description = feedback_params[:remarks] + "\n\n"
       description += "Referrer: #{feedback_params[:referrer]} \n"
       description += "User Email: #{user.email} \n"
       description += "Attachments:\n#{attachment_urls(feedback_params)}" if attachments_exist?(feedback_params)
       description += "\n\n"
-      fields = {
-        summary: "Aperta Feedback from #{user.full_name}.",
-        description: description,
-        customfield_13500: user.username,
-        customfield_13501: feedback_params[:browser],
-        customfield_13502: feedback_params[:platform],
-        customfield_13503: 'Some Fake DOI',
 
-        project: {
-          key: TahiEnv.jira_project
-        },
-        components: [{
-          name: "Aperta"
-        }],
-        issuetype: {
-          name: "Feedback"
+      {
+        fields: {
+          summary: "Aperta Feedback from #{user.full_name}.",
+          description: description,
+          customfield_13500: user.username,
+          customfield_13501: feedback_params[:browser],
+          customfield_13502: feedback_params[:platform],
+          customfield_13503: doi,
+          project: {
+            key: TahiEnv.jira_project
+          },
+          components: [{
+            name: "Aperta"
+          }],
+          issuetype: {
+            name: "Feedback"
+          }
         }
       }
-
-      { fields: fields }
     end
 
     def attachment_urls(feedback_params)

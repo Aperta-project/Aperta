@@ -13,16 +13,18 @@ describe JIRAIntegrationService do
     end
 
     it 'adds custom jira issue fields' do
+      paper = FactoryGirl.create(:paper)
       params.merge!(
         browser: 'Firefox 42.3',
-        platform: 'Platform 9'
+        platform: 'Platform 9',
+        paper_id: paper.id
       )
 
       fields = subject.build_payload(user, params)[:fields]
       expect(fields[:customfield_13500]).to eq(user.username)
       expect(fields[:customfield_13501]).to eq('Firefox 42.3')
       expect(fields[:customfield_13502]).to eq('Platform 9')
-      expect(fields[:customfield_13503]).to eq('Some Fake DOI')
+      expect(fields[:customfield_13503]).to eq(paper.doi)
     end
 
     context 'with one attachment' do

@@ -18,6 +18,6 @@ class FeedbackController < ApplicationController
   private
 
   def feedback_params
-    params.require(:feedback).permit(:remarks, :referrer, screenshots: [:url, :filename])
+    params.require(:feedback).permit(:remarks, :referrer, :paper_id, screenshots: [:url, :filename])
   end
 end

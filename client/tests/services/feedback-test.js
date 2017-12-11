@@ -13,9 +13,14 @@ test('sendFeedback calls Restless with the appropriate params', function(assert)
 
   let fakeRestless = {
     post: sinon.spy()
-  }
+  };
+
+  let fakePaper = {
+    id: 42
+  };
 
   let service = this.subject({restless: fakeRestless});
+  service.setContext(fakePaper);
 
   service.sendFeedback(referrerAddress, remarkText, shots);
 
@@ -25,6 +30,7 @@ test('sendFeedback calls Restless with the appropriate params', function(assert)
       feedback: {
         referrer: referrerAddress,
         remarks: remarkText,
+        paper_id: 42,
         screenshots: shots
       }
     }));

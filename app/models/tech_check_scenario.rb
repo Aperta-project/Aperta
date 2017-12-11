@@ -41,7 +41,7 @@ class TechCheckScenario < TemplateContext
         # Dont check the display reason editor value(targets[1]). This should be
         # replaced once we have a tag system for better identifying answers
         targets.delete_at 1
-        targets.all? { |child| child.answers[0].try(:value) }
+        targets.all? { |child| child.answers.order(created_at: :desc)[0].try(:value) }
       else
         false
       end

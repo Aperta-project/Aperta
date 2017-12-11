@@ -9,7 +9,7 @@ class FeedbackController < ApplicationController
         browser: "#{browser.name} #{browser.version}",
         platform: "#{browser.platform.name} #{browser.platform.version}"
       }.merge(feedback_params)
-      JIRAIntegrationWorker.perform_async(current_user.id, jira_params)
+      JiraWorker.perform_async(current_user.id, jira_params)
     end
 
     render json: {}, status: :created

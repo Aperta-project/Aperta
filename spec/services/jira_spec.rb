@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe JIRAIntegrationService do
+describe Jira do
   subject { described_class }
 
   describe '#build_payload' do

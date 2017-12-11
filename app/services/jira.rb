@@ -1,5 +1,5 @@
 # Service class to handle communication with JIRA
-class JIRAIntegrationService
+class Jira
   class << self
     def create_issue(user_id, feedback_params)
       user = User.find(user_id)

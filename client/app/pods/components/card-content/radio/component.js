@@ -4,6 +4,9 @@ import { PropTypes } from 'ember-prop-types';
 export default Ember.Component.extend({
   classNames: ['card-content', 'card-content-radio'],
   tagName: 'fieldset',
+  attributeBindings: ['data-ident'],
+  'data-ident': Ember.computed.alias('content.ident'),
+
   propTypes: {
     answer: PropTypes.EmberObject.isRequired,
     content: PropTypes.EmberObject.isRequired,

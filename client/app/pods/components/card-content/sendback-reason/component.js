@@ -8,6 +8,9 @@ let childAt = function(key, position) {
 };
 
 export default Ember.Component.extend({
+  classNames: ['card-content', 'card-content-sendback-reason'],
+  attributeBindings: ['data-ident'],
+  'data-ident': Ember.computed.alias('content.ident'),
 
   propTypes: {
     answer: PropTypes.EmberObject.isRequired,
@@ -16,8 +19,6 @@ export default Ember.Component.extend({
     repetition: PropTypes.oneOfType([PropTypes.null, PropTypes.EmberObject]).isRequired,
     answerChanged: PropTypes.any.isRequired
   },
-
-  classNames: ['card-content', 'card-content-sendback-reason'],
 
   shouldHide: Ember.observer('checkboxAnswer.value', function() {
     Ember.run.once(this, 'revertChildrenAnswers');

@@ -57,18 +57,17 @@ export default Ember.Component.extend({
     return {
       url: `/api/tasks/${this.get('owner.id')}/${endpoint}`,
       data: {
-        intro: this.get('emailIntroText'),
-        footer: this.get('emailFooterText')
+        ident: 'preprint-sendbacks',
       }
     };
   },
 
   actions: {
     generatePreview() {
-      const config = this._templateConfig('sendback_preview');
+      const config = this._templateConfig('render_template');
 
       this.get('restless').put(config.url, config.data).then((data)=> {
-        this.set('emailPreview', data.body);
+        this.set('emailPreview', data.letter_template.body);
         this.set('showEmailPreview', true);
       });
     },

@@ -73,18 +73,6 @@ class TasksController < ApplicationController
     respond_with(task)
   end
 
-  def load_email_template
-    requires_user_can :edit, task
-    @task = Task.find(params[:id])
-    template_name = params[:letter_template_name]
-    @letter_template = render_email_template(@task.paper, template_name)
-    render json:  {
-      to: @letter_template.to,
-      subject: @letter_template.subject,
-      body: @letter_template.body
-    }
-  end
-
   def send_message
     requires_user_can :edit, task
     users = User.where(id: task_email_params[:recipients])
@@ -126,19 +114,10 @@ class TasksController < ApplicationController
     }
   end
 
-  def sendback_preview
-    task = Task.find(params[:id])
-    letter_template = render_sendback_template(task)
-    render json:  {
-      to: letter_template.to,
-      subject: letter_template.subject,
-      body: letter_template.body
-    }
-  end
-
   def sendback_email
-    task = Task.find(params[:id])
-    letter_template = render_sendback_template(task)
+    letter_template = task.journal.letter_templates.find_by(ident: 'preprint-sendbacks')
+    letter_template.render(TechCheckScenario.new(task), check_blanks: false)
+
     GenericMailer.delay.send_email(
       subject: letter_template.subject,
       body: letter_template.body,
@@ -169,25 +148,30 @@ class TasksController < ApplicationController
     )
   end
 
+  def load_email_template
+    requires_user_can :edit, task
+    template = render_email_template(task, params[:letter_template_name])
+    render json: template
+  end
+
+  def render_template
+    template = render_email_template(task, params[:ident])
+    return head 404 if template.errors.present?
+    render json: template
+  end
+
   private
 
-  def trigger_email_sent_event(task_obj)
-    paper = task_obj.paper
-    event = Event.new(name: 'paper.email_sent', paper: paper, task: task_obj, user: current_user)
-    event.trigger
+  def trigger_email_sent_event(task)
+    Event.new(name: 'paper.email_sent', paper: task.paper, task: task, user: current_user).trigger
   end
 
-  def render_sendback_template(task_obj)
-    paper = task_obj.paper
-    journal = paper.journal
-    letter_template = journal.letter_templates.find_by(name: 'Sendback Reasons')
-    letter_template.render(TechCheckScenario.new(task_obj), check_blanks: false)
-  end
-
-  def render_email_template(paper, template_name)
-    journal = paper.journal
-    letter_template = journal.letter_templates.find_by(ident: template_name)
-    letter_template.render(letter_template.scenario_class.new(paper), check_blanks: false)
+  def render_email_template(task, template_ident)
+    # This can only render templates whose scenarios wrap Task, Paper, or Journal as is
+    # In the future LetterTemplates could define their own custom object selection mechanisms
+    # Which would allow them to be rendered for custom objects
+    template = task.paper.journal.letter_templates.find_by(ident: template_ident)
+    template.render(template.scenario_class.new(template.object_for_task(task)))
   end
 
   def paper

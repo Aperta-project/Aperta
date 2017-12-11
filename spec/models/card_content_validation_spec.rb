@@ -2,6 +2,20 @@ require 'rails_helper'
 
 describe CardContentValidation do
   context 'validate' do
+    describe '#letter_template_exists' do
+      let(:content) { FactoryGirl.build(:card_content, :template) }
+
+      it 'is valid with an existing template' do
+        FactoryGirl.create(:letter_template, ident: 'ident')
+        expect(content).to be_valid
+      end
+
+      it 'is invalid with a non existing template' do
+        FactoryGirl.create(:letter_template, ident: 'not matching')
+        expect(content).not_to be_valid
+      end
+    end
+
     context '#validate_by_string_match' do
       subject(:card_content_validation) do
         FactoryGirl.create(:card_content_validation, :with_string_match_validation, validator: 'org')

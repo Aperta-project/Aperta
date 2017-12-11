@@ -25,6 +25,7 @@ Router.map(function() {
 
     this.route('correspondence', { path: '/correspondence' }, function() {
       this.route('edit', { path: '/:correspondence_id/edit' });
+      this.route('delete', { path: '/:correspondence_id/delete' });
       this.route('viewcorrespondence',  { path: '/viewcorrespondence/:id' });
       this.route('new', { path: '/new' });
       this.route('discussions', function() {

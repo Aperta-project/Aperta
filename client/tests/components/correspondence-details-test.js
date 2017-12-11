@@ -45,4 +45,3 @@ test('shows the last activity', function(assert) {
 
   assert.textPresent('.history-text', 'Edited by John Doe');
 });
-

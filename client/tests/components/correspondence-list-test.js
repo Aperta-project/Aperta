@@ -125,3 +125,27 @@ test('correspondence with activities show the activity atop the entry', function
     assert.textPresent('.correspondence-table .most-recent-activity', 'Added by Jim');
   });
 });
+
+test('deleted correspondence renders deleted view of list items', function(assert) {
+  let paper = FactoryGuy.make('paper');
+  let correspondence = FactoryGuy.make('correspondence', 'externalCorrespondence', {
+    status: 'deleted',
+    activities: [
+      { key: 'correspondence.deleted', full_name: 'Jim', created_at: '1989-8-19' }
+    ],
+    paper: paper
+  });
+  const can = FakeCanService.create().allowPermission('manage_workflow', paper);
+  this.register('service:can', can.asService());
+
+  this.set('correspondence', [correspondence]);
+  this.set('paper', paper);
+  this.render(template);
+
+  return wait().then(() => {
+    assert.textPresent('tr:last td:nth-child(2)', 'view details');
+    assert.textPresent('tr:last td:nth-child(3)', 'n.a.');
+    assert.equal(this.$('tr:last td:nth-child(4)').length, 1, 'n.a.');
+    assert.textPresent('tr:last td:nth-child(5)', 'n.a.');
+  });
+});

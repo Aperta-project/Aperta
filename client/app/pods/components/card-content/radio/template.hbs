@@ -1,5 +1,15 @@
-{{#card-content/label content=content}}
-{{/card-content/label}}
+{{#if hasText}}
+  <div class="card-form-text">
+    {{{content.text}}}
+  </div>
+{{/if}}
+
+{{#if hasLabel}}
+  <div class="card-form-label">
+    {{{content.label}}}
+    {{partial "required-field"}}
+  </div>
+{{/if}}
 
 {{#if isText}}
   {{#each content.possibleValues as |opt index|}}

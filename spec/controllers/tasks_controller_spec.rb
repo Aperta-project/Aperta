@@ -157,7 +157,7 @@ describe TasksController, redis: true do
 
     context "when the user has access" do
       before do
-        FactoryGirl.create(:letter_template, journal: journal, name: 'Sendback Reasons')
+        FactoryGirl.create(:letter_template, journal: journal, name: 'Sendback Reasons', ident: 'preprint-sendbacks')
         stub_sign_in user
       end
 

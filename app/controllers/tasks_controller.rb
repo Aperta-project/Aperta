@@ -115,7 +115,7 @@ class TasksController < ApplicationController
   end
 
   def sendback_email
-    letter_template = task.journal.letter_templates.find_by(name: 'Sendback Reasons')
+    letter_template = task.journal.letter_templates.find_by(ident: 'preprint-sendbacks')
     letter_template.render(TechCheckScenario.new(task), check_blanks: false)
 
     GenericMailer.delay.send_email(

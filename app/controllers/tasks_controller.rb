@@ -150,8 +150,8 @@ class TasksController < ApplicationController
 
   def load_email_template
     requires_user_can :edit, task
-    template_name = params[:letter_template_name]
-    template = render_email_template(task.paper, template_name)
+    template_ident = params[:letter_template_name]
+    template = render_email_template(task.paper, template_ident)
     render json: template
   end
 
@@ -176,9 +176,8 @@ class TasksController < ApplicationController
     event.trigger
   end
 
-  def render_email_template(paper, template_name)
-    journal = paper.journal
-    letter_template = journal.letter_templates.find_by(ident: template_name)
+  def render_email_template(paper, template_ident)
+    letter_template = paper.journal.letter_templates.find_by(ident: template_ident)
     letter_template.render(letter_template.scenario_class.new(paper), check_blanks: false)
   end
 

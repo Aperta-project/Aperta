@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This test case validates the Authors Task.
@@ -43,7 +43,8 @@ class CoAuthorConfirmationTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     mmt = 'Essay'
     # Per APERTA-10873, co-author confirmation is disabled for non-PLOS Biology journals.
-    self.create_article(journal='PLOS Biology', type_=mmt, random_bit=True)
+    self.create_article(title='Testing Co-author Confirmation email', journal='PLOS Biology',
+                        type_=mmt, random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     paper_canonical_url = manuscript_page.get_current_url().split('?')[0]
@@ -107,7 +108,8 @@ class CoAuthorConfirmationTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     mmt = 'Essay'
     # Per APERTA-10873, co-author confirmation is disabled for non-PLOS Biology journals.
-    self.create_article(journal='PLOS Biology', type_=mmt, random_bit=True)
+    self.create_article(title = 'Testing group Co-author Confirmation email', journal='PLOS Biology',
+                        type_=mmt, random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     paper_canonical_url = manuscript_page.get_current_url().split('?')[0]
@@ -151,4 +153,4 @@ class CoAuthorConfirmationTest(CommonTest):
 
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

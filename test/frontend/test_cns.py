@@ -129,4 +129,4 @@ class ApertaCNSTest(CommonTest):
       assert submit_button.text.lower() == 'submit'
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

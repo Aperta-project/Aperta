@@ -1,6 +1,7 @@
 # require 'spec_helper' in your specs when you don't want to load dependencies
 require 'rspec/instafail'
 require 'rspec/retry'
+require 'aasm/rspec'
 
 RSpec.configure do |config|
   config.mock_with :rspec do |mocks|

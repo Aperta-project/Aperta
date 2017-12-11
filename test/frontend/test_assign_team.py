@@ -93,4 +93,4 @@ class AssignTeamCardTest(CommonTest):
     assign_team.revoke_assignment(reviewer_login, 'Reviewer')
 
 if __name__ == '__main__':
-  CommonTest._run_tests_randomly()
+  CommonTest.run_tests_randomly()

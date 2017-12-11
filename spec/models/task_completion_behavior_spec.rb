@@ -5,7 +5,8 @@ describe Behavior do
   let(:journal) { create(:journal) }
   let(:paper) { create(:paper, journal: journal) }
   let(:card) { FactoryGirl.create(:card, :versioned) }
-  let(:task) { create(:task, paper: paper, title: 'My Task', card_version: card.latest_published_card_version, completed: completed) }
+  let(:cardversion) { card.latest_published_card_version }
+  let(:task) { create(:task, paper: paper, title: 'My Task', card_version: cardversion, completed: completed) }
   let(:event) { Event.new(name: :fake_event, paper: paper, task: task, user: paper.creator) }
   subject { build(:task_completion_behavior, change_to: change_to, card_id: card_id) }
 
@@ -24,15 +25,14 @@ describe Behavior do
     context "and the task was completed" do
       let(:completed) { true }
       it "marks the task incomplete" do
-        event.trigger
-        expect(task.completed).to be(false)
+        expect { event.trigger }.to change { task.reload.completed }.from(true).to(false)
       end
     end
     context "and the task incomplete" do
       let(:completed) { false }
       it "marks the task incomplete" do
         event.trigger
-        expect(task.completed).to be(false)
+        expect(task.reload.completed).to be(false)
       end
     end
   end
@@ -43,15 +43,13 @@ describe Behavior do
     context "and the task was completed" do
       let(:completed) { true }
       it "marks the task completed" do
-        event.trigger
-        expect(task.completed).to be(true)
+        expect(task.reload.completed).to be(true)
       end
     end
     context "and the task incomplete" do
       let(:completed) { false }
       it "marks the task completed" do
-        event.trigger
-        expect(task.completed).to be(true)
+        expect { event.trigger }.to change { task.reload.completed }.from(false).to(true)
       end
     end
   end
@@ -62,15 +60,13 @@ describe Behavior do
     context "and the task was completed" do
       let(:completed) { true }
       it "marks the task incomplete" do
-        event.trigger
-        expect(task.completed).to be(false)
+        expect { event.trigger }.to change { task.reload.completed }.from(true).to(false)
       end
     end
     context "and the task incomplete" do
       let(:completed) { false }
       it "marks the task completed" do
-        event.trigger
-        expect(task.completed).to be(true)
+        expect { event.trigger }.to change { task.reload.completed }.from(false).to(true)
       end
     end
   end
@@ -82,14 +78,14 @@ describe Behavior do
       let(:completed) { true }
       it "marks the task unchanged" do
         event.trigger
-        expect(task.completed).to be(true)
+        expect(task.reload.completed).to be(true)
       end
     end
     context "and the task incomplete" do
       let(:completed) { false }
       it "marks the task unchanged" do
         event.trigger
-        expect(task.completed).to be(false)
+        expect(task.reload.completed).to be(false)
       end
     end
   end
@@ -102,14 +98,78 @@ describe Behavior do
       let(:completed) { true }
       it "marks the task unchanged" do
         event.trigger
-        expect(task.completed).to be(true)
+        expect(task.reload.completed).to be(true)
       end
     end
     context "and the task incomplete" do
       let(:completed) { false }
       it "marks the task unchanged" do
         event.trigger
-        expect(task.completed).to be(false)
+        expect(task.reload.completed).to be(false)
+      end
+    end
+  end
+
+  context "when multiple tasks instances of the same card are on the same paper" do
+    let!(:task2) { create(:task, paper: paper, title: 'My Task2', card_version: cardversion, completed: completed) }
+    context "and change_to is incomplete" do
+      let(:change_to) { 'incomplete' }
+      let(:card_id) { card.id }
+      context "and the task was completed" do
+        let(:completed) { true }
+        it "marks the task incomplete" do
+          event.trigger
+          expect(task.reload.completed).to be(false)
+          expect(task2.reload.completed).to be(false)
+        end
+      end
+      context "and the task incomplete" do
+        let(:completed) { false }
+        it "marks the task incomplete" do
+          event.trigger
+          expect(task.reload.completed).to be(false)
+          expect(task2.reload.completed).to be(false)
+        end
+      end
+    end
+    context "when change_to is completed" do
+      let(:change_to) { 'completed' }
+      let(:card_id) { card.id }
+      context "and the task was completed" do
+        let(:completed) { true }
+        it "marks the task completed" do
+          event.trigger
+          expect(task.reload.completed).to be(true)
+          expect(task2.reload.completed).to be(true)
+        end
+      end
+      context "and the task incomplete" do
+        let(:completed) { false }
+        it "marks the task completed" do
+          event.trigger
+          expect(task.reload.completed).to be(true)
+          expect(task2.reload.completed).to be(true)
+        end
+      end
+    end
+    context "when change_to is toggle" do
+      let(:change_to) { 'toggle' }
+      let(:card_id) { card.id }
+      context "and the task was completed" do
+        let(:completed) { true }
+        it "marks the task incomplete" do
+          event.trigger
+          expect(task.reload.completed).to be(false)
+          expect(task2.reload.completed).to be(false)
+        end
+      end
+      context "and the task incomplete" do
+        let(:completed) { false }
+        it "marks the task completed" do
+          event.trigger
+          expect(task.reload.completed).to be(true)
+          expect(task2.reload.completed).to be(true)
+        end
       end
     end
   end

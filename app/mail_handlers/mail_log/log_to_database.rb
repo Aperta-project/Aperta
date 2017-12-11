@@ -56,10 +56,12 @@ module MailLog
       end
 
       def self.get_recipients(message)
-        message.to.map do |to_email|
-          u = User.find_by(email: to_email)
-          u ? "#{u.full_name} <#{to_email}>" : to_email
-        end.join(', ')
+        recipients = Array(message.to)
+        users = User.where(email: recipients)
+        emails = users.map(&:email).compact
+        unknown = recipients - emails
+        known = users.map { |user| "#{user.full_name} <#{user.email}>" }
+        (known + unknown).join(', ')
       end
     end
 

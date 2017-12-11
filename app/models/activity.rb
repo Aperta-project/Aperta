@@ -373,6 +373,17 @@ class Activity < ActiveRecord::Base
     )
   end
 
+  def self.correspondence_deleted!(correspondence, user:)
+    correspondence_url = client_show_correspondence_url(correspondence)
+    create(
+      feed_name: 'workflow',
+      activity_key: 'correspondence.deleted',
+      subject: correspondence,
+      user: user,
+      message: "A <a href='#{correspondence_url}'>correspondence entry</a> was deleted"
+    )
+  end
+
   def self.due_datetime_updated!(due_datetime, user:)
     new_due_date = due_datetime.due_at.strftime('%B %d, %Y')
     reviewer_name = due_datetime.due.user.full_name

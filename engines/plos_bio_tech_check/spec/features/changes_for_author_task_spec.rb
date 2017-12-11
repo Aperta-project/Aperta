@@ -9,6 +9,6 @@ feature 'Changes For Author', js: true do
   scenario "paper is editable but not submittable" do
     login_as(author)
     overlay = Page.view_task_overlay(paper, task)
-    overlay.find("button#submit-tech-fix").click
+    overlay.find("button.task-completed").click
   end
 end

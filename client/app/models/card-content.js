@@ -19,7 +19,7 @@ export default DS.Model.extend({
   contentType: DS.attr('string'),
   ident: DS.attr('string'),
   possibleValues: DS.attr(),
-  defaultAnswerValue: DS.attr(),
+  defaultAnswerValue: DS.attr('string'),
   order: DS.attr('number'),
   text: DS.attr('string'),
   instructionText: DS.attr('string'),
@@ -123,12 +123,10 @@ export default DS.Model.extend({
     let defaultAnswerValue = this.get('defaultAnswerValue');
     if(!defaultAnswerValue) { return; }
 
-    // If the valueType is text or html, it will return it, otherwise (boolean) it will
-    // cast it will typecast it to boolean
-    if(this.get('valueType') === 'text' || this.get('valueType') === 'html')  {
-      return defaultAnswerValue;
+    if (this.get('valueType') === 'boolean') {
+      return defaultAnswerValue.trim() === 'true';
     } else {
-      return JSON.parse(defaultAnswerValue);
+      return defaultAnswerValue;
     }
   },
 

@@ -133,6 +133,8 @@ class PapersController < ApplicationController
       if paper.gradual_engagement? && paper.unsubmitted?
         paper.initial_submit! current_user
         Activity.paper_initially_submitted! paper, user: current_user
+      elsif paper.checking?
+        paper.submit_minor_check! current_user
       else
         paper.submit! current_user
         Activity.paper_submitted! paper, user: current_user

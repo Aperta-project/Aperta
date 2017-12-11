@@ -7,15 +7,6 @@ export default Ember.Component.extend({
 
   classNames: ['report-status'],
   readOnly: false,
-
-  inactiveAdminEdits: Ember.computed('report.adminEdits.[]', function() {
-    let edits = this.get('report.adminEdits');
-    if (Ember.isPresent(edits)) {
-      return edits.filterBy('active', false).sortBy('updated_at');
-    }
-  }),
-
-
   editingClass: Ember.computed('report.activeAdminEdit', function() {
     return this.get('report.activeAdminEdit') ? 'editing' : '';
   }),

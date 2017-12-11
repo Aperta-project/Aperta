@@ -150,8 +150,7 @@ class TasksController < ApplicationController
 
   def load_email_template
     requires_user_can :edit, task
-    template_ident = params[:letter_template_name]
-    template = render_email_template(task.paper, template_ident)
+    template = render_email_template(task.paper, params[:letter_template_name])
     render json:  {
       to: template.to,
       subject: template.subject,

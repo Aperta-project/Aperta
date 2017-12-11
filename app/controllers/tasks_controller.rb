@@ -175,9 +175,7 @@ class TasksController < ApplicationController
   private
 
   def trigger_email_sent_event(task)
-    paper = task.paper
-    event = Event.new(name: 'paper.email_sent', paper: paper, task: task, user: current_user)
-    event.trigger
+    Event.new(name: 'paper.email_sent', paper: task.paper, task: task, user: current_user).trigger
   end
 
   def render_email_template(paper, template_ident)

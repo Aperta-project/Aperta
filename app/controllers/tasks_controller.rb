@@ -150,23 +150,12 @@ class TasksController < ApplicationController
 
   def load_email_template
     requires_user_can :edit, task
-    template = render_email_template(task.paper, params[:letter_template_name])
-    render json:  {
-      to: template.to,
-      subject: template.subject,
-      body: template.body
-    }
+    template = render_email_template(task, params[:letter_template_name])
+    render json: template
   end
 
   def render_template
-    # This can only render templates whose scenarios wrap Task, Paper, or Journal as is
-    # In the future LetterTemplates could define their own custom object selection mechanisms
-    # Which would allow them to be rendered for custom objects
-    templates = task.journal.letter_templates
-    template = templates.find_by(ident: params[:ident])
-    scenario_class = template.scenario_class
-    scenario_object = template.object_for_task(task)
-    template.render(scenario_class.new(scenario_object))
+    template = render_email_template(task, params[:ident])
     return head 404 if template.errors.present?
     render json: template
   end
@@ -177,9 +166,12 @@ class TasksController < ApplicationController
     Event.new(name: 'paper.email_sent', paper: task.paper, task: task, user: current_user).trigger
   end
 
-  def render_email_template(paper, template_ident)
-    letter_template = paper.journal.letter_templates.find_by(ident: template_ident)
-    letter_template.render(letter_template.scenario_class.new(paper), check_blanks: false)
+  def render_email_template(task, template_ident)
+    # This can only render templates whose scenarios wrap Task, Paper, or Journal as is
+    # In the future LetterTemplates could define their own custom object selection mechanisms
+    # Which would allow them to be rendered for custom objects
+    template = task.paper.journal.letter_templates.find_by(ident: template_ident)
+    template.render(template.scenario_class.new(template.object_for_task(task)))
   end
 
   def paper

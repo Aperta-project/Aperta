@@ -25,9 +25,9 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     let templateName = this.get('content.letterTemplate');
 
     this.get('restless').get(config.url, {letter_template_name: templateName}).then((data)=> {
-      this.set('emailToField', data.to);
-      this.set('emailToSubject', data.subject);
-      this.set('emailToBody', data.body);
+      this.set('emailToField', data.letter_template.to);
+      this.set('emailToSubject', data.letter_template.subject);
+      this.set('emailToBody', data.letter_template.body);
     });
   },
 

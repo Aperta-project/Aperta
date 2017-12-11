@@ -10,6 +10,7 @@ class Card < ActiveRecord::Base
   belongs_to :journal, inverse_of: :cards
   has_many :card_versions, inverse_of: :card, dependent: :destroy
   has_many :task_templates, inverse_of: :card, dependent: :destroy
+  has_one :latest_card_version, ->(card) { where(version: card.latest_version) }, class_name: 'CardVersion'
 
   validates :card_task_type, presence: true
 
@@ -120,10 +121,6 @@ class Card < ActiveRecord::Base
       card.save!
       card
     end
-  end
-
-  def latest_card_version
-    card_versions.find_by(version: latest_version)
   end
 
   def latest_published_card_version

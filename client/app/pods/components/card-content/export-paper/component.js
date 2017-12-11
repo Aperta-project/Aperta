@@ -3,12 +3,16 @@ import { task } from 'ember-concurrency';
 
 export default Ember.Component.extend({
   classNames: ['card-content', 'card-content-export-paper'],
+  attributeBindings: ['data-ident'],
+  'data-ident': Ember.computed.alias('content.ident'),
+
   owner: null, //owner
   content: null, //card content
   disabled: false,
   store: Ember.inject.service(),
   task: Ember.computed.reads('owner'),
   destination: Ember.computed.reads('content.text'),
+
   createExportDelivery: task(function * () {
     if (this.get('disabled')) {
       return;

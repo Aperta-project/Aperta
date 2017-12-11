@@ -2,6 +2,9 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   classNames: ['card-content-tech-check-email'],
+  attributeBindings: ['data-ident'],
+  'data-ident': Ember.computed.alias('content.ident'),
+
   showEmailPreview: false,
   restless: Ember.inject.service('restless'),
   flash: Ember.inject.service('flash'),

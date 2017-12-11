@@ -8,6 +8,9 @@ let computedFromAnswer = function(ident) {
 };
 
 const Funder = Ember.Object.extend({
+  attributeBindings: ['data-ident'],
+  'data-ident': Ember.computed.alias('content.ident'),
+
   answers: null,
   repetition: null,
 

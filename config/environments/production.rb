@@ -45,7 +45,7 @@ Tahi::Application.configure do
   config.force_ssl = TahiEnv.force_ssl?
 
   # Send output to syslog, local3 facility (per Chris H 2017-12-07).
-  syslogger = Syslogger.new("Aperta", Syslog::LOG_PID, Syslog::LOG_LOCAL3)
+  syslogger = Syslogger.new("Tahi", Syslog::LOG_PID, Syslog::LOG_LOCAL3)
   config.logger = ActiveSupport::TaggedLogging.new(syslogger)
 
   # Set to :debug to see everything in the log.

@@ -1,0 +1,11 @@
+{{#overlay-fullscreen
+  visible=true
+  outAnimationComplete=(action "hideCorrespondenceOverlay")
+  title="This will permanently delete this record. Are you sure?"
+  enableClose=false
+  wormhole=false
+  overlayClass="correspondence-overlay correspondence-delete" as |overlay|}}
+  {{correspondence-delete-form model=model
+                        paper=linkedPaper
+                        close=(action 'hideCorrespondenceOverlay')}}
+{{/overlay-fullscreen}}

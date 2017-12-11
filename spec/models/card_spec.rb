@@ -24,24 +24,6 @@ describe Card do
       new_valid_card = FactoryGirl.build(:card, name: "Foo", journal: journal_b)
       expect(new_valid_card).to be_valid
     end
-
-    describe 'template validation' do
-      let(:content) { FactoryGirl.create(:card_content, :template) }
-
-      it 'is valid with an existing template' do
-        FactoryGirl.create(:letter_template, ident: 'ident')
-        card.latest_card_version.content_root.children << content
-        card.latest_card_version.card_contents << content
-        expect(card).to be_valid
-      end
-
-      it 'is invalid with a non existing template' do
-        FactoryGirl.create(:letter_template, ident: 'not matching')
-        card.latest_card_version.content_root.children << content
-        card.latest_card_version.card_contents << content
-        expect(card).to_not be_valid
-      end
-    end
   end
 
   describe 'create_published!' do

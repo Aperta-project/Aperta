@@ -27,7 +27,7 @@ feature 'Initial Tech Check', js: true do
     login_as(author, scope: :user)
     overlay = Page.view_task_overlay(paper, change_author_task)
     overlay.expect_to_see_change_list
-    overlay.click_changes_have_been_made
+    overlay.mark_as_complete
     overlay.dismiss
 
     # Creator cannot access initial tech check task

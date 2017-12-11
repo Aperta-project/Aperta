@@ -1,5 +1,5 @@
 .task.read-only {
-  button, .button {
+  *:not(.mce-btn) > button, .button {
     &:not(.display-while-disabled) {
       display: none;
     }

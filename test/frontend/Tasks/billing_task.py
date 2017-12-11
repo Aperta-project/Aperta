@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import logging
 import time
@@ -32,9 +32,11 @@ class BillingTask(BaseTask):
     self._city = (By.NAME, 'plos_billing--city')
     self._zip = (By.NAME, 'plos_billing--postal_code')
     self._payment_option = (By.CSS_SELECTOR, 'div.payment-method a')
+    self._affiliation1_parent = (By.CLASS_NAME, 'plos_billing--affiliation1')
     # This ID is bogus and dynamic, untrustworthy
     self._payment_prices_ul = (By.CSS_SELECTOR, 'div.task-main-content > div > p + ul')
     self._payment_items_parent = (By.CSS_SELECTOR, 'div.select2-drop-active')
+    self._payment_option_arrow = (By.CSS_SELECTOR, 'div.affiliation-field span.select2-arrow')
 
    # POM Actions
   def complete(self, data=data):
@@ -59,7 +61,11 @@ class BillingTask(BaseTask):
     self._get(self._first_name).send_keys(data['fist_name'])
     self._get(self._last_name).send_keys(data['last_name'])
     self._get(self._department).send_keys(data['department'])
-    self._get(self._affiliation1).send_keys(data['affiliation'])
+    affiliation1 = self._get(self._affiliation1)
+    affiliation1_parent = self._get(self._affiliation1_parent)
+    self.scroll_element_into_view_below_toolbar(self._get(self._department))
+    affiliation1.send_keys(data['affiliation'])
+    self.select_institution(affiliation1_parent, data['affiliation'])
     self._get(self._phone).send_keys(data['phone'])
     self._get(self._email).send_keys(data['email'])
     self._get(self._address1).send_keys(data['address1'])
@@ -68,10 +74,10 @@ class BillingTask(BaseTask):
     self._wait_for_text_to_be_present_in_element_value(self._zip, data['zip'])
     payment_prices = self._get(self._payment_prices_ul)
     self._scroll_into_view(payment_prices)
-    self._actions.move_to_element(payment_prices).perform()
     self._wait_for_element(self._get(self._payment_option))
     payment_select = self._get(self._payment_option)
-    self._actions.move_to_element(payment_select).click().perform()
+    payment_options_arrow = self._get(self._payment_option_arrow)
+    payment_options_arrow.click()
     # Grab the items in the select2 dropdown, then make selection
     # previous send_keys method no longer works.
     self._wait_for_element(self._get(self._payment_items_parent))

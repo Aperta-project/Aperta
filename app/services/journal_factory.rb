@@ -75,7 +75,7 @@ class JournalFactory
 
       # Creator(s) only get access to the submission task types
       task_klasses = SUBMISSION_TASKS
-      task_klasses += [PlosBioTechCheck::ChangesForAuthorTask, AdHocForAuthorsTask]
+      task_klasses += [AdHocForAuthorsTask]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
@@ -173,6 +173,7 @@ class JournalFactory
       # Reviewer(s) get access to all submission tasks, except a few
       task_klasses = SUBMISSION_TASKS
       task_klasses -= [
+        PlosBioTechCheck::ChangesForAuthorTask,
         PlosBilling::BillingTask,
         TahiStandardTasks::ReviewerRecommendationsTask
       ]
@@ -518,8 +519,8 @@ class JournalFactory
       # Changes For Author tasks. However, AEs can view all
       # ReviewerReportTask(s) and its descendants, but cannot edit them.
       task_klasses -= [
-        PlosBilling::BillingTask,
         PlosBioTechCheck::ChangesForAuthorTask,
+        PlosBilling::BillingTask,
         TahiStandardTasks::RegisterDecisionTask
       ]
       task_klasses += [TahiStandardTasks::ReviewerReportTask]

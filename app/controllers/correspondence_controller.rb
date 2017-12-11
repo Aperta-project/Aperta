@@ -27,9 +27,15 @@ class CorrespondenceController < ApplicationController
   def update
     correspondence = Correspondence.find(params[:id])
     if correspondence && correspondence.external?
-      correspondence.sent_at = params.dig(:correspondence, :date)
-      correspondence.update(correspondence_params)
-      Activity.correspondence_edited! correspondence, user: current_user
+      Correspondence.transaction do
+        correspondence.sent_at = params.dig(:correspondence, :date)
+        correspondence.update!(correspondence_params)
+        if correspondence_params[:status] == 'deleted'
+          Activity.correspondence_deleted! correspondence, user: current_user
+        else
+          Activity.correspondence_edited! correspondence, user: current_user
+        end
+      end
       render json: correspondence, status: :ok
     else
       respond_with correspondence, status: :unprocessable_entity
@@ -47,7 +53,9 @@ class CorrespondenceController < ApplicationController
       :description,
       :subject,
       :body,
-      :external
+      :external,
+      :status,
+      additional_context: [:delete_reason]
     )
   end
 

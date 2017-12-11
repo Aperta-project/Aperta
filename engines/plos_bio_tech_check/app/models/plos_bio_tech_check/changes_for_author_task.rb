@@ -3,6 +3,7 @@ module PlosBioTechCheck
   # after somebody has filled out a TechCheck card and requested changes
   # from the author.
   class ChangesForAuthorTask < Task
+    include SubmissionTask
     # uncomment the following line if you want to enable event streaming for this model
     # include EventStreamNotifier
 
@@ -28,32 +29,11 @@ module PlosBioTechCheck
       self.body = body.merge("initialTechCheckBody" => text)
     end
 
-    def submit_tech_check!(submitted_by:)
-      complete!
-      if paper.submit_minor_check!(submitted_by)
-        increment_initial_tech_check_round!
-        Activity.tech_check_fixed!(paper, user: submitted_by)
-        true
-      else
-        false
-      end
-    end
-
     def notify_changes_for_author
       PlosBioTechCheck::ChangesForAuthorMailer.delay.notify_changes_for_author(
         author_id: paper.creator.id,
         task_id: id
       )
-    end
-
-    private
-
-    def initial_tech_check_tasks
-      paper.tasks.of_type(InitialTechCheckTask)
-    end
-
-    def increment_initial_tech_check_round!
-      initial_tech_check_tasks.map(&:increment_round!)
     end
   end
 end

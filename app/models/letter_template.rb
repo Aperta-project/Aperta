@@ -61,6 +61,14 @@ class LetterTemplate < ActiveRecord::Base
     errors.add(:base, 'Template not renderable')
   end
 
+  def dummy_data_file
+    @dummy_data_file ||= YAML.load_file(Rails.root.join('config', 'letter_templates', 'dummy_data.yml'))
+  end
+
+  def render_dummy_data
+    render(dummy_data_file)
+  end
+
   private
 
   def render_attr(template, context, sanitize: false, check_blanks: false)

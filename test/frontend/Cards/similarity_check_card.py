@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
+
+from dateutil import tz
 from selenium.webdriver.common.by import By
 
 from Base.CustomException import ElementDoesNotExistAssertionError
@@ -30,7 +33,7 @@ class SimilarityCheckCard(BaseCard):
     self._manually_generate_button = (By.CSS_SELECTOR, 'button.generate-report')
     self._report_pending_spinner = (By.CSS_SELECTOR, 'div.progress-spinner')
     self._report_pending_spinner_message = (By.CSS_SELECTOR, 'div.ember-view.progress-spinner-message')
-    self._sim_check_report_title = (By.CSS_SELECTOR, 'latest-versioned-text>h3')
+    self._sim_check_report_title = (By.CSS_SELECTOR, '.latest-versioned-text>h3')
     self._sim_check_report_completed = (By.CSS_SELECTOR, '.latest-versioned-text p')
     self._sim_check_report_score_text = (By.CSS_SELECTOR, '.latest-versioned-text p + p')
     self._sim_check_report_link = (By.CSS_SELECTOR, '.similarity-check a')
@@ -44,14 +47,16 @@ class SimilarityCheckCard(BaseCard):
 
 
   # POM Actions
-  def validate_styles_and_components(self, ithenticate_automation='off'):
+  def validate_styles_and_components(self, ithenticate_automation):
     """
     Validate styles in the Similarity Check Card
     :return: void function
     """
     # AC#4
     card_title = self._get(self._card_heading)
-    assert card_title.text == 'Similarity Check'
+    assert card_title.text == 'Similarity Check', 'Card title {0} is not ' \
+                                                  'the expected: {1}'.format(card_title.text,
+                                                                             'Similarity Check')
     self.validate_overlay_card_title_style(card_title)
 
     # AC 4.1
@@ -75,15 +80,17 @@ class SimilarityCheckCard(BaseCard):
     # ithenticate_automation = 'off'
     if ithenticate_automation == 'off':
       auto_info = self._get(self._automation_disabled_info)
-      assert auto_info.text.strip() == 'Automated similarity check is disabled:'
+      assert auto_info.text.strip() == 'Automated similarity check is disabled:', \
+        auto_info.text.strip()
     else:
       auto_info = self._gets(self._automated_report_status_active)
       expected_text = 'Automated similarity check is active: ' \
                       'This manuscript will be sent to iThenticate on ' + \
                       auto_report_options[ithenticate_automation] + '.'
-      assert auto_info[0].text.strip() == expected_text
+      assert auto_info[0].text.strip() == expected_text, auto_info[0].text.strip()
       assert auto_info[1].text.strip() == 'Manually generating a report below will disable ' \
-                                          'the automated similarity check for this manuscript.'
+                                          'the automated similarity check for this manuscript.', \
+        auto_info[0].text.strip()
 
     if ithenticate_automation == 'at_first_full_submission':
       # check it is pending and "generate button is not enabled
@@ -99,7 +106,7 @@ class SimilarityCheckCard(BaseCard):
         assert 'Similarity Check Report' in report_title.text.strip()
 
     else:
-      # check if the button is enable if the card is incomplete
+      # check if the button is enable when the card is incomplete
       self.validate_generate_report_button()
       self.click_completion_button() # mark task as complete
       # check if the button is disable if the card is complete
@@ -114,16 +121,15 @@ class SimilarityCheckCard(BaseCard):
       send_for_manual_report_button.click()
       # confirm/cancel container
       self._wait_for_element(self._get(self._confirm_container))
-      assert self._get(self._confirm_container)
+      # assert self._get(self._confirm_container)
       confirm_container = self._get(self._confirm_container)
       self.validate_generate_confirmation_style(confirm_container)
 
       confirm_text = self._get(self._confirm_text)
       expected_confirm_text = 'Manually generating the report will disable the automated similarity check ' \
                               'for this manuscript'
-      assert expected_confirm_text == confirm_text.text.strip()
+      assert confirm_text.text.strip() == expected_confirm_text, confirm_text.text.strip()
       confirm_cancel = self._get(self._manually_generate_cancel_link)
-      assert confirm_cancel # cancel link
       self.validate_cancel_confirmation_style(confirm_cancel)
 
       confirm_generate_button = self._get(self._manually_generate_button)
@@ -142,7 +148,7 @@ class SimilarityCheckCard(BaseCard):
   def generate_manual_report(self):
     """
     Generate report manually by clicking on 'Generate Report' button
-    :return: void function
+    :return: url to check results, time when it's started
     """
     send_for_manual_report_button = self._get(self._generate_report_button)
     send_for_manual_report_button.click()
@@ -156,22 +162,42 @@ class SimilarityCheckCard(BaseCard):
     # TODO: add assert for AC 4.2.1.3 when APERTA-11392 gets resolved
     # assert not send_for_manual_report_button.is_displayed
 
-  def validate_report_result(self):
-    """
-    Wait for the report result and validate
-    :return: void function
-    """
     self._wait_for_element(self._get(self._sim_check_report_title), 1)
 
     report_title = self._get(self._sim_check_report_title)
     assert 'Similarity Check Report' in report_title.text.strip(), report_title.text.strip()
     self.validate_application_h3_style(report_title)
+    # html_header_title = self._get(self._header_title_link)
+    # paper_title = html_header_title.text
+    # wait for completed report
+    # self._wait_for_element(self._get(self._sim_check_report_completed))
+    # report_completed = self._get(self._sim_check_report_completed)
+
+    task_url = self.get_current_url()
+    start_time = datetime.now()
+
+    # self._wait_on_lambda(lambda: self.completed_state()==True, max_wait=300)  # score and style
+
+    return task_url, start_time
+
+
+  def validate_report_result(self):
+    """
+    Wait for the report result and validate
+    :return: void function
+    """
+    # self._wait_for_element(self._get(self._sim_check_report_title), 1)
+    #
+    # report_title = self._get(self._sim_check_report_title)
+    # assert 'Similarity Check Report' in report_title.text.strip(), report_title.text.strip()
+    # self.validate_application_h3_style(report_title)
     html_header_title = self._get(self._header_title_link)
     paper_title = html_header_title.text
     # wait for completed report
-    self._wait_for_element(self._get(self._sim_check_report_completed))
-    report_completed = self._get(self._sim_check_report_completed)
+    # self._wait_for_element(self._get(self._sim_check_report_completed))
+    # report_completed = self._get(self._sim_check_report_completed)
     self._wait_on_lambda(lambda: self.completed_state()==True, max_wait=300)  # score and style
+
     #self._wait_for_element(self._get(self._sim_check_report_link), 1000)
     score = self._get(self._sim_check_report_score)
     score = score.text

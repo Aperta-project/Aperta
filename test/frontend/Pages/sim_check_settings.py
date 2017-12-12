@@ -46,18 +46,12 @@ class SimCheckSettings(CardSettings):
     Validate style and components of Similarity Check Settings overlay.
     style is defined by APERTA-10741
     """
-    # expected_overlay_title = 'Similarity Check: Settings'
-    # overlay_title = self._get(self._overlay_header_title)
-    # assert overlay_title.text == expected_overlay_title, 'The card title: {0} is not the expected: ' \
-    #                                                      '{1}'.format(overlay_title.text, expected_overlay_title)
-    # #
-    # self.validate_overlay_card_title_style(overlay_title)
-    #
     auto_slider_input = self._iget(self._automatic_checks_slider_input)
-    # starting with automated setting set to "off"
+    # default automated setting set to "off"
     if auto_slider_input.is_selected():
       self.set_automation(automation=False)
-    assert self._check_for_absence_of_element(self._automatic_options)
+    assert self._check_for_absence_of_element(self._automatic_options), \
+    'Automatic options should not be present if Automation is Off'
 
     self.set_automation(automation=True)
     auto_slider_input = self._iget(self._automatic_checks_slider_input)

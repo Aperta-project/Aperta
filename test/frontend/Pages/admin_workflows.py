@@ -89,6 +89,8 @@ class AdminWorkflowsPage(BaseAdminPage):
     # locators for card settings overlay
     self._similarity_check_card = (By.XPATH, "//a[./span[contains(text(),'Similarity Check')]]")
     self._sim_check_card_settings = (By.XPATH, "//a[./span[contains(text(),'Similarity Check')]]//i")
+    self._card_settings = (By.CSS_SELECTOR, 'i.card--settings')
+
 
 
   # POM Actions
@@ -522,24 +524,23 @@ class AdminWorkflowsPage(BaseAdminPage):
         name.click()
         break
 
-  def click_on_card_settings(self, card_settings_locator):
+  def click_on_card_settings(self, card_locator):
     """
     A function to open card settings
-    :param card_settings_locator: locator to find the gear icon
+    :param card_locator: locator to find the gear icon
     :return: void function
     """
-    self._wait_for_element(self._get(card_settings_locator))
-    settings_icon = self._get(card_settings_locator)
+    self._wait_for_element(self._get(card_locator))
+    card_link = self._get(card_locator)
+    settings_icon = card_link.find_element(*self._card_settings)
     # Hover color of the Similarity Check settings cog should be Admin blue
-    self._scroll_into_view(settings_icon)
     color_before = settings_icon.value_of_css_property('color')
-    logging.info('Icon color before moving to it: '.format(color_before))
-    #self._actions.move_to_element(settings_icon).perform()
+    logging.info('Icon color before moving to it: {0}'.format(color_before))
     logging.info('Moving to settings gear icon')
-    self._actions.move_to_element_with_offset(settings_icon, 1, 1).perform()
-    logging.info('Icon color is: '.format(settings_icon.value_of_css_property('color')))
+    self._actions.move_to_element(settings_icon).click_and_hold().perform()
+    self.pause_to_save()
+    logging.info('Icon color is: {0}'.format(settings_icon.value_of_css_property('color')))
     self._wait_on_lambda(lambda: settings_icon.value_of_css_property('color') != color_before)
-    # time.sleep(1)
     assert settings_icon.value_of_css_property('color') == APERTA_BLUE, \
       settings_icon.value_of_css_property('color')
     settings_icon.click()
@@ -551,7 +552,8 @@ class AdminWorkflowsPage(BaseAdminPage):
     :return: void function
     """
     if setting['card_name'] == 'Similarity Check':
-      self.click_on_card_settings(self._sim_check_card_settings)
+      # self.click_on_card_settings(self._sim_check_card_settings)
+      self.click_on_card_settings(self._similarity_check_card)
       sim_check_settings = SimCheckSettings(self._driver)
       sim_check_settings.set_ithenticate(setting['value'])
       sim_check_settings.click_save_settings()

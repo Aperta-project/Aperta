@@ -105,9 +105,6 @@ describe TahiEnv do
   it_behaves_like 'dependent required boolean env var', var: 'CAS_SSL', dependent_key: 'CAS_ENABLED'
   it_behaves_like 'optional env var', var: 'CAS_CALLBACK_URL'
 
-  # EM / Editorial Manager
-  it_behaves_like 'optional env var', var: 'EM_DATABASE'
-
   # Event Stream
   it_behaves_like 'required env var', var: 'EVENT_STREAM_WS_HOST'
   it_behaves_like 'required env var', var: 'EVENT_STREAM_WS_PORT'

@@ -10,6 +10,10 @@
 
   <button {{action "generatePreview"}} class="button-primary button--green">Show Email Preview</button>
 
+  {{#if previewError}}
+    <p class="preview-error">All selected sendback reason fields must have a value.</p>
+  {{/if}}
+
   {{#if showEmailPreview}}
     <div class="email-preview">
       <h2>Previewing sendback to author email</h2>

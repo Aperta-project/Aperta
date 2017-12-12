@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   showEmailPreview: false,
   restless: Ember.inject.service('restless'),
   flash: Ember.inject.service('flash'),
+  previewError: false,
 
   emailPreview: null,
 
@@ -62,8 +63,29 @@ export default Ember.Component.extend({
     };
   },
 
+  _hasEmptySendbacks() {
+    const sendbacks = this.get('content.parent.children')
+      .findBy('contentType', 'tech-check').get('children');
+
+    return sendbacks.any((sendback) => {
+      const children = sendback.get('children');
+      const sendbackActive = children[0];
+      const reason = children[2];
+
+      return sendbackActive.get('answers.firstObject.value') &&
+        reason.get('answers.firstObject.value').length === 0;
+    });
+
+  },
+
   actions: {
     generatePreview() {
+      this.set('previewError', false);
+
+      if (this._hasEmptySendbacks()) {
+        return this.set('previewError', true);
+      }
+
       const config = this._templateConfig('render_template');
 
       this.get('restless').put(config.url, config.data).then((data)=> {

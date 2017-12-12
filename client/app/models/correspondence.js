@@ -18,9 +18,18 @@ export default DS.Model.extend({
   sentAt: DS.attr('date'),
   manuscriptVersion: DS.attr('string'),
   manuscriptStatus: DS.attr('string'),
-  activities: DS.attr(), // array?
-  
-  utcSentAt: Ember.computed('sentAt', function() {
+  activities: DS.attr(),
+  status: DS.attr('string'),
+  additionalContext: DS.attr(),
+
+  isDeleted: Ember.computed('status', 'external', function() {
+    return this.get('status') === 'deleted';
+  }),
+  isActive: Ember.computed.not('isDeleted'),
+
+  utcSentAt: Ember.computed('sentAt', 'status', function() {
+    if (this.get('status') === 'deleted') return '';
+
     let sentAt = this.get('sentAt');
     let time = Ember.isBlank(sentAt) ? moment.utc() : moment.utc(sentAt);
     return time.format('MMMM D, YYYY HH:mm');
@@ -46,7 +55,8 @@ export default DS.Model.extend({
 
   activityNames: {
     'correspondence.created': 'Added',
-    'correspondence.edited': 'Edited'
+    'correspondence.edited': 'Edited',
+    'correspondence.deleted': 'Deleted'
   },
 
   activityMessages: Ember.computed.map('activities', function(activity) {
@@ -55,5 +65,5 @@ export default DS.Model.extend({
 
   lastActivityMessage: Ember.computed('activityMessages', function(){
     return this.get('activityMessages.firstObject');
-  }),
+  })
 });

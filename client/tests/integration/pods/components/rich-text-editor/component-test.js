@@ -148,3 +148,21 @@ test('contents do not update from upstream changes when editor is active', funct
   this.set('value', upstreamValue);
   assert.equal(editor.getContent(), upstreamValue, 'the contents should change if the editor does not have focus');
 });
+
+test('it has no toolbar buttons when editorStyle is plain', function(assert) {
+  this.set('saveContents', function() {});
+  this.render(hbs`{{rich-text-editor editorStyle='plain' ident='foo' onContentsChanged=saveContents}}`);
+
+  let editor = findEditor('foo');
+  assert.elementFound(editor);
+  assert.elementNotFound('.mce-widget button');
+});
+
+test('it has toolbar buttons when editorStyle is not plain', function(assert) {
+  this.set('saveContents', function() {});
+  this.render(hbs`{{rich-text-editor ident='foo' onContentsChanged=saveContents}}`);
+
+  let editor = findEditor('foo');
+  assert.elementFound(editor);
+  assert.elementFound('.mce-widget button .mce-i-bold');
+});

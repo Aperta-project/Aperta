@@ -4,7 +4,7 @@ FactoryGirl.define do
     to 'author@example.com'
     subject 'Your [JOURNAL_NAME] submission'
 
-    name 'Some Decision'
+    sequence(:name) { |n| "Some Decision #{n}" }
     category ''
     body <<-LETTER.strip_heredoc
               ***EDIT THIS LETTER BEFORE SENDING****\n\nDear Dr. [Last Name],\n\nSincerely,\n\n[EDITOR NAME]\n[EDITOR TITLE]\nPLOS Biology  \n

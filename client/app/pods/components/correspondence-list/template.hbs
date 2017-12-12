@@ -17,24 +17,42 @@
               <td colspan="5">{{message.lastActivityMessage}}</td>
             </tr>
           {{/if}}
-          <tr onmouseenter={{action "toggleHighlight"}} onmouseleave={{action "toggleHighlight"}}>
-            <td>{{message.utcSentAt}}</td>
-            <td>
-              <div class="correspondence{{message.id}}">
-                {{#link-to 'paper.correspondence.viewcorrespondence' paper message.id }}
-                  {{if message.external message.description message.subject}} &nbsp;
-                {{/link-to}}
-                {{#if message.hasAnyAttachment}}
-                  <span class="fa fa-paperclip"></span>
-                {{/if}}
-              </div>
-            </td>
-            <td>{{message.recipient}}</td>
-            <td class="{{if (eq message.manuscriptVersionStatus "Unavailable") "unavailable"}}">
-              {{message.manuscriptVersionStatus}}
-            </td>
-            <td>{{message.sender}}</td>
-          </tr>
+          {{#if message.isActive}}
+            <tr onmouseenter={{action "toggleHighlight"}} onmouseleave={{action "toggleHighlight"}}>
+              <td>{{message.utcSentAt}}</td>
+              <td>
+                <div class="correspondence{{message.id}}">
+                  {{#link-to 'paper.correspondence.viewcorrespondence' paper message.id }}
+                    {{if message.external message.description message.subject}} &nbsp;
+                  {{/link-to}}
+                  {{#if message.hasAnyAttachment}}
+                    <span class="fa fa-paperclip"></span>
+                  {{/if}}
+                </div>
+              </td>
+              <td>{{message.recipient}}</td>
+              <td class="{{if (eq message.manuscriptVersionStatus "Unavailable") "unavailable"}}">
+                {{message.manuscriptVersionStatus}}
+              </td>
+              <td>{{message.sender}}</td>
+            </tr>
+          {{else}}
+            <tr onmouseenter={{action "toggleHighlight"}} onmouseleave={{action "toggleHighlight"}}>
+              <td>{{message.utcSentAt}}</td>
+              <td>
+                <div class="correspondence{{message.id}}">
+                  {{#link-to 'paper.correspondence.viewcorrespondence' paper message.id }}
+                    {{if message.external "[view details]"}} &nbsp;
+                  {{/link-to}}
+                </div>
+              </td>
+              <td>n.a.</td>
+              <td>
+                n.a.
+              </td>
+              <td>n.a.</td>
+            </tr>
+          {{/if}}
         {{/each}}
       </tbody>
     </table>

@@ -167,6 +167,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
         # Review before Submission overlay
         self._review_overlay_submit_button = (By.ID, 'review-submission-submit-button')
         self._review_before_submission = None
+        # relative locators
+        self._radio_buttons = (By.CSS_SELECTOR, "input[value]")
 
     # POM Actions
     def page_ready(self):
@@ -726,6 +728,15 @@ class ManuscriptViewerPage(AuthenticatedPage):
               logging.info('Accordion was closed, opening: {0}'.format(task.text))
               task.click()
             base_task.task_ready()
+
+            if task_name == 'Financial Disclosure':
+                # click on 'No' in 'Financial Disclosure' card to complete the task
+                # since it is required field in the release 1.56,
+                # but this should be updated using POM for 'Financial Disclosure' card
+                # once APERTA-8895 gets done
+                radio_button_no = div_list[1].find_elements(*self._radio_buttons)[1]
+                radio_button_no.click()
+
             # Check completed_check status
             if not base_task.completed_state():
               base_task.move2completion_button(task)

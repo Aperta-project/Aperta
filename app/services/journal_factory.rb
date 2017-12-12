@@ -1,3 +1,4 @@
+# coding: utf-8
 # JournalFactory is for creating new journals in Aperta. It gets them all
 # set up: nice and right.
 class JournalFactory
@@ -36,8 +37,8 @@ class JournalFactory
     self.class.setup_default_mmt(@journal)
     ensure_default_roles_and_permissions_exist
     assign_hints
-    assign_default_system_custom_cards
     seed_letter_templates
+    assign_default_system_custom_cards
     @journal
   end
 
@@ -75,7 +76,7 @@ class JournalFactory
 
       # Creator(s) only get access to the submission task types
       task_klasses = SUBMISSION_TASKS
-      task_klasses += [PlosBioTechCheck::ChangesForAuthorTask, AdHocForAuthorsTask]
+      task_klasses += [AdHocForAuthorsTask]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
@@ -173,6 +174,7 @@ class JournalFactory
       # Reviewer(s) get access to all submission tasks, except a few
       task_klasses = SUBMISSION_TASKS
       task_klasses -= [
+        PlosBioTechCheck::ChangesForAuthorTask,
         PlosBilling::BillingTask,
         TahiStandardTasks::ReviewerRecommendationsTask
       ]
@@ -518,8 +520,8 @@ class JournalFactory
       # Changes For Author tasks. However, AEs can view all
       # ReviewerReportTask(s) and its descendants, but cannot edit them.
       task_klasses -= [
-        PlosBilling::BillingTask,
         PlosBioTechCheck::ChangesForAuthorTask,
+        PlosBilling::BillingTask,
         TahiStandardTasks::RegisterDecisionTask
       ]
       task_klasses += [TahiStandardTasks::ReviewerReportTask]
@@ -582,6 +584,25 @@ class JournalFactory
           {% endfor %}
         </ol>
         {{footer}}
+        TEXT
+
+        lt.save!
+      end
+    end
+
+    ident = 'changes-for-author'
+    unless LetterTemplate.exists?(journal: @journal, ident: ident)
+      LetterTemplate.where(name: 'Changes For Author', journal: @journal).first_or_initialize.tap do |lt|
+        lt.ident = ident
+        lt.scenario = 'Tech Check'
+        lt.subject = 'Manuscript Sendback Reasons'
+        lt.to = '{{author.email}}'
+        lt.body = <<-TEXT.strip_heredoc
+        <ol>
+          {% for reason in paperwide_sendback_reasons %}
+            <li>{{reason.value}}</li>
+          {% endfor %}
+        </ol>
         TEXT
 
         lt.save!

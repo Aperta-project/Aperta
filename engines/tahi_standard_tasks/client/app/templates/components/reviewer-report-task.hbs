@@ -9,14 +9,16 @@
                          dueDate=currentReviewerReport.dueDatetime.dueAt}}
     {{/if}}
     {{#if task.isSubmitted}}
-      {{reviewer-report-questions report=currentReviewerReport readOnly=noActiveAdminEdit}}
+      {{reviewer-report-questions report=currentReviewerReport readOnly=noActiveAdminEdit frontMatter=frontMatter}}
       {{reviewer-report-edit-notes currentReviewerReport=currentReviewerReport}}
     {{else}}
-      <p><strong>Please refer to our
-        <a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication">reviewer</a>
-        guidelines for detailed instructions.</strong>
-      </p>
-      {{reviewer-report-questions report=currentReviewerReport readOnly=isNotEditable}}
+      {{#if notFrontMatter}}
+        <p><strong>Please refer to our
+          <a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication">reviewer</a>
+          guidelines for detailed instructions.</strong>
+        </p>
+      {{/if}}
+      {{reviewer-report-questions report=currentReviewerReport readOnly=isNotEditable frontMatter=frontMatter}}
 
       {{#if currentReviewerReport.needsSubmission }}
       <div class="reviewer-report-confirmation">
@@ -50,7 +52,15 @@
             </div>
             <div id="collapse-{{unbound report.decision.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="decision-{{unbound report.decision.id}}">
               <div class="panel-body">
-                {{reviewer-report-questions report=report readOnly=true}}
+                {{#each report.inactiveAdminEdits as |edit|}}
+                  <div class="report-edit-description">
+                    <span><em>Edited by {{edit.user.name}} on {{format-date edit.updatedAt}}:</em> {{edit.notes}}</span>
+                  </div>
+                {{/each}}
+                {{#if report.inactiveAdminEdits.length}}
+                  <hr>
+                {{/if}}
+                {{reviewer-report-questions report=report readOnly=true frontMatter=frontMatter}}
               </div>
             </div>
           </div>

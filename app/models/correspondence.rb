@@ -20,6 +20,9 @@ class Correspondence < ActiveRecord::Base
                              allow_blank: false
   end
 
+  validates :reason, presence: true, if: :deleted?
+  validate :external_if_deleted
+
   def activities
     Activity.feed_for('workflow', self).map do |f|
       {
@@ -28,5 +31,18 @@ class Correspondence < ActiveRecord::Base
         created_at: f.created_at
       }
     end
+  end
+
+  def deleted?
+    status == 'deleted'
+  end
+
+  def reason
+    additional_context['delete_reason'] if additional_context.try(:has_key?, 'delete_reason')
+  end
+
+  def external_if_deleted
+    return unless deleted?
+    errors.add(:deleted, "Deleted records must be external") unless external
   end
 end

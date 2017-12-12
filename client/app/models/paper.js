@@ -7,7 +7,8 @@ const { attr, belongsTo, hasMany } = DS;
 const PAPER_SUBMITTABLE_STATES = [
   'unsubmitted',
   'in_revision',
-  'invited_for_full_submission'
+  'invited_for_full_submission',
+  'checking'
 ];
 
 const TERMINAL_STATES = ['accepted', 'rejected'];

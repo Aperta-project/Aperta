@@ -16,12 +16,12 @@ describe Event do
 
       it 'should work' do
         Event.register('my_event')
-        expect(Event.allowed_events).to contain_exactly('my_event', 'paper.email_sent')
+        expect(Event.allowed_events).to include('my_event')
       end
 
       it 'should convert to a string' do
         Event.register(:my_event)
-        expect(Event.allowed_events).to contain_exactly('my_event', 'paper.email_sent')
+        expect(Event.allowed_events).to include('my_event')
       end
     end
 

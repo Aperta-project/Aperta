@@ -28,17 +28,18 @@ __author__ = 'jgray@plos.org'
 @MultiBrowserFixture
 class CFACardTest(CommonTest):
     """
-    The Changes for Author card is generated automatically by the completion of the ITC, RTC, and/or
-      FTC cards if there is anything registered on those cards that needs to be addressed. Currently,
-      those cards will only trigger the creation of a Changes for Author card IF the publishing_state
-      of the manuscript = 'submitted', otherwise an error is thrown on sending changes to the author.
+    The Changes for Author card is generated automatically by the completion of the ITC, RTC,
+    and/or FTC cards if there is anything registered on those cards that needs to be addressed.
+    Currently, those cards will only trigger the creation of a Changes for Author card IF the
+    publishing_state of the manuscript = 'submitted', otherwise an error is thrown on sending
+    changes to the author.
 
-      Note that no tests of the ITC/RTC/FTC cards are contemplated here as these are handled in their
-        own test cases. We are covering only state changes, generation of the card, and UI elements
-        and the function of the "These changes have been made" button.
+    Note that no tests of the ITC/RTC/FTC cards are contemplated here as these are handled in their
+    own test cases. We are covering only state changes, generation of the card and resubmitting
+    manuscript.
     """
 
-    def test_cfa_from_itc_card(self):
+    def test_smoke_cfa_from_itc_card(self):
         """
         test_changes_for_author: Test the creation of the Changes for Author card from the ITC card.
         Validates the elements, styles, roles and functions of Changes for Author card, including
@@ -112,14 +113,15 @@ class CFACardTest(CommonTest):
         success_msgs = [msg.text.split('\n')[0] for msg in all_success_messages]
         assert 'Author Changes Letter has been Saved' in success_msgs, success_msgs
         assert 'The author has been notified via email that changes are needed. They will also ' \
-               'see your message the next time they log in to see their manuscript.' in success_msgs, \
-            success_msgs
+               'see your message the next time they log in to see their manuscript.' \
+               in success_msgs, success_msgs
         # Check not error message
         try:
             itc_card._get(itc_card._flash_error_msg)
             # Note: Commenting out due to APERTA-7012
             # raise ElementExistsAssertionError('There is an unexpected error message')
-            logging.warning('WARNING: An error message fired on Send Changes to Author for ITC card')
+            logging.warning('WARNING: An error message fired on Send Changes to Author '
+                            'for ITC card')
         except ElementDoesNotExistAssertionError:
             pass
 
@@ -130,7 +132,8 @@ class CFACardTest(CommonTest):
         assert post_itc_state == 'checking', post_itc_state
         workflow_page.logout()
 
-        # Now log back in as the creator user and access Changes for Author card from accordion view
+        # Now log back in as the creator user and access Changes for Author card
+        # from accordion view
         dashboard_page = self.cas_login(email=creator_user['email'])
         dashboard_page.page_ready()
         dashboard_page.go_to_manuscript(paper_id)
@@ -147,14 +150,13 @@ class CFACardTest(CommonTest):
         manuscript_page.confirm_submit_btn()
         manuscript_page.close_modal()
 
-
         # Finally validate publishing state transition
         final_db_submission_data = manuscript_page.get_db_submission_data(paper_id)
         cfa_complete_state = final_db_submission_data[0][0]
         logging.info('Current publishing state is {0}'.format(cfa_complete_state))
         assert cfa_complete_state == 'submitted', cfa_complete_state
 
-    def test_cfa_from_rtc_card(self):
+    def test_smoke_cfa_from_rtc_card(self):
         """
         test_changes_for_author: Test the creation of the Changes for Author card from the RTC card.
         Validates the elements, styles, roles and functions of Changes for Author card, including
@@ -225,15 +227,16 @@ class CFACardTest(CommonTest):
         all_success_messages = rtc_card.get_flash_success_messages()
         success_msgs = [msg.text.split('\n')[0] for msg in all_success_messages]
         assert 'Author Changes Letter has been Saved' in success_msgs, success_msgs
-        assert 'The author has been notified via email that changes are needed. They will also ' \
-               'see your message the next time they log in to see their manuscript.' in success_msgs, \
-            success_msgs
+        assert 'The author has been notified via email that changes are needed. ' \
+               'They will also see your message the next time they log in to see ' \
+               'their manuscript.' in success_msgs, success_msgs
         # Check not error message
         try:
             rtc_card._get(rtc_card._flash_error_msg)
             # Note: Commenting out due to APERTA-7012
             # raise ElementExistsAssertionError('There is an unexpected error message')
-            logging.warning('WARNING: An error message fired on Send Changes to Author for RTC card')
+            logging.warning('WARNING: An error message fired on Send Changes to Author '
+                            'for RTC card')
         except ElementDoesNotExistAssertionError:
             pass
 
@@ -244,7 +247,8 @@ class CFACardTest(CommonTest):
         assert post_rtc_state == 'checking', post_rtc_state
         workflow_page.logout()
 
-        # Now log back in as the creator user and access Changes for Author card from accordion view
+        # Now log back in as the creator user and access Changes for Author card
+        # from accordion view
         dashboard_page = self.cas_login(email=creator_user['email'])
         dashboard_page.page_ready()
         dashboard_page.go_to_manuscript(paper_id)
@@ -267,7 +271,7 @@ class CFACardTest(CommonTest):
         logging.info('Current publishing state is {0}'.format(cfa_complete_state))
         assert cfa_complete_state == 'submitted', cfa_complete_state
 
-    def test_cfa_from_ftc_card(self):
+    def test_smoke_cfa_from_ftc_card(self):
         """
         test_changes_for_author: Test the creation of the Changes for Author card from the FTC card.
         Validates the elements, styles, roles and functions of Changes for Author card, including
@@ -341,14 +345,15 @@ class CFACardTest(CommonTest):
         success_msgs = [msg.text.split('\n')[0] for msg in all_success_messages]
         assert 'Author Changes Letter has been Saved' in success_msgs, success_msgs
         assert 'The author has been notified via email that changes are needed. They will also ' \
-               'see your message the next time they log in to see their manuscript.' in success_msgs, \
-            success_msgs
+               'see your message the next time they log in to see their manuscript.' \
+               in success_msgs, success_msgs
         # Check not error message
         try:
             ftc_card._get(ftc_card._flash_error_msg)
             # Note: Commenting out due to APERTA-7012
             # raise ElementExistsAssertionError('There is an unexpected error message')
-            logging.warning('WARNING: An error message fired on Send Changes to Author for ITC card')
+            logging.warning('WARNING: An error message fired on Send Changes to Author '
+                            'for ITC card')
         except ElementDoesNotExistAssertionError:
             pass
 

@@ -389,6 +389,8 @@ GEM
     hashie (3.4.2)
     health_check (2.6.0)
       rails (>= 4.0)
+    heroku-deflater (0.6.3)
+      rack (>= 1.4.5)
     hitimes (1.2.3)
     html_page (0.1.0)
     htmlentities (4.3.4)
@@ -543,6 +545,11 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
+    rails_12factor (0.0.3)
+      rails_serve_static_assets
+      rails_stdout_logging
+    rails_serve_static_assets (0.0.5)
+    rails_stdout_logging (0.0.5)
     railties (4.2.10)
       actionpack (= 4.2.10)
       activesupport (= 4.2.10)
@@ -766,6 +773,7 @@ DEPENDENCIES
   gepub (~> 0.7.0beta1)
   has_secure_token
   health_check
+  heroku-deflater
   jwt
   kaminari
   liquid
@@ -800,6 +808,7 @@ DEPENDENCIES
   quiet_assets
   rack-timeout
   rails (~> 4.2.10)
+  rails_12factor
   rbtrace
   render_anywhere
   request_store

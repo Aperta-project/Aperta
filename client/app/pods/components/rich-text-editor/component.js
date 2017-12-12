@@ -56,6 +56,7 @@ TinyMceEditor.reopen({
 
 export default Ember.Component.extend({
   classNames: ['rich-text-editor'],
+  classNameBindings: ['editorStyle'],
   attributeBindings: ['data-editor'],
   'data-editor': Ember.computed.alias('ident'),
 
@@ -88,6 +89,13 @@ export default Ember.Component.extend({
       plugins: basicPlugins,
       toolbar: basicToolbar,
       valid_elements: basicElements
+    },
+
+    plain: {
+      plugins: basicPlugins,
+      toolbar: 'false',
+      valid_elements: basicElements,
+      menubar: 'false'
     },
 
     expanded: {
@@ -144,7 +152,7 @@ export default Ember.Component.extend({
     options['autoresize_on_init'] = true;
     options['paste_postprocess'] = this.pastePostprocess.bind(this);
 
-    if (ENV.environment === 'development') {
+    if (ENV.environment === 'development' && options['toolbar'] !== 'false') {
       options['toolbar'] += ' code';
     }
     return options;

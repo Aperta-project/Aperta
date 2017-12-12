@@ -9,10 +9,6 @@ describe InvitationContext do
     FactoryGirl.build(:invitation, :invited)
   end
 
-  let(:flag) do
-    FactoryGirl.create(:feature_flag, name: 'REVIEW_DUE_DATE')
-  end
-
   context 'rendering an invitation' do
     before do
       journal = invitation.paper.journal
@@ -32,21 +28,13 @@ describe InvitationContext do
       check_render("{{ state }}", invitation.state)
     end
 
-    context 'has review due date feature flag' do
-      before do
-        flag.update(active: true)
-      end
-
+    context 'has review due date' do
       it 'renders the setting value (9) as the review duration period' do
         check_render("{{ due_in_days }}", "9")
       end
     end
 
-    context 'does not have review due date feature flag' do
-      before do
-        flag.update(active: false)
-      end
-
+    context 'does not have review due date' do
       it 'renders the default value (10) as the review duration period' do
         check_render("{{ due_in_days }}", "10")
       end

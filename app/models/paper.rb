@@ -687,14 +687,12 @@ class Paper < ActiveRecord::Base
   end
 
   def review_duration_period
-    default = 10
-    if FeatureFlag[:REVIEW_DUE_DATE]
-      setting = manuscript_manager_template
-        .try(:task_template_by_kind, "TahiStandardTasks::PaperReviewerTask")
-        .try(:setting, 'review_duration_period')
-      return setting.value if setting.present?
-    end
-    default
+    setting = manuscript_manager_template
+      .try(:task_template_by_kind, "TahiStandardTasks::PaperReviewerTask")
+      .try(:setting, 'review_duration_period')
+      .try(:value)
+
+    setting || 10
   end
 
   private

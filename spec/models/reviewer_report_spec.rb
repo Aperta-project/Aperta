@@ -152,8 +152,6 @@ describe ReviewerReport do
 
   describe '#set_due_datetime' do
     before do
-      FactoryGirl.create(:feature_flag, name: 'REVIEW_DUE_AT')
-      FactoryGirl.create(:feature_flag, name: 'REVIEW_DUE_DATE')
       FactoryGirl.create :review_duration_period_setting_template
     end
 
@@ -164,8 +162,6 @@ describe ReviewerReport do
 
   describe '#cancel_reminders' do
     before do
-      FactoryGirl.create(:feature_flag, name: 'REVIEW_DUE_AT')
-      FactoryGirl.create(:feature_flag, name: 'REVIEW_DUE_DATE')
       FactoryGirl.create :review_duration_period_setting_template
     end
 

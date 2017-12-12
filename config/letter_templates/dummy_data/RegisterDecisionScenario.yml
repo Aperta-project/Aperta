@@ -1,9 +1,16 @@
+footer: 'Morbi vulputate, nisl at lacinia ultrices, eros sapien condimentum dolor, sodales aliquam mauris sapien sit amet libero.'
+intro: 'Duis condimentum eu massa porta lacinia. Sed ornare, eros ac fringilla convallis, lorem nulla scelerisque mi, a volutpat purus mi a urna. Etiam eu pellentesque ligula. Integer vestibulum euismod lacus, sed porttitor lectus egestas et.'
+author:
+  email: 'david@plos.org'
+  first_name: 'David'
+  last_name: 'Cash'
+  full_name: 'David Cash'
 journal:
   logo_url: 'https://www.plos.org/uploads/image/file/27230/sm_plos-logo-sm.png'
   name: 'PLOS'
   staff_email: 'staff@plos.org'
 manuscript:
-  abstract: 'Lorem Ipsum'
+  abstract: 'In dignissim mauris nec blandit fermentum. Curabitur at maximus velit, sed malesuada lorem. Morbi egestas consectetur magna, vitae viverra lectus volutpat ut. Mauris sit amet velit at felis ullamcorper dictum in et felis. Phasellus convallis lobortis enim, eget fringilla nisl efficitur non. Aliquam erat volutpat. Duis iaculis tincidunt neque, quis scelerisque risus laoreet eget. Morbi lacus tellus, viverra nec viverra nec, molestie non enim. Fusce tincidunt felis dictum luctus feugiat. Sed condimentum justo massa, quis pellentesque sem rhoncus eget. Nullam pulvinar malesuada nisi, sed vulputate sapien tristique id.'
   academic_editors:
     -  email: 'academic@plos.org'
        first_name: 'Academic'
@@ -66,3 +73,10 @@ review: &review
      value_type: 'html'
 reviews:
   -  <<: *review
+sendback_reasons:
+  - ident: '--fake-ident'
+    question: 'Does the abstract have at least 100 words?'
+    string_value: 'Your abstract only have 88 words'
+    value: 'Your abstract only have 88 words'
+    value_type: 'text'
+paperwide_sendback_reasons: 'paperwide sendback reasons'

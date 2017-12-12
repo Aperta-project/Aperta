@@ -438,6 +438,22 @@ class CommonTest(FrontEndTest):
                      (siteadmin_user_id, site_admin_role_for_env))
 
   @staticmethod
+  def toggle_feature_setting_in_db(owner_id, owner_type, feature_name, enable):
+     """
+     This method toggles a feature setting in the database.
+     :param owner_id: The id of the owner for which the setting needs to be toggled (e.g. a Journal)
+     :param owner_type: The class name of the owner for which the setting needs to be toggled
+     :param feature_name: The name of the setting
+     :param enable: Whether to enable (True) or disabled (False) the setting
+     """
+
+     PgSQL().modify('UPDATE settings '
+                    'SET boolean_value = {0} '
+                    'WHERE owner_id = {1} '
+                    'AND owner_type = \'{2}\' '
+                    'AND name = \'{3}\';'.format(enable, owner_id, owner_type, feature_name))
+
+  @staticmethod
   def preprint_overlay_in_create_sequence(journal: str, mmt: str) -> bool:
       """
       A method that will determine for mmt if the pre-print posting overlay should be shown as part of the

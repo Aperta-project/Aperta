@@ -93,6 +93,9 @@ gem 'has_secure_token'
 group :staging, :production do
   # The dotenv binary is used to load our environment in staging & production
   gem 'dotenv', require: false
+end
+
+group :staging do
   gem 'heroku-deflater'
   gem 'rails_12factor'
 end

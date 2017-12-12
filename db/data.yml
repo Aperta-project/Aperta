@@ -11206,7 +11206,7 @@ card_versions:
   - - '77'
     - '1'
     - '85'
-    - false
+    - true
     - '2017-11-29 15:54:42.639288'
     - 
     - Initial version
@@ -38309,12 +38309,6 @@ journal_task_types:
     - TahiStandardTasks::EarlyPostingTask
     - false
     - user
-  - - '49'
-    - '1'
-    - Financial Disclosure
-    - TahiStandardTasks::FinancialDisclosureTask
-    - false
-    - author
 
 ---
 journals:

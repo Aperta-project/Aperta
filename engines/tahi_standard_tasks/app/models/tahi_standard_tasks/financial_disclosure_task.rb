@@ -11,5 +11,10 @@ module TahiStandardTasks
       foreign_key: :task_id,
       dependent: :destroy
     )
+
+    # This task has been superceded by a custom card
+    def self.create_journal_task_type?
+      false
+    end
   end
 end

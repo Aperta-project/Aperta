@@ -16,7 +16,7 @@ from .Pages.manuscript_viewer import ManuscriptViewerPage
 from .Pages.correspondence_history import CorrespondenceHistory
 from .Pages.workflow_page import WorkflowPage
 from frontend.common_test import CommonTest
-from Base.Resources import admin_users
+from Base.Resources import editorial_users
 
 __author__ = 'achoe@plos.org'
 
@@ -72,9 +72,9 @@ class CoAuthorConfirmationTest(CommonTest):
 
     # logout and login as a staff user
     manuscript_page.logout()
-    admin_user = random.choice(admin_users)
-    logging.info('Logging in as {0}'.format(admin_user))
-    dashboard_page = self.cas_login(email=admin_user['email'])
+    staff_user = random.choice(editorial_users)
+    logging.info('Logging in as {0}'.format(staff_user))
+    dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
@@ -135,9 +135,9 @@ class CoAuthorConfirmationTest(CommonTest):
 
     # logout and login as a staff user
     manuscript_page.logout()
-    admin_user = random.choice(admin_users)
-    logging.info('Logging in as {0}'.format(admin_user))
-    dashboard_page = self.cas_login(email=admin_user['email'])
+    staff_user = random.choice(editorial_users)
+    logging.info('Logging in as {0}'.format(staff_user))
+    dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
@@ -187,11 +187,17 @@ class CoAuthorConfirmationTest(CommonTest):
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()
 
+    # Now that we've submitted the manuscript, the coauthor confirmation controls are now available
+    # to staff users. However, authors should not be able to see this, per AC 1.1 of APERTA-9300.
+    # Here, we'll open the authors card, and validate that the coauthor confirmation elements are
+    # not available to the currently logged in author:
+    authors_task.validate_coauthors_elements_absence()
+
     # logout and login as a staff user
     manuscript_page.logout()
-    admin_user = random.choice(admin_users)
-    logging.info('Logging in as {0}'.format(admin_user))
-    dashboard_page = self.cas_login(email=admin_user['email'])
+    staff_user = random.choice(editorial_users)
+    logging.info('Logging in as {0}'.format(staff_user))
+    dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
@@ -206,7 +212,7 @@ class CoAuthorConfirmationTest(CommonTest):
 
     authors_card = AuthorsCard(self.getDriver())
     authors_card.click_completion_button()
-    authors_card.validate_coauthor_status(admin_user)
+    authors_card.validate_coauthor_status(staff_user)
 
   def test_group_coauthor_confirmation_by_staff(self):
     """
@@ -245,11 +251,17 @@ class CoAuthorConfirmationTest(CommonTest):
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()
 
+    # Now that we've submitted the manuscript, the coauthor confirmation controls are now available
+    # to staff users. However, authors should not be able to see this, per AC 1.1 of APERTA-9300.
+    # Here, we'll open the authors card, and validate that the coauthor confirmation elements are
+    # not available to the currently logged in author:
+    authors_task.validate_coauthors_elements_absence()
+
     # logout and login as a staff user
     manuscript_page.logout()
-    admin_user = random.choice(admin_users)
-    logging.info('Logging in as {0}'.format(admin_user))
-    dashboard_page = self.cas_login(email=admin_user['email'])
+    staff_user = random.choice(editorial_users)
+    logging.info('Logging in as {0}'.format(staff_user))
+    dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
@@ -264,7 +276,7 @@ class CoAuthorConfirmationTest(CommonTest):
 
     authors_card = AuthorsCard(self.getDriver())
     authors_card.click_completion_button()
-    authors_card.validate_coauthor_status(admin_user)
+    authors_card.validate_coauthor_status(staff_user)
 
 if __name__ == '__main__':
   CommonTest.run_tests_randomly()

@@ -145,6 +145,11 @@ class AuthorsTask(BaseTask):
     #self._cb = (By.CSS_SELECTOR, 'button.task-completed')
     #self._task_completed_section = (By.CLASS_NAME, 'task-completed-section')
 
+    # Coauthor elements
+    self._coauthor_confirm_lbl = (By.CLASS_NAME, 'confirm-coauthor-label')
+    self._coauthor_decline_lbl = (By.CLASS_NAME, 'decline-coauthor-label')
+    self._no_response_lbl = (By.CLASS_NAME, 'no-response-coauthor-label')
+
   # POM Actions
   def validate_author_task_styles(self):
     """Validate"""
@@ -696,3 +701,15 @@ class AuthorsTask(BaseTask):
   def confirm_submit_btn(self):
     """Press sidebar submit button"""
     self._get(self._submit_confirm).click()
+
+  def validate_coauthors_elements_absence(self):
+    """
+    Checks that the coauthor elements within the Authors task are not available.
+    :return: void function
+    """
+    author_items = self._gets(self._author_items)
+    self.scroll_element_into_view_below_toolbar(author_items[1])
+    author_items[1].click()
+    assert self._check_for_absence_of_element(self._coauthor_confirm_lbl), 'Confirm label is present'
+    assert self._check_for_absence_of_element(self._coauthor_decline_lbl), 'Decline label is present'
+    assert self._check_for_absence_of_element(self._no_response_lbl), 'No Response label is present'

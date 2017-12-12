@@ -223,10 +223,10 @@ test(`tech check email preview`, function(assert) {
   this.$('.card-content-tech-check-email .button-primary').click();
   return wait().then(() => {
     assert.elementNotFound(
-      `.email-preview`, 'email preview is still not visible with empty sendbacks'
+      `.email-preview`, 'email preview is not visible with empty sendbacks after clicking preview'
     );
     assert.elementFound(
-      `.preview-error`, 'the preview error is now visible'
+      `.preview-error`, 'the preview error is now visible after clicking preview with empty sendbacks'
     );
 
     reasonAnswer.set('value', 'some text');
@@ -234,7 +234,7 @@ test(`tech check email preview`, function(assert) {
     this.$('.card-content-tech-check-email .button-primary').click();
     return wait().then(() => {
       assert.elementFound(
-        `.email-preview`, 'email preview is visible after generated'
+        `.email-preview`, 'email preview is visible after all checked sendbacks have values and button is clicked'
       );
       assert.equal($('.preview-content').text().trim(), 'some text', 'the preview displays the responses body');
       assert.elementFound(

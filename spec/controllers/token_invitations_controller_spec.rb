@@ -141,6 +141,7 @@ describe TokenInvitationsController do
     before do
       expect_any_instance_of(TahiEnv).to receive(:cas_phased_signup_enabled?).and_return(phased_env_var)
     end
+
     context 'CAS_PHASED_SIGNUP_ENABLED env var is false' do
       let(:phased_env_var) { false }
 
@@ -151,19 +152,9 @@ describe TokenInvitationsController do
 
     context 'CAS_PHASED_SIGNUP_ENABLED env var is true' do
       let(:phased_env_var) { true }
-      before do
-        expect(FeatureFlag).to receive(:[]).with('CAS_PHASED_SIGNUP').and_return(cas_ff)
-      end
-      context 'with feature flag enabled' do
-        let(:cas_ff) { true }
+      context 'with feature enabled' do
         it 'returns false' do
           controller.send(:cas_phased_signup_disabled?).should be false
-        end
-      end
-      context 'with feature flag disabled' do
-        let(:cas_ff) { false }
-        it 'returns false' do
-          controller.send(:cas_phased_signup_disabled?).should be true
         end
       end
     end

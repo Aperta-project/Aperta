@@ -149,6 +149,9 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   invitationLoading: false,
   showConfirmAccept: false,
   showConfirmRescind: false,
+  confirmsInactive: Ember.computed('showConfirmAccept', 'showConfirmRescind', function() {
+    return this.get('showConfirmAccept') === false && this.get('showConfirmRescind') === false;
+  }),
 
   uiState: computed('invitation', 'activeInvitation', 'activeInvitationState', function() {
     if (this.get('invitation') !== this.get('activeInvitation')) {
@@ -206,7 +209,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     toggleDetails() {
       if (this.get('uiState') === 'closed') {
         this.get('setRowState')('show');
-      } else {
+      } else if(this.get('confirmsInactive')) {
         this.get('setRowState')('closed');
       }
     },
@@ -293,17 +296,11 @@ export default Component.extend(DragNDrop.DraggableMixin, {
       this.toggleProperty('displayAcceptFields');
     },
 
-    confirmAccept() {
-      this.set('showConfirmAccept', true);
+    toggleConfirmAccept() {
+      this.toggleProperty('showConfirmAccept');
     },
-    hideConfirmAccept() {
-      this.set('showConfirmAccept', false);
-    },
-    confirmRescind() {
-      this.set('showConfirmRescind', true);
-    },
-    hideConfirmRescind() {
-      this.set('showConfirmRescind', false);
+    toggleConfirmRescind() {
+      this.toggleProperty('showConfirmRescind');
     }
   }
 });

@@ -77,23 +77,30 @@
         </span>
       {{/if}}
       {{#if displayAcceptOnBehalfButton}}
-        <span class="invitation-item-action invitation-item-action-accept" {{action "confirmAccept" bubbles=false}}>
-          {{fa-icon icon="check-circle-o"}}
-          Accept invitation for reviewer
-        </span>
+        {{#if invitee}}
+          <span class="invitation-item-action invitation-item-action-accept" {{action "toggleConfirmAccept" bubbles=false}}>
+            {{fa-icon icon="check-circle-o"}}
+            Accept invitation for reviewer
+          </span>
+        {{else}}
+          <span class="invitation-item-action invitation-item-action-accept" {{action "acceptInvitation" bubbles=false}}>
+            {{fa-icon icon="check-circle-o"}}
+            Accept invitation for reviewer
+          </span>
+        {{/if}}
       {{/if}}
       {{#if showConfirmAccept}}
         <div class="confirm-overlay">
-            <h1>You are accepting this invitation on behalf of {{inviteeNameOrEmail}}<br />Are you sure?</h1>
+            <h1>You are accepting this invitation on behalf of {{invitee.fullName}}<br />Are you sure?</h1>
             <div class="overlay-action-buttons">
-              <button class="button-link" {{action "hideConfirmAccept" bubbles=false}}>cancel</button>
+              <button class="button-link" {{action "toggleConfirmAccept" bubbles=false}}>cancel</button>
               <button class="button button-secondary button--green" {{action "acceptInvitation" invitation bubbles=false}}>Accept Invitation</button>
             </div>
         </div>
       {{/if}}
       {{#if displayRescindButton}}
         <span class="invitation-item-action invitation-item-action-rescind {{if invitationsInFlight "invitation-item-action--disabled"}}"
-              {{action "confirmRescind" bubbles=false}}>
+              {{action "toggleConfirmRescind" bubbles=false}}>
           <span class="fa fa-ban invite-rescind"></span>
           <span class="invitation-item-action-text">Rescind</span>
         </span>
@@ -102,7 +109,7 @@
         <div class="confirm-overlay">
             <h1>You are rescinding the invitation to {{inviteeNameOrEmail}}<br />Are you sure?</h1>
             <div class="overlay-action-buttons">
-              <button class="button-link" {{action "hideConfirmRescind" bubbles=false}}>cancel</button>
+              <button class="button-link" {{action "toggleConfirmRescind" bubbles=false}}>cancel</button>
               <button class="button button-secondary button--green" {{action "rescindInvitation" invitation bubbles=false}}>Rescind Invitation</button>
             </div>
         </div>

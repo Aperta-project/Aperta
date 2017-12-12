@@ -25,9 +25,9 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     let templateName = this.get('content.letterTemplate');
 
     this.get('restless').get(config.url, {letter_template_name: templateName}).then((data)=> {
-      this.set('emailToField', data.to);
-      this.set('emailToSubject', data.subject);
-      this.set('emailToBody', data.body);
+      this.set('emailToField', data.letter_template.to);
+      this.set('emailToSubject', data.letter_template.subject);
+      this.set('emailToBody', data.letter_template.body);
     });
   },
 
@@ -54,7 +54,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     let answer = this.get('answer');
     if(answer) {
       let value = answer.get('value');
-      let emailJSON = value ? JSON.parse(value) : undefined;
+      let emailJSON = value ? JSON.parse(value).letter_template : undefined;
       return emailJSON;
     }
     return answer;
@@ -91,9 +91,9 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       }
 
       this.get('restless').put(config.url, emailMessage).then((data)=> {
-        this.set('emailToField', data.to.toString());
-        this.set('emailToSubject', data.subject);
-        this.set('emailToBody', data.body);
+        this.set('emailToField', data.letter_template.to.toString());
+        this.set('emailToSubject', data.letter_template.subject);
+        this.set('emailToBody', data.letter_template.body);
         var emailResult = JSON.stringify(data);
         let content = this.get('content');
         let answer = content.get('answers').findBy('owner', owner) || content.createAnswerForOwner(owner);

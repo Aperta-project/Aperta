@@ -9,7 +9,7 @@ describe Behavior do
   end
 
   after(:each) do
-    Event.deregister(:fake_name)
+    Event.deregister(:fake_event)
   end
 
   describe TestBehavior do

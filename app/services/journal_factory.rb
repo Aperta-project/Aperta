@@ -1,3 +1,4 @@
+# coding: utf-8
 # JournalFactory is for creating new journals in Aperta. It gets them all
 # set up: nice and right.
 class JournalFactory
@@ -36,8 +37,8 @@ class JournalFactory
     self.class.setup_default_mmt(@journal)
     ensure_default_roles_and_permissions_exist
     assign_hints
-    assign_default_system_custom_cards
     seed_letter_templates
+    assign_default_system_custom_cards
     @journal
   end
 
@@ -583,6 +584,25 @@ class JournalFactory
           {% endfor %}
         </ol>
         {{footer}}
+        TEXT
+
+        lt.save!
+      end
+    end
+
+    ident = 'changes-for-author'
+    unless LetterTemplate.exists?(journal: @journal, ident: ident)
+      LetterTemplate.where(name: 'Changes For Author', journal: @journal).first_or_initialize.tap do |lt|
+        lt.ident = ident
+        lt.scenario = 'Tech Check'
+        lt.subject = 'Manuscript Sendback Reasons'
+        lt.to = '{{author.email}}'
+        lt.body = <<-TEXT.strip_heredoc
+        <ol>
+          {% for reason in paperwide_sendback_reasons %}
+            <li>{{reason.value}}</li>
+          {% endfor %}
+        </ol>
         TEXT
 
         lt.save!

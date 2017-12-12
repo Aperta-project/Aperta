@@ -70,6 +70,7 @@ class CardContent < ActiveRecord::Base
   validate :value_type_for_default_answer_value
   validate :default_answer_present_in_possible_values
   validate :text_does_not_contain_cdata
+  validate :letter_template_exists
 
   SUPPORTED_VALUE_TYPES = %w[attachment boolean question-set text html].freeze
 
@@ -126,6 +127,13 @@ class CardContent < ActiveRecord::Base
     return if values.include? default_answer_value
 
     errors.add(:base, "default answer must be one of the following values: #{values}")
+  end
+
+  # for cards content that render templates, make sure the template exists
+  def letter_template_exists
+    return unless content_type == 'email-template' || content_type == 'email-editor'
+    return if LetterTemplate.where(ident: letter_template).exists?
+    errors.add(:base, "Non existent template ident(s): #{letter_template}")
   end
 
   def render_tag(xml, attr_name, attr)
@@ -199,6 +207,10 @@ class CardContent < ActiveRecord::Base
         'letter-template' => letter_template,
         'button-label' => button_label,
         'required-field' => required_field
+      }
+    when 'email-template'
+      {
+        'letter-template' => letter_template
       }
     else
       {}

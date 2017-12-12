@@ -35,7 +35,7 @@ valueChanged=(action actionStub)
 
 test(`it renders an email-editor initialized by the template`, function(assert) {
   this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
-  $.mockjax({url: '/api/tasks/1/load_email_template', type: 'get', status: 200, responseText: '{"to": "test@example.com", "subject":"hello world", "body": "some text"}'});
+  $.mockjax({url: '/api/tasks/1/load_email_template', type: 'get', status: 200, responseText: '{"letter_template": {"to": "test@example.com", "subject":"hello world", "body": "some text"}}'});
 
   this.render(template);
 
@@ -53,8 +53,8 @@ test(`it renders an email-editor initialized by the template`, function(assert) 
 
 test(`it renders an email-editor initialized by a template and sends the template`, function(assert) {
   this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
-  $.mockjax({url: '/api/tasks/1/load_email_template', type: 'get', status: 200, responseText: '{"to": "test@example.com", "subject":"hello world", "body": "some text"}'});
-  $.mockjax({url: '/api/tasks/1/send_message_email', type: 'PUT', status: 201, responseText: '{"to": ["test@example.com", "test2@example.com"], "from": "initiator@example.com", "date": "Nov 17, 2017 11:45pm", "subject":"hello world", "body": "some text"}'});
+  $.mockjax({url: '/api/tasks/1/load_email_template', type: 'get', status: 200, responseText: '{"letter_template": {"to": "test@example.com", "subject":"hello world", "body": "some text"}}'});
+  $.mockjax({url: '/api/tasks/1/send_message_email', type: 'PUT', status: 201, responseText: '{"letter_template": {"to": ["test@example.com", "test2@example.com"], "from": "initiator@example.com", "date": "Nov 17, 2017 11:45pm", "subject":"hello world", "body": "some text"}}'});
 
   this.render(template);
 

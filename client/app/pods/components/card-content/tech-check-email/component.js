@@ -69,11 +69,10 @@ export default Ember.Component.extend({
 
     return sendbacks.any((sendback) => {
       const children = sendback.get('children');
-      const sendbackActive = children[0];
-      const reason = children[2];
+      const sendbackActive = children[0].get('answers.firstObject.value');
+      const reason = children[2].get('answers.firstObject.value');
 
-      return sendbackActive.get('answers.firstObject.value') &&
-        reason.get('answers.firstObject.value').length === 0;
+      return sendbackActive && (!reason || reason.length === 0);
     });
 
   },

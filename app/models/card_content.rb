@@ -111,8 +111,8 @@ class CardContent < ActiveRecord::Base
   end
 
   def text_does_not_contain_cdata
-    return unless text.present? && text.match(/^<!\[CDATA.*\]\]>/)
-    errors.add(:base, "do not use CDATA, use regular HTML")
+    return unless text.present? && text.match(/<!\[CDATA\[/)
+    errors.add(:base, "do not use CDATA; use regular HTML")
   end
 
   def value_type_for_default_answer_value

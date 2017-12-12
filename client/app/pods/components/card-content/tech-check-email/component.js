@@ -65,7 +65,7 @@ export default Ember.Component.extend({
 
   _hasEmptySendbacks() {
     const sendbacks = this.get('content.parent.children')
-      .findBy('contentType', 'tech-check').get('children');
+      .filterBy('contentType', 'tech-check').get('firstObject.children');
 
     return sendbacks.any((sendback) => {
       const children = sendback.get('children');

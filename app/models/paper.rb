@@ -687,12 +687,15 @@ class Paper < ActiveRecord::Base
   end
 
   def review_duration_period
-    setting = manuscript_manager_template
-      .try(:task_template_by_kind, "TahiStandardTasks::PaperReviewerTask")
-      .try(:setting, 'review_duration_period')
-      .try(:value)
-
-    setting || 10
+    default = 10
+    begin
+      manuscript_manager_template
+        .try(:task_template_by_kind, "TahiStandardTasks::PaperReviewerTask")
+        .try(:setting, 'review_duration_period')
+        .try(:value) || default
+    rescue ActiveRecord::RecordNotFound
+      default
+    end
   end
 
   private

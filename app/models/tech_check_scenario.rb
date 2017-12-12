@@ -22,7 +22,7 @@ class TechCheckScenario < TemplateContext
     incomplete_tech_checks = task.paper.tasks
       .joins(card_version: [card_contents: [:answers]])
       .where(card_contents: { content_type: 'tech-check' })
-      .where(answers: { value: 'f' }).group('id')
+      .where(answers: { value: 'f' }).group('id').order('id')
 
     incomplete_tech_checks.flat_map { |task| task_sendback_reasons(task) }
   end

@@ -61,7 +61,7 @@ class TokenInvitationsController < ApplicationController
   end
 
   def cas_phased_signup_disabled?
-    !TahiEnv.cas_phased_signup_enabled? or !FeatureFlag['CAS_PHASED_SIGNUP']
+    !TahiEnv.cas_phased_signup_enabled?
   end
 
   def ned_unverified?

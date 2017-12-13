@@ -115,7 +115,7 @@ describe Event do
       let(:event) { Event.new(name: :good_event, paper: paper, user: user, task: nil) }
 
       it 'should call the call method with action parameters' do
-        expect(Behavior).to receive(:where).with(event_name: :good_event, journal: paper.journal).and_return([behavior])
+        expect(paper.journal.behaviors).to receive(:where).with(event_name: :good_event).and_return([behavior])
         expect(behavior).to receive(:call).with(event)
         event.trigger
       end
@@ -125,7 +125,7 @@ describe Event do
         let!(:paper) { FactoryGirl.create(:paper, journal: other_journal) }
 
         it 'should be scoped to the journal' do
-          expect(Behavior).to receive(:where).with(event_name: :good_event, journal: other_journal).and_return([])
+          expect(paper.journal.behaviors).to receive(:where).with(event_name: :good_event).and_return([])
           expect(behavior).not_to receive(:call).with(event)
           event.trigger
         end
@@ -143,7 +143,7 @@ describe Event do
       let(:event) { Event.new(name: :good_event, paper: paper, user: user, task: nil) }
 
       before(:each) do
-        expect(Behavior).to receive(:where).with(event_name: :good_event, journal: journal).and_return([behavior])
+        expect(paper.journal.behaviors).to receive(:where).with(event_name: :good_event).and_return([behavior])
         expect(behavior).to receive(:call).with(event).and_raise(StandardError)
       end
 

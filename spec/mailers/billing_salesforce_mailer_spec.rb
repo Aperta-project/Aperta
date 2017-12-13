@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe PlosBilling::BillingSalesforceMailer do
+describe BillingSalesforceMailer do
   let(:paper) { FactoryGirl.create(:paper) }
   let(:site_admin_role) { FactoryGirl.create(:role, :site_admin) }
   let(:the_system) { System.create! }

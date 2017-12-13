@@ -11,6 +11,18 @@ module Attributable
 
   included do
     has_many :entity_attributes, dependent: :destroy, inverse_of: :entity, as: :entity
+
+    def inspect
+      super.tap do |base|
+        # Inspect strings end in >. We will chop of the end and insert some
+        # stuff in between.
+        base.chomp!(">")
+        entity_attributes.each do |a|
+          base << ", *#{a.name}: #{a.value}"
+        end
+        base << ">"
+      end
+    end
   end
 
   module ClassMethods

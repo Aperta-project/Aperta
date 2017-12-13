@@ -38,6 +38,7 @@ Tahi::Application.routes.draw do
   # TODO: namespace to api
   #
   scope '/api', constraints: { format: :json } do
+    resources :correspondence, only: :show
     resources :countries, only: :index
     resources :institutional_accounts, only: :index
 

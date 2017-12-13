@@ -51,14 +51,14 @@ describe TechCheckScenario do
 
         task.answers.create!(card_content: tech_check_parent, value: 'f', paper: paper)
         task2.answers.create!(card_content: tech_check_parent2, value: 'f', paper: paper)
-        complaints = ['it is ugly', 'it is wrong', 'it is the worst', 'I hate it']
-        task.answers.create!(card_content: reasons, value: complaints[0], paper: paper)
-        task.answers.create!(card_content: reasons, value: complaints[1], paper: paper)
-        task2.answers.create!(card_content: reasons, value: complaints[2], paper: paper)
-        task2.answers.create!(card_content: reasons, value: complaints[3], paper: paper)
+
+        task.answers.create!(card_content: reasons, value: 'it is ugly', paper: paper)
+        task.answers.create!(card_content: reasons, value: 'it is wrong', paper: paper)
+        task2.answers.create!(card_content: reasons, value: 'it is the worst', paper: paper)
+        task2.answers.create!(card_content: reasons, value: 'I hate it', paper: paper)
         template = "{% for reason in paperwide_sendback_reasons %}{{ reason.value }}, {% endfor %}"
-        reasons = LetterTemplate.new(body: template).render(context).body.split(',').map(&:strip).reject(&:blank?)
-        expect(reasons).to match_array(complaints)
+        expect(LetterTemplate.new(body: template).render(context).body)
+          .to eq('it is ugly, it is wrong, it is the worst, I hate it, ')
       end
 
       it "only renders reasons from unpassed tech checks" do

@@ -24,7 +24,7 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
   nameErrorPresent: Ember.computed.notEmpty('nameError'),
   ccErrorPresent: Ember.computed.notEmpty('ccErrors'),
   bccErrorPresent: Ember.computed.notEmpty('bccErrors'),
-
+  hasErrors: Ember.computed.or('subjectErrorPresent', 'bodyErrorPresent', 'nameErrorPresent', 'ccErrorPresent', 'bccErrorPresent'),
   actions: {
     editTitle() {
       this.set('isEditingName', true);

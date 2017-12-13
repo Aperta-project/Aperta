@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   classNameBindings: ['preview-email'],
   tagName: 'span',
   visible: false,
+  hasErrors: false,
   letterTemplateId: null,
   letterTemplate: null,
   actions: {

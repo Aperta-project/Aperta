@@ -1,4 +1,4 @@
-<button class="button-secondary button--blue" {{action "loadPreviewData"}}>Preview</button>
+<button class="button-secondary button--blue" disabled={{hasErrors}} {{action "loadPreviewData"}}>Preview</button>
 {{#if visible }}
   {{#overlay-fullscreen visible=visible
     overlayClass="preview-email overlay--blue"

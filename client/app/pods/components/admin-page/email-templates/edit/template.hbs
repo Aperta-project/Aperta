@@ -41,7 +41,9 @@
           displaySpinner=template.isSaving}}
           SAVE
         {{/save-button}}
-        {{admin-page/email-templates/preview letterTemplateId=template.id }}
+        {{admin-page/email-templates/preview
+          letterTemplateId=template.id
+          hasErrors=hasErrors }}
       </div>
 
       <div class="edit-email-well">

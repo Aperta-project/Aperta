@@ -8,7 +8,12 @@
     preview=preview
   }}
 
-  <button {{action "generatePreview"}} class="button-primary button--green">Show Email Preview</button>
+  <button
+    class="button-primary button--green"
+    disabled={{emailNotAllowed}}
+    {{action "generatePreview"}}>
+      Show Email Preview
+  </button>
 
   {{#if previewError}}
     <div class="preview-error error-message">
@@ -25,7 +30,12 @@
         {{{emailPreview}}}
       </div>
 
-      <button class="button-primary button--green" {{action "sendChangeRequestEmail"}}>Send Changes For Author</button>
+      <button
+        class="button-primary button--green"
+        disabled={{emailNotAllowed}}
+        {{action "sendChangeRequestEmail"}}>
+          Send Changes For Author
+      </button>
     </div>
   {{/if}}
 </div>

@@ -21,9 +21,9 @@ class TechCheckScenario < TemplateContext
   def paperwide_sendback_reasons
     task.paper.tasks
       .joins(card_version: [card_contents: [:answers]])
+      .group('id')
       .where(card_contents: { content_type: 'tech-check' })
       .where(answers: { value: 'f' })
-      .group('id')
       .sort_by { |task| [task.phase.position, task.position] }
       .flat_map { |task| task_sendback_reasons(task) }
   end
@@ -49,7 +49,7 @@ class TechCheckScenario < TemplateContext
     end
 
     reasons
-      .sort_by { |reason| CardContent.find(reason.card_content_id).lft }
+      .sort_by { |reason| reason.card_content.lft }
       .map { |reason| AnswerContext.new(reason) }
   end
 

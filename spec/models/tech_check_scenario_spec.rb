@@ -61,7 +61,7 @@ describe TechCheckScenario do
         template_body = LetterTemplate.new(body: template).render(context).body
         answers = CardContent.find_by(content_type: 'paragraph-input').answers
 
-        answers.length.times { |n| expect(template_body).to match(answers[n].value) }
+        expect(template_body).to eq('it is ugly, it is wrong, it is the worst, I hate it, ')
       end
 
       it "only renders reasons from unpassed tech checks" do

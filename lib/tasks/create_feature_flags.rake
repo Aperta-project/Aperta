@@ -13,7 +13,6 @@ task 'create_feature_flags': :environment do
     "HEALTH_CHECK",
     "REVIEW_DUE_DATE",
     "REVIEW_DUE_AT",
-    "CAS_PHASED_SIGNUP",
     "KEEP_APEX_HTML",
     "PREPRINT",
     "JIRA_INTEGRATION"

@@ -16,10 +16,11 @@ from .Pages.manuscript_viewer import ManuscriptViewerPage
 from .Pages.correspondence_history import CorrespondenceHistory
 from .Pages.workflow_page import WorkflowPage
 from frontend.common_test import CommonTest
-from Base.Resources import editorial_users
+from Base.Resources import editorial_users, prod_staff_login
 
 __author__ = 'achoe@plos.org'
 
+editorial_users.remove(prod_staff_login)
 
 @MultiBrowserFixture
 class CoAuthorConfirmationTest(CommonTest):
@@ -214,7 +215,7 @@ class CoAuthorConfirmationTest(CommonTest):
 
         authors_card = AuthorsCard(self.getDriver())
         authors_card.click_completion_button()
-        authors_card.validate_coauthor_status(staff_user)
+        authors_card.validate_coauthor_status(short_doi)
 
     def test_group_coauthor_confirmation_by_staff(self):
         """

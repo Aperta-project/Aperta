@@ -196,7 +196,7 @@ test('the row is in the show state, invitation is declined, and in current round
 });
 
 test('the row is in the show state, invitation is invited, and in current round', function(assert) {
-  assert.expect(2);
+  assert.expect(3);
   const spy = sinon.spy();
   this.setProperties({
     'invitation.state': 'invited',
@@ -210,7 +210,73 @@ test('the row is in the show state, invitation is invited, and in current round'
   assert.textPresent('.invitation-item-action', 'Accept invitation for reviewer', 'Shows Accept button');
   this.$('.invitation-item-action-accept').click();
 
+  assert.textPresent('.confirm-overlay', 'Are you sure?', 'Shows confirmation dialog');
+  this.$(".confirm-overlay button:contains('Accept Invitation')").click();
+
   assert.spyCalled(spy, 'clicking on button invokes invitation.accept()');
+});
+
+test('Canceling accept confirm dialog does not call invitation.accept()', function(assert) {
+  assert.expect(3);
+  const spy = sinon.spy();
+  this.setProperties({
+    'invitation.state': 'invited',
+    currentRound: true,
+    uiState: 'show',
+    'invitation.accept': spy
+  });
+
+  this.render(openTemplate);
+
+  assert.textPresent('.invitation-item-action', 'Accept invitation for reviewer', 'Shows Accept button');
+  this.$('.invitation-item-action-accept').click();
+
+  assert.textPresent('.confirm-overlay', 'Are you sure?', 'Shows confirmation dialog');
+  this.$(".confirm-overlay button:contains('cancel')").click();
+
+  assert.spyNotCalled(spy, 'clicking on button invokes invitation.accept()');
+});
+
+test('Clicking rescind on rescind confirm dialog calls invitation.rescind()', function(assert) {
+  assert.expect(3);
+  const spy = sinon.spy();
+  this.setProperties({
+    'invitation.state': 'invited',
+    currentRound: true,
+    uiState: 'show',
+    'invitation.rescind': spy
+  });
+
+  this.render(openTemplate);
+
+  assert.textPresent('.invitation-item-action', 'Rescind', 'Shows rescind button');
+  this.$('.invitation-item-action-rescind').click();
+
+  assert.textPresent('.confirm-overlay', 'Are you sure?', 'Shows confirmation dialog');
+  this.$(".confirm-overlay button:contains('Rescind Invitation')").click();
+
+  assert.spyCalled(spy, 'clicking on button invokes invitation.rescind()');
+});
+
+test('Canceling rescind confirm dialog does not call invitation.rescind()', function(assert) {
+  assert.expect(3);
+  const spy = sinon.spy();
+  this.setProperties({
+    'invitation.state': 'invited',
+    currentRound: true,
+    uiState: 'show',
+    'invitation.rescind': spy
+  });
+
+  this.render(openTemplate);
+
+  assert.textPresent('.invitation-item-action', 'Rescind', 'Shows rescind button');
+  this.$('.invitation-item-action-rescind').click();
+
+  assert.textPresent('.confirm-overlay', 'Are you sure?', 'Shows confirmation dialog');
+  this.$(".confirm-overlay button:contains('cancel')").click();
+
+  assert.spyNotCalled(spy, 'clicking on button invokes invitation.rescind()');
 });
 
 test('the row is in the show state, invitation is invited, and in current round but invitee has no id', function(assert) {

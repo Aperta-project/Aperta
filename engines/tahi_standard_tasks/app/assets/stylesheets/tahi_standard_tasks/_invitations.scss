@@ -64,6 +64,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invitation-item {
   border-top: 2px solid $aperta-grey-light;
+  position: relative;
 
   &:last-child {
     margin-bottom: 1px;

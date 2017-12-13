@@ -126,7 +126,7 @@ describe ScheduledEvent do
     before do
       subject.name = 'Pre-due Reminder'
       subject.state = 'processing'
-      allow_any_instance_of(TahiStandardTasks::ReviewerMailer).to receive(:remind_before_due)
+      allow_any_instance_of(ReviewerMailer).to receive(:remind_before_due)
     end
 
     it 'should error if the email cannot be sent' do

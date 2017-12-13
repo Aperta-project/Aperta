@@ -69,7 +69,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
     end
 
     it "will email using last completed decision" do
-      expect(TahiStandardTasks::RegisterDecisionMailer)
+      expect(RegisterDecisionMailer)
         .to receive_message_chain(:delay, :notify_author_email)
         .with(
           decision_id: decision_one.id,

@@ -165,7 +165,7 @@ class ReviewerReport < ActiveRecord::Base
   end
 
   def thank_reviewer
-    mailer = TahiStandardTasks::ReviewerMailer
+    mailer = ReviewerMailer
     case state
     when 'submitted'
       mailer.delay.thank_reviewer(reviewer_report_id: id)

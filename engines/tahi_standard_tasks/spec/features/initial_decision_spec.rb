@@ -38,7 +38,7 @@ feature 'Initial Decision', js: true, sidekiq: :inline! do
 
   scenario 'Registers a decision on the paper' do
     text = 'Accepting this because I can'
-    expect(TahiStandardTasks::InitialDecisionMailer)
+    expect(InitialDecisionMailer)
       .to receive_message_chain(:delay, :notify)
     choose('Invite for full submission')
     wait_for_editors

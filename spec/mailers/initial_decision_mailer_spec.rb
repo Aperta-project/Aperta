@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::InitialDecisionMailer do
+describe InitialDecisionMailer do
   let(:paper) { FactoryGirl.build_stubbed(:paper, title: 'Paper Title') }
   let(:decision) do
     FactoryGirl.build_stubbed(

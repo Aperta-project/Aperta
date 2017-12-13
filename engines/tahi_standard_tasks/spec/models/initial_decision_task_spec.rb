@@ -56,7 +56,7 @@ describe TahiStandardTasks::InitialDecisionTask do
     end
 
     it "will email using last completed decision" do
-      expect(TahiStandardTasks::InitialDecisionMailer)
+      expect(InitialDecisionMailer)
         .to receive_message_chain(:delay, :notify)
         .with(decision_id: decision_one.id)
       task.send_email

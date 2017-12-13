@@ -78,7 +78,7 @@ class ScheduledEvent < ActiveRecord::Base
   end
 
   def send_email
-    task_mailer = TahiStandardTasks::ReviewerMailer
+    task_mailer = ReviewerMailer
     begin
       case name
       when 'Pre-due Reminder'

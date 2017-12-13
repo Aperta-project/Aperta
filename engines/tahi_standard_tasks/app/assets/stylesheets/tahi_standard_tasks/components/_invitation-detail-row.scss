@@ -1,0 +1,26 @@
+.confirm-overlay {
+  background: $aperta-green;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  cursor: auto;
+  text-align: center;
+
+  h1 {
+    color: white;
+    font-size: 18px;
+    margin: 20px;
+    line-height: 1.5em;
+  }
+
+  .button-link {
+    color: white;
+  }
+
+  .overlay-action-buttons {
+    float: none;
+    margin-top: 20px;
+  }
+}

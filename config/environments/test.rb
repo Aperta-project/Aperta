@@ -12,6 +12,8 @@ Tahi::Application.configure do
   # preloads Rails for running tests, you may have to set it to true.
   # config.eager_load = true
 
+  config.session_store :cookie_store, key: '_tahi_session'
+
   # Configure static asset server for tests with Cache-Control for performance.
   config.serve_static_files  = true
   config.static_cache_control = "public, max-age=3600"

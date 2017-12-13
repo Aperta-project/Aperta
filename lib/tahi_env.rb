@@ -102,9 +102,6 @@ class TahiEnv
   required :CAS_PHASED_SIGNUP_URL, if: :cas_phased_signup_enabled?
   required :JWT_ID_ECDSA, if: :cas_phased_signup_enabled?
 
-  # EM / Editorial Manager
-  optional :EM_DATABASE
-
   # Event Stream
   required :EVENT_STREAM_WS_HOST
   required :EVENT_STREAM_WS_PORT

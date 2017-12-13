@@ -157,7 +157,7 @@ describe TasksController, redis: true do
 
     context "when the user has access" do
       before do
-        FactoryGirl.create(:letter_template, journal: journal, name: 'Sendback Reasons')
+        FactoryGirl.create(:letter_template, journal: journal, name: 'Sendback Reasons', ident: 'preprint-sendbacks')
         stub_sign_in user
       end
 
@@ -178,16 +178,16 @@ describe TasksController, redis: true do
     end
   end
 
-  describe "PUT #sendback_preview" do
+  describe "PUT #render_template" do
     let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
-
+    let(:template) { FactoryGirl.create(:letter_template, journal: journal) }
     subject(:do_request) do
       xhr(
         :put,
-        :sendback_preview,
+        :render_template,
         format: 'json',
         id: task.to_param,
-        task: {}
+        ident: template.ident
       )
     end
 
@@ -195,7 +195,6 @@ describe TasksController, redis: true do
 
     context "when the user has access" do
       before do
-        FactoryGirl.create(:letter_template, journal: journal, name: 'Sendback Reasons')
         stub_sign_in user
       end
 
@@ -206,8 +205,7 @@ describe TasksController, redis: true do
 
       it "renders the rendered letter template" do
         do_request
-        expect(res_body.keys).to contain_exactly("to", "subject", "body")
-        expect(res_body.values).not_to include(nil)
+        expect(res_body[:letter_template][:body]).to eq(template.body)
       end
     end
   end

@@ -19,11 +19,14 @@
       {{/if}}
     </h3>
     Completed {{statusDate}}
-    {{#each inactiveAdminEdits as |edit|}}
+    {{#each report.inactiveAdminEdits as |edit|}}
       <div class="report-edit-description">
         <span><em>Edited by {{edit.user.name}} on {{format-date edit.updatedAt}}:</em> {{edit.notes}}</span>
       </div>
     {{/each}}
+    {{#if report.inactiveAdminEdits.length}}
+      <hr>
+    {{/if}}
   {{else}}
   <strong>{{reviewerStatus}}:</strong> {{statusMessage}}
   {{#if (and canEditDueDate

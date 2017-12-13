@@ -8,8 +8,11 @@ describe XmlCardLoader do
   let(:xml_card_loader) { XmlCardLoader.new(card) }
 
   describe 'XML format check' do
-    xml_dir = Rails.root.join('lib', 'custom_card', 'configurations', 'xml_content')
+    before(:each) do
+      JournalFactory.seed_letter_templates(card.journal)
+    end
 
+    xml_dir = Rails.root.join('lib', 'custom_card', 'configurations', 'xml_content')
     Dir.glob("#{xml_dir}/*.xml").each do |xml_file|
       it "should round-trip #{xml_file}" do
         xml = File.read(xml_file)

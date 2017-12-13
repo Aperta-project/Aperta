@@ -3,12 +3,6 @@ require 'sidekiq-scheduler/web'
 
 # rubocop:disable Metrics/LineLength
 Tahi::Application.routes.draw do
-  mount TahiStandardTasks::Engine => '/api', as: 'standard_tasks'
-  ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
-  mount PlosBioInternalReview::Engine => '/api'
-  mount PlosBioTechCheck::Engine => '/api'
-  mount PlosBilling::Engine => '/api'
-
   # Test specific
   #
   if Rails.env.test?

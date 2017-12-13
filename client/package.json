@@ -91,11 +91,7 @@
   },
   "ember-addon": {
     "paths": [
-      "../engines/plos_billing/client",
-      "../engines/tahi_standard_tasks/client",
-      "../engines/plos_bio_internal_review/client",
-      "../engines/plos_bio_tech_check/client",
-      "../engines/tahi-assign_team/client"
+
     ]
   },
   "devDependencies": {

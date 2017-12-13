@@ -31,8 +31,14 @@
     }
   }
   .preview-error {
-    margin-top: 20px;
+    vertical-align: middle;
+    padding-top: 30px;
     font-size: 16px;
-    color: #C00
+    color: #C00;
+
+    p {
+      display: inline;
+      padding-left: 5px;
+    }
   }
 }

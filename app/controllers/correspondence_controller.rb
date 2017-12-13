@@ -64,7 +64,6 @@ class CorrespondenceController < ApplicationController
   def ensure_paper
     paper_id = params.dig(:correspondence, :paper_id) || params[:paper_id]
     if paper_id
-      # @paper = Paper.find_by_id_or_short_doi(paper_id)
       @paper = Paper.find paper_id
     else
       @paper = correspondence.paper

@@ -15,7 +15,6 @@ require 'sidekiq/testing'
 require 'webmock/rspec'
 require 'rake'
 require 'fakeredis/rspec'
-require Rails.root.join('lib', 'tahi_plugin')
 Dir[Rails.root.join('lib', 'custom_card', '**', '*.rb')].each { |f| require f }
 include Warden::Test::Helpers
 

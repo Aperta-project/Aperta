@@ -242,7 +242,7 @@ class AuthorsCard(BaseCard):
     time.sleep(.2)
     self._get(self._close_button).click()
 
-  def update_coauthor_status(self, confirm=True):
+  def update_coauthor_status(self, decision):
     """
     Selects a radio button option to either confirm or decline co-authorship status. This assumes that the
     co-author has not already submitted confirmed/declined via email (we are not able to test that piece yet).
@@ -250,7 +250,7 @@ class AuthorsCard(BaseCard):
     :param confirm: The decision taken (accept or decline) for co-author confirmation
     :return: void function
     """
-    if confirm:
+    if decision == 'confirm':
       self._get(self._coauthor_confirm_lbl).click()
     else:
       self._get(self._coauthor_decline_lbl).click()
@@ -272,19 +272,9 @@ class AuthorsCard(BaseCard):
     no_response_info = self._get(self._coauthor_status_info_no_response)
     assert no_response_info.text == expected_no_response_msg, 'Actual: {0} != Expected: {1}'.format(no_response_info.text, expected_no_response_msg)
 
-    confirm = random.choice([True, False])
-    logging.info('Selecting {0} for coauthor confirmation'.format(confirm))
-    self.update_coauthor_status(confirm)
-
-    if confirm:
-      expected_accept_msg = 'Authorship has been confirmed'
-      accept_msg = self._get(self._coauthor_status_info_confirmed)
-      assert accept_msg.text == expected_accept_msg, 'Actual: {0} != Expected: {1}'.format(accept_msg.text, expected_accept_msg)
-    else:
-      expected_decline_msg = 'Authorship has been refuted'
-      decline_msg = self._get(self._coauthor_status_info_declined)
-      assert decline_msg.text == expected_decline_msg, 'Actual: {0} != Expected: {1}'.format(decline_msg.text, expected_decline_msg)
-
+    decision = random.choice(['confirm', 'refute'])
+    logging.info('Selecting {0} for coauthor confirmation'.format(decision))
+    self.update_coauthor_status(decision)
     self._get(self._add_author_add_btn).click()
 
     # Now, open the author item for the coauthor and verify that the last modified by info is displayed
@@ -293,15 +283,22 @@ class AuthorsCard(BaseCard):
     coauthor_item.find_element(*self._delete_author_item)
     coauthor_item.click()
     last_mod_info = self._get(self._coauthor_last_mod_info)
-    if confirm:
-      action = 'Confirmed by'
-    else:
-      action = 'Refuted By'
 
     coauthor_info_from_db = self.get_coauthor_info_from_db(short_doi)
     coauthor_state_from_db = coauthor_info_from_db[0]
     coauthor_state_modified_at = self.utc_to_local_tz(coauthor_info_from_db[1])
     coauthor_state_modified_by_id = coauthor_info_from_db[2]
+
+    expected_decision_msg = 'Authorship has been {0}'.format(coauthor_state_from_db)
+
+    if decision == 'confirm':
+        action = '{0} by'.format(coauthor_state_from_db.capitalize())
+        accept_msg = self._get(self._coauthor_status_info_confirmed)
+        assert accept_msg.text == expected_decision_msg, 'Actual: {0} != Expected: {1}'.format(accept_msg.text, expected_decision_msg)
+    else:
+        action = '{0} By'.format(coauthor_state_from_db.capitalize())
+        decline_msg = self._get(self._coauthor_status_info_declined)
+        assert decline_msg.text == expected_decision_msg, 'Actual: {0} != Expected: {1}'.format(decline_msg.text, expected_decision_msg)
 
     time_confirmed = coauthor_state_modified_at.strftime('%B %-d, %Y %H:%M')
     coauthor_state_modified_by = ' '.join(self.get_user_name_from_id(coauthor_state_modified_by_id))

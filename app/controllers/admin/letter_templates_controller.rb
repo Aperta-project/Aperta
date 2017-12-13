@@ -28,6 +28,12 @@ class Admin::LetterTemplatesController < ApplicationController
     respond_with :admin, template
   end
 
+  def preview
+    letter_template = LetterTemplate.find(params[:id])
+    letter_template.render_dummy_data
+    respond_with letter_template
+  end
+
   private
 
   def authorized_user

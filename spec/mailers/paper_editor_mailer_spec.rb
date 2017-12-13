@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::PaperEditorMailer do
+describe PaperEditorMailer do
   include ClientRouteHelper
 
   describe "#notify_invited" do

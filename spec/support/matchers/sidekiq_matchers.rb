@@ -7,7 +7,7 @@
 #
 # Here's an exampl using it:
 #   expect(Sidekiq::DelayedMailer).to have_queued_mailer_job(
-#     PlosBioTechCheck::ChangesForAuthorMailer,
+#     ChangesForAuthorMailer,
 #     :notify_changes_for_author,
 #     [{author_id: paper.creator.id, task_id: task.id}
 RSpec::Matchers.define :have_queued_mailer_job do |*expected|

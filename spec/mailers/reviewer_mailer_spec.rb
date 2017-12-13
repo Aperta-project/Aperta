@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::ReviewerMailer do
+describe ReviewerMailer do
   include ClientRouteHelper
 
   let(:assigner) { FactoryGirl.create(:user) }

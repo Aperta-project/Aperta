@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::RegisterDecisionMailer do
+describe RegisterDecisionMailer do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) do
     FactoryGirl.create(:paper,

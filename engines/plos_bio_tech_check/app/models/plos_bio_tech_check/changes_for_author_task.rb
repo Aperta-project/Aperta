@@ -30,7 +30,7 @@ module PlosBioTechCheck
     end
 
     def notify_changes_for_author
-      PlosBioTechCheck::ChangesForAuthorMailer.delay.notify_changes_for_author(
+      ChangesForAuthorMailer.delay.notify_changes_for_author(
         author_id: paper.creator.id,
         task_id: id
       )

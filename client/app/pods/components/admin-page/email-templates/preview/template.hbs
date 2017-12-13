@@ -1,3 +1,4 @@
+<button class="button-secondary button--blue" {{action "loadPreviewData"}}>Preview</button>
 {{#if visible }}
   {{#overlay-fullscreen visible=visible
     overlayClass="preview-email"
@@ -17,6 +18,4 @@
     {{{ letterTemplate.body }}}
   </div>
   {{/overlay-fullscreen}}
-{{else}}
-  <button class="button-primary button--white" {{action "loadPreviewData"}}>Preview</button>
 {{/if}}

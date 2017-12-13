@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   restless: Ember.inject.service(),
   classNameBindings: ['preview-email'],
+  tagName: 'span',
   visible: false,
   letterTemplateId: null,
   letterTemplate: null,

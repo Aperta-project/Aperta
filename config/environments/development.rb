@@ -32,6 +32,7 @@ Tahi::Application.configure do
 
   # defaults to local storage
   # config.carrierwave_storage = :fog
+  config.session_store :cookie_store, key: '_tahi_session'
 
   # compress logging output
   # config.lograge.enabled = true

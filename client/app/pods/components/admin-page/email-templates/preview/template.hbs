@@ -1,0 +1,22 @@
+{{#if visible }}
+  {{#overlay-fullscreen visible=visible
+    overlayClass="preview-email"
+    outAnimationComplete=(action 'close') }}
+  <h1> Email Template Preview</h1>
+  <div>
+    <label for="subject">Subject:</label><span>{{letterTemplate.subject}}</span>
+  </div>
+  <div>
+    <label for="cc">CC:</label><span>{{letterTemplate.cc}}</span>
+  </div>
+  <div>
+    <label for="cc">BCC:</label><span>{{letterTemplate.bcc}}</span>
+  </div>
+  <hr/>
+  <div>
+    {{{ letterTemplate.body }}}
+  </div>
+  {{/overlay-fullscreen}}
+{{else}}
+  <button class="button-primary button--white" {{action "loadPreviewData"}}>Preview</button>
+{{/if}}

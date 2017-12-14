@@ -58,7 +58,7 @@ class CorrespondenceController < ApplicationController
   end
 
   def correspondence
-    Correspondence.find(params[:id])
+    @correspondence ||= Correspondence.find(params[:id])
   end
 
   def ensure_paper

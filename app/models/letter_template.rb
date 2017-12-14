@@ -62,7 +62,7 @@ class LetterTemplate < ActiveRecord::Base
   end
 
   def render_dummy_data
-    render(dummy_data_file)
+    render(dummy_data)
   end
 
   private
@@ -121,7 +121,7 @@ class LetterTemplate < ActiveRecord::Base
       .join(',')                               # ...and join them back together with the Tahi standard email separator
   end
 
-  def dummy_data_file
-    @dummy_data_file ||= YAML.load_file(Rails.root.join('config', 'letter_templates', 'dummy_data.yml'))
+  def dummy_data
+    @dummy_data ||= YAML.load_file(Rails.root.join('config', 'letter_templates', 'dummy_data.yml'))
   end
 end

@@ -6,13 +6,17 @@ class Jira
       feedback_params.deep_symbolize_keys!
       session_token = authenticate!
       payload = build_payload(user, feedback_params)
-      faraday_connection.post do |req|
+
+      Rails.logger.info "creating JIRA issue with params: #{payload}"
+      response = faraday_connection.post do |req|
         req.url TahiEnv.jira_create_issue_url
         req.body = payload.to_json
         req.headers['Content-Type'] = 'application/json'
         req.headers['Accept'] = 'application/json'
         req.headers['Cookie'] = "JSESSIONID=#{session_token[:value]}"
       end
+
+      Rails.logger.warn("Failed to create JIRA Feedaback Issue. Response: #{response}") unless response.success?
     end
 
     def authenticate!
@@ -36,6 +40,8 @@ class Jira
       description = feedback_params[:remarks] + "\n\n"
       description += "Referrer: #{feedback_params[:referrer]} \n"
       description += "User Email: #{user.email} \n"
+      description += "Tahi App Name: #{TahiEnv.app_name} \n"
+      description += "Rails Env: #{Rails.env} \n"
       description += "Attachments:\n#{attachment_urls(feedback_params)}" if attachments_exist?(feedback_params)
       description += "\n\n"
 
@@ -43,6 +49,7 @@ class Jira
         fields: {
           summary: "Aperta Feedback from #{user.full_name}.",
           description: description,
+          customfield_13439: aperta_environment,
           customfield_13500: user.username,
           customfield_13501: feedback_params[:browser],
           customfield_13502: feedback_params[:platform],
@@ -58,6 +65,25 @@ class Jira
           }
         }
       }
+    end
+
+    def aperta_environment
+      aperta_env = {
+        'development' => 'Vagrant/Local',
+        'test'        => 'CircleCI',
+        'staging'     => 'Heroku Review App'
+      }[Rails.env]
+
+      aperta_env ||= {
+        'Aperta'           => 'Production',
+        'Aperta (Stage)'   => 'Stage',
+        'Aperta (QA-RC)'   => 'RC',
+        'Aperta (DEV-CI)'  => 'CI/DEV',
+        'Aperta (Demo)'    => 'Demo',
+        'Aperta (Vagrant)' => 'Vagrant/Local'
+      }[TahiEnv.app_name]
+
+      aperta_env ? [{ value: aperta_env }] : []
     end
 
     def attachment_urls(feedback_params)

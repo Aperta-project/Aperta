@@ -21,6 +21,7 @@ describe Jira do
       )
 
       fields = subject.build_payload(user, params)[:fields]
+      expect(fields[:customfield_13439]).to eq([{ value: 'CircleCI' }])
       expect(fields[:customfield_13500]).to eq(user.username)
       expect(fields[:customfield_13501]).to eq('Firefox 42.3')
       expect(fields[:customfield_13502]).to eq('Platform 9')

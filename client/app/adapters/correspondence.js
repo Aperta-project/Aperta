@@ -3,8 +3,10 @@ import ApplicationAdapter from 'tahi/adapters/application';
 
 export default ApplicationAdapter.extend({
   buildURL: function(modelName, id, record) {
-    let paperId = record.belongsTo('paper').id;
-    Ember.assert(`Expected a paper.id but didn't find one`, paperId);
+    let paper = record.belongsTo('paper');
+    let paperId = Ember.isPresent(paper)? paper.id : null;
+
+    Ember.assert(`Expected a paper ID or correspondence ID but didn't find one`, paperId || id);
 
     let namespace = this.get('namespace');
     if (namespace) {
@@ -13,7 +15,7 @@ export default ApplicationAdapter.extend({
       namespace = '';
     }
 
-    let url = `${namespace}/papers/${paperId}/correspondence`;
+    let url = paper ? `${namespace}/papers/${paperId}/correspondence` : `${namespace}/correspondence`;
 
     if (id) {
       url = `${url}/${id}`;

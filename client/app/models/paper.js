@@ -44,7 +44,7 @@ export default DS.Model.extend({
 
   paperTaskTypes: hasMany('paper-task-type'),
   availableCards: hasMany('card'),
-  correspondence: hasMany('correspondence'),
+  correspondences: hasMany('correspondence'),
   phases: hasMany('phase'),
   relatedArticles: hasMany('related-article'),
   snapshots: hasMany('snapshot', { inverse: 'paper' }),

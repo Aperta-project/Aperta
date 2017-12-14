@@ -19,11 +19,11 @@ class ReviewerReportSerializer < ActiveModel::Serializer
   has_many :admin_edits, embed: :ids, include: true
 
   def due_at
-    object.due_at if FeatureFlag[:REVIEW_DUE_DATE]
+    object.due_at
   end
 
   def due_at_id
-    object.due_datetime.id if object.due_datetime.present? && FeatureFlag[:REVIEW_DUE_DATE]
+    object.due_datetime.id if object.due_datetime.present?
   end
 
   def status

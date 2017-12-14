@@ -7,6 +7,8 @@ module PaperConverters
       PDFKit.new(pdf_html,
         footer_right: publishing_info_presenter.downloader_name,
         footer_font_name: 'Times New Roman',
+        margin_right: 30, # in mm
+        margin_left: 30,
         footer_font_size: '10').to_pdf
     end
 

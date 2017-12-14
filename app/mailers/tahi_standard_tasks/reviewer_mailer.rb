@@ -94,6 +94,7 @@ module TahiStandardTasks
     private
 
     def send_mail_with_letter_template(scenario:)
+      begin
         @letter_template.render(scenario, check_blanks: true)
         @subject = @letter_template.subject
         @body = @letter_template.body

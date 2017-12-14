@@ -4,9 +4,10 @@ import ValidateTextInput from 'tahi/mixins/validate-text-input';
 
 export default Ember.Component.extend(ValidateTextInput, {
   classNames: ['card-content', 'card-content-short-input'],
-  attributeBindings: ['isRequired:required', 'aria-required'],
-  'aria-required': Ember.computed.reads('isRequiredString'),
   classNameBindings: ['answer.shouldShowErrors:has-error'],
+  attributeBindings: ['isRequired:required', 'aria-required', 'data-ident'],
+  'aria-required': Ember.computed.reads('isRequiredString'),
+  'data-ident': Ember.computed.alias('content.ident'),
 
   propTypes: {
     answer: PropTypes.EmberObject.isRequired,

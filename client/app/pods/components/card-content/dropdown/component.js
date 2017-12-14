@@ -3,6 +3,8 @@ import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   classNames: ['card-content', 'card-content-dropdown'],
+  attributeBindings: ['data-ident'],
+  'data-ident': Ember.computed.alias('content.ident'),
 
   propTypes: {
     content: PropTypes.EmberObject.isRequired,

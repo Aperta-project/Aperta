@@ -5,6 +5,8 @@ import ValidateTextInput from 'tahi/mixins/validate-text-input';
 export default Ember.Component.extend(ValidateTextInput, {
   classNames: ['card-content', 'card-content-paragraph-input'],
   classNameBindings: ['answer.shouldShowErrors:has-error', 'disabled:read-only'],
+  attributeBindings: ['data-ident'],
+  'data-ident': Ember.computed.alias('content.ident'),
 
   propTypes: {
     answer: PropTypes.EmberObject.isRequired,

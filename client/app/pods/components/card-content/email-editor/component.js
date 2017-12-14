@@ -4,6 +4,9 @@ import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
   classNames: ['card-content', 'card-content-email-editor'],
+  attributeBindings: ['data-ident'],
+  'data-ident': Ember.computed.alias('content.ident'),
+
   restless: Ember.inject.service('restless'),
   flash: Ember.inject.service('flash'),
   propTypes: {

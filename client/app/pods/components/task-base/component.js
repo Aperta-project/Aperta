@@ -50,11 +50,8 @@ export default Component.extend(ValidationErrorsMixin, {
 
   saveTask: concurrencyTask(function * () {
     const currentSkipValidations = this.get('skipValidations');
-    const isCompleted = this.toggleProperty('task.completed');
     try {
       // if task is now incomplete skip validations
-      this.set('skipValidations', !isCompleted);
-
       yield this.get('task').save();
       this.clearAllValidationErrors();
     } catch (response) {
@@ -77,7 +74,6 @@ export default Component.extend(ValidationErrorsMixin, {
         return new Ember.RSVP.Promise((resolve) => resolve() );
       }
     }
-
     return this.get('saveTask').perform();
   },
 
@@ -138,6 +134,10 @@ export default Component.extend(ValidationErrorsMixin, {
     },
 
     toggleTaskCompletion() {
+      const isCompleted = this.toggleProperty('task.completed');
+
+      // if task is now incomplete skip validations
+      this.set('skipValidations', !isCompleted);
       this.save()
     }
   }

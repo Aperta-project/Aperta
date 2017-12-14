@@ -4,7 +4,12 @@ require 'data_transformation/fix_xml_text_node_values'
 
 describe 'DataTransformation::FixXmlTextNodeValues' do
   describe '#remove_cdata_nodes' do
-    subject { DataTransformation::FixXmlTextNodeValues.new }
+    subject(:data_transformation) { DataTransformation::FixXmlTextNodeValues.new }
+
+    before(:each) do
+      data_transformation.counters = {}
+    end
+
     let(:text) do
       <<-TEXT
           <![CDATA[Thank you very much for submitting your manuscript for consideration at PLOS Biology.
@@ -28,7 +33,7 @@ describe 'DataTransformation::FixXmlTextNodeValues' do
       # We want to put the text in an invalid state to make it mirror prod
       # rubocop:disable Rails/SkipsModelValidations:
       card_content.update_attribute('text', text)
-      subject.remove_cdata_nodes
+      data_transformation.remove_cdata_nodes
       expect(card_content.reload.text).to eq expected_text
     end
   end

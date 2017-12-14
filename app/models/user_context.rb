@@ -5,6 +5,10 @@ class UserContext < TemplateContext
     affiliations.first.try(:title)
   end
 
+  def name_or_email
+    object.try(:full_name) || object.try(:email)
+  end
+
   private
 
   def affiliations

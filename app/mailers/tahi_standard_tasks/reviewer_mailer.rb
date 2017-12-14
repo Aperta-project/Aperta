@@ -27,58 +27,38 @@ module TahiStandardTasks
 
     def reviewer_accepted(invitation_id:)
       @invitation = Invitation.find_by(id: invitation_id)
-      return if @invitation.blank?
-
-      @assigner = @invitation.inviter
-      return if @assigner.blank?
+      return if @invitation.blank? || @invitation.inviter.blank?
 
       @invite_reviewer_task = @invitation.task
       @paper = @invite_reviewer_task.paper
       @journal = @paper.journal
+      @letter_template = @journal.letter_templates.find_by(ident: 'reviewer-accepted')
+      scenario = InvitationScenario.new(@invitation)
 
-      @reviewer = @invitation.invitee
-      @reviewer_name = @reviewer.try(:full_name) || @invitation.email
-
-      mail(
-        to: @assigner.email,
-        subject: "Reviewer invitation was accepted on the manuscript, \"#{@paper.display_title}\""
-      )
+      send_mail_with_letter_template(scenario: scenario)
     end
 
     def reviewer_declined(invitation_id:)
       @invitation = Invitation.find_by(id: invitation_id)
-      return if @invitation.blank?
-
-      @assigner = @invitation.inviter
-      return if @assigner.blank?
+      return if @invitation.blank? || @invitation.inviter.blank?
 
       @invite_reviewer_task = @invitation.task
       @paper = @invite_reviewer_task.paper
       @journal = @paper.journal
+      @letter_template = @journal.letter_templates.find_by(ident: 'reviewer-declined')
+      scenario = InvitationScenario.new(@invitation)
 
-      @reviewer = @invitation.invitee
-      @reviewer_name = @reviewer.try(:full_name) || @invitation.email
-
-      mail(
-        to: @assigner.email,
-        subject: "Reviewer invitation was declined on the manuscript, \"#{@paper.display_title}\""
-      )
+      send_mail_with_letter_template(scenario: scenario)
     end
 
     def welcome_reviewer(assignee_id:, paper_id:)
       @paper = Paper.find(paper_id)
+      @reviewer_report = ReviewerReport.where( user_id: assignee_id, decision: @paper.draft_decision).first
       @journal = @paper.journal
-      @assignee = User.find_by(id: assignee_id)
-      @assignee_name = display_name(@assignee)
-      @reviewer_report =
-        ReviewerReport.where(user: @assignee,
-                             decision: @paper.draft_decision).first
-      @review_due_at = @reviewer_report.due_at || 10.days.from_now
+      @letter_template = @journal.letter_templates.find_by(ident: 'reviewer-welcome')
       @invitation = @reviewer_report.invitation
-      mail(
-        to: @assignee.try(:email),
-        subject: "Thank you for agreeing to review for #{@journal.name}"
-      )
+      scenario = ReviewerReportScenario.new(@reviewer_report)
+      send_mail_with_letter_template(scenario: scenario)
     end
 
     def remind_before_due(reviewer_report_id:)
@@ -112,6 +92,19 @@ module TahiStandardTasks
     end
 
     private
+
+    def send_mail_with_letter_template(scenario:)
+        @letter_template.render(scenario, check_blanks: true)
+        @subject = @letter_template.subject
+        @body = @letter_template.body
+        @to = @letter_template.to
+        @cc = @letter_template.cc
+        @bcc = @letter_template.bcc
+        mail(to: @to, cc: @cc, bcc: @bcc, subject: @subject)
+      rescue BlankRenderFieldsError => e
+        Bugsnag.notify(e)
+      end
+    end
 
     def reminder_notice(letter_template_ident:, reviewer_report_id:)
       @reviewer_report = ReviewerReport.find(reviewer_report_id)

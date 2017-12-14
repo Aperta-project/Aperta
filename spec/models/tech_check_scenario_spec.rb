@@ -3,10 +3,10 @@ require 'rails_helper'
 describe TechCheckScenario do
   subject(:context) { TechCheckScenario.new(task) }
   let(:paper) { FactoryGirl.create(:paper, journal: FactoryGirl.create(:journal)) }
-  let(:task) { FactoryGirl.create(:initial_tech_check_task, paper: paper) }
-  let(:task2) { FactoryGirl.create(:final_tech_check_task, paper: paper) }
+  let (:phase1) { FactoryGirl.create(:phase, position: 1, paper: paper) }
+  let (:phase2) { FactoryGirl.create(:phase, position: 2, paper: paper) }
+  let(:task) { FactoryGirl.create(:initial_tech_check_task, paper: paper, phase: phase1, position: 1) }
   let(:tech_check_parent) { FactoryGirl.create(:card_content, content_type: 'tech-check', value_type: 'boolean') }
-  let(:tech_check_parent2) { FactoryGirl.create(:card_content, content_type: 'tech-check', value_type: 'boolean') }
 
   describe "rendering a template" do
     it "renders the intro" do
@@ -39,29 +39,44 @@ describe TechCheckScenario do
     end
 
     context 'when rendering sendback reasons' do
+      let(:task2) { FactoryGirl.create(:final_tech_check_task, paper: paper, phase: phase1, position: 2) }
+      let(:tech_check_parent2) { FactoryGirl.create(:card_content, content_type: 'tech-check', value_type: 'boolean') }
+      let(:task3) { FactoryGirl.create(:revision_tech_check_task, paper: paper, phase: phase2, position: 1) }
+      let(:tech_check_parent3) { FactoryGirl.create(:card_content, content_type: 'tech-check', value_type: 'boolean') }
+
       let(:sendback_parent) { FactoryGirl.create(:card_content, content_type: 'sendback-reason', value_type: 'boolean', parent: tech_check_parent) }
       let(:reasons) { FactoryGirl.create(:card_content, content_type: 'paragraph-input', parent: sendback_parent) }
+
+      let(:sendback_parent2) { FactoryGirl.create(:card_content, content_type: 'sendback-reason', value_type: 'boolean', parent: tech_check_parent2) }
+      let(:reasons2) { FactoryGirl.create(:card_content, content_type: 'paragraph-input', parent: sendback_parent2) }
+
+      let(:sendback_parent3) { FactoryGirl.create(:card_content, content_type: 'sendback-reason', value_type: 'boolean', parent: tech_check_parent3) }
+      let(:reasons3) { FactoryGirl.create(:card_content, content_type: 'paragraph-input', parent: sendback_parent3) }
 
       it "renders all sendback reasons if all tech checks are unpassed" do
         task.card_version.content_root.children << tech_check_parent
         task.card_version.card_contents << tech_check_parent
-
         task2.card_version.content_root.children << tech_check_parent2
         task2.card_version.card_contents << tech_check_parent2
+        task3.card_version.content_root.children << tech_check_parent3
+        task3.card_version.card_contents << tech_check_parent3
 
         task.answers.create!(card_content: tech_check_parent, value: 'f', paper: paper)
         task2.answers.create!(card_content: tech_check_parent2, value: 'f', paper: paper)
+        task3.answers.create!(card_content: tech_check_parent3, value: 'f', paper: paper)
 
         task.answers.create!(card_content: reasons, value: 'it is ugly', paper: paper)
+        task3.answers.create!(card_content: reasons3, value: 'it is devoid of value', paper: paper)
+        task2.answers.create!(card_content: reasons2, value: 'I hate it', paper: paper)
+        task2.answers.create!(card_content: reasons2, value: 'it is the worst', paper: paper)
+        task3.answers.create!(card_content: reasons3, value: 'it is totally useless', paper: paper)
         task.answers.create!(card_content: reasons, value: 'it is wrong', paper: paper)
-        task2.answers.create!(card_content: reasons, value: 'it is the worst', paper: paper)
-        task2.answers.create!(card_content: reasons, value: 'I hate it', paper: paper)
 
         template = "{% for reason in paperwide_sendback_reasons %}{{ reason.value }}, {% endfor %}"
         template_body = LetterTemplate.new(body: template).render(context).body
         answers = CardContent.find_by(content_type: 'paragraph-input').answers
 
-        expect(template_body).to eq('it is ugly, it is wrong, it is the worst, I hate it, ')
+        expect(template_body).to eq('it is ugly, it is wrong, I hate it, it is the worst, it is devoid of value, it is totally useless, ')
       end
 
       it "only renders reasons from unpassed tech checks" do

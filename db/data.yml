@@ -10751,6 +10751,51 @@ card_contents:
     - '2017-11-29 15:54:42.621586'
     - '77'
     - financial-disclosure-summary
+  - - '479'
+    - 
+    - 
+    - '831'
+    - '840'
+    - '2017-12-13 22:16:18.448937'
+    - '2017-12-13 22:16:18.525625'
+    - '78'
+    - display-children
+  - - '480'
+    - 
+    - '479'
+    - '832'
+    - '837'
+    - '2017-12-13 22:16:18.462482'
+    - '2017-12-13 22:16:18.501745'
+    - '78'
+    - if
+  - - '481'
+    - 
+    - '480'
+    - '833'
+    - '834'
+    - '2017-12-13 22:16:18.471507'
+    - '2017-12-13 22:16:18.501745'
+    - '78'
+    - description
+  - - '482'
+    - 
+    - '480'
+    - '835'
+    - '836'
+    - '2017-12-13 22:16:18.487549'
+    - '2017-12-13 22:16:18.501745'
+    - '78'
+    - description
+  - - '483'
+    - preprint-posting--consent
+    - '479'
+    - '838'
+    - '839'
+    - '2017-12-13 22:16:18.509688'
+    - '2017-12-13 22:16:18.525625'
+    - '78'
+    - radio
 
 ---
 card_task_types:
@@ -11211,6 +11256,14 @@ card_versions:
     - 
     - Initial version
     - false
+  - - '78'
+    - '3'
+    - '75'
+    - true
+    - '2017-12-13 22:16:30.937313'
+    - '1'
+    - Update xml formatting
+    - false
 
 ---
 cards:
@@ -11587,10 +11640,10 @@ cards:
     - '1'
   - - '75'
     - '2017-08-16 18:01:19.302583'
-    - '2017-09-08 21:43:56.398314'
+    - '2017-12-13 22:16:31.022784'
     - Preprint Posting
     - '1'
-    - '2'
+    - '3'
     - 
     - published
     - '1'
@@ -36584,6 +36637,145 @@ entity_attributes:
     - 
     - '2017-11-29 15:54:42.618904'
     - '2017-11-29 15:54:42.618904'
+    - CardContent
+  - - '2276'
+    - '479'
+    - possible_values
+    - json
+    - false
+    - 
+    - 
+    - 
+    - '2017-12-13 22:16:18.454546'
+    - '2017-12-13 22:16:18.454546'
+    - CardContent
+  - - '2277'
+    - '480'
+    - possible_values
+    - json
+    - false
+    - 
+    - 
+    - 
+    - '2017-12-13 22:16:18.466602'
+    - '2017-12-13 22:16:18.466602'
+    - CardContent
+  - - '2278'
+    - '480'
+    - condition
+    - string
+    - false
+    - 
+    - isOverlay
+    - 
+    - '2017-12-13 22:16:18.468599'
+    - '2017-12-13 22:16:18.468599'
+    - CardContent
+  - - '2279'
+    - '481'
+    - possible_values
+    - json
+    - false
+    - 
+    - 
+    - 
+    - '2017-12-13 22:16:18.47481'
+    - '2017-12-13 22:16:18.47481'
+    - CardContent
+  - - '2280'
+    - '481'
+    - text
+    - string
+    - false
+    - 
+    - |-
+      <p>1. Benefit: Establish priority<br/>2. Benefit: Gather feedback<br/>3. Benefit: Cite for funding</p>
+              <br/>
+    - 
+    - '2017-12-13 22:16:18.476652'
+    - '2017-12-13 22:16:18.476652'
+    - CardContent
+  - - '2281'
+    - '482'
+    - possible_values
+    - json
+    - false
+    - 
+    - 
+    - 
+    - '2017-12-13 22:16:18.490897'
+    - '2017-12-13 22:16:18.490897'
+    - CardContent
+  - - '2282'
+    - '482'
+    - text
+    - string
+    - false
+    - 
+    - |2-
+
+                <p>Establish priority: take credit for your research and discoveries, by posting a copy of your uncorrected proof online.
+              If you do <b>NOT</b> consent to having an early version of your paper posted online, indicate your choice below.</p>
+    - 
+    - '2017-12-13 22:16:18.49275'
+    - '2017-12-13 22:16:18.49275'
+    - CardContent
+  - - '2283'
+    - '483'
+    - allow_annotations
+    - boolean
+    - false
+    - 
+    - 
+    - 
+    - '2017-12-13 22:16:18.513434'
+    - '2017-12-13 22:16:18.513434'
+    - CardContent
+  - - '2284'
+    - '483'
+    - default_answer_value
+    - string
+    - false
+    - 
+    - 'true'
+    - 
+    - '2017-12-13 22:16:18.515538'
+    - '2017-12-13 22:16:18.515538'
+    - CardContent
+  - - '2285'
+    - '483'
+    - required_field
+    - boolean
+    - false
+    - 
+    - 
+    - 
+    - '2017-12-13 22:16:18.517591'
+    - '2017-12-13 22:16:18.517591'
+    - CardContent
+  - - '2286'
+    - '483'
+    - possible_values
+    - json
+    - false
+    - 
+    - 
+    - '[{"label": "Yes, I want to accelerate research by publishing a preprint ahead
+      of peer review", "value": "true"}, {"label": "No, I do not want my article to
+      appear online ahead of the reviewed article", "value": "false"}]'
+    - '2017-12-13 22:16:18.519729'
+    - '2017-12-13 22:16:18.519729'
+    - CardContent
+  - - '2287'
+    - '483'
+    - value_type
+    - string
+    - false
+    - 
+    - boolean
+    - 
+    - '2017-12-13 22:16:18.522071'
+    - '2017-12-13 22:16:18.522071'
     - CardContent
 
 ---

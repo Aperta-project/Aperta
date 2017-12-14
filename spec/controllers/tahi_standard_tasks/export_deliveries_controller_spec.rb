@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::ExportDeliveriesController do
-  routes { TahiStandardTasks::Engine.routes }
-
   let(:user) { FactoryGirl.create :user }
   let(:journal) { FactoryGirl.create :journal }
   let(:paper) { FactoryGirl.create :paper, journal: journal, publishing_state: 'accepted' }

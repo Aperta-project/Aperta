@@ -2,8 +2,6 @@ require 'rails_helper'
 
 module PlosBioTechCheck
   describe InitialTechCheckController do
-    routes { Engine.routes }
-
     let(:user) { FactoryGirl.build_stubbed :user }
     let(:task) { FactoryGirl.build_stubbed :initial_tech_check_task }
     let(:notify_service) do

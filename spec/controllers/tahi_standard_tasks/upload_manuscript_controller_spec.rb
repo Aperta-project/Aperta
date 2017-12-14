@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::UploadManuscriptController do
-  routes { TahiStandardTasks::Engine.routes }
   let(:user) { FactoryGirl.create(:user) }
   let(:paper) { FactoryGirl.create(:paper) }
   let(:task) { FactoryGirl.create(:upload_manuscript_task, paper: paper) }

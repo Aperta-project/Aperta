@@ -2,7 +2,6 @@ require 'rails_helper'
 
 module TahiStandardTasks
   describe ReviewerRecommendationsController do
-    routes { TahiStandardTasks::Engine.routes }
     before do
       CardLoader.load("TahiStandardTasks::Funder")
       CardLoader.load("TahiStandardTasks::ReviewerRecommendation")

@@ -33,8 +33,9 @@ module TahiStandardTasks
       @paper = @invite_reviewer_task.paper
       @journal = @paper.journal
       @letter_template = @journal.letter_templates.find_by(ident: 'reviewer-accepted')
+      scenario = InvitationScenario.new(@invitation)
 
-      send_mail_with_letter_template(scenario: InvitationScenario.new(@invitation))
+      send_mail_with_letter_template(scenario: scenario)
     end
 
     def reviewer_declined(invitation_id:)
@@ -45,8 +46,9 @@ module TahiStandardTasks
       @paper = @invite_reviewer_task.paper
       @journal = @paper.journal
       @letter_template = @journal.letter_templates.find_by(ident: 'reviewer-declined')
+      scenario = InvitationScenario.new(@invitation)
 
-      send_mail_with_letter_template(scenario: InvitationScenario.new(@invitation))
+      send_mail_with_letter_template(scenario: scenario)
     end
 
     def welcome_reviewer(assignee_id:, paper_id:)
@@ -55,8 +57,9 @@ module TahiStandardTasks
       @journal = @paper.journal
       @letter_template = @journal.letter_templates.find_by(ident: 'reviewer-welcome')
       @invitation = @reviewer_report.invitation
+      scenario = ReviewerReportScenario.new(@reviewer_report)
 
-      send_mail_with_letter_template(scenario: ReviewerReportScenario.new(@reviewer_report))
+      send_mail_with_letter_template(scenario: scenario)
     end
 
     def remind_before_due(reviewer_report_id:)
@@ -92,15 +95,16 @@ module TahiStandardTasks
     private
 
     def send_mail_with_letter_template(scenario:)
-      @letter_template.render(scenario)
+      @letter_template.render(scenario, check_blanks: true)
       @subject = @letter_template.subject
       @body = @letter_template.body
       @to = @letter_template.to
       @cc = @letter_template.cc
       @bcc = @letter_template.bcc
       mail(to: @to, cc: @cc, bcc: @bcc, subject: @subject)
-    rescue BlankRenderFieldsError => e
-      Bugsnag.notify(e)
+      rescue BlankRenderFieldsError => e
+        Bugsnag.notify(e)
+      end
     end
 
     def reminder_notice(letter_template_ident:, reviewer_report_id:)

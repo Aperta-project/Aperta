@@ -37,13 +37,13 @@ describe InvitationScenario do
     end
 
     it 'renders the declined reason (html safe)' do
-      template = "{{ invitation.decline_reason }}"
+      template = "{{ invitation.decline_reason_html_safe }}"
       expect(LetterTemplate.new(body: template).render(context).body)
         .to eq(invitation.decline_reason.html_safe)
     end
 
     it 'renders the reviewer suggestions (html safe)' do
-      template = "{{ invitation.reviewer_suggestions }}"
+      template = "{{ invitation.reviewer_suggestions_html_safe }}"
       expect(LetterTemplate.new(body: template).render(context).body)
         .to eq(invitation.reviewer_suggestions.html_safe)
     end

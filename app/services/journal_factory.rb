@@ -973,10 +973,10 @@ class JournalFactory
         lt.ident = ident
         lt.scenario = 'Invitation'
         lt.to = '{{ inviter.email }}'
-        lt.subject = 'Reviewer invitation was accepted on the manuscript, "{{ manuscript.title }}"'
+        lt.subject = 'Reviewer invitation was accepted on the manuscript, {{ manuscript.title }}'
         lt.body = <<-TEXT.strip_heredoc
           <p>Hello {{ inviter.full_name }}</p>
-          <p>{{ invitee_name_or_email }} has accepted your invitation to review the Manuscript: "{{ manuscript.title }}".</p>
+          <p>{{ invitee.name_or_email }} has accepted your invitation to review the Manuscript: "{{ manuscript.title }}".</p>
         TEXT
 
         lt.save!
@@ -988,12 +988,12 @@ class JournalFactory
         lt.ident = ident
         lt.scenario = 'Invitation'
         lt.to = '{{ inviter.email }}'
-        lt.subject = 'Reviewer invitation was declined on the manuscript, "{{ manuscript.title }}"'
+        lt.subject = 'Reviewer invitation was declined on the manuscript, {{ manuscript.title }}'
         lt.body = <<-TEXT.strip_heredoc
           <p>Hello {{ inviter.full_name }}</p>
-          <p>{{ invitee_name_or_email }} has declined your invitation to review the Manuscript: "{{ manuscript.title }}".</p>
-          <p class="decline_reason"><strong>Reason:</strong> {{ invitation.decline_reason }}</p>
-          <p class="reviewer_suggestions"><strong>Reviewer Suggestions:</strong> {{ invitation.reviewer_suggestions }}</p>
+          <p>{{ invitee.name_or_email }} has declined your invitation to review the Manuscript: "{{ manuscript.title }}".</p>
+          <p class="decline_reason"><strong>Reason:</strong> {{ invitation.decline_reason_html_safe }}</p>
+          <p class="reviewer_suggestions"><strong>Reviewer Suggestions:</strong> {{ invitation.reviewer_suggestions_html_safe }}</p>
         TEXT
 
         lt.save!

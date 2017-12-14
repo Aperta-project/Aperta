@@ -5,11 +5,11 @@ class InvitationContext < TemplateContext
     @object.paper.review_duration_period
   end
 
-  def decline_reason_html_safe
+  def decline_reason
     @object.decline_reason.try(:html_safe)
   end
 
-  def reviewer_suggestions_html_safe
+  def reviewer_suggestions
     @object.reviewer_suggestions.try(:html_safe)
   end
 end

@@ -97,5 +97,71 @@ FactoryGirl.define do
           {% endif %}
         TEXT
     end
+
+    trait(:reviewer_invite) do
+      scenario 'Invitation'
+      ident 'reviewer-invite'
+      name 'Reviewer Invite'
+      to '{{ manuscript.creator.email }}'
+      subject 'You have been invited as a reviewer for the manuscript, "{{ manuscript.title }}"'
+      body <<-TEXT.strip_heredoc
+            <p>You've been invited as a Reviewer on "{{ manuscript.title }}", for {{ journal.name }}.</p>
+            <p>The abstract is included below. We would ideally like to have reviews returned to us within {{ invitation.due_in_days }} days. If you require additional time, please do let us know so that we may plan accordingly.</p>
+            <p>Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.</p>
+            <p>We look forward to hearing from you.</p>
+            <p>Sincerely,</p>
+            <p>{{ journal.name }} Team</p>
+            <p>***************** CONFIDENTIAL *****************</p>
+            <p>{{ manuscript.paper_type }}</p>
+            <p>Manuscript Title:<br>
+            {{ manuscript.title }}</p>
+            <p>Authors:<br>
+            {% for author in manuscript.authors %}
+            {{ forloop.index }}. {{ author.last_name }}, {{ author.first_name }}<br>
+            {% endfor %}</p>
+            <p>Abstract:<br>
+            {{ manuscript.abstract | default: 'Abstract is not available' }}</p>
+          TEXT
+    end
+
+    trait(:reviewer_welcome) do
+      scenario 'Reviewer Report'
+      ident 'reviewer-welcome'
+      name 'Reviewer Welcome'
+      to '{{ reviewer.email }}'
+      subject 'Thank you for agreeing to review for {{ journal.name }}'
+      body <<-TEXT.strip_heredoc
+          <h1>Thank you for agreeing to review for {{ journal.name }}</h1>
+          <p>Hello {{ reviewer.full_name }},</p>
+          <p>Thank you very much for agreeing to review the manuscript "{{ manuscript.title }}" for {{ journal.name }}.</p>
+          <p>In the interest of returning timely decisions to the authors, please return your review by {{ review.due_at }}. Please do let us know if you wish to request additional time to review this manuscript, so that we may plan accordingly.</p>
+          <p>For full reviewer guidelines, including what we look for and how to structure your
+            review for PLOS Biology, please visit: <a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines">http://journals.plos.org/plosbiology/s/reviewer-guidelines"</a>.</p>
+        TEXT
+    end
+
+    trait(:reviewer_accepted) do
+      scenario 'Manuscript'
+      ident 'reviewer-accepted'
+      name 'Reviewer Accepted'
+      to '{{ inviter.email }}'
+      subject 'Reviewer invitation was accepted on the manuscript, {{ manuscript.title }}'
+      body <<-TEXT.strip_heredoc
+          <p>Hello {{ inviter.full_name }}</p>
+          <p>{{ invitee.name_or_email }} has accepted your invitation to review the Manuscript: "{{ manuscript.title }}".</p>
+        TEXT
+    end
+
+    trait(:reviewer_declined) do
+      scenario 'Manuscript'
+      ident 'reviewer-declined'
+      name 'Reviewer Declined'
+      to '{{ inviter.email }}'
+      subject 'Reviewer invitation was declined on the manuscript, {{ manuscript.title }}'
+      body <<-TEXT.strip_heredoc
+          <p>Hello {{ inviter.full_name }}</p>
+          <p>{{ invitee.name_or_email }} has declined your invitation to review the Manuscript: "{{ manuscript.title }}".</p>
+        TEXT
+    end
   end
 end

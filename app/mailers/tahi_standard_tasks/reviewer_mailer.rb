@@ -95,13 +95,14 @@ module TahiStandardTasks
     private
 
     def send_mail_with_letter_template(scenario:)
-      @letter_template.render(scenario, check_blanks: true)
-      @subject = @letter_template.subject
-      @body = @letter_template.body
-      @to = @letter_template.to
-      @cc = @letter_template.cc
-      @bcc = @letter_template.bcc
-      mail(to: @to, cc: @cc, bcc: @bcc, subject: @subject)
+      begin
+        @letter_template.render(scenario, check_blanks: true)
+        @subject = @letter_template.subject
+        @body = @letter_template.body
+        @to = @letter_template.to
+        @cc = @letter_template.cc
+        @bcc = @letter_template.bcc
+        mail(to: @to, cc: @cc, bcc: @bcc, subject: @subject)
       rescue BlankRenderFieldsError => e
         Bugsnag.notify(e)
       end

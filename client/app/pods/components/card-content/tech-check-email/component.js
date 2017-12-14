@@ -32,8 +32,7 @@ export default Ember.Component.extend({
   },
 
   emailNotAllowed: Ember.computed('owner.paper.publishingState', function () {
-    return this.get('emailSending') ||
-      !(this.get('owner.paper.publishingState') === 'submitted');
+    return this.get('emailSending') || !this.get('owner.paper.isSubmitted');
   }),
 
   intro: Ember.computed(function () {

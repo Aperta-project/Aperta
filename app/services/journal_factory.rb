@@ -854,7 +854,7 @@ class JournalFactory
         lt.subject = 'Your review for {{ journal.name }} is due soon'
         lt.body = <<-TEXT.strip_heredoc
           <p>Dear Dr. {{ reviewer.last_name }}</p>
-          <p>Thank you again for agreeing to review “{{ manuscript.title }}” for {{ journal.name }}. This is a brief reminder that we hope to receive your review comments on the manuscript by {{ review.due_at }}. Please let us know as soon as possible, by return email, if your review will be delayed.</p>
+          <p>Thank you again for agreeing to review “{{ manuscript.title }}” for {{ journal.name }}. This is a brief reminder that we hope to receive your review comments on the manuscript by {{ review.due_at_with_minutes }}. Please let us know as soon as possible, by return email, if your review will be delayed.</p>
           <p>To view the manuscript and submit your review, please log in to Aperta via the green button below.</p>
           <p>For further instructions, please see the Aperta Reviewer Guide here: <a href="http://plos.io/Aperta-Reviewers">http://plos.io/Aperta-Reviewers</a></p>
           <p>We are grateful for your continued support of {{ journal.name }}. Please do not hesitate to contact the journal office if you have questions or require assistance.</p>
@@ -973,7 +973,7 @@ class JournalFactory
         lt.ident = ident
         lt.scenario = 'Invitation'
         lt.to = '{{ inviter.email }}'
-        lt.subject = 'Reviewer invitation was accepted on the manuscript, {{ manuscript.title }}'
+        lt.subject = 'Reviewer invitation was accepted on the manuscript, "{{ manuscript.title }}"'
         lt.body = <<-TEXT.strip_heredoc
           <p>Hello {{ inviter.full_name }}</p>
           <p>{{ reviewer_name }} has accepted your invitation to review the Manuscript: "{{ manuscript.title }}".</p>
@@ -988,7 +988,7 @@ class JournalFactory
         lt.ident = ident
         lt.scenario = 'Invitation'
         lt.to = '{{ inviter.email }}'
-        lt.subject = 'Reviewer invitation was declined on the manuscript, {{ manuscript.title }}'
+        lt.subject = 'Reviewer invitation was declined on the manuscript, "{{ manuscript.title }}"'
         lt.body = <<-TEXT.strip_heredoc
           <p>Hello {{ inviter.full_name }}</p>
           <p>{{ reviewer_name }} has declined your invitation to review the Manuscript: "{{ manuscript.title }}".</p>

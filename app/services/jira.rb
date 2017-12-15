@@ -87,11 +87,9 @@ class Jira
     end
 
     def attachment_urls(feedback_params)
-      result = ''
-      feedback_params.dig(:screenshots).each do |screenshot|
-        result += screenshot[:url] + "\n"
+      feedback_params.dig(:screenshots).reduce("") do |result, screenshot|
+        result + screenshot[:url] + "\n"
       end
-      result
     end
 
     def attachments_exist?(feedback_params)

@@ -6,7 +6,7 @@ export default Ember.Service.extend({
   sendFeedback(referrer, remarks, screenshots) {
     let paperId = this.get('paper.id');
     return this.get('restless').post('/api/feedback', {
-      feedback: {referrer, remarks, paper_id: paperId, screenshots }
+      feedback: {referrer, remarks, paper_id: paperId, screenshots}
     });
   },
 

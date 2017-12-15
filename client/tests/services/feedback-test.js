@@ -30,7 +30,7 @@ test('sendFeedback calls Restless with the appropriate params', function(assert)
       feedback: {
         referrer: referrerAddress,
         remarks: remarkText,
-        paper_id: 42,
+        paper_id: fakePaper.id,
         screenshots: shots
       }
     }));

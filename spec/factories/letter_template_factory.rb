@@ -134,7 +134,7 @@ FactoryGirl.define do
           <h1>Thank you for agreeing to review for {{ journal.name }}</h1>
           <p>Hello {{ reviewer.full_name }},</p>
           <p>Thank you very much for agreeing to review the manuscript "{{ manuscript.title }}" for {{ journal.name }}.</p>
-          <p>In the interest of returning timely decisions to the authors, please return your review by {{ review.due_at }}. Please do let us know if you wish to request additional time to review this manuscript, so that we may plan accordingly.</p>
+          <p>In the interest of returning timely decisions to the authors, please return your review by {{ review.due_at_with_minutes }}. Please do let us know if you wish to request additional time to review this manuscript, so that we may plan accordingly.</p>
           <p>For full reviewer guidelines, including what we look for and how to structure your
             review for PLOS Biology, please visit: <a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines">http://journals.plos.org/plosbiology/s/reviewer-guidelines"</a>.</p>
         TEXT
@@ -145,10 +145,10 @@ FactoryGirl.define do
       ident 'reviewer-accepted'
       name 'Reviewer Accepted'
       to '{{ inviter.email }}'
-      subject 'Reviewer invitation was accepted on the manuscript, {{ manuscript.title }}'
+      subject 'Reviewer invitation was accepted on the manuscript, "{{ manuscript.title }}"'
       body <<-TEXT.strip_heredoc
           <p>Hello {{ inviter.full_name }}</p>
-          <p>{{ invitee.name_or_email }} has accepted your invitation to review the Manuscript: "{{ manuscript.title }}".</p>
+          <p>{{ reviewer_name }} has accepted your invitation to review the Manuscript: "{{ manuscript.title }}".</p>
         TEXT
     end
 
@@ -157,10 +157,12 @@ FactoryGirl.define do
       ident 'reviewer-declined'
       name 'Reviewer Declined'
       to '{{ inviter.email }}'
-      subject 'Reviewer invitation was declined on the manuscript, {{ manuscript.title }}'
+      subject 'Reviewer invitation was declined on the manuscript, "{{ manuscript.title }}"'
       body <<-TEXT.strip_heredoc
           <p>Hello {{ inviter.full_name }}</p>
-          <p>{{ invitee.name_or_email }} has declined your invitation to review the Manuscript: "{{ manuscript.title }}".</p>
+          <p>{{ reviewer_name }} has declined your invitation to review the Manuscript: "{{ manuscript.title }}".</p>
+          <p class="decline_reason"><strong>Reason:</strong> {{ invitation.decline_reason }}</p>
+          <p class="reviewer_suggestions"><strong>Reviewer Suggestions:</strong> {{ invitation.reviewer_suggestions }}</p>
         TEXT
     end
   end

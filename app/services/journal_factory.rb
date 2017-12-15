@@ -973,7 +973,7 @@ class JournalFactory
         lt.ident = ident
         lt.scenario = 'Invitation'
         lt.to = '{{ inviter.email }}'
-        lt.subject = 'Reviewer invitation was accepted on the manuscript, {{ manuscript.title }}'
+        lt.subject = 'Reviewer invitation was accepted on the manuscript, "{{ manuscript.title }}"'
         lt.body = <<-TEXT.strip_heredoc
           <p>Hello {{ inviter.full_name }}</p>
           <p>{{ reviewer_name }} has accepted your invitation to review the Manuscript: "{{ manuscript.title }}".</p>
@@ -988,7 +988,7 @@ class JournalFactory
         lt.ident = ident
         lt.scenario = 'Invitation'
         lt.to = '{{ inviter.email }}'
-        lt.subject = 'Reviewer invitation was declined on the manuscript, {{ manuscript.title }}'
+        lt.subject = 'Reviewer invitation was declined on the manuscript, "{{ manuscript.title }}"'
         lt.body = <<-TEXT.strip_heredoc
           <p>Hello {{ inviter.full_name }}</p>
           <p>{{ reviewer_name }} has declined your invitation to review the Manuscript: "{{ manuscript.title }}".</p>

@@ -33,9 +33,8 @@ module TahiStandardTasks
       @paper = @invite_reviewer_task.paper
       @journal = @paper.journal
       @letter_template = @journal.letter_templates.find_by(ident: 'reviewer-accepted')
-      scenario = InvitationScenario.new(@invitation)
 
-      send_mail_with_letter_template(scenario: scenario)
+      send_mail_with_letter_template(scenario: InvitationScenario.new(@invitation))
     end
 
     def reviewer_declined(invitation_id:)
@@ -46,9 +45,8 @@ module TahiStandardTasks
       @paper = @invite_reviewer_task.paper
       @journal = @paper.journal
       @letter_template = @journal.letter_templates.find_by(ident: 'reviewer-declined')
-      scenario = InvitationScenario.new(@invitation)
 
-      send_mail_with_letter_template(scenario: scenario)
+      send_mail_with_letter_template(scenario: InvitationScenario.new(@invitation))
     end
 
     def welcome_reviewer(assignee_id:, paper_id:)
@@ -57,9 +55,8 @@ module TahiStandardTasks
       @journal = @paper.journal
       @letter_template = @journal.letter_templates.find_by(ident: 'reviewer-welcome')
       @invitation = @reviewer_report.invitation
-      scenario = ReviewerReportScenario.new(@reviewer_report)
 
-      send_mail_with_letter_template(scenario: scenario)
+      send_mail_with_letter_template(scenario: ReviewerReportScenario.new(@reviewer_report))
     end
 
     def remind_before_due(reviewer_report_id:)

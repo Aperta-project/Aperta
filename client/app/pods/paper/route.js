@@ -6,6 +6,7 @@ export default AuthorizedRoute.extend(PopoutParentRouteMixin,{
   channelName: null,
   popoutParams: { top: 10, left: 10, height: window.screen.height, width: 900 },
   pusher: Ember.inject.service(),
+  feedbackService: Ember.inject.service('feedback'),
 
   model(params) {
     return this.store.query('paper', { shortDoi: params.paper_shortDoi })
@@ -14,12 +15,15 @@ export default AuthorizedRoute.extend(PopoutParentRouteMixin,{
     });
   },
 
-/* eslint-disable camelcase */
+  afterModel(model) {
+    this.get('feedbackService').setContext(model);
+  },
 
+
+/* eslint-disable camelcase */
   serialize(model) {
     return { paper_shortDoi: model.get('shortDoi') };
   },
-
 /* eslint-emable camelcase */
 
   setupController(controller, model) {
@@ -59,6 +63,8 @@ export default AuthorizedRoute.extend(PopoutParentRouteMixin,{
 
     let popout = this.get('popoutParent');
     popout.closeAll();
+
+    this.get('feedbackService').clearContext();
   },
 
   _pusherEventsId() {

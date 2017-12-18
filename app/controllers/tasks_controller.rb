@@ -105,12 +105,14 @@ class TasksController < ApplicationController
     trigger_email_sent_event(task)
     d = Time.now.getlocal
     initiator = current_user.email
-    render json:  {
-      to: sent_to_users,
-      from: initiator,
-      date: d.strftime("%h %d, %Y %r"),
-      subject: params[:subject],
-      body: params[:body]
+    render json: {
+      letter_template: {
+        to: sent_to_users,
+        from: initiator,
+        date: d.strftime("%h %d, %Y %r"),
+        subject: params[:subject],
+        body: params[:body]
+      }
     }
   end
 

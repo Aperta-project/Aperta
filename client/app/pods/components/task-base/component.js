@@ -58,7 +58,7 @@ export default Component.extend(ValidationErrorsMixin, {
       this.displayValidationErrorsFromResponse(response);
       this.set('task.completed', false);
     } finally {
-      this.set('skipValidations', currentSkipValidations);
+      this.set('skipValidations', this.get('currentSkipValidations'));
     }
   }).keepLatest(),
 
@@ -134,10 +134,12 @@ export default Component.extend(ValidationErrorsMixin, {
     },
 
     toggleTaskCompletion() {
+      this.set('currentSkipValidations', this.get('skipValidations'));
       const isCompleted = this.toggleProperty('task.completed');
 
       // if task is now incomplete skip validations
       this.set('skipValidations', !isCompleted);
+
       this.save()
     }
   }

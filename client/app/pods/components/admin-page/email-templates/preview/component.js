@@ -6,14 +6,22 @@ export default Ember.Component.extend({
   tagName: 'span',
   visible: false,
   hasErrors: false,
-  letterTemplateId: null,
-  letterTemplate: null,
+  template: null,
+  previewTemplate: null,
   actions: {
     loadPreviewData() {
+      let data = {
+        letter_template:
+        { body: this.get('template.body'),
+          subject: this.get('template.subject'),
+          cc: this.get('template.cc'),
+          bcc: this.get('template.bcc')
+        }
+      };
       this.get('restless')
-        .get(`/api/admin/letter_templates/${this.get('letterTemplateId')}/preview`).
+        .post(`/api/admin/letter_templates/${this.get('template.id')}/preview`, data).
         then((data) => {
-          this.set('letterTemplate', data.letter_template);
+          this.set('previewTemplate', data.letter_template);
         });
       this.set('visible', true);
     },

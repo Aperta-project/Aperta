@@ -30,8 +30,10 @@ class Admin::LetterTemplatesController < ApplicationController
 
   def preview
     letter_template = LetterTemplate.find(params[:id])
+    preview_params = letter_template_params[:letter_template]
+    letter_template.assign_attributes(preview_params)
     letter_template.render_dummy_data
-    respond_with letter_template
+    respond_with :admin, letter_template
   end
 
   private

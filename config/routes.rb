@@ -241,7 +241,7 @@ Tahi::Application.routes.draw do
         get :authorization, on: :collection
       end
       resources :letter_templates, only: [:index, :show, :update, :create] do
-        get :preview, on: :member
+        post :preview, on: :member
       end
     end
 

@@ -6,17 +6,17 @@
     outAnimationComplete=(action 'close') }}
   <h1> Email Template Preview</h1>
   <div>
-    <label for="subject">Subject:</label><span>{{letterTemplate.subject}}</span>
+    <label for="subject">Subject:</label><span>{{previewTemplate.subject}}</span>
   </div>
   <div>
-    <label for="cc">CC:</label><span>{{letterTemplate.cc}}</span>
+    <label for="cc">CC:</label><span>{{previewTemplate.cc}}</span>
   </div>
   <div>
-    <label for="cc">BCC:</label><span>{{letterTemplate.bcc}}</span>
+    <label for="cc">BCC:</label><span>{{previewTemplate.bcc}}</span>
   </div>
   <hr/>
   <div>
-    {{{ letterTemplate.body }}}
+    {{{ previewTemplate.body }}}
   </div>
   {{/overlay-fullscreen}}
 {{/if}}

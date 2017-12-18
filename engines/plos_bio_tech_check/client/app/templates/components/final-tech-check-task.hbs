@@ -1,4 +1,3 @@
-
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
@@ -115,13 +114,18 @@
     <button class="button button--green" {{action "saveLetter"}}>
       Save Text
     </button>
-    <button class="button-primary button--green" {{action "sendEmail"}}>
+    <button class="button-primary button--green"
+            disabled={{emailNotAllowed}}
+            {{action "sendEmail"}}>
       {{buttonText}}
     </button>
+
   {{else}}
-    <button class="button-primary button--green" {{action "activateAuthoringMode"}}>
-      {{buttonText}}
-    </button>
+      <button class="button-primary button--green"
+              disabled={{emailNotAllowed}}
+              {{action "activateAuthoringMode"}}>
+        {{buttonText}}
+      </button>
   {{/if}}
 </div>
 

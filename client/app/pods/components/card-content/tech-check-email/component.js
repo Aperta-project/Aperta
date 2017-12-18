@@ -8,6 +8,7 @@ export default Ember.Component.extend({
   previewError: false,
 
   emailPreview: null,
+  emailSending: false,
 
   didInsertElement() {
     $(document).on('focus', '.card-content-sendback-reason textarea', () => {
@@ -29,6 +30,10 @@ export default Ember.Component.extend({
     $(document).off('click', '.sendback-reason-row input');
     $(document).off('click', '.sendback-reason-row .fa-pencil');
   },
+
+  emailNotAllowed: Ember.computed('owner.paper.publishingState', function () {
+    return this.get('emailSending') || !this.get('owner.paper.isSubmitted');
+  }),
 
   intro: Ember.computed(function () {
     const editors = this.get('content.children');
@@ -94,11 +99,14 @@ export default Ember.Component.extend({
     },
 
     sendChangeRequestEmail() {
+      this.set('emailSending', true);
       const config = this._templateConfig('sendback_email');
 
       this.get('restless').put(config.url, config.data).then(()=> {
         const flash = this.get('flash');
         flash.displaySystemLevelMessage('success', 'Sendback reasons email sent');
+        this.get('owner.paper').reload();
+        this.set('emailSending', false);
       });
     },
   }

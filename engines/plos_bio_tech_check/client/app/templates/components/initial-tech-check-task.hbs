@@ -127,35 +127,41 @@
     {{flash-messages classNames="initial-check-tech-flash"}}
 
     {{#if authoringMode}}
-    <div class="form-group">
-      {{#if isEditable}}
-        <div>
-          List all changes the author needs to make:
-        </div>
-      {{/if}}
+      <div class="form-group">
+        {{#if isEditable}}
+          <div>
+            List all changes the author needs to make:
+          </div>
+        {{/if}}
 
-      {{rich-text-editor
-        value=authorChangesLetter
-        onContentsChanged=(action 'saveLetterBody')
-        name='author-changes-letter'
-        ident='author-changes-letter'
-        disabled=isNotEditable
-      }}
-    </div>
+        {{rich-text-editor
+          value=authorChangesLetter
+          onContentsChanged=(action 'saveLetterBody')
+          name='author-changes-letter'
+          ident='author-changes-letter'
+          disabled=isNotEditable
+        }}
+      </div>
 
-    <button id="autogenerate-email" class="button" {{action "setQuestionSelectedText"}}>
-      Auto-generate Text
-    </button>
-    <button class="button" {{action "saveLetter"}}>
-      Save Text
-    </button>
-    <button class="button-primary button--green" {{action "sendEmail"}}>
-      {{buttonText}}
-    </button>
+      <button id="autogenerate-email" class="button" {{action "setQuestionSelectedText"}}>
+        Auto-generate Text
+      </button>
+      <button class="button" {{action "saveLetter"}}>
+        Save Text
+      </button>
+      <button class="button-primary button--green"
+              disabled={{emailNotAllowed}}
+              {{action "sendEmail"}}>
+        {{buttonText}}
+      </button>
+
     {{else}}
-    <button class="button-primary button--green" {{action "activateAuthoringMode"}}>
-      {{buttonText}}
-    </button>
+
+      <button class="button-primary button--green"
+              disabled={{emailNotAllowed}}
+              {{action "activateAuthoringMode"}}>
+        {{buttonText}}
+      </button>
     {{/if}}
   </div>
 </div>

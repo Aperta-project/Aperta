@@ -30,7 +30,7 @@ module ApertaSourceCodeVisitors
     end
 
     def leaving_assign(node, tail)
-      # no-op for leaving variable assignments (both ivar and local var) 
+      # no-op for leaving variable assignments (both ivar and local var)
     end
 
     def visit_class(node, tail)

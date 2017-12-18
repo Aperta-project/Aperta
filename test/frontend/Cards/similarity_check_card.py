@@ -4,6 +4,7 @@
 from datetime import datetime
 
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from frontend.Cards.basecard import BaseCard
@@ -176,12 +177,23 @@ class SimilarityCheckCard(BaseCard):
     def validate_report_result(self):
         """
         Wait for the report result and validate
-        :return: void function
+        :return: "" if validation is ok, if not - assertion will fail
+        if generating report fails with TimeoutException,
+        returns error message or 'No error message'
         """
         html_header_title = self._get(self._header_title_link)
         paper_title = html_header_title.text
-        self._wait_on_lambda(lambda: self.completed_state() == True,
-                             max_wait=300)  # score and style
+        try:
+            self._wait_on_lambda(lambda: self.completed_state() == True,
+                                 max_wait=600)  # score and style
+        except TimeoutException:
+            # after 10 minutes the 'Report not available' error message is expected to be displayed
+            try:
+                error_message = self._get(self._flash_error_msg)
+                return error_message.text.strip()
+            except:
+                return 'No error message'
+                # ? raise ElementDoesNotExistAssertionError(locator)
         score = self._get(self._sim_check_report_score)
         score = score.text
         paper_author = (self._get(self._author)).text
@@ -195,6 +207,7 @@ class SimilarityCheckCard(BaseCard):
         assert paper_author.lower().strip() in author.lower().strip(), \
             'Paper author {0} is expected in {1}' \
                 .format(paper_author.strip(), author.strip())
+        return ""
 
     def launch_ithenticate_page(self):
         """
@@ -205,6 +218,7 @@ class SimilarityCheckCard(BaseCard):
         assert self._is_link_valid(report_link), 'Report link {0} is invalid' \
             .report_link.get_attribute('href')
         report_link.click()
+        self._wait_for_number_of_windows_to_be(2)
         self.traverse_to_new_window()
 
     def validate_generate_report_button(self):

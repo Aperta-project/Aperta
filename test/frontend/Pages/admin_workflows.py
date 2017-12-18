@@ -12,7 +12,6 @@ import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.expected_conditions import alert_is_present
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PostgreSQL import PgSQL
@@ -326,16 +325,7 @@ class AdminWorkflowsPage(BaseAdminPage):
       template_field.send_keys(Keys.ARROW_DOWN + (Keys.BACKSPACE * 8) + mmt_name + Keys.ENTER)
       self._wait_for_element(save_template_button)
       save_template_button.click()
-      # time.sleep(1)
-      #
-      active_queries = self._driver.execute_script("return jQuery.active")
-      seconds_to_wait = max(5, int(int(active_queries) / 4))
-      logging.info('Saving mmt: {0}, active queries: {1}, max_wait: {2}'.format(mmt_name, str(active_queries),
-                                                                                str(seconds_to_wait)))
-      self._wait_on_lambda(lambda:
-                           self._driver.execute_script("return jQuery.active") == 0, max_wait=seconds_to_wait)
-      #
-
+      time.sleep(1)
       phases = self._gets(self._mmt_template_column_add_new_card_btn)
       phase1 = phases[0]
       if user_tasks:
@@ -347,10 +337,8 @@ class AdminWorkflowsPage(BaseAdminPage):
         div_buttons = self._get(self._div_buttons)
         check_divs_before = len(self._gets(self._check_divs))
         div_buttons.find_element(*self._add_button).click()
-        self._wait_on_lambda(lambda: self._driver.execute_script("return jQuery.active") == 0, max_wait=10)
         self._wait_on_lambda(lambda: len(self._driver.find_elements(*self._check_divs))
-                                     ==(check_divs_before+len(user_tasks)-2), max_wait=5)
-        #time.sleep(1)
+                                      ==(check_divs_before+len(user_tasks)-2), max_wait=5)
       phase2 = phases[1]
       if staff_tasks:
         phase2.click()
@@ -361,23 +349,11 @@ class AdminWorkflowsPage(BaseAdminPage):
         div_buttons = self._get(self._div_buttons)
         check_divs_before = len(self._gets(self._check_divs))
         div_buttons.find_element(*self._add_button).click()
-        self._wait_on_lambda(lambda: self._driver.execute_script("return jQuery.active") == 0, max_wait=10)
         self._wait_on_lambda(lambda: len(self._driver.find_elements(*self._check_divs))
-                                     ==(check_divs_before+len(staff_tasks)-2), max_wait=5)
-
-        self._scroll_into_view(self._get(self._mmt_template_save_button))
+                                      ==(check_divs_before+len(staff_tasks)-2), max_wait=5)
         save_template_button = self._get(self._mmt_template_save_button)
         save_template_button.click()
-        #
-        active_queries = self._driver.execute_script("return jQuery.active")
-        seconds_to_wait = max(5, int(int(active_queries)/4))
-        logging.info('Saving mmt: {0}, active queries: {1}, max_wait: {2}'.format(mmt_name, str(active_queries),
-                                                                                  str(seconds_to_wait)))
-        self._wait_on_lambda(lambda:
-                             self._driver.execute_script("return jQuery.active") == 0, max_wait=seconds_to_wait)
-        self._wait_for_element(self._get(self._mmt_template_back_link))
-        #
-      #time.sleep(1)
+        time.sleep(3)
       if settings:
         for setting in settings:
           self.set_settings(setting)
@@ -385,7 +361,6 @@ class AdminWorkflowsPage(BaseAdminPage):
         time.sleep(1)
       self._wait_for_element(self._get(self._mmt_template_back_link))
       back_btn = self._get(self._mmt_template_back_link)
-      #self._scroll_into_view(self._get(self._mmt_template_save_button))
       back_btn.click()
       self._wait_on_lambda(lambda: 'workflows' in self._driver.current_url)
 
@@ -511,7 +486,7 @@ class AdminWorkflowsPage(BaseAdminPage):
   def open_mmt(self, mmt_name):
     """
     A function to open existing mmt
-    :param mmt_name: optional name for the new mmt
+    :param mmt_name: name for the new mmt
     :return: void function
     """
     self._wait_for_element(self._get(self._admin_workflow_pane_title))
@@ -557,13 +532,3 @@ class AdminWorkflowsPage(BaseAdminPage):
       sim_check_settings = SimCheckSettings(self._driver)
       sim_check_settings.set_ithenticate(setting['value'])
       sim_check_settings.click_save_settings()
-
-  def wait_for_not_active_jqueries(self, mmt_name):
-    #
-    active_queries = self._driver.execute_script("return jQuery.active")
-    seconds_to_wait = max(5, int(int(active_queries) / 4))
-    logging.info('Saving mmt: {0}, active queries: {1}, max_wait: {2}'.format(mmt_name, str(active_queries),
-                                                                              str(seconds_to_wait)))
-    self._wait_on_lambda(lambda:
-                         self._driver.execute_script("return jQuery.active") == 0, max_wait=seconds_to_wait)
-    #

@@ -449,18 +449,6 @@ class AuthenticatedPage(StyledPage):
     url = url.split('/')[0] + '//' + url.split('/')[2] + '/papers/' + short_doi
     self._driver.get(url)
 
-  def go_to_card(self, short_doi, task_id):
-    """
-    Navigate to the workflow viewer page of the provided short doi and task_id
-    :param short_doi: papers.short_doi of the requested paper
-    :param task_id: task_id of the requested task
-    :return: void function
-    """
-    time.sleep(5)
-    url = self._driver.current_url
-    url = url.split('/')[0] + '//' + url.split('/')[2] + '/papers/' + short_doi + '/tasks/' + task_id
-    self._driver.get(url)
-
   def validate_ihat_conversions_success(self, timeout=104, fail_on_missing=False):
     """
     Validate ihat conversion success, or display of failure message or no message at all

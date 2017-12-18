@@ -208,6 +208,18 @@ class PlosPage(object):
       locator, text))
     self.restore_timeout()
 
+  def _wait_for_number_of_windows_to_be(self, num_windows,
+                                           multiplier=5):
+    """
+    Wait for the number of windows to be specific value
+    :param num_windows: the expected number of windows
+    :param multiplier: the multiplier of Config.wait_timeout to wait for a locator to be not present
+    """
+    timeout = wait_timeout * multiplier
+    self.set_timeout(timeout)
+    self._wait.until(expected_conditions.number_of_windows_to_be(num_windows))
+    self.restore_timeout()
+
   def _wait_for_text_to_be_present_in_element_value(self, locator, text,
                                            multiplier=5):
     """

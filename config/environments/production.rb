@@ -45,8 +45,11 @@ Tahi::Application.configure do
   config.force_ssl = TahiEnv.force_ssl?
 
   # Send output to syslog, local3 facility (per Chris H 2017-12-07).
-  syslogger = Syslogger.new("tahi-web", Syslog::LOG_PID, Syslog::LOG_LOCAL3)
+  env = Sidekiq.server? ? 'worker' : 'web'
+  syslogger = Syslogger.new("tahi-#{env}", Syslog::LOG_PID, Syslog::LOG_LOCAL3)
   config.logger = ActiveSupport::TaggedLogging.new(syslogger)
+
+  config.session_store :cookie_store, key: '_tahi_session', secure: true
 
   # Set to :debug to see everything in the log.
   config.log_level = :info

@@ -5,13 +5,27 @@ module DataTransformation
   # 2. Fixes
   class FixXmlTextNodeValues < Base
     counter :br_elements_closed
+    counter :cdata_nodes_removed
 
     def transform
+      remove_cdata_nodes
       fix_unclosed_brs
       fix_unclosed_ols
     end
 
-    private
+    def remove_cdata_nodes
+      card_contents = CardContent.all
+      card_contents.each do |content|
+        next if content.text.blank?
+        previous_text = content.text
+        replaced = content.text.gsub(/<!\[CDATA\[|\]\]>/, '')
+        next unless replaced
+        log("Updating CardContent with removed CDATA nodes: #{content.id}")
+        log("old: #{previous_text}")
+        log("new: #{content.text}")
+        content.update!(text: replaced)
+      end
+    end
 
     def fix_unclosed_brs
       card_contents = CardContent.all

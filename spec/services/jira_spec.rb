@@ -1,19 +1,31 @@
 require 'rails_helper'
 
-describe JIRAIntegrationService do
+describe Jira do
   subject { described_class }
 
-  before do
-    allow_any_instance_of(TahiEnv).to receive(:jira_authenticate_url).and_return 'https://jira.plos.org/jira/rest/auth/1/session'
-    allow_any_instance_of(TahiEnv).to receive(:jira_create_issue_url).and_return 'https://example.com'
-  end
-
   describe '#build_payload' do
+    let(:user) { FactoryGirl.create(:user, first_name: 'Barbara', last_name: 'Foo') }
     let(:params) { { remarks: 'talks' } }
     it 'should return a properly formatted hash' do
-      payload = subject.build_payload('tim', params)
-      expect(payload.dig(:fields, :summary)).to match(/tim/)
-      expect(payload.dig(:fields, :description)).to eq('talks')
+      fields = subject.build_payload(user, params)[:fields]
+      expect(fields[:summary]).to include(user.full_name)
+      expect(fields[:description]).to include('talks')
+    end
+
+    it 'adds custom jira issue fields' do
+      paper = FactoryGirl.create(:paper)
+      params.merge!(
+        browser: 'Firefox 42.3',
+        platform: 'Platform 9',
+        paper_id: paper.id
+      )
+
+      fields = subject.build_payload(user, params)[:fields]
+      expect(fields[:customfield_13439]).to eq([{ value: 'CircleCI' }])
+      expect(fields[:customfield_13500]).to eq(user.username)
+      expect(fields[:customfield_13501]).to eq('Firefox 42.3')
+      expect(fields[:customfield_13502]).to eq('Platform 9')
+      expect(fields[:customfield_13503]).to eq(paper.doi)
     end
 
     context 'with one attachment' do
@@ -26,7 +38,7 @@ describe JIRAIntegrationService do
         }
       end
       it 'should attach a link to the attachment' do
-        payload = subject.build_payload('tim', params)
+        payload = subject.build_payload(user, params)
         expect(payload.dig(:fields, :description)).to match(/awesomeness\.gif/)
       end
     end
@@ -43,7 +55,7 @@ describe JIRAIntegrationService do
       end
 
       it 'should attach the links to the attachments' do
-        payload = subject.build_payload('tim', params_with_multiple_attachments)
+        payload = subject.build_payload(user, params_with_multiple_attachments)
         expect(payload.dig(:fields, :description)).to match(/awesomeness\.gif/)
         expect(payload.dig(:fields, :description)).to match(/ssenemosewa\.gif/)
       end

@@ -36,7 +36,7 @@ Were there major UI changes? Add a screenshot here -- and please let the QA team
 
 **Author tasks** (delete tasks that don't apply to your PR, this list should be finished before code review):
 
-- [ ] If I made any UI changes, I've let QA know.
+- [ ] If I made any UI changes at all, I've let the entire QA team know in the JIRA ticket and in the Aperta QA hipchat room.
 - [ ] I have set the correct component(s) in the JIRA ticket
 - [ ] I have set an appropriate resolution in the JIRA ticket
 - [ ] If I changed the database schema, I enforced database constraints.

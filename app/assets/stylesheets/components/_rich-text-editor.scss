@@ -19,3 +19,12 @@
    border-radius:4px;
    padding: 4px;
 }
+
+.rich-text-editor.plain {
+  .mce-toolbar-grp {
+    display: none;
+  }
+  .mce-statusbar {
+    display: none;
+  }
+}

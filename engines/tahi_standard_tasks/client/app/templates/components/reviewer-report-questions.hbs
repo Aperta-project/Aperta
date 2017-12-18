@@ -25,7 +25,7 @@
 
         {{nested-question-textarea
           ident="reviewer_report--competing_interests--detail"
-          editorStyle='expanded'
+          editorStyle='plain'
           owner=report
           disabled=readOnly
           displayQuestionText=false
@@ -36,7 +36,7 @@
       <li class="question">
         {{nested-question-textarea
           ident="reviewer_report--identity"
-          editorStyle='expanded'
+          editorStyle='plain'
           owner=report
           displayContent=true
           disabled=readOnly
@@ -64,6 +64,7 @@
       <li class="question">
         {{nested-question-textarea
           ident="reviewer_report--additional_comments"
+          editorStyle='plain'
           owner=report
           disabled=readOnly
           displayContent=true
@@ -84,7 +85,7 @@
 
         {{nested-question-textarea
           ident="reviewer_report--suitable_for_another_journal--journal"
-          editorStyle='expanded'
+          editorStyle='plain'
           owner=report
           inputClassNames="reviewer_report--suitable_for_another_journal--journal"
           displayQuestionText=false

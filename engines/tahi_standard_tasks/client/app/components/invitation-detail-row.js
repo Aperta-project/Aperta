@@ -120,7 +120,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   inviteeNameAndEmail: Ember.computed('invitee.fullName', 'invitation.email', function() {
     let name = this.get('invitee.fullName');
     let email = this.get('invitation.email');
-    return Ember.isPresent(name) ? '${name} <${email}>' : email;
+    return Ember.isPresent(name) ? `${name} <${email}>` : email;
   }),
 
   invitationBodyStateBeforeEdit: null,

@@ -115,9 +115,8 @@ class InviteCard(BaseCard):
                 invite_headings = self._gets(self._edit_invite_heading)
                 # Since the invitee is potentially off system, we can only validate email
                 invite_headings_text = [x.text for x in invite_headings]
-                # TODO: enable next 2 lines once APERTA-12266 gets resolved
-                # assert any(invitee['email'] in s for s in invite_headings_text), \
-                #     '{0} not found in {1}'.format(invitee['email'], invite_headings_text)
+                assert any(invitee['email'] in s for s in invite_headings_text), \
+                    '{0} not found in {1}'.format(invitee['email'], invite_headings_text)
                 tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
                     self.get_rich_text_editor_instance('invitation-edit-body')
                 logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
@@ -132,8 +131,8 @@ class InviteCard(BaseCard):
                 assert 'PLOS Wombat' in invite_text, invite_text
                 assert '***************** CONFIDENTIAL *****************' in \
                        invite_text, invite_text
-                creator_fn, creator_ln = creator['name'].split(' ')[0], \
-                                         creator['name'].split(' ')[1]
+                creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[
+                    1]
                 main_author = u'{0}, {1}'.format(creator_ln, creator_fn)
                 assert main_author in invite_text, (main_author, invite_text)
                 abstract = PgSQL().query('SELECT abstract '
@@ -240,6 +239,8 @@ class InviteCard(BaseCard):
         :param invitee: user to invite specified as email, or, if in system, name,
             or username
         :param response: The response to the invitation
+        :param reason: The text to be sent as a reason to decline invitation, optional
+        :param suggestions: The text to be sent as a suggestion whith declined invitation
         :return void function
         """
         self._wait_for_element(self._get(self._invitee_listing))

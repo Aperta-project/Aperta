@@ -199,9 +199,9 @@ class InviteReviewersCardTest(CommonTest):
         except IndexError:
             test_for_role = False
         if invite_response == 'Accept':
-            assert test_for_role == reviewer_role_for_env, 'assigned role, {0}, is not the expected ' \
-                                                           'value: {1}'.format(test_for_role,
-                                                                               reviewer_role_for_env)
+            assert test_for_role == reviewer_role_for_env, \
+                'assigned role, {0}, is not the expected value: {1}' \
+                .format(test_for_role, reviewer_role_for_env)
         elif invite_response == 'Decline':
             assert not test_for_role
             # search for reply

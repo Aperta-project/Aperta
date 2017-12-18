@@ -63,6 +63,6 @@ class TokenCoAuthorsController < ApplicationController
 
   # We have to check both since coauthorship is across models
   def find_author_by_token
-    GroupAuthor.find_by_token(token) || Author.find_by_token(token)
+    GroupAuthor.find_by(token: token) || Author.find_by(token: token)
   end
 end

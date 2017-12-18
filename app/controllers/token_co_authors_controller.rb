@@ -38,12 +38,8 @@ class TokenCoAuthorsController < ApplicationController
     @journal_logo_url ||= @paper.journal.logo_url
   end
 
-  def token
-    params[:token] || params[:invitation][:token]
-  end
-
-  # We have to check both since coauthorship is across models
   def find_author_by_token
+    token = params[:token]
     GroupAuthor.find_by(token: token) || Author.find_by(token: token)
   end
 end

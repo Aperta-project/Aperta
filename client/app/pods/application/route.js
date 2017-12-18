@@ -16,7 +16,6 @@ const debug = function(description, obj) {
   }
 };
 
-
 export default Ember.Route.extend(EmberPusher.Bindings, {
   restless: Ember.inject.service(),
   notifications: Ember.inject.service(),

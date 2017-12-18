@@ -13,7 +13,7 @@ describe FeedbackController do
     context "with valid params" do
       include ActiveJob::TestHelper
 
-      before { allow(JIRAIntegrationService).to receive(:create_issue) }
+      before { allow(Jira).to receive(:create_issue) }
       after  { clear_enqueued_jobs }
 
       let(:valid_params){ {remarks: 'foo', referrer: 'http://example.com',

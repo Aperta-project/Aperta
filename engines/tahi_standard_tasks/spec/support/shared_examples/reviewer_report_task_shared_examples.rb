@@ -3,12 +3,14 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
   let(:paper) { create :paper, :submitted_lite, journal: journal }
   let(:task) { FactoryGirl.create(factory, paper: paper) }
   let(:body) { { "submitted" => false } }
+
   let!(:reviewer_user) do
     reviewer = FactoryGirl.create(:user)
     role = journal.create_reviewer_report_owner_role!
     reviewer.assign_to!(assigned_to: task, role: role)
     reviewer
   end
+
   let!(:reviewer_report) do
     invitation = FactoryGirl.create(
       :invitation,
@@ -18,9 +20,8 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
       invitee: reviewer_user,
       decision: paper.draft_decision
     )
-    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE", active: false
+
     FactoryGirl.create :review_duration_period_setting_template
-    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT", active: false
     paper.draft_decision.invitations << invitation
     report = FactoryGirl.create(:reviewer_report,
                                 task: task,

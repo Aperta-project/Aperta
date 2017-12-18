@@ -21,7 +21,7 @@ moduleForAcceptance('Integration: Correspondence', {
   beforeEach: function() {
     correspondence = FactoryGuy.make('correspondence');
     paper = FactoryGuy.make('paper', {
-      correspondence: [correspondence]
+      correspondences: [correspondence]
     });
 
     TestHelper.mockPaperQuery(paper);
@@ -34,6 +34,24 @@ moduleForAcceptance('Integration: Correspondence', {
       status: 200,
       responseText: {
         correspondence: correspondence.toJSON({includeId: true})
+      }
+    });
+
+    $.mockjax({
+      url: `/api/correspondence/${correspondence.get('id')}`,
+      type: 'GET',
+      status: 200,
+      responseText: {
+        correspondence: correspondence.toJSON({includeId: true})
+      }
+    });
+
+    $.mockjax({
+      url: `/api/papers/${paper.get('id')}/correspondence`,
+      type: 'GET',
+      status: 200,
+      responseText: {
+        correspondences: [correspondence.toJSON({includeId: true})]
       }
     });
   }
@@ -192,6 +210,15 @@ test('user is able to edit an external correspondence', (assert) => {
 
   $.mockjax({
     url: `/api/papers/${paper.get('id')}/correspondence/${correspondence.get('id')}`,
+    type: 'PUT',
+    status: 200,
+    responseText: {
+      correspondence: correspondence.toJSON({includeId: true})
+    }
+  });
+
+  $.mockjax({
+    url: `/api/correspondence/${correspondence.get('id')}`,
     type: 'PUT',
     status: 200,
     responseText: {

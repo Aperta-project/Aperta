@@ -4,7 +4,7 @@ export PATH="$HOME/bin:$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
-wget https://github.com/mozilla/geckodriver/releases/download/v0.18.0/geckodriver-v0.18.0-linux32.tar.gz
+wget https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz
 tar -xvzf geckodriver*
 chmod +x geckodriver
 mv geckodriver /opt/teamcity/bin/

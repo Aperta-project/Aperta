@@ -32,7 +32,6 @@ describe TahiStandardTasks::PaperEditorTask do
   describe "#invitation_accepted" do
     before do
       Role.ensure_exists(Role::ACADEMIC_EDITOR_ROLE, journal: journal)
-      FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
     end
 
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }

@@ -26,17 +26,13 @@ class ReviewerReport < ActiveRecord::Base
     { name: 'Second Late Reminder', dispatch_offset: 4 }
   ].freeze
 
-  # rubocop:disable Style/AccessorMethodName
   def set_due_datetime(length_of_time: review_duration_period.days)
-    if FeatureFlag[:REVIEW_DUE_DATE]
-      DueDatetime.set_for(self, length_of_time: length_of_time)
-    end
-    schedule_events if FeatureFlag[:REVIEW_DUE_AT]
+    DueDatetime.set_for(self, length_of_time: length_of_time)
+    schedule_events
   end
-  # rubocop:enable Style/AccessorMethodName
 
   def schedule_events(owner: self, template: SCHEDULED_EVENTS_TEMPLATE)
-    ScheduledEventFactory.new(owner, template).schedule_events if FeatureFlag[:REVIEW_DUE_AT]
+    ScheduledEventFactory.new(owner, template).schedule_events
   end
 
   def self.for_invitation(invitation)

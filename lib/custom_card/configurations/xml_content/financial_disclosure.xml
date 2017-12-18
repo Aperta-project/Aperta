@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<card required-for-submission="false" workflow-display-only="false">
+<card required-for-submission="true" workflow-display-only="false">
   <DisplayChildren>
     <Radio ident="financial_disclosures--author_received_funding" value-type="boolean" required-field="true">
       <text>Did any of the authors receive specific funding for this work?</text>

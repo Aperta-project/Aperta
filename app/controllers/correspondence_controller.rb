@@ -20,12 +20,10 @@ class CorrespondenceController < ApplicationController
   end
 
   def show
-    correspondence = Correspondence.find(params[:id])
     render json: correspondence, status: :ok
   end
 
   def update
-    correspondence = Correspondence.find(params[:id])
     if correspondence && correspondence.external?
       Correspondence.transaction do
         correspondence.sent_at = params.dig(:correspondence, :date)
@@ -59,10 +57,19 @@ class CorrespondenceController < ApplicationController
     )
   end
 
+  def correspondence
+    @correspondence ||= Correspondence.find(params[:id])
+  end
+
   def ensure_paper
     paper_id = params.dig(:correspondence, :paper_id) || params[:paper_id]
     if paper_id
       @paper = Paper.find paper_id
+    else
+      @paper = correspondence.paper
+    end
+
+    if @paper
       requires_user_can :manage_workflow, @paper
     else
       render :not_found

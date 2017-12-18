@@ -3,7 +3,7 @@ class CorrespondenceSerializer < ActiveModel::Serializer
   attributes :id, :date, :subject, :recipient, :sender, :body,
              :recipients, :sent_at, :external, :description, :status,
              :cc, :bcc, :manuscript_version, :manuscript_status, :activities,
-             :additional_context
+             :additional_context, :paper_id
 
   has_many :attachments, embed: :ids, include: true, root: :correspondence_attachments
 

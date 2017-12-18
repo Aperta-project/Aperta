@@ -94,8 +94,6 @@ describe Invitation do
   end
 
   describe '#rescind!' do
-    let!(:due_at_flag) { FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT" }
-
     it "sets the state to 'rescinded' from 'invited'" do
       invitation.invite!
       invitation.rescind!
@@ -145,8 +143,6 @@ describe Invitation do
   end
 
   describe "#accept!" do
-    let!(:due_at_flag) { FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT" }
-
     it "sends an invitation email" do
       invitation.invite!
       expect(task).to receive(:accept_allowed?).with(invitation).and_return(true)

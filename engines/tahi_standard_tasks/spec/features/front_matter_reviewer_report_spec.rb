@@ -42,8 +42,6 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
 
   before do
     assign_reviewer_role paper, reviewer
-    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
-    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
     FactoryGirl.create :feature_flag, name: "PREPRINT"
 
     login_as(reviewer, scope: :user)

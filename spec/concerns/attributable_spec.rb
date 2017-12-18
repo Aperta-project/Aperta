@@ -12,9 +12,9 @@ describe Attributable do
     FakeTestSystem
   end
 
-  describe 'setting values' do
-    let(:instance) { klass.create }
+  let(:instance) { klass.create }
 
+  describe 'setting values' do
     describe 'boolean values' do
       it 'sets truthy values' do
         instance.bool_attr = true
@@ -37,6 +37,17 @@ describe Attributable do
         instance.string_attr = false
         expect(instance.reload.string_attr).to eq('f') # fails on master
       end
+    end
+  end
+
+  describe '#inspect' do
+    let(:word) { Faker::Lorem.word }
+
+    it 'includes the attributes' do
+      instance.bool_attr = true
+      instance.string_attr = word
+      expect(instance.inspect).to match(/\*string_attr: #{word}/)
+      expect(instance.inspect).to match(/\*bool_attr: true/)
     end
   end
 end

@@ -36,8 +36,9 @@ module CustomCard
         .where(journal_task_types: { kind: TahiStandardTasks::FinancialDisclosureTask })
         .update_all(journal_task_type_id: nil, card_id: @card.id, title: "Financial Disclosure") # rubocop:disable Rails/SkipsModelValidations
 
-      # Since the JournalTaskType is not longer needed, remove it
-      JournalTaskType.find_by(kind: "TahiStandardTasks::FinancialDisclosureTask").try(:destroy)
+      # Since the JournalTaskType is not longer needed, remove it for all journals
+      # This is the same operation that runs in the CustomCard::Migrator class
+      JournalTaskType.where(kind: "TahiStandardTasks::FinancialDisclosureTask").delete_all
     end
 
     def migrate(legacy_task, new_task)

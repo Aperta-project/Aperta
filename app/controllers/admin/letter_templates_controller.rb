@@ -32,7 +32,7 @@ class Admin::LetterTemplatesController < ApplicationController
     letter_template = LetterTemplate.find(params[:id])
     preview_params = letter_template_params[:letter_template]
     letter_template.assign_attributes(preview_params)
-    letter_template.render_dummy_data
+    letter_template.render_dummy_data if letter_template.valid?
     respond_with :admin, letter_template
   end
 

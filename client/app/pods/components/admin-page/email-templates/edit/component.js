@@ -63,13 +63,43 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
       }
     },
 
-    save: function() {
+    clearErrors() {
       this.setProperties({
         subjectErrors: [],
         bodyErrors: [],
         ccErrors: [],
         bccErrors: []
       });
+    },
+    parseErrors(error) {
+      const subjectErrors = error.errors.filter((e) => e.source.pointer.includes('subject'));
+      const bodyErrors = error.errors.filter((e) => e.source.pointer.includes('body'));
+      const nameError = error.errors.filter(e => e.source.pointer.includes('name'));
+      const ccErrors = error.errors.filter(e => e.source.pointer.endsWith('/cc'));
+      const bccErrors = error.errors.filter(e => e.source.pointer.endsWith('/bcc'));
+      if (subjectErrors.length) {
+        this.set('subjectErrors', subjectErrors.map(s => s.detail));
+      }
+      if (bodyErrors.length) {
+        this.set('bodyErrors', bodyErrors.map(b => b.detail));
+      }
+      if (nameError.length) {
+        this.set('nameError', nameError.map(n => n.detail));
+      }
+      if (ccErrors.length) {
+        this.set('ccErrors', ccErrors.map(err => err.detail));
+      }
+      if (bccErrors.length) {
+        this.set('bccErrors', bccErrors.map(err => err.detail));
+      }
+      this.setProperties({
+        message: 'Please correct errors where indicated.',
+        messageType: 'danger'
+      });
+    },
+
+    save: function() {
+      this.send('clearErrors');
       let template = this.get('template');
       if (template.get('subject') && template.get('body') && template.get('name')) {
         template.save()
@@ -83,30 +113,7 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
             template.reload();
           })
           .catch(error => {
-            const subjectErrors = error.errors.filter((e) => e.source.pointer.includes('subject'));
-            const bodyErrors = error.errors.filter((e) => e.source.pointer.includes('body'));
-            const nameError = error.errors.filter(e => e.source.pointer.includes('name'));
-            const ccErrors = error.errors.filter(e => e.source.pointer.endsWith('/cc'));
-            const bccErrors = error.errors.filter(e => e.source.pointer.endsWith('/bcc'));
-            if (subjectErrors.length) {
-              this.set('subjectErrors', subjectErrors.map(s => s.detail));
-            }
-            if (bodyErrors.length) {
-              this.set('bodyErrors', bodyErrors.map(b => b.detail));
-            }
-            if (nameError.length) {
-              this.set('nameError', nameError.map(n => n.detail));
-            }
-            if (ccErrors.length) {
-              this.set('ccErrors', ccErrors.map(err => err.detail));
-            }
-            if (bccErrors.length) {
-              this.set('bccErrors', bccErrors.map(err => err.detail));
-            }
-            this.setProperties({
-              message: 'Please correct errors where indicated.',
-              messageType: 'danger'
-            });
+            this.send('parseErrors', error);
           });
       } else {
         this.setProperties({

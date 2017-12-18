@@ -43,7 +43,9 @@
         {{/save-button}}
         {{admin-page/email-templates/preview
           template=template
-          hasErrors=hasErrors }}
+          clearErrors=(action 'clearErrors')
+          parseErrors=(action 'parseErrors')
+        }}
       </div>
 
       <div class="edit-email-well">

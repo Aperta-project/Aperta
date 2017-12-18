@@ -17,7 +17,7 @@ Subscriptions.configure do
   add 'journal:updated', AdminJournal::NotifyAdmin
   add 'journal:destroyed', AdminJournal::NotifyAdmin
 
-  # Assgnments
+  # Assignments
 
   add 'assignment:created', Assignment::NotifyAssignee
   add 'assignment:updated', Assignment::NotifyAssignee
@@ -111,4 +111,9 @@ Subscriptions.configure do
 
   add 'similarity_check:updated', stream_to_paper_channel
   add 'similarity_check:created', stream_to_paper_channel
+
+  # Correspondence History:
+
+  add 'correspondence:created', stream_to_paper_channel
+  add 'correspondence:updated', stream_to_paper_channel
 end

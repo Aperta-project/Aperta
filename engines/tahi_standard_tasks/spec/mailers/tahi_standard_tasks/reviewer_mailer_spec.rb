@@ -26,9 +26,7 @@ describe TahiStandardTasks::ReviewerMailer do
   end
 
   before do
-    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
     FactoryGirl.create :review_duration_period_setting_template
-    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
     allow(report).to receive(:invitation).and_return(invitation)
   end
 

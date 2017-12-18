@@ -2,25 +2,17 @@
 <card required-for-submission="true" workflow-display-only="false">
   <DisplayChildren>
     <If condition="isOverlay">
-      <DisplayChildren child-tag="li" wrapper-tag="ol">
-        <Description>
-          <text>Benefit: Establish priority</text>
-        </Description>
-        <Description>
-          <text>Benefit: Gather feedback</text>
-        </Description>
-        <Description>
-          <text>Benefit: Cite for funding</text>
-        </Description>
-      </DisplayChildren>
+      <Description>
+        <text><p>1. Benefit: Establish priority<br/>2. Benefit: Gather feedback<br/>3. Benefit: Cite for funding</p>
+          <br/></text>
+      </Description>
       <Description>
         <text>
-          Establish priority: take credit for your research and discoveries, by posting a copy of your uncorrected proof online.<br/>
-          If you do <b>NOT</b> consent to having an early version of your paper posted online, indicate your choice below.
-        </text>
+          <p>Establish priority: take credit for your research and discoveries, by posting a copy of your uncorrected proof online.
+            If you do <b>NOT</b> consent to having an early version of your paper posted online, indicate your choice below.</p></text>
       </Description>
     </If>
-    <Radio value-type="boolean" allow-annotations="true" required-field="false">
+    <Radio ident="preprint-posting--consent" value-type="boolean" allow-annotations="false" required-field="false">
       <default-answer-value>true</default-answer-value>
       <possible-value label="Yes, I want to accelerate research by publishing a preprint ahead of peer review" value="true"/>
       <possible-value label="No, I do not want my article to appear online ahead of the reviewed article" value="false"/>

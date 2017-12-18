@@ -69,7 +69,7 @@ module MailLog
     class DeliveredEmailObserver
       def self.delivered_email(message)
         email_log = Correspondence.find_by!(message_id: message.message_id)
-        email_log.update_columns(
+        email_log.update!(
           status: 'sent',
           sent_at: Time.now.utc
         )

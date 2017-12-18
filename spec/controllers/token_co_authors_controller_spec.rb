@@ -16,7 +16,7 @@ describe TokenCoAuthorsController do
       subject(:do_request) { get :show, token: author.token }
 
       it "renders a 404" do
-        author.paper.journal.setting("coauthor_confirmation_enabled").update(value: false)
+        author.paper.journal.setting("coauthor_confirmation_enabled").update!(value: false)
         do_request
         expect(response.status).to eq(404)
       end
@@ -32,9 +32,9 @@ describe TokenCoAuthorsController do
 
         context "author previously confirmed" do
           let!(:author) { FactoryGirl.create(:author, co_author_state: 'confirmed') }
-          it "redirects to #thank_you" do
+          it "renders :thank_you" do
             do_request
-            expect(response).to redirect_to(:thank_you_token_co_author)
+            expect(response).to render_template("token_co_authors/thank_you")
           end
         end
       end
@@ -53,34 +53,16 @@ describe TokenCoAuthorsController do
           do_request
         end
 
-        it "redirects to #thank_you" do
-          do_request
-          expect(response).to redirect_to(:thank_you_token_co_author)
-        end
-
-        context "author previously confirmed" do
-          let!(:author) { FactoryGirl.create(:author, co_author_state: 'confirmed') }
-          it "redirects to #thank_you" do
-            do_request
-            expect(response).to redirect_to(:thank_you_token_co_author)
-          end
-        end
-      end
-
-      describe "GET /co_authors_token/:token/thank_you" do
-        let!(:author) { FactoryGirl.create(:author, co_author_state: 'confirmed') }
-        subject(:do_request) { get :thank_you, token: author.token }
-        it "renders the thank you template" do
+        it "renders :thank_you" do
           do_request
           expect(response).to render_template("token_co_authors/thank_you")
         end
 
-        describe "author is not confirmed" do
-          let!(:author) { FactoryGirl.create(:author) }
-
-          it "redirects to #show" do
+        context "author previously confirmed" do
+          let!(:author) { FactoryGirl.create(:author, co_author_state: 'confirmed') }
+          it "renders :thank_you" do
             do_request
-            expect(response).to redirect_to(:show_token_co_author)
+            expect(response).to render_template("token_co_authors/thank_you")
           end
         end
       end
@@ -94,7 +76,7 @@ describe TokenCoAuthorsController do
       subject(:do_request) { get :show, token: group_author.token }
 
       it "renders a 404" do
-        group_author.paper.journal.setting("coauthor_confirmation_enabled").update(value: false)
+        group_author.paper.journal.setting("coauthor_confirmation_enabled").update!(value: false)
         do_request
         expect(response.status).to eq(404)
       end
@@ -110,9 +92,9 @@ describe TokenCoAuthorsController do
 
         context "author previously confirmed" do
           let!(:group_author) { FactoryGirl.create(:group_author, co_author_state: 'confirmed') }
-          it "redirects to #thank_you" do
+          it "renders :thank_you" do
             do_request
-            expect(response).to redirect_to(:thank_you_token_co_author)
+            expect(response).to render_template("token_co_authors/thank_you")
           end
         end
       end
@@ -131,34 +113,16 @@ describe TokenCoAuthorsController do
           do_request
         end
 
-        it "redirects to #thank_you" do
-          do_request
-          expect(response).to redirect_to(:thank_you_token_co_author)
-        end
-
-        context "group author previously confirmed" do
-          let!(:group_author) { FactoryGirl.create(:author, co_author_state: 'confirmed') }
-          it "redirects to #thank_you" do
-            do_request
-            expect(response).to redirect_to(:thank_you_token_co_author)
-          end
-        end
-      end
-
-      describe "GET /co_authors_token/:token/thank_you" do
-        let!(:group_author) { FactoryGirl.create(:group_author, co_author_state: 'confirmed') }
-        subject(:do_request) { get :thank_you, token: group_author.token }
-        it "renders the thank you template" do
+        it "renders :thank_you" do
           do_request
           expect(response).to render_template("token_co_authors/thank_you")
         end
 
-        describe "group author is not confirmed" do
-          let!(:group_author) { FactoryGirl.create(:group_author) }
-
-          it "redirects to #show" do
+        context "group author previously confirmed" do
+          let!(:group_author) { FactoryGirl.create(:author, co_author_state: 'confirmed') }
+          it "renders :thank_you" do
             do_request
-            expect(response).to redirect_to(:show_token_co_author)
+            expect(response).to render_template("token_co_authors/thank_you")
           end
         end
       end

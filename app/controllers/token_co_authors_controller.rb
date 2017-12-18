@@ -5,32 +5,21 @@ class TokenCoAuthorsController < ApplicationController
   before_action :verify_coauthor_enabled
 
   def show
-    if @author.co_author_confirmed?
-      redirect_to thank_you_token_co_author_path(token)
-    end
+    render(:thank_you) && return if @author.co_author_confirmed?
 
-    # a more elegant handling of this edge case is handled in a later story
+    # a more elegant handling of this edge case may be handled in a later story
     if @author.co_author_refuted?
-      render nothing: true, status: 200, content_type: 'text/html'
+      render(nothing: true, status: 200, content_type: 'text/html') && return
     end
-
-    assign_template_vars
   end
 
   def confirm
-    if @author.co_author_confirmed?
-      return redirect_to thank_you_token_co_author_path(token)
-    end
-
-    @author.co_author_confirmed!
-    Activity.co_author_confirmed!(@author, user: current_user)
-    redirect_to thank_you_token_co_author_path(token)
-  end
-
-  def thank_you
     unless @author.co_author_confirmed?
-      redirect_to show_token_co_author_path(token)
+      @author.co_author_confirmed!
+      Activity.co_author_confirmed!(@author, user: current_user)
     end
+
+    render(:thank_you) && return
   end
 
   private

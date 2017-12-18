@@ -287,10 +287,6 @@ Tahi::Application.routes.draw do
     to: 'token_co_authors#confirm',
     as: 'confirm_token_co_author'
 
-  get '/co_authors_token/:token/thank_you',
-    to: 'token_co_authors#thank_you',
-    as: 'thank_you_token_co_author'
-
   # Legacy resource_proxy routes
   # We need to maintain this route as existing resources have been linked with
   # this scheme.

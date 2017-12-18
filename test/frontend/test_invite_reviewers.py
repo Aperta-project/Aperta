@@ -13,7 +13,7 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import prod_staff_login, reviewer_login, ascii_only_users, editorial_users
+from Base.Resources import prod_staff_login, reviewer_users, ascii_only_users, editorial_users
 from frontend.common_test import CommonTest
 from .Cards.invite_reviewer_card import InviteReviewersCard
 from .Pages.manuscript_viewer import ManuscriptViewerPage
@@ -32,6 +32,7 @@ class InviteReviewersCardTest(CommonTest):
         logging.info('Test Invite Reviewers::elements and styles')
         # Users logs in and make a submission
         creator_user = random.choice(ascii_only_users)
+        reviewer_login = random.choice(reviewer_users)
         dashboard_page = self.cas_login(email=creator_user['email'])
         dashboard_page.page_ready()
         dashboard_page.click_create_new_submission_button()
@@ -115,6 +116,7 @@ class InviteReviewersCardTest(CommonTest):
         logging.info(current_path)
         # Users logs in and make a submission
         creator_user = random.choice(ascii_only_users)
+        reviewer_login = random.choice(reviewer_users)
         dashboard_page = self.cas_login(email=creator_user['email'])
         dashboard_page.page_ready()
         dashboard_page.click_create_new_submission_button()
@@ -248,6 +250,7 @@ class InviteReviewersCardTest(CommonTest):
         logging.info('Test Invite Reviewers::Invite Rescind Reinvite')
         # Users logs in and make a submission
         creator_user = random.choice(ascii_only_users)
+        reviewer_login = random.choice(reviewer_users)
         dashboard_page = self.cas_login(email=creator_user['email'])
         dashboard_page.page_ready()
         dashboard_page.click_create_new_submission_button()
@@ -380,6 +383,7 @@ class InviteReviewersCardTest(CommonTest):
         # current_path = os.getcwd()
         # User log in and makes a submission
         creator_user = random.choice(ascii_only_users)
+        reviewer_login = random.choice(reviewer_users)
         logging.info('logging in as {0}'.format(creator_user))
         dashboard_page = self.cas_login(email=creator_user['email'])
         dashboard_page.page_ready()
@@ -425,6 +429,7 @@ class InviteReviewersCardTest(CommonTest):
         logging.info('Test Invite Reviewers::Reviewer Report State')
         # Users logs in and make a submission
         creator_user = random.choice(ascii_only_users)
+        reviewer_login = random.choice(reviewer_users)
         dashboard_page = self.cas_login(email=creator_user['email'])
         dashboard_page.page_ready()
         dashboard_page.click_create_new_submission_button()

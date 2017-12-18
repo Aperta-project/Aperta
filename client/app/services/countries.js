@@ -40,7 +40,6 @@ export default Service.extend({
     } catch(e) {
       this.set('loading', false);
       this.set('error', true);
-      throw(e);
     }
   })
 });

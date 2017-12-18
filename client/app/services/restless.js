@@ -6,6 +6,8 @@ import camelizeKeys from 'tahi/lib/camelize-keys';
 const { getOwner } = Ember;
 
 export default Ember.Service.extend({
+  store: Ember.inject.service(),
+
   pathFor(model) {
     let adapter = model.get('store').adapterFor(model.constructor.modelName);
     let resourceType = model.constructor.modelName;
@@ -13,32 +15,8 @@ export default Ember.Service.extend({
   },
 
   ajaxPromise(method, path, data) {
-    let pusher = getOwner(this).lookup('service:pusher');
-    let socketId = null;
-    if (pusher) {
-      socketId = getOwner(this).lookup('service:pusher').get('socketId');
-    }
-
-    let contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
-    if (method !== 'GET') {
-      contentType = 'application/json';
-      data = JSON.stringify(data);
-    }
-
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      return Ember.$.ajax({
-        url: path,
-        type: method,
-        data: data,
-        contentType: contentType,
-        success: resolve,
-        error: reject,
-        headers: {
-          'Pusher-Socket-ID': socketId
-        },
-        dataType: 'json'
-      });
-    });
+    let adapter = Ember.get(this, 'store').adapterFor('application');
+    return adapter.ajax(path, method, { data });
   },
 
   'delete': function(path, data) {

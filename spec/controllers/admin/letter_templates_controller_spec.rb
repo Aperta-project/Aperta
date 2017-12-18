@@ -115,7 +115,7 @@ describe Admin::LetterTemplatesController, redis: true do
 
   describe '#preview' do
     subject :do_request do
-      get :preview, format: 'json', id: letter_template.id
+      post :preview, format: 'json', id: letter_template.id, letter_template: { subject: "{{journal.name}}" }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -126,15 +126,21 @@ describe Admin::LetterTemplatesController, redis: true do
         allow(user).to receive(:can?)
           .with(:manage_users, Journal)
           .and_return true
-        expect_any_instance_of(LetterTemplate).to receive(:render_dummy_data)
+        allow_any_instance_of(LetterTemplate).to receive(:render_dummy_data)
       end
 
-      it { is_expected.to responds_with(200) }
+      it { is_expected.to responds_with(201) }
 
       it 'returns dummy data rendered into the template' do
+        expect_any_instance_of(LetterTemplate).to receive(:render_dummy_data)
         do_request
         expect(res_body['letter_template']['subject']).to be_present
         expect(res_body['letter_template']['body']).to be_present
+      end
+
+      it 'sends error messages if template validations fail' do
+        post :preview, format: 'json', id: letter_template.id, letter_template: { subject: "{{journal.name}" }
+        expect(res_body['errors']['subject']).to be_present
       end
     end
   end

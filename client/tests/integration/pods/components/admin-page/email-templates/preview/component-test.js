@@ -16,26 +16,38 @@ moduleForComponent('admin-page/email-templates/preview',
   }
 );
 
-test('it disables preview button if template has errors', function(assert) {
-  this.set('hasErrors', true);
+test('it displays template errors properly', function(assert) {
   this.set('template', Ember.Object.create({id: 1}));
+  $.mockjax({
+    url: '/api/admin/letter_templates/1/preview',
+    status: 422,
+    responseText: { errors: [] }
+  });
+  this.set('dirtyEditorConfig', {model: 'template', properties: ['subject', 'body']});
+
+  // Test display of errors through email-template/edit component
   this.render(hbs`
-    {{admin-page/email-templates/preview letterTemplateId=template.id hasErrors=hasErrors}}
+    {{admin-page/email-templates/edit template=template dirtyEditorConfig=dirtyEditorConfig}}
   `);
-  assert.elementFound("[data-test-selector='preview-email'][disabled]");
+
+  this.$("[data-test-selector='preview-email']").click();
+
+  return wait().then(() => {
+    assert.equal(this.$('.text-danger').text().trim(), 'Please correct errors where indicated.', 'Displays errors if preview template has syntax errors');
+  });
 });
 
 test('it displays dummy data when clicked on preview button', function(assert) {
   $.mockjax({
     url: '/api/admin/letter_templates/1/preview',
-    status: 200,
+    status: 201,
     responseText: { letter_template: {body: 'dummy data present' } }
   });
   this.set('template', Ember.Object.create({id: 1}));
 
   this.render(hbs`
     <div id="overlay-drop-zone"></div>
-    {{admin-page/email-templates/preview letterTemplateId=template.id hasErrors=hasErrors}}
+    {{admin-page/email-templates/preview template=template}}
   `);
   this.$("[data-test-selector='preview-email']").click();
 

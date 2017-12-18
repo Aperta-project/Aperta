@@ -71,6 +71,7 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
         bccErrors: []
       });
     },
+
     parseErrors(error) {
       const subjectErrors = error.errors.filter((e) => e.source.pointer.includes('subject'));
       const bodyErrors = error.errors.filter((e) => e.source.pointer.includes('body'));

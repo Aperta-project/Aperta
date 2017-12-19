@@ -20,6 +20,7 @@ class Journal < ActiveRecord::Base
 
   has_many :manuscript_manager_templates, dependent: :destroy
   has_many :journal_task_types, inverse_of: :journal, dependent: :destroy
+  has_many :behaviors, inverse_of: :journal, dependent: :destroy
 
   validates :name, presence: { message: 'Please include a journal name' }, uniqueness: true
   validates :doi_publisher_prefix,

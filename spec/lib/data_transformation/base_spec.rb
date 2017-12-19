@@ -10,6 +10,10 @@ describe DataTransformation::Base do
     end
   end
 
+  before(:each) do
+    data_transformation.counters = {}
+  end
+
   describe "#register_counter" do
     let(:counter_name) { :my_counter }
 

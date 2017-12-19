@@ -234,7 +234,12 @@
     "sendgrid:starter",
     "papertrail:choklad",
     "pusher:sandbox",
-    "heroku-postgresql:hobby-dev",
+    {
+      "plan": "heroku-postgresql:hobby-dev",
+      "options": {
+        "version": "9.6"
+      }
+    },
     "rediscloud:30"
   ],
   "formation": {

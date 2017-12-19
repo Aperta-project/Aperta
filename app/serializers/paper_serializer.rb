@@ -19,11 +19,6 @@ class PaperSerializer < LitePaperSerializer
            include: true,
            serializer: AssignmentSerializer
 
-  has_many :correspondence,
-  embed: :ids,
-  include: true,
-  serializer: CorrespondenceSerializer
-
   has_many :authors,
            embed: :ids,
            include: true,

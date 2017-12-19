@@ -255,7 +255,7 @@ class AuthorsCard(BaseCard):
     else:
       self._get(self._coauthor_decline_lbl).click()
 
-  def validate_coauthor_status(self, short_doi):
+  def validate_coauthor_status(self, author_type, short_doi):
     """
     Validates the messages that appear on the authors card after confirmation or
     decline of co-author status by an internal user.
@@ -284,7 +284,7 @@ class AuthorsCard(BaseCard):
     coauthor_item.click()
     last_mod_info = self._get(self._coauthor_last_mod_info)
 
-    coauthor_info_from_db = self.get_coauthor_info_from_db(short_doi)
+    coauthor_info_from_db = self.get_coauthor_info_from_db(author_type, short_doi)
     coauthor_state_from_db = coauthor_info_from_db[0]
     coauthor_state_modified_at = self.utc_to_local_tz(coauthor_info_from_db[1])
     coauthor_state_modified_by_id = coauthor_info_from_db[2]
@@ -305,20 +305,25 @@ class AuthorsCard(BaseCard):
     expected_last_mod_info = '{0} {1} on {2}'.format(action, coauthor_state_modified_by, time_confirmed)
     assert last_mod_info.text == expected_last_mod_info, 'Actual: {0} != Expected: {1}'.format(last_mod_info.text, expected_last_mod_info)
 
-  def get_coauthor_info_from_db(self, short_doi):
+  def get_coauthor_info_from_db(self, author_type, short_doi):
         """
         Retrieves an author's information for coauthor state for a paper from the database.
         :param short_doi: The short for the paper
         :return: co_author_state, co_author_state_modified_at, co_author_state_modified_by_id
         """
 
+        if author_type == 'individual':
+            table = 'authors'
+        else:
+            table = 'group_authors'
+
         coauthor_info =  PgSQL().query('SELECT papers.id, papers.short_doi,'
                     'author_list_items.author_type, '
-                    'authors.id,authors.co_author_state, authors.co_author_state_modified_at, '
-                    'authors.co_author_state_modified_by_id FROM papers '
+                    '{0}.id,{0}.co_author_state, {0}.co_author_state_modified_at, '
+                    '{0}.co_author_state_modified_by_id FROM papers '
                     'JOIN author_list_items ON author_list_items.paper_id = papers.id '
-                    'JOIN authors ON authors.id = author_list_items.author_id WHERE '
-                    'papers.short_doi = \'{0}\' order by authors.id DESC;'.format(short_doi))[0]
+                    'JOIN {0} ON {0}.id = author_list_items.author_id WHERE '
+                    'papers.short_doi = \'{1}\' order by {0}.id DESC;'.format(table, short_doi))[0]
 
         coauthor_state = coauthor_info[4]
         coauthor_state_modified_at = coauthor_info[5]

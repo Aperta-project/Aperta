@@ -215,7 +215,7 @@ class CoAuthorConfirmationTest(CommonTest):
 
         authors_card = AuthorsCard(self.getDriver())
         authors_card.click_completion_button()
-        authors_card.validate_coauthor_status(short_doi)
+        authors_card.validate_coauthor_status('individual', short_doi)
 
     def test_group_coauthor_confirmation_by_staff(self):
         """
@@ -281,7 +281,7 @@ class CoAuthorConfirmationTest(CommonTest):
 
         authors_card = AuthorsCard(self.getDriver())
         authors_card.click_completion_button()
-        authors_card.validate_coauthor_status(staff_user)
+        authors_card.validate_coauthor_status('group', short_doi)
 
 
 if __name__ == '__main__':

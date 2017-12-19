@@ -57,5 +57,12 @@ export default DS.Model.extend({
     if (bccErrors.length) {
       this.set('bccErrors', bccErrors.map(err => err.detail));
     }
+  },
+
+  preview() {
+    let data = _.pick(this.serialize(), ['body', 'subject', 'cc', 'bcc']);
+    let modelName = this.constructor.modelName;
+    let adapter = this.store.adapterFor(modelName);
+    return adapter.preview(this.get('id'), data);
   }
 });

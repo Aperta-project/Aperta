@@ -126,13 +126,17 @@ describe Admin::LetterTemplatesController, redis: true do
         allow(user).to receive(:can?)
           .with(:manage_users, Journal)
           .and_return true
-        allow_any_instance_of(LetterTemplate).to receive(:render_dummy_data)
+        allow(LetterTemplate).to receive(:find).with(letter_template.id.to_s) { letter_template }
       end
 
-      it { is_expected.to responds_with(201) }
+      it 'responds with 201' do
+        allow(letter_template).to receive(:render_dummy_data)
+        do_request
+        is_expected.to responds_with(201)
+      end
 
       it 'returns dummy data rendered into the template' do
-        expect_any_instance_of(LetterTemplate).to receive(:render_dummy_data)
+        expect(letter_template).to receive(:render_dummy_data)
         do_request
         expect(res_body['letter_template']['subject']).to be_present
         expect(res_body['letter_template']['body']).to be_present

@@ -19,7 +19,7 @@
 
 .card-radio {
   .card-form-element {
-   margin-bottom:0; 
+   margin-bottom:0;
   }
   .card-form-label {
     display:inline;
@@ -27,4 +27,8 @@
     font-weight:normal;
     margin-left:5px;
   }
+}
+
+div.card-form-text-error p {
+  margin: 0px;
 }

@@ -72,7 +72,6 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
               message: 'Your changes have been saved.',
               messageType: 'success'
             });
-            template.reload();
           })
           .catch(error => {
             this.send('parseErrors', error);

@@ -21,11 +21,10 @@ export default Ember.Component.extend({
       let adapter = this.get('store').adapterFor('application');
       adapter.ajax(`/api/admin/letter_templates/${this.get('template.id')}/preview`, 'POST', {data}).
         then((data) => {
+          this.get('template').clearErrors();
           this.set('previewTemplate', data.letter_template);
           this.set('visible', true);
-          this.sendAction('clearErrors');
         }).catch((error) => {
-          this.set('visible', false);
           this.sendAction('parseErrors', error);
         });
     },

@@ -12,19 +12,8 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
   saved: true,
   subjectEmpty: false,
   bodyEmpty: false,
-  nameEmpty: Ember.computed.empty('template.name'),
   isEditingName: false,
-  subjectErrors: [],
-  bodyErrors: [],
-  ccErrors: [],
-  bccErrors: [],
-  nameError: '',
-  subjectErrorPresent: Ember.computed.notEmpty('subjectErrors'),
-  bodyErrorPresent: Ember.computed.notEmpty('bodyErrors'),
-  nameErrorPresent: Ember.computed.notEmpty('nameError'),
-  ccErrorPresent: Ember.computed.notEmpty('ccErrors'),
-  bccErrorPresent: Ember.computed.notEmpty('bccErrors'),
-  hasErrors: Ember.computed.or('subjectErrorPresent', 'bodyErrorPresent', 'nameErrorPresent', 'ccErrorPresent', 'bccErrorPresent'),
+
   actions: {
     editTitle() {
       this.set('isEditingName', true);
@@ -37,7 +26,7 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
 
     handleInputChange() {
       this.set('saved', false);
-      if(!this.get('nameEmpty')) {
+      if(!this.get('template.nameEmpty')) {
         this.set('message', '');
       } else {
         this.setProperties({
@@ -63,36 +52,8 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
       }
     },
 
-    clearErrors() {
-      this.setProperties({
-        subjectErrors: [],
-        bodyErrors: [],
-        ccErrors: [],
-        bccErrors: []
-      });
-    },
-
     parseErrors(error) {
-      const subjectErrors = error.errors.filter((e) => e.source.pointer.includes('subject'));
-      const bodyErrors = error.errors.filter((e) => e.source.pointer.includes('body'));
-      const nameError = error.errors.filter(e => e.source.pointer.includes('name'));
-      const ccErrors = error.errors.filter(e => e.source.pointer.endsWith('/cc'));
-      const bccErrors = error.errors.filter(e => e.source.pointer.endsWith('/bcc'));
-      if (subjectErrors.length) {
-        this.set('subjectErrors', subjectErrors.map(s => s.detail));
-      }
-      if (bodyErrors.length) {
-        this.set('bodyErrors', bodyErrors.map(b => b.detail));
-      }
-      if (nameError.length) {
-        this.set('nameError', nameError.map(n => n.detail));
-      }
-      if (ccErrors.length) {
-        this.set('ccErrors', ccErrors.map(err => err.detail));
-      }
-      if (bccErrors.length) {
-        this.set('bccErrors', bccErrors.map(err => err.detail));
-      }
+      this.get('template').parseErrors(error);
       this.setProperties({
         message: 'Please correct errors where indicated.',
         messageType: 'danger'
@@ -100,8 +61,8 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
     },
 
     save: function() {
-      this.send('clearErrors');
       let template = this.get('template');
+      template.clearErrors();
       if (template.get('subject') && template.get('body') && template.get('name')) {
         template.save()
           .then(() => {

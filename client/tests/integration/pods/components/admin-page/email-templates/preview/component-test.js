@@ -3,6 +3,7 @@ import hbs from 'htmlbars-inline-precompile';
 import { manualSetup } from 'ember-data-factory-guy';
 import Ember from 'ember';
 import wait from 'ember-test-helpers/wait';
+import FactoryGuy from 'ember-data-factory-guy';
 
 moduleForComponent('admin-page/email-templates/preview',
   'Integration | Component | Admin Page | Email Templates | Preview', {
@@ -17,9 +18,11 @@ moduleForComponent('admin-page/email-templates/preview',
 );
 
 test('it displays template errors properly', function(assert) {
-  this.set('template', Ember.Object.create({id: 1}));
+  let template = FactoryGuy.make('letter-template', {subject: 'foo', body: 'bar'});
+  this.set('template', template);
+
   $.mockjax({
-    url: '/api/admin/letter_templates/1/preview',
+    url: `/api/admin/letter_templates/${template.get('id')}/preview`,
     status: 422,
     responseText: { errors: [] }
   });
@@ -38,12 +41,14 @@ test('it displays template errors properly', function(assert) {
 });
 
 test('it displays dummy data when clicked on preview button', function(assert) {
+  let template = FactoryGuy.make('letter-template', {subject: 'foo', body: 'bar'});
+  this.set('template', template);
+
   $.mockjax({
-    url: '/api/admin/letter_templates/1/preview',
+    url: `/api/admin/letter_templates/${template.get('id')}/preview`,
     status: 201,
     responseText: { letter_template: {body: 'dummy data present' } }
   });
-  this.set('template', Ember.Object.create({id: 1}));
 
   this.render(hbs`
     <div id="overlay-drop-zone"></div>

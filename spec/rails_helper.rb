@@ -138,8 +138,8 @@ RSpec.configure do |config|
 
     # Load question seeds before any tests start since we don't want them
     # to be rolled back as part of a transaction
-    Rake::Task['cards:load'].reenable
-    Rake::Task['cards:load'].invoke
+    # Rake::Task['cards:load'].reenable
+    # Rake::Task['cards:load'].invoke
 
     $capybara_setup_done = true
     # rubocop:enable Style/GlobalVars

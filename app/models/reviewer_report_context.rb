@@ -18,7 +18,7 @@ class ReviewerReportContext < TemplateContext
   end
 
   def due_at_with_minutes
-    (object.due_at || 10.days.from_now).to_s(:due_with_minutes)
+    object.due_at.to_s(:due_with_minutes)
   end
 
   def due_at_with_minutes

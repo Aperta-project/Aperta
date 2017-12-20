@@ -61,6 +61,10 @@ class LetterTemplate < ActiveRecord::Base
     errors.add(:base, 'Template not renderable')
   end
 
+  def render_dummy_data
+    render(dummy_data)
+  end
+
   private
 
   def render_attr(template, context, sanitize: false, check_blanks: false)
@@ -115,5 +119,9 @@ class LetterTemplate < ActiveRecord::Base
       .map(&:strip)                            # Git rid of surrounding whitespace
       .map { |a| a.gsub(/.*<(.+)>$/, '\1') }   # Strip angle brackets and any leading friendly names that weren't quoted
       .join(',')                               # ...and join them back together with the Tahi standard email separator
+  end
+
+  def dummy_data
+    @dummy_data ||= YAML.load_file(Rails.root.join('config', 'letter_templates', 'dummy_data.yml'))
   end
 end

@@ -9,10 +9,10 @@
         <div class="name-input-size {{unless template.name 'error'}}">
           {{input value=template.name key-down="handleInputChange" class="form-control template-name"}}
         </div>
-        {{#if nameEmpty}}
+        {{#if template.nameEmpty}}
           <span class="error">{{fa-icon 'warning'}} This field is required.</span>
         {{/if}}
-        {{#if nameErrorPresent}}
+        {{#if template.nameErrorPresent}}
           <span class="error">
             {{fa-icon 'warning'}} The email template name of "{{unbound template.name}}" is already taken for this journal.
             Please give your template a new name.
@@ -41,6 +41,10 @@
           displaySpinner=template.isSaving}}
           SAVE
         {{/save-button}}
+        {{admin-page/email-templates/preview
+          template=template
+          parseErrors=(action 'parseErrors')
+        }}
       </div>
 
       <div class="edit-email-well">
@@ -49,16 +53,16 @@
             <div class="col-xs-9">
               <div class="form-group">
                 <label for="subject" class="text-bold required-field-label">Subject <span>{{fa-icon 'asterisk'}}</span></label>
-                <div class="{{if (or subjectErrorPresent  subjectEmpty) 'error'}}">
+                <div class="{{if (or template.subjectErrorPresent  subjectEmpty) 'error'}}">
                   {{input class="form-control template-subject" value=template.subject key-down="handleInputChange" focus-out="checkSubject"}}
                   {{#if subjectEmpty}}
                     <span>{{fa-icon 'warning'}} This field is required.</span>
                   {{/if}}
-                  {{#if subjectErrorPresent}}
+                  {{#if template.subjectErrorPresent}}
                     <div class="error">
                       <span>{{fa-icon 'warning'}} Please correct the following syntax errors.</span>
                       <ul>
-                        {{#each subjectErrors as |error|}}
+                        {{#each template.subjectErrors as |error|}}
                           <li>{{error}}</li>
                         {{/each}}
                       </ul>
@@ -69,13 +73,13 @@
 
               <div class="form-group">
                 <label for="cc" class="text-bold">CC </label>
-                <div class="{{if ccErrorPresent 'error'}}">
+                <div class="{{if template.ccErrorPresent 'error'}}">
                   {{input class="form-control template-cc" value=template.cc key-down="handleInputChange"}}
-                  {{#if ccErrorPresent}}
+                  {{#if template.ccErrorPresent}}
                     <div class="error">
                       <span>{{fa-icon 'warning'}} Please correct the following syntax errors.</span>
                       <ul>
-                        {{#each ccErrors as |error|}}
+                        {{#each template.ccErrors as |error|}}
                           <li>{{error}}</li>
                         {{/each}}
                       </ul>
@@ -86,13 +90,13 @@
 
               <div class="form-group">
                 <label for="bcc" class="text-bold">BCC </label>
-                <div class="{{if bccErrorPresent 'error'}}">
+                <div class="{{if template.bccErrorPresent 'error'}}">
                   {{input class="form-control template-bcc" value=template.bcc key-down="handleInputChange"}}
-                  {{#if bccErrorPresent}}
+                  {{#if template.bccErrorPresent}}
                     <div class="error">
                       <span>{{fa-icon 'warning'}} Please correct the following syntax errors.</span>
                       <ul>
-                        {{#each bccErrors as |error|}}
+                        {{#each template.bccErrors as |error|}}
                           <li>{{error}}</li>
                         {{/each}}
                       </ul>
@@ -103,16 +107,16 @@
 
               <div class="form-group">
                 <label for="body" class="text-bold required-field-label">Body </label>
-                <div class="{{if (or bodyErrorPresent bodyEmpty) 'error'}}">
+                <div class="{{if (or template.bodyErrorPresent bodyEmpty) 'error'}}">
                   {{textarea class="form-control template-body" value=template.body key-down="handleInputChange" focus-out="checkBody"}}
                   {{#if bodyEmpty}}
                     <span>{{fa-icon 'warning'}} This field is required.</span>
                   {{/if}}
-                  {{#if bodyErrorPresent}}
+                  {{#if template.bodyErrorPresent}}
                     <div class="error">
                       <span>{{fa-icon 'warning'}} Please correct the following syntax errors.</span>
                       <ul>
-                        {{#each bodyErrors as |error|}}
+                        {{#each template.bodyErrors as |error|}}
                           <li>{{error}}</li>
                         {{/each}}
                       </ul>

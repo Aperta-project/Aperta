@@ -11,11 +11,10 @@ class Admin::LetterTemplatesController < ApplicationController
   end
 
   def show
-    respond_with LetterTemplate.find(params[:id])
+    respond_with letter_template
   end
 
   def update
-    letter_template = LetterTemplate.find(params[:id])
     update_params = letter_template_params[:letter_template]
     letter_template.update(update_params)
     respond_with letter_template
@@ -28,7 +27,18 @@ class Admin::LetterTemplatesController < ApplicationController
     respond_with :admin, template
   end
 
+  def preview
+    preview_params = letter_template_params[:letter_template]
+    letter_template.assign_attributes(preview_params)
+    letter_template.render_dummy_data if letter_template.valid?
+    respond_with :admin, letter_template
+  end
+
   private
+
+  def letter_template
+    @letter_template ||= LetterTemplate.find(params[:id])
+  end
 
   def authorized_user
     requires_user_can(:manage_users, Journal)

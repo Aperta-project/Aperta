@@ -11,8 +11,8 @@ moduleForComponent(
     beforeEach() {
       registerCustomAssertions();
       this.set('actionStub', function() {});
-      this.set('content', Ember.Object.create({ ident: 'test' }));
-      this.set('answer', Ember.Object.create({ value: null }));
+      this.set('content', { ident: 'test' });
+      this.set('answer', { value: null });
     }
   }
 );
@@ -43,7 +43,7 @@ test(`it disables the input if disabled=true`, function(assert) {
 });
 
 test(`it is checked if the answer is truthy`, function(assert) {
-  this.set('answer', Ember.Object.create({ value: true }));
+  this.set('answer', { value: true });
   this.render(template);
   assert.elementFound('.card-content-toggle-switch input[type=checkbox]:checked');
 });

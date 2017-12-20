@@ -1,6 +1,4 @@
 RSpec.shared_examples_for 'creating a reviewer report task' do |reviewer_report_type:|
-  FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
-  FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
 
   before do
     FactoryGirl.create :review_duration_period_setting_template

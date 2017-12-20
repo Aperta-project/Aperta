@@ -7,11 +7,11 @@ describe Behavior do
   let(:task) { create(:task, paper: paper, title: 'My Task') }
   let!(:template) { create(:letter_template, journal: journal, ident: 'foo-bar', scenario: 'Manuscript') }
   let(:event) { Event.new(name: :fake_event, paper: paper, task: task, user: paper.creator) }
-  subject { build(:send_email_behavior, event_name: :fake_event, letter_template: 'foo-bar') }
+  subject { create(:send_email_behavior, event_name: :fake_event, journal: journal, letter_template: 'foo-bar') }
 
   before(:each) do
     Event.register(:fake_event)
-    allow(Behavior).to receive(:where).with(event_name: :fake_event).and_return([subject])
+    subject.save!
   end
 
   after(:each) do
@@ -24,11 +24,6 @@ describe Behavior do
     subject.letter_template = nil
     expect(subject).not_to be_valid
     expect(subject.errors[:letter_template]).to eq(["can't be blank"])
-  end
-
-  it 'should call the behavior' do
-    expect(subject).to receive(:call).with(event)
-    event.trigger
   end
 
   it 'should call GenericMailer to send the email' do

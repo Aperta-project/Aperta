@@ -11,7 +11,7 @@
         </tr>
       </thead>
       <tbody>
-        {{#each model as |message|}}
+        {{#each sortedSentAt as |message|}}
           {{#if message.hasActivities}}
             <tr class="most-recent-activity">
               <td colspan="5">{{message.lastActivityMessage}}</td>

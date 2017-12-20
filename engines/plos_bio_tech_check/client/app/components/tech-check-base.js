@@ -15,6 +15,11 @@ export default TaskComponent.extend({
   successText: `The author has been notified via email that changes are
                 needed. They will also see your message the next time they
                 log in to see their manuscript.`,
+  emailSending: false,
+
+  emailNotAllowed: Ember.computed('task.paper.publishingState', function () {
+    return this.get('emailSending') || !this.get('task.paper.isSubmitted');
+  }),
 
   setLetter(callback) {
     const data = {};
@@ -50,11 +55,15 @@ export default TaskComponent.extend({
     },
 
     sendEmail() {
+      this.set('emailSending', true);
       this.setLetter(()=> {
         const taskId = this.get('task.id');
         const endpoint = this.get('emailEndpoint');
         const path = '/api/' + endpoint + '/' + taskId + '/send_email';
-        this.get('restless').post(path);
+        this.get('restless').post(path).then(()=> {
+          this.get('task.paper').reload();
+          this.set('emailSending', false);
+        });
 
         this.set('authoringMode', false);
         this.get('flash').displayRouteLevelMessage('success', this.get('successText'));

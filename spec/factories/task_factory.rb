@@ -9,6 +9,7 @@ FactoryGirl.define do
     paper { FactoryGirl.build_stubbed(:paper) }
     phase { FactoryGirl.build_stubbed(:phase) }
     card_version { FactoryGirl.build_stubbed(:card_version) }
+    sequence(:position)
   end
 
   factory :task do

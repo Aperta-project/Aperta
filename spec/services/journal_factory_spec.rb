@@ -176,7 +176,7 @@ describe JournalFactory do
         Role.delete_all
         Journal.delete_all
         CardContentValidation.delete_all
-        ContentAttribute.delete_all
+        EntityAttribute.delete_all
         CardContent.delete_all
         CardVersion.delete_all
         TaskTemplate.delete_all

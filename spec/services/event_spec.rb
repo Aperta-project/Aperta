@@ -5,8 +5,9 @@ describe Event do
   let(:action) { double(klass) }
   let(:klass) { Class.new(BehaviorAction) }
   let(:user) { create(:user) }
+  let(:journal) { create(:journal) }
   let(:task) { FactoryGirl.create(:task, :with_card, title: Faker::Lorem.sentence, paper: paper) }
-  let(:paper) { create(:paper) }
+  let(:paper) { create(:paper, journal: journal) }
   let(:event) { Event.new(name: :good_event, **action_data) }
   subject { event.trigger }
 
@@ -114,9 +115,20 @@ describe Event do
       let(:event) { Event.new(name: :good_event, paper: paper, user: user, task: nil) }
 
       it 'should call the call method with action parameters' do
-        expect(Behavior).to receive(:where).with(event_name: :good_event).and_return([behavior])
+        expect(paper.journal.behaviors).to receive(:where).with(event_name: :good_event).and_return([behavior])
         expect(behavior).to receive(:call).with(event)
         event.trigger
+      end
+
+      context 'when multiple journals are present' do
+        let(:other_journal) { FactoryGirl.create(:journal) }
+        let!(:paper) { FactoryGirl.create(:paper, journal: other_journal) }
+
+        it 'should be scoped to the journal' do
+          expect(paper.journal.behaviors).to receive(:where).with(event_name: :good_event).and_return([])
+          expect(behavior).not_to receive(:call).with(event)
+          event.trigger
+        end
       end
     end
 
@@ -131,7 +143,7 @@ describe Event do
       let(:event) { Event.new(name: :good_event, paper: paper, user: user, task: nil) }
 
       before(:each) do
-        expect(Behavior).to receive(:where).with(event_name: :good_event).and_return([behavior])
+        expect(paper.journal.behaviors).to receive(:where).with(event_name: :good_event).and_return([behavior])
         expect(behavior).to receive(:call).with(event).and_raise(StandardError)
       end
 

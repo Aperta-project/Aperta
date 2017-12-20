@@ -190,7 +190,7 @@ class Paper < ActiveRecord::Base
     end
 
     event(:minor_check) do
-      transitions from: :submitted,
+      transitions from: [:initially_submitted, :submitted],
                   to: :checking,
                   after: [:allow_edits!, :new_draft!]
     end

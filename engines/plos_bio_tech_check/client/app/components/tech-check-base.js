@@ -18,7 +18,7 @@ export default TaskComponent.extend({
   emailSending: false,
 
   emailNotAllowed: Ember.computed('task.paper.publishingState', function () {
-    return this.get('emailSending') || !this.get('task.paper.isSubmitted');
+    return this.get('emailSending') || !this.get('task.paper.isAnySubmitted');
   }),
 
   setLetter(callback) {

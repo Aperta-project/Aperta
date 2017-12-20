@@ -33,6 +33,11 @@ export default Component.extend({
     'Figure'
   ],
 
+  hasSIErrors: computed('taskErrors.supportingInformationFiles', function( ){
+    return !!this.get('taskErrors.supportingInformationFiles');
+  }),
+
+  hasSaveErrors: computed.or('hasSIErrors', 'model.validationErrors.save'),
 
   uiStateClass: computed('uiState', function() {
     return `si-file-${this.get('uiState')}`;
@@ -53,7 +58,6 @@ export default Component.extend({
             this.get('file.id') +
             '/update_attachment');
   }),
-
   uploadErrorMessage: Ember.computed('file.filename', function() {
     const filename = this.get('file.filename') || 'your file';
     return `There was an error while processing ${filename}. Please try again

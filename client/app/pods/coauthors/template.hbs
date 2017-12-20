@@ -1,2 +1,6 @@
 <h1>THIS IS BOGUS</h1>
-{{model.paper.title}}
+{{model.token}}
+{{{model.paper_title}}}
+{{#each model.coauthors as |coauthor|}}
+  {{coauthor.full_name}} {{coauthor.affiliation}}
+{{/each}}

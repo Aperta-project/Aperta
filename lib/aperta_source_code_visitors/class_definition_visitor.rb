@@ -1,3 +1,5 @@
+require_relative './basic_visitor'
+
 module ApertaSourceCodeVisitors
   # ClassDefinitionVisitor is a visitor which keeps track of class definitions.
   # It is useful if you want to make decisions upon who a superclass

@@ -1,3 +1,5 @@
+require_relative './basic_visitor'
+
 module ApertaSourceCodeVisitors
 
   # InstanceMethodAssignmentsVisitor is a visitor which keeps track of

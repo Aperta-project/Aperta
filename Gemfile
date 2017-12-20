@@ -105,6 +105,7 @@ group :development, :test do
   gem 'pry-rescue'
   gem 'quiet_assets'
   gem 'rspec-rails' # This needs to be in the development group to make rake tasks work
+  gem 'simplecov'
 end
 
 group :development do
@@ -142,7 +143,6 @@ group :test do
   gem 'rspec-retry'
   gem 'rspec_junit_formatter'
   gem 'selenium-webdriver'
-  gem 'simplecov'
   gem 'test_after_commit'
   gem 'thin'
   gem 'timecop'

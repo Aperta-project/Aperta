@@ -1,12 +1,16 @@
+import Ember from 'ember';
 import deepJoinArrays from 'tahi/lib/deep-join-arrays';
 import deepCamelizeKeys from 'tahi/lib/deep-camelize-keys';
 import humanizeStr from 'tahi/lib/humanize';
 
 //errors will look something like [{detail, source: {pointer}}]
+//unless they're adapter related errors that don't return a JSON-API error
+//response, in which they're more like [{title, detail}]
 function createLegacyErrors(errors) {
   let errorObj = {};
+  let errorKey;
   errors.forEach(({source, detail}) => {
-    let errorKey = source.pointer.split('/').pop();
+    errorKey = (Ember.isNone(source)) ?  detail : source.pointer.split('/').pop();
     if (!errorObj[errorKey]) { errorObj[errorKey] = []; }
     errorObj[errorKey].push(detail);
   });

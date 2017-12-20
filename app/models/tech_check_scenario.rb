@@ -19,12 +19,13 @@ class TechCheckScenario < TemplateContext
   end
 
   def paperwide_sendback_reasons
-    incomplete_tech_checks = task.paper.tasks
+    task.paper.tasks
       .joins(card_version: [card_contents: [:answers]])
+      .group('id')
       .where(card_contents: { content_type: 'tech-check' })
-      .where(answers: { value: 'f' }).group('id')
-
-    incomplete_tech_checks.flat_map { |task| task_sendback_reasons(task) }
+      .where(answers: { value: 'f' })
+      .sort_by { |task| [task.phase.position, task.position] }
+      .flat_map { |task| task_sendback_reasons(task) }
   end
 
   private
@@ -47,7 +48,9 @@ class TechCheckScenario < TemplateContext
       end
     end
 
-    reasons.sort_by(&:card_content_id).map { |reason| AnswerContext.new(reason) }
+    reasons
+      .sort_by { |reason| reason.card_content.lft }
+      .map { |reason| AnswerContext.new(reason) }
   end
 
   def task

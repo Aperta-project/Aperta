@@ -1,0 +1,22 @@
+<button data-test-selector="preview-email"
+  class="button-secondary button--blue" {{action "loadPreviewData"}}>Preview</button>
+{{#if visible }}
+  {{#overlay-fullscreen visible=visible
+    overlayClass="preview-email overlay--blue"
+    outAnimationComplete=(action 'close') }}
+  <h1> Email Template Preview</h1>
+  <div>
+    <label for="subject">Subject:</label><span>{{previewTemplate.subject}}</span>
+  </div>
+  <div>
+    <label for="cc">CC:</label><span>{{previewTemplate.cc}}</span>
+  </div>
+  <div>
+    <label for="cc">BCC:</label><span>{{previewTemplate.bcc}}</span>
+  </div>
+  <hr/>
+  <div>
+    {{{ previewTemplate.body }}}
+  </div>
+  {{/overlay-fullscreen}}
+{{/if}}

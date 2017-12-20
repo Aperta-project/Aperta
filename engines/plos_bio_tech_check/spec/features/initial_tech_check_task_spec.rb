@@ -4,7 +4,7 @@ feature 'Initial Tech Check', js: true do
   let(:journal) { create :journal, :with_roles_and_permissions }
   let(:editor) { create :user }
   let(:author) { create :user }
-  let(:paper) { create :paper, :checking, journal: journal, creator: author }
+  let(:paper) { create :paper, :submitted, journal: journal, creator: author }
   let(:task) { create :initial_tech_check_task, :with_loaded_card, paper: paper }
 
   before do

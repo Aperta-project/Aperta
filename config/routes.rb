@@ -241,7 +241,9 @@ Tahi::Application.routes.draw do
       resources :journals, only: [:index, :show, :update, :create] do
         get :authorization, on: :collection
       end
-      resources :letter_templates, only: [:index, :show, :update, :create]
+      resources :letter_templates, only: [:index, :show, :update, :create] do
+        post :preview, on: :member
+      end
     end
 
     # ihat endpoints

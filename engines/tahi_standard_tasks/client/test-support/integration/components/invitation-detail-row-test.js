@@ -94,6 +94,17 @@ test('displays invitation email when no invitee present', function(assert){
   assert.textPresent('.invitation-item-full-name', 'jane@example.com');
 });
 
+test('displays invitee name and email when present when editing the invitation', function(assert){
+  let template = hbs`{{invitation-detail-row
+                      invitation=invitation
+                      owner=owner
+                      uiState='edit'}}`;
+
+  this.render(template);
+
+  assert.textPresent('.invitation-item-full-name', 'Jane McEdits');
+  assert.textPresent('.invitation-item-full-name', '<jane@example.com>');
+});
 
 // header buttons
 

@@ -44,7 +44,7 @@ class Event
     raise StandardError, "Event #{self} already triggered" if @triggered
 
     # Run handlers
-    Behavior.where(event_name: name).each { |behavior| behavior.call(self) }
+    paper.journal.behaviors.where(event_name: name).each { |behavior| behavior.call(self) }
 
     # Broadcast it
     Notifier.notify(event: name, data: notify_payload)

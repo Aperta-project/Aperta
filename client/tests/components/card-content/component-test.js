@@ -16,6 +16,8 @@ moduleForComponent('custom-card-task', 'Integration | Components | Card Content'
 
     let task = make('custom-card-task');
     this.set('task', task);
+    this.set('repetition', null);
+    this.set('preview', false);
     mockCreate('answer');
   },
 
@@ -30,7 +32,7 @@ test('it creates an answer for card-content', function(assert) {
   this.set('task.cardVersion.contentRoot', cardContent);
 
   this.render(hbs`
-    {{custom-card-task task=task preview=false}}
+    {{custom-card-task task=task preview=preview}}
   `);
 
   assert.expect(2);
@@ -54,7 +56,7 @@ test('it does not create an answer for non answerables', function(assert) {
   assert.expect(1);
 
   this.render(hbs`
-    {{custom-card-task task=task preview=false}}
+    {{custom-card-task task=task preview=preview}}
   `);
 
   return wait().then(() => {
@@ -67,7 +69,7 @@ test('it renders text for card-content', function(assert) {
   this.set('task.cardVersion.contentRoot', cardContent);
 
   this.render(hbs`
-    {{custom-card-task task=task preview=false}}
+    {{custom-card-task task=task preview=preview}}
   `);
 
   assert.textPresent('.card-form-text', 'A short input question');
@@ -78,7 +80,7 @@ test('it renders a label for card-content', function(assert) {
   this.set('task.cardVersion.contentRoot', cardContent);
 
   this.render(hbs`
-    {{custom-card-task task=task preview=false}}
+    {{custom-card-task task=task preview=preview}}
   `);
 
   return wait().then(() => {
@@ -93,7 +95,7 @@ test('it displays an indicator for required fields', function(assert) {
   this.set(root, cardContent);
 
   let template = hbs`
-    {{custom-card-task task=task preview=false}}
+    {{custom-card-task task=task preview=preview}}
   `;
 
   this.render(template);
@@ -119,7 +121,7 @@ test('it does not display an indicator for non-required fields', function(assert
   );
 
   this.render(hbs`
-    {{custom-card-task task=task preview=false}}
+    {{custom-card-task task=task preview=preview}}
   `);
 
   return wait().then(() => {
@@ -133,7 +135,7 @@ test('When having "false" as the content.defaultAnswerValue it casts it to boole
   this.set('owner', Ember.Object.create());
   this.set('preview', true);
 
-  this.render(hbs` {{card-content content=content owner=owner preview=preview }}`);
+  this.render(hbs` {{card-content content=content owner=owner preview=preview repetition=repetition }}`);
   return wait().then(() => {
     assert.equal(this.$('input[type=checkbox]').is(':checked'), false);
   });
@@ -148,7 +150,7 @@ test('When having "true" as the content.defaultAnswerValue it casts it to boolea
   this.set('owner', Ember.Object.create());
   this.set('preview', true);
 
-  this.render(hbs `{{card-content content=content owner=owner preview=preview }}`);
+  this.render(hbs` {{card-content content=content owner=owner preview=preview repetition=repetition }}`);
   return wait().then(() => {
     assert.equal(this.$('input[type=checkbox]').is(':checked'), true);
   });
@@ -168,7 +170,7 @@ test('it lazily saves new answers', function(assert) {
   let task = make('custom-card-task');
   task.set('cardVersion.contentRoot', cardContent);
   let answer = cardContent.answerForOwner(task);
-  let component = this.subject({content: cardContent, owner: task, preview: false});
+  let component = this.subject({content: cardContent, owner: task, preview: false, repetition: null});
 
   assert.notOk(component.shouldEagerlySave(answer));
 });
@@ -178,7 +180,7 @@ test('it eagerly saves new required answers', function(assert) {
   let task = make('custom-card-task');
   task.set('cardVersion.contentRoot', cardContent);
   let answer = cardContent.answerForOwner(task);
-  let component = this.subject({content: cardContent, owner: task, preview: false});
+  let component = this.subject({content: cardContent, owner: task, preview: false, repetition: null});
 
   assert.ok(component.shouldEagerlySave(answer));
 });
@@ -191,6 +193,6 @@ test('it eagerly saves new answers with default values', function(assert) {
   let answer = cardContent.answerForOwner(task);
   assert.equal(answer.get('value'), 'hippopotamus');
 
-  let component = this.subject({content: cardContent, owner: task, preview: false});
+  let component = this.subject({content: cardContent, owner: task, preview: false, repetition: null});
   assert.ok(component.shouldEagerlySave(answer));
 });

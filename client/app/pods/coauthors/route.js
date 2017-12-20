@@ -7,5 +7,10 @@ export default Ember.Route.extend({
 
   model(params) {
     return this.store.queryRecord('token-coauthor', {token: params.token});
+  },
+
+  setupController(controller, model) {
+    this.controllerFor('application').set('minimalChrome', true);
+    controller.set('model', model);
   }
 });

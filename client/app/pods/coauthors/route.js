@@ -12,5 +12,12 @@ export default Ember.Route.extend({
   setupController(controller, model) {
     this.controllerFor('application').set('minimalChrome', true);
     controller.set('model', model);
+  },
+
+  actions: {
+    save() {
+      this.set('model.confirmationState', 'confirmed');
+      this.get('controller.model').save();
+    }
   }
 });

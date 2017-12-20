@@ -9,7 +9,6 @@
     </div>
 
     {{#if model.isConfirmable}}
-
       <div class="pending-confirmation">
         <h2 class='confirmation-metadata'><i class="fa fa-envelope email-icon"></i> Co-author Confirmation |
           <span class="date">{{model.created_at}}</span>
@@ -33,19 +32,17 @@
           <li class="authorship-criteria-item">Agreement to be accountable for all aspects of the work in ensuring that questions related to the accuracy or integrity of any part of the work are appropriately investigated and resolved.</li>
         </ol>
 
-        <form url='' method='PUT'>
-          <input type='submit' class='button-primary button--green' value='Confirm Authorship' />
-        </form>
+        <button class="button-primary button--green" {{action 'save'}}>Confirm Authorship</button>
         <p class="refute-authorship">To refute authorship, please reply to the email you recieved.</p>
       </div>
+    {{/if}}
 
-    {{else}}
-      
+    {{#if model.isConfirmed}}
       <div class='message thank-you'>
         <h1>Thank You!</h1>
       </div>
-
     {{/if}}
+
   </div>
 </div>
 

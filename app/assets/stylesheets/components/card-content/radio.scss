@@ -29,6 +29,11 @@
   }
 }
 
-div.card-form-text-error p {
-  margin: 0px;
+.card-form-text-error {
+  p {
+    margin: 0px;
+  }
+  .error-message {
+    margin-left:  0px;
+  }
 }

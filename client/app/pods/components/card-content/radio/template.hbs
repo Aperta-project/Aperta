@@ -3,7 +3,9 @@
     {{{content.text}}}
   </div>
 {{/if}}
-{{card-content/validation-errors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
+<div class="card-form-text-error">
+  {{card-content/validation-errors hideErrors=answer.hideErrors errors=answer.readyIssuesArray}}
+</div>
 {{#if isText}}
   {{#each content.possibleValues as |opt index|}}
     <div class="card-radio">

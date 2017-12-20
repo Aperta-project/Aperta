@@ -894,17 +894,28 @@ describe Paper do
     describe '#minor_check!' do
       subject { paper.minor_check! }
 
-      it_behaves_like "transitions save state_updated_at",
-        minor_check: proc { subject }
-      it_behaves_like 'state transitioning'
+      context 'with paper in state submitted' do
+        it_behaves_like "transitions save state_updated_at", minor_check: proc { subject }
+        it_behaves_like 'state transitioning'
 
-      let(:paper) do
-        FactoryGirl.create(:paper, :submitted, journal: journal)
+        let(:paper) { FactoryGirl.create(:paper, :submitted, journal: journal) }
+
+        it "marks the paper editable" do
+          subject
+          expect(paper).to be_editable
+        end
       end
 
-      it "marks the paper editable" do
-        subject
-        expect(paper).to be_editable
+      context 'with paper in state initially submitted' do
+        it_behaves_like "transitions save state_updated_at", minor_check: proc { subject }
+        it_behaves_like 'state transitioning'
+
+        let(:paper) { FactoryGirl.create(:paper, :initially_submitted, journal: journal) }
+
+        it "marks the paper editable" do
+          subject
+          expect(paper).to be_editable
+        end
       end
     end
 

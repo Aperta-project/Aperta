@@ -7,7 +7,6 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
   let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions, :with_default_mmt, pdf_allowed: true }
   let!(:non_pdf_journal) { FactoryGirl.create :journal, :with_roles_and_permissions, :with_default_mmt, pdf_allowed: false }
   let!(:papers) { [] }
-
   let(:dashboard) { DashboardPage.new }
 
   scenario 'failure' do
@@ -56,6 +55,7 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
   end
 
   scenario 'MMTs not pre-print eligible do not show preprint offer overlay' do
+    FeatureFlag.create!(name: 'PREPRINT', active: true)
     journal.manuscript_manager_templates.each { |mmt| mmt.update(is_preprint_eligible: false) }
     with_aws_cassette('manuscript-new') do
       login_as(user, scope: :user)
@@ -77,6 +77,7 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
   end
 
   scenario 'MMTs that are preprint-eligible show preprint offer overlay' do
+    FeatureFlag.create!(name: 'PREPRINT', active: true)
     journal.manuscript_manager_templates.each { |mmt| mmt.update(is_preprint_eligible: true) }
     c = FactoryGirl.create :card, journal: journal
     FactoryGirl.create :card_version,

@@ -5,7 +5,7 @@ class InvitationScenario < TemplateContext
   subcontext :inviter,    type: :user
   subcontext :invitee,    type: :user
 
-  def reviewer_name
+  def invitee_name_or_email
     @object.invitee.try(:full_name) || @object.email
   end
 end

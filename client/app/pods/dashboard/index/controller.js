@@ -3,7 +3,7 @@ import pluralizeString from 'tahi/lib/pluralize-string';
 
 export default Ember.Controller.extend({
   restless: Ember.inject.service('restless'),
-
+  featureFlag: Ember.inject.service(),
   papers: [],
   unreadComments: [],
   invitationsInvited: Ember.computed.alias('currentUser.invitationsInvited'),
@@ -148,7 +148,9 @@ export default Ember.Controller.extend({
         isUploading: false
       });
 
-      if (template.is_preprint_eligible && template.task_names.includes('Preprint Posting')) {
+      const preprintFeatureFlagEnabled = this.get('featureFlag').value('PREPRINT');
+
+      if (template.is_preprint_eligible && template.task_names.includes('Preprint Posting') && preprintFeatureFlagEnabled) {
         this.set('showPreprintOverlay', true);
       } else {
         this.transitionToRoute('paper.index', manuscript, {

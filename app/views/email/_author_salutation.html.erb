@@ -2,6 +2,6 @@
   <% if author.try(:last_name) %>
    Dr <%= author.last_name %>,
   <% else %>
-   <%= author.name %>,
+   <%= author.full_name.strip %>,
   <% end %>
 </p>

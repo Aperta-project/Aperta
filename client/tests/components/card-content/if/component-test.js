@@ -12,6 +12,7 @@ moduleForComponent(
     integration: true,
     beforeEach: function() {
       manualSetup(this.container);
+      this.set('repetition', null);
     }
   }
 );
@@ -22,6 +23,7 @@ let ifTemplate = hbs`
   scenario=scenario
   owner=owner
   preview=false
+  repetition=repetition
   content=content}}`;
 
 let parent = Ember.Object.extend({
@@ -83,8 +85,9 @@ test(`if/then (only 1 child) chooses 'then' content or nothing based on the cond
 
 let cardContentTemplate = hbs`
 {{card-content content=content
-               scenario=scenario 
+               scenario=scenario
                preview=preview
+               repetition=repetition
                owner=owner}}`;
 
 test(`can reference a scenario from a parent view instead of having it passed in directly`, function(assert) {
@@ -146,6 +149,7 @@ test(
       scenario=scenario
       preview=false
       disabled=disabled
+      repetition=repetition
       content=content}}`;
 
     let owner = FactoryGuy.make('custom-card-task');

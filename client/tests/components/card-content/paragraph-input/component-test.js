@@ -10,6 +10,8 @@ moduleForComponent(
     integration: true,
     beforeEach() {
       registerCustomAssertions();
+      this.set('answer', Ember.Object.create());
+      this.set('content', Ember.Object.create());
     }
   }
 );
@@ -20,16 +22,19 @@ content=content
 disabled=disabled
 workingValue=workingValue
 }}`;
+
 test(`it disables the by marking it read-only if disabled=true`, function(assert) {
   this.set('disabled', true);
   this.render(template);
   assert.elementFound('.read-only');
 });
+
 test(`it displays the value from answer.value`, function(assert) {
-  this.set('answer', {value: 'Bar'});
+  this.set('answer', Ember.Object.create({value: 'Bar'}));
   this.render(template);
   assert.equal(this.$('.ember-text-area').val(), 'Bar', 'Text is present in textarea');
 });
+
 test('it displays error messages if present', function(assert){
   let errorsArr = ['Oh Noes', 'You fool!'];
   this.set('answer', Ember.Object.create({readyIssuesArray: errorsArr, shouldShowErrors: true}));

@@ -12,6 +12,9 @@ moduleForComponent(
     integration: true,
     beforeEach: function() {
       manualSetup(this.container);
+      this.set('owner', Ember.Object.create());
+      this.set('repetition', null);
+      this.set('preview', false);
     }
   }
 );
@@ -19,9 +22,11 @@ moduleForComponent(
 let template = hbs`
 {{card-content/display-with-value
   class="display-test"
-  owner="this can be anything"
+  owner=owner
   disabled=disabled
   tagName="div"
+  repetition=repetition
+  preview=preview
   content=content}}`;
 
 let fakeTextContent = Ember.Object.extend({
@@ -191,6 +196,8 @@ test(
       class="removing-answers-test"
       owner=owner
       disabled=disabled
+      repetition=repetition
+      preview=preview
       tagName="div"
       content=content}}`;
 

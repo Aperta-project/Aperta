@@ -11,6 +11,7 @@ moduleForComponent(
     beforeEach() {
       registerCustomAssertions();
       this.set('actionStub', function() {});
+      this.set('answer', Ember.Object.create());
     }
   }
 );

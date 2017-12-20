@@ -1,5 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import Ember from 'ember';
 
 moduleForComponent(
   'card-content/radio',
@@ -8,26 +9,29 @@ moduleForComponent(
     integration: true,
     beforeEach() {
       this.set('actionStub', function() {});
-      this.defaultContent = {
+      this.set('answer', Ember.Object.create({hideErrors: true}));
+      this.set('owner', Ember.Object.create());
+      this.set('repetition', null);
+      this.defaultContent = Ember.Object.create({
         text: `<b class='foo'>Foo</b>`,
         valueType: 'text',
         possibleValues: [{ label: 'Choice 1', value: 1 }, { label: '<b>Choice</b> 2', value: 2}]
-      };
+      });
 
-      this.radioBooleanContent = {
+      this.radioBooleanContent = Ember.Object.create({
         text: `<b class='bar'>Bar</b>`,
         valueType: 'boolean'
-      };
+      });
 
-      this.radioWithoutText = {
+      this.radioWithoutText = Ember.Object.create({
         valueType: 'boolean'
-      };
+      });
 
-      this.radioBooleanLabeledContent = {
+      this.radioBooleanLabeledContent = Ember.Object.create({
         text: `<b class='foo'>Foo</b>`,
         valueType: 'text',
         possibleValues: [{ label: 'Why Yes', value: 'true' }, { label: 'Oh No', value: 'false'}]
-      };
+      });
 
       this.radioBooleanLabeledRequiredFieldContent = {
         text: `<b class='foo'>Foo</b>`,
@@ -42,8 +46,10 @@ moduleForComponent(
 let template = hbs`
 {{card-content/radio
   answer=answer
+  owner=owner
   content=content
   disabled=disabled
+  repetition=repetition
   valueChanged=(action actionStub)}}`;
 
 test(`it renders a radio button for each of the possibleValues, allowing html`, function(assert) {
@@ -63,21 +69,21 @@ test(`it disables the inputs if disabled=true`, function(assert) {
 });
 
 test(`it checks the button corresponding to the answer's value`, function(assert) {
-  this.set('answer', { value: 2});
+  this.set('answer', Ember.Object.create({ value: 2 }));
   this.set('content', this.defaultContent);
   this.render(template);
   assert.equal(this.$('input:checked').val(), 2);
 });
 
 test(`it checks the button corresponding to the answer's value with different datatypes`, function(assert) {
-  this.set('answer', { value: '2'});
+  this.set('answer', Ember.Object.create({ value: 2}));
   this.set('content', this.defaultContent);
   this.render(template);
   assert.equal(this.$('input:checked').val(), 2);
 });
 
 test(`no buttons are checked if the answer's value is blank/null`, function(assert) {
-  this.set('answer', { value: null});
+  this.set('answer', Ember.Object.create());
   this.set('content', this.defaultContent);
   this.render(template);
   assert.equal(this.$('input:checked').length, 0);
@@ -85,7 +91,7 @@ test(`no buttons are checked if the answer's value is blank/null`, function(asse
 
 test(`it sends 'valueChanged' on change`, function(assert) {
   assert.expect(1);
-  this.set('answer', { value: null});
+  this.set('answer', Ember.Object.create({ value: null}));
   this.set('content', this.defaultContent);
   this.set('actionStub', function(newVal) {
     assert.equal(newVal, 2, 'it calls the action with the new value');

@@ -1,5 +1,6 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  token: DS.attr('string')
+  token: DS.attr('string'),
+  paper: DS.belongsTo('paper')
 });

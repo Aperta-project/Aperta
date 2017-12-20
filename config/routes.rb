@@ -273,6 +273,8 @@ Tahi::Application.routes.draw do
     delete 'tasks/:id/delete_sourcefile', to: 'tahi_standard_tasks/upload_manuscript#destroy_sourcefile', as: :destroy_sourcefile
 
     resources :scheduled_events, only: [:update]
+
+    resources :token_coauthors, only: [:index, :update]
   end
 
   get '/invitations/:token/accept',

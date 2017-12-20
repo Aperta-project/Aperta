@@ -213,8 +213,9 @@ export default DS.Model.extend({
 
   isUnsubmitted: computed.equal('publishingState', 'unsubmitted'),
   isSubmitted: computed.equal('publishingState', 'submitted'),
-  invitedForFullSubmission: computed.equal('publishingState', 'invited_for_full_submission'),
   isInitiallySubmitted: computed.equal('publishingState', 'initially_submitted'),
+  isAnySubmitted: computed.or('isSubmitted', 'isInitiallySubmitted'),
+  invitedForFullSubmission: computed.equal('publishingState', 'invited_for_full_submission'),
   isInRevision: computed.equal('publishingState', 'in_revision'),
   isWithdrawn: computed.equal('publishingState', 'withdrawn'),
 

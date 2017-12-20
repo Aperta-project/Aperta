@@ -264,6 +264,7 @@ class AuthorsCard(BaseCard):
     author_items = self._gets(self._author_items)
     coauthor_item = author_items[1]
     coauthor_item.click()
+    self._wait_for_element(self._get(self._add_author_add_btn))
 
     # Before updating, the "No Response" radio button will be selected, with its
     # corresponding message:

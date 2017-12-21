@@ -2,7 +2,7 @@ import {
   moduleForComponent,
   test
 } from 'ember-qunit';
-
+import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('util/async-content', 'Integration | Component | async content', {
@@ -22,7 +22,7 @@ moduleForComponent('util/async-content', 'Integration | Component | async conten
 test('yields the task\'s last completed value', function(assert) {
   assert.expect(1);
 
-  this.set( 'task', {perform: () => {}, lastSuccessful: {value: 'done'}});
+  this.set( 'task', Ember.Object.create({perform: () => {}, lastSuccessful: {value: 'done'}}));
 
   this.render(this.template);
 
@@ -35,7 +35,7 @@ test('yields the task\'s last completed value', function(assert) {
 test('renders the else state if the task is not completed with a value', function(assert) {
   assert.expect(1);
 
-  this.set( 'task', {perform: () => {} });
+  this.set( 'task', Ember.Object.create({perform: () => {} }));
 
   this.render(this.template);
 

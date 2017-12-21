@@ -8,7 +8,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   propTypes: {
     phase: PropTypes.EmberObject,
     journalTaskTypes: PropTypes.oneOfType([PropTypes.array, PropTypes.EmberObject]), // Could also be a DS.ManyArray or DS.PromiseManyArray object
-    cards: PropTypes.EmberObject,
+    cards: PropTypes.oneOfType([PropTypes.array, PropTypes.EmberObject]),
     onSave: PropTypes.func,
     isLoading: PropTypes.bool,
     close: PropTypes.func

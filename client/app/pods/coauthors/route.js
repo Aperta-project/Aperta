@@ -6,7 +6,7 @@ export default Ember.Route.extend({
   },
 
   model(params) {
-    return this.store.queryRecord('token-coauthor', {token: params.token});
+    return this.store.findRecord('token-coauthor', params.token);
   },
 
   setupController(controller, model) {

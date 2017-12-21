@@ -1,5 +1,5 @@
 class TokenCoauthorSerializer < ActiveModel::Serializer
-  attributes :id, :token, :created_at, :confirmation_state, :paper_title, :coauthors, :journal_logo_url
+  attributes :id, :created_at, :confirmation_state, :paper_title, :coauthors, :journal_logo_url
 
   def id
     object.token

@@ -4,7 +4,7 @@ class TokenCoauthorsController < ApplicationController
   before_action :verify_coauthor_enabled
   respond_to :json
 
-  def index
+  def show
     render json: @token_coauthor, serializer: TokenCoauthorSerializer
   end
 
@@ -27,7 +27,7 @@ class TokenCoauthorsController < ApplicationController
   end
 
   def find_author_by_token
-    token = params[:token] || params[:id]
+    token = params[:id]
     @token_coauthor = GroupAuthor.find_by(token: token) || Author.find_by(token: token)
   end
 end

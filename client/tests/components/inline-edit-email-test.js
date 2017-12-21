@@ -50,10 +50,11 @@ test('can send email after selecting participants', function(assert){
   this.fake.allowPermission('add_email_participants', this.task);
 
   let sendEmail = function() { assert.ok(true); };
-  let fakeUser = { id: 1,
-                   full_name: 'Test User',
-                   avatar_url: 'http://example.com/pic.jpg',
-                   email: 'test.user@example.com'};
+  let fakeUser = Ember.Object.create({
+    id: 1,
+    full_name: 'Test User',
+    avatar_url: 'http://example.com/pic.jpg',
+    email: 'test.user@example.com'});
 
   this.set('canEdit', true);
   this.set('canManage', false);
@@ -87,16 +88,16 @@ test('can remove participants from email', function(assert){
   this.fake.allowPermission('add_email_participants', this.task);
 
   let fakeUsers = [
-    {
+    Ember.Object.create({
       id: 1,
       fullName: 'Test User',
       email: 'test.user@example.com'
-    },
-    {
+    }),
+    Ember.Object.create({
       id: 2,
       fullName: 'Test User2',
       email: 'test.user2@example.com'
-    }
+    })
   ];
 
   this.set('canEdit', true);

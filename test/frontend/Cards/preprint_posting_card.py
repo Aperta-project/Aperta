@@ -24,14 +24,14 @@ class PrePrintPostCard(BaseCard):
         super(PrePrintPostCard, self).__init__(driver)
 
         # Locators - Instance members
-        self._benefit_text = (By.CSS_SELECTOR, 'div[id^="ember"] ol')
+        self._benefit_text = (By.CSS_SELECTOR, 'div > p')
 
-        self._yes_radio_button = (By.XPATH, "//input[@class='ember-view'][@value='1']")
-        self._no_radio_button = (By.XPATH, "//input[@class='ember-view'][@value='2']")
+        self._yes_radio_button = (By.XPATH, "//input[@class='ember-view'][@value='true']")
+        self._no_radio_button = (By.XPATH, "//input[@class='ember-view'][@value='false']")
         self._card_opt_in_content_label = (By.CSS_SELECTOR, 'div>label:nth-child(1)')
         self._card_opt_out_content_label = (By.CSS_SELECTOR, 'div>label:nth-child(2)')
-        self._yes_disabled_radio_button = (By.XPATH, "//input[@class='ember-view'][@value='1'][@disabled='']")
-        self._no_disabled_radio_button = (By.XPATH, "//input[@class='ember-view'][@value='1'][@disabled='']")
+        self._yes_disabled_radio_button = (By.XPATH, "//input[@class='ember-view'][@value='true'][@disabled='']")
+        self._no_disabled_radio_button = (By.XPATH, "//input[@class='ember-view'][@value='false'][@disabled='']")
 
     def validate_styles(self):
         """

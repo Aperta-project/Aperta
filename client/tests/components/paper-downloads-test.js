@@ -19,7 +19,7 @@ moduleForComponent('paper-downloads', 'Integration | Component | Paper Downloads
         majorVersion: 1,
         minorVersion: 1,
         updatedAt: '2017-01-30T22:51:16.000Z',
-        fileType: 'docx',
+        fileType: 'docx'
       }]
     });
     this.set('docxPaper', docxPaper);
@@ -31,7 +31,7 @@ moduleForComponent('paper-downloads', 'Integration | Component | Paper Downloads
         majorVersion: 1,
         minorVersion: 1,
         updatedAt: '2017-01-30T22:51:16.000Z',
-        fileType: 'pdf',
+        fileType: 'pdf'
       }]
     });
     this.set('pdfPaper', pdfPaper);
@@ -48,34 +48,32 @@ moduleForComponent('paper-downloads', 'Integration | Component | Paper Downloads
       }]
     });
     this.set('pdfAndSourcePaper', pdfAndSourcePaper);
+    this.set('toggle', function(){});
   }
 });
+
+let template = hbs`
+    {{paper-downloads paper=docxPaper toggle=toggle}}`;
+
 
 test('it renders', function(assert) {
   assert.expect(1);
 
-  this.render(hbs`
-    {{paper-downloads paper=docxPaper}}
-  `);
+  this.render(template);
 
   assert.equal(this.$('.paper-downloads').length, 1);
 });
 
 
 test('docx versions display download links', function(assert) {
-  this.render(hbs`
-    {{paper-downloads paper=docxPaper}}
-  `);
+  this.render(template);
 
   assert.equal(this.$('.download-docx').length, 1);
   assert.equal(this.$('.download-pdf').length, 1);
 });
 
 test('it displays version number and date completed', function(assert) {
-  this.render(hbs`
-    {{paper-downloads paper=docxPaper}}
-  `);
+  this.render(template);
 
   assert.ok(this.$('td.paper-downloads-version').text(), 'v1.1 - Jan 30, 2017');
 });
-

@@ -4,13 +4,17 @@ import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('paper-preview-error-message', 'Integration | Component | paper-preview-error-message', {
   integration: true,
+  beforeEach() {
+    this.set('toggle', function(){});
+    this.set('feedback', function(){});
+  }
 });
 
-let template = hbs`{{paper-preview-error-message paper=paper}}`;
+let template = hbs`{{paper-preview-error-message paper=paper toggle=toggle feedback=feedback}}`;
 
 test('paper is submitted without errors but cannot be rendered', function(assert) {
   this.set('paper', {
-    'isSubmitted': true,
+    'isSubmitted': true
   });
   this.render(template);
   assert.textPresent('p', `This may be due to images, audio, video, or other

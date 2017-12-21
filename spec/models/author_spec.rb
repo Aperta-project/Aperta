@@ -74,6 +74,18 @@ describe Author do
         expect(author.valid?).to be(true)
       end
     end
+
+    describe 'stripping whitespace' do
+      it 'strips whitespace from first_name, last_name, middle_initial, and email before validation' do
+        author = FactoryGirl.build(:author, email: '    author@example.com   ', first_name: '   author', last_name: ' name ', middle_initial: '  A  ')
+
+        expect(author).to be_valid
+        expect(author.email).to eq('author@example.com')
+        expect(author.first_name).to eq('author')
+        expect(author.last_name).to eq('name')
+        expect(author.middle_initial).to eq('A')
+      end
+    end
   end
 
   describe "#update_coauthor_state" do

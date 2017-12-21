@@ -52,6 +52,22 @@ class Author < ActiveRecord::Base
 
   before_create :set_default_co_author_state
 
+  before_validation :strip_whitespace
+
+  STRIPPED_ATTRS = [
+    :first_name,
+    :last_name,
+    :middle_initial,
+    :email
+  ].freeze
+
+  def strip_whitespace
+    STRIPPED_ATTRS.each do |to_strip|
+      old_value = self[to_strip]
+      self[to_strip] = old_value.strip if old_value.present?
+    end
+  end
+
   def full_name
     "#{first_name} #{last_name}"
   end

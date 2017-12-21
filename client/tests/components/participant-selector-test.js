@@ -239,18 +239,25 @@ test('remove link is not rendered if there are not currentParticipants but canRe
 });
 
 
-moduleFor('component:participant-selector', 'Unit | Component | participant selector', {integration: true});
+moduleFor('component:participant-selector', 'Unit | Component | participant selector', {
+  integration: true,
+  beforeEach() {
+    this.subject({
+      currentParticipants: [],
+      onRemove: function() {},
+      onSelect: function() {},
+      searchStarted: function() {},
+      searchFinished: function() {}
+    });
+  }
+});
 
 test('participantUrl defaults to the filtered users endpoint for the given paperId', function(assert) {
-  assert.equal(
-    this.subject({paperId: 10}).get('participantUrl'),
-    '/api/filtered_users/users/10'
-  );
+  this.subject().paperId = 10;
+  assert.equal(this.subject().get('participantUrl'), '/api/filtered_users/users/10');
 });
 
 test('participantUrl can be overwritten by passing in url', function(assert) {
-  assert.equal(
-    this.subject({url: 'foo'}).get('participantUrl'),
-    'foo'
-  );
+  this.subject().url = 'foo';
+  assert.equal(this.subject().get('participantUrl'), 'foo');
 });

@@ -1,12 +1,11 @@
 import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
 
-let healthCheckStub, pusherStub, pusherFailureMessagesStub, flashStub;
+let pusherStub, pusherFailureMessagesStub, flashStub;
 
 moduleFor('controller:application', 'Unit | Controller | application', {
   integration: true,
   beforeEach: function() {
-    healthCheckStub = { start: ()=>{} };
     pusherStub = Ember.Object.create({pusher: { connection: { state: 'connecting' } }});
     pusherFailureMessagesStub = { failed: 'f', unavailable: 'u', connecting: 'c', disconnected: 'd' };
     flashStub = Ember.Object.create({
@@ -41,7 +40,6 @@ test('Slanger notifications - happy path', function(assert) {
     controller = this.subject({
       pusher: pusherStub,
       flash: flashStub,
-      healthCheck: healthCheckStub,
       pusherFailureMessages: pusherFailureMessagesStub
     });
 
@@ -66,7 +64,6 @@ test('Slanger notifications - failed to connect', function(assert) {
     controller = this.subject({
       pusher: pusherStub,
       flash: flashStub,
-      healthCheck: healthCheckStub,
       pusherFailureMessages: pusherFailureMessagesStub
     });
 
@@ -98,7 +95,6 @@ test('Slanger notifications - spotty but ultimately able to connect', function(a
     controller = this.subject({
       pusher: pusherStub,
       flash: flashStub,
-      healthCheck: healthCheckStub,
       pusherFailureMessages: pusherFailureMessagesStub
     });
 
@@ -165,7 +161,6 @@ test('Slanger notifications - browser doesnt support web sockets', function(asse
     controller = this.subject({
       pusher: pusherStub,
       flash: flashStub,
-      healthCheck: healthCheckStub,
       pusherFailureMessages: pusherFailureMessagesStub
     });
 
@@ -192,7 +187,6 @@ test('Slanger notifications - intentional disconnect', function(assert) {
     controller = this.subject({
       pusher: pusherStub,
       flash: flashStub,
-      healthCheck: healthCheckStub,
       pusherFailureMessages: pusherFailureMessagesStub
     });
 

@@ -9,8 +9,5 @@ export default DS.Model.extend({
   paper_title: DS.attr('string'),
   journal_logo_url: DS.attr('string'),
   isConfirmable: Ember.computed.equal('confirmationState', 'unconfirmed'),
-  isConfirmed: Ember.computed.equal('confirmationState', 'confirmed'),
-  date_created: Ember.computed('created_at', function() {
-    return moment(this.get('created_at')).format('ll');
-  })
+  isConfirmed: Ember.computed.equal('confirmationState', 'confirmed')
 });

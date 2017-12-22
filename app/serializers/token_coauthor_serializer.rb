@@ -11,7 +11,7 @@ class TokenCoauthorSerializer < ActiveModel::Serializer
 
   def coauthors
     object.paper.all_authors.map do |author|
-      { fullName: author.full_name, affiliation: author.affiliation }
+      { fullName: author.full_name, affiliation: author.try(:affiliation) }
     end
   end
 

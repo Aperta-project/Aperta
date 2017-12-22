@@ -29,5 +29,8 @@ class TokenCoauthorsController < ApplicationController
   def find_author_by_token
     token = params[:id]
     @token_coauthor = GroupAuthor.find_by(token: token) || Author.find_by(token: token)
+    return if @token_coauthor
+
+    render json: {}, status: 404
   end
 end

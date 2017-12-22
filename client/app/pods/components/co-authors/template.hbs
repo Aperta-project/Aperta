@@ -3,21 +3,21 @@
 </div>
 <div class="confirmation-container">
   <div class='logo'>
-    <img class='plos auth-logo' src="{{author.journal_logo_url}}" />
+    <img class='plos auth-logo' src="{{author.journalLogoUrl}}" />
   </div>
 
   {{#if author.isConfirmable}}
     <div class="pending-confirmation">
       <h2 class='confirmation-metadata'><i class="fa fa-envelope email-icon"></i> Co-author Confirmation |
-        <span class="date">{{date_created}}</span>
+        <span class="date">{{dateCreated}}</span>
       </h2>
-      <h3 class="dashboard-paper-title">{{{author.paper_title}}}</h3>
+      <h3 class="dashboard-paper-title">{{{author.paperTitle}}}</h3>
 
       <h4>The full authorship list, as submitted is:</h4>
       <ol id="author-list">
         {{#each author.coauthors as |coauthor|}}
           <li class="author-list-item">
-            {{coauthor.full_name}}{{#if coauthor.affiliation}}: {{coauthor.affiliation}}{{/if}}
+            {{coauthor.fullName}}{{#if coauthor.affiliation}}: {{coauthor.affiliation}}{{/if}}
           </li>
         {{/each}}
       </ol>

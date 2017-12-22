@@ -28,7 +28,7 @@
 </p>
 
 <%= render partial: 'email/button', locals: {
-  href: show_token_co_author_url(@coauthor.token),
+  href: client_coauthor_url(token: @coauthor.token),
   text: 'Confirm Authorship'
 } %>
 

@@ -1,7 +1,6 @@
 require "rails_helper"
 
 describe ClientRouteHelper do
-
   let(:paper) { double('paper', to_param: 1) }
   let(:task) { double('task', to_param: 1) }
 
@@ -46,6 +45,14 @@ describe ClientRouteHelper do
     it "generates the url to a correspondence" do
       url = client_show_correspondence_url(correspondence)
       expect(url).to include "/#{correspondence.paper.short_doi}/correspondence/viewcorrespondence/#{correspondence.id}"
+    end
+  end
+
+  describe '#client_coauthor_url' do
+    let(:coauthor) { double(token: 'foo') }
+    it 'generates the url to a coauthor confirmation page' do
+      url = client_coauthor_url(token: coauthor.token)
+      expect(url).to eq("http://test.host/coauthors/#{coauthor.token}")
     end
   end
 end

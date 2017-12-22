@@ -1,8 +1,0 @@
-<ol id="author-list">
-<% authors.each do |single_author| %>
-  <li class="author-list-item">
-      <%= single_author.full_name %>
-      <% if single_author.try(:affiliation).present? %>: <%= single_author.affiliation %><% end %>
-  </li>
-<% end %>
-</ol>

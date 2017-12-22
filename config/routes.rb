@@ -1,7 +1,5 @@
 require 'sidekiq/web'
 require 'sidekiq-scheduler/web'
-
-# rubocop:disable Metrics/LineLength
 Tahi::Application.routes.draw do
   # Test specific
   #
@@ -280,14 +278,6 @@ Tahi::Application.routes.draw do
   get '/invitations/:token/accept',
     to: 'token_invitations#accept',
     as: 'invitation_accept'
-
-  get '/co_authors_token/:token',
-    to: 'token_co_authors#show',
-    as: 'show_token_co_author'
-
-  put '/co_authors_token/:token/confirm',
-    to: 'token_co_authors#confirm',
-    as: 'confirm_token_co_author'
 
   # Legacy resource_proxy routes
   # We need to maintain this route as existing resources have been linked with

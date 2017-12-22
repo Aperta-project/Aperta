@@ -33,12 +33,12 @@ moduleForComponent(
         possibleValues: [{ label: 'Why Yes', value: 'true' }, { label: 'Oh No', value: 'false'}]
       });
 
-      this.radioBooleanLabeledRequiredFieldContent = {
+      this.radioBooleanLabeledRequiredFieldContent = Ember.Object.create({
         text: `<b class='foo'>Foo</b>`,
         valueType: 'text',
         requiredField: 'true',
         possibleValues: [{ label: 'Why Yes', value: 'true' }, { label: 'Oh No', value: 'false'}]
-      };
+      });
     }
   }
 );
@@ -127,7 +127,7 @@ test(`it renders the supplied true and false labels when value type is boolean`,
 });
 
 test(`it displays an error message when a field is marked required and not answered`, function(assert) {
-  this.set('answer', { ready: false, readyIssuesArray: ['This field is required.'], hideErrors: false});
+  this.set('answer', Ember.Object.create({ ready: false, readyIssuesArray: ['This field is required.'], hideErrors: false}));
   this.set('content', this.radioBooleanLabeledRequiredFieldContent);
   this.render(template);
   let errors = this.$('.error-message');
@@ -135,7 +135,7 @@ test(`it displays an error message when a field is marked required and not answe
 });
 
 test(`it does not display an error message when a field is marked required and hide errors is true`, function(assert) {
-  this.set('answer', { ready: false, readyIssuesArray: ['This field is required.'], hideErrors: true});
+  this.set('answer', Ember.Object.create({ ready: false, readyIssuesArray: ['This field is required.'], hideErrors: true}));
   this.set('content', this.radioBooleanLabeledRequiredFieldContent);
   this.render(template);
   let errors = this.$('.error-message');

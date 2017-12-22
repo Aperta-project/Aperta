@@ -33,10 +33,7 @@ export default Component.extend({
     'Figure'
   ],
 
-  hasSIErrors: computed('taskErrors.supportingInformationFiles', function( ){
-    return !!this.get('taskErrors.supportingInformationFiles');
-  }),
-
+  hasSIErrors: computed.notEmpty('taskErrors.supportingInformationFiles'),
   hasSaveErrors: computed.or('hasSIErrors', 'model.validationErrors.save'),
 
   uiStateClass: computed('uiState', function() {

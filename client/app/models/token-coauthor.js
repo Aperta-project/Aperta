@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import DS from 'ember-data';
+import moment from 'moment';
 
 export default DS.Model.extend({
   created_at: DS.attr('date'),
@@ -8,5 +9,8 @@ export default DS.Model.extend({
   paper_title: DS.attr('string'),
   journal_logo_url: DS.attr('string'),
   isConfirmable: Ember.computed.equal('confirmationState', 'unconfirmed'),
-  isConfirmed: Ember.computed.equal('confirmationState', 'confirmed')
+  isConfirmed: Ember.computed.equal('confirmationState', 'confirmed'),
+  date_created: Ember.computed('created_at', function() {
+    return moment(this.get('created_at')).format('ll');
+  })
 });

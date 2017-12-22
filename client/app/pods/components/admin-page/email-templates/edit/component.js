@@ -12,18 +12,7 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
   saved: true,
   subjectEmpty: false,
   bodyEmpty: false,
-  nameEmpty: Ember.computed.empty('template.name'),
   isEditingName: false,
-  subjectErrors: [],
-  bodyErrors: [],
-  ccErrors: [],
-  bccErrors: [],
-  nameError: '',
-  subjectErrorPresent: Ember.computed.notEmpty('subjectErrors'),
-  bodyErrorPresent: Ember.computed.notEmpty('bodyErrors'),
-  nameErrorPresent: Ember.computed.notEmpty('nameError'),
-  ccErrorPresent: Ember.computed.notEmpty('ccErrors'),
-  bccErrorPresent: Ember.computed.notEmpty('bccErrors'),
 
   actions: {
     editTitle() {
@@ -37,7 +26,7 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
 
     handleInputChange() {
       this.set('saved', false);
-      if(!this.get('nameEmpty')) {
+      if(!this.get('template.nameEmpty')) {
         this.set('message', '');
       } else {
         this.setProperties({
@@ -63,14 +52,17 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
       }
     },
 
-    save: function() {
+    parseErrors(error) {
+      this.get('template').parseErrors(error);
       this.setProperties({
-        subjectErrors: [],
-        bodyErrors: [],
-        ccErrors: [],
-        bccErrors: []
+        message: 'Please correct errors where indicated.',
+        messageType: 'danger'
       });
+    },
+
+    save: function() {
       let template = this.get('template');
+      template.clearErrors();
       if (template.get('subject') && template.get('body') && template.get('name')) {
         template.save()
           .then(() => {
@@ -80,33 +72,9 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
               message: 'Your changes have been saved.',
               messageType: 'success'
             });
-            template.reload();
           })
           .catch(error => {
-            const subjectErrors = error.errors.filter((e) => e.source.pointer.includes('subject'));
-            const bodyErrors = error.errors.filter((e) => e.source.pointer.includes('body'));
-            const nameError = error.errors.filter(e => e.source.pointer.includes('name'));
-            const ccErrors = error.errors.filter(e => e.source.pointer.endsWith('/cc'));
-            const bccErrors = error.errors.filter(e => e.source.pointer.endsWith('/bcc'));
-            if (subjectErrors.length) {
-              this.set('subjectErrors', subjectErrors.map(s => s.detail));
-            }
-            if (bodyErrors.length) {
-              this.set('bodyErrors', bodyErrors.map(b => b.detail));
-            }
-            if (nameError.length) {
-              this.set('nameError', nameError.map(n => n.detail));
-            }
-            if (ccErrors.length) {
-              this.set('ccErrors', ccErrors.map(err => err.detail));
-            }
-            if (bccErrors.length) {
-              this.set('bccErrors', bccErrors.map(err => err.detail));
-            }
-            this.setProperties({
-              message: 'Please correct errors where indicated.',
-              messageType: 'danger'
-            });
+            this.send('parseErrors', error);
           });
       } else {
         this.setProperties({

@@ -387,7 +387,7 @@ GEM
     hashie (3.4.2)
     health_check (2.6.0)
       rails (>= 4.0)
-    heroku-deflater (0.5.3)
+    heroku-deflater (0.6.3)
       rack (>= 1.4.5)
     hitimes (1.2.3)
     html_page (0.1.0)
@@ -546,8 +546,8 @@ GEM
     rails_12factor (0.0.3)
       rails_serve_static_assets
       rails_stdout_logging
-    rails_serve_static_assets (0.0.4)
-    rails_stdout_logging (0.0.3)
+    rails_serve_static_assets (0.0.5)
+    rails_stdout_logging (0.0.5)
     railties (4.2.10)
       actionpack (= 4.2.10)
       activesupport (= 4.2.10)
@@ -679,6 +679,7 @@ GEM
     sshkit (1.8.1)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
+    syslogger (1.6.5)
     test_after_commit (0.4.1)
       activerecord (>= 3.2)
     thin (1.6.3)
@@ -831,6 +832,7 @@ DEPENDENCIES
   sort_alphabetical
   spring
   spring-commands-rspec
+  syslogger
   tahi-assign_team!
   tahi_standard_tasks!
   test_after_commit
@@ -846,7 +848,7 @@ DEPENDENCIES
   yaml_db!
 
 RUBY VERSION
-   ruby 2.2.8p477
+   ruby 2.3.6p384
 
 BUNDLED WITH
    1.16.0

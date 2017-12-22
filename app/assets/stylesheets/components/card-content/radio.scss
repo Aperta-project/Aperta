@@ -19,12 +19,21 @@
 
 .card-radio {
   .card-form-element {
-   margin-bottom:0; 
+   margin-bottom:0;
   }
   .card-form-label {
     display:inline;
     font-size:14px;
     font-weight:normal;
     margin-left:5px;
+  }
+}
+
+.card-form-text-error {
+  p {
+    margin: 0px;
+  }
+  .error-message {
+    margin-left:  0px;
   }
 }

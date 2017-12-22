@@ -1,26 +1,3 @@
-.public-body {
-  height: 100%;
-  padding: 8px;
-  background-image: url(image-path('auth/bg-1.jpg'));
-  background-color: $aperta-grey-light;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-attachment :fixed;
-  .ccby::before {
-    content: "Image credit: Vadim Kurland on Flickr under a ";
-  }
-}
-
-.public-container {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 120px 0 20px 0;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-}
-
 .co-author-confirmaion {
   background: $aperta-grey-xlighter;
   width: 860px;

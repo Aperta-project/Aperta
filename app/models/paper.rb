@@ -187,6 +187,9 @@ class Paper < ActiveRecord::Base
       transitions from: :initially_submitted,
                   to: :invited_for_full_submission,
                   after: [:allow_edits!, :new_draft!]
+      before do
+        update(active: true)
+      end
     end
 
     event(:minor_check) do

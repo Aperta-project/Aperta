@@ -35,21 +35,22 @@ class TemplateContext < Liquid::Drop
   #             e.g. [:object, :paper] means the source object is at self.object.paper
   # is_array: if true then the method returns an array instead of a single context
   #
-  def self.subcontext(context_name, props = {})
-    MergeField.register_subcontext(self, context_name, props)
-    return if respond_to?(context_name)
+  def self.subcontext(subcontext_name, props = {})
+    MergeField.register_subcontext(self, subcontext_name, props)
+    return if respond_to?(subcontext_name)
 
-    default_source_chain = [:object, context_name]
-    source_chain = props[:source] ? Array(props[:source]) : default_source_chain
-    context_class = class_for(props[:type] || context_name)
+    subcontext_type, subcontext_source, is_array = props.values_at(:type, :source, :is_array)
+    subcontext_class = class_for(subcontext_type || subcontext_name)
+    subcontext_source ||= [:object, subcontext_name]
+    subcontext_source = Array(subcontext_source)
 
-    define_method context_name do
-      context_instance_eval(context_name, source_chain, context_class, props[:is_array])
+    define_method subcontext_name do
+      define_subcontext(subcontext_name, subcontext_class, subcontext_source, is_array)
     end
   end
 
-  def self.subcontexts(context_name, props = {})
-    subcontext(context_name, props.merge(is_array: true))
+  def self.subcontexts(subcontext_name, props = {})
+    subcontext(subcontext_name, props.merge(is_array: true))
   end
 
   def self.whitelist(*args)
@@ -85,17 +86,17 @@ class TemplateContext < Liquid::Drop
 
   attr_reader :object
 
-  def context_instance_eval(context_name, source_chain, context_class, is_array)
-    cache = instance_variable_get("@#{context_name}")
+  def define_subcontext(subcontext_name, subcontext_class, subcontext_source, is_array)
+    cache = instance_variable_get("@#{subcontext_name}")
     return cache if cache
 
-    source = source_chain.reduce(self) { |obj, meth| obj.send(meth) }
-    contextualized_source = if is_array
-                              source.map { |source_item| context_class.new(source_item) }
-                            else
-                              context_class.new(source)
-                            end
+    source = subcontext_source.reduce(self) { |obj, meth| obj.send(meth) }
+    wrappped_source = if is_array
+                        source.map { |source_item| subcontext_class.new(source_item) }
+                      else
+                        subcontext_class.new(source)
+                      end
 
-    instance_variable_set("@#{context_name}", contextualized_source)
+    instance_variable_set("@#{subcontext_name}", wrappped_source)
   end
 end

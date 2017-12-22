@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import DS from 'ember-data';
-import moment from 'moment';
 
 export default DS.Model.extend({
   created_at: DS.attr('date'),

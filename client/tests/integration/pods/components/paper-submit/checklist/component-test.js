@@ -5,7 +5,7 @@ import {
 
 import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
-import registerCustomAssertions from '../../helpers/custom-assertions';
+import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import { initialize as initTruthHelpers }  from 'tahi/initializers/truth-helpers';
 
 moduleForComponent(
@@ -45,4 +45,3 @@ test('it adds the bright class from completedStage', function(assert) {
   this.render(template);
   assert.elementsFound('.bright', 2)
 });
-

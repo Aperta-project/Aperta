@@ -7,7 +7,7 @@ import sinon from 'sinon';
 
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
-import customAssertions from '../helpers/custom-assertions';
+import customAssertions from 'tahi/tests/helpers/custom-assertions';
 
 moduleForComponent('feedback-form', 'Integration | Component | feedback form', {
   integration: true,

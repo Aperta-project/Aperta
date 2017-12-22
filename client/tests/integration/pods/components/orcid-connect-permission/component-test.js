@@ -1,9 +1,9 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
-import startApp from '../helpers/start-app';
+import startApp from 'tahi/tests/helpers/start-app';
 import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
-import setupMockServer from '../helpers/mock-server';
-import Factory from '../helpers/factory';
+import setupMockServer from 'tahi/tests/helpers/mock-server';
+import Factory from 'tahi/tests/helpers/factory';
 import { make } from 'ember-data-factory-guy';
 import * as TestHelper from 'ember-data-factory-guy';
 
@@ -50,5 +50,3 @@ test('user with permission sees remove button', function(assert) {
     assert.ok(find('.remove-orcid'));
   });
 });
-
-

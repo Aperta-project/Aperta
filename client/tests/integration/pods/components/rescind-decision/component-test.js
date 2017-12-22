@@ -5,10 +5,10 @@ import {
 import { manualSetup, make } from 'ember-data-factory-guy';
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
-import customAssertions from '../helpers/custom-assertions';
+import customAssertions from 'tahi/tests/helpers/custom-assertions';
 import { initialize as initTruthHelpers }  from 'tahi/initializers/truth-helpers';
 import sinon from 'sinon';
-import FakeCanService from '../helpers/fake-can-service';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 
 moduleForComponent(
   'rescind-decision',

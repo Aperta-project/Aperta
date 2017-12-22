@@ -4,7 +4,7 @@ import {
 } from 'ember-qunit';
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
-import customAssertions from '../helpers/custom-assertions';
+import customAssertions from 'tahi/tests/helpers/custom-assertions';
 
 moduleForComponent(
   'full-overlay-verification',

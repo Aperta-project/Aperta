@@ -5,7 +5,7 @@ import {
 import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup }  from 'ember-data-factory-guy';
 import hbs from 'htmlbars-inline-precompile';
-import customAssertions from '../helpers/custom-assertions';
+import customAssertions from 'tahi/tests/helpers/custom-assertions';
 
 moduleForComponent(
   'decision-bar',

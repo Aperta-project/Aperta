@@ -2,8 +2,8 @@ import { test, moduleForComponent } from 'ember-qunit';
 // import wait from 'ember-test-helpers/wait';
 import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
-import registerCustomAssertions from '../helpers/custom-assertions';
-import FakeCanService from '../helpers/fake-can-service';
+import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 import Ember from 'ember';
 
 moduleForComponent('inline-edit-email', 'Integration | Component | inline edit email', {

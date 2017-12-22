@@ -6,8 +6,8 @@ import {
 import Ember from 'ember';
 import { initialize as initTruthHelpers }  from 'tahi/initializers/truth-helpers';
 import hbs from 'htmlbars-inline-precompile';
-import FakeCanService from '../helpers/fake-can-service';
-import customAssertions from '../helpers/custom-assertions';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
+import customAssertions from 'tahi/tests/helpers/custom-assertions';
 
 moduleForComponent('paper-sidebar', 'Integration | Component | paper sidebar', {
   integration: true,

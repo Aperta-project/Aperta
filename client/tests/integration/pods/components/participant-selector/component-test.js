@@ -4,7 +4,7 @@ import {
   test
 } from 'ember-qunit';
 
-import customAssertions from '../helpers/custom-assertions';
+import customAssertions from 'tahi/tests/helpers/custom-assertions';
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 import wait from 'ember-test-helpers/wait';

@@ -1,7 +1,7 @@
 import { test, moduleForComponent } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
-import registerCustomAssertions from '../helpers/custom-assertions';
+import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import wait from 'ember-test-helpers/wait';
 import { createQuestion, createQuestionWithAnswer } from 'tahi/tests/factories/nested-question';
 import Ember from 'ember';

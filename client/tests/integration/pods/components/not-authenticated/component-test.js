@@ -5,21 +5,13 @@ moduleForComponent('not-authenticated', 'Integration | Component | not authentic
   integration: true
 });
 
-test('it renders', function(assert) {
+test('it expects minimalChrome in its container layout', function(assert) {
 
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
-
-  this.render(hbs`{{not-authenticated}}`);
-
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
   this.render(hbs`
     {{#not-authenticated}}
-      template block text
+      blah
     {{/not-authenticated}}
   `);
 
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.ok(this.$('div').hasClass('public-body'));
 });

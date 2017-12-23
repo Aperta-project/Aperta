@@ -1,25 +1,21 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('my-co-authors', 'Integration | Component | my co authors', {
+moduleForComponent('co-authors', 'Integration | Component | co authors', {
   integration: true
 });
 
-test('it renders', function(assert) {
+test('it renders the paper title when the author is confirmable', function(assert) {
+  this.set('model', {isConfirmable: true, paperTitle: 'Some title'});
+  this.render(hbs`{{co-authors author=model}}`);
+  
+  assert.textPresent(this.$('.co-author-confirmation'), 'Some title');
+});
 
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
-
-  this.render(hbs`{{my-co-authors}}`);
-
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#my-co-authors}}
-      template block text
-    {{/my-co-authors}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+test('it renders "Thank You" when the author is confirmed', function(assert) {
+  this.set('model', {isConfirmed: true, paperTitle: 'Some title'});
+  this.render(hbs`{{co-authors author=model}}`);
+  
+  assert.textPresent(this.$('.co-author-confirmation'), 'Thank You!');
+  assert.textNotPresent(this.$('.co-author-confirmation'), 'Some title');
 });

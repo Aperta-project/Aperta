@@ -88,7 +88,8 @@ export default Ember.Component.extend({
     changeDueDate(newDate) {
       var hours = this.get('dueDatetime.dueAt').getHours();
       newDate.setHours(hours);
-      this.get('report').save();
+      this.set('dueDatetime.dueAt', newDate);
+      this.get('dueDatetime').save();
     },
 
     editReport() {

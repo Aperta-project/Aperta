@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # Remember to also change circle.yml and .ruby-version when the
 # ruby version changes
-ruby '2.2.8'
+ruby '2.3.6'
 
 # Task Engines
 gem 'plos_billing', path: 'engines/plos_billing'
@@ -72,6 +72,7 @@ gem 'sidekiq-scheduler'
 gem 'sidekiq-unique-jobs'
 gem 'sinatra', require: nil
 gem 'sort_alphabetical'
+gem 'syslogger'
 gem 'timeliness'
 gem 'tiny_tds'
 gem 'twitter-text'
@@ -91,6 +92,9 @@ gem 'has_secure_token'
 group :staging, :production do
   # The dotenv binary is used to load our environment in staging & production
   gem 'dotenv', require: false
+end
+
+group :staging do
   gem 'heroku-deflater'
   gem 'rails_12factor'
 end

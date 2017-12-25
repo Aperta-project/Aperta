@@ -51,6 +51,11 @@ export default Ember.Component.extend({
     return (this.get('content.valueType') === 'text');
   }),
 
+  cardFormClass: Ember.computed('answer.hasErrors', function() {
+    let hasErrors = this.get('answer.hasErrors');
+    return hasErrors ? 'card-form-text-error' : 'card-form-text';
+  }),
+
   actions: {
     valueChanged(newVal) {
       let action = this.get('valueChanged');

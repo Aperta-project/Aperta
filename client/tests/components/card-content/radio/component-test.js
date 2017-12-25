@@ -28,6 +28,13 @@ moduleForComponent(
         valueType: 'text',
         possibleValues: [{ label: 'Why Yes', value: 'true' }, { label: 'Oh No', value: 'false'}]
       };
+
+      this.radioBooleanLabeledRequiredFieldContent = {
+        text: `<b class='foo'>Foo</b>`,
+        valueType: 'text',
+        requiredField: 'true',
+        possibleValues: [{ label: 'Why Yes', value: 'true' }, { label: 'Oh No', value: 'false'}]
+      };
     }
   }
 );
@@ -111,4 +118,20 @@ test(`it renders the supplied true and false labels when value type is boolean`,
   this.render(template);
   assert.textPresent('.card-form-label', 'Why Yes');
   assert.textPresent('.card-form-label', 'Oh No');
+});
+
+test(`it displays an error message when a field is marked required and not answered`, function(assert) {
+  this.set('answer', { ready: false, readyIssuesArray: ['This field is required.'], hideErrors: false});
+  this.set('content', this.radioBooleanLabeledRequiredFieldContent);
+  this.render(template);
+  let errors = this.$('.error-message');
+  assert.textPresent(errors[0], 'This field is required.');
+});
+
+test(`it does not display an error message when a field is marked required and hide errors is true`, function(assert) {
+  this.set('answer', { ready: false, readyIssuesArray: ['This field is required.'], hideErrors: true});
+  this.set('content', this.radioBooleanLabeledRequiredFieldContent);
+  this.render(template);
+  let errors = this.$('.error-message');
+  assert.textPresent(errors[0], '');
 });

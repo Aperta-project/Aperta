@@ -164,10 +164,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
         self._resize_handle_box = (By.CLASS_NAME, 'box-handle')
         self._resize_handle_box_lines = (By.CSS_SELECTOR, '.box-handle .vertical-line')
         self._resize_handle_box_tooltip = (By.CSS_SELECTOR, '.box-handle .tooltip')
-        # relative locators
-        self._rel_locator_to_check_if_task_completed = (By.CSS_SELECTOR, 'div div')
-        self._rel_locator_to_check_if_task_open = (By.XPATH, '../div')
-        self._parent_node = (By.XPATH, '..')
         # Review before Submission overlay
         self._review_overlay_submit_button = (By.ID, 'review-submission-submit-button')
         self._review_before_submission = None

@@ -14,7 +14,6 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.PostgreSQL import PgSQL
 from Base.Resources import users, editorial_users, super_admin_login, handling_editor_login, \
     cover_editor_login, sim_check_full_submission_mmt, sim_check_major_revision_mmt, \
     sim_check_minor_revision_mmt, sim_check_first_revision_mmt
@@ -23,7 +22,6 @@ from frontend.Cards.assign_team_card import AssignTeamCard
 from frontend.Cards.register_decision_card import RegisterDecisionCard
 from frontend.Cards.similarity_check_card import SimilarityCheckCard
 from .Pages.admin_workflows import AdminWorkflowsPage
-from frontend.Pages.card_settings import CardSettings
 from frontend.Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.Pages.workflow_page import WorkflowPage
 from .Pages.sim_check_settings import SimCheckSettings
@@ -61,7 +59,7 @@ class SimilarityCheckTest(CommonTest):
 
         card_settings.click_cancel()
 
-    def test_smoke_generate_manually_and_validate_access(self):
+    def rest_smoke_generate_manually_and_validate_access(self):
         """
         test_smoke_generate_manually_and_validate_access: two-in-one test
         Validates the similarity check card presence in a workflow view, generating report manually,
@@ -107,21 +105,25 @@ class SimilarityCheckTest(CommonTest):
         workflow_page = WorkflowPage(self.getDriver())
         workflow_page.page_ready()
 
+        workflow_page.click_card('similarity_check')
+        sim_check = SimilarityCheckCard(self.getDriver())
+        sim_check.card_ready()
+
         auto_setting_default = 'off'
         # get auto settings from db, it is expected to be off by default
-        auto_settings_db = workflow_page.get_sim_check_auto_settings(short_doi=short_doi,
-                                                                     from_admin_mmt=False)
+        auto_settings_db = sim_check.get_sim_check_auto_settings(short_doi=short_doi)
         assert auto_settings_db == 'off', 'Automation setting in db: \'{0}\' is not ' \
                                           'the expected: \'{1}\''.format(auto_settings_db,
                                                                          auto_setting_default)
 
-        workflow_page.click_card('similarity_check')
-        sim_check = SimilarityCheckCard(self.getDriver())
-        sim_check.card_ready()
         sim_check.validate_card_header(short_doi)
         sim_check.validate_styles_and_components(auto_setting_default)
 
-        task_url, start_time = sim_check.generate_manual_report()
+        task_url, start_time, pending_message, report_title = sim_check.generate_manual_report()
+        assert "Pending" in pending_message, '\'Pending\' is expected in the message: {0}'\
+            .format(pending_message)
+        assert 'Similarity Check Report' in report_title, '\'Similarity Check Report\' is ' \
+                                                          'expected in: '.format(report_title)
         sim_check.logout()
 
         # Similarity checks may take up to several minutes to complete,
@@ -148,7 +150,7 @@ class SimilarityCheckTest(CommonTest):
 
         sim_check = SimilarityCheckCard(self.getDriver())
         sim_check.card_ready()
-        seconds_to_wait = max(10,600-seconds_elapsed)
+        seconds_to_wait = max(10, 600 - seconds_elapsed)
         logging.info('Starting report validation with maximum time to wait in seconds: '
                      '{0}'.format(str(seconds_to_wait)))
         self.validate_report_history(sim_check, version='0.0')
@@ -165,13 +167,13 @@ class SimilarityCheckTest(CommonTest):
             assert 'Report not available:' in report_validation_result, report_validation_result
         else:
             # results assertion
-            assert paper_data['title']== report_data['title'], \
+            assert paper_data['title'] == report_data['title'], \
                 'The title {0} is expected.'.format(paper_data['title'])
             assert paper_data['value'] in report_data['value'], 'Score {0} is expected in {1}' \
                 .format(paper_data['value'], report_data['value'])
             assert paper_data['author'] in report_data['author'], \
-                'Paper author {0} is expected in {1}' \
-                    .format(paper_data['author'], report_data['author'])
+                'Paper author {0} is expected in {1}'.format(paper_data['author'],
+                                                             report_data['author'])
 
         sim_check.logout()
 
@@ -209,7 +211,7 @@ class SimilarityCheckTest(CommonTest):
 
         # log as author and create new submission using 'Similarity Check test' mmt
         creator_user = random.choice(users)
-        title='Similarity Check test with default settings - validate access'
+        title = 'Similarity Check test with default settings - validate access'
         short_doi, paper_url = self.create_new_submission(creator_user, title, '',
                                                           'Similarity Check test')
 
@@ -298,12 +300,13 @@ class SimilarityCheckTest(CommonTest):
 
         logging.info('Test Similarity Check with Automation ON:: generate report '
                      'manually and validate access')
-        auto_options = (('at_first_full_submission',sim_check_full_submission_mmt['name']),
-                        ('after_major_revise_decision',sim_check_major_revision_mmt['name']),
-                        ('after_minor_revise_decision',sim_check_minor_revision_mmt['name']),
-                        ('after_any_first_revise_decision',sim_check_first_revision_mmt['name']))
+        auto_options = (('at_first_full_submission', sim_check_full_submission_mmt['name']),
+                        ('after_major_revise_decision', sim_check_major_revision_mmt['name']),
+                        ('after_minor_revise_decision', sim_check_minor_revision_mmt['name']),
+                        ('after_any_first_revise_decision', sim_check_first_revision_mmt['name']))
 
-        auto_setting =  random.choice(auto_options)
+        auto_setting = random.choice(auto_options)
+        # TODO: delete after debugging:
         auto_option = auto_setting[0]
         mmt_name = auto_setting[1]
 
@@ -312,10 +315,10 @@ class SimilarityCheckTest(CommonTest):
 
         doc_to_use = 'frontend/assets/docs/' \
                      'Preclinical_Applications_of_3-Deoxy-3-18F_Fluorothymidine_in_' \
-                     'Oncology-A_Systematic_.docx' # error from ithenticate
+                     'Oncology-A_Systematic_.docx'  # error from ithenticate
         doc_to_use = 'frontend/assets/docs/Cytoplasmic_Viruses_Rage_Against_the_Cellular_' \
-                     'RNA_Decay_Machine.docx' # no error, index= 97
-        title = 'Similarity Check test with auto trigger: '+auto_option
+                     'RNA_Decay_Machine.docx'  # no error, index= 97
+        title = 'Similarity Check test with auto trigger: ' + auto_option
         short_doi, paper_url = self.create_new_submission(creator_user, title, doc_to_use, mmt_name)
 
         # log as editorial user
@@ -327,9 +330,9 @@ class SimilarityCheckTest(CommonTest):
         sim_check.card_ready()
         sim_check.validate_card_header(short_doi)
         if auto_option == 'at_first_full_submission':
-            sim_check.validate_styles_and_components(auto_option, triggered = True)
+            sim_check.validate_styles_and_components(auto_option, triggered=True)
             # check Report History
-            self.validate_report_history(sim_check, version ='0.0')
+            self.validate_report_history(sim_check, version='0.0')
 
             sim_check.click_close_button_bottom()
             time.sleep(3)
@@ -348,7 +351,7 @@ class SimilarityCheckTest(CommonTest):
             sim_check.validate_styles_and_components(auto_option, triggered=False,
                                                      auto_report_done=True)
             # check Report History
-            self.validate_report_history(sim_check, version ='0.0')
+            self.validate_report_history(sim_check, version='0.0')
 
         elif auto_option == 'after_any_first_revise_decision':
             sim_check.validate_styles_and_components(auto_option, triggered=False)
@@ -407,7 +410,6 @@ class SimilarityCheckTest(CommonTest):
             workflow_page.click_card('similarity_check')
             sim_check.validate_styles_and_components(auto_option, triggered=True)
 
-
             sim_check.click_close_button_bottom()
             time.sleep(3)
             # another register decision that should not trigger automated report
@@ -440,6 +442,156 @@ class SimilarityCheckTest(CommonTest):
             # check Report History
             self.validate_report_history(sim_check, version='1.0')
 
+    def test_core_disable_automation_by_manual_generation(self):
+        """
+        test_core_generate_manually_with_auto_settings:
+        Validates APERTA-9958: Disable similarity check automation on manual report
+        AC 1: User can disable report automation for an individual manuscript by running it manually
+        AC 2: Once automation is disabled, it stays disabled for that manuscript
+
+        Validates the similarity check card presence in a workflow view, generating report manually,
+        validates access while the report is generating as it may take several minutes.
+        Validates form elements and styles.
+        Testing default settings, automation is Off.
+        :return: void function
+        """
+        #
+        # the card appears only in Workflow view
+        current_path = os.getcwd()
+        logging.info(current_path)
+
+        logging.info('Test Similarity Check with Automation On:: disable automation by '
+                     'sending report manually')
+
+        auto_options = (('after_major_revise_decision', sim_check_major_revision_mmt['name']),
+                        ('after_minor_revise_decision', sim_check_minor_revision_mmt['name']),
+                        ('after_any_first_revise_decision', sim_check_first_revision_mmt['name']))
+
+        auto_setting = random.choice(auto_options)
+        # TODO: delete after debugging:
+        auto_option = auto_setting[0]
+        mmt_name = auto_setting[1]
+
+        # log as an author and create new submission
+        creator_user = random.choice(users)
+
+        doc_to_use = 'frontend/assets/docs/' \
+                     'Preclinical_Applications_of_3-Deoxy-3-18F_Fluorothymidine_in_' \
+                     'Oncology-A_Systematic_.docx'  # error from ithenticate
+        doc_to_use = 'frontend/assets/docs/Cytoplasmic_Viruses_Rage_Against_the_Cellular_' \
+                     'RNA_Decay_Machine.docx'  # no error, index= 97
+        title = 'Similarity Check test manual send report - disable auto trigger: ' \
+                '{0}'.format(auto_option)
+        short_doi, paper_url = self.create_new_submission(creator_user, title, doc_to_use, mmt_name)
+
+        # log as editorial user
+        staff_user = random.choice(editorial_users)
+        logging.info('Logging in as user: {0}'.format(staff_user['name']))
+        dashboard_page = self.cas_login(email=staff_user['email'])
+        dashboard_page.go_to_manuscript(short_doi)
+        self._driver.navigated = True
+
+        paper_viewer = ManuscriptViewerPage(self.getDriver())
+        paper_viewer.page_ready()
+        # AC#2 - check the card appears only in workflow view, not in manuscript view
+        assert not paper_viewer.is_task_present("Similarity Check"), \
+            "Similarity Check card should not be available in Manuscript view"
+        # go to Workflow view
+        paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+        paper_viewer.click_workflow_link()
+        workflow_page = WorkflowPage(self.getDriver())
+        workflow_page.page_ready()
+
+        workflow_page.click_card('similarity_check')
+        sim_check = SimilarityCheckCard(self.getDriver())
+        sim_check.card_ready()
+
+        auto_settings_db = sim_check.get_sim_check_auto_settings(short_doi=short_doi)
+        assert auto_settings_db == auto_option, 'Automation setting in db: \'{0}\' is not ' \
+                                          'the expected: \'{1}\''.format(auto_settings_db,
+                                                                         auto_option)
+
+        sim_check.validate_card_header(short_doi)
+        sim_check.validate_styles_and_components(auto_option)
+
+        task_url, start_time, pending_message, report_title = sim_check.generate_manual_report()
+        assert "Pending" in pending_message, '\'Pending\' is expected in the message: {0}'\
+            .format(pending_message)
+        assert 'Similarity Check Report' in report_title, '\'Similarity Check Report\' is ' \
+                                                          'expected in: '.format(report_title)
+
+        sim_check.logout()
+
+        # Similarity checks may take up to several minutes to complete,
+
+        finish_time = datetime.now()
+        diff_time = finish_time - start_time
+
+        seconds_elapsed = diff_time.seconds
+        logging.info("Access validation test finished at: {0}"
+                     .format(finish_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')))
+
+        logging.info('Elapsed time in seconds: {0}'.format(str(seconds_elapsed)))
+
+        # log as staff_user
+        logging.info('Logging in as user: {0} to validate similarity check report'
+                     .format(staff_user['name']))
+        dashboard_page = self.cas_login(email=staff_user['email'])
+        dashboard_page.page_ready()
+        self._driver.get(task_url)
+
+        sim_check = SimilarityCheckCard(self.getDriver())
+        sim_check.card_ready()
+        seconds_to_wait = max(10, 600 - seconds_elapsed)
+        logging.info('Starting report validation, expected maximum time to wait in seconds: '
+                     '{0}'.format(str(seconds_to_wait)))
+        self.validate_report_history(sim_check, version='0.0')
+
+        # report_validation_result, validation_seconds, paper_data, report_data = \
+        #     sim_check.get_report_result(start_time)
+        #
+        # logging.info('Elapsed time for validation in seconds: '
+        #              '{0}'.format(str(validation_seconds)))
+        #
+        # # analyze the result
+        # if report_validation_result:
+        #     # 10 min time out exception - error message is expected to be displaye
+        #     assert 'Report not available:' in report_validation_result, report_validation_result
+        # else:
+        #     # results assertion
+        #     assert paper_data['title'] == report_data['title'], \
+        #         'The title {0} is expected.'.format(paper_data['title'])
+        #     assert paper_data['value'] in report_data['value'], 'Score {0} is expected in {1}' \
+        #         .format(paper_data['value'], report_data['value'])
+        #     assert paper_data['author'] in report_data['author'], \
+        #         'Paper author {0} is expected in {1}'.format(paper_data['author'],
+        #                                                      report_data['author'])
+
+        sim_check.logout()
+
+        # check that the Report generation is not triggered for the next revision:
+        # log as editorial user
+        staff_user = random.choice(editorial_users)
+        workflow_page = self.go_to_ms_wokflow_as_editor(staff_user, paper_url)
+
+        decision = random.choice(['Major Revision', 'Minor Revision'])
+        # register decision
+        self.make_register_decision(workflow_page, decision)
+        workflow_page.logout()
+
+        # Login as user and complete Revise Manuscript (Response to Reviewers)
+        self.submit_new_version(short_doi, creator_user)
+
+        # log as editorial user and open the manuscript in workflow view
+        workflow_page = self.go_to_ms_wokflow_as_editor(staff_user, paper_url)
+        workflow_page.click_card('similarity_check')
+        # check AC#6: If the card is marked complete, it is not marked as incomplete
+        # when a new version is submitted
+        assert sim_check.completed_state()
+        sim_check.validate_styles_and_components('off')
+        # check Report History
+        self.validate_report_history(sim_check, version='0.0')
+
 
     def validate_report_history(self, sim_check, version):
         """
@@ -449,7 +601,9 @@ class SimilarityCheckTest(CommonTest):
         :return: void function
         """
         # check Report History
-        versions, last_version_report = sim_check.get_report_history()
+        report_history_title, versions, last_version_report = sim_check.get_report_history()
+        assert 'Report History' in report_history_title, '\'Report \' is expected in {0}'\
+            .format(report_history_title)
         assert len(versions) == 1, '{0} versions in the Report History. Only one version ' \
                                    'of Report is expected.'.format(str(len(versions)))
         card_completed = sim_check.completed_state()
@@ -498,7 +652,7 @@ class SimilarityCheckTest(CommonTest):
         manuscript_page.close_submit_overlay()
         manuscript_page.logout()
 
-    def go_to_ms_wokflow_as_editor(self,staff_user, paper_url):
+    def go_to_ms_wokflow_as_editor(self, staff_user, paper_url):
         """
         Method to log in as an staff user and navigate  directly to manuscript workflow view
         :param staff_user: staff user account
@@ -509,8 +663,8 @@ class SimilarityCheckTest(CommonTest):
         # staff_user = random.choice(editorial_users)
         logging.info('Logging in as user: {0}'.format(staff_user['name']))
         dashboard_page = self.cas_login(email=staff_user['email'])
-        dashboard_page._wait_on_lambda(lambda: paper_url.split('/')[2] in
-                                              dashboard_page.get_current_url())
+        dashboard_page._wait_on_lambda(
+                lambda: paper_url.split('/')[2] in dashboard_page.get_current_url())
         # dashboard_page.page_ready()
         # navigate directly to manuscript workflow view
         paper_workflow_url = '{0}/workflow'.format(paper_url)
@@ -554,4 +708,4 @@ class SimilarityCheckTest(CommonTest):
 
 
 if __name__ == '__main__':
-    CommonTest._run_tests_randomly()
+    CommonTest.run_tests_randomly()

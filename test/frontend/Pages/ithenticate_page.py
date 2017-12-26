@@ -37,8 +37,8 @@ class IthenticatePage(PlosPage):
 
     def get_title_score(self):
         """
-        Validates elements of the api.ithenticate page
-        :return: None
+        gets elements of the api.ithenticate page
+        :return: title, value, author - strings to validate
         """
         title = self._get(self._ithenticate_title).text
         value = self._get(self._ithenticate_value).text

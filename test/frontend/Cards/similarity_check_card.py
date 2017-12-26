@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 
 from Base.CustomException import ElementDoesNotExistAssertionError
+from Base.PostgreSQL import PgSQL
 from frontend.Cards.basecard import BaseCard
 from ..Pages.ithenticate_page import IthenticatePage
 
@@ -62,7 +63,6 @@ class SimilarityCheckCard(BaseCard):
         steps, default is False, optional
         :return: void function
         """
-        # AC#4
         card_title = self._get(self._card_heading)
         assert card_title.text == 'Similarity Check', 'Card title {0} is not ' \
                                                       'the expected: {1}'.format(card_title.text,
@@ -80,8 +80,8 @@ class SimilarityCheckCard(BaseCard):
         # Button to send for manual report The button is only enabled if:
         # the card is marked incomplete
 
-        # auto options are defined in APERTA-9958
-        auto_report_options = {'at_first_full_submission': 'first full submission',
+        # auto options (defined in APERTA-9958)
+        auto_report_options_text = {'at_first_full_submission': 'first full submission',
                                'after_major_revise_decision': 'major revision',
                                'after_minor_revise_decision': 'minor revision',
                                'after_any_first_revise_decision': 'any first revision'}
@@ -93,12 +93,12 @@ class SimilarityCheckCard(BaseCard):
         else:
             auto_info = self._gets(self._automated_report_status_active)
             expected_text = 'Automated similarity check is active: ' \
-                            'This manuscript will be sent to iThenticate on ' + \
-                            auto_report_options[ithenticate_automation] + '.'
+                            'This manuscript will be sent to iThenticate on {0}.'\
+                .format(auto_report_options_text[ithenticate_automation])
             assert auto_info[0].text.strip() == expected_text, auto_info[0].text.strip()
             assert auto_info[1].text.strip() == 'Manually generating a report below will disable ' \
-                                                'the automated similarity check for this manuscript.', \
-                auto_info[0].text.strip()
+                                                'the automated similarity check for this ' \
+                                                'manuscript.', auto_info[0].text.strip()
 
         if triggered:
             # check it is pending and "generate button is not enabled
@@ -121,10 +121,10 @@ class SimilarityCheckCard(BaseCard):
                 # 1) report sending is not triggered yet, for example, auto option is
                 # 'after_major_revise_decision', and it's first submission or minor revision
                 # 2) it is one of the next submissions after the automated report was done
-                if not auto_report_done: # 1)
+                if not auto_report_done:  # 1)
                     assert not self.completed_state(), 'The card is expected to be editable'
                     self.validate_manual_report_confirmation()
-                else: # 2)
+                else:  # 2)
                     if not self.completed_state():
                         # it's still in pending status
                         self.validate_pending()
@@ -160,9 +160,11 @@ class SimilarityCheckCard(BaseCard):
         self.validate_generate_confirmation_style(confirm_container)
 
         confirm_text = self._get(self._confirm_text)
-        expected_confirm_text = 'Manually generating the report will disable the automated ' \
-                                'similarity check for this manuscript'
-        assert confirm_text.text.strip() == expected_confirm_text, confirm_text.text.strip()
+        expected_confirm_text = ['Manually generating the report will disable the automated ' \
+                                'similarity check for this manuscript', 'Are you sure?']
+        assert confirm_text.text.strip() in expected_confirm_text, \
+            'Confirmation text is: \'{0}\', expected: \'{1}\'' \
+                .format(confirm_text.text.strip(), expected_confirm_text)
         confirm_cancel = self._get(self._manually_generate_cancel_link)
         self.validate_cancel_confirmation_style(confirm_cancel)
 
@@ -181,34 +183,36 @@ class SimilarityCheckCard(BaseCard):
     def get_report_history(self):
         """
         Gets Report History for result validation
-        :return: versions: list of strings, last_version_report: string
+        :return: report_history_title: string, versions: list of strings,
+          last_version_report: string
         """
         report_history = self._get(self._sim_check_report_history)
-        assert 'Report History' in report_history.text.strip(), report_history.text.strip()
+        report_history_title = not report_history.text.strip()
         version_numbers = self._gets(self._sim_check_report_revision_number)
         versions = [version.text.strip() for version in version_numbers]
         self._get(self._sim_check_report_revision_number).click()
         self._wait_for_element(self._get(self._version_report))
         last_version_report = self._get(self._version_report).text.strip()
 
-        return versions, last_version_report
-
+        return report_history_title, versions, last_version_report
 
     def generate_manual_report(self):
         """
         Generate report manually by clicking on 'Generate Report' button
         :return: task_url: url to get back and check results,
             start_time: time when the generate report call has started, to track and calculate
-            remaining time to wait for the Report from iThenicate
+            remaining time to wait for the Report from iThenicate,
+            pending_message, report_title - text to validate
         """
         send_for_manual_report_button = self._get(self._generate_report_button)
         send_for_manual_report_button.click()
 
-        # AC 4.2.1.3 ... the report status is not pending
+        # AC Button to send for manual report: The button is only enabled if the report status is not pending
         confirm_generate_button = self._get(self._manually_generate_button)
         confirm_generate_button.click()
         report_pending_spinner_message = self._get(self._report_pending_spinner_message)
-        assert "Pending" in report_pending_spinner_message.text
+        pending_message = report_pending_spinner_message.text
+        # assert "Pending" in report_pending_spinner_message.text
         # self.validate_progress_spinner_style(report_pending_spinner_message)
         # TODO: add assert for AC 4.2.1.3 when APERTA-11392 gets resolved
         # assert not send_for_manual_report_button.is_displayed
@@ -216,15 +220,16 @@ class SimilarityCheckCard(BaseCard):
         self._wait_for_element(self._get(self._sim_check_report_title), 1)
 
         report_title = self._get(self._sim_check_report_title)
-        assert 'Similarity Check Report' in report_title.text.strip(), report_title.text.strip()
+        report_title = report_title.text.strip()
+        # assert 'Similarity Check Report' in report_title.text.strip(), report_title.text.strip()
         self.validate_application_h3_style(report_title)
         # save task url and current time to go back to the task after report is generated
         task_url = self.get_current_url()
         start_time = datetime.now()
 
-        return task_url, start_time
+        return task_url, start_time, pending_message, report_title
 
-    def get_report_result(self, start_time = None):
+    def get_report_result(self, start_time=None):
         """
         Waits for the Report from iThenticate, fetch the results from the link and gets the results
         from Similar Card page and iThenticate page to validate
@@ -239,13 +244,13 @@ class SimilarityCheckCard(BaseCard):
         html_header_title = self._get(self._header_title_link)
         paper_title = html_header_title.text
         try:
-            if start_time==None:
-                seconds_to_wait=500
+            if start_time is None:
+                seconds_to_wait = 500
             else:
                 diff_time = datetime.now() - start_time
                 seconds_to_wait = max(10, 500 - diff_time.seconds)
 
-            self._wait_on_lambda(lambda: self.completed_state() == True,
+            self._wait_on_lambda(lambda: bool(self.completed_state()),
                                  max_wait=seconds_to_wait)  # score and style
         except TimeoutException:
             # after 10 minutes the 'Report not available' error message is expected to be displayed
@@ -277,8 +282,8 @@ class SimilarityCheckCard(BaseCard):
     def launch_ithenticate_page(self):
         """Click on iThenticate report link to go the Report page"""
         report_link = self._get(self._sim_check_report_link)
-        assert self._is_link_valid(report_link), 'Report link {0} is invalid' \
-            .report_link.get_attribute('href')
+        assert self._is_link_valid(report_link), 'Report link {0} is invalid'\
+            .format(report_link.get_attribute('href'))
         report_link.click()
         self._wait_for_number_of_windows_to_be(2)
         self.traverse_to_new_window()
@@ -317,3 +322,28 @@ class SimilarityCheckCard(BaseCard):
             confirm_container.value_of_css_property('text-align')
         assert confirm_container.value_of_css_property('background-color') == 'rgb(57, 163, 41)', \
             confirm_container.value_of_css_property('background-color')
+
+    def get_sim_check_auto_settings(self, short_doi):
+        """
+        A method to return the settings for automated sending report; Similarity Check task
+        via a query
+        :param short_doi: papers.short_doi of the requested paper
+        :return: auto_settings (settings.string_value) from db, a string
+        """
+
+        mmt_id = PgSQL().query('SELECT manuscript_manager_templates.id '
+                               'FROM papers, journals, manuscript_manager_templates '
+                               'WHERE papers.journal_id = journals.id '
+                               'AND journals.id = manuscript_manager_templates.journal_id '
+                               'AND manuscript_manager_templates.paper_type = papers.paper_type '
+                               'AND short_doi=%s;', (short_doi,))[0][0]
+
+        auto_setting = PgSQL().query('SELECT settings.string_value '
+                                     'FROM task_templates, phase_templates, settings '
+                                     'WHERE phase_templates.manuscript_manager_template_id = %s '
+                                     'AND phase_templates.id=task_templates.phase_template_id '
+                                     'AND settings.owner_id=task_templates.id '
+                                     'AND task_templates.title=%s '
+                                     'AND settings.NAME =%s;', (mmt_id, 'Similarity Check',
+                                                                'ithenticate_automation'))[0][0]
+        return auto_setting

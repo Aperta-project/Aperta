@@ -7,7 +7,6 @@ also includes Page Object Model for the card settings overlay,
 locators and functions: set automation options for the Similarity Check Report to be
 automatically triggered
 """
-import logging
 
 from selenium.webdriver.common.by import By
 
@@ -27,7 +26,7 @@ class SimCheckSettings(CardSettings):
         # locators for card settings overlay
         self._similarity_check_card = (By.XPATH, "//a[./span[contains(text(),'Similarity Check')]]")
         self._sim_check_card_settings = (
-        By.XPATH, "//a[./span[contains(text(),'Similarity Check')]]//i")
+            By.XPATH, "//a[./span[contains(text(),'Similarity Check')]]//i")
         # setting edit page
         self._automatic_check_settings = (By.CLASS_NAME, 'similarity-check-settings')
         self._automatic_checks_text = (By.CSS_SELECTOR, '.similarity-check-settings h4')
@@ -41,8 +40,6 @@ class SimCheckSettings(CardSettings):
         self._send_ms_after_revision_list_items = (By.CSS_SELECTOR, 'li.select2-result-selectable')
         self._after_revision_chosen = (By.CSS_SELECTOR, 'span.select2-chosen')
         self._after_revision_arrow = (By.CSS_SELECTOR, '.select2-arrow')
-        # self._sim_check_settings_save_button = (By.CSS_SELECTOR, 'div.overlay-action-buttons>button.button-primary')
-        # self._overlay_header_close = (By.CSS_SELECTOR, 'button.cancel')
 
     def validate_setting_style_and_components(self):
         """
@@ -74,17 +71,20 @@ class SimCheckSettings(CardSettings):
         on_first_submission = radio_buttons[0]
         after_revision = radio_buttons[1]
 
-        assert on_first_submission.is_selected(), 'On first full submission option should be checked by default'
-        assert not after_revision.is_selected(), 'After revisions option should be unchecked by default'
+        assert on_first_submission.is_selected(), 'On first full submission option ' \
+                                                  'should be checked by default'
+        assert not after_revision.is_selected(), 'After revisions option should be ' \
+                                                 'unchecked by default'
         # check 'after revisions' option
         after_revision.click()
-        assert not on_first_submission.is_selected(), 'After submission option expected to be checked'
-        assert after_revision.is_selected(), 'On first full submission option expected to be unchecked'
+        assert not on_first_submission.is_selected(), 'After submission option expected ' \
+                                                      'to be checked'
+        assert after_revision.is_selected(), 'On first full submission option expected ' \
+                                             'to be unchecked'
         # check options of the dropdown list
         self.select_and_validate_after_revision_option('major revision')
         self.select_and_validate_after_revision_option('minor revision')
         self.select_and_validate_after_revision_option('any first revision')
-
 
     def select_and_validate_after_revision_option(self, option_text):
         """
@@ -103,7 +103,6 @@ class SimCheckSettings(CardSettings):
                 option.click()
                 break
 
-
     def set_automation(self, automation=True):
         """
         function to set automated Similarity Check sending
@@ -116,7 +115,7 @@ class SimCheckSettings(CardSettings):
         if not automation == auto_slider_input.is_selected():
             automation_slider = self._get(self._automatic_checks_slider)
             assert automation_slider.value_of_css_property(
-                'background-color') == expected_background_color, \
+                    'background-color') == expected_background_color, \
                 automation_slider.value_of_css_property('background-color')
             automation_slider.click()
 
@@ -134,8 +133,9 @@ class SimCheckSettings(CardSettings):
     def set_ithenticate(self, auto_option='off'):
         """
         Set Similarity Check automation options
-        :param: auto_option: string: one of the options: 'off','at_first_full_submission',
-        'after_major_revise_decision','after_minor_revise_decision','after_any_first_revise_decision'
+        :param: auto_option: string: one of the options: 'off', 'at_first_full_submission',
+        'after_major_revise_decision', 'after_minor_revise_decision',
+        'after_any_first_revise_decision'
         :return: void function
         """
         if auto_option == 'off':

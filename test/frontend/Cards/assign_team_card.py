@@ -128,7 +128,7 @@ class AssignTeamCard(BaseCard):
             revoke = assignment.find_element(*self._assignee_revoke)
             if role in role_clause.text:
                 logging.info(
-                    'Found role, checking assignee ({0}) for match'.format(assignee['name']))
+                        'Found role, checking assignee ({0}) for match'.format(assignee['name']))
                 if assignee['name'] in pagefullname.text:
                     logging.info('Removing role {0} for {1}'.format(role, assignee['name']))
                     revoke.click()
@@ -149,7 +149,7 @@ class AssignTeamCard(BaseCard):
             assignment.find_element(*self._assignee_revoke)
             if role in role_clause.text:
                 logging.info(
-                    'Found role, checking assignee ({0}) for match'.format(assignee['name']))
+                        'Found role, checking assignee ({0}) for match'.format(assignee['name']))
                 if assignee['name'] in pagefullname.text:
                     raise (ValueError,
                            'Revoked assignment found for {0} and {1}'.format(assignee['name'],

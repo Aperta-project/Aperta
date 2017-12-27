@@ -9,7 +9,7 @@
   {{#if isConfirmable}}
     <div class="pending-confirmation">
       <h2 class='confirmation-metadata'><i class="fa fa-envelope email-icon"></i> Co-author Confirmation |
-        <span class="date">{{dateCreated}}</span>
+        <span class="date">{{format-date author.createdAt format="ll"}}</span>
       </h2>
       <h3 class="dashboard-paper-title">{{{author.paperTitle}}}</h3>
 

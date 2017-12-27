@@ -6,7 +6,5 @@ export default DS.Model.extend({
   confirmationState: DS.attr('string'),
   coauthors: DS.attr(),
   paperTitle: DS.attr('string'),
-  journalLogoUrl: DS.attr('string'),
-  isConfirmable: Ember.computed.equal('confirmationState', 'unconfirmed'),
-  isConfirmed: Ember.computed.equal('confirmationState', 'confirmed')
+  journalLogoUrl: DS.attr('string')
 });

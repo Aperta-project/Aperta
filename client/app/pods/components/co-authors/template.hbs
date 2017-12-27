@@ -6,7 +6,7 @@
     <img class='plos auth-logo' src="{{author.journalLogoUrl}}" />
   </div>
 
-  {{#if author.isConfirmable}}
+  {{#if isConfirmable}}
     <div class="pending-confirmation">
       <h2 class='confirmation-metadata'><i class="fa fa-envelope email-icon"></i> Co-author Confirmation |
         <span class="date">{{dateCreated}}</span>
@@ -35,7 +35,7 @@
     </div>
   {{/if}}
 
-  {{#if author.isConfirmed}}
+  {{#if isConfirmed}}
     <div class='message thank-you'>
       <h1>Thank You!</h1>
     </div>

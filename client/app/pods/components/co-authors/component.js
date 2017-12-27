@@ -6,6 +6,8 @@ export default Ember.Component.extend({
   dateCreated: Ember.computed('author.createdAt', function() {
     return moment(this.get('author.createdAt')).format('ll');
   }),
+  isConfirmed: Ember.computed.equal('author.confirmationState', 'confirmed'),
+  isConfirmable: Ember.computed.equal('author.confirmationState', 'unconfirmed'),
 
   actions: {
     save() {

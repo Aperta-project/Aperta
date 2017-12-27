@@ -203,9 +203,6 @@ describe Task do
     end
 
     it 'works across reload' do
-      # TODO: This tests wreaks havoc on classes that are nested deep in engines
-      # app/subscribers.
-      skip
       expect do
         ActionDispatch::Reloader.cleanup!
         ActionDispatch::Reloader.prepare!

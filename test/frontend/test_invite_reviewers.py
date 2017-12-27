@@ -186,7 +186,7 @@ class InviteReviewersCardTest(CommonTest):
                                           'FROM journals '
                                           'WHERE name = \'PLOS Wombat\';')[0][0]
         reviewer_user_id = PgSQL().query('SELECT id FROM users '
-                                         'WHERE username = \'areviewer\';')[0][0]
+                                         'WHERE username = %s;',(reviewer_login['user'],))[0][0]
         reviewer_role_for_env = PgSQL().query('SELECT id '
                                               'FROM roles '
                                               'WHERE journal_id = %s '
@@ -319,7 +319,7 @@ class InviteReviewersCardTest(CommonTest):
                                           'FROM journals '
                                           'WHERE name = \'PLOS Wombat\';')[0][0]
         reviewer_user_id = PgSQL().query('SELECT id FROM users '
-                                         'WHERE username = \'areviewer\';')[0][0]
+                                         'WHERE username =%s;',(reviewer_login['user'],))[0][0]
         reviewer_role_for_env = PgSQL().query('SELECT id '
                                               'FROM roles '
                                               'WHERE journal_id = %s '

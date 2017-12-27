@@ -116,4 +116,9 @@ Subscriptions.configure do
 
   add 'correspondence:created', stream_to_paper_channel
   add 'correspondence:updated', stream_to_paper_channel
+
+  # Export Delivery:
+  add 'tahi_standard_tasks/export_delivery:updated', stream_to_paper_channel
+  add 'tahi_standard_tasks/export_delivery:delivery_succeeded',
+      ExportDelivery::DeliverySucceeded::FlashSuccessMessage
 end

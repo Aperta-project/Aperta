@@ -4,13 +4,6 @@ source 'https://rubygems.org'
 # ruby version changes
 ruby '2.3.6'
 
-# Task Engines
-gem 'plos_billing', path: 'engines/plos_billing'
-gem 'plos_bio_internal_review', path: 'engines/plos_bio_internal_review'
-gem 'plos_bio_tech_check', path: 'engines/plos_bio_tech_check'
-gem 'tahi-assign_team', path: 'engines/tahi-assign_team'
-gem 'tahi_standard_tasks', path: 'engines/tahi_standard_tasks'
-
 # Gems
 gem 'aasm', '~> 4.9.0'
 gem 'active_model_serializers', '0.8.3'

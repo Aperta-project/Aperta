@@ -10,11 +10,28 @@ Subscriptions.configure do
   add 'paper:submitted', \
       Paper::Submitted::EmailCreator,
       Paper::Submitted::SnapshotPaper,
-      Paper::Submitted::EmailCoauthors
+      Paper::Submitted::EmailCoauthors,
+      PlosBilling::Paper::Salesforce,
+      Paper::Submitted::ReopenRevisionTasks,
+      Paper::Submitted::CreateReviewerReports
 
   add 'paper:initially_submitted', \
       Paper::Submitted::SnapshotPaper,
       Paper::Submitted::EmailCreator
+
+  add 'paper:in_revision', Paper::DecisionMade::UnassignReviewers
+
+  add 'paper:accepted', \
+      Paper::DecisionMade::UnassignReviewers,
+      PlosBilling::Paper::Salesforce
+
+  add 'paper:rejected', \
+      PlosBilling::Paper::Salesforce,
+      Paper::DecisionMade::UnassignReviewers
+
+  add 'paper:withdrawn', \
+      PlosBilling::Paper::Salesforce,
+      Paper::DecisionMade::UnassignReviewers
 
   add 'discussion_reply:created', \
       DiscussionReply::Created::EmailPeopleMentioned,
@@ -26,5 +43,4 @@ Subscriptions.configure do
 
   add 'discussion_participant:destroyed', \
       Notification::Unbadger
-
 end

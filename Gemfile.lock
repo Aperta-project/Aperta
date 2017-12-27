@@ -15,36 +15,6 @@ GIT
       rails (>= 3.0, < 4.3)
       rake (>= 0.8.7)
 
-PATH
-  remote: engines/plos_billing
-  specs:
-    plos_billing (0.0.1)
-      rails (~> 4.2.0)
-
-PATH
-  remote: engines/plos_bio_internal_review
-  specs:
-    plos_bio_internal_review (0.0.1)
-      rails (~> 4.2.1)
-
-PATH
-  remote: engines/plos_bio_tech_check
-  specs:
-    plos_bio_tech_check (0.0.1)
-      rails (~> 4.2.0)
-
-PATH
-  remote: engines/tahi-assign_team
-  specs:
-    tahi-assign_team (0.0.1)
-      rails (~> 4.2.1)
-
-PATH
-  remote: engines/tahi_standard_tasks
-  specs:
-    tahi_standard_tasks (0.0.1)
-      rails (~> 4.2.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -790,9 +760,6 @@ DEPENDENCIES
   pdfkit
   pg
   pg_search
-  plos_billing!
-  plos_bio_internal_review!
-  plos_bio_tech_check!
   premailer-rails
   progressbar
   pry-byebug
@@ -833,8 +800,6 @@ DEPENDENCIES
   spring
   spring-commands-rspec
   syslogger
-  tahi-assign_team!
-  tahi_standard_tasks!
   test_after_commit
   thin
   timecop

@@ -15,23 +15,8 @@ require 'sidekiq/testing'
 require 'webmock/rspec'
 require 'rake'
 require 'fakeredis/rspec'
-require Rails.root.join('lib', 'tahi_plugin')
 Dir[Rails.root.join('lib', 'custom_card', '**', '*.rb')].each { |f| require f }
 include Warden::Test::Helpers
-
-# Requires supporting ruby files with custom matchers and macros, etc,
-# in spec/support/ and its subdirectories.
-require_relative 'support/pages/page'
-require_relative 'support/pages/overlay'
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
-
-include FeatureLogoutHelper
-
-# Load support & factories for installed Tahi plugins
-TahiPlugin.plugins.each do |gem|
-  Dir[File.join(gem.full_gem_path, 'spec', 'support', '**', '*.rb')].each { |f| require f }
-  Dir[File.join(gem.full_gem_path, 'spec', 'factories', '**', '*.rb')].each { |f| require f }
-end
 
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
@@ -42,6 +27,16 @@ VCR.configure do |config|
   config.ignore_hosts 'codeclimate.com'
   config.ignore_localhost = true
 end
+
+# Requires supporting ruby files with custom matchers and macros, etc,
+# in spec/support/ and its subdirectories.
+require_relative '../lib/tasks/card_loading/support/card_loader'
+require_relative 'support/pages/page'
+require_relative 'support/pages/overlay'
+Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+
+include FeatureLogoutHelper
+
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema! if

@@ -1,0 +1,2 @@
+module TahiPusher
+end

@@ -46,14 +46,14 @@ describe TokenCoauthorsController do
   end
 
   describe 'PUT /token_coauthors/:token' do
-    it 'updates the state of the author' do
+    it 'confirms the author' do
       expect(author.co_author_state).to eq('unconfirmed')
       put :update, id: author.token
 
       expect(author.reload.co_author_state).to eq('confirmed')
     end
 
-    it 'updates the state of the group author' do
+    it 'confirms the group author' do
       group_author = FactoryGirl.create(:group_author)
       group_author.paper.journal.setting("coauthor_confirmation_enabled").update!(value: true)
       expect(group_author.co_author_state).to eq('unconfirmed')
@@ -62,21 +62,19 @@ describe TokenCoauthorsController do
       expect(group_author.reload.co_author_state).to eq('confirmed')
     end
 
-    context 'the author is already confirmed' do
-      it 'does not change the state of the author' do
-        author.update_attributes!(co_author_state: 'confirmed')
+    context 'the authorship is refuted' do
+      it 'confirms the author' do
+        author.update_attributes!(co_author_state: 'refuted')
         put :update, id: author.token
 
         expect(author.reload.co_author_state).to eq('confirmed')
       end
     end
 
-    context 'the authorship is refuted' do
-      it 'does not change the state of the author' do
-        author.update_attributes!(co_author_state: 'refuted')
-        put :update, id: author.token
-
-        expect(author.reload.co_author_state).to eq('confirmed')
+    context 'the author is already confirmed' do
+      it 'does not add an event to the activity feed' do
+        author.update_attributes!(co_author_state: 'confirmed')
+        expect { put :update, id: author.token }.to_not change(Activity, :count)
       end
     end
 

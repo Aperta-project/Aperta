@@ -30,8 +30,8 @@
   <ol id="author-list">
     <% @authors.each do |coauthor| %>
       <li class="author-list-item">
-          <%= coauthor.full_name %>
-          <% if coauthor.try(:affiliation).present? %>: <%= coauthor.affiliation %><% end %>
+        <%= coauthor.full_name %>
+        <% if coauthor.try(:affiliation).present? %>: <%= coauthor.affiliation %><% end %>
       </li>
     <% end %>
   </ol>

@@ -10,8 +10,10 @@ class TokenCoauthorsController < ApplicationController
 
   def update
     unless @token_coauthor.co_author_confirmed?
-      @token_coauthor.co_author_confirmed!
-      Activity.co_author_confirmed!(@token_coauthor, user: current_user)
+      Activity.transaction do
+        @token_coauthor.co_author_confirmed!
+        Activity.co_author_confirmed!(@token_coauthor, user: current_user)
+      end
     end
 
     render json: @token_coauthor, serializer: TokenCoauthorSerializer

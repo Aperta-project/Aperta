@@ -12,7 +12,7 @@ class TokenCoauthorsController < ApplicationController
     unless @token_coauthor.co_author_confirmed?
       Activity.transaction do
         @token_coauthor.co_author_confirmed!
-        Activity.co_author_confirmed!(@token_coauthor, user: current_user)
+        Activity.co_author_confirmed!(@token_coauthor, user: nil)
       end
     end
 
@@ -22,14 +22,14 @@ class TokenCoauthorsController < ApplicationController
   private
 
   def verify_coauthor_enabled
-    return if @token_coauthor && @token_coauthor.paper.journal.setting("coauthor_confirmation_enabled").value
+    return if @token_coauthor.paper.journal.setting("coauthor_confirmation_enabled").value
 
     Rails.logger.warn("User attempted to access disabled coauthor functionality")
     render json: {}, status: 404
   end
 
   def find_author_by_token
-    token = params[:id]
+    token = params[:token]
     @token_coauthor = GroupAuthor.find_by(token: token) || Author.find_by(token: token)
     return if @token_coauthor
 

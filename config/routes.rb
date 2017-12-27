@@ -272,7 +272,7 @@ Tahi::Application.routes.draw do
 
     resources :scheduled_events, only: [:update]
 
-    resources :token_coauthors, only: [:show, :update]
+    resources :token_coauthors, only: [:show, :update], param: :token
   end
 
   get '/invitations/:token/accept',

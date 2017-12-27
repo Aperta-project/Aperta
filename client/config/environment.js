@@ -88,7 +88,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-
+    ENV['ember-prop-types'].validate = false;
   }
 
   return ENV;

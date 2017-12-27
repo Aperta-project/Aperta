@@ -12,6 +12,19 @@
   }
 }
 
+.attribution {
+  display: block;
+  position: fixed;
+  bottom: 5px;
+  right: 10px;
+  color: $aperta-white;
+}
+
+.attribution a {
+  color: $aperta-white;
+  text-decoration: underline;
+}
+
 .public-container {
   max-width: 860px;
   margin: 0 auto;

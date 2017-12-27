@@ -129,6 +129,7 @@ class CommonTest(FrontEndTest):
         dashboard.get_rich_text_editor_instance('new-paper-title')
     logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
     dashboard.tmce_set_rich_text(tinymce_editor_instance_iframe, content=title)
+    dashboard.pause_to_save()
     # Gratuitous verification
     temp_title = dashboard.tmce_get_rich_text(tinymce_editor_instance_iframe)
     logging.info('Temporary Paper Title is: {0}'.format(temp_title))

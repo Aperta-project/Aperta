@@ -144,6 +144,12 @@ class SimilarityCheckCard(BaseCard):
             assert 'Similarity Check Report' in report_title.text.strip()
         return True
 
+    def click_send_manual_report(self):
+        """ Click on Generate Report button to send report manually """
+        send_for_manual_report_button = self._get(self._generate_report_button)
+        self.validate_primary_big_green_button_style(send_for_manual_report_button)
+        send_for_manual_report_button.click()
+
     def validate_manual_report_confirmation(self):
         """
         Validates confirmation step befor manual Report generation
@@ -187,7 +193,7 @@ class SimilarityCheckCard(BaseCard):
           last_version_report: string
         """
         report_history = self._get(self._sim_check_report_history)
-        report_history_title = not report_history.text.strip()
+        report_history_title = report_history.text.strip()
         version_numbers = self._gets(self._sim_check_report_revision_number)
         versions = [version.text.strip() for version in version_numbers]
         self._get(self._sim_check_report_revision_number).click()
@@ -220,14 +226,14 @@ class SimilarityCheckCard(BaseCard):
         self._wait_for_element(self._get(self._sim_check_report_title), 1)
 
         report_title = self._get(self._sim_check_report_title)
-        report_title = report_title.text.strip()
+        report_title_text = report_title.text.strip()
         # assert 'Similarity Check Report' in report_title.text.strip(), report_title.text.strip()
         self.validate_application_h3_style(report_title)
         # save task url and current time to go back to the task after report is generated
         task_url = self.get_current_url()
         start_time = datetime.now()
 
-        return task_url, start_time, pending_message, report_title
+        return task_url, start_time, pending_message, report_title_text
 
     def get_report_result(self, start_time=None):
         """
@@ -282,8 +288,6 @@ class SimilarityCheckCard(BaseCard):
     def launch_ithenticate_page(self):
         """Click on iThenticate report link to go the Report page"""
         report_link = self._get(self._sim_check_report_link)
-        assert self._is_link_valid(report_link), 'Report link {0} is invalid'\
-            .format(report_link.get_attribute('href'))
         report_link.click()
         self._wait_for_number_of_windows_to_be(2)
         self.traverse_to_new_window()

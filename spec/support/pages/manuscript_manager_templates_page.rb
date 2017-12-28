@@ -1,3 +1,4 @@
+require 'support/pages/fragments/phase_fragment'
 class ManuscriptManagerTemplatePage < Page
   text_assertions :paper_type, ".paper-type-name"
 

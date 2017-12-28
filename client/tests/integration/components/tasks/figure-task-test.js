@@ -2,6 +2,7 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import Factory from '../../../helpers/factory';
+import customAssertions from 'tahi/tests/helpers/custom-assertions';
 
 let createTaskWithFigures = function(figures) {
   return make('figure-task', {
@@ -14,12 +15,11 @@ let createTaskWithFigures = function(figures) {
   });
 }
 
-moduleForComponent(
-  'figure-task',
-  'Integration | Components | Tasks | Figure', {
+moduleForComponent('figure-task', 'Integration | Components | Tasks | Figure', {
   integration: true,
   beforeEach() {
     manualSetup(this.container);
+    customAssertions();
     Factory.createPermission('figureTask', 1, ['edit', 'view']);
   }
 });

@@ -1347,7 +1347,7 @@ broccoli-debug@^0.6.1, broccoli-debug@^0.6.2:
     symlink-or-copy "^1.1.8"
     tree-sync "^1.2.2"
 
-broccoli-file-creator@^1.0.0:
+broccoli-file-creator@^1.0.0, broccoli-file-creator@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/broccoli-file-creator/-/broccoli-file-creator-1.1.1.tgz#1b35b67d215abdfadd8d49eeb69493c39e6c3450"
   dependencies:
@@ -2607,7 +2607,7 @@ ember-cli-at-js@0.0.3:
   dependencies:
     ember-cli-babel "^5.1.3"
 
-ember-cli-babel@^5.0.0, ember-cli-babel@^5.1.10, ember-cli-babel@^5.1.3, ember-cli-babel@^5.1.5, ember-cli-babel@^5.1.6, ember-cli-babel@^5.1.7, ember-cli-babel@^5.1.8, ember-cli-babel@^5.2.1:
+ember-cli-babel@^5.0.0, ember-cli-babel@^5.1.10, ember-cli-babel@^5.1.3, ember-cli-babel@^5.1.5, ember-cli-babel@^5.1.6, ember-cli-babel@^5.1.7, ember-cli-babel@^5.2.1:
   version "5.2.4"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-5.2.4.tgz#5ce4f46b08ed6f6d21e878619fb689719d6e8e13"
   dependencies:
@@ -3189,11 +3189,12 @@ ember-font-awesome@3.0.5:
     ember-cli-htmlbars "^1.1.1"
     font-awesome "^4.7.0"
 
-ember-get-config@0.1.7:
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/ember-get-config/-/ember-get-config-0.1.7.tgz#21165330563ee24680d7e4cb070f176aa62dde36"
+ember-get-config@^0.2.2:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/ember-get-config/-/ember-get-config-0.2.4.tgz#118492a2a03d73e46004ed777928942021fe1ecd"
   dependencies:
-    ember-cli-babel "^5.1.6"
+    broccoli-file-creator "^1.1.1"
+    ember-cli-babel "^6.3.0"
 
 ember-getowner-polyfill@^1.1.0, ember-getowner-polyfill@^1.1.1:
   version "1.2.5"
@@ -3298,12 +3299,12 @@ ember-promise-helpers@^1.0.3:
   dependencies:
     ember-cli-babel "^5.1.5"
 
-ember-prop-types@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/ember-prop-types/-/ember-prop-types-3.0.0.tgz#173cb42da6bc0d2c6bdacc6afa21a3f1967cbeb0"
+ember-prop-types@5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/ember-prop-types/-/ember-prop-types-5.0.2.tgz#b2aa7d8f0edba7173d57d2f934251ce72015d688"
   dependencies:
-    ember-cli-babel "^5.1.8"
-    ember-get-config "0.1.7"
+    ember-cli-babel "^5.1.7"
+    ember-get-config "^0.2.2"
     npm-install-security-check "^1.0.0"
 
 ember-pusher@^1.1.0:

@@ -10,7 +10,7 @@ export default Ember.Component.extend({
     placeholder: PropTypes.string,
     helpText: PropTypes.string,
     label: PropTypes.string,
-    errors: PropTypes.oneOfType([PropTypes.null, PropTypes.object]),
+    errors: PropTypes.oneOfType([PropTypes.null, PropTypes.EmberObject]),
     enter: PropTypes.func,
     autofocus: PropTypes.bool
   },

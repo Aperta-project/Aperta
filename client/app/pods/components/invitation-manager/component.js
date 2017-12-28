@@ -13,6 +13,10 @@ const taskValidations = {
 };
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
+  init() {
+    this._super(...arguments);
+    this.set('dueIn', this.get('defaultDueIn'));
+  },
   store: Ember.inject.service(),
   restless: Ember.inject.service(),
 
@@ -64,6 +68,8 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
   inviteeRole: computed.reads('task.inviteeRole'),
 
+  defaultDueIn: computed.reads('task.paper.reviewDurationPeriod'),
+
   loadDecisions: concurrencyTask(function * () {
     return yield this.get('task.decisions');
   }),
@@ -90,7 +96,8 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       this.setProperties({
         selectedUser: null,
         pendingInvitation: null,
-        autoSuggestSelectedText: null
+        autoSuggestSelectedText: null,
+        dueIn: this.get('defaultDueIn')
       });
     } catch(error) {
       // In order to properly throw an ajax error (which allows ember-data
@@ -148,6 +155,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       if (this.get('disableButton')) { return; }
 
       this.get('createInvitation').perform({
+        dueIn: this.get('dueIn'),
         task: this.get('task'),
         email: this.get('selectedUser.email')
       });
@@ -192,6 +200,9 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     },
     focusOut(){
       this.validateData();
+    },
+    updateReviewDurationPeriod(event) {
+      this.set('dueIn', event.target.value);
     }
   }
 });

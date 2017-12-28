@@ -146,7 +146,8 @@ class InvitationsController < ApplicationController
         :email,
         :state,
         :reviewer_suggestions,
-        :task_id)
+        :task_id,
+        :due_in)
   end
 
   def invitation_update_params

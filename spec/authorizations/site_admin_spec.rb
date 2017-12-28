@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/authorization_spec_helper'
 
 describe 'Site admins have ALL the permissions' do
   include AuthorizationSpecHelper

@@ -1,5 +1,6 @@
 require "rails_helper"
 require 'support/authorization_spec_helper'
+require 'support/pages/profile_page'
 
 feature "Profile Page", js: true, vcr: {cassette_name: "ned_countries", record: :none} do
   include AuthorizationSpecHelper

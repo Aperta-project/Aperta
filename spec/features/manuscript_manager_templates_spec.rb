@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'support/pages/task_manager_page'
+require 'support/pages/manuscript_manager_template_page'
 
 # rubocop:disable Metrics/BlockLength
 feature 'Manuscript Manager Templates', js: true, selenium: true do

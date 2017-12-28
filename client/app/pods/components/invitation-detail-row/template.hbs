@@ -135,6 +135,11 @@
      {{/unless}}
      {{inviteeNameAndEmail}}
     </div>
+    {{invitation-due-period
+      value=invitation.dueIn
+      onchange=(action "saveDuringType" invitation)
+      appendedText="(Edit the invitation below to reflect any changes.)"
+    }}
   </div>
 {{/unless}}
 

@@ -14,7 +14,8 @@ class InvitationSerializer < ActiveModel::Serializer
              :rescinded_at,
              :position,
              :decision_id,
-             :valid_new_positions_for_invitation
+             :valid_new_positions_for_invitation,
+             :due_in
 
   has_one :invitee, serializer: UserSerializer, embed: :id, root: :users, include: true
   has_one :actor, serializer: UserSerializer, embed: :id, root: :users, include: true
@@ -30,5 +31,9 @@ class InvitationSerializer < ActiveModel::Serializer
 
   def reviewer_report
     ReviewerReport.for_invitation(object)
+  end
+
+  def due_in
+    object.due_in || object.paper.review_duration_period # use as default
   end
 end

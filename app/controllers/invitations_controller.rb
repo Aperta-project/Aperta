@@ -153,7 +153,7 @@ class InvitationsController < ApplicationController
   def invitation_update_params
     params
       .require(:invitation)
-      .permit(:id, :body, :email)
+      .permit(:id, :body, :email, :due_in)
   end
 
   def invitation_decline_params

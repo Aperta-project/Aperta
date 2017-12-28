@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/invitation_feature_helpers'
 require 'support/rich_text_editor_helpers'
 
 feature "Inviting a new Academic Editor", js: true do

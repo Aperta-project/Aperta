@@ -30,6 +30,6 @@ module ClientRouteHelper
   end
 
   def client_coauthor_url(token:)
-    "#{root_url}coauthors/#{token}"
+    "#{root_url}co_authors_token/#{token}"
   end
 end

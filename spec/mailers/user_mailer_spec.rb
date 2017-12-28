@@ -211,7 +211,7 @@ describe UserMailer, redis: true do
 
     it "has a link to confirm authorship" do
       expect(email_1.body).to include("Confirm Authorship")
-      expect(email_1.body).to include("coauthors/#{author_2.token}")
+      expect(email_1.body).to include("co_authors_token/#{author_2.token}")
     end
 
     it "has a mailto: link to refute authorship" do
@@ -405,5 +405,4 @@ describe UserMailer, redis: true do
       end
     end
   end
-
 end

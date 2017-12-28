@@ -52,7 +52,7 @@ describe ClientRouteHelper do
     let(:coauthor) { double(token: 'foo') }
     it 'generates the url to a coauthor confirmation page' do
       url = client_coauthor_url(token: coauthor.token)
-      expect(url).to eq("http://test.host/coauthors/#{coauthor.token}")
+      expect(url).to eq("http://test.host/co_authors_token/#{coauthor.token}")
     end
   end
 end

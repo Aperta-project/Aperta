@@ -8,7 +8,7 @@ const Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('invitations', { path: '/invitations/:token' });
-  this.route('coauthors', { path: '/coauthors/:token' });
+  this.route('coauthors', { path: '/co_authors_token/:token' });
 
   this.route('dashboard', { path: '/' }, function() {});
 

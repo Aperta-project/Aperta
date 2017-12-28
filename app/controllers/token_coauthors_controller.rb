@@ -12,7 +12,7 @@ class TokenCoauthorsController < ApplicationController
     unless @token_coauthor.co_author_confirmed?
       Activity.transaction do
         @token_coauthor.co_author_confirmed!
-        Activity.co_author_confirmed!(@token_coauthor, user: nil)
+        Activity.co_author_confirmed!(@token_coauthor, user: current_user)
       end
     end
 

@@ -1,3 +1,5 @@
+require 'support/pages/card_overlay'
+
 class ChooseCardOverlay < CardOverlay
   def create_message
     find('#overlay button.message').click

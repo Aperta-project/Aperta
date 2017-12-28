@@ -1,3 +1,5 @@
+require 'support/pages/card_overlay'
+
 class ChooseCardTypeOverlay < CardOverlay
   def self.launch(session)
     new session.find('.overlay')
@@ -15,4 +17,3 @@ class ChooseCardTypeOverlay < CardOverlay
     self
   end
 end
-

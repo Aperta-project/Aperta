@@ -76,6 +76,7 @@ class Page < PageFragment
   end
 
   def view_task_overlay(paper, task, opts = {})
+    require 'support/pages/card_overlay'
     visit "/papers/#{paper.to_param}/tasks/#{task.id}"
     class_name =
       (task.title.split(' ')

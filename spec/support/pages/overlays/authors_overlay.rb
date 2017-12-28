@@ -1,3 +1,5 @@
+require 'support/pages/card_overlay'
+
 class AuthorsOverlay < CardOverlay
   def add_author(author)
     find(".button-primary", text: "ADD A NEW AUTHOR").click

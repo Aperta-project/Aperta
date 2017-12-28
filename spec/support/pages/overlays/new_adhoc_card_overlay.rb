@@ -1,3 +1,5 @@
+require 'support/pages/card_overlay'
+
 class NewAdhocCardOverlay < CardOverlay
   text_assertions :card_title, 'main > div > h1'
 

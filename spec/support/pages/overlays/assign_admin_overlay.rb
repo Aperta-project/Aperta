@@ -1,3 +1,5 @@
+require 'support/pages/card_overlay'
+
 class AssignAdminOverlay < CardOverlay
   text_assertions :admin, '.admin-select2', ->(email){ email }
 

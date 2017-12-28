@@ -51,6 +51,7 @@ class PaperPage < Page
   end
 
   def show_contributors
+    require 'support/pages/overlays/add_collaborators_overlay'
     reload
     contributors_link.click
     click_contributors_link

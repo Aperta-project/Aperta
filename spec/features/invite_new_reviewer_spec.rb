@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'support/invitation_feature_helpers'
+require 'support/pages/overlays/invite_reviewers_overlay'
 require 'support/rich_text_editor_helpers'
 
 feature "Inviting a new reviewer", js: true do

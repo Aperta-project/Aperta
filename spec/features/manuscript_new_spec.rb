@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'support/pages/dashboard_page'
 require 'support/pages/paper_page'
+require 'support/fake_ihat_service'
 
 feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
   let!(:user) { FactoryGirl.create :user, :site_admin }

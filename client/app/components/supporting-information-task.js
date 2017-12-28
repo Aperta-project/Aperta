@@ -29,6 +29,8 @@ export default TaskComponent.extend(FileUploadMixin, {
         'validationErrors.completed',
         this.get('completedErrorText')
       );
+    } else {
+      this.set('validationErrors', {});
     }
   },
 

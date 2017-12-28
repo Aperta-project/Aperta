@@ -68,6 +68,10 @@ describe ExportPackager do
       expect(zip_filenames(zip_io)).to include(
         'test.0001.docx'
       )
+    end
+
+    it 'creates a zip package for a paper2' do
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
       expect(zip_contains(zip_io,
                           'test.0001.docx',
                           Rails.root.join(
@@ -190,9 +194,14 @@ describe ExportPackager do
     it 'adds a figure to a zip' do
       zip_io = ExportPackager.create_zip(paper, destination: 'apex')
 
-      expect(zip_filenames(zip_io)).to include('yeti.jpg')
       contents = read_zip_entry(zip_io, 'yeti.jpg')
       expect(contents).to eq('a string')
+    end
+
+    it 'adds a figure to a zip2' do
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
+
+      expect(zip_filenames(zip_io)).to include('yeti.jpg')
     end
 
     describe "add_figures" do
@@ -221,9 +230,15 @@ describe ExportPackager do
       zip_io = ExportPackager.create_zip(paper, destination: 'not-apex')
 
       cover_letter_name = "aperta-cover-letter-#{paper.short_doi}.docx"
-      expect(zip_filenames(zip_io)).to include(cover_letter_name)
       contents = read_zip_entry(zip_io, cover_letter_name)
       expect(contents).to eq('some bytes')
+    end
+
+    it 'adds cover letter files to a zip2' do
+      zip_io = ExportPackager.create_zip(paper, destination: 'not-apex')
+
+      cover_letter_name = "aperta-cover-letter-#{paper.short_doi}.docx"
+      expect(zip_filenames(zip_io)).to include(cover_letter_name)
     end
   end
 
@@ -259,10 +274,13 @@ describe ExportPackager do
 
     it 'adds supporting information to a zip' do
       zip_io = ExportPackager.create_zip(paper, destination: 'apex')
-
-      expect(zip_filenames(zip_io)).to include('about_turtles.docx')
       contents = read_zip_entry(zip_io, 'about_turtles.docx')
       expect(contents).to eq('a string')
+    end
+
+    it 'adds supporting information to a zip2' do
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
+      expect(zip_filenames(zip_io)).to include('about_turtles.docx')
     end
 
     it 'does not add unpublishable supporting information to the zip' do
@@ -357,16 +375,28 @@ describe ExportPackager do
         .and_return(Rails.root.join('spec/fixtures/about_turtles.docx'))
     end
 
-    it 'creates a zip package for a paper with pdf and docx' do
+    it 'creates a zip package for a paper with pdf' do
       zip_io = ExportPackager.create_zip(paper, destination: 'apex')
-      expect(zip_filenames(zip_io)).to include('test.0001.docx')
-      expect(
-        zip_contains(zip_io, 'test.0001.docx', Rails.root.join('spec/fixtures/about_turtles.docx'))
-      ).to be(true)
       expect(zip_filenames(zip_io)).to include('test.0001.pdf')
+    end
+
+    it 'creates a zip package for a paper with pdf2' do
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
       expect(
         zip_contains(zip_io, 'test.0001.pdf', Rails.root.join('spec/fixtures/about_turtles.pdf'))
       ).to be(true)
+    end
+
+    it 'creates a zip package for a paper with docx' do
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
+      expect(
+        zip_contains(zip_io, 'test.0001.docx', Rails.root.join('spec/fixtures/about_turtles.docx'))
+      ).to be(true)
+    end
+
+    it 'creates a zip package for a paper with docx2' do
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
+      expect(zip_filenames(zip_io)).to include('test.0001.docx')
     end
   end
 end

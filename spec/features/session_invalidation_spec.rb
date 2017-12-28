@@ -1,4 +1,5 @@
 require "rails_helper"
+require 'support/pages/tasks/reviewer_report_task_overlay'
 
 feature "session invalidation", js: true do
   let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }

@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'support/rich_text_editor_helpers'
+require 'support/pages/tasks/reviewer_report_task_overlay'
 
 include RichTextEditorHelpers
 

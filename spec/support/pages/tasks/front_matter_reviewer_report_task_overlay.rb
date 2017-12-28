@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require File.dirname(__FILE__) + '/reviewer_report_task_overlay'
+require_relative 'reviewer_report_task_overlay'
 require 'support/rich_text_editor_helpers'
 
 class FrontMatterReviewerReportTaskOverlay < ReviewerReportTaskOverlay

@@ -1,4 +1,5 @@
 require 'support/pages/admin_dashboard_page'
+require 'support/pages/fragments/pending_invitation_fragment'
 require 'support/pages/paper_page'
 require 'support/rich_text_editor_helpers'
 

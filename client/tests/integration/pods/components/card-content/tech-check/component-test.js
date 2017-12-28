@@ -19,6 +19,7 @@ moduleForComponent(
       this.set('owner', task);
       this.set('actionStub', function() {});
       this.set('preview', true);
+      this.set('repetition', null);
       this.set('content', Ember.Object.create({ ident: 'test' }));
       this.set('answer', Ember.Object.create({ value: null }));
     },
@@ -35,6 +36,7 @@ disabled=disabled
 owner=owner
 answer=answer
 preview=preview
+repetition=repetition
 valueChanged=(action actionStub)
 }}`;
 
@@ -198,7 +200,7 @@ test(`checking a sendback will set the toggle to 'Fail' and send 'valueChanged'`
 
 test(`tech check email preview`, function(assert) {
   let ds = make('card-content', {
-    contentType: 'display-children',
+    contentType: 'display-children'
   });
   let tc = make('card-content', {
     contentType: 'tech-check',

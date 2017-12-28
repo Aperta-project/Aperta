@@ -158,6 +158,7 @@ HERE
   end
 
   def submit(&blk)
+    require 'support/pages/overlays/submit_paper_overlay'
     click_on "Submit"
     SubmitPaperOverlay.new.tap do |overlay|
       if blk

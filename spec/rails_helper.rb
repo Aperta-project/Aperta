@@ -16,7 +16,6 @@ require 'webmock/rspec'
 require 'rake'
 require 'fakeredis/rspec'
 Dir[Rails.root.join('lib', 'custom_card', '**', '*.rb')].each { |f| require f }
-include Warden::Test::Helpers
 
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
@@ -35,7 +34,6 @@ require_relative 'support/pages/page'
 require_relative 'support/pages/overlay'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
-include FeatureLogoutHelper
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -70,6 +68,8 @@ RSpec.configure do |config|
   config.include EmailSpec::Helpers
   config.include EmailSpec::Matchers
   config.include HTMLHelpers
+  config.include FeatureLogoutHelper, type: :feature
+  config.include Warden::Test::Helpers, type: :feature
 
   config.before(:suite) do
     Warden.test_mode!

@@ -2,6 +2,7 @@ require 'rails_helper'
 require 'support/invitation_feature_helpers'
 require 'support/rich_text_editor_helpers'
 require 'support/pages/page'
+require 'support/pages/overlays/invite_editor_overlay'
 
 feature "Inviting a new Academic Editor", js: true do
   include InvitationFeatureHelpers

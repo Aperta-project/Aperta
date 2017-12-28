@@ -1,6 +1,5 @@
 require 'support/pages/sign_in_page'
 require 'support/pages/sign_up_page'
-require 'support/pages/overlays/base_invite_users_overlay'
 require 'support/sidekiq_helper_methods'
 
 module InvitationFeatureHelpers

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/overlays/tech_check_overlay'
 require 'support/rich_text_editor_helpers'
 
 include RichTextEditorHelpers

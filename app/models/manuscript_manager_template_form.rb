@@ -26,6 +26,7 @@ class ManuscriptManagerTemplateForm
     process_params
     TaskTemplate.acts_as_list_no_update([TaskTemplate]) do
       template.update! params
+      template.touch
     end
   end
 

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/dashboard_page'
 require 'support/sidekiq_helper_methods'
 
 # rubocop:disable Style/PercentLiteralDelimiters

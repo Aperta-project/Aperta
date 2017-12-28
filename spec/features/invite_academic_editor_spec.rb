@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'support/pages/components/active_invitation'
+require 'support/pages/dashboard_page'
 require 'support/sidekiq_helper_methods'
 
 feature "Invite Academic Editor", js: true do

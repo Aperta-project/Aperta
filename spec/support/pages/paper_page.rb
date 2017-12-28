@@ -46,6 +46,7 @@ class PaperPage < Page
   end
 
   def visit_dashboard
+    require 'support/pages/dashboard_page'
     click_link 'Dashboard'
     DashboardPage.new
   end

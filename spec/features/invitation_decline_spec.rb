@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'support/invitation_feature_helpers'
+require 'support/pages/dashboard_page'
 
 # rubocop:disable Metrics/BlockLength
 feature "Invite Reviewer", js: true do

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/dashboard_page'
 
 feature "Register Decision", js: true, sidekiq: :inline! do
   let(:user) { FactoryGirl.create(:user) }

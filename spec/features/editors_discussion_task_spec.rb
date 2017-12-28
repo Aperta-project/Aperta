@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/dashboard_page'
 require 'support/pages/sign_in_page'
 
 feature "Editor Discussion", js: true do

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/dashboard_page'
 require 'support/pages/paper_page'
 
 feature 'Withdrawing a paper', js: true do

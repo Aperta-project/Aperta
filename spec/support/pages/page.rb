@@ -70,6 +70,7 @@ class Page < PageFragment
   end
 
   def navigate_to_dashboard
+    require 'support/pages/dashboard_page'
     find('.main-nav-item-app-name').click
     wait_for_ajax
     DashboardPage.new

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/dashboard_page'
 require 'support/sidekiq_helper_methods'
 
 feature 'Similarity Check', js: true, redis: true do

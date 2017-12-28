@@ -1,3 +1,5 @@
+require 'support/pages/page_fragment'
+
 class PageNotReady < Capybara::ElementNotFound; end
 
 class DeclarationFragment < PageFragment

@@ -1,3 +1,5 @@
+require 'support/pages/page_fragment'
+
 class TaskManagerPage < Page
 
   path :root

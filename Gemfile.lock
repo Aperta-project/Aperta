@@ -750,7 +750,7 @@ DEPENDENCIES
   migration_data
   mini_magick
   newrelic_rpm
-  nokogiri
+  nokogiri (>= 1.7.2)
   omniauth-cas
   omniauth-oauth2
   ordinalize

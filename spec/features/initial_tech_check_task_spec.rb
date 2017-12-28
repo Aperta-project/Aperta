@@ -1,5 +1,6 @@
 require 'rails_helper'
-require 'support/pages/overlays/tech_check_overlay'
+require 'support/pages/overlays/changes_for_author_overlay'
+require 'support/pages/overlays/initial_tech_check_overlay'
 
 feature 'Initial Tech Check', js: true do
   let(:journal) { create :journal, :with_roles_and_permissions }

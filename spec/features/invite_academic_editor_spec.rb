@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/sidekiq_helper_methods'
 
 feature "Invite Academic Editor", js: true do
   include SidekiqHelperMethods

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/sidekiq_helper_methods'
 
 # rubocop:disable Style/PercentLiteralDelimiters
 feature 'Send to Apex task', js: true do

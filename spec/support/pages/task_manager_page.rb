@@ -1,4 +1,5 @@
 require 'support/pages/page_fragment'
+require 'support/pages/paper_page'
 
 class TaskManagerPage < Page
 

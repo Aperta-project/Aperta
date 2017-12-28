@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/paper_page'
 
 feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
   let!(:user) { FactoryGirl.create :user, :site_admin }

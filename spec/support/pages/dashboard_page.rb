@@ -1,4 +1,5 @@
 require 'support/pages/admin_dashboard_page'
+require 'support/pages/paper_page'
 require 'support/rich_text_editor_helpers'
 
 # Represents the main page of the app
@@ -37,6 +38,7 @@ class DashboardPage < Page
   end
 
   def view_submitted_paper(paper)
+    require 'support/pages/paper_page'
     title = paper.title || paper.short_title
     click_link title
     wait_for_ajax

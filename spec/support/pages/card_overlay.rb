@@ -1,3 +1,5 @@
+require 'support/pages/paper_page'
+
 class CardOverlay < Page
   path :root
 

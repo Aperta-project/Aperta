@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/paper_page'
 
 feature "Submitting a paper", js: true do
   let(:admin) { create :user, :site_admin }

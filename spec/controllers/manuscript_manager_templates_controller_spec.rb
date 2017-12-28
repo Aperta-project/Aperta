@@ -219,11 +219,29 @@ describe ManuscriptManagerTemplatesController do
       it "updates the ManuscriptManagerTemplate" do
         do_request
         mmt = ManuscriptManagerTemplate.last
-        old_mmt_update_stamp = mmt.updated_at
         template = mmt.phase_templates.last.task_templates.last.template
         expect(mmt.paper_type).to eq(new_params[:paper_type])
-        expect(mmt.updated_at).not_to eq(old_mmt_update_stamp)
         expect(template.to_json).to eq(template_params.to_json)
+      end
+
+      context "when the update doesn't change the MMT's attributes" do
+        let(:new_params) do
+          {
+            phase_templates: [
+              manuscript_manager_template_id: mmt.id,
+              name: 'Phase title',
+              position: 1,
+              task_templates: [
+                journal_task_type_id: journal_task_type.id,
+                title: 'Ad-hoc',
+                template: template_params
+              ]
+            ]
+          }
+        end
+        it "still updates the MMT's timestamp" do
+          expect { do_request }.to change { ManuscriptManagerTemplate.last.updated_at }
+        end
       end
 
       context "with invalid params" do

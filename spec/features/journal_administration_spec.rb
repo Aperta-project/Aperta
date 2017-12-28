@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/admin_dashboard_page'
 
 feature "Journal Administration", js: true do
   let(:user) { create :user, :site_admin }

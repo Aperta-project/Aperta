@@ -1,3 +1,4 @@
+require 'support/pages/admin_dashboard_page'
 require 'support/rich_text_editor_helpers'
 
 # Represents the main page of the app
@@ -52,6 +53,7 @@ class DashboardPage < Page
   end
 
   def visit_admin
+    require 'support/pages/admin_dashboard_page'
     admin_link.click
     AdminDashboardPage.new
   end

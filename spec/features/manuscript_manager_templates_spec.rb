@@ -1,4 +1,6 @@
 require 'rails_helper'
+require 'support/pages/task_manager_page'
+
 # rubocop:disable Metrics/BlockLength
 feature 'Manuscript Manager Templates', js: true, selenium: true do
   let(:journal_admin) { FactoryGirl.create :user }

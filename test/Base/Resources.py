@@ -1861,8 +1861,8 @@ front_matter_mmt = {'name': 'Front-Matter-type',
                     'preprint_eligible': False
                     }
 research_mmt = {'name': 'Research',
-                'user_tasks': ['Authors', 'Billing', 'Cover Letter', 'Figures',
-                               'Financial Disclosure', 'Supporting Info',
+                'user_tasks': ['Additional Information', 'Authors', 'Billing', 'Cover Letter',
+                               'Figures', 'Financial Disclosure', 'Supporting Info',
                                'Upload Manuscript'],
                 'staff_tasks': ['Assign Team', 'Invite Academic Editor',
                                 'Invite Reviewers', 'Register Decision',
@@ -1871,9 +1871,9 @@ research_mmt = {'name': 'Research',
                 'preprint_eligible': False
                 }
 resrch_w_init_dec = {'name': 'Research w/Initial Decision Card',
-                     'user_tasks': ['Authors', 'Billing', 'Cover Letter', 'Figures',
+                     'user_tasks': ['Additional Information', 'Authors', 'Billing', 'Cover Letter',
                                     'Financial Disclosure', 'Supporting Info',
-                                    'Upload Manuscript'],
+                                    'Figures', 'Upload Manuscript'],
                      'staff_tasks': ['Assign Team', 'Initial Decision',
                                      'Invite Academic Editor', 'Invite Reviewers',
                                      'Register Decision', 'Title And Abstract',

@@ -21,12 +21,17 @@ from frontend.common_test import CommonTest
 from frontend.Cards.assign_team_card import AssignTeamCard
 from frontend.Cards.register_decision_card import RegisterDecisionCard
 from frontend.Cards.similarity_check_card import SimilarityCheckCard
-from .Pages.admin_workflows import AdminWorkflowsPage
 from frontend.Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.Pages.workflow_page import WorkflowPage
+from .Pages.admin_workflows import AdminWorkflowsPage
 from .Pages.sim_check_settings import SimCheckSettings
 
 __author__ = 'gtimonina@plos.org'
+
+auto_options = (('at_first_full_submission', sim_check_full_submission_mmt['name']),
+                ('after_major_revise_decision', sim_check_major_revision_mmt['name']),
+                ('after_minor_revise_decision', sim_check_minor_revision_mmt['name']),
+                ('after_any_first_revise_decision', sim_check_first_revision_mmt['name']))
 
 
 @MultiBrowserFixture
@@ -36,7 +41,7 @@ class SimilarityCheckTest(CommonTest):
 
     """
 
-    def rest_core_settings_validate_components_styles(self):
+    def test_core_settings_validate_components_styles(self):
         """
         Validates elements and styles for the Similarity Check Settings page
         :return: void function
@@ -300,10 +305,10 @@ class SimilarityCheckTest(CommonTest):
 
         logging.info('Test Similarity Check with Automation ON:: generate report '
                      'manually and validate access')
-        auto_options = (('at_first_full_submission', sim_check_full_submission_mmt['name']),
-                        ('after_major_revise_decision', sim_check_major_revision_mmt['name']),
-                        ('after_minor_revise_decision', sim_check_minor_revision_mmt['name']),
-                        ('after_any_first_revise_decision', sim_check_first_revision_mmt['name']))
+        # auto_options = (('at_first_full_submission', sim_check_full_submission_mmt['name']),
+        #                 ('after_major_revise_decision', sim_check_major_revision_mmt['name']),
+        #                 ('after_minor_revise_decision', sim_check_minor_revision_mmt['name']),
+        #                 ('after_any_first_revise_decision', sim_check_first_revision_mmt['name']))
 
         auto_setting = random.choice(auto_options)
         # TODO: delete after debugging:
@@ -442,7 +447,7 @@ class SimilarityCheckTest(CommonTest):
             # check Report History
             self.validate_report_history(sim_check, version='1.0')
 
-    def test_core_disable_automation_by_manual_generation(self):
+    def rest_core_disable_automation_by_manual_generation(self):
         """
         test_core_generate_manually_with_auto_settings:
         Validates APERTA-9958: Disable similarity check automation on manual report
@@ -463,11 +468,11 @@ class SimilarityCheckTest(CommonTest):
         logging.info('Test Similarity Check with Automation On:: disable automation by '
                      'sending report manually')
 
-        auto_options = (('after_major_revise_decision', sim_check_major_revision_mmt['name']),
-                        ('after_minor_revise_decision', sim_check_minor_revision_mmt['name']),
-                        ('after_any_first_revise_decision', sim_check_first_revision_mmt['name']))
+        # auto_options = (('after_major_revise_decision', sim_check_major_revision_mmt['name']),
+        #                 ('after_minor_revise_decision', sim_check_minor_revision_mmt['name']),
+        #                 ('after_any_first_revise_decision', sim_check_first_revision_mmt['name']))
 
-        auto_setting = random.choice(auto_options)
+        auto_setting = random.choice(auto_options[1:])
         # TODO: delete after debugging:
         auto_option = auto_setting[0]
         mmt_name = auto_setting[1]
@@ -547,26 +552,6 @@ class SimilarityCheckTest(CommonTest):
                      '{0}'.format(str(seconds_to_wait)))
         self.validate_report_history(sim_check, version='0.0')
 
-        # report_validation_result, validation_seconds, paper_data, report_data = \
-        #     sim_check.get_report_result(start_time)
-        #
-        # logging.info('Elapsed time for validation in seconds: '
-        #              '{0}'.format(str(validation_seconds)))
-        #
-        # # analyze the result
-        # if report_validation_result:
-        #     # 10 min time out exception - error message is expected to be displaye
-        #     assert 'Report not available:' in report_validation_result, report_validation_result
-        # else:
-        #     # results assertion
-        #     assert paper_data['title'] == report_data['title'], \
-        #         'The title {0} is expected.'.format(paper_data['title'])
-        #     assert paper_data['value'] in report_data['value'], 'Score {0} is expected in {1}' \
-        #         .format(paper_data['value'], report_data['value'])
-        #     assert paper_data['author'] in report_data['author'], \
-        #         'Paper author {0} is expected in {1}'.format(paper_data['author'],
-        #                                                      report_data['author'])
-
         sim_check.logout()
 
         # check that the Report generation is not triggered for the next revision:
@@ -591,7 +576,6 @@ class SimilarityCheckTest(CommonTest):
         sim_check.validate_styles_and_components('off')
         # check Report History
         self.validate_report_history(sim_check, version='0.0')
-
 
     def validate_report_history(self, sim_check, version):
         """

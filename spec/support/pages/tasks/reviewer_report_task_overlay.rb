@@ -1,3 +1,7 @@
+# coding: utf-8
+
+require 'support/pages/fragments/paper_task_overlay'
+
 # Helper class for running specs
 # coding: utf-8
 class ReviewerReportTaskOverlay < PaperTaskOverlay

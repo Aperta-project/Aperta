@@ -33,6 +33,7 @@ end
 require_relative '../lib/tasks/card_loading/support/card_loader'
 require_relative 'support/pages/page'
 require_relative 'support/pages/overlay'
+require_relative 'support/pages/fragments/paper_task_overlay'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 include FeatureLogoutHelper

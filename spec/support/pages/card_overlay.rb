@@ -6,7 +6,7 @@ class CardOverlay < Page
     expect(page).to have_no_css('.overlay')
   end
 
-  text_assertions :assignee, '.chosen-assignee.chosen-container', ->(name){ name.upcase }
+  text_assertions :assignee, '.chosen-assignee.chosen-container', ->(name) { name.upcase }
 
   def assignee
     all('.chosen-assignee.chosen-container').first

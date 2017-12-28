@@ -1,3 +1,7 @@
+# coding: utf-8
+
+require 'support/rich_text_editor_helpers'
+
 #
 # InvitationOverlay is a test helper for the "Reviewer Invitation" overlay
 # used by the application.

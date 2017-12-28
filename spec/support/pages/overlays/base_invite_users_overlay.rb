@@ -1,6 +1,9 @@
+require 'support/rich_text_editor_helpers'
+
 # PaperReviewerTask and PaperEditorTask both inherit from this overlay
 class BaseInviteUsersOverlay < CardOverlay
   include RichTextEditorHelpers
+
   text_assertions :invitee, '.invitation-item-full-name'
 
   def invited_users=(users)

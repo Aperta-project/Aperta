@@ -1,3 +1,5 @@
+require 'support/rich_text_editor_helpers'
+
 # Represents the main page of the app
 class DashboardPage < Page
   include RichTextEditorHelpers

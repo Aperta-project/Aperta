@@ -1,5 +1,6 @@
 # coding: utf-8
 
+require 'support/rich_text_editor_helpers'
 require 'support/pages/fragments/paper_task_overlay'
 
 # Helper class for running specs

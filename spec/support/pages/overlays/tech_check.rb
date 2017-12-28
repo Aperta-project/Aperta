@@ -1,3 +1,5 @@
+require 'support/rich_text_editor_helpers'
+
 class TechCheckOverlay < CardOverlay
   include RichTextEditorHelpers
 

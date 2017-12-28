@@ -16,7 +16,7 @@ import random
 from Base.Decorators import MultiBrowserFixture
 from frontend.common_test import CommonTest
 from .Pages.paper_tracker import PaperTrackerPage
-from Base.Resources import editorial_users, staff_admin_login, super_admin_login
+from Base.Resources import editorial_users
 
 __author__ = 'jgray@plos.org'
 
@@ -69,8 +69,8 @@ class ApertaPaperTrackerTest(CommonTest):
     def test_validate_paper_tracker_search(self):
         """
         test_paper_tracker: Validate Paper tracker search and saved search functions
-        Validate the Aperta Query Language Usage, Search function elements, including saved search, and
-        the Saved Search functions
+        Validate the Aperta Query Language Usage, Search function elements, including saved search,
+         and the Saved Search functions
         """
         logging.info('Test Paper Tracker::search')
         current_path = os.getcwd()

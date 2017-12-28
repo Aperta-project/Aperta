@@ -358,7 +358,7 @@ class ProfilePage(AuthenticatedPage):
     logging.info('Finished validating validations')
 
   def click_add_affiliation_button(self):
-    """Click add addiliation button"""
+    """Click add affiliation button"""
     self._wait_for_element(self._get(self._add_new_affiliation_btn))
     self._get(self._add_new_affiliation_btn).click()
 
@@ -415,11 +415,11 @@ class ProfilePage(AuthenticatedPage):
     institution_field = self._get(self._add_affiliation_institution_input)
     institution_parent_element = self._get(self._institution_parent)
     if user['affiliation-name'] and not transient:
-      institution_field.send_keys(user['affiliation-name'])
+      institution_field.send_keys(user['affiliation-name'] + Keys.ENTER)
       self.select_institution(institution_parent_element, user['affiliation-name'])
       affiliation_list.append(user['affiliation-name'])
     else:
-      institution_field.send_keys('Trump University')
+      institution_field.send_keys('Trump University'+Keys.ENTER)
       self.select_institution(institution_parent_element, 'Trump University')
       affiliation_list.append('Trump University')
     self.set_timeout(4)

@@ -15,7 +15,8 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import users, reviewer_login, academic_editor_login, editorial_users
+from Base.Resources import users, reviewer_login, reviewer_login2, reviewer_login3, \
+    academic_editor_login, editorial_users
 from .Cards.invite_reviewer_card import InviteReviewersCard
 from .Cards.invite_ae_card import InviteAECard
 from .Cards.reviewer_candidates_card import ReviewerCandidatesCard
@@ -33,7 +34,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
   1. Creator can recommend or oppose a reviewer
   """
 
-  def rest_smoke_reviewer_candidates_styles(self):
+  def test_smoke_reviewer_candidates_styles(self):
     """
     test_reviewer_candidates: Validates the elements, styles of the reviewer candidates task and
       card from new document creation through making a recommendation through
@@ -84,7 +85,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     rcc = ReviewerCandidatesCard(self.getDriver())
     rcc.validate_styles(reviewer_login, paper_id)
 
-  def rest_core_add_reviewer_candidate(self):
+  def test_core_add_reviewer_candidate(self):
     """
     test_reviewer_candidates_task: Validates the submission of a recommended or opposed reviewer.
       Validates the presentation of the data submitted from the task on the workflow card. Note
@@ -139,7 +140,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     rcc.validate_styles(reviewer_login, paper_id)
     rcc.check_initial_population(reviewer_login, choice, reason)
 
-  def rest_core_delete_reviewer_candidate(self):
+  def test_core_delete_reviewer_candidate(self):
     """
     test_reviewer_candidates_task: Validates the submission of a recommended or opposed reviewer.
       Following submission deletes that submitted reviewer.

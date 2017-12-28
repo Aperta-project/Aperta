@@ -13,7 +13,7 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import reviewer_login, users, editorial_users
+from Base.Resources import reviewer_login, reviewer_login2, reviewer_login3, users, editorial_users
 from frontend.common_test import CommonTest
 from .Cards.invite_reviewer_card import InviteReviewersCard
 from .Cards.reviewer_report_card import ReviewerReportCard
@@ -48,6 +48,8 @@ class ReviewerReportTest(CommonTest):
     # Create base data - new papers
     creator_user = random.choice(users)
     logging.info(creator_user)
+    reviewer = self._pick_reviewer()
+    logging.info('Selected reviewer is: {0}'.format(reviewer['name']))
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
@@ -88,7 +90,7 @@ class ReviewerReportTest(CommonTest):
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
     logging.info('Paper short DOI is: {0}.'.format(short_doi))
-    invite_reviewers.invite(reviewer_login)
+    invite_reviewers.invite(reviewer)
     workflow_page.logout()
     # Get invite title
     manuscript_title = PgSQL().query('SELECT title '
@@ -96,7 +98,7 @@ class ReviewerReportTest(CommonTest):
                                      (short_doi,))[0][0]
 
     # login as reviewer respond to invite
-    dashboard_page = self.cas_login(email=reviewer_login['email'])
+    dashboard_page = self.cas_login(email=reviewer['email'])
     dashboard_page.click_view_invites_button()
     dashboard_page.accept_invitation(manuscript_title)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -129,7 +131,7 @@ class ReviewerReportTest(CommonTest):
       paper_viewer.click_workflow_link()
       workflow_page = WorkflowPage(self.getDriver())
       workflow_page.page_ready()
-      card_title = 'Review by {0} (#1)'.format(reviewer_login['name'])
+      card_title = 'Review by {0} (#1)'.format(reviewer['name'])
       workflow_page.click_card('fm_review_by', card_title)
       reviewer_report_card = ReviewerReportCard(self.getDriver())
       #reviewer_report_card.card_ready() # not working - button.task-completed not there
@@ -148,6 +150,8 @@ class ReviewerReportTest(CommonTest):
     # Create base data - new papers
     creator_user = random.choice(users)
     logging.info(creator_user)
+    reviewer = self._pick_reviewer()
+    logging.info('Selected reviewer is: {0}'.format(reviewer['name']))
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True)
@@ -177,12 +181,13 @@ class ReviewerReportTest(CommonTest):
     workflow_page.page_ready()
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
-    invite_reviewers.invite(reviewer_login)
+    invite_reviewers.invite(reviewer)
     workflow_page.logout()
 
     # login as reviewer respond to invite
-    dashboard_page = self.cas_login(email=reviewer_login['email'])
-    reviewer_name = reviewer_login['name']
+    dashboard_page = self.cas_login(email=reviewer['email'])
+    reviewer_name = reviewer['name']
+    logging.warning(reviewer_name)
     dashboard_page.click_view_invites_button()
     # Get invite title
     manuscript_title = PgSQL().query('SELECT title '
@@ -203,8 +208,8 @@ class ReviewerReportTest(CommonTest):
     logging.info('Validate in {}'.format(validate_in[validate_view_in_place]))
     dashboard_page.logout()
     if validate_view_in_place:
-      logging.info(reviewer_login)
-      dashboard_page = self.cas_login(email=reviewer_login['email'])
+      logging.info(reviewer)
+      dashboard_page = self.cas_login(email=reviewer['email'])
       dashboard_page.page_ready()
       dashboard_page.go_to_manuscript(short_doi)
       self._driver.navigated = True
@@ -228,9 +233,18 @@ class ReviewerReportTest(CommonTest):
       paper_viewer.click_workflow_link()
       workflow_page = WorkflowPage(self.getDriver())
       workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
-      workflow_page.click_card('review_by', 'Review by {0} (#1)'.format(reviewer_name))
+      logging.warning(reviewer_name)
+      found = workflow_page.click_card('review_by', 'Review by {0} (#1)'.format(reviewer_name))
+      if not found:
+        raise(AssertionError, 'Card "Review by {0} (#1) not found'.format(reviewer_name))
       reviewer_report_card = ReviewerReportCard(self.getDriver())
       reviewer_report_card.validate_reviewer_report(outdata)
+
+  @staticmethod
+  def _pick_reviewer():
+    """Return a reviewer to use in test"""
+    reviewer = random.choice([reviewer_login3, reviewer_login, reviewer_login2])
+    return reviewer
 
 if __name__ == '__main__':
   CommonTest.run_tests_randomly()

@@ -13,7 +13,7 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users, handling_editor_login, cover_editor_login, \
-    reviewer_login, academic_editor_login
+    reviewer_login, reviewer_login2, reviewer_login3, academic_editor_login
 from frontend.common_test import CommonTest
 from .Cards.assign_team_card import AssignTeamCard
 from .Pages.manuscript_viewer import ManuscriptViewerPage
@@ -40,6 +40,7 @@ class AssignTeamCardTest(CommonTest):
     logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
+    reviewer_user=random.choice([reviewer_login3, reviewer_login, reviewer_login2])
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
@@ -88,9 +89,11 @@ class AssignTeamCardTest(CommonTest):
     assign_team.assign_role(academic_editor_login, 'Academic Editor')
     assign_team.assign_role(cover_editor_login, 'Cover Editor')
     assign_team.assign_role(handling_editor_login, 'Handling Editor')
-    assign_team.assign_role(reviewer_login, 'Reviewer')
+    assign_team.assign_role(reviewer_user, 'Reviewer')
     assign_team.revoke_assignment(academic_editor_login, 'Academic Editor')
     assign_team.revoke_assignment(reviewer_login, 'Reviewer')
+
+
 
 if __name__ == '__main__':
   CommonTest.run_tests_randomly()

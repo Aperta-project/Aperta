@@ -19,7 +19,8 @@ from dateutil import tz
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import ascii_only_users, editorial_users, staff_admin_login, reviewer_login
+from Base.Resources import ascii_only_users, editorial_users, staff_admin_login, reviewer_login, \
+    reviewer_login2, reviewer_login3
 from .Cards.invite_reviewer_card import InviteReviewersCard
 from frontend.common_test import CommonTest
 from .Pages.manuscript_viewer import ManuscriptViewerPage
@@ -213,6 +214,7 @@ class DiscussionForumTest(CommonTest):
 
     # Login as Staff user
     staff_user = random.choice(staff_users)
+    reviewer_user=random.choice([reviewer_login2, reviewer_login, reviewer_login3])
     logging.info(u'Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
@@ -242,7 +244,7 @@ class DiscussionForumTest(CommonTest):
       workflow_page.click_card('invite_reviewers')
       invite_reviewers = InviteReviewersCard(self.getDriver())
       invite_reviewers.card_ready()
-      invite_reviewers.invite(reviewer_login)
+      invite_reviewers.invite(reviewer_user)
     # Staff user logout
     manuscript_page.logout()
 
@@ -355,7 +357,7 @@ class DiscussionForumTest(CommonTest):
       manuscript_page.logout()
 
       # APERTA-9117
-      dashboard_page = self.cas_login(email=reviewer_login['email'])
+      dashboard_page = self.cas_login(email=reviewer_user['email'])
       dashboard_page.page_ready()
       dashboard_page.click_view_invitations()
       dashboard_page.accept_invitation(title=manuscript_title)

@@ -2,6 +2,7 @@ module TahiStandardTasks
   class ReviewerMailer < ApplicationMailer
     include Rails.application.routes.url_helpers
     include MailerHelper
+    include ::EmailFromLiquidTemplate
     add_template_helper ClientRouteHelper
     add_template_helper TemplateHelper
     layout "mailer"
@@ -34,7 +35,12 @@ module TahiStandardTasks
       @journal = @paper.journal
       @letter_template = @journal.letter_templates.find_by(ident: 'reviewer-accepted')
 
-      send_mail_with_letter_template(scenario: InvitationScenario.new(@invitation))
+      send_mail_from_letter_template(
+        journal: @journal,
+        letter_ident: 'reviewer-accepted',
+        scenario: InvitationScenario.new(@invitation),
+        check_blanks: false
+      )
     end
 
     def reviewer_declined(invitation_id:)
@@ -46,17 +52,26 @@ module TahiStandardTasks
       @journal = @paper.journal
       @letter_template = @journal.letter_templates.find_by(ident: 'reviewer-declined')
 
-      send_mail_with_letter_template(scenario: InvitationScenario.new(@invitation))
+      send_mail_from_letter_template(
+        journal: @journal,
+        letter_ident: 'reviewer-declined',
+        scenario: InvitationScenario.new(@invitation),
+        check_blanks: false
+      )
     end
 
     def welcome_reviewer(assignee_id:, paper_id:)
       @paper = Paper.find(paper_id)
       @reviewer_report = ReviewerReport.where( user_id: assignee_id, decision: @paper.draft_decision).first
       @journal = @paper.journal
-      @letter_template = @journal.letter_templates.find_by(ident: 'reviewer-welcome')
       @invitation = @reviewer_report.invitation
 
-      send_mail_with_letter_template(scenario: ReviewerReportScenario.new(@reviewer_report))
+      send_mail_from_letter_template(
+        journal: @journal,
+        letter_ident: 'reviewer-welcome',
+        scenario: ReviewerReportScenario.new(@reviewer_report),
+        check_blanks: false
+      )
     end
 
     def remind_before_due(reviewer_report_id:)

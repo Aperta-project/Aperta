@@ -1,3 +1,5 @@
+require 'support/pages/page'
+
 class JournalPage < Page
   text_assertions :mmt_name, ".admin-workflow-thumbnail .admin-workflow-thumbnail-header"
 

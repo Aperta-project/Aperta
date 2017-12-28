@@ -1,4 +1,6 @@
 require 'support/pages/dashboard_page'
+require 'support/pages/page'
+
 class SignInPage < Page
   path :new_user_session
 

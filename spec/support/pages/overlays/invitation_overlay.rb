@@ -1,5 +1,6 @@
 # coding: utf-8
 
+require 'support/pages/page'
 require 'support/rich_text_editor_helpers'
 
 #

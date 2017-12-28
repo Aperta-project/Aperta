@@ -1,4 +1,6 @@
 require 'support/pages/journal_page'
+require 'support/pages/page'
+
 class AdminDashboardPage < Page
   text_assertions :journal_name, '.journal-thumbnail-name'
 

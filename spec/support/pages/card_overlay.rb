@@ -1,3 +1,4 @@
+require 'support/pages/page'
 require 'support/pages/paper_page'
 
 class CardOverlay < Page

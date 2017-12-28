@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/sign_in_page'
 
 feature "Editor Discussion", js: true do
   let(:journal) { create :journal, :with_roles_and_permissions }

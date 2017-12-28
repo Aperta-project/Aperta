@@ -1,3 +1,4 @@
+require 'support/pages/sign_in_page'
 require 'support/sidekiq_helper_methods'
 
 module InvitationFeatureHelpers

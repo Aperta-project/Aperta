@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/sign_in_page'
 
 feature "CAS account creation" do
   scenario "User can create account for cas" do

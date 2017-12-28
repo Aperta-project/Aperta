@@ -591,7 +591,7 @@ GEM
     ruby-progressbar (1.8.1)
     ruby-rc4 (0.1.5)
     ruby_dig (0.0.2)
-    rubyzip (1.1.7)
+    rubyzip (1.2.1)
     rufus-scheduler (3.4.0)
       et-orbi (~> 1.0)
     safe_yaml (1.0.4)
@@ -787,7 +787,7 @@ DEPENDENCIES
   rubocop
   ruby-jing
   ruby_dig
-  rubyzip (= 1.1.7)
+  rubyzip (>= 1.2.1)
   sass-rails
   sdoc
   selenium-webdriver
@@ -816,4 +816,4 @@ RUBY VERSION
    ruby 2.3.6p384
 
 BUNDLED WITH
-   1.16.0
+   1.16.1

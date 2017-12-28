@@ -86,16 +86,16 @@ test('it retains validation errors on the remaining files when a file is deleted
   this.$('.si-file-viewing .si-file-edit-icon').first().click();
   assert.elementsFound('.si-file-viewing', 1);
   assert.elementsFound('.si-file-editor', 1);
-  
+
   // Validation errors are visible on the first file
   this.$('.si-file-editor .si-file-save-edit-button').click();
   assert.textPresent('.si-file-editor', 'Please edit and complete the required fields');
-  
+
   // delete the second file
   $.mockjax({url: '/api/supporting_information_files/2', type: 'DELETE', status: 204, responseText: ''});
   this.$('.si-file-viewing .si-file-delete-icon').click();
   this.$('.si-file-viewing .si-file-delete-button').click();
-  
+
   return wait().then(() => {
     // Validation errors remain visible on the first (and now only) file
     assert.textPresent('.si-file-editor', 'Please edit and complete the required fields');
@@ -217,6 +217,28 @@ test("it does not allow completion when any of the files' categories is not defi
   return wait().then(() => {
     assert.equal(testTask.get('completed'), false, 'task remains uncompleted');
     assert.mockjaxRequestNotMade('/api/tasks/1', 'PUT', 'it does not save the task')
+  });
+});
+
+test('the file save button turns red on task completion without save', function(assert) {
+  let doneFile = make('supporting-information-file', { status: 'done', category: null });
+  let testTask = createTaskWithFiles([doneFile]);
+  allowPermissionOnTask('edit', testTask);
+
+  this.set('testTask', testTask);
+  let testUrl = `/api/tasks/${testTask.id}`;
+  $.mockjax({url: testUrl, type: 'PUT', status: 204, responseText: '{}'});
+
+  this.render(template);
+
+  this.$('.si-file-edit-icon').click();
+  return wait().then(() => {
+    assert.elementNotFound('.si-file-save-edit-button.button--red', 'save button is not red');
+
+    this.$('.task-completed').click();
+    return wait().then(() => {
+      assert.elementFound('.si-file-save-edit-button.button--red', 'save button is now red');
+    });
   });
 });
 

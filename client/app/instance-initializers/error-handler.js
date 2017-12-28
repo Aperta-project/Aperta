@@ -15,11 +15,11 @@ export default {
     // the console and throw again.
     if (!Ember.testing) {
       Ember.onerror = function(error) {
+        logError(error);
         if (ENV.environment !== 'development') {
           bugsnag.notifyException(error);
         } else {
           flash.displayRouteLevelMessage('error', error);
-          logError(error);
           throw error;
         }
       };

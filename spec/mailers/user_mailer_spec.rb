@@ -233,6 +233,12 @@ describe UserMailer, redis: true do
         expect(email_2.body).to include_as_escaped_html(author_full_name)
       end
     end
+
+    it "will use the coauthor's full name if they have not specified a last name, omitting the 'Dr.' title" do
+      author_3.update!(last_name: nil, first_name: 'Cher')
+      email = UserMailer.notify_coauthor_of_paper_submission(paper.id, author_3.id, "Author")
+      expect(email.body).to include_as_escaped_html("Cher,")
+    end
   end
 
   describe '#notify_creator_of_initial_submission' do

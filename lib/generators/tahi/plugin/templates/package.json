@@ -1,6 +1,0 @@
-{
-    "name": "<%= dasherized_module_name %>",
-    "keywords": [
-        "ember-addon"
-    ]
-}

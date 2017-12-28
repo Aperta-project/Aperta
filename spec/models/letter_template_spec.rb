@@ -148,5 +148,13 @@ describe LetterTemplate do
       expect(LetterTemplate.where(ident: orig_ident)).to exist
     end
   end
+
+  describe '#render_dummy_data' do
+    it 'loads dummy data file and render it into a template' do
+      letter_template = LetterTemplate.new(body: '{{journal.name}}')
+      letter_template.render_dummy_data
+      expect(letter_template.body). to eq('PLOS')
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength

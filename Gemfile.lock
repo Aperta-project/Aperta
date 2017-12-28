@@ -15,36 +15,6 @@ GIT
       rails (>= 3.0, < 4.3)
       rake (>= 0.8.7)
 
-PATH
-  remote: engines/plos_billing
-  specs:
-    plos_billing (0.0.1)
-      rails (~> 4.2.0)
-
-PATH
-  remote: engines/plos_bio_internal_review
-  specs:
-    plos_bio_internal_review (0.0.1)
-      rails (~> 4.2.1)
-
-PATH
-  remote: engines/plos_bio_tech_check
-  specs:
-    plos_bio_tech_check (0.0.1)
-      rails (~> 4.2.0)
-
-PATH
-  remote: engines/tahi-assign_team
-  specs:
-    tahi-assign_team (0.0.1)
-      rails (~> 4.2.1)
-
-PATH
-  remote: engines/tahi_standard_tasks
-  specs:
-    tahi_standard_tasks (0.0.1)
-      rails (~> 4.2.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -387,7 +357,7 @@ GEM
     hashie (3.4.2)
     health_check (2.6.0)
       rails (>= 4.0)
-    heroku-deflater (0.5.3)
+    heroku-deflater (0.6.3)
       rack (>= 1.4.5)
     hitimes (1.2.3)
     html_page (0.1.0)
@@ -546,8 +516,8 @@ GEM
     rails_12factor (0.0.3)
       rails_serve_static_assets
       rails_stdout_logging
-    rails_serve_static_assets (0.0.4)
-    rails_stdout_logging (0.0.3)
+    rails_serve_static_assets (0.0.5)
+    rails_stdout_logging (0.0.5)
     railties (4.2.10)
       actionpack (= 4.2.10)
       activesupport (= 4.2.10)
@@ -621,7 +591,7 @@ GEM
     ruby-progressbar (1.8.1)
     ruby-rc4 (0.1.5)
     ruby_dig (0.0.2)
-    rubyzip (1.1.7)
+    rubyzip (1.2.1)
     rufus-scheduler (3.4.0)
       et-orbi (~> 1.0)
     safe_yaml (1.0.4)
@@ -679,6 +649,7 @@ GEM
     sshkit (1.8.1)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
+    syslogger (1.6.5)
     test_after_commit (0.4.1)
       activerecord (>= 3.2)
     thin (1.6.3)
@@ -789,9 +760,6 @@ DEPENDENCIES
   pdfkit
   pg
   pg_search
-  plos_billing!
-  plos_bio_internal_review!
-  plos_bio_tech_check!
   premailer-rails
   progressbar
   pry-byebug
@@ -819,7 +787,7 @@ DEPENDENCIES
   rubocop
   ruby-jing
   ruby_dig
-  rubyzip (= 1.1.7)
+  rubyzip (>= 1.2.1)
   sass-rails
   sdoc
   selenium-webdriver
@@ -831,8 +799,7 @@ DEPENDENCIES
   sort_alphabetical
   spring
   spring-commands-rspec
-  tahi-assign_team!
-  tahi_standard_tasks!
+  syslogger
   test_after_commit
   thin
   timecop
@@ -846,7 +813,7 @@ DEPENDENCIES
   yaml_db!
 
 RUBY VERSION
-   ruby 2.2.8p477
+   ruby 2.3.6p384
 
 BUNDLED WITH
-   1.16.0
+   1.16.1

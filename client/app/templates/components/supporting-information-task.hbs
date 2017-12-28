@@ -1,0 +1,46 @@
+{{partial "task-completed-section"}}
+
+{{#unless legendsAllowed}}
+  <div class="task-main-content">
+    <p>
+      For each Supporting Information file,
+      include a legend at the end of your manuscript after any figures.
+    </p>
+  </div>
+{{/unless}}
+
+<div class="task-main-content">
+  <div class="supporting-information-files">
+    {{#each filesWithValidations as |file|}}
+      {{supporting-information-file model=file
+                                    updateFile=(action "updateFile")
+                                    deleteFile=(action "deleteFile")
+                                    taskErrors=validationErrors
+                                    isEditable=isEditable}}
+    {{/each}}
+  </div>
+
+  <div id="paper-file-uploads">
+    {{#each uploads as |upload|}}
+      {{upload-preview upload=upload}}
+    {{/each}}
+  </div>
+  {{#if isEditable}}
+    <span class="button-primary button--green fileinput-button si-files-upload-button">
+      <span>Add Files</span>
+      {{file-uploader id="file_attachment"
+                      filePrefix="supporting-info"
+                      url=uploadUrl
+                      start="uploadStarted"
+                      done="uploadFinished"
+                      cancel="cancelUploads"
+                      progress="uploadProgress"
+                      multiple=true
+                      disabled=notEditable}}
+    </span>
+
+    <div>
+      Please provide files in their native file formats, e.g. Word, Excel, WAV, MPEG, JPG, etc.
+    </div>
+  {{/if}}
+</div>

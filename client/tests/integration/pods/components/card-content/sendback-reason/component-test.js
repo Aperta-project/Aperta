@@ -15,6 +15,9 @@ moduleForComponent('card-content/sendback-reason', 'Integration | Component | ca
     this.set('owner', make('custom-card-task'));
     this.set('content', Ember.Object.create({ ident: 'test' }));
     this.set('answer', Ember.Object.create({ value: null }));
+    this.set('answerChanged', null);
+    this.set('preview', false);
+    this.set('repetition', null);
     this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
   }
 });
@@ -44,6 +47,16 @@ let createSendbackWithChildren = () => {
   return sendback;
 };
 
+let template = hbs`{{card-content/sendback-reason
+  content=sendback
+  answer=answer
+  disabled=disabled
+  owner=owner
+  repetition=repetition
+  preview=preview
+  answerChanged=answerChanged
+  valueChanged=(action actionStub)}}`;
+
 test('it shows its text if provided', function(assert) {
 
   let sendback = createSendbackWithChildren();
@@ -51,12 +64,7 @@ test('it shows its text if provided', function(assert) {
   // Handle any actions with this.on('myAction', function(val) { ... });
   this.set('sendback', sendback);
 
-  this.render(hbs`{{card-content/sendback-reason
-  content=sendback
-  answer=answer
-  disabled=disabled
-  owner=owner
-  valueChanged=(action actionStub)}}`);
+  this.render(template);
 
   assert.equal(this.$('.card-checkbox .card-form-text').text().trim(), 'lalalala');
 });
@@ -68,12 +76,7 @@ test('it shows its label if provided', function(assert) {
   // Handle any actions with this.on('myAction', function(val) { ... });
   this.set('sendback', sendback);
 
-  this.render(hbs`{{card-content/sendback-reason
-  content=sendback
-  answer=answer
-  disabled=disabled
-  owner=owner
-  valueChanged=(action actionStub)}}`);
+  this.render(template);
 
   assert.equal(this.$('label').first().text().trim(), 'See me!');
 });
@@ -86,12 +89,7 @@ test('it displays the pencil if sendback reason is checked', function(assert) {
   // Handle any actions with this.on('myAction', function(val) { ... });
   this.set('sendback', sendback);
 
-  this.render(hbs`{{card-content/sendback-reason
-  content=sendback
-  answer=answer
-  disabled=disabled
-  owner=owner
-  valueChanged=(action actionStub)}}`);
+  this.render(template);
 
   this.$('input[type=checkbox]').click();
   assert.elementFound('.fa-pencil');
@@ -105,12 +103,7 @@ test('it hides the pencil if sendback reason is unchecked', function(assert) {
   // Handle any actions with this.on('myAction', function(val) { ... });
   this.set('sendback', sendback);
 
-  this.render(hbs`{{card-content/sendback-reason
-  content=sendback
-  answer=answer
-  disabled=disabled
-  owner=owner
-  valueChanged=(action actionStub)}}`);
+  this.render(template);
 
   assert.elementNotFound('.fa-pencil');
 
@@ -122,14 +115,9 @@ test('it displays the textrea if sendback reason is checked', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
   this.set('sendback', sendback);
+  this.set('preview', true);
 
-  this.render(hbs`{{card-content/sendback-reason
-  content=sendback
-  answer=answer
-  disabled=disabled
-  preview=true
-  owner=owner
-  valueChanged=(action actionStub)}}`);
+  this.render(template);
 
   this.$('input[type=checkbox]').click();
 
@@ -143,14 +131,9 @@ test('it hides the textrea if sendback reason is checked but the pencil has not 
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
   this.set('sendback', sendback);
+  this.set('preview', true);
 
-  this.render(hbs`{{card-content/sendback-reason
-  content=sendback
-  answer=answer
-  disabled=disabled
-  preview=true
-  owner=owner
-  valueChanged=(action actionStub)}}`);
+  this.render(template);
 
   this.$('#check-box-reason').click();
   assert.elementNotFound('.card-content-paragraph-input');

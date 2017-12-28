@@ -18,6 +18,7 @@ export default Ember.Mixin.create({
     let base = this.makeBasePath();
 
     this.setProperties({
+      atMentionableStaffUsers:[], //Required proptype of at-mentionable-textarea component
       topicsParentPath: 'paper.' + this.get('subRouteName'),
       topicsBasePath:   base,
       topicsIndexPath:  base + '.index',

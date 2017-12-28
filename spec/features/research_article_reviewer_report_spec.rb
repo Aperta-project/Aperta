@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'support/pages/paper_page'
+require 'support/pages/paper_workflow_page'
 require 'support/pages/tasks/reviewer_report_task_overlay'
 require 'support/rich_text_editor_helpers'
 

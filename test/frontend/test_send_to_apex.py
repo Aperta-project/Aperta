@@ -90,7 +90,8 @@ class SendToApexTest(CommonTest):
 
     def test_smoke_send_to_apex_metadata_file(self):
         """
-        test_send_to_apex_file: Validate if the metadata file sent to apex contains the correct information
+        test_send_to_apex_file: Validate if the metadata file sent to apex contains the correct
+            information
         """
         logging.info('test_send_to_apex_file')
         # Create base data - new papers
@@ -114,7 +115,7 @@ class SendToApexTest(CommonTest):
         manuscript_page.complete_task('Additional Information')
         manuscript_page.complete_task('Authors', author=creator_user)
         manuscript_page.complete_task('Billing')
-        manuscript_page.complete_task('Competing Interest')
+        manuscript_page.complete_task('Competing Interests')
         manuscript_page.complete_task('Cover Letter')
         manuscript_page.complete_task('Data Availability')
         manuscript_page.complete_task('Early Version')
@@ -220,7 +221,6 @@ class SendToApexTest(CommonTest):
                                                       hash_file,
                                                       short_doi,
                                                       file_ext)
-
 
     def test_core_send_to_apex_message(self):
         """

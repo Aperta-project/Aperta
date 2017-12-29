@@ -1,25 +1,23 @@
 import Ember from 'ember';
 import startApp from 'tahi/tests/helpers/start-app';
-import { module, test } from 'ember-qunit';
+import { moduleFor, test } from 'ember-qunit';
 var container, subject;
 
 subject = null;
 
 container = null;
 
-module('Integration: Application Serializer', {
+moduleFor('serializer:application', 'Integration: Application Serializer', {
+  integration: true,
   beforeEach: function() {
-    var app;
-    app = startApp();
-    container = app.__container__;
-    return subject = container.lookup('serializer:application');
+    return subject = this.container.lookup('serializer:application');
   }
 });
 
 test('serializing a model that was originally namespaced will correctly re-namespace it', function(assert) {
   return Ember.run(() => {
     var json, snapshot, task;
-    task = getStore().createRecord('task', {
+    task = this.container.lookup('service:store').createRecord('task', {
       qualifiedType: 'Foo::BarTask'
     });
     snapshot = task._createSnapshot();
@@ -39,7 +37,7 @@ test('mungeTaskData', function(assert) {
 
 test("normalizeSingleResponse normalizes the primary task record based on its 'type' attribute", function(assert) {
   var expectedPayload, pluralResult, result, store, task;
-  store = getStore();
+  store = this.container.lookup('service:store');
   task = {
     id: '1',
     type: 'InitialTechCheckTask',
@@ -67,7 +65,7 @@ test("normalizeSingleResponse normalizes the primary task record based on its 't
 
 test('normalizeSingleResponse leaves a model with the requested type unchanged', function(assert) {
   var expectedPayload, pluralResult, result, store, task;
-  store = getStore();
+  store = this.container.lookup('service:store');
   task = {
     id: '1',
     type: 'AdHocTask',
@@ -95,7 +93,7 @@ test('normalizeSingleResponse leaves a model with the requested type unchanged',
 
 test("normalizeSingleResponse normalizes sideloaded tasks via their 'type' attribute", function(assert) {
   var jsonHash, result, store;
-  store = getStore();
+  store = this.container.lookup('service:store');
   jsonHash = {
     tasks: [
       {
@@ -390,7 +388,7 @@ test("newNormalize doesn't touch non-primary records that don't have a type attr
 
 test("normalizeSingleResponse normalizes sideloaded stuff even if they're not explicitly tasks", function(assert) {
   var jsonHash, result, store;
-  store = getStore();
+  store = this.container.lookup('service:store');
   jsonHash = {
     tasks: [
       {
@@ -463,7 +461,7 @@ test("normalizeSingleResponse normalizes sideloaded stuff even if they're not ex
 
 test("normalizeArrayResponse normalizes an array of tasks via each task's type attribute", function(assert) {
   var jsonHash, result, store;
-  store = getStore();
+  store = this.container.lookup('service:store');
   jsonHash = {
     tasks: [
       {
@@ -491,7 +489,7 @@ test("normalizeArrayResponse normalizes an array of tasks via each task's type a
 
 test("normalizeArrayResponse normalizes an array of tasks via each task's type attribute, even when the first task is not polymorphic", function(assert) {
   var jsonHash, result, store;
-  store = getStore();
+  store = this.container.lookup('service:store');
   jsonHash = {
     ad_hoc_tasks: [
       {
@@ -519,7 +517,7 @@ test("normalizeArrayResponse normalizes an array of tasks via each task's type a
 
 test("normalizeArrayResponse properly denamespaces tasks even when the main type isn't 'task'", function(assert) {
   var jsonHash, result, store;
-  store = getStore();
+  store = this.container.lookup('service:store');
   jsonHash = {
     paper: {},
     authors_tasks: [
@@ -536,7 +534,7 @@ test("normalizeArrayResponse properly denamespaces tasks even when the main type
 
 test("normalizeArrayResponse works correctly even when no 'task' type tasks are in the payload", function(assert) {
   var jsonHash, result, store;
-  store = getStore();
+  store = this.container.lookup('service:store');
   jsonHash = {
     tasks: [
       {
@@ -558,7 +556,7 @@ test("normalizeArrayResponse works correctly even when no 'task' type tasks are 
 
 test("normalizeArrayResponse works correctly even when no 'task' type tasks are in the payload", function(assert) {
   var jsonHash, result, store;
-  store = getStore();
+  store = this.container.lookup('service:store');
   jsonHash = {
     attachments: [
       {

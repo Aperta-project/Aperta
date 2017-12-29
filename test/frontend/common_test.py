@@ -15,7 +15,7 @@ from Base.FrontEndTest import FrontEndTest
 from Base.PostgreSQL import PgSQL
 from Base.Resources import login_valid_pw, docs, docxs, pdfs, users, editorial_users, \
     external_editorial_users, au_login, co_login, rv_login, ae_login, he_login, fm_login, \
-    oa_login, production_urls
+    oa_login, production_urls, reviewer_users
 from .Pages.login_page import LoginPage
 from .Pages.akita_login_page import AkitaLoginPage
 from .Pages.dashboard import DashboardPage
@@ -529,3 +529,10 @@ class CommonTest(FrontEndTest):
         except IndexError:
             return False
         return True
+
+    @staticmethod
+    def pick_reviewer():
+        """Return a reviewer to use in test"""
+        reviewer = random.choice(reviewer_users)
+        logging.info('Selected reviewer is: {0}'.format(reviewer))
+        return reviewer

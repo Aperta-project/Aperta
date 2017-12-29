@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/card_overlay'
 
 feature "Displaying task", js: true do
   let(:admin) { create :user, :site_admin }

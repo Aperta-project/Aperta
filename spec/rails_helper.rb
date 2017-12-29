@@ -15,8 +15,10 @@ require 'sidekiq/testing'
 require 'webmock/rspec'
 require 'rake'
 require 'fakeredis/rspec'
+
+# Necessary card loading stuff
 Dir[Rails.root.join('lib', 'custom_card', '**', '*.rb')].each { |f| require f }
-include Warden::Test::Helpers
+require_relative '../lib/tasks/card_loading/support/card_loader'
 
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
@@ -28,15 +30,10 @@ VCR.configure do |config|
   config.ignore_localhost = true
 end
 
-# Requires supporting ruby files with custom matchers and macros, etc,
-# in spec/support/ and its subdirectories.
-require_relative '../lib/tasks/card_loading/support/card_loader'
-require_relative 'support/pages/page'
-require_relative 'support/pages/overlay'
-require_relative 'support/pages/fragments/paper_task_overlay'
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
-
-include FeatureLogoutHelper
+# Require a limited set of support files
+Dir[Rails.root.join('spec', 'support', 'matchers', '*.rb')].sort.each { |f| require f }
+Dir[Rails.root.join('spec', 'support', 'shared_examples', '*.rb')].sort.each { |f| require f }
+Dir[Rails.root.join('spec', 'support', '*.rb')].sort.each { |f| require f }
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -71,6 +68,8 @@ RSpec.configure do |config|
   config.include EmailSpec::Helpers
   config.include EmailSpec::Matchers
   config.include HTMLHelpers
+  config.include FeatureLogoutHelper, type: :feature
+  config.include Warden::Test::Helpers, type: :feature
 
   config.before(:suite) do
     Warden.test_mode!

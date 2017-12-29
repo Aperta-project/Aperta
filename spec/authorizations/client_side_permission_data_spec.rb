@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/authorization_spec_helper'
 
 describe <<-DESC.strip_heredoc do
   In order to be able to communicate permission information to the front-end

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/authorization_spec_helper'
 
 describe PaperTrackerSerializer, serializer_test: true do
   include AuthorizationSpecHelper

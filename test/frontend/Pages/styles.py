@@ -838,10 +838,6 @@ class StyledPage(PlosPage):
     """
     assert APPLICATION_TYPEFACE in olul.value_of_css_property('font-family'), \
         olul.value_of_css_property('font-family')
-    assert olul.value_of_css_property('font-size') == '19.6px', \
-        olul.value_of_css_property('font-size')
-    assert olul.value_of_css_property('line-height') == '23.5167px', \
-        olul.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
     assert olul.value_of_css_property('color') == APERTA_BLACK, olul.value_of_css_property('color')
 

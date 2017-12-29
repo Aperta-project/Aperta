@@ -291,6 +291,16 @@ describe TasksController, redis: true do
           end.to change { task.reload.assigned_user_id }.from(11).to(nil)
         end
 
+        it "allows changing phase and position in the workflow" do
+          task.update!(phase_id: 11, position: 11)
+          task_params[:phase_id] = 22
+          task_params[:position] = 22
+          do_request
+          task.reload
+          expect(task.phase_id).to eq(22)
+          expect(task.position).to eq(22)
+        end
+
         it "does not incomplete the task when the completed param is not a part of the request" do
           expect do
             task_params = { title: 'vernors' }

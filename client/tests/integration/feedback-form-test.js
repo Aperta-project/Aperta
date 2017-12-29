@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from 'tahi/tests/helpers/start-app';
-import Factory from '../helpers/factory';
 import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 
 let App = null;

@@ -1,9 +1,9 @@
 import { test } from 'ember-qunit';
-import startApp from '../helpers/start-app';
+import startApp from 'tahi/tests/helpers/start-app';
 import Ember from 'ember';
 import * as TestHelper from 'ember-data-factory-guy';
-import setupMockServer from '../helpers/mock-server';
-import Factory from '../helpers/factory';
+import setupMockServer from 'tahi/tests/helpers/mock-server';
+import Factory from 'tahi/tests/helpers/factory';
 import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 
 var server = null;

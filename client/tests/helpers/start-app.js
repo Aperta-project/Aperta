@@ -4,7 +4,7 @@ import Router from '../../router';
 import config from '../../config/environment';
 import * as TestHelper from 'ember-data-factory-guy';
 
-import registerPowerSelectHelpers from '../../tests/helpers/ember-power-select';
+import registerPowerSelectHelpers from 'tahi/tests/helpers/ember-power-select';
 
 import registerCustomAssertions from './custom-assertions';
 import registerAsyncHelpers     from './async-helpers';

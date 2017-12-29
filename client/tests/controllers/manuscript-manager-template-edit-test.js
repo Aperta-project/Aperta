@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import startApp from '../helpers/start-app';
+import startApp from 'tahi/tests/helpers/start-app';
 import { test, moduleFor } from 'ember-qunit';
 
 moduleFor(

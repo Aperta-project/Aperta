@@ -1,9 +1,8 @@
 import Ember from 'ember';
 import { moduleForModel, test } from 'ember-qunit';
 import FactoryGuy from 'ember-data-factory-guy';
-import customAssertions from '../helpers/custom-assertions';
 import sinon from 'sinon';
-import startApp from '../helpers/start-app';
+import startApp from 'tahi/tests/helpers/start-app';
 import * as TestHelper from 'ember-data-factory-guy';
 
 var app;

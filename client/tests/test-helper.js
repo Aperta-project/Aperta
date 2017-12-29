@@ -1,4 +1,4 @@
-import resolver from './helpers/resolver';
+import resolver from 'tahi/tests/helpers/resolver';
 import {
   setResolver
 } from 'ember-qunit';

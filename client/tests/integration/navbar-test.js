@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import { test } from 'ember-qunit';
-import setupMockServer from '../helpers/mock-server';
+import setupMockServer from 'tahi/tests/helpers/mock-server';
 import * as TestHelper from 'ember-data-factory-guy';
-import Factory from '../helpers/factory';
+import Factory from 'tahi/tests/helpers/factory';
 import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 
 var respondAuthorized, respondUnauthorized, setCurrentUserAdmin;

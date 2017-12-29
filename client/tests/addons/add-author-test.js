@@ -1,11 +1,11 @@
 import { test } from 'ember-qunit';
 import * as TestHelper from 'ember-data-factory-guy';
-import Factory from '../helpers/factory';
-import setupMockServer from '../helpers/mock-server';
+import Factory from 'tahi/tests/helpers/factory';
+import setupMockServer from 'tahi/tests/helpers/mock-server';
 import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 import {
   paperWithTask, addUserAsParticipant, addNestedQuestionToTask
-} from '../helpers/setups';
+} from 'tahi/tests/helpers/setups';
 
 let fakeUser = null;
 let server   = null;

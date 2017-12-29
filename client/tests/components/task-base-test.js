@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { test, moduleForComponent } from 'ember-qunit';
-import FakeCanService from '../helpers/fake-can-service';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 
 moduleForComponent('task-base', 'Unit: components/task-base', {
   unit: true,

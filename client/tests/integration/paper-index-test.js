@@ -2,9 +2,9 @@ import { test } from 'ember-qunit';
 import {
   paperWithTask,
   addNestedQuestionToTask
-} from '../helpers/setups';
-import setupMockServer from '../helpers/mock-server';
-import Factory from '../helpers/factory';
+} from 'tahi/tests/helpers/setups';
+import setupMockServer from 'tahi/tests/helpers/mock-server';
+import Factory from 'tahi/tests/helpers/factory';
 import { mockFindAll } from 'ember-data-factory-guy';
 import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 var currentPaper, fakeUser, server;

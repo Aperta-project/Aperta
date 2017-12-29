@@ -3,7 +3,7 @@ import { test } from 'ember-qunit';
 import { make, makeList, mockFindRecord, mockFindAll, mockDelete } from 'ember-data-factory-guy';
 import setupMockServer from 'tahi/tests/helpers/mock-server';
 import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
-import Factory from '../helpers/factory';
+import Factory from 'tahi/tests/helpers/factory';
 import * as TestHelper from 'ember-data-factory-guy';
 
 var paper = null;

@@ -1,7 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import { initialize as initTruthHelpers }  from 'tahi/initializers/truth-helpers';
-import customAssertions from '../../helpers/custom-assertions';
+import customAssertions from 'tahi/tests/helpers/custom-assertions';
 import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
 

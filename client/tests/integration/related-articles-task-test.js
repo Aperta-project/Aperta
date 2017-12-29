@@ -2,8 +2,8 @@ import {moduleForComponent, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
 // Pretend like you're in client/tests
-import FakeCanService from '../helpers/fake-can-service';
-import registerCustomAssertions from '../helpers/custom-assertions';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
+import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 
 
 moduleForComponent(

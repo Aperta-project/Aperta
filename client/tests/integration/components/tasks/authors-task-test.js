@@ -1,7 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
-import Factory from '../../../helpers/factory';
+import Factory from 'tahi/tests/helpers/factory';
 import Ember from 'ember';
 import wait from 'ember-test-helpers/wait';
 import FakeCanService from 'tahi/tests/helpers/fake-can-service';

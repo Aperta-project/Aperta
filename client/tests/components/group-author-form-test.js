@@ -4,7 +4,7 @@ import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup } from 'ember-data-factory-guy';
 import { createQuestionWithAnswer } from 'tahi/tests/factories/nested-question';
 import * as TestHelper from 'ember-data-factory-guy';
-import FakeCanService from '../helpers/fake-can-service';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 
 import hbs from 'htmlbars-inline-precompile';

@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from 'tahi/tests/helpers/start-app';
 import FactoryGuy from 'ember-data-factory-guy';
-import Factory from '../helpers/factory';
+import Factory from 'tahi/tests/helpers/factory';
 import * as TestHelper from 'ember-data-factory-guy';
 import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 

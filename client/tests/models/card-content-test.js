@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { moduleForModel, test } from 'ember-qunit';
 import { make } from 'ember-data-factory-guy';
-import startApp from '../helpers/start-app';
+import startApp from 'tahi/tests/helpers/start-app';
 import * as TestHelper from 'ember-data-factory-guy';
 
 var app;

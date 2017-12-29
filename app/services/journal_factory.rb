@@ -854,7 +854,7 @@ class JournalFactory
         lt.subject = 'Your review for {{ journal.name }} is due soon'
         lt.body = <<-TEXT.strip_heredoc
           <p>Dear Dr. {{ reviewer.last_name }}</p>
-          <p>Thank you again for agreeing to review “{{ manuscript.title }}” for {{ journal.name }}. This is a brief reminder that we hope to receive your review comments on the manuscript by {{ review.due_at_with_minutes }}. Please let us know as soon as possible, by return email, if your review will be delayed.</p>
+          <p>Thank you again for agreeing to review “{{ manuscript.title }}” for {{ journal.name }}. This is a brief reminder that we hope to receive your review comments on the manuscript by {{ review.due_at }}. Please let us know as soon as possible, by return email, if your review will be delayed.</p>
           <p>To view the manuscript and submit your review, please log in to Aperta via the green button below.</p>
           <p>For further instructions, please see the Aperta Reviewer Guide here: <a href="http://plos.io/Aperta-Reviewers">http://plos.io/Aperta-Reviewers</a></p>
           <p>We are grateful for your continued support of {{ journal.name }}. Please do not hesitate to contact the journal office if you have questions or require assistance.</p>
@@ -959,7 +959,7 @@ class JournalFactory
           <h1>Thank you for agreeing to review for {{ journal.name }}</h1>
           <p>Hello {{ reviewer.full_name }},</p>
           <p>Thank you very much for agreeing to review the manuscript "{{ manuscript.title }}" for {{ journal.name }}.</p>
-          <p>In the interest of returning timely decisions to the authors, please return your review by {{ review.due_at }}. Please do let us know if you wish to request additional time to review this manuscript, so that we may plan accordingly.</p>
+          <p>In the interest of returning timely decisions to the authors, please return your review by {{ review.due_at_with_minutes }}. Please do let us know if you wish to request additional time to review this manuscript, so that we may plan accordingly.</p>
           <p>For full reviewer guidelines, including what we look for and how to structure your
             review for PLOS Biology, please visit: <a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines">http://journals.plos.org/plosbiology/s/reviewer-guidelines"</a>.</p>
         TEXT

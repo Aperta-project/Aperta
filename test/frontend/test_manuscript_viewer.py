@@ -180,15 +180,18 @@ class ManuscriptViewerTest(CommonTest):
             manuscript_page.get_submission_status_initial_submission_todo()
         manuscript_page.set_timeout(1)
 
+        # AC2: Test closing the info box
         # APERTA-11669: No flash messages on creation of manuscript via pdf
-        # AC2 fails for pdf, so checking it only for word documents until APERTA-11669 gets resolved
-        if format == 'word':
-            try:
-                manuscript_page.get_infobox()
-            except ElementDoesNotExistAssertionError:
-                assert True
-            else:
-                assert False, "Infobox still open. AC2 fails"
+        # closing flash message for word files closes also infobox, we have to close infobox for pdf
+        # we will have to remove next 2 lines once APERTA-11669 gets resolved
+        if format == 'pdf':
+            manuscript_page.close_infobox()
+        try:
+            manuscript_page.get_infobox()
+        except ElementDoesNotExistAssertionError:
+            assert True
+        else:
+            assert False, "Infobox still open. AC2 fails"
         manuscript_page.restore_timeout()
         # AC3 Green info box appears for initial manuscript view only - whether the user closes or
         #   leaves it open
@@ -277,7 +280,7 @@ class ManuscriptViewerTest(CommonTest):
             manuscript_page.get_submission_status_ready2submit_text()
         return self
 
-    def rest_paper_download(self):
+    def test_paper_download(self):
         """
         test_manuscript_viewer: Validates the download functions for different
         versions, formats, UI elements and styles

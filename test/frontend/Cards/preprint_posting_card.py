@@ -40,6 +40,7 @@ class PrePrintPostCard(BaseCard):
         card_title = self._get(self._card_heading)
         assert card_title.text == 'Preprint Posting', card_title.text
         self.validate_overlay_card_title_style(card_title)
+        # TODO: Investigate the current state of affairs with PO and correct the following
         # opt_in_checkbox = self._get(self._yes_radio_button)
         # assert opt_in_checkbox.is_selected(), 'Default value for Preprint Posting Card should
         #       be selected, it isn\'t'

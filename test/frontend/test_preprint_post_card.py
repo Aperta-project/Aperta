@@ -10,6 +10,7 @@ import logging
 import random
 
 from Base.Decorators import MultiBrowserFixture
+# APERTA-11884 Removed editorial users and staff admin
 from Base.Resources import users, handling_editor_login, academic_editor_login, \
     super_admin_login, pub_svcs_login
 from frontend.Cards.preprint_posting_card import PrePrintPostCard

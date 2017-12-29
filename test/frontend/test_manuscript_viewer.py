@@ -183,7 +183,7 @@ class ManuscriptViewerTest(CommonTest):
         # AC2: Test closing the info box
         # APERTA-11669: No flash messages on creation of manuscript via pdf
         # closing flash message for word files closes also infobox, we have to close infobox for pdf
-        # we will have to remove next 2 lines once APERTA-11669 gets resolved
+        # TODO: remove next 2 lines once APERTA-11669 gets resolved
         if format == 'pdf':
             manuscript_page.close_infobox()
         try:

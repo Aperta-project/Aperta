@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import DS from 'ember-data';
-import QuestionAttachmentOwner from 'tahi/models/question-attachment-owner';
+import QuestionAttachmentOwner from 'tahi/pods/question-attachment-owner/model';
 
 export default QuestionAttachmentOwner.extend({
   decision: DS.belongsTo('decision', { async: true }),

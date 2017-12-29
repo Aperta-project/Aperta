@@ -1,4 +1,4 @@
-import Task from 'tahi/models/task';
+import Task from 'tahi/pods/task/model';
 
 export default Task.extend({
   cardVersion: DS.belongsTo('card-version'),

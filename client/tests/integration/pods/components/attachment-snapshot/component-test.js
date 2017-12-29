@@ -2,7 +2,7 @@ import {moduleForComponent, moduleFor, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import registerDiffAssertions from 'tahi/tests/helpers/diff-assertions';
 import { initialize as initTruthHelpers }  from 'tahi/initializers/truth-helpers';
-import SnapshotAttachment from 'tahi/models/snapshot/attachment';
+import SnapshotAttachment from 'tahi/pods/snapshot/attachment/model';
 
 moduleForComponent('attachment-snapshot',
                    'Integration | Component | attachment-snapshot',

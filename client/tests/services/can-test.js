@@ -1,7 +1,7 @@
 import { moduleFor, test } from 'ember-qunit';
 import wait from 'ember-test-helpers/wait';
 import Ember from 'ember';
-import { Ability } from 'tahi/services/can';
+import { Ability } from 'tahi/pods/can/service';
 const { run } = Ember;
 
 moduleFor('service:can', 'Unit: Can Service Permissions', {

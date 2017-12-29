@@ -1,4 +1,4 @@
-import ApplicationAdapter from 'tahi/adapters/application';
+import ApplicationAdapter from 'tahi/pods/application/adapter';
 
 export default ApplicationAdapter.extend({
   pathForType() { return 'tasks'; }

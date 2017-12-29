@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import ApplicationAdapter from 'tahi/adapters/application';
+import ApplicationAdapter from 'tahi/pods/application/adapter';
 
 export default ApplicationAdapter.extend({
   buildURL: function(modelName, id, record) {

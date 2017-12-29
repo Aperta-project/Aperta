@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
-import DragNDrop from 'tahi/services/drag-n-drop';
+import DragNDrop from 'tahi/pods/drag-n-drop/service';
 import { timeout, task as concurrencyTask } from 'ember-concurrency';
 
 const {

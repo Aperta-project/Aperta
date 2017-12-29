@@ -1,2 +1,2 @@
-import AdHocTaskSerializer from 'tahi/serializers/ad-hoc-task';
+import AdHocTaskSerializer from 'tahi/pods/ad-hoc-task/serializer';
 export default AdHocTaskSerializer.extend();

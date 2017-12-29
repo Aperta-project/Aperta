@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import { contributionIdents } from 'tahi/models/author';
-import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
+import { contributionIdents } from 'tahi/pods/author/model';
+import ObjectProxyWithErrors from 'tahi/pods/object-proxy-with-validation-errors/model';
 
 const {
   Component,

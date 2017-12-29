@@ -1,4 +1,4 @@
-import Task from 'tahi/models/task';
+import Task from 'tahi/pods/task/model';
 
 /**
  * The card-preview model only exists as an owner for ephemeral

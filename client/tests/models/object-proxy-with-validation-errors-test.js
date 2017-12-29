@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
+import ObjectProxyWithErrors from 'tahi/pods/object-proxy-with-validation-errors/model';
 
 module('ObjectProxyWithValidationErrors');
 

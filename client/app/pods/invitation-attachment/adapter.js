@@ -1,4 +1,4 @@
-import ApplicationAdapter from 'tahi/adapters/application';
+import ApplicationAdapter from 'tahi/pods/application/adapter';
 import DS from 'ember-data';
 import Ember from 'ember';
 

@@ -8,7 +8,7 @@ import Ember from 'ember';
 
   ```
   import Ember from 'ember';
-  import DragNDrop from 'tahi/services/drag-n-drop';
+  import DragNDrop from 'tahi/pods/drag-n-drop/service';
 
   export default Ember.Component.extend(DragNDrop.DraggableMixin, {
     dragStart: function(e) {
@@ -25,7 +25,7 @@ import Ember from 'ember';
 
   ```
   import Ember from 'ember';
-  import DragNDrop from 'tahi/services/drag-n-drop';
+  import DragNDrop from 'tahi/pods/drag-n-drop/service';
 
   export default Ember.Component.extend(DragNDrop.DroppableMixin, {
     removeDragStyles: function() {

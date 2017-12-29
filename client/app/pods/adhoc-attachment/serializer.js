@@ -1,3 +1,3 @@
-import AttachmentSerializer from 'tahi/serializers/attachment';
+import AttachmentSerializer from 'tahi/pods/attachment/serializer';
 
 export default AttachmentSerializer.extend();

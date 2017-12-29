@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import DS from 'ember-data';
-import Task from 'tahi/models/task';
+import Task from 'tahi/pods/task/model';
 
 export default Task.extend({
   decisions: DS.hasMany('decision'),

@@ -1,4 +1,4 @@
-import AttachmentAdapter from 'tahi/adapters/attachment';
+import AttachmentAdapter from 'tahi/pods/attachment/adapter';
 
 export default AttachmentAdapter.extend({
   pathForType() { return 'manuscript_attachments'; },

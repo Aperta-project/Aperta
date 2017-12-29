@@ -1,5 +1,5 @@
 import { module, test } from 'ember-qunit';
-import SnapshotAttachment from 'tahi/models/snapshot/attachment'
+import SnapshotAttachment from 'tahi/pods/snapshot/attachment/model';
 
 module('Unit | snapshot/attachment', {
   needs: []

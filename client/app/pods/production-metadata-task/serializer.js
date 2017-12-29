@@ -1,4 +1,4 @@
-import TaskSerializer from 'tahi/serializers/task';
+import TaskSerializer from 'tahi/pods/task/serializer';
 export default TaskSerializer.extend({
 
 });

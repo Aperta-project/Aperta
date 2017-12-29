@@ -1,3 +1,3 @@
-import Decision from 'tahi/models/decision';
+import Decision from 'tahi/pods/decision/model';
 
 export default Decision.extend();

@@ -1,6 +1,6 @@
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import FileUploadMixin from 'tahi/mixins/file-upload';
-import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
+import ObjectProxyWithErrors from 'tahi/pods/object-proxy-with-validation-errors/model';
 import Ember from 'ember';
 
 const { computed } = Ember;

@@ -1,4 +1,4 @@
-import TaskAdapter from 'tahi/adapters/task';
+import TaskAdapter from 'tahi/pods/task/adapter';
 
 let RegisterDecisionTaskAdapter = TaskAdapter.extend();
 

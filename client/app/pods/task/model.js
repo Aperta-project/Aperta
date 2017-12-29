@@ -2,7 +2,7 @@ import Ember from 'ember';
 import DS from 'ember-data';
 import CardThumbnailObserver from 'tahi/mixins/models/card-thumbnail-observer';
 import Answerable from 'tahi/mixins/answerable';
-import NestedQuestionOwner from 'tahi/models/nested-question-owner';
+import NestedQuestionOwner from 'tahi/pods/nested-question-owner/model';
 import Snapshottable from 'tahi/mixins/snapshottable';
 import { timeout, task as concurrencyTask } from 'ember-concurrency';
 

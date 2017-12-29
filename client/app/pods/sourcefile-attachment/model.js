@@ -1,5 +1,5 @@
 import DS from 'ember-data';
-import Attachment from 'tahi/models/attachment';
+import Attachment from 'tahi/pods/attachment/model';
 import { paperDownloadPath } from 'tahi/utils/api-path-helpers';
 import Ember from 'ember';
 export default Attachment.extend({

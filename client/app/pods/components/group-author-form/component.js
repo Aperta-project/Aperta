@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import { contributionIdents } from 'tahi/models/group-author';
-import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
+import { contributionIdents } from 'tahi/pods/group-author/model';
+import ObjectProxyWithErrors from 'tahi/pods/object-proxy-with-validation-errors/model';
 
 export default Ember.Component.extend({
   classNames: ['author-form', 'group-author-form'],

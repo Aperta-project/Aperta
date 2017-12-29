@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import DragNDrop from 'tahi/services/drag-n-drop';
+import DragNDrop from 'tahi/pods/drag-n-drop/service';
 
 const {
   Component,

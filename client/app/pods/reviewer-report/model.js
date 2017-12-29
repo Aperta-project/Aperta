@@ -1,6 +1,6 @@
 import Answerable from 'tahi/mixins/answerable';
 import DS from 'ember-data';
-import NestedQuestionOwner from 'tahi/models/nested-question-owner';
+import NestedQuestionOwner from 'tahi/pods/nested-question-owner/model';
 import Ember from 'ember';
 
 export default NestedQuestionOwner.extend(Answerable, {

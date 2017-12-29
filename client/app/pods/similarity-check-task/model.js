@@ -1,4 +1,4 @@
-import Task from 'tahi/models/task';
+import Task from 'tahi/pods/task/model';
 import DS from 'ember-data';
 
 export default Task.extend({

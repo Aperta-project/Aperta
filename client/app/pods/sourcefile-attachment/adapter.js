@@ -1,4 +1,4 @@
-import AttachmentAdapter from 'tahi/adapters/attachment';
+import AttachmentAdapter from 'tahi/pods/attachment/adapter';
 
 /**
  * Manuscript attachments and sourcefile attachments go to the same endpoint

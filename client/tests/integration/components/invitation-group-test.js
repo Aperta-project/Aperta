@@ -2,7 +2,7 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import MockDataTransfer from 'tahi/tests/helpers/data-transfer';
-import DragNDrop from 'tahi/services/drag-n-drop';
+import DragNDrop from 'tahi/pods/drag-n-drop/service';
 import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 import { triggerEvent } from 'ember-native-dom-helpers';
 

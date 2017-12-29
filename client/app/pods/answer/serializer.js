@@ -1,4 +1,4 @@
-import ApplicationSerializer from 'tahi/serializers/application';
+import ApplicationSerializer from 'tahi/pods/application/serializer';
 import Ember from 'ember';
 
 export default ApplicationSerializer.extend({

@@ -181,7 +181,6 @@ class DiscussionForumTest(CommonTest):
         manuscript_page.page_ready_post_create()
         logging.info(manuscript_page.get_current_url())
         short_doi = manuscript_page.get_paper_short_doi_from_url()
-        logging.info('Assigned paper short doi: {0}'.format(short_doi))
         manuscript_page.complete_task('Upload Manuscript')
         manuscript_page.complete_task('Title And Abstract')
 
@@ -305,9 +304,15 @@ class DiscussionForumTest(CommonTest):
         discussion_title = discussion_link.text
         assert topic in discussion_title, '{0} not in {1}'.format(topic, discussion_title)
         discussion_link.click()
+        # There are two relevant times for a discussion - the original creation time and the time
+        # of the discussion and the time of a discussion reply. We should in all cases use the
+        # latter of the two.
+        logging.warning('Discusssion Topic ID: {0}'.format(discussion_topic_id))
         created = PgSQL().query('SELECT created_at '
                                 'FROM discussion_replies '
-                                'WHERE discussion_topic_id = %s;', (discussion_topic_id,))[0][0]
+                                'WHERE discussion_topic_id = %s '
+                                'ORDER BY id DESC '
+                                'LIMIT 1;', (discussion_topic_id,))[0][0]
         from_zone = tz.gettz('UTC')
         to_zone = tz.tzlocal()
         created = created.replace(tzinfo=from_zone)

@@ -1,4 +1,10 @@
 require 'rails_helper'
+require 'support/pages/page'
+require 'support/pages/paper_page'
+require 'support/pages/paper_workflow_page'
+require 'support/pages/tasks/reviewer_report_task_overlay'
+require 'support/rich_text_editor_helpers'
+
 include RichTextEditorHelpers
 
 feature 'Reviewer filling out their research article reviewer report', js: true do

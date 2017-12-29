@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/overlays/adhoc_overlay'
 
 feature 'Adhoc cards', js: true do
   let(:author) { create :user, first_name: 'Author' }

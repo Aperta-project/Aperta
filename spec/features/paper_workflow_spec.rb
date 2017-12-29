@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/task_manager_page'
 
 feature "Paper workflow", js: true, selenium: true do
   let(:admin) { FactoryGirl.create :user }

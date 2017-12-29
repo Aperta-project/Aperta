@@ -1,4 +1,6 @@
 require 'rails_helper'
+require 'support/rich_text_editor_helpers'
+
 include RichTextEditorHelpers
 
 feature "User adding reviewer candidates", js: true do

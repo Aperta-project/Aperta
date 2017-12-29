@@ -1,4 +1,7 @@
 require 'rails_helper'
+require 'support/pages/components/active_invitation'
+require 'support/pages/overlays/invite_reviewers_overlay'
+require 'support/sidekiq_helper_methods'
 
 feature "Invite Reviewer", js: true do
   include SidekiqHelperMethods
@@ -158,13 +161,5 @@ feature "Invite Reviewer", js: true do
     email = find_email(reviewer1.email)
     expect(email).to be
     expect(email.attachments.map(&:filename)).to contain_exactly 'yeti.jpg'
-  end
-
-  scenario 'clicking on an email selects it' do
-    overlay = Page.view_task_overlay(paper, task)
-    overlay.add_to_queue(reviewer1)
-    find('.invitation-item-email', text: reviewer1.email).click
-    expect(execute_script("return window.getSelection().toString()").strip)
-      .to eq("#{reviewer1.full_name} <#{reviewer1.email}>")
   end
 end

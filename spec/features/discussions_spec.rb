@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/discussions_page'
 
 feature "Discussions", js: true, selenium: true do
   let(:admin) { FactoryGirl.create :user }

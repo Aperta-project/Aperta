@@ -1,3 +1,5 @@
+require 'support/pages/page'
+
 module FeatureHelpers
   def ensure_user_does_not_have_access_to_task(user:, task:)
     logout

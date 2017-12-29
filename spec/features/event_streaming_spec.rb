@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/sidekiq_helper_methods'
 
 feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
   context "as an admin" do

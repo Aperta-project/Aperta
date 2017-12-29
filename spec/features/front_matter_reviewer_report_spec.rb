@@ -1,4 +1,8 @@
 require 'rails_helper'
+require 'support/pages/paper_page'
+require 'support/pages/tasks/front_matter_reviewer_report_task_overlay'
+require 'support/rich_text_editor_helpers'
+
 include RichTextEditorHelpers
 
 feature 'Reviewer filling out their front matter article reviewer report', js: true do

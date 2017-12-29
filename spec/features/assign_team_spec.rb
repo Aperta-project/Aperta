@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/overlays/assign_team_overlay'
 
 feature 'Assign team', js: true do
   let!(:journal) do

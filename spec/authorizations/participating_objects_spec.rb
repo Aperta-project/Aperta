@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/authorization_spec_helper'
 
 describe <<-DESC.strip_heredoc do
   There are two kinds of visibility that pertain to the authorization

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/paper_page'
 
 feature "Manuscript CSS", js: true do
   let(:author) { FactoryGirl.create :user }

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/authorization_spec_helper'
 
 describe "Permission states can be delegated to a model's association" do
   include AuthorizationSpecHelper

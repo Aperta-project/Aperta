@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/overlays/supporting_info_overlay'
 
 feature "Upload Supporting Information", js: true do
   let(:author) { create :user }

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/authorization_spec_helper'
 
 describe <<-DESC.strip_heredoc do
   The possible ways to check permissions and filter authorized objects.

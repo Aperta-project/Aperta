@@ -127,19 +127,17 @@
   </div>
 {{else}}
   <div class="invitation-item-header">
-    <div class="invitation-item-full-name">
-     {{#unless (eq invitation composedInvitation)}}
-      <b>
-        Edit invitation to:
-      </b>
-     {{/unless}}
-     {{inviteeNameAndEmail}}
-    </div>
-    {{invitation-due-period
+    {{#invitation-due-period
       value=invitation.dueIn
       onchange=(action "saveDuringType" invitation)
-      appendedText="(Edit the invitation below to reflect any changes.)"
-    }}
+      appendedText="(Edit the invitation below to reflect any changes.)"}}
+        <span class="invitation-item-full-name">
+         {{#unless (eq invitation composedInvitation)}}
+          <b> Edit invitation to:</b>
+         {{/unless}}
+         {{inviteeNameAndEmail}}
+       </span>
+    {{/invitation-due-period}}
   </div>
 {{/unless}}
 

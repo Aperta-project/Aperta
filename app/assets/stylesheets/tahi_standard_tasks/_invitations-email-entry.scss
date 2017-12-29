@@ -10,6 +10,11 @@
     min-width: 216px;
     margin-right: 14px;
   }
+
+  input.due-input {
+    display: inline-block;
+    width: 20%;
+  }
 }
 
 .invitation-email-entry-progress {

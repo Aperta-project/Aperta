@@ -11,7 +11,8 @@ module TahiStandardTasks
     validates_with AssociationValidator,
       association: :authors,
       fail: :set_completion_error,
-      if: :completed?
+      if: :completed?,
+      before_each_validation: ->(_task, author) { author.validate_all = true }
 
     def active_model_serializer
       TahiStandardTasks::AuthorsTaskSerializer

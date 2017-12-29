@@ -74,6 +74,18 @@ describe Author do
         expect(author.valid?).to be(true)
       end
     end
+
+    describe 'stripping whitespace' do
+      it 'strips whitespace from first_name, last_name, middle_initial, and email before validation' do
+        author = FactoryGirl.build(:author, email: '    author@example.com   ', first_name: '   author', last_name: ' name ', middle_initial: '  A  ')
+
+        expect(author).to be_valid
+        expect(author.email).to eq('author@example.com')
+        expect(author.first_name).to eq('author')
+        expect(author.last_name).to eq('name')
+        expect(author.middle_initial).to eq('A')
+      end
+    end
   end
 
   describe "#update_coauthor_state" do
@@ -159,23 +171,27 @@ describe Author do
     end
   end
 
-  describe "#task-completed?" do
-    let!(:author) { FactoryGirl.create(:author, :contributions, paper: authors_task.paper) }
-    let(:authors_task) { FactoryGirl.create(:authors_task) }
+  describe "#fully_validate?" do
+    let(:authors_task) { FactoryGirl.create(:authors_task, completed: true) }
+    let(:author) { FactoryGirl.create(:author, :contributions, paper: authors_task.paper).reload }
 
     it "is true when task is complete" do
-      authors_task.completed = true
-      authors_task.save!
-      expect(author.task_completed?).to be true
+      expect(author.fully_validate?).to be true
     end
 
     it "is false when task is incomplete" do
-      authors_task.completed = false
-      expect(author.task_completed?).to be_falsy
+      authors_task.update!(completed: false)
+      expect(author.fully_validate?).to be_falsy
     end
 
     it "is false when there is no task" do
-      expect(Author.new.task_completed?).to be_falsy
+      expect(Author.new.fully_validate?).to be_falsy
+    end
+
+    it "is true when there's no task but validate_all is true" do
+      a = Author.new
+      a.validate_all = true
+      expect(a.fully_validate?).to be true
     end
   end
 

@@ -1,3 +1,9 @@
+require 'support/pages/admin_dashboard_page'
+require 'support/pages/fragments/pending_invitation_fragment'
+require 'support/pages/page'
+require 'support/pages/paper_page'
+require 'support/rich_text_editor_helpers'
+
 # Represents the main page of the app
 class DashboardPage < Page
   include RichTextEditorHelpers
@@ -34,6 +40,7 @@ class DashboardPage < Page
   end
 
   def view_submitted_paper(paper)
+    require 'support/pages/paper_page'
     title = paper.title || paper.short_title
     click_link title
     wait_for_ajax
@@ -50,6 +57,7 @@ class DashboardPage < Page
   end
 
   def visit_admin
+    require 'support/pages/admin_dashboard_page'
     admin_link.click
     AdminDashboardPage.new
   end

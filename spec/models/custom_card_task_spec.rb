@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/authorization_spec_helper'
 
 describe CustomCardTask do
   it 'is valid with factory defaults' do

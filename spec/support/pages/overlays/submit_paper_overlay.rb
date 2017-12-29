@@ -1,3 +1,6 @@
+require 'support/pages/card_overlay'
+require 'support/pages/dashboard_page'
+
 class SubmitPaperOverlay < CardOverlay
   def has_paper_title?
     has_selector? '.overlay-container h2'

@@ -1,4 +1,6 @@
 require 'rails_helper'
+require 'support/pages/sign_in_page'
+require 'support/pages/sign_up_page'
 
 feature "Devise account creation", js: true do
   scenario "User can create an account" do

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/authorization_spec_helper'
 
 describe <<-DESC.strip_heredoc do
   It is possible for a user to get access to the same object thru multiple

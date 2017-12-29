@@ -70,12 +70,14 @@ class Page < PageFragment
   end
 
   def navigate_to_dashboard
+    require 'support/pages/dashboard_page'
     find('.main-nav-item-app-name').click
     wait_for_ajax
     DashboardPage.new
   end
 
   def view_task_overlay(paper, task, opts = {})
+    require 'support/pages/card_overlay'
     visit "/papers/#{paper.to_param}/tasks/#{task.id}"
     class_name =
       (task.title.split(' ')

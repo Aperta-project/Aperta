@@ -1,4 +1,8 @@
 require 'rails_helper'
+require 'support/pages/overlays/changes_for_author_overlay'
+require 'support/pages/overlays/revision_tech_check_overlay'
+require 'support/rich_text_editor_helpers'
+
 include RichTextEditorHelpers
 
 feature 'Revision Tech Check', js: true do

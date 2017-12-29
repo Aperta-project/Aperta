@@ -1,3 +1,5 @@
+require 'support/pages/card_overlay'
+
 class AddCollaboratorsOverlay < CardOverlay
   text_assertions :collaborator, ".collaborator .name"
 

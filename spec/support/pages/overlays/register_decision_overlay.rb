@@ -1,3 +1,6 @@
+require 'support/pages/card_overlay'
+require 'support/rich_text_editor_helpers'
+
 class RegisterDecisionOverlay < CardOverlay
   include RichTextEditorHelpers
 

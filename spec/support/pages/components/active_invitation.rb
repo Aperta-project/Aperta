@@ -1,3 +1,5 @@
+require 'support/pages/page_fragment'
+
 # Represents a row in the table of active invitations for editors,
 # reviewers, etc
 class ActiveInvitation < PageFragment

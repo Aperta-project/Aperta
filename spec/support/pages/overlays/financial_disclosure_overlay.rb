@@ -1,3 +1,5 @@
+require 'support/pages/card_overlay'
+
 class FinancialDisclosureOverlay < CardOverlay
   def received_funding
     find('#received-funding-yes')

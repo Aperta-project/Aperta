@@ -1,3 +1,5 @@
+require 'support/pages/page'
+
 class DiscussionsPage < Page
   def new_topic
     find(create_topic_button).click

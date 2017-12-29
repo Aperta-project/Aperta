@@ -1,3 +1,5 @@
+require 'support/pages/card_overlay'
+
 class AssignTeamOverlay < CardOverlay
   def self.visit(assign_team_task, &blk)
     page.visit "/papers/#{assign_team_task.paper.id}/tasks/#{assign_team_task.id}"

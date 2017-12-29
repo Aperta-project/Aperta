@@ -66,6 +66,7 @@ class InviteCard(BaseCard):
         :user: User to send the invitation
         :return: None
         """
+        logging.info('Inviting user: {0}'.format(user))
         self._wait_for_element(self._get(self._recipient_field))
         self._get(self._recipient_field).send_keys(user['email'] + Keys.ENTER)
         # self._get(self._compose_invitation_button).click()

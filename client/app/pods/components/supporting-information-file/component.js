@@ -33,7 +33,15 @@ export default Component.extend({
     'Figure'
   ],
 
-  hasSIErrors: computed.notEmpty('taskErrors.supportingInformationFiles'),
+  SIErrors: computed.alias('taskErrors.supportingInformationFiles'),
+
+  hasSIErrors: computed('SIErrors', function() {
+    if(!this.get('SIErrors')) { return false; }
+
+    const id = this.get('file').id;
+    return !Ember.isEmpty(this.get('SIErrors')[id]);
+  }),
+
   hasSaveErrors: computed.or('hasSIErrors', 'model.validationErrors.save'),
 
   uiStateClass: computed('uiState', function() {
@@ -66,6 +74,13 @@ export default Component.extend({
       this.set('content.editorStyle', 'basic');
       this.set('content.valueType', 'html');
     }
+  },
+
+  resetSIErrorsForFile() {
+    if(!this.get('SIErrors')) { return false; }
+    const id = this.get('file.id');
+    this.set(`SIErrors.${id}`, null);
+    this.notifyPropertyChange('hasSIErrors');
   },
 
   actions: {
@@ -119,7 +134,7 @@ export default Component.extend({
       this.get('model').validateAll();
       if(this.get('model').validationErrorsPresent()) { return; }
 
-      // this.set('taskErrors.supportingInformationFiles', null);
+      this.resetSIErrorsForFile();
       this.get('updateFile')(this.get('file'));
       this.set('uiState', 'view');
     },

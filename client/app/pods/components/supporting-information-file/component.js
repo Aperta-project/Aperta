@@ -119,6 +119,7 @@ export default Component.extend({
       this.get('model').validateAll();
       if(this.get('model').validationErrorsPresent()) { return; }
 
+      // this.set('taskErrors.supportingInformationFiles', null);
       this.get('updateFile')(this.get('file'));
       this.set('uiState', 'view');
     },

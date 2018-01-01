@@ -11,16 +11,15 @@ function createLegacyErrors(errors) {
   let errorKey;
   errors.forEach(({source, detail}) => {
     errorKey = (Ember.isNone(source)) ?  detail : source.pointer.split('/').pop();
-    if (!errorObj[errorKey]) {
-      if(typeof(detail) === 'object') {
-        Object.keys(detail).forEach(function(key) {
-          detail[key] = detail[key]['category'][0];
-        });
-        errorObj[errorKey] = detail;
-      } else {
-        errorObj[errorKey] = [];
-        errorObj[errorKey].push(detail);
-      }
+
+    if(typeof(detail) === 'object') {
+      Object.keys(detail).forEach(function(key) {
+        detail[key] = detail[key]['category'][0];
+      });
+      errorObj[errorKey] = detail;
+    } else {
+      if (!errorObj[errorKey]) { errorObj[errorKey] = []; }
+      errorObj[errorKey].push(detail);
     }
   });
 

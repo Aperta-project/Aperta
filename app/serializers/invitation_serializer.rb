@@ -32,8 +32,4 @@ class InvitationSerializer < ActiveModel::Serializer
   def reviewer_report
     ReviewerReport.for_invitation(object)
   end
-
-  def due_in
-    object.due_in || object.paper.review_duration_period # use as default
-  end
 end

@@ -32,11 +32,10 @@
                         as |user|}}
           {{user.full_name}} &lt;{{user.email}}&gt;
         {{/auto-suggest}}
-        {{#if (eq inviteeRole "Reviewer")}}
-          {{invitation-due-period
-            value=dueIn
-            onchange=(action "updateReviewDurationPeriod")}}
-        {{/if}}
+        {{invitation-due-period
+          value=dueIn
+          display=(eq inviteeRole "Reviewer")
+          onchange=(action "updateReviewDurationPeriod")}}
         <button class="button-secondary button--green invitation-email-entry-button {{if disableButton "button--disabled"}}"
                 {{action "createInvitation"}}>
           Add to Queue

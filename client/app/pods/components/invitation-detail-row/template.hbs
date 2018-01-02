@@ -129,7 +129,9 @@
   <div class="invitation-item-header">
     {{#invitation-due-period
       value=invitation.dueIn
+      display=invitation.reviewer
       onchange=(action "saveDuringType" invitation)
+      placeholder=owner.paper.reviewDurationPeriod
       appendedText="(Edit the invitation below to reflect any changes.)"}}
         <span class="invitation-item-full-name">
          {{#unless (eq invitation composedInvitation)}}

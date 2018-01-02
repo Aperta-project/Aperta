@@ -32,6 +32,23 @@ export default TaskComponent.extend(FileUploadMixin, {
     } else {
       this.set('validationErrors', {});
     }
+
+    this._validateDirtyFiles();
+  },
+
+  _validateDirtyFiles() {
+    let dirtyErrors = {};
+
+    this.get('files').forEach((file) => {
+      const dirtyAttrs = file.changedAttributes();
+      const dirtyKeys = Object.keys(dirtyAttrs);
+      if(dirtyKeys.length > 0) { dirtyErrors[file.id] = 'dirty'; }
+    });
+
+    let SIErrors = {supportingInformationFiles: dirtyErrors};
+    let validationErrors = this.get('validationErrors');
+    const combinedErrors = Object.assign(validationErrors, SIErrors);
+    this.set('validationErrors', combinedErrors);
   },
 
   filesWithValidations: computed('files.[]', function() {
@@ -43,7 +60,9 @@ export default TaskComponent.extend(FileUploadMixin, {
     this.set('cachedFilesWithValidations', proxies);
     return proxies;
   }),
+
   cachedFilesWithValidations: computed(() => []),
+
   newFileWithValidations(file){
     return ObjectProxyWithErrors.create({
       saveErrorText: this.get('saveErrorText'),

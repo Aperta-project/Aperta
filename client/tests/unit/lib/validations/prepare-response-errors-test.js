@@ -7,12 +7,12 @@ test('with only string details', function(assert) {
   const apiErrors = [
     {
       'detail': 'some error',
-      'source': { 'pointer': '/path/to/resource' },
+      'source': {'pointer': '/path/to/resource'},
       'title': 'title'
     },
     {
       'detail': 'some other error',
-      'source': { 'pointer': '/path/to/other' },
+      'source': {'pointer': '/path/to/other'},
       'title': 'other title'
     }
   ];
@@ -27,20 +27,16 @@ test('with an object detail', function(assert) {
   const apiErrors = [
     {
       'detail': {
-        1: {
-          'category': ['can`t be blank']
-        }
+        1: {'category': ['can`t be blank']}
       },
-      'source': { 'pointer': '/path/to/resource' },
+      'source': {'pointer': '/path/to/resource'},
       'title': 'title'
     },
     {
       'detail': {
-        1: {
-          'category': ['can`t be wrong']
-        }
+        1: {'category': ['can`t be wrong']}
       },
-      'source': { 'pointer': '/path/to/other' },
+      'source': {'pointer': '/path/to/other'},
       'title': 'other title'
     }
   ];

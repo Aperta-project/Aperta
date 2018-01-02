@@ -33,8 +33,6 @@ export default Component.extend({
     'Figure'
   ],
 
-  SIErrors: computed.alias('taskErrors.supportingInformationFiles'),
-
   hasSIErrors: computed('SIErrors', function() {
     if(!this.get('SIErrors')) { return false; }
 
@@ -63,6 +61,7 @@ export default Component.extend({
             this.get('file.id') +
             '/update_attachment');
   }),
+
   uploadErrorMessage: Ember.computed('file.filename', function() {
     const filename = this.get('file.filename') || 'your file';
     return `There was an error while processing ${filename}. Please try again
@@ -74,13 +73,6 @@ export default Component.extend({
       this.set('content.editorStyle', 'basic');
       this.set('content.valueType', 'html');
     }
-  },
-
-  resetSIErrorsForFile() {
-    if(!this.get('SIErrors')) { return false; }
-    const id = this.get('file.id');
-    this.set(`SIErrors.${id}`, null);
-    this.notifyPropertyChange('hasSIErrors');
   },
 
   actions: {
@@ -134,10 +126,13 @@ export default Component.extend({
       this.get('model').validateAll();
       if(this.get('model').validationErrorsPresent()) { return; }
 
-      this.resetSIErrorsForFile();
-      this.get('updateFile')(this.get('file'));
+      const file = this.get('file');
+
+      this.get('resetSIErrorsForFile')(file);
+      this.get('updateFile')(file);
       this.set('uiState', 'view');
     },
+
     uploadFinished(){
       this.get('model').clearAllValidationErrors();
     }

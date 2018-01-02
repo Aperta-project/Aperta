@@ -111,6 +111,12 @@ export default TaskComponent.extend(FileUploadMixin, {
     updateFile(file) {
       this.clearAllValidationErrorsForModel(file);
       file.save();
+    },
+
+    resetSIErrorsForFile(file) {
+      if(!this.get('validationErrors.supportingInformationFiles')) { return; }
+      this.set(`validationErrors.supportingInformationFiles.${file.id}`, null);
+      this.validateData();
     }
   }
 });

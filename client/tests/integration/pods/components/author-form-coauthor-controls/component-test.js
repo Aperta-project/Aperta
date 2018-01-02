@@ -2,6 +2,7 @@ import {moduleForComponent, test} from 'ember-qunit';
 import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup } from 'ember-data-factory-guy';
 import { createQuestionWithAnswer } from 'tahi/tests/factories/nested-question';
+import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import * as TestHelper from 'ember-data-factory-guy';
 
 import hbs from 'htmlbars-inline-precompile';
@@ -13,6 +14,7 @@ moduleForComponent(
     integration: true,
     beforeEach: function() {
       manualSetup(this.container);
+      registerCustomAssertions();
       let journal = FactoryGuy.make('journal');
       TestHelper.mockFindRecord('journal').returns({model: journal});
       //

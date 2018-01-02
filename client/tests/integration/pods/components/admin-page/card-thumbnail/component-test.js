@@ -1,8 +1,13 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
+
 
 moduleForComponent('admin-page/card-thumbnail', 'Integration | Component | admin page | card thumbnail', {
-  integration: true
+  integration: true,
+  beforeEach() {
+    registerCustomAssertions();
+  }
 });
 
 const journal = {name: 'The best journal'};

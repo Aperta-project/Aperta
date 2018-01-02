@@ -5,7 +5,7 @@ import { manualSetup } from 'ember-data-factory-guy';
 import { createQuestionWithAnswer } from 'tahi/tests/factories/nested-question';
 import * as TestHelper from 'ember-data-factory-guy';
 import FakeCanService from 'tahi/tests/helpers/fake-can-service';
-import sinon from 'sinon'
+import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 
 import hbs from 'htmlbars-inline-precompile';
 
@@ -18,6 +18,7 @@ moduleForComponent(
     integration: true,
     beforeEach: function() {
       manualSetup(this.container);
+      registerCustomAssertions();
 
       $.mockjax({url: '/api/countries', status: 200, responseText: {
         countries: []

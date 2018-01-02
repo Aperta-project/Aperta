@@ -3,6 +3,7 @@ import {make, manualSetup, mockCreate} from 'ember-data-factory-guy';
 import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 import Ember from 'ember';
 import wait from 'ember-test-helpers/wait';
+import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 
 import hbs from 'htmlbars-inline-precompile';
 
@@ -12,6 +13,7 @@ moduleForComponent('custom-card-task', 'Integration | Components | Card Content'
   beforeEach() {
     this.registry.register('service:pusher', Ember.Object.extend({socketId: 'foo'}));
     manualSetup(this.container);
+    registerCustomAssertions();
     this.registry.register('service:can', FakeCanService);
 
     let task = make('custom-card-task');

@@ -26,7 +26,7 @@ class ApertaCNSTest(CommonTest):
   Two tests explicit to the current two paths of creating a new submission. Relies on the seeding data provided by
     test_add_stock_mmt.
   """
-  def test_smoke_validate_create_to_submit_no_preprint_overlay(self, init=True):
+  def rest_smoke_validate_create_to_submit_no_preprint_overlay(self, init=True):
     """
     test_cns: Validates Creating a new document - needs extension to take it through to Submit
     Validates the presence of the following elements:
@@ -51,7 +51,7 @@ class ApertaCNSTest(CommonTest):
     title = manuscript_page.get_paper_title_from_page()
     logging.info(u'Paper page title is: {0}'.format(title))
 
-  def test_core_validate_create_to_submit_with_preprint_overlay(self, init=True):
+  def rest_core_validate_create_to_submit_with_preprint_overlay(self, init=True):
     """
     test_cns: Validates Creating a new document - needs extension to take it through to Submit with the preprint
     overlay in the create sequence.
@@ -110,6 +110,8 @@ class ApertaCNSTest(CommonTest):
     authors_task.add_individual_author_task_action()
     authors_task.edit_author(author)
     # TODO: add group co-author when APERTA-11838 gets resolved
+
+    authors_task.add_group_author_task_action()
 
     ms_page._wait_for_element(ms_page._get(ms_page._submit_button), 1)
     submit_button = ms_page._get(ms_page._submit_button)

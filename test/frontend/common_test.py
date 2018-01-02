@@ -525,7 +525,7 @@ class CommonTest(FrontEndTest):
             mmt_phase_ids.append(mmt_phase_id_tuple[0])
         try:
             PgSQL().query('SELECT title FROM task_templates WHERE title = \'Preprint Posting\' '
-                          'AND phase_template_id = ANY(%S) ;', (mmt_phase_ids,))[0][0]
+                          'AND phase_template_id = ANY(%s) ;', (mmt_phase_ids,))[0][0]
         except IndexError:
             return False
         return True

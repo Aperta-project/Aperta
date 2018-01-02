@@ -24,11 +24,11 @@ class PreprintPostingOverlay(AuthenticatedPage):
     super(PreprintPostingOverlay, self).__init__(driver)
     self._title = (By.CLASS_NAME, 'overlay-header-title')
     self._preprint_image = (By.CLASS_NAME, 'preprint-background-image')
-    self._preprint_benefits = (By.TAG_NAME, 'li')
+    self._preprint_benefits = (By.CSS_SELECTOR, '.card-content-view-text>p')
     self._preprint_content_text = (By.CSS_SELECTOR, 'p.content-text')
     self._preprint_content_text_em = (By.CSS_SELECTOR, 'p.content-text > b')
     self._preprint_input_radios = (By.TAG_NAME, 'input')
-    self._preprint_input_radio_labels = (By.CSS_SELECTOR, 'span.card-content-radio-label')
+    self._preprint_input_radio_labels = (By.CSS_SELECTOR, 'span.card-form-label')
     self._preprint_overlay_continue_btn = (By.TAG_NAME, 'button')
 
   def overlay_ready(self):
@@ -52,12 +52,13 @@ class PreprintPostingOverlay(AuthenticatedPage):
     bg_image = self._get(self._preprint_image).value_of_css_property('background-image')
     assert expected_background_image in bg_image, bg_image
 
-    benefits = self._gets(self._preprint_benefits)
-    assert benefits[0].text.strip() == 'Benefit: Establish priority', benefits[0].text
-    assert benefits[1].text.strip() == 'Benefit: Gather feedback', benefits[1].text
-    assert benefits[2].text.strip() == 'Benefit: Cite for funding', benefits[2].text
-    for benefit in benefits:
-      self.validate_application_body_text(benefit)
+    benefits = self._get(self._preprint_benefits)
+    benefits_text = benefits.text.split('\n')
+    assert benefits_text[0] == '1. Benefit: Establish priority', benefits_text[0]
+    assert benefits_text[1] == '2. Benefit: Gather feedback', benefits_text[1]
+    assert benefits_text[2] == '3. Benefit: Cite for funding', benefits_text[2]
+    # for benefit in benefits:
+    self.validate_application_body_text(benefits)
 
     radio_buttons = self._gets(self._preprint_input_radios)
     yes_radio = radio_buttons[0]

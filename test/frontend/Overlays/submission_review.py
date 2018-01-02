@@ -70,38 +70,52 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     # commented until APERTA-11857 gets resolved:
     # font-size is 36px instead of 48px according to the style guide
     # self.validate_overlay_card_title_style(overlay_title)
+    journal_name = 'PLOS Wombat'
+    short_doi = self.get_paper_short_doi_from_url()
+    # get metadata from db
+    db_title, db_abstract, db_authors_for_assertion, pp_posting_answer = self.get_metadata(
+        short_doi)
+    overlay_subtitle = self._gets(self._subtitle)
+    expected_subtitle_line1 = 'You are about to submit your manuscript to {0}. ' \
+                        'Please verify that the information below is correct.'.format(journal_name)
 
-    overlay_subtitle = self._get(self._subtitle)
-    expected_subtitle = 'Please verify that the metadata you entered is correct ' \
-                        'before completing your submission.'
-    assert overlay_subtitle.text == expected_subtitle, 'The overlay subtitle: {0} is not ' \
-                                                         'the expected: {1}'.format(overlay_title.text,
-                                                                                    expected_subtitle)
+    assert overlay_subtitle[0].text == expected_subtitle_line1, 'The overlay subtitle, line 1: {0} is not ' \
+                                                         'the expected: {1}'.format(overlay_title[0].text,
+                                                                                    expected_subtitle_line1)
+
+    expected_subtitle_line2 = 'This information will also appear with the preprint you have elected to post on apertarxiv.org.'
+
+    assert overlay_subtitle[1].text == expected_subtitle_line1, 'The overlay subtitle, line 2: {0} is not ' \
+                                                         'the expected: {1}'.format(overlay_title[1].text,
+                                                                                    expected_subtitle_line2)
+
     self.validate_application_body_text(overlay_subtitle)
 
     # validate metadata in a table
     # validate names
     card_headings = self._gets(self._headings)
-    expected_headings = ['Preprint', 'Title', 'Author', 'Co-Authors', 'Abstract', 'Manuscript']
+    expected_headings = ['Preprint', 'Title', 'Author', 'Coauthors', 'Abstract', 'Manuscript']
     assert len(card_headings) == len(expected_headings)
-    for i in range(len(card_headings)):
-      assert card_headings[i].text.strip() == expected_headings[i], card_headings[i]
-      self.validate_table_heading_style(card_headings[i], True)
-
-    short_doi = self.get_paper_short_doi_from_url()
-    # get metadata from db
-    db_title, db_abstract, db_authors_for_assertion, pp_posting_answer = self.get_metadata(short_doi)
+    for i, card_heading in enumerate(card_headings):
+      assert card_heading.text.strip() == expected_headings[i], card_heading
+      self.validate_table_heading_style(card_heading, True)
 
     card_metadata = self._gets(self._metadata)
-    expected_values = {'Preprint'   : ["Would you like to post this paper as a preprint?",
-                                       "Yes, I want to post a preprint.",
-                                       "No, I don't want to post a preprint."],
-                       'Title'      : db_title,
-                       'Author'     : db_authors_for_assertion[0],
-                       'Co-Authors' : db_authors_for_assertion[1:],
-                       'Abstract'   : db_abstract,
-                       'Manuscript' : ['Download PDF',
-                                       'Note: Figures and Supplemental Files are included in the PDF.']}
+    expected_values = {
+        'Preprint': ["Would you like to post this paper as a preprint?",
+                     "Yes, I want to post a preprint.",
+                     "No, I don't want to post a preprint."],
+        'Title': db_title,
+        'Author': db_authors_for_assertion[0],
+        'Coauthors': db_authors_for_assertion[1:],
+        'Abstract': db_abstract,
+        'Manuscript': ['Manuscript (review version with figures and supporting information '
+                       'files included)',
+                       'This is the review version of your manuscript, which includes figures '
+                       'and supplemental information.',
+                       'In your posted preprint, figures will be inserted in the manuscript text '
+                       'and supporting information files will be available via links on the '
+                       'preprint page.']}
 
     # Preprint line#1
     preprint_text = card_metadata[0].find_element_by_tag_name('dt')
@@ -109,9 +123,10 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     assert preprint_text.text.strip() == expected_text.strip(), preprint_text.text.strip()
 
     # Preprint line#2
-    assert pp_posting_answer in {1,2}, pp_posting_answer
+    assert pp_posting_answer in {True, False}, pp_posting_answer
     preprint_text = card_metadata[0].find_element_by_tag_name('dd')
-    expected_text = expected_values["Preprint"][pp_posting_answer]
+    answer_index = 1 if pp_posting_answer else 2
+    expected_text = expected_values["Preprint"][answer_index]
     assert preprint_text.text.strip() == expected_text.strip(), preprint_text.text.strip()
 
     # Title
@@ -130,12 +145,12 @@ class SubmissionReviewOverlay(AuthenticatedPage):
 
     # Co-Author (list) might be empty, if there are no co-authors
     coauthors = card_metadata[3].find_elements_by_css_selector('td>p>span')
-    expected_coauthor_list = expected_values["Co-Authors"]
-    for i in range(len(coauthors)):
-      assert self.normalize_spaces(coauthors[i].text) == self.normalize_spaces(expected_coauthor_list[i]), \
+    expected_coauthor_list = expected_values["Coauthors"]
+    for i, coauthor in enumerate(coauthors):
+      assert self.normalize_spaces(coauthor.text) == self.normalize_spaces(expected_coauthor_list[i]), \
       'Invalid Co-Authors representation on the page: {0}, expected: {1}' \
-        .format(self.normalize_spaces(coauthors[i].text), self.normalize_spaces(expected_coauthor_list[i]))
-      self.validate_application_body_text(coauthors[i])
+        .format(self.normalize_spaces(coauthor.text), self.normalize_spaces(expected_coauthor_list[i]))
+      self.validate_application_body_text(coauthor)
 
     # Abstract
     abstract_text = card_metadata[4].find_element(*self._abstract)
@@ -150,6 +165,12 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     assert ms_text.text.strip() == expected_text.strip()
     self.validate_application_body_text(ms_text), ms_text.text.strip()
 
+    # TODO: add line 2
+    if pp_posting_answer:
+        expected_text = expected_values["Manuscript"][2]
+        assert ms_text.text.strip() == expected_text.strip()
+        self.validate_application_body_text(ms_text), ms_text.text.strip()
+
     # download pdf
     ms_pdf_link = card_metadata[5].find_element_by_css_selector('a')
     expected_link_title = expected_values["Manuscript"][0]
@@ -161,9 +182,9 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     assert submit_button.text == 'SUBMIT'
     self.validate_primary_big_green_button_style(submit_button), submit_button.text
 
-    make_changes_button = self._get(self._review_overlay_back2ms_button)
-    assert make_changes_button.text == 'MAKE CHANGES', make_changes_button.text
-    self.validate_secondary_big_green_button_style(make_changes_button)
+    edit_submission = self._get(self._review_overlay_back2ms_button)
+    assert edit_submission.text == 'EDIT SUBMISSION', edit_submission.text
+    self.validate_secondary_big_green_button_style(edit_submission)
 
   def select_submit_or_make_changes(self, selection=''):
       """
@@ -200,19 +221,30 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     db_abstract = self.strip_tinymce_ptags(db_abstract)
 
     db_authors_for_assertion = []
-    db_authors = PgSQL().query('SELECT a.first_name, a.middle_initial, a.last_name, a.affiliation '
-                               'FROM authors a, author_list_items al '
-                               'WHERE al.paper_id=%s AND al.author_id = a.id '
-                               'ORDER BY al.position;',(db_paper_id,))
-
+    db_authors = PgSQL().query('SELECT a.first_name, a.middle_initial, a.last_name, '
+                               'a.affiliation, a.secondary_affiliation, ga.name, al.author_type '
+                               'FROM  author_list_items al JOIN authors a '
+                               'ON al.author_id = a.id '
+                               'LEFT JOIN group_authors ga ON al.author_id = ga.id '
+                               'WHERE al.paper_id=%s '
+                               'ORDER BY al.position;',[db_paper_id])
 
     for db_author in db_authors:
       logging.debug('Appending author {0} to the list db_authors_for_assertions'.format(db_author[0]))
-      db_authors_for_assertion.append(
-              ('' if db_author[0]==None else db_author[0].strip()+" ")+          # first name
-              ('' if db_author[1]==None else db_author[1].strip()+" ")+          # middle name
-              ('' if db_author[2]==None else db_author[2].strip()) +", "+        # last name
-              ('' if db_author[3]==None else db_author[3].strip()))              # affiliation
+      if db_author[0]=='GroupAuthor':
+          db_authors_for_assertion.append(db_author[6].strip())
+      else:
+
+          author_name = \
+              ('' if db_author[0] == None else db_author[0].strip() + " ") + \
+              ('' if db_author[1] == None else db_author[1].strip() + " ") + \
+              ('' if db_author[2] == None else db_author[2].strip())  # last name
+          author_affiliations = ('' if db_author[3] == None else db_author[3].strip()) \
+                                + ('' if db_author[4] == None
+                                   else ', {0}'.format(db_author[4].strip()))
+
+          author_info = '{0}, {1}'.format(author_name, author_affiliations)
+          db_authors_for_assertion.append(author_info)
 
     # check value selected in the 'Preprint Posting" card : 1(Yes) or 2 (No)
     # read card data from the DB
@@ -225,5 +257,5 @@ class SubmissionReviewOverlay(AuthenticatedPage):
                                       'FROM answers '
                                       'WHERE owner_id = %s AND owner_type=%s;', (task_id, 'Task'))[0][0]
 
-    return  db_title, db_abstract, db_authors_for_assertion, int(pp_posting_answer)
+    return  db_title, db_abstract, db_authors_for_assertion, pp_posting_answer
 

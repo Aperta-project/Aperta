@@ -59,7 +59,7 @@ class EpubConverter
 
   def builder
     Dir.mktmpdir do |dir|
-      content_file_path = write_to_file dir, '', 'content.html'
+      content_file_path = write_to_file dir, '<html></html>', 'content.html'
       generate_epub_builder content_file_path
     end
   end

@@ -68,6 +68,7 @@ class CommonTest(FrontEndTest):
         # Login to Aperta
         logging.info('Logging in as user: {0}'.format(email))
         login_page = LoginPage(self.getDriver())
+        login_page.page_ready_cas_login()
         login_page.login_cas()
         cas_signin_page = AkitaLoginPage(self.getDriver())
         cas_signin_page.enter_login_field(email)

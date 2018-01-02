@@ -82,7 +82,7 @@ class LoginPage(AuthenticatedPage):
                                    'will be rolled out on other PLOS journals in the coming ' \
                                    'months.\nClick here for more information about submitting to ' \
                                    'PLOS Biology.\nTo submit to one of our other journals, start ' \
-                                   'here.', avail_jrnls_msg.text                      
+                                   'here.', avail_jrnls_msg.text
     avail_jrnls_list = self._get(self._avail_journals_list)
     assert avail_jrnls_list.text == 'PLOS Biology', avail_jrnls_list.text
     avail_jrnls_info_link = self._get(self._avail_journals_more_info_link)
@@ -343,3 +343,8 @@ class LoginPage(AuthenticatedPage):
     orcid_signin = self._get(self._orcid_signin)
     orcid_signin.click()
     time.sleep(3)
+
+  def page_ready_cas_login(self):
+    self.set_timeout(10)
+    self._wait_for_element(self._get(self._cas_signin))
+    self.restore_timeout()

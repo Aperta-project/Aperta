@@ -40,9 +40,9 @@ export default TaskComponent.extend(FileUploadMixin, {
     let dirtyErrors = {};
 
     this.get('files').forEach((file) => {
-      const dirtyAttrs = file.changedAttributes();
-      const dirtyKeys = Object.keys(dirtyAttrs);
-      if(dirtyKeys.length > 0) { dirtyErrors[file.id] = 'dirty'; }
+      if(file.get('hasDirtyAttributes')) {
+        dirtyErrors[file.id] = 'dirty';
+      }
     });
 
     let SIErrors = {supportingInformationFiles: dirtyErrors};

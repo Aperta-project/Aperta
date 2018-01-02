@@ -1137,7 +1137,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
           version_data = ms_versions[key]
           expected_version_name = version_data['version']
           # adding submission date: APERTA-9335
-          expected_version_date = version_data['date'].strftime("%b %d, %Y")
+          expected_version_date_local = self.utc_to_local_tz(version_data['date'])
+          expected_version_date = expected_version_date_local.strftime("%b %d, %Y")
 
           # Fix for adding the 'V' before the version number
           if expected_version_name != 'draft':

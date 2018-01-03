@@ -27,9 +27,9 @@ test('serializing a model that was originally namespaced will correctly re-names
   });
 });
 
-test('_mungeTaskData', function(assert) {
+test('_setQualifiedType', function(assert) {
   var payload;
-  payload = subject._mungeTaskData({
+  payload = subject._setQualifiedType({
     type: 'bar'
   });
   return assert.equal(payload.qualified_type, 'bar', 'sets qualified type');

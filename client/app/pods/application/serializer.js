@@ -64,7 +64,7 @@ export default ActiveModelSerializer.extend({
   // The Ember side is only interested in the last half.
   // Store the original full name in `qualified_type`
   // We snake case because our superclass expects it
-  _mungeTaskData(taskObj) {
+  _setQualifiedType(taskObj) {
     const qualifiedType  = taskObj.type;
 
     if (qualifiedType) {
@@ -80,9 +80,9 @@ export default ActiveModelSerializer.extend({
     Object.keys(payload).forEach((key) => {
       let val = payload[key];
       if (_.isArray(val)) {
-        newPayload[key] = val.map(obj => this._mungeTaskData(_.clone(obj)));
+        newPayload[key] = val.map(obj => this._setQualifiedType(_.clone(obj)));
       } else {
-        newPayload[key] = this._mungeTaskData(_.clone(val));
+        newPayload[key] = this._setQualifiedType(_.clone(val));
       }
     });
 

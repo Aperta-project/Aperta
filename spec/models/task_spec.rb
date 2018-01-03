@@ -185,34 +185,6 @@ describe Task do
     end
   end
 
-  describe 'Task.descendants' do
-    it 'includes a new subclass of Task' do
-      new_task = Class.new(Task)
-      expect(Task.descendants).to include(new_task)
-    end
-
-    it 'returns all the tasks' do
-      tasks_from_source = Dir[Rails.root.join('**/*.rb')]
-                          .select { |path| path.match(%r{models/.*task.rb}) }
-                          .reject { |path| path.match(/concerns/) }
-                          .reject { |path| path.match(%r{models/task.rb}) }
-                          .map { |path| path.match(%r{models/(.*).rb})[1] }
-
-      tasks = Task.descendants.map { |c| c.to_s.underscore }
-      expect(tasks).to include(*tasks_from_source)
-    end
-
-    it 'works across reload' do
-      # TODO: This tests wreaks havoc on classes that are nested deep in engines
-      # app/subscribers.
-      skip
-      expect do
-        ActionDispatch::Reloader.cleanup!
-        ActionDispatch::Reloader.prepare!
-      end.not_to change { Task.descendants.count }
-    end
-  end
-
   describe 'Task.safe_constantize' do
     it 'fails with Task' do
       expect { Task.safe_constantize('Task') }

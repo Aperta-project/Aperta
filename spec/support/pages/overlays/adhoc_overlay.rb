@@ -1,5 +1,6 @@
-class AdhocOverlay < CardOverlay
+require 'support/pages/card_overlay'
 
+class AdhocOverlay < CardOverlay
   def upload_attachment(file_name)
     upload_file(element_id: 'file',
                 file_name: file_name,

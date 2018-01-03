@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171212195154) do
+ActiveRecord::Schema.define(version: 20171227175430) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -431,6 +431,18 @@ ActiveRecord::Schema.define(version: 20171212195154) do
   add_index "entity_attributes", ["name"], name: "index_entity_attributes_on_name", using: :btree
   add_index "entity_attributes", ["value_type"], name: "index_entity_attributes_on_value_type", using: :btree
 
+  create_table "export_deliveries", force: :cascade do |t|
+    t.integer  "paper_id"
+    t.integer  "task_id"
+    t.integer  "user_id"
+    t.string   "state"
+    t.string   "error_message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "destination",   null: false
+    t.string   "service_id"
+  end
+
   create_table "feature_flags", force: :cascade do |t|
     t.string  "name",   null: false
     t.boolean "active", null: false
@@ -768,6 +780,23 @@ ActiveRecord::Schema.define(version: 20171212195154) do
   add_index "reviewer_numbers", ["paper_id"], name: "index_reviewer_numbers_on_paper_id", using: :btree
   add_index "reviewer_numbers", ["user_id"], name: "index_reviewer_numbers_on_user_id", using: :btree
 
+  create_table "reviewer_recommendations", force: :cascade do |t|
+    t.integer  "reviewer_recommendations_task_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "middle_initial"
+    t.string   "email"
+    t.string   "department"
+    t.string   "title"
+    t.string   "affiliation"
+    t.string   "recommend_or_oppose"
+    t.text     "reason"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "ringgold_id"
+    t.integer  "card_version_id",                  null: false
+  end
+
   create_table "reviewer_reports", force: :cascade do |t|
     t.integer  "task_id",                         null: false
     t.integer  "decision_id",                     null: false
@@ -822,12 +851,6 @@ ActiveRecord::Schema.define(version: 20171212195154) do
   end
 
   add_index "scheduled_events", ["due_datetime_id"], name: "index_scheduled_events_on_due_datetime_id", using: :btree
-
-  create_table "scratches", force: :cascade do |t|
-    t.string   "contents"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "setting_templates", force: :cascade do |t|
     t.string  "key"
@@ -895,18 +918,6 @@ ActiveRecord::Schema.define(version: 20171212195154) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "tahi_standard_tasks_export_deliveries", force: :cascade do |t|
-    t.integer  "paper_id"
-    t.integer  "task_id"
-    t.integer  "user_id"
-    t.string   "state"
-    t.string   "error_message"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "destination",   null: false
-    t.string   "service_id"
-  end
-
   create_table "tahi_standard_tasks_funders", force: :cascade do |t|
     t.string   "name"
     t.string   "grant_number"
@@ -919,23 +930,6 @@ ActiveRecord::Schema.define(version: 20171212195154) do
   end
 
   add_index "tahi_standard_tasks_funders", ["task_id"], name: "index_tahi_standard_tasks_funders_on_task_id", using: :btree
-
-  create_table "tahi_standard_tasks_reviewer_recommendations", force: :cascade do |t|
-    t.integer  "reviewer_recommendations_task_id"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "middle_initial"
-    t.string   "email"
-    t.string   "department"
-    t.string   "title"
-    t.string   "affiliation"
-    t.string   "recommend_or_oppose"
-    t.text     "reason"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "ringgold_id"
-    t.integer  "card_version_id",                  null: false
-  end
 
   create_table "task_templates", force: :cascade do |t|
     t.integer "journal_task_type_id"

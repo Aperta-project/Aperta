@@ -1,3 +1,5 @@
+require 'support/pages/card_overlay'
+
 class VersionedMetadataOverlay < CardOverlay
   def expect_version(version)
     expect(page).to have_content(version)

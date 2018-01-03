@@ -4,13 +4,6 @@ source 'https://rubygems.org'
 # ruby version changes
 ruby '2.3.6'
 
-# Task Engines
-gem 'plos_billing', path: 'engines/plos_billing'
-gem 'plos_bio_internal_review', path: 'engines/plos_bio_internal_review'
-gem 'plos_bio_tech_check', path: 'engines/plos_bio_tech_check'
-gem 'tahi-assign_team', path: 'engines/tahi-assign_team'
-gem 'tahi_standard_tasks', path: 'engines/tahi_standard_tasks'
-
 # Gems
 gem 'aasm', '~> 4.9.0'
 gem 'active_model_serializers', '0.8.3'
@@ -32,7 +25,7 @@ gem 'ember-cli-rails'
 gem 'faraday'
 gem 'faraday_middleware', '~> 0.10'
 gem 'fog', '~> 1.36.0'
-gem 'gepub', '~> 0.7.0beta1'
+gem 'gepub', '~> 0.7.0beta4'
 gem 'health_check'
 gem 'jwt'
 gem 'kaminari'
@@ -43,7 +36,7 @@ gem 'migration_comments'
 gem 'migration_data'
 gem 'mini_magick'
 gem 'newrelic_rpm'
-gem 'nokogiri'
+gem 'nokogiri', '>= 1.7.2'
 gem 'omniauth-cas'
 gem 'omniauth-oauth2'
 gem 'ordinalize'
@@ -64,7 +57,7 @@ gem 'rest-client'
 gem 'rsec'
 gem 'ruby-jing'
 gem 'ruby_dig'
-gem 'rubyzip', '1.1.7', require: 'zip'
+gem 'rubyzip', '>=1.2.1', require: 'zip'
 gem 'sass-rails'
 gem 'sdoc'
 gem 'sidekiq'
@@ -72,6 +65,7 @@ gem 'sidekiq-scheduler'
 gem 'sidekiq-unique-jobs'
 gem 'sinatra', require: nil
 gem 'sort_alphabetical'
+gem 'syslogger'
 gem 'timeliness'
 gem 'tiny_tds'
 gem 'twitter-text'
@@ -91,6 +85,9 @@ gem 'has_secure_token'
 group :staging, :production do
   # The dotenv binary is used to load our environment in staging & production
   gem 'dotenv', require: false
+end
+
+group :staging do
   gem 'heroku-deflater'
   gem 'rails_12factor'
 end

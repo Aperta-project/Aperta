@@ -1,19 +1,19 @@
 import Ember from 'ember';
-import Application from '../../app';
-import Router from '../../router';
-import config from '../../config/environment';
+import Application from 'tahi/app';
+import Router from 'tahi/router';
+import config from 'tahi/config/environment';
 import * as TestHelper from 'ember-data-factory-guy';
 
-import registerPowerSelectHelpers from '../../tests/helpers/ember-power-select';
+import registerPowerSelectHelpers from 'tahi/tests/helpers/ember-power-select';
 
-import registerCustomAssertions from './custom-assertions';
-import registerAsyncHelpers     from './async-helpers';
-import registerStoreHelpers     from './store-helpers';
-import registerContainerHelpers from './container-helpers';
-import registerSelectHelpers    from './select-native-helper';
-import registerSelect2Helpers   from './select2-helpers';
+import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
+import registerAsyncHelpers     from 'tahi/tests/helpers/async-helpers';
+import registerStoreHelpers     from 'tahi/tests/helpers/store-helpers';
+import registerContainerHelpers from 'tahi/tests/helpers/container-helpers';
+import registerSelectHelpers    from 'tahi/tests/helpers/select-native-helper';
+import registerSelect2Helpers   from 'tahi/tests/helpers/select2-helpers';
 
-import Factory from './factory';
+import Factory from 'tahi/tests/helpers/factory';
 
 registerPowerSelectHelpers();
 registerCustomAssertions();

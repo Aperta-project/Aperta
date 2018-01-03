@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/paper_page'
 
 feature "Adding collaborators", js: true do
   let(:author) { FactoryGirl.create :user }

@@ -15,36 +15,6 @@ GIT
       rails (>= 3.0, < 4.3)
       rake (>= 0.8.7)
 
-PATH
-  remote: engines/plos_billing
-  specs:
-    plos_billing (0.0.1)
-      rails (~> 4.2.0)
-
-PATH
-  remote: engines/plos_bio_internal_review
-  specs:
-    plos_bio_internal_review (0.0.1)
-      rails (~> 4.2.1)
-
-PATH
-  remote: engines/plos_bio_tech_check
-  specs:
-    plos_bio_tech_check (0.0.1)
-      rails (~> 4.2.0)
-
-PATH
-  remote: engines/tahi-assign_team
-  specs:
-    tahi-assign_team (0.0.1)
-      rails (~> 4.2.1)
-
-PATH
-  remote: engines/tahi_standard_tasks
-  specs:
-    tahi_standard_tasks (0.0.1)
-      rails (~> 4.2.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -377,17 +347,15 @@ GEM
     generator_spec (0.9.3)
       activesupport (>= 3.0.0)
       railties (>= 3.0.0)
-    gepub (0.7.0beta2)
-      nokogiri (~> 1.6.1)
+    gepub (0.7.0beta4)
+      nokogiri (>= 1.6.1, < 1.9)
       rubyzip (>= 1.1.1)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     has_secure_token (1.0.0)
       activerecord (>= 3.0)
     hashie (3.4.2)
-    health_check (2.6.0)
-      rails (>= 4.0)
-    heroku-deflater (0.5.3)
+    heroku-deflater (0.6.3)
       rack (>= 1.4.5)
     hitimes (1.2.3)
     html_page (0.1.0)
@@ -395,7 +363,7 @@ GEM
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     http_parser.rb (0.6.0)
-    httpclient (2.6.0.1)
+    httpclient (2.8.3)
     humanize (1.1.0)
     i18n (0.9.1)
       concurrent-ruby (~> 1.0)
@@ -433,7 +401,7 @@ GEM
     mini_magick (4.5.1)
     mini_mime (1.0.0)
     mini_portile (0.6.2)
-    mini_portile2 (2.1.0)
+    mini_portile2 (2.3.0)
     minitest (5.10.3)
     msgpack (0.7.6)
     multi_json (1.12.1)
@@ -444,8 +412,8 @@ GEM
     net-ssh (3.0.2)
     netrc (0.10.3)
     newrelic_rpm (4.6.0.338)
-    nokogiri (1.6.8.1)
-      mini_portile2 (~> 2.1.0)
+    nokogiri (1.8.1)
+      mini_portile2 (~> 2.3.0)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0)
@@ -546,8 +514,8 @@ GEM
     rails_12factor (0.0.3)
       rails_serve_static_assets
       rails_stdout_logging
-    rails_serve_static_assets (0.0.4)
-    rails_stdout_logging (0.0.3)
+    rails_serve_static_assets (0.0.5)
+    rails_stdout_logging (0.0.5)
     railties (4.2.10)
       actionpack (= 4.2.10)
       activesupport (= 4.2.10)
@@ -621,7 +589,7 @@ GEM
     ruby-progressbar (1.8.1)
     ruby-rc4 (0.1.5)
     ruby_dig (0.0.2)
-    rubyzip (1.1.7)
+    rubyzip (1.2.1)
     rufus-scheduler (3.4.0)
       et-orbi (~> 1.0)
     safe_yaml (1.0.4)
@@ -679,6 +647,7 @@ GEM
     sshkit (1.8.1)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
+    syslogger (1.6.5)
     test_after_commit (0.4.1)
       activerecord (>= 3.2)
     thin (1.6.3)
@@ -766,9 +735,8 @@ DEPENDENCIES
   foreman
   geckodriver-helper
   generator_spec
-  gepub (~> 0.7.0beta1)
+  gepub (~> 0.7.0beta4)
   has_secure_token
-  health_check
   heroku-deflater
   jwt
   kaminari
@@ -779,7 +747,7 @@ DEPENDENCIES
   migration_data
   mini_magick
   newrelic_rpm
-  nokogiri
+  nokogiri (>= 1.7.2)
   omniauth-cas
   omniauth-oauth2
   ordinalize
@@ -789,9 +757,6 @@ DEPENDENCIES
   pdfkit
   pg
   pg_search
-  plos_billing!
-  plos_bio_internal_review!
-  plos_bio_tech_check!
   premailer-rails
   progressbar
   pry-byebug
@@ -819,7 +784,7 @@ DEPENDENCIES
   rubocop
   ruby-jing
   ruby_dig
-  rubyzip (= 1.1.7)
+  rubyzip (>= 1.2.1)
   sass-rails
   sdoc
   selenium-webdriver
@@ -831,8 +796,7 @@ DEPENDENCIES
   sort_alphabetical
   spring
   spring-commands-rspec
-  tahi-assign_team!
-  tahi_standard_tasks!
+  syslogger
   test_after_commit
   thin
   timecop
@@ -849,4 +813,4 @@ RUBY VERSION
    ruby 2.3.6p384
 
 BUNDLED WITH
-   1.16.0
+   1.16.1

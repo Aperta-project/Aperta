@@ -31,16 +31,14 @@ class TasksController < ApplicationController
 
   def update
     requires_user_can :edit, task
-
     # If user is going to be removed get it to log Activity event
     last_assigned_user = task.assigned_user
 
     if task.completed?
-      # If the task is already completed, all the user can do is uncomplete it
-      # or assign an user.
-      attrs = params.require(:task).permit(:completed, :assigned_user_id)
-      task.completed = attrs[:completed]
-      task.assigned_user_id = attrs[:assigned_user_id]
+      # If the task is already completed, all the user can do is uncomplete it,
+      # assign an user or move it to a different phase in the workflow.
+      attrs = task_params(task.class).slice(:completed, :assigned_user_id, :phase_id, :position)
+      task.assign_attributes(attrs)
     else
       # At this point, the user could be doing one of two things.
       # 1. They are toggling the completed flag.

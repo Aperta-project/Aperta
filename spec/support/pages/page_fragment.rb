@@ -96,6 +96,7 @@ class PageFragment
     overlay_class ||= begin
                       "#{card_name.delete ' '}Overlay".constantize
                     rescue NameError
+                      require 'support/pages/card_overlay'
                       CardOverlay
                     end
     overlay = overlay_class.new session.find(".overlay")

@@ -1,3 +1,5 @@
+require 'support/pages/page_fragment'
+
 class RoleFragment < PageFragment
   text_assertions :name, ".role-name-field"
 

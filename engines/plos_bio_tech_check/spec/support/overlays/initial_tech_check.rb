@@ -1,2 +1,0 @@
-class InitialTechCheckOverlay < TechCheckOverlay
-end

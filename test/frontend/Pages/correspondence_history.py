@@ -59,7 +59,7 @@ class CorrespondenceHistory(AuthenticatedPage):
     # most recent email sent for this paper from Aperta.
     co_author_confirmation_correspondence = correspondence_items[0]
     correspondence_link = co_author_confirmation_correspondence.find_element_by_tag_name('a')
-    assert correspondence_link.text.strip() == 'Authorship Confirmation of Manuscript Submitted to PLOS Biology', correspondence_link.text
+    assert correspondence_link.text.strip() == 'Authorship Confirmation of Manuscript Submitted to PLOS Wombat', correspondence_link.text
 
     correspondence_link.click()
     correspondence_subject = self._get(self._correspondence_modal_subject)

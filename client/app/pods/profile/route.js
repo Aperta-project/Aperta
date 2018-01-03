@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import AuthorizedRoute from 'tahi/routes/authorized';
+import AuthorizedRoute from 'tahi/pods/authorized/route';
 
 export default AuthorizedRoute.extend( {
   model() { return this.currentUser; },

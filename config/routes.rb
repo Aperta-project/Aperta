@@ -3,12 +3,6 @@ require 'sidekiq-scheduler/web'
 
 # rubocop:disable Metrics/LineLength
 Tahi::Application.routes.draw do
-  mount TahiStandardTasks::Engine => '/api', as: 'standard_tasks'
-  ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
-  mount PlosBioInternalReview::Engine => '/api'
-  mount PlosBioTechCheck::Engine => '/api'
-  mount PlosBilling::Engine => '/api'
-
   # Test specific
   #
   if Rails.env.test?
@@ -265,6 +259,19 @@ Tahi::Application.routes.draw do
 
     resources :feature_flags, only: [:index, :update]
 
+    post 'changes_for_author/:id/submit_tech_check', controller: 'plos_bio_tech_check/changes_for_author', action: 'submit_tech_check', as: :submit_tech_check
+    post 'initial_tech_check/:id/send_email', controller: 'plos_bio_tech_check/initial_tech_check', action: 'send_email', as: :send_itc_email
+    post 'revision_tech_check/:id/send_email', controller: 'plos_bio_tech_check/revision_tech_check', action: 'send_email', as: :send_rtc_email
+    post 'final_tech_check/:id/send_email', controller: 'plos_bio_tech_check/final_tech_check', action: 'send_email', as: :send_ftc_email
+
+    resources :export_deliveries, only: [:create, :show], controller: 'tahi_standard_tasks/export_deliveries'
+    resources :funders, only: [:create, :update, :destroy], controller: 'tahi_standard_tasks/funders'
+    resources :reviewer_recommendations, only: [:create, :update, :destroy], controller: 'tahi_standard_tasks/reviewer_recommendations'
+    put 'tasks/:id/upload_manuscript', to: 'tahi_standard_tasks/upload_manuscript#upload', as: :upload_manuscript
+    post 'tasks/:id/upload_manuscript', to: 'tahi_standard_tasks/upload_manuscript#upload', as: :upload_new_manuscript
+    delete 'tasks/:id/delete_manuscript', to: 'tahi_standard_tasks/upload_manuscript#destroy_manuscript', as: :destroy_manuscript
+    delete 'tasks/:id/delete_sourcefile', to: 'tahi_standard_tasks/upload_manuscript#destroy_sourcefile', as: :destroy_sourcefile
+
     resources :scheduled_events, only: [:update]
   end
 
@@ -315,6 +322,5 @@ Tahi::Application.routes.draw do
   end
 
   root to: 'ember_cli/ember#index'
-  health_check_routes
   mount_ember_app :client, to: '/'
 end

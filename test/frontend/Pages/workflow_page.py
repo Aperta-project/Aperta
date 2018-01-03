@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import logging
 import time
@@ -177,6 +177,10 @@ class WorkflowPage(AuthenticatedPage):
   def click_ad_hoc_authors_card(self):
     """Open the Ad Hoc author card"""
     self._get(self._ad_hoc_authors_card).click()
+
+  def click_authors_card(self):
+    """Open the Authors Card from the workflow page"""
+    self._get(self._authors_card).click()
 
   def click_column_header(self):
     """Click on the first column header and returns the text"""

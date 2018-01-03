@@ -1,7 +1,7 @@
 import { module } from 'qunit';
 import Ember from 'ember';
-import startApp from '../helpers/start-app';
-import destroyApp from '../helpers/destroy-app';
+import startApp from 'tahi/tests/helpers/start-app';
+import destroyApp from 'tahi/tests/helpers/destroy-app';
 import { mockSetup, mockTeardown } from 'ember-data-factory-guy';
 
 const { RSVP: { Promise } } = Ember;

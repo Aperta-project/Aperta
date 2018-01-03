@@ -12,7 +12,7 @@ export default Ember.Component.extend({
     disabled: PropTypes.bool.isRequired,
     align: PropTypes.string
   },
-  
+
   getDefaultProps() {
     return {
       displaySpinner: false,

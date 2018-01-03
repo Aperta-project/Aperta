@@ -1,3 +1,5 @@
+require 'support/pages/dashboard_page'
+
 class SignUpPage < Page
   path :new_user_registration
 

@@ -3,11 +3,11 @@
 // import Ember from 'ember';
 // import { module, test } from 'qunit';
 // import FactoryGuy from 'ember-data-factory-guy';
-// import Factory from '../helpers/factory';
+// import Factory from 'tahi/tests/helpers/factory';
 // import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 // import startApp from 'tahi/tests/helpers/start-app';
 // import { manualSetup } from 'ember-data-factory-guy';
-// import FakeCanService from '../helpers/fake-can-service';
+// import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 
 // import RSVP from 'rsvp';
 

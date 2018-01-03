@@ -1,0 +1,12 @@
+<%= @body.html_safe %>
+
+<%= render partial: 'email/button', locals: {
+  href: invitation_accept_url({ token: @invitation.token }),
+  text: 'View Manuscript'
+} %>
+
+<p>Kind regards,<br />
+  Bethany Walker<br />
+  Publications Manager<br />
+  PLOS Biology
+</p>

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import HasBusyStateMixin from '../../../mixins/has-busy-state';
+import HasBusyStateMixin from 'tahi/mixins/has-busy-state';
 import { module, test } from 'qunit';
 
 module('Unit | Mixin | has busy state');

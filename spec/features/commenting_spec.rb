@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/task_manager_page'
 
 feature 'Comments on cards', js: true do
   let(:admin) { create :user, :site_admin, first_name: "Admin" }

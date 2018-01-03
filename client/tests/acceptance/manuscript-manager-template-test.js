@@ -4,9 +4,11 @@ import { test } from 'ember-qunit';
 import FactoryGuy from 'ember-data-factory-guy';
 import * as TestHelper from 'ember-data-factory-guy';
 import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
+import customAssertions from 'tahi/tests/helpers/custom-assertions';
 
 moduleForAcceptance('Integration: Manuscript Manager Templates', {
   beforeEach: function() {
+    customAssertions();
     return Ember.run(() => {
       $.mockjax({
         url: '/api/admin/journals/authorization',
@@ -22,6 +24,10 @@ moduleForAcceptance('Integration: Manuscript Manager Templates', {
         }
       });
     });
+  },
+
+  afterEach() {
+    $.mockjax.clear();
   }
 });
 
@@ -55,6 +61,61 @@ test('Changing phase name', function(assert) {
   });
 });
 
+test('Deleting a phase with no cards', function(assert) {
+  var adminJournal, mmt;
+  adminJournal = FactoryGuy.make('admin-journal', {
+    id: 1
+  });
+  mmt = FactoryGuy.make('manuscript-manager-template', {
+    id: 1,
+    journal: adminJournal
+  });
+  let phase_template = FactoryGuy.make('phase-template', {
+    id: 1,
+    manuscriptManagerTemplate: mmt,
+    name: 'Phase 1'
+  });
+  TestHelper.mockFindRecord('admin-journal').returns({
+    model: adminJournal
+  });
+
+  $.mockjax({url: `/api/phase_templates/${phase_template.get('id')}`, type: 'DELETE', status: 204, responseText: ''});
+
+  visit('/admin/mmt/journals/1/manuscript_manager_templates/1/edit');
+  andThen(function() {
+    assert.textPresent('.column-title', 'Phase 1');
+  });
+  click('.remove-icon');
+  andThen(function() {
+    assert.mockjaxRequestMade(`/api/phase_templates/${phase_template.get('id')}`, 'DELETE', 'it deletes the phase');
+    assert.textNotPresent('.column-title', 'Phase 1');
+  });
+});
+
+test('Deleting a newly created phase not yet saved in the database', function(assert) {
+  var adminJournal;
+  adminJournal = FactoryGuy.make('admin-journal', {
+    id: 1
+  });
+  FactoryGuy.make('manuscript-manager-template', {
+    id: 1,
+    journal: adminJournal
+  });
+  TestHelper.mockFindRecord('admin-journal').returns({
+    model: adminJournal
+  });
+
+  visit('/admin/mmt/journals/1/manuscript_manager_templates/1/edit');
+  click('.add-column');
+  andThen(function() {
+    assert.textPresent('.column-title', 'New Phase');
+  });
+  click('.remove-icon');
+  andThen(function() {
+    assert.textNotPresent('.column-title', 'New Phase');
+  });
+});
+
 test('Adding an Ad-Hoc card', function(assert) {
   var adminJournal, journalTaskType, mmt, pt;
   journalTaskType = FactoryGuy.make('journal-task-type', {
@@ -78,6 +139,7 @@ test('Adding an Ad-Hoc card', function(assert) {
   TestHelper.mockFindRecord('admin-journal').returns({
     model: adminJournal
   });
+
   visit('/admin/mmt/journals/1/manuscript_manager_templates/1/edit');
   click('.button--green:contains("Add New Card")');
   click('label:contains("Ad Hoc")');
@@ -167,7 +229,6 @@ test('User can enable a workflow as preprint eligible', function(assert){
   TestHelper.mockFindRecord('admin-journal').returns({
     model: adminJournal
   });
-
   $.mockjax({
     url: '/api/manuscript_manager_templates/1',
     status: 204
@@ -218,4 +279,3 @@ test('Preprint eligible is hidden if feature flag is not set', function(assert){
     assert.elementNotFound('.preprint-eligible');
   });
 });
-

@@ -59,7 +59,7 @@ test('does not validate original attributes on cancel', function(assert) {
 });
 
 test('validates attributes and updates the file on save', function(assert) {
-  assert.expect(2);
+  assert.expect(3);
   this.set('fileProxy', Ember.Object.create({
     object: make('supporting-information-file', {title: 'Old Title', category: 'Figure', status: 'done'}),
     validateAll() {
@@ -71,15 +71,16 @@ test('validates attributes and updates the file on save', function(assert) {
   }));
 
   this.set('updateStub', function() { assert.ok(true, 'update action is called'); });
+  this.set('resetStub', function() { assert.ok(true, 'reset action is called'); });
 
   const template = hbs`{{supporting-information-file
                        isEditable=true
                        model=fileProxy
+                       resetSIErrorsForFile=(action resetStub)
                        updateFile=(action updateStub)}}`;
 
   this.render(template);
 
   this.$('.si-file-edit-icon').click();
   this.$('.si-file-save-edit-button').click();
-
 });

@@ -247,10 +247,19 @@ class Card < ActiveRecord::Base
     destroy!
   end
 
+  def card_permissions
+    role_perms = Hash.new { |hash, key| hash[key] = Set.new }
+    card_perms = Permission.where(filter_by_card_id: id).includes(:roles)
+    card_perms.each_with_object(role_perms) do |perm, hash|
+      perm.roles.each { |role| hash[role.name] << perm.action }
+    end
+    Hash[role_perms.transform_values(&:to_a).sort]
+  end
+
   private
 
   def clean_permissions
-    Permission.where(filter_by_card_id: id).delete_all
+    card_permissions.delete_all
   end
 
   def check_destroyable

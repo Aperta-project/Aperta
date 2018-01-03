@@ -9,12 +9,7 @@ export default ActiveModelSerializer.extend({
   // Revert this on the way out.
 
   serialize(record, options) {
-    let json = this._super(record, options);
-    if (json.qualified_type) {
-      json.type = json.qualified_type;
-      delete json.qualified_type;
-    }
-    return json;
+    return this._unsetQualifiedType(this._super(record, options));
   },
 
   pushPayload(store, payload) {
@@ -72,6 +67,14 @@ export default ActiveModelSerializer.extend({
       taskObj.type = deNamespaceTaskType(taskObj.type);
     }
 
+    return taskObj;
+  },
+
+  _unsetQualifiedType(taskObj) {
+    if (taskObj.qualified_type) {
+      taskObj.type = taskObj.qualified_type;
+      delete taskObj.qualified_type;
+    }
     return taskObj;
   },
 

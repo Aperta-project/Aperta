@@ -21,6 +21,7 @@ moduleFor('controller:paper/workflow', 'Unit | Controller | paper workflow', {
       'service:pusher',
       Ember.Object.extend({ socketId: 'foo' })
     );
+    $.mockjax.clear();
 
     $.mockjax({
       type: 'GET',

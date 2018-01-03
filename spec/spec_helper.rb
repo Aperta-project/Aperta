@@ -10,6 +10,7 @@ end
 SimpleCov.start do
   add_filter %r{^/test/}
   add_filter %r{^/spec/}
+  add_filter %r{^/lib/tasks/}
 end
 
 require 'rspec/instafail'

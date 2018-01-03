@@ -58,6 +58,6 @@ else
 fi
 
 # setup data on host
-python -m frontend.test_add_superadmin
-python -m frontend.test_add_stock_mmt
-python -m frontend.test_add_stock_users_assignments
+python -m frontend.test_a_1_add_superadmin
+python -m frontend.test_a_2_add_stock_mmt
+python -m frontend.test_a_3_add_stock_users_assignments

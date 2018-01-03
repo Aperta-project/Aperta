@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import Resolver from './resolver';
+import Resolver from 'tahi/resolver';
 import loadInitializers from 'ember-load-initializers';
-import config from './config/environment';
+import config from 'tahi/config/environment';
 
 let App;
 

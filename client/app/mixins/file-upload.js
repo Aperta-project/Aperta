@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import FileUpload from 'tahi/models/file-upload';
+import FileUpload from 'tahi/pods/file-upload/model';
 
 export default Ember.Mixin.create({
   _initFileUpload: Ember.on('init', function() {

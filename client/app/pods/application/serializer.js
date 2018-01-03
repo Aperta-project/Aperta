@@ -59,12 +59,6 @@ export default ActiveModelSerializer.extend({
     return normalizedPayload;
   },
 
-  // Make sure normalizeSaveResponse uses our normalizeSingleResponse
-
-  normalizeSaveResponse(...args) {
-    return this.normalizeSingleResponse(...args);
-  },
-
   // The Task payload has a key of `type`. This is the full
   // Ruby class name. Example: "ApertaThings::ImportantTask"
   // The Ember side is only interested in the last half.

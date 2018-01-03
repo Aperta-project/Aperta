@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Page Object definition for the Ad-hoc for authors card
@@ -10,11 +10,11 @@ __author__ = 'sbassi@plos.org'
 
 
 class AHAuthorCard(AHCard):
-  """
-  Page Object Model for Ad Hoc for Authors Card
-  """
-  def __init__(self, driver):
-    super(AHAuthorCard, self).__init__(driver)
+    """
+    Page Object Model for Ad Hoc for Authors Card
+    """
+    def __init__(self, driver):
+        super(AHAuthorCard, self).__init__(driver)
 
-    # Locators - Instance members
-    # self._invite_editor_text = (By.CLASS_NAME, 'invite-editor-text')
+        # Locators - Instance members
+        # self._invite_editor_text = (By.CLASS_NAME, 'invite-editor-text')

@@ -829,14 +829,17 @@ class ManuscriptViewerPage(AuthenticatedPage):
         logging.info(current_env)
         if current_env in production_urls:
             return False
-        preprint_feature_flag = PgSQL().query('SELECT active FROM feature_flags WHERE name = \'PREPRINT\';')[0][0]
+        preprint_feature_flag = PgSQL().query('SELECT active '
+                                              'FROM feature_flags '
+                                              'WHERE name = \'PREPRINT\';')[0][0]
         return preprint_feature_flag
 
     def is_review_before_submission(self):
         """
-        A method that will determine for the manuscript if the 'Review Your Submission' overlay should be shown
-        on submission. Tests for Preprint feature flag enablement for system, preprint checkbox selection for mmt,
-        and finally presence of Preprint Posting card in the manuscript. If all three are found,
+        A method that will determine for the manuscript if the 'Review Your Submission' overlay
+            should be shown on submission. Tests for Preprint feature flag enablement for system,
+            preprint checkbox selection for mmt, and finally presence of Preprint Posting card in
+            the manuscript. If all three are found,
         return True, else False
         """
         # check if the pre-print feature flag is ON
@@ -1137,7 +1140,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
           version_data = ms_versions[key]
           expected_version_name = version_data['version']
           # adding submission date: APERTA-9335
-          expected_version_date = version_data['date'].strftime("%b %d, %Y")
+          expected_version_date_local = self.utc_to_local_tz(version_data['date'])
+          expected_version_date = expected_version_date_local.strftime("%b %d, %Y")
 
           # Fix for adding the 'V' before the version number
           if expected_version_name != 'draft':

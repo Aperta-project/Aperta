@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import FileUpload from 'tahi/models/file-upload';
+import FileUpload from 'tahi/pods/file-upload/model';
 
 /**
  *  This component displays a UI where you can upload one or multiple files,

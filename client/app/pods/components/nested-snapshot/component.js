@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import SnapshotAttachment from 'tahi/models/snapshot/attachment';
+import SnapshotAttachment from 'tahi/pods/snapshot/attachment/model';
 
 export default Ember.Component.extend({
   snapshot1: null,

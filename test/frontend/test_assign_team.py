@@ -28,7 +28,7 @@ class AssignTeamCardTest(CommonTest):
     Validate the elements, styles, functions of the Assign Team card
     """
 
-    def test_assign_team_actions(self):
+    def test_smoke_assign_team_actions(self):
         """
         test_assign_team_card: Validates the elements, styles, roles and functions of assign team
             card from new document creation through inviting reviewer, academic editor, cover and
@@ -44,28 +44,22 @@ class AssignTeamCardTest(CommonTest):
         dashboard_page = self.cas_login(email=creator_user['email'])
         dashboard_page.set_timeout(60)
         dashboard_page.click_create_new_submission_button()
-        self.create_article(journal='PLOS Wombat', type_='OnlyInitialDecisionCard', random_bit=True)
+        self.create_article(title='Test Assign Team Actions',
+                            journal='PLOS Wombat',
+                            type_='OnlyInitialDecisionCard',
+                            random_bit=True)
         dashboard_page.restore_timeout()
         # Time needed for iHat conversion. This is not quite enough time in all circumstances
         time.sleep(5)
         manuscript_page = ManuscriptViewerPage(self.getDriver())
-        # Abbreviating the timeout for success message
-        manuscript_page.validate_ihat_conversions_success(timeout=45)
-        # Note: Request title to make sure the required page is loaded
+        manuscript_page.page_ready_post_create()
         paper_url = manuscript_page.get_current_url_without_args()
         short_doi = manuscript_page.get_paper_short_doi_from_url()
-
-        # Giving just a little extra time here so the title on the paper gets updated
-        # What I notice is that if we submit before iHat is done updating, the paper title
-        # reverts to the temporary title specified on the CNS overlay (5s is too short)
-        # APERTA-6514
-        time.sleep(15)
         manuscript_page.complete_task('Upload Manuscript')
         manuscript_page.complete_task('Title And Abstract')
         manuscript_page.click_submit_btn()
         manuscript_page.confirm_submit_btn()
-        # Now we get the submit confirmation overlay
-        # Sadly, we take time to switch the overlay
+        # Now we get the submit confirmation overlay - Sadly, we take time to switch the overlay
         time.sleep(2)
         manuscript_page.close_modal()
         # logout and enter as editor
@@ -77,10 +71,7 @@ class AssignTeamCardTest(CommonTest):
         self.cas_login(email=editorial_user['email'])
         paper_workflow_url = '{0}/workflow'.format(paper_url)
         self._driver.get(paper_workflow_url)
-        # go to card
         workflow_page = WorkflowPage(self.getDriver())
-        # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-        #   otherwise failures
         workflow_page.page_ready()
         workflow_page.click_card('assign_team')
         assign_team = AssignTeamCard(self.getDriver())

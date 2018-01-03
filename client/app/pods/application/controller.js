@@ -11,13 +11,7 @@ export default Ember.Controller.extend(pusherConcerns, {
   showFeedbackOverlay: false,
   journals: null,
   canViewPaperTracker: false,
-  healthCheck: Ember.inject.service('health-check'),
   minimalChrome: false,
-
-  init: function() {
-    this._super(...arguments);
-    this.get('healthCheck').start();
-  },
 
   setCanViewPaperTracker: function() {
     if (this.journals === null) {

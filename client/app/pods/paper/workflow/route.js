@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import AuthorizedRoute from 'tahi/routes/authorized';
+import AuthorizedRoute from 'tahi/pods/authorized/route';
 import deNamespaceTaskType from 'tahi/lib/de-namespace-task-type';
 
 export default AuthorizedRoute.extend({

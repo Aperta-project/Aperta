@@ -11,8 +11,16 @@ function createLegacyErrors(errors) {
   let errorKey;
   errors.forEach(({source, detail}) => {
     errorKey = (Ember.isNone(source)) ?  detail : source.pointer.split('/').pop();
-    if (!errorObj[errorKey]) { errorObj[errorKey] = []; }
-    errorObj[errorKey].push(detail);
+
+    if(typeof(detail) === 'object') {
+      Object.keys(detail).forEach(function(key) {
+        detail[key] = detail[key]['category'][0];
+      });
+      errorObj[errorKey] = detail;
+    } else {
+      if (!errorObj[errorKey]) { errorObj[errorKey] = []; }
+      errorObj[errorKey].push(detail);
+    }
   });
 
   return errorObj;
@@ -46,6 +54,7 @@ export default function prepareResponseErrors(jsonApiErrors, options) {
 
   if (options && options.includeNames) {
     let humanize = options.includeNames === 'humanize';
+
     Object.keys(errorsObject).forEach((key) =>{
       let keyName = formatKey(key, humanize);
       errorsObject[key] = `${keyName} ${errorsObject[key]}`;

@@ -47,10 +47,10 @@ source $VENV_ACTIVATE
 pip install -r requirements.txt
 
 # get secrets
-scp aperta@aperta-frontend-201.soma.plos.org:secrets/env.tahi-integration config/env.vagrant
 
 if [ $VAGRANT ]; then
   echo "Configuring vagrant environment ..."
+  scp aperta@aperta-frontend-201.soma.plos.org:secrets/env.tahi-integration config/env.vagrant
   source config/env.vagrant
 else
   echo "Configuring development environment ..."

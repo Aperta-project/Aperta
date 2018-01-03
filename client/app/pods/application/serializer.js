@@ -78,6 +78,20 @@ export default ActiveModelSerializer.extend({
     return taskObj;
   },
 
+  /**
+   * Call the function f once on a thing if it is not an array, or map with f if
+   * thing is an array.
+   * @param thing - Either an an array, or something else
+   * @param f - function to call on thing
+   */
+  _callOnceOrMap(thing, f) {
+    if (_.isArray(thing)) {
+      return thing.map(f);
+    } else {
+      return f(thing);
+    }
+  },
+
   _mungePayloadTypes(payload) {
     const newPayload = {};
     Object.keys(payload).forEach((key) => {

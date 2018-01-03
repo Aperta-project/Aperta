@@ -786,14 +786,28 @@ class PaperTrackerPage(AuthenticatedPage):
         :param reverse: Whether the sort is DESC (True) or ASC (False) (passed to _get_paper_list())
         :return: void function
         """
+        pt_short_doi = self._get_page_contents()
+        papers = self._get_paper_list(journal_ids, sort_by=sort_by, reverse=reverse)
+        db_id = papers[0][0]
+        try:
+            assert pt_short_doi == db_id, 'ID in page: {0} != ID in DB: {1}'.format(pt_short_doi,
+                                                                                    db_id)
+        except AssertionError as e:
+            submit_date = PgSQL().query('SELECT submitted_at '
+                                        'FROM papers '
+                                        'WHERE papers.short_doi = %s;', (pt_short_doi,))
+            if not submit_date:
+                logging.warning('We have one or more paper(s) in the system without a submit date')
+            else:
+                raise e
+
+    def _get_page_contents(self):
+        """Grab the current contents of the paper tracker table - returns short DOI of 1st paper"""
         self._paper_tracker_table_tbody_manid = (
             By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/div/a')
         paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid)
         pt_short_doi = paper_tracker_ms_id.get_attribute('href').split('/')[-2]
-        papers = self._get_paper_list(journal_ids, sort_by=sort_by, reverse=reverse)
-        db_id = papers[0][0]
-        logging.info(db_id)
-        assert pt_short_doi == db_id, 'ID in page: {0} != ID in DB: {1}'.format(pt_short_doi, db_id)
+        return pt_short_doi
 
     @staticmethod
     def _normalize_status(status):

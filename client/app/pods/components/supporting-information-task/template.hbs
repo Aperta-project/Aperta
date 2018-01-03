@@ -14,8 +14,9 @@
     {{#each filesWithValidations as |file|}}
       {{supporting-information-file model=file
                                     updateFile=(action "updateFile")
+                                    resetSIErrorsForFile=(action "resetSIErrorsForFile")
                                     deleteFile=(action "deleteFile")
-                                    taskErrors=validationErrors
+                                    SIErrors=validationErrors.supportingInformationFiles
                                     isEditable=isEditable}}
     {{/each}}
   </div>
@@ -25,6 +26,7 @@
       {{upload-preview upload=upload}}
     {{/each}}
   </div>
+
   {{#if isEditable}}
     <span class="button-primary button--green fileinput-button si-files-upload-button">
       <span>Add Files</span>

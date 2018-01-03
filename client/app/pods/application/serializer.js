@@ -93,18 +93,10 @@ export default ActiveModelSerializer.extend({
   },
 
   _mungePayloadTypes(payload) {
-    const newPayload = {};
-    Object.keys(payload).forEach((key) => {
-      let val = payload[key];
-      if (_.isArray(val)) {
-        newPayload[key] = val.map(obj => this._setQualifiedType(_.clone(obj)));
-      } else {
-        newPayload[key] = this._setQualifiedType(_.clone(val));
-      }
+    Object.values(payload).forEach((val) => {
+      this._callOnceOrMap(val, this._setQualifiedType);
     });
-
-    return newPayload;
-
+    return payload;
   },
 
   // returns new payload

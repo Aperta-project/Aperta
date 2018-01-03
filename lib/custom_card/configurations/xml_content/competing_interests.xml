@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<card required-for-submission="true" workflow-display-only="false">
+  <DisplayChildren>
+    <Radio ident="competing_interests--has_competing_interests" value-type="boolean">
+      <text><ol class="question-list"><li class="question"><div class="question-text"><p>You are responsible for recognizing and disclosing on behalf of all authors any competing interest that could be perceived to bias their work, acknowledging all financial support and any other relevant financial or non-financial competing interests.</p>Do any authors of this manuscript have competing interests (as described in the <a target="_blank" href="http://journals.plos.org/plosbiology/s/competing-interests">PLOS Policy on Declaration and Evaluation of Competing Interests</a>)?</div></li></ol></text>
+      <DisplayWithValue visible-with-parent-answer="true">
+        <DisplayChildren custom-class="card-content-field-set">
+          <ParagraphInput ident="competing_interests--statement" value-type="html" editor-style="basic">
+            <text>Please provide details about any and all competing interests in the box below. Your response should begin with this statement: "I have read the journal's policy and the authors of this manuscript have the following competing interests."<br/><br/>Please note that if your manuscript is accepted, this statement will be published.</text>
+          </ParagraphInput>
+        </DisplayChildren>
+      </DisplayWithValue>
+      <DisplayWithValue visible-with-parent-answer="false">
+        <DisplayChildren custom-class="card-content-field-set">
+          <Description>
+            <text>Your competing interests statement will appear as: "The authors have declared that no competing interests exist."
+Please note that if your manuscript is accepted, this statement will be published.</text>
+          </Description>
+        </DisplayChildren>
+      </DisplayWithValue>
+    </Radio>
+  </DisplayChildren>
+</card>

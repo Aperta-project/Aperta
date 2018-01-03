@@ -17,12 +17,60 @@ export default ActiveModelSerializer.extend({
     return json;
   },
 
+  pushPayload(store, payload) {
+    let normalized = this._normalizePayloadData(payload);
+
+    return this._super(store, normalized);
+
+  },
+
+  normalizeSingleResponse(store, primaryModelClass, originalPayload, recordId, requestType) {
+    let {newModelName, payload} = this._newNormalize(
+      primaryModelClass.modelName,
+      this._mungePayloadTypes(originalPayload),
+      false
+    );
+
+    let newModelClass = store.modelFor(newModelName);
+    return this._super.apply(
+      this, [store, newModelClass, payload, recordId, requestType]
+    );
+  },
+
+  normalizeArrayResponse(store, primaryModelClass, originalPayload, recordId, requestType) {
+    let {newModelName, payload, isPolymorphic} = this._newNormalize(
+      primaryModelClass.modelName,
+      this._mungePayloadTypes(originalPayload),
+      false
+    );
+
+    let newModelClass = store.modelFor(newModelName);
+    let normalizedPayload = this._super.apply(
+      this, [store, newModelClass, payload, recordId, requestType]
+    );
+
+    if (isPolymorphic) {
+      if (!normalizedPayload.data) { normalizedPayload.data = []; }
+      normalizedPayload.data.push(...normalizedPayload.included);
+      delete normalizedPayload.included;
+    }
+
+    if (!normalizedPayload.data) { normalizedPayload.data = []; }
+    return normalizedPayload;
+  },
+
+  // Make sure normalizeSaveResponse uses our normalizeSingleResponse
+
+  normalizeSaveResponse(...args) {
+    return this.normalizeSingleResponse(...args);
+  },
+
   // The Task payload has a key of `type`. This is the full
   // Ruby class name. Example: "ApertaThings::ImportantTask"
   // The Ember side is only interested in the last half.
   // Store the original full name in `qualified_type`
   // We snake case because our superclass expects it
-  mungeTaskData(taskObj) {
+  _mungeTaskData(taskObj) {
     const qualifiedType  = taskObj.type;
 
     if (qualifiedType) {
@@ -33,14 +81,14 @@ export default ActiveModelSerializer.extend({
     return taskObj;
   },
 
-  mungePayloadTypes(payload) {
+  _mungePayloadTypes(payload) {
     const newPayload = {};
     Object.keys(payload).forEach((key) => {
       let val = payload[key];
       if (_.isArray(val)) {
-        newPayload[key] = val.map(obj => this.mungeTaskData(_.clone(obj)));
+        newPayload[key] = val.map(obj => this._mungeTaskData(_.clone(obj)));
       } else {
-        newPayload[key] = this.mungeTaskData(_.clone(val));
+        newPayload[key] = this._mungeTaskData(_.clone(val));
       }
     });
 
@@ -49,7 +97,7 @@ export default ActiveModelSerializer.extend({
   },
 
   // returns new payload
-  pluralizePrimaryKeyData(singularKey, pluralKey, payload, assumeObject) {
+  _pluralizePrimaryKeyData(singularKey, pluralKey, payload, assumeObject) {
     let newPayload = _.clone(payload);
 
     if((payload[singularKey] && payload[pluralKey])) {
@@ -76,7 +124,7 @@ export default ActiveModelSerializer.extend({
 
 
   //mutates payload
-  removeEmptyArrays(payload) {
+  _removeEmptyArrays(payload) {
     //remove empty arrays
     Object.keys(payload).forEach((key) => {
       let val = payload[key];
@@ -84,7 +132,7 @@ export default ActiveModelSerializer.extend({
     });
   },
 
-  getPolymorphicModelName(modelName, records) {
+  _getPolymorphicModelName(modelName, records) {
     records = Ember.makeArray(records);
 
     if (records && records[0] && records[0].type) {
@@ -94,7 +142,7 @@ export default ActiveModelSerializer.extend({
     }
   },
 
-  distributeRecordsByType(payload) {
+  _distributeRecordsByType(payload) {
     const originalKeys = Object.keys(payload);
     originalKeys.forEach((oldBucketName) => {
       if (Array.isArray(payload[oldBucketName])) {
@@ -126,13 +174,13 @@ export default ActiveModelSerializer.extend({
     });
   },
 
-  hasMultipleTypes(records) {
+  _hasMultipleTypes(records) {
     if (!Ember.isArray(records)) { return false; }
 
     return records.mapBy('type').uniq().length > 1;
   },
 
-  newNormalize(modelName, sourcePayload, assumeObject) {
+  _newNormalize(modelName, sourcePayload, assumeObject) {
     let payload = _.clone(sourcePayload);
 
     if(assumeObject !== false) {
@@ -143,43 +191,36 @@ export default ActiveModelSerializer.extend({
       primaryKey = singularPrimaryKey.pluralize();
 
     // author_task: {} ===> author_tasks: [{}]
-    let newPayload = this.pluralizePrimaryKeyData(singularPrimaryKey, primaryKey, payload, assumeObject);
+    let newPayload = this._pluralizePrimaryKeyData(singularPrimaryKey, primaryKey, payload, assumeObject);
 
     let primaryContent = payload[primaryKey];
     // if the primary key's content has a type, and that type is different than the modelName,
     // then THAT type should be the model name when we call super.
-    let newModelName = this.getPolymorphicModelName(modelName, newPayload[primaryKey]);
+    let newModelName = this._getPolymorphicModelName(modelName, newPayload[primaryKey]);
 
     // the payload is 'polymorphic' if the returned type is different than the one we asked for,
     // or if the payload has multiple different types.
-    let isPolymorphic = (newModelName !== modelName) || this.hasMultipleTypes(primaryContent);
+    let isPolymorphic = (newModelName !== modelName) || this._hasMultipleTypes(primaryContent);
 
     // loop through each key in the payload and move models into buckets based on their dasherized and pluralized 'type'
     // attributes if they have them
-    this.distributeRecordsByType(newPayload);
+    this._distributeRecordsByType(newPayload);
 
-    this.removeEmptyArrays(newPayload);
+    this._removeEmptyArrays(newPayload);
 
     return {newModelName, payload: newPayload, isPolymorphic};
   },
 
-  pushPayload(store, payload) {
-    let normalized = this.normalizePayloadData(payload);
-
-    return this._super(store, normalized);
-
-  },
-
-  normalizePayloadData(rawPayload){
+  _normalizePayloadData(rawPayload){
     if(!rawPayload){
       return;
     }
 
     var newPayload = {};
     for(var key of Object.keys(rawPayload)) {
-      let { payload } = this.newNormalize(key, rawPayload[key]);
+      let { payload } = this._newNormalize(key, rawPayload[key]);
 
-      // if we get { tasks: [{...}], authors: [{...}] } back from newNormalize
+      // if we get { tasks: [{...}], authors: [{...}] } back from _newNormalize
       // make sure we add all key/value pairs to newPayload
       for(var newKey of Object.keys(payload)){
         newPayload[newKey] = payload[newKey];
@@ -187,46 +228,5 @@ export default ActiveModelSerializer.extend({
     }
 
     return newPayload;
-  },
-
-  normalizeSingleResponse(store, primaryModelClass, originalPayload, recordId, requestType) {
-    let {newModelName, payload} = this.newNormalize(
-      primaryModelClass.modelName,
-      this.mungePayloadTypes(originalPayload),
-      false
-    );
-
-    let newModelClass = store.modelFor(newModelName);
-    return this._super.apply(
-      this, [store, newModelClass, payload, recordId, requestType]
-    );
-  },
-
-  normalizeArrayResponse(store, primaryModelClass, originalPayload, recordId, requestType) {
-    let {newModelName, payload, isPolymorphic} = this.newNormalize(
-      primaryModelClass.modelName,
-      this.mungePayloadTypes(originalPayload),
-      false
-    );
-
-    let newModelClass = store.modelFor(newModelName);
-    let normalizedPayload = this._super.apply(
-      this, [store, newModelClass, payload, recordId, requestType]
-    );
-
-    if (isPolymorphic) {
-      if (!normalizedPayload.data) { normalizedPayload.data = []; }
-      normalizedPayload.data.push(...normalizedPayload.included);
-      delete normalizedPayload.included;
-    }
-
-    if (!normalizedPayload.data) { normalizedPayload.data = []; }
-    return normalizedPayload;
-  },
-
-  // Make sure normalizeSaveResponse uses our normalizeSingleResponse
-
-  normalizeSaveResponse(store, primaryModelClass, payload, id, requestType) {
-    return this.normalizeSingleResponse(...arguments);
   }
 });

@@ -174,12 +174,8 @@ export default ActiveModelSerializer.extend({
     return records.mapBy('type').uniq().length > 1;
   },
 
-  _newNormalize(modelName, sourcePayload, assumeObject) {
+  _newNormalize(modelName, sourcePayload, assumeObject = true) {
     let payload = _.clone(sourcePayload);
-
-    if(assumeObject !== false) {
-      assumeObject = true;
-    }
 
     let singularPrimaryKey = modelName.underscore(),
       primaryKey = singularPrimaryKey.pluralize();

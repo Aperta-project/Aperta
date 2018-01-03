@@ -22,11 +22,11 @@ class OrcidLoginPage(PlosPage):
     super(OrcidLoginPage, self).__init__(driver)
 
     # Locators - Instance members
-    self._orcid_logo = (By.CSS_SELECTOR, 'div.logo h1 a img')
+    self._orcid_logo = (By.CSS_SELECTOR, 'a > img')
     # These next two are a misery or relations, but we don't own the page, ORCID does.
-    self._orcid_user_input = (By.CSS_SELECTOR, '.personal-login > div > label + input')
-    self._orcid_pw = (By.CSS_SELECTOR, '.personal-login > div + div > label + input')
-    self._orcid_login_authorize_btn = (By.ID, 'login-authorize-button')
+    self._orcid_user_input = (By.ID, 'userId')
+    self._orcid_pw = (By.ID, 'password')
+    self._orcid_login_authorize_btn = (By.ID, 'form-sign-in-button')
 
   # POM Actions
   def page_ready(self):

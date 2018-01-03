@@ -1,3 +1,6 @@
+require 'support/pages/page'
+require 'support/pages/manuscript_manager_template_page'
+
 class JournalPage < Page
   text_assertions :mmt_name, ".admin-workflow-thumbnail .admin-workflow-thumbnail-header"
 

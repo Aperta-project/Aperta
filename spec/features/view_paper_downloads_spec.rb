@@ -1,4 +1,6 @@
 require 'rails_helper'
+require 'support/pages/paper_page'
+
 # rubocop:disable Metrics/BlockLength
 feature 'Viewing Versions:', js: true do
   let(:creator) { FactoryGirl.create :user }

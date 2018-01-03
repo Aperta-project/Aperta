@@ -50,6 +50,17 @@ module.exports = function(environment) {
 
     moment: {
       includeTimezone: 'all'
+    },
+
+    'ember-prop-types': {
+      // Throw errors instead of logging warnings (default is false)
+      throwErrors: true,
+
+      // Validate properties (default is true for all environments except "production")
+      validate: true,
+
+      // Validate properties when they are updated (default is false)
+      validateOnUpdate: true
     }
   };
 
@@ -77,7 +88,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-
+    ENV['ember-prop-types'].validate = false;
   }
 
   return ENV;

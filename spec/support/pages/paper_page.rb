@@ -1,3 +1,5 @@
+require 'support/pages/page_fragment'
+
 class PageNotReady < Capybara::ElementNotFound; end
 
 class DeclarationFragment < PageFragment
@@ -44,11 +46,13 @@ class PaperPage < Page
   end
 
   def visit_dashboard
+    require 'support/pages/dashboard_page'
     click_link 'Dashboard'
     DashboardPage.new
   end
 
   def show_contributors
+    require 'support/pages/overlays/add_collaborators_overlay'
     reload
     contributors_link.click
     click_contributors_link
@@ -154,6 +158,7 @@ HERE
   end
 
   def submit(&blk)
+    require 'support/pages/overlays/submit_paper_overlay'
     click_on "Submit"
     SubmitPaperOverlay.new.tap do |overlay|
       if blk

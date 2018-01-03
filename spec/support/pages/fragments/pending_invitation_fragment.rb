@@ -1,3 +1,5 @@
+require 'support/pages/page_fragment'
+
 class PendingInvitationFragment < PageFragment
   def accept(button_text='Accept')
     click_button button_text

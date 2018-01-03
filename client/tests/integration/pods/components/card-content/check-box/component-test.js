@@ -13,6 +13,8 @@ moduleForComponent(
       this.set('actionStub', function() {});
       this.set('content', Ember.Object.create({ ident: 'test' }));
       this.set('answer', Ember.Object.create({ value: null }));
+      this.set('repetition', null);
+      this.set('owner', Ember.Object.create());
 
       this.labelAndText = Ember.Object.create({ text: '<b class="foo">Foo</b>', label: 'some label' });
       this.labelOnly = Ember.Object.create({ label: 'some label' });
@@ -25,6 +27,8 @@ let template = hbs`{{card-content/check-box
 answer=answer
 content=content
 disabled=disabled
+repetition=repetition
+owner=owner
 valueChanged=(action actionStub)
 }}`;
 

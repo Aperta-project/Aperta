@@ -1,3 +1,5 @@
+require 'support/pages/page_fragment'
+
 class PhaseFragment < PageFragment
   text_assertions :card, '.card'
 

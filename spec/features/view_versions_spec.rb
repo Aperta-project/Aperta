@@ -1,4 +1,6 @@
 require 'rails_helper'
+require 'support/pages/paper_page'
+
 # rubocop:disable Metrics/BlockLength
 # See APERTA-11563. This fails after 5pm PST, which is too much pain just to test that the version date looks good.
 xfeature 'Viewing Versions:', js: true do

@@ -1006,7 +1006,7 @@ group_author = {'group_name': 'Rebel Alliance',
                 'first': 'Jackson',
                 'middle': 'V',
                 'last': 'Stoeffer',
-                'email': 'test@test.org'}
+                'email': 'test_group@test.org'}
 
 billing_data = {'first': 'Jane',
                 'last': 'Doe',

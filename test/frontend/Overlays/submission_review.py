@@ -28,9 +28,10 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     self._headings = (By.CSS_SELECTOR, 'tr>th')
     self._metadata = (By.CSS_SELECTOR, 'tbody>tr>td')
     self._abstract = (By.CSS_SELECTOR, 'td>p')
+    self._manuscript = (By.CSS_SELECTOR, 'p.muted')
     self._review_ms_file_link = (By.CSS_SELECTOR, 'td>p>a')
     self._review_overlay_submit_button = (By.ID, 'review-submission-submit-button')
-    self._review_overlay_back2ms_button = (By.ID, 'review-submission-make-changes-button')
+    self._edit_submission_button = (By.ID, 'review-submission-make-changes-button')
     # manuscript viewer page
     self._submit_button = (By.ID, 'sidebar-submit-paper')
 
@@ -38,12 +39,12 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     """"Ensure the overlay is ready to test"""
     self._wait_for_element(self._get(self._review_overlay_submit_button),1)
 
-  def go_back_make_changes(self):
+  def go_back_edit_submission(self):
     """"
     Go back to Manuscript View by clicking on the 'Make changes' button
     """
-    self._wait_for_element(self._get(self._review_overlay_back2ms_button), 1)
-    self._get(self._review_overlay_back2ms_button).click()
+    self._wait_for_element(self._get(self._edit_submission_button), 1)
+    self._get(self._edit_submission_button).click()
 
   def complete_submission(self):
     """
@@ -80,16 +81,19 @@ class SubmissionReviewOverlay(AuthenticatedPage):
                         'Please verify that the information below is correct.'.format(journal_name)
 
     assert overlay_subtitle[0].text == expected_subtitle_line1, 'The overlay subtitle, line 1: {0} is not ' \
-                                                         'the expected: {1}'.format(overlay_title[0].text,
+                                                         'the expected: {1}'.format(overlay_subtitle[0].text,
                                                                                     expected_subtitle_line1)
+    self.validate_application_body_text(overlay_subtitle[0])
+    if pp_posting_answer:
+        assert len(overlay_subtitle) == 2, '{0} text lines displayed while 2 lines are expected ' \
+                                           'in the subtitle if the submitter opted in to preprint ' \
+                                           'posting'.format(str(len(overlay_subtitle)))
+        expected_subtitle_line2 = 'This information will also appear with the preprint you have elected to post on apertarxiv.org.'
 
-    expected_subtitle_line2 = 'This information will also appear with the preprint you have elected to post on apertarxiv.org.'
-
-    assert overlay_subtitle[1].text == expected_subtitle_line1, 'The overlay subtitle, line 2: {0} is not ' \
-                                                         'the expected: {1}'.format(overlay_title[1].text,
-                                                                                    expected_subtitle_line2)
-
-    self.validate_application_body_text(overlay_subtitle)
+        assert overlay_subtitle[1].text.strip() == expected_subtitle_line2, \
+            'The overlay subtitle, line 2: {0} is not the expected: {1}'\
+                .format(overlay_subtitle[1].text, expected_subtitle_line2)
+        self.validate_application_body_text(overlay_subtitle[1])
 
     # validate metadata in a table
     # validate names
@@ -102,8 +106,8 @@ class SubmissionReviewOverlay(AuthenticatedPage):
 
     card_metadata = self._gets(self._metadata)
     expected_values = {
-        'Preprint': ["Would you like to post this paper as a preprint?",
-                     "Yes, I want to post a preprint.",
+        'Preprint': ['Would you like to post this paper as a preprint?',
+                     'Yes, I want to post a preprint.',
                      "No, I don't want to post a preprint."],
         'Title': db_title,
         'Author': db_authors_for_assertion[0],
@@ -119,25 +123,25 @@ class SubmissionReviewOverlay(AuthenticatedPage):
 
     # Preprint line#1
     preprint_text = card_metadata[0].find_element_by_tag_name('dt')
-    expected_text = expected_values["Preprint"][0]
+    expected_text = expected_values['Preprint'][0]
     assert preprint_text.text.strip() == expected_text.strip(), preprint_text.text.strip()
 
     # Preprint line#2
     assert pp_posting_answer in {True, False}, pp_posting_answer
     preprint_text = card_metadata[0].find_element_by_tag_name('dd')
     answer_index = 1 if pp_posting_answer else 2
-    expected_text = expected_values["Preprint"][answer_index]
+    expected_text = expected_values['Preprint'][answer_index]
     assert preprint_text.text.strip() == expected_text.strip(), preprint_text.text.strip()
 
     # Title
     title_text = card_metadata[1].find_element_by_css_selector('td>p')
-    expected_text = expected_values["Title"]
+    expected_text = expected_values['Title']
     assert title_text.text.strip() == expected_text.strip(), title_text.text.strip()
     self.validate_application_body_text(title_text)
 
     # Author
     author_text = card_metadata[2].find_element_by_css_selector('td>p>span')
-    expected_text = self.normalize_spaces(expected_values["Author"])
+    expected_text = self.normalize_spaces(expected_values['Author'])
     assert self.normalize_spaces(author_text.text) == expected_text, \
       'Invalid Author representation on the page: {0}, expected: {1}' \
         .format(self.normalize_spaces(author_text.text), expected_text)
@@ -145,7 +149,7 @@ class SubmissionReviewOverlay(AuthenticatedPage):
 
     # Co-Author (list) might be empty, if there are no co-authors
     coauthors = card_metadata[3].find_elements_by_css_selector('td>p>span')
-    expected_coauthor_list = expected_values["Coauthors"]
+    expected_coauthor_list = expected_values['Coauthors']
     for i, coauthor in enumerate(coauthors):
       assert self.normalize_spaces(coauthor.text) == self.normalize_spaces(expected_coauthor_list[i]), \
       'Invalid Co-Authors representation on the page: {0}, expected: {1}' \
@@ -154,26 +158,28 @@ class SubmissionReviewOverlay(AuthenticatedPage):
 
     # Abstract
     abstract_text = card_metadata[4].find_element(*self._abstract)
-    expected_text = self.normalize_spaces(expected_values["Abstract"])
+    expected_text = self.normalize_spaces(expected_values['Abstract'])
     assert self.normalize_spaces(abstract_text.text) == expected_text, \
       'Invalid Abstract text on the page: {0}, expected: {1}' \
         .format(self.normalize_spaces(abstract_text.text), expected_text)
 
     # Manuscript
-    ms_text = card_metadata[5].find_element_by_css_selector('p.muted')
-    expected_text = expected_values["Manuscript"][1]
-    assert ms_text.text.strip() == expected_text.strip()
-    self.validate_application_body_text(ms_text), ms_text.text.strip()
+    ms_text = card_metadata[5].find_elements(*self._manuscript)
+    expected_text = expected_values['Manuscript'][1]
+    assert ms_text[0].text.strip() == expected_text.strip(), ms_text[0].text.strip()
+    self.validate_application_body_text(ms_text[0])
 
-    # TODO: add line 2
     if pp_posting_answer:
-        expected_text = expected_values["Manuscript"][2]
-        assert ms_text.text.strip() == expected_text.strip()
-        self.validate_application_body_text(ms_text), ms_text.text.strip()
+        assert len(ms_text)==2, '{0} text lines displayed for the manuscript while 2 lines are ' \
+                                'expected if the submitter opted in to preprint posting'\
+            .format(str(len(ms_text)))
+        expected_text = expected_values['Manuscript'][2]
+        assert ms_text[1].text.strip() == expected_text.strip(), ms_text[1].text.strip()
+        self.validate_application_body_text(ms_text[1])
 
     # download pdf
     ms_pdf_link = card_metadata[5].find_element_by_css_selector('a')
-    expected_link_title = expected_values["Manuscript"][0]
+    expected_link_title = expected_values['Manuscript'][0]
     assert ms_pdf_link.text.strip() == expected_link_title.strip(), ms_pdf_link.text.strip()
     self.validate_default_link_style(ms_pdf_link)
 
@@ -182,29 +188,29 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     assert submit_button.text == 'SUBMIT'
     self.validate_primary_big_green_button_style(submit_button), submit_button.text
 
-    edit_submission = self._get(self._review_overlay_back2ms_button)
+    edit_submission = self._get(self._edit_submission_button)
     assert edit_submission.text == 'EDIT SUBMISSION', edit_submission.text
     self.validate_secondary_big_green_button_style(edit_submission)
 
-  def select_submit_or_make_changes(self, selection=''):
+  def select_submit_or_edit_submission(self, selection=''):
       """
       Validate making a selection and closing the preview submission overlay
-      :param selection:  "Make Changes" or "Submit", not specified will lead to random selection
-      :return: selection: "Make Changes" or "Submit"
+      :param selection:  "edit submission" or "submit", not specified will lead to random selection
+      :return: selection: "edit submission" or "submit"
       """
       if selection:
-        assert selection in ['Make Changes', 'Submit'], 'Invalid selection for ' \
+        assert selection.lower() in ['edit submission', 'submit'], 'Invalid selection for ' \
                                                         'going back/forward choice: {0}'.format(selection)
-      go_back_button = self._get(self._review_overlay_back2ms_button)
-      submit_button =  self._get(self._review_overlay_submit_button)
-      logging.info('Submission Review button is: {0}'.format(selection))
       if not selection:
-        selection = random.choice(['Make Changes', 'Submit'])
-      if selection.lower() == 'make changes':
-        go_back_button.click()
+        selection = random.choice(['edit submission', 'submit'])
+      logging.info('Submission Review button is: {0}'.format(selection))
+      if selection.lower() == 'edit submission':
+        # go_back_button.click()
+        self.go_back_edit_submission()
         self._wait_for_element(self._get(self._submit_button), 0.5)
       elif selection.lower() == 'submit':
-        submit_button.click()
+        # submit_button.click()
+        self.complete_submission()
         self._wait_for_element(self._get(self._overlay_header_close), 1)
       return selection
 
@@ -231,8 +237,8 @@ class SubmissionReviewOverlay(AuthenticatedPage):
 
     for db_author in db_authors:
       logging.debug('Appending author {0} to the list db_authors_for_assertions'.format(db_author[0]))
-      if db_author[0]=='GroupAuthor':
-          db_authors_for_assertion.append(db_author[6].strip())
+      if db_author[6]=='GroupAuthor':
+          db_authors_for_assertion.append(db_author[5].strip())
       else:
 
           author_name = \
@@ -256,6 +262,8 @@ class SubmissionReviewOverlay(AuthenticatedPage):
     pp_posting_answer = PgSQL().query('SELECT value '
                                       'FROM answers '
                                       'WHERE owner_id = %s AND owner_type=%s;', (task_id, 'Task'))[0][0]
+
+    pp_posting_answer = True if pp_posting_answer == 't' else False
 
     return  db_title, db_abstract, db_authors_for_assertion, pp_posting_answer
 

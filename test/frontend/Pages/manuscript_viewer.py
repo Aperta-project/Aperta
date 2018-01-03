@@ -814,7 +814,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
             submission_review_overlay = SubmissionReviewOverlay(self._driver)
             submission_review_overlay.overlay_ready()
             submission_review_overlay.validate_styles_and_components()
-            submission_review_overlay.select_submit_or_make_changes("Submit")
+            submission_review_overlay.select_submit_or_edit_submission("Submit")
           else:
             self._wait_for_element(self._get(self._review_overlay_submit_button), multiplier=2)
             self._get(self._review_overlay_submit_button).click()

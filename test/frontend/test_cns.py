@@ -26,7 +26,7 @@ class ApertaCNSTest(CommonTest):
   Two tests explicit to the current two paths of creating a new submission. Relies on the seeding data provided by
     test_add_stock_mmt.
   """
-  def rest_smoke_validate_create_to_submit_no_preprint_overlay(self, init=True):
+  def test_smoke_validate_create_to_submit_no_preprint_overlay(self, init=True):
     """
     test_cns: Validates Creating a new document - needs extension to take it through to Submit
     Validates the presence of the following elements:
@@ -51,7 +51,7 @@ class ApertaCNSTest(CommonTest):
     title = manuscript_page.get_paper_title_from_page()
     logging.info(u'Paper page title is: {0}'.format(title))
 
-  def rest_core_validate_create_to_submit_with_preprint_overlay(self, init=True):
+  def test_core_validate_create_to_submit_with_preprint_overlay(self, init=True):
     """
     test_cns: Validates Creating a new document - needs extension to take it through to Submit with the preprint
     overlay in the create sequence.
@@ -100,18 +100,24 @@ class ApertaCNSTest(CommonTest):
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     # open to check style
     review_before_submission = ms_page.is_review_before_submission()
+    # if review_before_submission:
+    ms_page.complete_task("Preprint Posting")
+
     if review_before_submission:
-      ms_page.complete_task("Preprint Posting")
+      # This check is needed due to APERTA-12376
+      if ms_page.is_task_open("Preprint Posting"):
+        ms_page.click_task("Preprint Posting")
+
     ms_page.complete_task('Title And Abstract')
     ms_page.complete_task('Upload Manuscript')
     # On the Authors card, we add a co-author
     ms_page.click_task('Authors')
     authors_task = AuthorsTask(self.getDriver())
+    authors_task.task_ready()
     authors_task.add_individual_author_task_action()
-    authors_task.edit_author(author)
-    # TODO: add group co-author when APERTA-11838 gets resolved
-
+    authors_task.task_ready()
     authors_task.add_group_author_task_action()
+    authors_task.edit_author(author)
 
     ms_page._wait_for_element(ms_page._get(ms_page._submit_button), 1)
     submit_button = ms_page._get(ms_page._submit_button)
@@ -125,7 +131,7 @@ class ApertaCNSTest(CommonTest):
       submission_review_overlay.validate_styles_and_components()
       ms_pdf_link = submission_review_overlay._get(submission_review_overlay._review_ms_file_link)
       ms_page.validate_manuscript_downloaded_file(ms_pdf_link, format='pdf')
-      submission_review_overlay.select_submit_or_make_changes()
+      submission_review_overlay.select_submit_or_edit_submission()
     else:
       logging.info("No Review Submission overlay for the manuscript")
       assert submit_button.text.lower() == 'submit'

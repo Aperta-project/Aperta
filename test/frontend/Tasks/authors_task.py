@@ -462,6 +462,7 @@ class AuthorsTask(BaseTask):
         initials_input.send_keys(author['initials'] + Keys.ENTER)
         email_input.send_keys(author['email'] + Keys.ENTER)
         title_input.send_keys(author['title'] + Keys.ENTER)
+        self._wait_for_text_to_be_present_in_element_value(self._title_input, author['title'])
 
         self.scroll_element_into_view_below_toolbar(department_input)
         department_input.send_keys(author['department'] + Keys.ENTER)
@@ -508,6 +509,7 @@ class AuthorsTask(BaseTask):
             govt_no.click()
         time.sleep(1)
         add_author_add_btn = self._get(self._add_author_add_btn)
+
         add_author_add_btn.click()
         # Check if data is there
         time.sleep(3)
@@ -545,6 +547,7 @@ class AuthorsTask(BaseTask):
         last_input.send_keys(group_author['last'] + Keys.ENTER)
         email_input.send_keys(group_author['email'] + Keys.ENTER)
 
+        self._wait_for_text_to_be_present_in_element_value(self._gemail_input, group_author['email'])
         # check one of the boxes in Author Contributions, as this is required
         self._wait_for_element(self._get(self._gdesigned_chkbx))
         group_author_contribution_chck = self._get(self._gdesigned_chkbx)
@@ -556,7 +559,6 @@ class AuthorsTask(BaseTask):
         logging.info('Selecting Gov\'t Choice {0}'.format(govt_choice))
         govt_div = self._get(self._govt_employee_div)
         self._scroll_into_view(govt_div)
-        self._actions.move_to_element(govt_div).perform()
         if govt_choice == 'Yes':
             govt_yes.click()
         else:
@@ -565,7 +567,7 @@ class AuthorsTask(BaseTask):
         add_author_add_btn = self._get(self._add_author_add_btn)
         add_author_add_btn.click()
         # Check if data is there
-        time.sleep(3)
+        self._wait_for_not_element(self._add_author_add_btn, 0.5)
         authors = self._gets(self._author_items)
         for item in authors:
             logging.info(item.text)

@@ -98,6 +98,37 @@ FactoryGirl.define do
         TEXT
     end
 
+    trait(:academic_editor_invite) do
+      scenario 'Invitation'
+      ident 'academic-editor-invite'
+      name 'Academic Editor Invite'
+      to '{{ manuscript.creator.email }}'
+      subject 'You have been invited as a reviewer for the manuscript, "{{ manuscript.title }}"'
+      body <<-TEXT.strip_heredoc
+            <p>I am writing to seek your advice as the academic editor on a manuscript entitled '{{ manuscript.title }}'. The corresponding author is {{author.full_name}}, and the manuscript is under consideration at {{ journal.name }}.</p>
+            <p>We would be very grateful if you could let us know whether or not you are able to take on this assignment within 24 hours, so that we know whether to await your comments, or if we need to approach someone else. To accept or decline the assignment via our submission system, please use the link below. If you are available to help and have no conflicts of interest, you also can view the entire manuscript via this link.</p>
+            <p><a href="dashboard_url">View Invitation</a></p>
+            <p>If you do take this assignment, and think that this work is not suitable for further consideration by {{ journal.name }}, please tell us if it would be more appropriate for one of the other PLOS journals, and in particular, PLOS ONE (<a href="http://plos.io/1hPjumI">http://plos.io/1hPjumI</a>). If you suggest PLOS ONE, please let us know if you would be willing to act as Academic Editor there. For more details on what this role would entail, please go to <a href="http://journals.plos.org/plosone/s/journal-information ">http://journals.plos.org/plosone/s/journal-information</a>.</p>
+            <p>I have appended further information, including a copy of the abstract and full list of authors below.</p>
+            <p>My colleagues and I are grateful for your support and advice. Please don't hesitate to contact me should you have any questions.</p>
+            <p>Kind regards,</p>
+            <p>{{ inviter.full_name }}</p>
+            <p>{{ journal.name }}</p>
+            <p>***************** CONFIDENTIAL *****************</p>
+            <p>{{ manuscript.paper_type }}</p>
+            <p>Manuscript Title:<br>
+            {{ manuscript.title }}</p>
+            <p>Authors:<br>
+            {% for author in manuscript.authors %}
+            {{ forloop.index }}. {{ author.last_name }}, {{ author.first_name }}<br>
+            {% endfor %}</p>
+            <p>Abstract:<br>
+            {{ manuscript.abstract | default: 'Abstract is not available' }}</p>
+            <p>To view this manuscript, please use the link presented above in the body of the e-mail.</p>
+            <p>You will be directed to your dashboard in Aperta, where you will see your invitation. Selecting "yes" confirms your assignment as Academic Editor. Selecting "yes" to accept this assignment will allow you to access the full submission from the Dashboard link in your main menu.</p>
+          TEXT
+    end
+
     trait(:reviewer_invite) do
       scenario 'Invitation'
       ident 'reviewer-invite'

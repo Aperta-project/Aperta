@@ -224,11 +224,6 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       this.set('pendingChanges', true);
     },
 
-    removeRecord(record){
-      record.destroyRecord();
-      this.set('pendingChanges', true);
-    },
-
     rollbackPhase(phase, oldName){
       phase.set('name', oldName);
     },

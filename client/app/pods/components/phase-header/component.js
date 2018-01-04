@@ -38,7 +38,7 @@ export default Ember.Component.extend({
     },
 
     remove() {
-      this.sendAction('removePhase', this.get('phase'));
+      this.get('phase').destroyRecord();
     },
 
     cancel() {

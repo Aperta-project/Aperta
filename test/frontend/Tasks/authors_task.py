@@ -512,7 +512,7 @@ class AuthorsTask(BaseTask):
 
         add_author_add_btn.click()
         # Check if data is there
-        time.sleep(3)
+        self._wait_for_not_element(self._add_author_add_btn, 1)
         authors = self._gets(self._author_items)
         all_auth_data = [x.text for x in authors]
         assert [x for x in all_auth_data if author['first'] in x], u'{0} not in {1}'.format(
@@ -546,8 +546,8 @@ class AuthorsTask(BaseTask):
         middle_input.send_keys(group_author['middle'] + Keys.ENTER)
         last_input.send_keys(group_author['last'] + Keys.ENTER)
         email_input.send_keys(group_author['email'] + Keys.ENTER)
-
-        self._wait_for_text_to_be_present_in_element_value(self._gemail_input, group_author['email'])
+        self._wait_for_text_to_be_present_in_element_value(
+                self._gemail_input, group_author['email'])
         # check one of the boxes in Author Contributions, as this is required
         self._wait_for_element(self._get(self._gdesigned_chkbx))
         group_author_contribution_chck = self._get(self._gdesigned_chkbx)
@@ -678,9 +678,14 @@ class AuthorsTask(BaseTask):
         # Need to complete the remaining required elements to successfully complete this card.
         author_inits_input = self._get(self._author_inits_input)
         author_inits_input.send_keys(author_data['initials'])
+        self._wait_for_text_to_be_present_in_element_value(self._author_inits_input,
+                                                           author_data['initials'])
+        govt_div = self._get(self._govt_employee_div)
+        self._scroll_into_view(govt_div)
+
         add_author_add_btn = self._get(self._add_author_add_btn)
-        self.click_covered_element(add_author_add_btn)
-        self.pause_to_save()
+        add_author_add_btn.click()
+        self._wait_for_not_element(self._add_author_add_btn, 0.5)
         # Scroll to top be sure complete button is accessible
         manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
         self._scroll_into_view(manuscript_id_text)
@@ -725,14 +730,6 @@ class AuthorsTask(BaseTask):
         finally:
             return orcid_connect_exist
 
-    # def press_submit_btn(self):
-    #     """Press sidebar submit button"""
-    #     self._get(self._sidebar_submit).click()
-    #
-    # def confirm_submit_btn(self):
-    #     """Press sidebar submit button"""
-    #     self._get(self._submit_confirm).click()
-    #
     def validate_coauthors_elements_absence(self):
         """
         Checks that the coauthor elements within the Authors task are not available.

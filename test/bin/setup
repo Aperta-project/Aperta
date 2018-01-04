@@ -6,6 +6,8 @@ command_exists () {
   command -v $1 &> /dev/null;
 }
 
+BIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 USAGE="usage: bin/setup [-v]"
 DESC="Prepare application state for our python tests. Default sets up a local dev env. -v sets up a local vagrant env"
 
@@ -56,6 +58,9 @@ else
   echo "Configuring development environment ..."
   source config/env.dev
 fi
+
+# setup testing assets
+$BIN_DIR/download_and_extract_assets
 
 # setup data on host
 python -m frontend.test_a_1_add_superadmin

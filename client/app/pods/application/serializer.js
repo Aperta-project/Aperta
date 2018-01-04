@@ -125,16 +125,6 @@ export default ActiveModelSerializer.extend({
     return newPayload;
   },
 
-
-  //mutates payload
-  _removeEmptyArrays(payload) {
-    //remove empty arrays
-    Object.keys(payload).forEach((key) => {
-      let val = payload[key];
-      if (Ember.isArray(val) && _.isEmpty(val)) { delete payload[key]; }
-    });
-  },
-
   _getPolymorphicModelName(modelName, records) {
     records = Ember.makeArray(records);
 
@@ -157,6 +147,9 @@ export default ActiveModelSerializer.extend({
             if (newBucketName !== oldBucketName) {
               payload[newBucketName].addObject(record);
               payload[oldBucketName].removeObject(record);
+              if (Ember.isEmpty(payload[oldBucketName])) {
+                delete payload[oldBucketName];
+              }
             }
           }
         });
@@ -202,8 +195,6 @@ export default ActiveModelSerializer.extend({
     // loop through each key in the payload and move models into buckets based on their dasherized and pluralized 'type'
     // attributes if they have them
     this._distributeRecordsByType(newPayload);
-
-    this._removeEmptyArrays(newPayload);
 
     return {newModelName, payload: newPayload, isPolymorphic};
   },

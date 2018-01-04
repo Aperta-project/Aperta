@@ -47,7 +47,18 @@ class GroupAuthorsController < ApplicationController
   end
 
   def author_list_payload(group_author)
-    serializer = PaperAuthorSerializer.new(group_author.paper, root: 'paper')
+    # The PaperAuthorSerializer eventually invokes the OrcidAccountSerializer if
+    # circumstances are right (TahiEnv.orcid_connect_enabled and the author
+    # belongs to a user with an orcid account). Since we're manually creating
+    # the PaperAuthorSerializer we need to set the scope and the scope name
+    # manually as well. This process is normally taken care of for us by active
+    # model serializers. (Note this logic is duplicated in the AuthorsController)
+    serializer = PaperAuthorSerializer.new(
+      group_author.paper,
+      root: 'paper',
+      scope: current_user,
+      scope_name: :current_user
+    )
     hash = serializer.as_json
     hash.delete("paper")
     hash

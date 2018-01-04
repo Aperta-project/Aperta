@@ -59,6 +59,19 @@ describe AuthorsController do
       expect(author.reload.last_name).to eq "Blabby"
     end
 
+    context 'the author belongs to a user with an orcid account and orcid connect is enabled' do
+      before do
+        allow_any_instance_of(TahiEnv).to receive(:orcid_connect_enabled?).and_return(true)
+        user = FactoryGirl.create(:user)
+        author.update!(user: user)
+        FactoryGirl.create(:orcid_account, user: user)
+      end
+      it 'serializes the orcid account for the author' do
+        put_request
+        expect(res_body).to have_key('orcid_accounts')
+      end
+    end
+
     it 'a DELETE request deletes the author' do
       expect { delete_request }.to change { Author.count }.by(-1)
     end

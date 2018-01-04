@@ -16,7 +16,6 @@ export default ActiveModelSerializer.extend({
     let normalized = this._normalizePayloadData(payload);
 
     return this._super(store, normalized);
-
   },
 
   normalizeSingleResponse(store, primaryModelClass, originalPayload, recordId, requestType) {
@@ -208,11 +207,9 @@ export default ActiveModelSerializer.extend({
 
       // if we get { tasks: [{...}], authors: [{...}] } back from _newNormalize
       // make sure we add all key/value pairs to newPayload
-      for(var newKey of Object.keys(payload)){
-        newPayload[newKey] = payload[newKey];
-      }
-    }
 
+      Object.assign(newPayload, payload);
+    }
     return newPayload;
   }
 });

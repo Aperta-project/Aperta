@@ -14,39 +14,47 @@
         {{/if}}
       </div>
     </div>
-    <div class="invitation-item-status">
-      {{#if (and (eq uiState 'closed') (not invitation.pending))}}
-        {{#if invitation.invited}}
-          <span>Invited {{format-date invitation.invitedAt "short-date"}}</span>
-        {{else if invitation.accepted}}
-          {{#if invitation.reviewerReport}}
-            {{#if (eq invitation.reviewerReport.status 'completed')}}
-              <div class="invitation-item-review-completed-icon">
-                {{partial "svg/check"}}
-              </div>
-              <span>Completed {{format-date invitation.reviewerReport.statusDatetime "short-date"}}</span>
+    {{#if (and (and invitation.reviewer invitation.invited) (eq uiState 'show'))}}
+      {{invitation-due-period
+        value=invitation.dueIn
+        onchange=(action "saveDuringType" invitation)
+        placeholder=owner.paper.reviewDurationPeriod}}
+    {{/if}}
+    {{#if (eq uiState 'closed')}}
+      <div class="invitation-item-status">
+        {{#if (not invitation.pending)}}
+          {{#if invitation.invited}}
+            <span>Invited {{format-date invitation.invitedAt format="MMM D, YYYY"}}</span>
+          {{else if invitation.accepted}}
+            {{#if invitation.reviewerReport}}
+              {{#if (eq invitation.reviewerReport.status 'completed')}}
+                <div class="invitation-item-review-completed-icon">
+                  {{partial "svg/check"}}
+                </div>
+                <span>Completed {{format-date invitation.reviewerReport.statusDatetime format="MMM D, YYYY"}}</span>
+              {{else}}
+                <span>
+                  {{#if invitation.reviewerReport.dueDatetime.dueAt}}
+                    <p>Review due {{format-date invitation.reviewerReport.dueDatetime.dueAt format="MMM D, YYYY"}}</p>
+                  {{else}}
+                    <p>Review pending</p>
+                  {{/if}}
+                  {{#if (and invitation.actor notAcceptedByInvitee)}}
+                    <p class="not-bold">Accepted by <em>{{invitation.actor.fullName}}</em></p>
+                  {{/if}}
+                </span>
+              {{/if}}
             {{else}}
-              <span>
-                {{#if invitation.reviewerReport.dueDatetime.dueAt}}
-                  <p>Review due {{format-date invitation.reviewerReport.dueDatetime.dueAt "short-date"}}</p>
-                {{else}}
-                  <p>Review pending</p>
-                {{/if}}
-                {{#if (and invitation.actor notAcceptedByInvitee)}}
-                  <p class="not-bold">Accepted by <em>{{invitation.actor.fullName}}</em></p>
-                {{/if}}
-              </span>
+              <span>Accepted {{format-date invitation.acceptedAt format="MMM D, YYYY"}}</span>
             {{/if}}
-          {{else}}
-            <span>Accepted {{format-date invitation.acceptedAt "short-date"}}</span>
+          {{else if invitation.declined}}
+            <span>Declined {{format-date invitation.declinedAt format="MMM D, YYYY"}}</span>
+          {{else if invitation.rescinded}}
+            <span>Rescinded {{format-date invitation.rescindedAt format="MMM D, YYYY"}}</span>
           {{/if}}
-        {{else if invitation.declined}}
-          <span>Declined {{format-date invitation.declinedAt "short-date"}}</span>
-        {{else if invitation.rescinded}}
-          <span>Rescinded {{format-date invitation.rescindedAt "short-date"}}</span>
         {{/if}}
-      {{/if}}
-    </div>
+      </div>
+    {{/if}}
     <div class="invitation-item-body-preview">
       {{#if invitation.declined}}
         {{strip-html (space-out-breaks invitation.declineReason)}}
@@ -127,19 +135,20 @@
   </div>
 {{else}}
   <div class="invitation-item-header">
-    {{#invitation-due-period
-      value=invitation.dueIn
-      display=invitation.reviewer
-      onchange=(action "saveDuringType" invitation)
-      placeholder=owner.paper.reviewDurationPeriod
-      appendedText="(Edit the invitation below to reflect any changes.)"}}
-        <span class="invitation-item-full-name">
-         {{#unless (eq invitation composedInvitation)}}
-          <b> Edit invitation to:</b>
-         {{/unless}}
-         {{inviteeNameAndEmail}}
-       </span>
-    {{/invitation-due-period}}
+     <div class="invitation-item-full-name">
+      {{#unless (eq invitation composedInvitation)}}
+       <b> Edit invitation to:</b>
+      {{/unless}}
+      {{inviteeNameAndEmail}}
+    </div>
+    {{#if invitation.reviewer}}
+      {{#invitation-due-period
+        value=invitation.dueIn
+        onchange=(action "saveDuringType" invitation)
+        placeholder=owner.paper.reviewDurationPeriod}}
+        (Edit the invitation below to reflect any changes.)
+      {{/invitation-due-period}}
+    {{/if}}
   </div>
 {{/unless}}
 

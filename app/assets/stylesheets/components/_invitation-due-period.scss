@@ -1,0 +1,9 @@
+.invitation-item-due {
+  input.due-input {
+    display: inline-block;
+    width: 70px;
+    &.error {
+      border-color: $aperta-red;
+    }
+  }
+}

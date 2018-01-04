@@ -1,5 +1,4 @@
-{{yield}}
-{{#if display}}
+<div {{action 'noop' bubbles=false}} class="due-input-container">
   <span>Review due</span>
   {{input type="number"
     class="due-input form-control"
@@ -8,5 +7,5 @@
     input=(action 'onInputChange')
     placeholder=placeholder
     size=4}}
-  <span>days after acceptance {{appendedText}}</span>
-{{/if}}
+  <span>days after acceptance {{yield}}</span>
+</div>

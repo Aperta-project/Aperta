@@ -17,6 +17,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     this._super(...arguments);
     this.set('dueIn', this.get('defaultDueIn'));
   },
+  classNameBindings: ['errorMessage:errored'],
   store: Ember.inject.service(),
   restless: Ember.inject.service(),
 

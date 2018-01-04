@@ -24,11 +24,3 @@
     margin-top: 20px;
   }
 }
-
-input.due-input {
-  display: inline-block;
-  width: 10%;
-  &.error {
-    border-color: $aperta-red;
-  }
-}

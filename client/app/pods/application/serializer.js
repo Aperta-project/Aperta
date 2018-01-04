@@ -175,8 +175,8 @@ export default ActiveModelSerializer.extend({
   _newNormalize(modelName, sourcePayload, assumeObject = true) {
     let payload = _.clone(sourcePayload);
 
-    let singularPrimaryKey = modelName.underscore(),
-      primaryKey = singularPrimaryKey.pluralize();
+    let singularPrimaryKey = modelName.underscore();
+    let primaryKey = singularPrimaryKey.pluralize();
 
     // author_task: {} ===> author_tasks: [{}]
     let newPayload = this._pluralizePrimaryKeyData(singularPrimaryKey, primaryKey, payload, assumeObject);

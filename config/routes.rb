@@ -1,7 +1,5 @@
 require 'sidekiq/web'
 require 'sidekiq-scheduler/web'
-
-# rubocop:disable Metrics/LineLength
 Tahi::Application.routes.draw do
   # Test specific
   #
@@ -273,27 +271,13 @@ Tahi::Application.routes.draw do
     delete 'tasks/:id/delete_sourcefile', to: 'tahi_standard_tasks/upload_manuscript#destroy_sourcefile', as: :destroy_sourcefile
 
     resources :scheduled_events, only: [:update]
+
+    resources :token_coauthors, only: [:show, :update], param: :token
   end
 
   get '/invitations/:token/accept',
     to: 'token_invitations#accept',
     as: 'invitation_accept'
-
-  get '/co_authors_token/:token',
-    to: 'token_co_authors#show',
-    as: 'show_token_co_author'
-
-  put '/co_authors_token/:token/confirm',
-    to: 'token_co_authors#confirm',
-    as: 'confirm_token_co_author'
-
-  get '/co_authors_token/:token/thank_you',
-    to: 'token_co_authors#thank_you',
-    as: 'thank_you_token_co_author'
-
-  get '/co_authors_token/:token/authorship_refuted',
-    to: 'token_co_authors#authorship_refuted',
-    as: 'authorship_refuted_token_co_author'
 
   # Legacy resource_proxy routes
   # We need to maintain this route as existing resources have been linked with

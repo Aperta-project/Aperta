@@ -2,6 +2,7 @@
 
 {{phase-header phase=phaseTemplate
                savePhase="savePhase"
+               removePhase="removeRecord"
                rollbackPhase="rollbackPhase"}}
 
 <div class="column-content">
@@ -15,6 +16,7 @@
       {{card-preview task=task
                      taskTemplate=true
                      canRemoveCard=true
+                     removeTask="removeRecord"
                      showDeleteConfirm="showDeleteConfirm"
                      showSettings=(action attrs.showSettings task)
                      action=(action attrs.editTaskTemplate task)}}

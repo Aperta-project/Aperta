@@ -9,6 +9,7 @@ export default Ember.Component.extend({
   //actions passed in
   addPhase: null,
   savePhase: null,
+  removeRecord: null,
   rollbackPhase: null,
   showDeleteConfirm: null,
   showSettings: null,
@@ -33,6 +34,10 @@ export default Ember.Component.extend({
 
     addPhase(position)          {
       this.sendAction('addPhase', position);
+    },
+
+    removeRecord(phase) {
+      this.sendAction('removeRecord', phase);
     },
 
     rollbackPhase(phase)  {

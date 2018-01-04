@@ -50,25 +50,9 @@ module TahiStandardTasks
       Role::REVIEWER_ROLE
     end
 
-    def invitation_template
-      LetterTemplate.new(
-        salutation: "Dear [REVIEWER NAME],",
-        body: invitation_body_template
-      )
-    end
-
     def accept_allowed?(invitation)
       # Prevents accepting invitation without an invitee
       invitation.invitee.present?
-    end
-
-    private
-
-    def invitation_body_template
-      scenario = InvitationScenario.new(self)
-      @letter_template = journal.letter_templates.find_by(ident: 'reviewer-invite')
-
-      @letter_template.render(scenario).body
     end
   end
 end

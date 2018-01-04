@@ -76,6 +76,8 @@ class InvitationsController < ApplicationController
     invitation_queue.add_invitation(invitation)
 
     @invitation.set_invitee
+    @invitation.set_body
+
     @invitation.save
 
     render json: invitations_in_queue

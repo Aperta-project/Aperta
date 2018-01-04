@@ -6,7 +6,7 @@ ruby '2.3.6'
 
 # Gems
 gem 'aasm', '~> 4.9.0'
-gem 'active_model_serializers', '0.8.3'
+gem 'active_model_serializers', '~> 0.8.3'
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
 gem 'activerecord-import'
 gem 'acts_as_list', '~> 0.9.0'

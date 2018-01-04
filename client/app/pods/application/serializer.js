@@ -12,11 +12,18 @@ export default ActiveModelSerializer.extend({
     return this._unsetQualifiedType(this._super(record, options));
   },
 
-  pushPayload(store, payload) {
-    let normalized = this._normalizePayloadData(payload);
+  pushPayload(store, rawPayload) {
+    var newPayload = {};
+    for(var key of Object.keys(rawPayload)) {
+      let { payload } = this._newNormalize(key, rawPayload[key]);
 
-    return this._super(store, normalized);
-
+      // if we get { tasks: [{...}], authors: [{...}] } back from _newNormalize
+      // make sure we add all key/value pairs to newPayload
+      for(var newKey of Object.keys(payload)){
+        newPayload[newKey] = payload[newKey];
+      }
+    }
+    return this._super(store, newPayload);
   },
 
   normalizeSingleResponse(store, primaryModelClass, originalPayload, recordId, requestType) {
@@ -195,24 +202,5 @@ export default ActiveModelSerializer.extend({
     this._distributeRecordsByType(newPayload);
 
     return {newModelName, payload: newPayload, isPolymorphic};
-  },
-
-  _normalizePayloadData(rawPayload){
-    if(!rawPayload){
-      return;
-    }
-
-    var newPayload = {};
-    for(var key of Object.keys(rawPayload)) {
-      let { payload } = this._newNormalize(key, rawPayload[key]);
-
-      // if we get { tasks: [{...}], authors: [{...}] } back from _newNormalize
-      // make sure we add all key/value pairs to newPayload
-      for(var newKey of Object.keys(payload)){
-        newPayload[newKey] = payload[newKey];
-      }
-    }
-
-    return newPayload;
   }
 });

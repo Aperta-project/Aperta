@@ -85,7 +85,7 @@ export default ActiveModelSerializer.extend({
    * @param f - function to call on thing
    */
   _callOnceOrMap(thing, f) {
-    if (_.isArray(thing)) {
+    if (Ember.isArray(thing)) {
       return thing.map(f);
     } else {
       return f(thing);
@@ -131,7 +131,7 @@ export default ActiveModelSerializer.extend({
     //remove empty arrays
     Object.keys(payload).forEach((key) => {
       let val = payload[key];
-      if (_.isArray(val) && _.isEmpty(val)) { delete payload[key]; }
+      if (Ember.isArray(val) && _.isEmpty(val)) { delete payload[key]; }
     });
   },
 
@@ -148,7 +148,7 @@ export default ActiveModelSerializer.extend({
   _distributeRecordsByType(payload) {
     const originalKeys = Object.keys(payload);
     originalKeys.forEach((oldBucketName) => {
-      if (Array.isArray(payload[oldBucketName])) {
+      if (Ember.isArray(payload[oldBucketName])) {
         let records = payload[oldBucketName].slice();
         records.forEach((record) => {
           const type = record.type;

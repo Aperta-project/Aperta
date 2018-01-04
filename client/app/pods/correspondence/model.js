@@ -60,7 +60,7 @@ export default DS.Model.extend({
   },
 
   activityMessages: Ember.computed.map('activities', function(activity) {
-    return `${this.get('activityNames')[activity.key]} by ${activity.full_name} on ${formatDate(activity.created_at, { format: 'MMMM DD, YYYY H:mm' })}`;
+    return `${this.get('activityNames')[activity.key]} by ${activity.full_name} on ${formatDate(activity.created_at, { format: 'long-date-military-time' })}`;
   }),
 
   lastActivityMessage: Ember.computed('activityMessages', function(){

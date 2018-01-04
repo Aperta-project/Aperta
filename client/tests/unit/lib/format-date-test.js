@@ -14,11 +14,11 @@ test('default formatting', function(assert) {
   );
 });
 
-test('specify formatting', function(assert) {
-  let options = { format: 'l' };
+test('specify formatting with custom date format constant', function(assert) {
+  let options = { format: 'short-date' };
   let result  = formatDate(new Date('February 06, 1990'), options);
 
-  assert.equal(result, '2/6/1990', 'returns date in a custom format');
+  assert.equal(result, 'Feb 6, 1990', 'returns date in a custom format');
 });
 
 test('format only valid dates', function(assert) {

@@ -15,11 +15,13 @@ describe "Affiliation" do
     it "does not allow a invalid email address" do
       affiliation = FactoryGirl.build(:affiliation, email: "someonetypedsomethingbad")
       expect(affiliation).to_not be_valid
+      expect(affiliation.errors[:email][0]).to eq("is invalid")
     end
 
     it "is invalid without an email address" do
       affiliation = FactoryGirl.build(:affiliation, email: nil)
       expect(affiliation).to_not be_valid
+      expect(affiliation.errors[:email][0]).to eq("can't be blank")
     end
   end
 

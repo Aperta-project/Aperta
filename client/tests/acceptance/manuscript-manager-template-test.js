@@ -6,6 +6,7 @@ import * as TestHelper from 'ember-data-factory-guy';
 import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 import customAssertions from 'tahi/tests/helpers/custom-assertions';
 let adminJournal, mmt;
+
 moduleForAcceptance('Integration: Manuscript Manager Templates', {
   beforeEach: function() {
     customAssertions();
@@ -42,7 +43,7 @@ moduleForAcceptance('Integration: Manuscript Manager Templates', {
 });
 
 function createPhaseTemplate() {
-  return FactoryGuy.make('phase-template', {
+  FactoryGuy.make('phase-template', {
     id: 1,
     manuscriptManagerTemplate: mmt,
     name: 'Phase 1'
@@ -64,10 +65,10 @@ test('Changing phase name', function(assert) {
 });
 
 test('Deleting a phase with no cards', function(assert) {
-  let phase_template = createPhaseTemplate();
+  createPhaseTemplate();
   $.mockjax({
-    url: `/api/phase_templates/${phase_template.get('id')}`,
-    type: 'DELETE',
+    url: '/api/manuscript_manager_templates/1',
+    type: 'PUT',
     status: 204,
     responseText: ''});
 
@@ -76,8 +77,9 @@ test('Deleting a phase with no cards', function(assert) {
     assert.textPresent('.column-title', 'Phase 1');
   });
   click('.remove-icon');
+  click('.paper-type-save-button'); // Click save to persist changes in the DB
   andThen(function() {
-    assert.mockjaxRequestMade(`/api/phase_templates/${phase_template.get('id')}`, 'DELETE', 'it deletes the phase');
+    assert.mockjaxRequestMade('/api/manuscript_manager_templates/1', 'PUT', 'it deletes the phase');
     assert.textNotPresent('.column-title', 'Phase 1');
   });
 });
@@ -90,6 +92,7 @@ test('Deleting a newly created phase not yet saved in the database', function(as
   });
   click('.remove-icon');
   andThen(function() {
+    assert.mockjaxRequestNotMade('/api/manuscript_manager_templates/1', 'PUT');
     assert.textNotPresent('.column-title', 'New Phase');
   });
 });

@@ -142,9 +142,8 @@ export default ActiveModelSerializer.extend({
           const type = record.type;
           if (type) {
             let newBucketName = type.underscore().pluralize();
-            if(!payload[newBucketName]) { payload[newBucketName] = []; }
-
             if (newBucketName !== oldBucketName) {
+              if(!payload[newBucketName]) { payload[newBucketName] = []; }
               payload[newBucketName].addObject(record);
               payload[oldBucketName].removeObject(record);
               if (Ember.isEmpty(payload[oldBucketName])) {
@@ -158,9 +157,8 @@ export default ActiveModelSerializer.extend({
         const type = record.type;
         if (type) {
           let newBucketName = type.underscore();
-          if(!payload[newBucketName]) { payload[newBucketName] = record; }
-
           if (newBucketName !== oldBucketName) {
+            payload[newBucketName] = record;
             delete payload[oldBucketName];
           }
         }

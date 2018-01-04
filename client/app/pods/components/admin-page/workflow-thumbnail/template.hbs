@@ -23,7 +23,7 @@
     </div>
     <div class="admin-workflow-thumbnail-footer">
       <div class="admin-workflow-thumbnail-updated">
-        Last updated: {{ format-date workflow.updatedAt format='MMM D, YYYY'}}
+        Last updated: {{ format-date workflow.updatedAt format='short-date'}}
       </div>
       <div class="admin-workflow-thumbnail-active-manuscripts">
         {{ workflow.activePaperCount }} Active {{ pluralize-string count=workflow.activePaperCount string="Manuscript" }}

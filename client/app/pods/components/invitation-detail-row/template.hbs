@@ -17,18 +17,18 @@
     <div class="invitation-item-status">
       {{#if (and (eq uiState 'closed') (not invitation.pending))}}
         {{#if invitation.invited}}
-          <span>Invited {{format-date invitation.invitedAt format="MMM D, YYYY"}}</span>
+          <span>Invited {{format-date invitation.invitedAt format="short-date"}}</span>
         {{else if invitation.accepted}}
           {{#if invitation.reviewerReport}}
             {{#if (eq invitation.reviewerReport.status 'completed')}}
               <div class="invitation-item-review-completed-icon">
                 {{partial "svg/check"}}
               </div>
-              <span>Completed {{format-date invitation.reviewerReport.statusDatetime format="MMM D, YYYY"}}</span>
+              <span>Completed {{format-date invitation.reviewerReport.statusDatetime format="short-date"}}</span>
             {{else}}
               <span>
                 {{#if invitation.reviewerReport.dueDatetime.dueAt}}
-                  <p>Review due {{format-date invitation.reviewerReport.dueDatetime.dueAt format="MMM D, YYYY"}}</p>
+                  <p>Review due {{format-date invitation.reviewerReport.dueDatetime.dueAt format="short-date"}}</p>
                 {{else}}
                   <p>Review pending</p>
                 {{/if}}
@@ -38,12 +38,12 @@
               </span>
             {{/if}}
           {{else}}
-            <span>Accepted {{format-date invitation.acceptedAt format="MMM D, YYYY"}}</span>
+            <span>Accepted {{format-date invitation.acceptedAt format="short-date"}}</span>
           {{/if}}
         {{else if invitation.declined}}
-          <span>Declined {{format-date invitation.declinedAt format="MMM D, YYYY"}}</span>
+          <span>Declined {{format-date invitation.declinedAt format="short-date"}}</span>
         {{else if invitation.rescinded}}
-          <span>Rescinded {{format-date invitation.rescindedAt format="MMM D, YYYY"}}</span>
+          <span>Rescinded {{format-date invitation.rescindedAt format="short-date"}}</span>
         {{/if}}
       {{/if}}
     </div>
@@ -148,19 +148,19 @@
       acceptInvitation=(perform acceptInvitation)}}
     <div class="invitation-item-state-and-date">
       {{#if invitation.accepted}}
-        <span>Accepted {{format-date invitation.acceptedAt format="LLL"}}</span>
+        <span>Accepted {{format-date invitation.acceptedAt format="long-date-short-time"}}</span>
         {{#if (and invitation.actor notAcceptedByInvitee)}}
           <span> by {{invitation.actor.fullName}}</span>
         {{/if}}
         <hr>
       {{else if invitation.rescinded}}
-        <span>Rescinded {{format-date invitation.rescindedAt format="LLL"}}</span>
+        <span>Rescinded {{format-date invitation.rescindedAt format="long-date-short-time"}}</span>
         <hr>
       {{/if}}
     </div>
     {{#if invitation.declined}}
       <div class="invitation-item-state-and-date">
-        <span>Declined {{format-date invitation.declinedAt format="LLL"}}</span>
+        <span>Declined {{format-date invitation.declinedAt format="long-date-short-time"}}</span>
       </div>
       <div class="invitation-item-decline-info">
         <p>
@@ -176,7 +176,7 @@
     {{/if}}
     {{#unless invitation.pending}}
       <div class="invitation-item-state-and-date">
-        <span>Invited {{format-date invitation.invitedAt format="LLL"}}</span>
+        <span>Invited {{format-date invitation.invitedAt format="long-date-short-time"}}</span>
       </div>
     {{/unless}}
 {{!-- Leave weird indentation --}}

@@ -146,11 +146,9 @@ export default ActiveModelSerializer.extend({
   },
 
   _distributeRecordsByType(payload) {
-    const originalKeys = Object.keys(payload);
-    originalKeys.forEach((oldBucketName) => {
+    Object.keys(payload).forEach((oldBucketName) => {
       if (Ember.isArray(payload[oldBucketName])) {
-        let records = payload[oldBucketName].slice();
-        records.forEach((record) => {
+        payload[oldBucketName].slice().forEach((record) => {
           const type = record.type;
           if (type) {
             let newBucketName = type.underscore().pluralize();

@@ -16,12 +16,7 @@ export default ActiveModelSerializer.extend({
     var newPayload = {};
     for(var key of Object.keys(rawPayload)) {
       let { payload } = this._newNormalize(key, rawPayload[key]);
-
-      // if we get { tasks: [{...}], authors: [{...}] } back from _newNormalize
-      // make sure we add all key/value pairs to newPayload
-      for(var newKey of Object.keys(payload)){
-        newPayload[newKey] = payload[newKey];
-      }
+      Object.assign(newPayload, payload);
     }
     return this._super(store, newPayload);
   },

@@ -16,6 +16,11 @@ describe "Affiliation" do
       affiliation = FactoryGirl.build(:affiliation, email: "someonetypedsomethingbad")
       expect(affiliation).to_not be_valid
     end
+
+    it "is invalid without an email address" do
+      affiliation = FactoryGirl.build(:affiliation, email: nil)
+      expect(affiliation).to_not be_valid
+    end
   end
 
   context "by_date scope" do

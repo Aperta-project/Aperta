@@ -1,4 +1,4 @@
-module ExportDelivery
+module Export
   module DeliverySucceeded
     #
     # Sends an EventStream message, telling the browser to flash a success

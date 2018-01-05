@@ -120,5 +120,5 @@ Subscriptions.configure do
   # Export Delivery:
   add 'tahi_standard_tasks/export_delivery:updated', stream_to_paper_channel
   add 'tahi_standard_tasks/export_delivery:delivery_succeeded',
-      ExportDelivery::DeliverySucceeded::FlashSuccessMessage
+      Export::DeliverySucceeded::FlashSuccessMessage
 end

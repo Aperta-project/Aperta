@@ -292,16 +292,12 @@ describe InvitationsController do
         format: 'json',
         invitation: {
           email: email_to_invite,
-          task_id: task.id,
-          body: invitation_body
+          task_id: task.id
         }
       )
     end
 
     let(:email_to_invite) { invitee.email }
-    let(:invitation_body) do
-      'Hard to find a black cat in a dark room, especially if there is no cat.'
-    end
     let!(:invite_letter_template) { FactoryGirl.create(:letter_template, :academic_editor_invite, journal: paper.journal) }
 
     it_behaves_like 'an unauthenticated json request'
@@ -325,6 +321,7 @@ describe InvitationsController do
           expect(invitation.state).to eq('pending')
           expect(invitation.invitee).to eq(invitee)
           expect(invitation.email).to eq(invitee.email)
+          expect(invitation.body).to be
         end
       end
     end

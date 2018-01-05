@@ -33,7 +33,6 @@ module TahiStandardTasks
       @invite_reviewer_task = @invitation.task
       @paper = @invite_reviewer_task.paper
       @journal = @paper.journal
-      @letter_template = @journal.letter_templates.find_by(ident: 'reviewer-accepted')
 
       send_mail_from_letter_template(
         journal: @journal,
@@ -50,7 +49,6 @@ module TahiStandardTasks
       @invite_reviewer_task = @invitation.task
       @paper = @invite_reviewer_task.paper
       @journal = @paper.journal
-      @letter_template = @journal.letter_templates.find_by(ident: 'reviewer-declined')
 
       send_mail_from_letter_template(
         journal: @journal,

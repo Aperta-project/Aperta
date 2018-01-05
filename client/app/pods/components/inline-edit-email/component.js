@@ -46,7 +46,7 @@ export default Ember.Component.extend({
       var bodyPart, recipientIds;
       recipientIds = this.get('recipients').mapBy('id');
       bodyPart = this.get('bodyPart');
-      this.set('bodyPart.sent', formatDate(Date.now(), { format: 'long-date-day-ordinal' }));
+      this.set('bodyPart.sent', formatDate(Date.now(), 'long-date-day-ordinal'));
       this.get('sendEmail')({
         body: bodyPart.value,
         subject: bodyPart.subject,

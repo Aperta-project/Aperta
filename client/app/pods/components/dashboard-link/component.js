@@ -29,7 +29,7 @@ export default Ember.Component.extend({
 
   reviewDueMessage: Ember.computed('model.roles', 'model.reviewDueAt', function() {
     if (this.get('model.roles').includes('Reviewer') && !Ember.isEmpty(this.get('model.reviewDueAt'))) {
-      return 'Your review is due ' + formatDate(this.get('model.reviewDueAt'), { format: 'long-month-day' });
+      return 'Your review is due ' + formatDate(this.get('model.reviewDueAt'), 'long-month-day');
     } else {
       return '';
     }
@@ -37,7 +37,7 @@ export default Ember.Component.extend({
 
   originallyDueMessage: Ember.computed('model.roles','model.reviewDueAt', function() {
     if (this.get('model.roles').includes('Reviewer') && !Ember.isEmpty(this.get('model.reviewOriginallyDueAt'))) {
-      return 'Originally due ' + formatDate(this.get('model.reviewOriginallyDueAt'), { format: 'long-month-day' });
+      return 'Originally due ' + formatDate(this.get('model.reviewOriginallyDueAt'), 'long-month-day');
     } else {
       return '';
     }

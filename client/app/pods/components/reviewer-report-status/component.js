@@ -35,8 +35,8 @@ export default Ember.Component.extend({
     const dueDate = this.get('report.dueDatetime.dueAt');
     const originalDueDate = this.get('report.originallyDueAt');
     const format = 'long-month-day-2';
-    const formattedDueDate = formatDate(dueDate, { format: format });
-    const formattedOriginalDueDate = formatDate(originalDueDate, { format: format });
+    const formattedDueDate = formatDate(dueDate, format);
+    const formattedOriginalDueDate = formatDate(originalDueDate, format);
     if (dueDate && formattedDueDate !== formattedOriginalDueDate) {
       output += `; original due date was ${formattedOriginalDueDate}.`;
     }
@@ -56,7 +56,7 @@ export default Ember.Component.extend({
   statusDate: Ember.computed('report.statusDatetime', function(){
     const date = this.get('report.statusDatetime');
     const format = 'long-date';
-    return formatDate(date, { format: format });
+    return formatDate(date, format);
   }),
 
   reviewDueMessage: Ember.computed('dueDatetime.dueAt', function(){
@@ -65,7 +65,7 @@ export default Ember.Component.extend({
     if (date) {
       const format = 'long-date-short-time-zone';
       const zone = moment.tz.guess();
-      output = ' due ' + formatDate(moment(date).tz(zone), { format: format });
+      output = ' due ' + formatDate(moment(date).tz(zone), format);
     }
     return output;
   }),

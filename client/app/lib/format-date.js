@@ -4,8 +4,12 @@ export default function(date, options) {
   let dateObj = moment(date);
   if (!dateObj.isValid()) { return date; }
 
-  let format = formatFor(options.format);
-  return dateObj.format(format);
+  if (typeof options === 'string') {
+    options = { format: options };
+  }
+
+  let dateFormat = formatFor(options.format);
+  return dateObj.format(dateFormat);
 }
 
 export function formatFor(format) {

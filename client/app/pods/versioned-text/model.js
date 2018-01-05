@@ -21,7 +21,7 @@ export default DS.Model.extend({
   }),
   sourceType: DS.attr('string'),
   versionString: computed('majorVersion', 'minorVersion', 'updatedAt', function() {
-    const date = formatDate(this.get('updatedAt'), { format: ('long-date-2') });
+    const date = formatDate(this.get('updatedAt'), 'long-date-2');
     const fileType = isBlank(this.get('fileType')) ? '' : `(${this.get('fileType').toUpperCase()})`;
     if (this.get('isDraft')) {
       return`(draft) ${fileType} - ${date}`;

@@ -21,6 +21,12 @@ test('specify formatting with custom date format constant', function(assert) {
   assert.equal(result, 'Feb 6, 1990', 'returns date in a custom format');
 });
 
+test('accepts a formatted string as the second arg', function(assert) {
+  let result  = formatDate(new Date('February 06, 1990'), 'short-date');
+
+  assert.equal(result, 'Feb 6, 1990', 'returns date in a custom format');
+});
+
 test('format only valid dates', function(assert) {
   let options     = {};
   let invalidDate = 'hello world';

@@ -11,13 +11,13 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   timeSent: Ember.computed('model.sentAt', function() {
     let sentAt = this.get('model.sentAt');
     let time = Ember.isBlank(sentAt) ? moment.utc() : moment.utc(sentAt);
-    return formatDate(time, { format: 'hour-minute-military-2' });
+    return formatDate(time, 'hour-minute-military-2');
   }),
 
   dateSent: Ember.computed('model', function() {
     let sentAt = this.get('model.sentAt');
     let date = Ember.isBlank(sentAt) ? moment.utc() : moment.utc(sentAt);
-    return formatDate(date, {format: 'month-day-year'});
+    return formatDate(date, 'month-day-year');
   }),
 
   prepareModelDate() {

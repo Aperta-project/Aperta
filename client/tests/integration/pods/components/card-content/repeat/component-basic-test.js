@@ -4,6 +4,7 @@ import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import hbs from 'htmlbars-inline-precompile';
 import wait from 'ember-test-helpers/wait';
+import testQAIdent from 'tahi/tests/helpers/test-mixins/qa-ident';
 
 moduleForComponent(
   'card-content/repeat',
@@ -320,3 +321,5 @@ test(`it only shows repetitions that are owned by a specific task `, function(as
     assert.inputPresent('.repeated-block input', 'answer one', 'only the answer for the owner is being shown');
   });
 });
+
+testQAIdent(template);

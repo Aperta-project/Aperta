@@ -4,6 +4,7 @@ import { manualSetup, make } from 'ember-data-factory-guy';
 import Ember from 'ember';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import wait from 'ember-test-helpers/wait';
+import testQAIdent from 'tahi/tests/helpers/test-mixins/qa-ident';
 
 moduleForComponent('card-content/email-editor', 'Integration | Component | card content/email editor', {
   integration: true,
@@ -74,3 +75,5 @@ test(`it renders an email-editor initialized by a template and sends the templat
     });
   });
 });
+
+testQAIdent(template);

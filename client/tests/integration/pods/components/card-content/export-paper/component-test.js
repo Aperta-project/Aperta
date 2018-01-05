@@ -5,6 +5,7 @@ import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import wait from 'ember-test-helpers/wait';
 
 import hbs from 'htmlbars-inline-precompile';
+import testQAIdent from 'tahi/tests/helpers/test-mixins/qa-ident';
 
 moduleForComponent(
   'card-content/export-paper',
@@ -80,3 +81,5 @@ test('it displays a list of deliveries', function(assert) {
   this.render(template);
   assert.elementFound('.export-delivery-message');
 });
+
+testQAIdent(template);

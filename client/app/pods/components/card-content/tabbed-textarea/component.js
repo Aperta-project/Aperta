@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import QAIdent from 'tahi/mixins/components/qa-ident';
 
 export default Ember.Component.extend(QAIdent, {
 

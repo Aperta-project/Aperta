@@ -4,6 +4,7 @@ import wait from 'ember-test-helpers/wait';
 import hbs from 'htmlbars-inline-precompile';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import Ember from 'ember';
+import testQAIdent from 'tahi/tests/helpers/test-mixins/qa-ident';
 
 moduleForComponent(
   'card-content/tech-check',
@@ -309,3 +310,5 @@ test(`submision diabled for non submitted state papers`, function(assert) {
     );
   });
 });
+
+testQAIdent(template);

@@ -3,6 +3,7 @@ import { moduleForComponent, test } from 'ember-qunit';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import hbs from 'htmlbars-inline-precompile';
+import testQAIdent from 'tahi/tests/helpers/test-mixins/qa-ident';
 
 moduleForComponent(
   'card-content/repeat',
@@ -153,3 +154,5 @@ test('it renders default funding statement', function(assert) {
 
   assert.textPresent('.card-content-financial-disclosure-summary', 'The funder had no role in study design', 'funder default had-influence is displayed');
 });
+
+testQAIdent(template);

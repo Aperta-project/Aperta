@@ -4,6 +4,7 @@ import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup } from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import Ember from 'ember';
+import testQAIdent from 'tahi/tests/helpers/test-mixins/qa-ident';
 
 moduleForComponent(
   'card-content/if',
@@ -204,3 +205,5 @@ test(
     assert.ok(elseDestroyRecord.called, 'destroyRecord was never called on the elseAnswer');
   }
 );
+
+testQAIdent(ifTemplate);

@@ -2,6 +2,7 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
 import wait from 'ember-test-helpers/wait';
+import testQAIdent from 'tahi/tests/helpers/test-mixins/qa-ident';
 
 moduleForComponent(
   'card-content/email-template',
@@ -37,3 +38,5 @@ test(`it displays the body of the template as markup`, function(assert) {
     assert.textNotPresent('.card-content-template p', '<p>test</p>');
   });
 });
+
+testQAIdent(template);

@@ -2,6 +2,7 @@ import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import hbs from 'htmlbars-inline-precompile';
+import testQAIdent from 'tahi/tests/helpers/test-mixins/qa-ident';
 
 moduleForComponent(
   'card-content/paragraph-input',
@@ -45,3 +46,5 @@ test('it displays error messages if present', function(assert){
   let text = 'Error class present on parent element';
   assert.ok(this.$('.card-content-paragraph-input').hasClass('has-error'), text);
 });
+
+testQAIdent(template);

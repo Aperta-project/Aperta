@@ -54,8 +54,4 @@ test(`it sends 'valueChanged' on change`, function(assert) {
   this.$('input').click();
 });
 
-test(`it has the correct qa ident`, function(assert) {
-  assert.expect(0);
-  const ident = this.get('content.ident');
-  testQAIdent(template, ident);
-});
+testQAIdent(template);

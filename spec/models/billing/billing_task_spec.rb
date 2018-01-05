@@ -16,7 +16,7 @@ module PlosBilling
 
     describe '#active_model_serializer' do
       it 'has the proper serializer' do
-        expect(billing_task.active_model_serializer).to eq PlosBilling::TaskSerializer
+        expect(billing_task.active_model_serializer).to eq TaskSerializer
       end
     end
   end

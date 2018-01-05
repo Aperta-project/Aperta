@@ -1,4 +1,5 @@
 module CustomCard
+  include CardPermissions
   # The purpose of this class is to provide a common interface for
   # creating custom Cards for specified Journals.
   #

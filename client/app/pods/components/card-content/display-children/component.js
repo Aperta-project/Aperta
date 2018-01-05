@@ -1,8 +1,7 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
-import QAIdent from 'tahi/mixins/components/qa-ident';
 
-export default Ember.Component.extend(QAIdent, {
+export default Ember.Component.extend({
   classNames: ['card-content', 'card-content-display-children'],
   classNameBindings: ['customDisplayClass'],
   tagName: '',

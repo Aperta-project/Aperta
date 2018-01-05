@@ -1,7 +1,9 @@
-class PlosBilling::Paper::Salesforce
-  def self.call(_event_name, event_data)
-    paper = event_data[:record]
+module PlosBilling
+  class Paper::Salesforce
+    def self.call(_event_name, event_data)
+      paper = event_data[:record]
 
-    PlosBilling::SalesforceManuscriptUpdateWorker.perform_async(paper.id)
+      PlosBilling::SalesforceManuscriptUpdateWorker.perform_async(paper.id)
+    end
   end
 end

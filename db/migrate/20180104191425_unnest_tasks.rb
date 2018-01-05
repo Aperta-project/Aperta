@@ -17,7 +17,7 @@ class UnnestTasks < ActiveRecord::Migration
     { table: 'email_logs', column: 'additional_context' },
     { table: 'journal_task_types', column: 'kind' },
     { table: 'permissions', column: 'applies_to' },
-    { table: 'settings_templates', column: 'key' },
+    { table: 'setting_templates', column: 'key' },
     { table: 'tasks', column: 'type' }
   ].freeze
 

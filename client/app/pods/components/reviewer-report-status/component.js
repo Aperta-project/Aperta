@@ -1,6 +1,5 @@
 import Ember from 'ember';
-import moment from 'moment';
-import formatDate from 'tahi/lib/format-date';
+import { formatDate, moment } from 'tahi/lib/format-date';
 
 export default Ember.Component.extend({
   store: Ember.inject.service(),

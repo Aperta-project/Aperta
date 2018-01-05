@@ -1,7 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { make, manualSetup } from 'ember-data-factory-guy';
-import moment from 'moment';
+import { moment } from 'tahi/lib/format-date';
 
 moduleForComponent('invitation-header', 'Integration | Component | invitation header', {
   integration: true,

@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import formatDate, { formatFor } from 'tahi/lib/format-date';
+import { formatDate, formatFor } from 'tahi/lib/format-date';
 
 module('FormatDate');
 

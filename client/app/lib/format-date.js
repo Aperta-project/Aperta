@@ -1,6 +1,8 @@
 import moment from 'moment';
+export { formatDate, formatFor, moment };
+export default formatDate;
 
-export default function(date, options) {
+function formatDate(date, options) {
   let dateObj = moment(date);
   if (!dateObj.isValid()) { return date; }
 
@@ -13,7 +15,7 @@ export default function(date, options) {
   return dateObj.format(dateFormat);
 }
 
-export function formatFor(format) {
+function formatFor(format) {
   return formats[format] || format || formats.default;
 }
 

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
-import formatDate, { formatFor } from 'tahi/lib/format-date';
+import { formatDate, formatFor, moment } from 'tahi/lib/format-date';
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
   close: null,

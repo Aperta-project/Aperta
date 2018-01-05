@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import moment from 'moment';
+import { moment } from 'tahi/lib/format-date';
 
 export default Ember.Helper.extend({
   compute([dueDate, dispatchDate]) {

@@ -6,7 +6,7 @@ import {
 import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup } from 'ember-data-factory-guy';
 import hbs from 'htmlbars-inline-precompile';
-import moment from 'moment';
+import { moment } from 'tahi/lib/format-date';
 
 moduleForComponent('review-status', 'Integration | Component | Scheduled Event', {
   integration: true,

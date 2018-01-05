@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { moment } from 'tahi/lib/format-date';
 
 export default function(date, todaysMoment) {
   if(!date) { return ''; }

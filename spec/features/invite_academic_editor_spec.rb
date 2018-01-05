@@ -19,6 +19,7 @@ feature "Invite Academic Editor", js: true do
   let!(:editor1) { create :user, first_name: 'Henry' }
   let!(:editor2) { create :user, first_name: 'Henroff' }
   let!(:editor3) { create :user, first_name: 'Henrietta' }
+  let!(:invite_letter_template) { FactoryGirl.create(:letter_template, :academic_editor_invite, journal: paper.journal) }
 
   before do
     assign_journal_role journal, staff_admin, :admin

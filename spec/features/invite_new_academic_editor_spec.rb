@@ -16,6 +16,7 @@ feature "Inviting a new Academic Editor", js: true do
   end
 
   let(:task) { FactoryGirl.create :paper_editor_task, paper: paper }
+  let!(:invite_letter_template) { FactoryGirl.create(:letter_template, :academic_editor_invite, journal: paper.journal) }
 
   before do
     task.add_participant(internal_editor)

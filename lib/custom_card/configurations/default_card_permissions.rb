@@ -1,6 +1,42 @@
 # rubocop:disable Metrics/ModuleLength, Metrics/MethodLength, Style/TrailingCommaInLiteral
 module CustomCard
-  module DefaultCardPermissions
+  class DefaultCardPermissions
+
+    def initialize
+      @permissions = default_card_permissions
+    end
+
+    def validate(names)
+      perms = @permissions.keys
+      matching = names.sort == perms.sort
+      raise StandardError, 'Mismatched custom card permissions' unless matching
+    end
+
+    def apply(journal, key)
+      permissions = @permissions[key]
+      roles = get_roles(journal, permissions)
+      actions = get_actions(permissions)
+      actions.each do |action|
+        action_roles = roles_with_action(permissions, action)
+        active_roles = roles.slice(*action_roles).values
+        yield(action, active_roles)
+      end
+    end
+
+    private
+
+    def get_roles(journal, permissions)
+      roles = journal.roles.where(name: permissions.keys).load
+      roles.each_with_object({}) { |role, hash| hash[role.name] = role }
+    end
+
+    def get_actions(permissions)
+      permissions.values.flatten.uniq
+    end
+
+    def roles_with_action(permissions, action)
+      permissions.keys.select { |key| permissions[key].include?(action) }
+    end
 
     def default_card_permissions
       {

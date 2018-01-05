@@ -20,6 +20,14 @@ class CardTaskType < ActiveRecord::Base
     find_by(task_class: klass) || create!(default_attributes(klass))
   end
 
+  def self.named(name)
+    where(display_name: name).first
+  end
+
+  def self.custom_card
+    where(task_class: 'CustomCardTask').first
+  end
+
   def self.seed_defaults
     [
       default_attributes('CustomCardTask'),

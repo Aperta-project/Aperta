@@ -253,7 +253,7 @@ class Card < ActiveRecord::Base
     card_perms.each_with_object(role_perms) do |perm, hash|
       perm.roles.each { |role| hash[role.name] << perm.action }
     end
-    Hash[role_perms.transform_values(&:to_a).sort]
+    Hash[role_perms.transform_values(&:sort)]
   end
 
   private

@@ -12,7 +12,7 @@ moduleForComponent(
 
     beforeEach() {
       this.set('owner', Ember.Object.create({ id: 1 }));
-      this.set('content', Ember.Object.create({ letterTemplate: 'test' }));
+      this.set('content', Ember.Object.create({ letterTemplate: 'test', ident: 'test' }));
     },
 
     afterEach() {

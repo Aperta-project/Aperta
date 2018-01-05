@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import QAIdent from 'tahi/mixins/components/qa-ident';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(QAIdent, {
   classNames: ['card-content-tech-check-email'],
   showEmailPreview: false,
   restless: Ember.inject.service('restless'),

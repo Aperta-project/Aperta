@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
+import QAIdent from 'tahi/mixins/components/qa-ident';
 
 let childAt = function(key, position) {
   return Ember.computed(`${key}.[]`, function() {
@@ -7,7 +8,8 @@ let childAt = function(key, position) {
   });
 };
 
-export default Ember.Component.extend({
+
+export default Ember.Component.extend(QAIdent, {
 
   propTypes: {
     answer: PropTypes.EmberObject.isRequired,

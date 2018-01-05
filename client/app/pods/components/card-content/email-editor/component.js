@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 import { PropTypes } from 'ember-prop-types';
+import QAIdent from 'tahi/mixins/components/qa-ident';
 
-export default Ember.Component.extend(ValidationErrorsMixin, {
+export default Ember.Component.extend(QAIdent, ValidationErrorsMixin, {
   classNames: ['card-content', 'card-content-email-editor'],
   restless: Ember.inject.service('restless'),
   flash: Ember.inject.service('flash'),

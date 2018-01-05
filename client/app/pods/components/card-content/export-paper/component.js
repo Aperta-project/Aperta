@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import { task } from 'ember-concurrency';
+import QAIdent from 'tahi/mixins/components/qa-ident';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(QAIdent, {
   classNames: ['card-content', 'card-content-export-paper'],
   owner: null, //owner
   content: null, //card content

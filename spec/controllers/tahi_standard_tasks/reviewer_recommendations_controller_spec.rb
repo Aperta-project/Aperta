@@ -3,7 +3,6 @@ require 'rails_helper'
 module TahiStandardTasks
   describe ReviewerRecommendationsController do
     before do
-      CardLoader.load("TahiStandardTasks::Funder")
       CardLoader.load("TahiStandardTasks::ReviewerRecommendation")
     end
 

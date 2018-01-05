@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import moment from 'moment';
+import formatDate from 'tahi/lib/format-date';
 
 export default Ember.Component.extend({
   store: Ember.inject.service(),
@@ -33,9 +34,9 @@ export default Ember.Component.extend({
 
     const dueDate = this.get('report.dueDatetime.dueAt');
     const originalDueDate = this.get('report.originallyDueAt');
-    const format = 'MMMM D';
-    const formattedDueDate = moment(dueDate).format(format);
-    const formattedOriginalDueDate = moment(originalDueDate).format(format);
+    const format = 'long-month-day-2';
+    const formattedDueDate = formatDate(dueDate, { format: format });
+    const formattedOriginalDueDate = formatDate(originalDueDate, { format: format });
     if (dueDate && formattedDueDate !== formattedOriginalDueDate) {
       output += `; original due date was ${formattedOriginalDueDate}.`;
     }
@@ -54,17 +55,17 @@ export default Ember.Component.extend({
 
   statusDate: Ember.computed('report.statusDatetime', function(){
     const date = this.get('report.statusDatetime');
-    const format = 'MMMM D, YYYY';
-    return moment(date).format(format);
+    const format = 'long-date';
+    return formatDate(date, { format: format });
   }),
 
   reviewDueMessage: Ember.computed('dueDatetime.dueAt', function(){
     const date = this.get('dueDatetime.dueAt');
     var output = '';
     if (date) {
-      const format = 'MMMM D, YYYY h:mm a z';
+      const format = 'long-date-short-time-zone';
       const zone = moment.tz.guess();
-      output = ' due ' + moment(date).tz(zone).format(format);
+      output = ' due ' + formatDate(moment(date).tz(zone), { format: format });
     }
     return output;
   }),

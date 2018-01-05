@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import formatDate from 'tahi/lib/format-date';
+import formatDate, { formatFor } from 'tahi/lib/format-date';
 
 module('FormatDate');
 
@@ -27,4 +27,10 @@ test('format only valid dates', function(assert) {
   let result      = formatDate(invalidDate, options);
 
   assert.equal(result, invalidDate, 'returns original value sent');
+});
+
+test('get format for custom date constant', function(assert) {
+  assert.equal(formatFor('short-date'), 'MMM D, YYYY',        'returns a value from the map');
+  assert.equal(formatFor('foo-bar'),    'foo-bar',            'returns arg if not in the map');
+  assert.equal(formatFor(),             'MMMM D, YYYY HH:mm', 'returns default if no arg');
 });

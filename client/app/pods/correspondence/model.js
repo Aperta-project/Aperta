@@ -32,7 +32,7 @@ export default DS.Model.extend({
 
     let sentAt = this.get('sentAt');
     let time = Ember.isBlank(sentAt) ? moment.utc() : moment.utc(sentAt);
-    return time.format('MMMM D, YYYY HH:mm');
+    return formatDate(time, {format: 'long-date-military-time-2'});
   }),
 
   manuscriptVersionStatus: Ember.computed('manuscriptVersion','manuscriptStatus', function() {

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import formatDate from 'tahi/lib/format-date';
 
 export default Ember.Component.extend({
   classNames: ['scheduled-events'],
@@ -6,7 +7,7 @@ export default Ember.Component.extend({
   dispatchDateFormat: 'long-date-hour',
   dueAtTimezone: Ember.computed('dueDate', function() {
     let tz = moment.tz.guess();
-    return moment(this.get('dueDate')).tz(tz).format('z');
+    return formatDate(moment(this.get('dueDate')).tz(tz), {format: 'short-time-zone'});
   }),
   eventsAscendingSort: ['dispatchAt:asc'],
   eventsAscending: Ember.computed.sort('events', 'eventsAscendingSort')

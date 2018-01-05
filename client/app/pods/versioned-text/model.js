@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import DS from 'ember-data';
-import moment from 'moment';
+import formatDate from 'tahi/lib/format-date';
 
 const {
   computed,
@@ -21,7 +21,7 @@ export default DS.Model.extend({
   }),
   sourceType: DS.attr('string'),
   versionString: computed('majorVersion', 'minorVersion', 'updatedAt', function() {
-    const date = moment(this.get('updatedAt')).format('MMM DD, YYYY');
+    const date = formatDate(this.get('updatedAt'), { format: ('long-date-2') });
     const fileType = isBlank(this.get('fileType')) ? '' : `(${this.get('fileType').toUpperCase()})`;
     if (this.get('isDraft')) {
       return`(draft) ${fileType} - ${date}`;

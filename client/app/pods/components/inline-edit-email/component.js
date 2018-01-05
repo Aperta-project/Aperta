@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import moment from 'moment';
+import formatDate from 'tahi/lib/format-date';
 
 export default Ember.Component.extend({
   editing: false,
@@ -46,7 +46,7 @@ export default Ember.Component.extend({
       var bodyPart, recipientIds;
       recipientIds = this.get('recipients').mapBy('id');
       bodyPart = this.get('bodyPart');
-      this.set('bodyPart.sent', moment().format('MMMM Do YYYY'));
+      this.set('bodyPart.sent', formatDate(Date.now(), { format: 'long-date-day-ordinal' }));
       this.get('sendEmail')({
         body: bodyPart.value,
         subject: bodyPart.subject,

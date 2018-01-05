@@ -59,10 +59,6 @@ let cardIdents = {
   'TahiStandardTasks::FinancialDisclosureTask': [
     'financial_disclosures--author_received_funding'
   ],
-  'TahiStandardTasks::Funder': [
-    'funder--had_influence',
-    'funder--had_influence--role_description',
-  ],
   'PlosBilling::BillingTask': [
     'plos_billing--first_name',
     'plos_billing--last_name',

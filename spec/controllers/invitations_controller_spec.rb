@@ -8,8 +8,6 @@ describe InvitationsController do
   let(:invitee) { FactoryGirl.create(:user) }
   let(:task) { FactoryGirl.create :paper_editor_task, :with_loaded_card, paper: paper }
   let!(:queue) { FactoryGirl.create(:invitation_queue, task: task) }
-  let!(:invite_letter_template) { FactoryGirl.create(:letter_template, :academic_editor_invite, journal: paper.journal) }
-
 
   describe 'GET /invitations' do
     let!(:invitation) do
@@ -304,6 +302,7 @@ describe InvitationsController do
     let(:invitation_body) do
       'Hard to find a black cat in a dark room, especially if there is no cat.'
     end
+    let!(:invite_letter_template) { FactoryGirl.create(:letter_template, :academic_editor_invite, journal: paper.journal) }
 
     it_behaves_like 'an unauthenticated json request'
 

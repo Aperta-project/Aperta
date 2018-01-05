@@ -9,7 +9,6 @@ describe Invitation::Updated::StateChange do
     it 'receives notification when the invite is sent' do
       Subscriptions.reload
       expect(described_class).to receive(:call)
-
       invitation.invite!
     end
   end

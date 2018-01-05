@@ -141,13 +141,8 @@ class Invitation < ActiveRecord::Base
   def set_body
     scenario = InvitationScenario.new(self)
     letter_templates = paper.journal.letter_templates
-    letter_template =
-      case invitee_role
-      when Role::REVIEWER_ROLE
-        letter_templates.find_by(ident: 'reviewer-invite')
-      when Role::ACADEMIC_EDITOR_ROLE
-        letter_templates.find_by(ident: 'academic-editor-invite')
-      end
+    ident = invitee_role == Role::REVIEWER_ROLE ? 'reviewer-invite' : 'academic-editor-invite'
+    letter_template = letter_templates.find_by(ident: ident)
     update(body: letter_template.render(scenario).body)
   end
 

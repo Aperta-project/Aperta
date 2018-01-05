@@ -19,14 +19,14 @@
                 <span class="versioned-metadata-version-string">
                   Version {{ snapshots.v1.versionString }}
                   &mdash;
-                  {{format-date snapshots.v1.createdAtOrNow format='short-date'}}
+                  {{format-date snapshots.v1.createdAtOrNow 'short-date'}}
                 </span>
                 {{#if snapshots.v2}}
                   <span class="grey">comparing with</span>
                   <span class="versioned-metadata-version-string">
                     Version {{ snapshots.v2.versionString }}
                     &mdash;
-                    {{format-date snapshots.v2.createdAtOrNow format='short-date'}}
+                    {{format-date snapshots.v2.createdAtOrNow 'short-date'}}
                   </span>
                 {{/if}}
               </div>

@@ -5,6 +5,7 @@ export default function(date, options) {
   if (!dateObj.isValid()) { return date; }
 
   if (typeof options === 'string') {
+    // convert string param to hash
     options = { format: options };
   }
 

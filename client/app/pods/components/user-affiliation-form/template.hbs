@@ -19,11 +19,11 @@
         {{affiliation.country}}
       </div>
         {{#if affiliation.startDate }}
-          {{format-date affiliation.startDate format="short-date"}} -
+          {{format-date affiliation.startDate "short-date"}} -
           {{#if affiliation.isCurrent}}
             Present
           {{else}}
-            {{format-date affiliation.endDate format="short-date"}}
+            {{format-date affiliation.endDate "short-date"}}
           {{/if}}
         {{/if}}
     </div>

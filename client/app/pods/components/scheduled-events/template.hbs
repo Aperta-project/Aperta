@@ -5,7 +5,7 @@
       <div class="scheduled-event-cell">
         <div class="scheduled-event-description">
           {{event.name}} on
-          {{format-date event.dispatchAt format=dispatchDateFormat}} {{dueAtTimezone}}
+          {{format-date event.dispatchAt dispatchDateFormat}} {{dueAtTimezone}}
           {{due-date-offset event.dispatchAt dueDate}}
         </div>
       </div>

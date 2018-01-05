@@ -53,7 +53,6 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
   ),
   permissionState: Ember.computed.alias('paper.permissionState'),
   position: DS.attr('number'),
-  qualifiedType: DS.attr('string'),
   title: DS.attr('string'),
   type: DS.attr('string'),
   viewable: DS.attr('boolean'),

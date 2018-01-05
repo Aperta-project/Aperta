@@ -14,27 +14,6 @@ moduleFor('serializer:application', 'Integration: Application Serializer', {
   }
 });
 
-test('serializing a model that was originally namespaced will correctly re-namespace it', function(assert) {
-  return Ember.run(() => {
-    var json, snapshot, task;
-    task = this.container.lookup('service:store').createRecord('task', {
-      qualifiedType: 'Foo::BarTask'
-    });
-    snapshot = task._createSnapshot();
-    json = subject.serialize(snapshot);
-    assert.equal(json.type, 'Foo::BarTask');
-    return assert.equal(void 0, json.qualified_type, 'deletes qualified_type from the payload');
-  });
-});
-
-test('_setQualifiedType', function(assert) {
-  var payload;
-  payload = subject._setQualifiedType({
-    type: 'bar'
-  });
-  return assert.equal(payload.qualified_type, 'bar', 'sets qualified type');
-});
-
 test("normalizeSingleResponse normalizes the primary task record based on its 'type' attribute", function(assert) {
   var expectedPayload, pluralResult, result, store, task;
   store = this.container.lookup('service:store');
@@ -45,7 +24,6 @@ test("normalizeSingleResponse normalizes the primary task record based on its 't
   };
   expectedPayload = {
     'attributes': {
-      'qualifiedType': 'InitialTechCheckTask',
       'title': 'Initial Tech Check',
       'type': 'InitialTechCheckTask'
     },
@@ -73,7 +51,6 @@ test('normalizeSingleResponse leaves a model with the requested type unchanged',
   };
   expectedPayload = {
     'attributes': {
-      'qualifiedType': 'AdHocTask',
       'title': 'Ad-hoc Task',
       'type': 'AdHocTask'
     },
@@ -141,7 +118,6 @@ test("normalizeSingleResponse normalizes sideloaded tasks via their 'type' attri
   return assert.deepEqual(result.included, [
     {
       'attributes': {
-        'qualifiedType': 'Standard::InitialTechCheckTask',
         'title': 'Initial Tech Check',
         'type': 'InitialTechCheckTask'
       },
@@ -150,7 +126,6 @@ test("normalizeSingleResponse normalizes sideloaded tasks via their 'type' attri
       'type': 'initial-tech-check-task'
     }, {
       'attributes': {
-        'qualifiedType': 'AdHocTask',
         'title': 'Ad-hoc',
         'type': 'AdHocTask'
       },
@@ -159,53 +134,6 @@ test("normalizeSingleResponse normalizes sideloaded tasks via their 'type' attri
       'type': 'ad-hoc-task'
     }
   ], 'tasks are sideloaded with their proper type, defaulting to adhoc');
-});
-
-test('_mungePayloadTypes', function(assert) {
-  var expected, inputPayload, output;
-  inputPayload = {
-    tasks: [
-      {
-        id: 1,
-        type: 'NameSpace::AuthorTask'
-      }, {
-        id: 2,
-        type: 'SomeTaskName'
-      }, {
-        id: 3
-      }
-    ],
-    others: [
-      {
-        id: 4,
-        type: 'OtherStuff::Other'
-      }
-    ]
-  };
-  output = subject._mungePayloadTypes(inputPayload);
-  expected = {
-    tasks: [
-      {
-        id: 1,
-        qualified_type: 'NameSpace::AuthorTask',
-        type: 'AuthorTask'
-      }, {
-        id: 2,
-        qualified_type: 'SomeTaskName',
-        type: 'SomeTaskName'
-      }, {
-        id: 3
-      }
-    ],
-    others: [
-      {
-        id: 4,
-        qualified_type: 'OtherStuff::Other',
-        type: 'Other'
-      }
-    ]
-  };
-  return assert.deepEqual(expected, output, 'It munges every object with a type, but leaves objects without types untouched');
 });
 
 test('_newNormalize when the primary record has the same type attribute as the passed-in modelName', function(assert) {
@@ -439,7 +367,6 @@ test("normalizeSingleResponse normalizes sideloaded stuff even if they're not ex
   return assert.deepEqual(result.included, [
     {
       'attributes': {
-        'qualifiedType': 'Standard::InitialTechCheckTask',
         'title': 'Initial Tech Check',
         'type': 'InitialTechCheckTask'
       },
@@ -448,7 +375,6 @@ test("normalizeSingleResponse normalizes sideloaded stuff even if they're not ex
       'type': 'initial-tech-check-task'
     }, {
       'attributes': {
-        'qualifiedType': 'AdHocTask',
         'title': 'Ad-hoc',
         'type': 'AdHocTask'
       },

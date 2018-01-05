@@ -5,13 +5,6 @@ import { ActiveModelSerializer } from 'active-model-adapter';
 export default ActiveModelSerializer.extend({
   isNewSerializerAPI: true,
 
-  // We add qualifiedType and modify type when the payload comes in.
-  // Revert this on the way out.
-
-  serialize(record, options) {
-    return this._unsetQualifiedType(this._super(record, options));
-  },
-
   pushPayload(store, rawPayload) {
     var newPayload = {};
     for(var key of Object.keys(rawPayload)) {
@@ -24,7 +17,7 @@ export default ActiveModelSerializer.extend({
   normalizeSingleResponse(store, primaryModelClass, originalPayload, recordId, requestType) {
     let {newModelName, payload} = this._newNormalize(
       primaryModelClass.modelName,
-      this._mungePayloadTypes(originalPayload),
+      originalPayload,
       false
     );
 
@@ -37,7 +30,7 @@ export default ActiveModelSerializer.extend({
   normalizeArrayResponse(store, primaryModelClass, originalPayload, recordId, requestType) {
     let {newModelName, payload, isPolymorphic} = this._newNormalize(
       primaryModelClass.modelName,
-      this._mungePayloadTypes(originalPayload),
+      originalPayload,
       false
     );
 
@@ -56,30 +49,6 @@ export default ActiveModelSerializer.extend({
     return normalizedPayload;
   },
 
-  // The Task payload has a key of `type`. This is the full
-  // Ruby class name. Example: "ApertaThings::ImportantTask"
-  // The Ember side is only interested in the last half.
-  // Store the original full name in `qualified_type`
-  // We snake case because our superclass expects it
-  _setQualifiedType(taskObj) {
-    const qualifiedType  = taskObj.type;
-
-    if (qualifiedType) {
-      taskObj.qualified_type = qualifiedType;
-      taskObj.type = deNamespaceTaskType(taskObj.type);
-    }
-
-    return taskObj;
-  },
-
-  _unsetQualifiedType(taskObj) {
-    if (taskObj.qualified_type) {
-      taskObj.type = taskObj.qualified_type;
-      delete taskObj.qualified_type;
-    }
-    return taskObj;
-  },
-
   /**
    * Call the function f once on a thing if it is not an array, or map with f if
    * thing is an array.
@@ -92,13 +61,6 @@ export default ActiveModelSerializer.extend({
     } else {
       return f(thing);
     }
-  },
-
-  _mungePayloadTypes(payload) {
-    Object.values(payload).forEach((val) => {
-      this._callOnceOrMap(val, this._setQualifiedType);
-    });
-    return payload;
   },
 
   // returns new payload

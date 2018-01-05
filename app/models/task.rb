@@ -64,7 +64,24 @@ class Task < ActiveRecord::Base
   validates :title, presence: true
   validates :title, length: { maximum: 255 }
 
+  self.store_full_sti_class = false
+
   class << self
+    def find_sti_class(type_name)
+      @lookup_table ||= {}
+      if @lookup_table.key? type_name
+        @lookup_table[type_name]
+      else
+        klass = descendants.find { |d| d.name.ends_with? type_name }
+        if klass.nil?
+          # I give up
+          super
+        else
+          @lookup_table[type_name] = klass
+        end
+      end
+    end
+
     # Public: Restores the task defaults to all of its instances/models
     #
     # * restores title to DEFAULT_TITLE

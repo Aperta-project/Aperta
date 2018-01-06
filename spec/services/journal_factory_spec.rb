@@ -182,6 +182,7 @@ describe JournalFactory do
         TaskTemplate.delete_all
         Card.delete_all
         CardTaskType.delete_all
+        LetterTemplate.delete_all
       end
 
       let!(:journal) { @journal }

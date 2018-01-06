@@ -1,4 +1,4 @@
-import logError from 'tahi/services/log-error';
+import logError from 'tahi/pods/log-error/service';
 
 export default {
   name: 'errorHandler',

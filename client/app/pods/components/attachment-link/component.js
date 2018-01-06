@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import FileUpload from 'tahi/models/file-upload';
 import fontAwesomeFiletypeClass from 'tahi/lib/font-awesome-fyletype-class';
 
 export default Ember.Component.extend({

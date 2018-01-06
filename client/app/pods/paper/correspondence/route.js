@@ -1,4 +1,4 @@
-import AuthorizedRoute from 'tahi/routes/authorized';
+import AuthorizedRoute from 'tahi/pods/authorized/route';
 import Ember from 'ember';
 
 export default AuthorizedRoute.extend({

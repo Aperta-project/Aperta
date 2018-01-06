@@ -92,7 +92,8 @@ class ApertaCNSTest(CommonTest):
         logging.info('CNSTest::validate_core_review_submission_overlay')
         preprint_feature_flag, current_env = self.is_preprint_on()
         if not preprint_feature_flag:
-            logging.warning('Preprint feature flag is Off in {0}, nothing to test.'.format(current_env))
+            logging.warning('Preprint feature flag is Off in {0}, nothing to test.'
+                            .format(current_env))
             return
 
         author = random.choice(users)
@@ -129,8 +130,10 @@ class ApertaCNSTest(CommonTest):
         authors_task.task_ready()
         authors_task.add_group_author_task_action()
         authors_task.edit_author(author)
+        ms_page.complete_task('Authors', click_override=True)
 
-        ms_page._wait_for_element(ms_page._get(ms_page._submit_button), 1)
+        ms_page._wait_on_lambda(lambda: not bool(ms_page.uncompleted_tasks()), max_wait=2)
+        ms_page._wait_for_element(ms_page._get(ms_page._submit_button), 0.1)
         submit_button = ms_page._get(ms_page._submit_button)
 
         if review_before_submission:

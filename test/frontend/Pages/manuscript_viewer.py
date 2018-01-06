@@ -541,6 +541,20 @@ class ManuscriptViewerPage(AuthenticatedPage):
         logging.info('Completed is False')
         return False
 
+    def uncompleted_tasks(self):
+        """Checks if every task is marked as completed and returns list of uncompleted tasks"""
+        tasks = self._gets(self._task_headings)
+        uncompleted_tasks=[]
+        for task in tasks:
+            completed_icon = task.find_element(*self._task_heading_status_icon)
+            if not 'active' in completed_icon.get_attribute('class'):
+                uncompleted_tasks.append(task.text)
+        if uncompleted_tasks:
+            logging.info('Uncompleted tasks: {0}'.format(str(uncompleted_tasks)))
+        else:
+            logging.info('All tasks are completed')
+        return uncompleted_tasks
+
     def is_task_open(self, task_name):
         """
         Check if a task is open

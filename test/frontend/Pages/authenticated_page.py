@@ -443,6 +443,7 @@ class AuthenticatedPage(StyledPage):
         url = self._driver.current_url
         signout_url = url.split('/')[0] + '//' + url.split('/')[2] + '/users/sign_out'
         self._driver.get(signout_url)
+        self._wait_on_lambda(lambda: 'sign_in' in self.get_current_url(), max_wait=10)
 
     def close_sheet(self):
         """

@@ -50,6 +50,13 @@ module TahiStandardTasks
       Role::REVIEWER_ROLE
     end
 
+    def invitation_template
+      OldLetterTemplate.new(
+        salutation: "Dear [REVIEWER NAME],",
+        body: invitation_body_template
+      )
+    end
+
     def accept_allowed?(invitation)
       # Prevents accepting invitation without an invitee
       invitation.invitee.present?

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# Downloads and extracts a bunch of testing assets in the project
+#
+# this prevents us from needing to check a bunch of binary data into git
+
+BIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+TEST_DIR=$BIN_DIR/..
+ASSETS_DIR=$TEST_DIR/frontend/assets
+
+# Fetch the assets archive from big hector
+cd $ASSETS_DIR
+TESTING_ASSETS_ARCHIVE="testing_assets.tar.gz"
+wget http://bighector.plos.org/aperta/$TESTING_ASSETS_ARCHIVE
+
+# Extract the archive
+if tar --version | grep -q 'gnu'; then
+  echo "Detected GNU tar"
+  tar --warning=no-unknown-keyword -vxf $TESTING_ASSETS_ARCHIVE
+else
+  echo "Detected non-GNU tar"
+  tar -vxf $TESTING_ASSETS_ARCHIVE
+fi
+
+# Remove the archive
+rm $TESTING_ASSETS_ARCHIVE

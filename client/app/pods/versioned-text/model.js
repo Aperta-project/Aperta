@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import DS from 'ember-data';
-import formatDate from 'tahi/lib/format-date';
+import formatDate from 'tahi/lib/aperta-moment';
 
 const {
   computed,

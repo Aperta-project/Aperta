@@ -1,6 +1,6 @@
 import DS from 'ember-data';
 import Ember from 'ember';
-import formatDate from 'tahi/lib/format-date';
+import formatDate from 'tahi/lib/aperta-moment';
 
 export default DS.Model.extend({
   paper: DS.belongsTo('paper', { async: false }),

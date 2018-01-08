@@ -7,7 +7,7 @@ import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup } from 'ember-data-factory-guy';
 import hbs from 'htmlbars-inline-precompile';
 import FakeCanService from 'tahi/tests/helpers/fake-can-service';
-import { moment } from 'tahi/lib/format-date';
+import { moment } from 'tahi/lib/aperta-moment';
 
 moduleForComponent('review-status', 'Integration | Component | review status', {
   integration: true,

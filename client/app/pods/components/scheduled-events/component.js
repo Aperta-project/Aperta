@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import formatDate from 'tahi/lib/format-date';
+import formatDate from 'tahi/lib/aperta-moment';
 
 export default Ember.Component.extend({
   classNames: ['scheduled-events'],

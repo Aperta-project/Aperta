@@ -33,7 +33,7 @@ export default Ember.Component.extend({
 
     const dueDate = this.get('report.dueDatetime.dueAt');
     const originalDueDate = this.get('report.originallyDueAt');
-    const format = 'long-month-day-2';
+    const format = 'long-month-day-1';
     const formattedDueDate = formatDate(dueDate, format);
     const formattedOriginalDueDate = formatDate(originalDueDate, format);
     if (dueDate && formattedDueDate !== formattedOriginalDueDate) {
@@ -54,7 +54,7 @@ export default Ember.Component.extend({
 
   statusDate: Ember.computed('report.statusDatetime', function(){
     const date = this.get('report.statusDatetime');
-    const format = 'long-date';
+    const format = 'long-date-1';
     return formatDate(date, format);
   }),
 

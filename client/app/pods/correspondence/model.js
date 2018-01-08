@@ -32,7 +32,7 @@ export default DS.Model.extend({
 
     let sentAt = this.get('sentAt');
     let time = Ember.isBlank(sentAt) ? moment.utc() : moment.utc(sentAt);
-    return formatDate(time, 'long-date-military-time-2');
+    return formatDate(time, 'long-date-time-1');
   }),
 
   manuscriptVersionStatus: Ember.computed('manuscriptVersion','manuscriptStatus', function() {
@@ -60,7 +60,7 @@ export default DS.Model.extend({
   },
 
   activityMessages: Ember.computed.map('activities', function(activity) {
-    return `${this.get('activityNames')[activity.key]} by ${activity.full_name} on ${formatDate(activity.created_at, 'long-date-military-time')}`;
+    return `${this.get('activityNames')[activity.key]} by ${activity.full_name} on ${formatDate(activity.created_at, 'long-date-time-2')}`;
   }),
 
   lastActivityMessage: Ember.computed('activityMessages', function(){

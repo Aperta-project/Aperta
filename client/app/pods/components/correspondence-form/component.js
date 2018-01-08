@@ -11,7 +11,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   timeSent: Ember.computed('model.sentAt', function() {
     let sentAt = this.get('model.sentAt');
     let time = Ember.isBlank(sentAt) ? moment.utc() : moment.utc(sentAt);
-    return formatDate(time, 'hour-minute-military-2');
+    return formatDate(time, 'hour-minute-2');
   }),
 
   dateSent: Ember.computed('model', function() {
@@ -38,7 +38,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   },
 
   validateTime() {
-    let timeIsValid = moment(this.get('timeSent'), formatFor('hour-minute-military')).isValid();
+    let timeIsValid = moment(this.get('timeSent'), formatFor('hour-minute-1')).isValid();
 
     if (!timeIsValid) {
       this.set('validationErrors.timeSent', 'Invalid Time.');

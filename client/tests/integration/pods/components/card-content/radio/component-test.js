@@ -1,7 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
-import testQAIdent from 'tahi/tests/helpers/test-mixins/qa-ident';
 
 moduleForComponent(
   'card-content/radio',
@@ -142,5 +141,3 @@ test(`it does not display an error message when a field is marked required and h
   let errors = this.$('.error-message');
   assert.textPresent(errors[0], '');
 });
-
-testQAIdent(template);

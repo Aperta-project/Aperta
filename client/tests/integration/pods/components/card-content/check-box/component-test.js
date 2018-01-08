@@ -2,7 +2,6 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import Ember from 'ember';
-import testQAIdent from 'tahi/tests/helpers/test-mixins/qa-ident';
 
 moduleForComponent(
   'card-content/check-box',
@@ -53,5 +52,3 @@ test(`it sends 'valueChanged' on change`, function(assert) {
   this.render(template);
   this.$('input').click();
 });
-
-testQAIdent(template);

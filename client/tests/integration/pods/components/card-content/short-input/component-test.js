@@ -2,7 +2,6 @@ import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import hbs from 'htmlbars-inline-precompile';
-import testQAIdent from 'tahi/tests/helpers/test-mixins/qa-ident';
 
 moduleForComponent(
   'card-content/short-input',
@@ -85,5 +84,3 @@ test('hides errors on init and displays error messages if appropriate', function
     'error class present on parent element'
   );
 });
-
-testQAIdent(template);

@@ -2,7 +2,6 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
-import testQAIdent from 'tahi/tests/helpers/test-mixins/qa-ident';
 
 moduleForComponent(
   'card-content/error-message',
@@ -49,5 +48,3 @@ test('it renders the message from the scenario based on the content key', functi
   this.set('content.key', 'no match');
   assert.elementFound('.error-message--hidden', 'The error message is hidden when the key does not match');
 });
-
-testQAIdent(template);

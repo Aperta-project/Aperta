@@ -2,7 +2,6 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import Ember from 'ember';
-import testQAIdent from 'tahi/tests/helpers/test-mixins/qa-ident';
 
 moduleForComponent(
   'card-content/file-uploader',
@@ -62,5 +61,3 @@ test(`shows an uploader with a button`, function(assert) {
     `Doesn't show the button when multiple=false and there's an existing upload`
   );
 });
-
-testQAIdent(template);

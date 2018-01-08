@@ -2,7 +2,6 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { clickTrigger, nativeMouseUp } from 'tahi/tests/helpers/ember-power-select';
 import Ember from 'ember';
-import testQAIdent from 'tahi/tests/helpers/test-mixins/qa-ident';
 
 moduleForComponent(
   'card-content/dropdown',
@@ -61,5 +60,3 @@ test(`it sends 'valueChanged' when a new option is picked`, function(assert) {
   clickTrigger();
   nativeMouseUp(`.ember-power-select-option[data-option-index="1"]`);
 });
-
-testQAIdent(template);

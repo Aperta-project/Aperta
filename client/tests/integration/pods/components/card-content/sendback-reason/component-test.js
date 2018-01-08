@@ -3,7 +3,6 @@ import { moduleForComponent, test } from 'ember-qunit';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import hbs from 'htmlbars-inline-precompile';
-import testQAIdent from 'tahi/tests/helpers/test-mixins/qa-ident';
 
 moduleForComponent('card-content/sendback-reason', 'Integration | Component | card content | sendback reason', {
   integration: true,
@@ -138,5 +137,3 @@ test('it hides the textrea if sendback reason is checked but the pencil has not 
   this.$('#check-box-reason').click();
   assert.elementNotFound('.card-content-paragraph-input');
 });
-
-testQAIdent(template);

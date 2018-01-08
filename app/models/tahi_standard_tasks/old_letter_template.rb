@@ -1,5 +1,5 @@
 module TahiStandardTasks
-  class LetterTemplate
+  class OldLetterTemplate
     attr_reader :salutation, :body
 
     def initialize(salutation:, body:)

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::LetterTemplate do
+describe TahiStandardTasks::OldLetterTemplate do
   subject(:template) { described_class.new(salutation: salutation, body: body) }
   let(:salutation) { "Dear SoAndSo," }
   let(:body) { "You've won a million dollars!" }

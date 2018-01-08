@@ -41,6 +41,13 @@ module TahiStandardTasks
       Role::ACADEMIC_EDITOR_ROLE
     end
 
+    def invitation_template
+      OldLetterTemplate.new(
+        salutation: "Dear Dr. [EDITOR NAME],",
+        body: invitation_body
+      )
+    end
+
     def add_invitation_link(invitation)
       old_invitation_url = client_dashboard_url
       new_invitation_url = client_dashboard_url(

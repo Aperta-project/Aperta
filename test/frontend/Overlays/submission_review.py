@@ -32,7 +32,7 @@ class SubmissionReviewOverlay(AuthenticatedPage):
         self._review_ms_file_link = (By.CSS_SELECTOR, 'td>p>a')
         self._review_overlay_submit_button = (By.ID, 'review-submission-submit-button')
         self._edit_submission_button = (By.ID, 'review-submission-make-changes-button')
-        # relative locators to validate metadata in a table
+        # relative locators to validate metadata in the table
         self._preprint_text = (By.TAG_NAME, 'dt')
         self._posting_answer = (By.TAG_NAME, 'dd')
         self._title_text = (By.CSS_SELECTOR, 'td>p')
@@ -159,7 +159,7 @@ class SubmissionReviewOverlay(AuthenticatedPage):
         self.validate_application_body_text(author_text)
 
         # Co-Author (list) might be empty, if there are no co-authors
-        coauthors = card_metadata[3].find_elements_by_css_selector('td>p>span')
+        coauthors = card_metadata[3].find_elements(*self._author_text)
         expected_coauthor_list = expected_values['Coauthors']
         for i, coauthor in enumerate(coauthors):
             assert self.normalize_spaces(coauthor.text) == \
@@ -257,7 +257,6 @@ class SubmissionReviewOverlay(AuthenticatedPage):
             if db_author[6] == 'GroupAuthor':
                 db_authors_for_assertion.append(db_author[5].strip())
             else:
-
                 author_name = \
                     ('' if db_author[0] is None else db_author[0].strip() + " ") + \
                     ('' if db_author[1] is None else db_author[1].strip() + " ") + \
@@ -265,7 +264,6 @@ class SubmissionReviewOverlay(AuthenticatedPage):
                 author_affiliations = \
                     ('' if db_author[3] is None else db_author[3].strip()) + \
                     ('' if db_author[4] is None else ', {0}'.format(db_author[4].strip()))
-
                 author_info = '{0}, {1}'.format(author_name, author_affiliations)
                 db_authors_for_assertion.append(author_info)
 

@@ -129,8 +129,7 @@ class ApertaCNSTest(CommonTest):
         authors_task.add_individual_author_task_action()
         authors_task.task_ready()
         authors_task.add_group_author_task_action()
-        authors_task.edit_author(author)
-        ms_page.complete_task('Authors', click_override=True)
+        ms_page.complete_task('Authors', click_override=True, author=author)
 
         ms_page._wait_on_lambda(lambda: not bool(ms_page.uncompleted_tasks()), max_wait=2)
         ms_page._wait_for_element(ms_page._get(ms_page._submit_button), 0.1)
@@ -144,7 +143,7 @@ class ApertaCNSTest(CommonTest):
             submission_review_overlay.overlay_ready()
             submission_review_overlay.validate_styles_and_components()
             ms_pdf_link = submission_review_overlay._get(
-                submission_review_overlay._review_ms_file_link)
+                    submission_review_overlay._review_ms_file_link)
             ms_page.validate_manuscript_downloaded_file(ms_pdf_link, format='pdf')
             submission_review_overlay.select_submit_or_edit_submission()
         else:

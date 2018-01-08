@@ -37,6 +37,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     Model an aperta paper viewer page
     """
+
     def __init__(self, driver, url_suffix='/'):
         super(ManuscriptViewerPage, self).__init__(driver, url_suffix)
 
@@ -48,8 +49,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
         self._card = (By.CLASS_NAME, 'card')
         self._submit_button = (By.ID, 'sidebar-submit-paper')
         self._withdraw_banner = (By.CLASS_NAME, 'withdrawal-banner')
-        self._withdraw_banner_reactivate_button = (By.CSS_SELECTOR,
-                                                   'div.withdrawal-banner > button.button-secondary')
+        self._withdraw_banner_reactivate_button = (
+            By.CSS_SELECTOR, 'div.withdrawal-banner > button.button-secondary')
         self._manuscript_pane = (By.CLASS_NAME, 'manuscript-pane')
         self._manuscript_pdf_viewer_container = (By.ID, 'viewerContainer')
         self._accordion_pane = (By.CSS_SELECTOR, 'div.split-pane-element + div.split-pane-element')
@@ -84,8 +85,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
         self._add_collaborators_modal_input = (By.CLASS_NAME, 'select2-input')
         self._add_collaborators_modal_select = (By.CSS_SELECTOR, 'div.select2-container')
 
-        self._add_collaborators_modal_cancel = (By.XPATH, "//div[@class='overlay-action-buttons']/a")
-        self._add_collaborators_modal_save = (By.XPATH, "//div[@class='overlay-action-buttons']/button")
+        self._add_collaborators_modal_cancel = (
+            By.XPATH, "//div[@class='overlay-action-buttons']/a")
+        self._add_collaborators_modal_save = (
+            By.XPATH, "//div[@class='overlay-action-buttons']/button")
         # Withdraw Manuscript Overlay
         self._wm_modal = (By.CLASS_NAME, 'overlay--fullscreen')
         self._wm_exclamation_circle = (By.CLASS_NAME, 'fa-exclamation-circle')
@@ -98,7 +101,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
         # The overlay close X is universal and defined in
         # authenticated page (self._overlay_header_close)
         self._so_paper_submit_icon = (By.CLASS_NAME, 'paper-submit-icon')
-        self._so_paper_submit_title_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit h1')
+        self._so_paper_submit_title_text_submit = (
+            By.CSS_SELECTOR, 'div.overlay-title-text-submit h1')
         self._so_paper_submit_subhead_text_submit = (By.CSS_SELECTOR,
                                                      'div.overlay-title-text-submit + h5')
         self._so_paper_title = (By.ID, 'paper-submit-title')
@@ -133,7 +137,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
         self._report_guide_task = (By.CLASS_NAME, 'reporting-guidelines-task')
         self._review_cands_task = (By.CLASS_NAME, 'reviewer-recommendations-task')
         self._research_reviewer_report_task = (By.CLASS_NAME, 'reviewer-report-task')
-        self._front_matter_reviewer_report_task = (By.CLASS_NAME, 'front-matter-reviewer-report-task')
+        self._front_matter_reviewer_report_task = (
+            By.CLASS_NAME, 'front-matter-reviewer-report-task')
         self._supporting_info_task = (By.CLASS_NAME, 'supporting-info-task')
         self._upload_manu_task = (By.CLASS_NAME, 'task-type-upload-manuscript-task')
         # infobox
@@ -151,9 +156,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
         # Download drawer
         self._download_drawer = (By.CLASS_NAME, 'sheet')
         self._download_drawer_title = (By.CSS_SELECTOR, '.sheet .sheet-title')
-        self._download_drawer_table_header = (By.CSS_SELECTOR, '.sheet '
-                                                               '.paper-downloads '
-                                                               '.paper-downloads-row:not(.animation-fade-in) th')
+        self._download_drawer_table_header = (
+            By.CSS_SELECTOR, '.sheet '
+                             '.paper-downloads '
+                             '.paper-downloads-row:not(.animation-fade-in) th')
         self._download_drawer_items = (By.CSS_SELECTOR, '.sheet .paper-downloads '
                                                         '.paper-downloads-row.animation-fade-in')
         self._download_drawer_close_btn = (By.CSS_SELECTOR, '.sheet .sheet-close-x')
@@ -181,8 +187,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
     def page_ready_post_create(self):
         """
-        A method to validate that the manuscript page is ready for testing following the creation of a
-          new manuscript
+        A method to validate that the manuscript page is ready for testing following the creation of
+          a new manuscript
         :return: void function
         """
         self.set_timeout(10)
@@ -261,7 +267,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
         # allow time for components to attach to DOM
         time.sleep(1)
         bar_items = self._gets(self._bar_items)
-        version_number = bar_items[0].find_element(*self._bar_item_selected_item).text.split(' - ')[0]
+        version_number = bar_items[0].find_element(*self._bar_item_selected_item).text.split(' - ')[
+            0]
         logging.info(version_number)
         self._get(self._tb_versions_closer).click()
         return version_number
@@ -404,11 +411,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
         more_btn.click()
         # For the time being, the appeals link is being removed for everybody.
         # self._get(self._tb_more_appeal_link)
-        # Per APERTA-5371 only creators, admins, pub svcs and internal editors can see the withdraw item
+        # Per APERTA-5371 only creators, admins, pub svcs and internal editors can see the
+        # withdraw item
         withdraw_users = users + [staff_admin_login['email'],
-                    pub_svcs_login['email'],
-                    internal_editor_login['email'],
-                    super_admin_login['email'],
+                                  pub_svcs_login['email'],
+                                  internal_editor_login['email'],
+                                  super_admin_login['email'],
                                   ]
         if user in withdraw_users:
             withdraw_link = self._get(self._tb_more_withdraw_link)
@@ -439,10 +447,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
             # APERTA-9608
             # assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px'), \
             #   close_icon_overlay.value_of_css_property('font-size')
-            assert APPLICATION_TYPEFACE in close_icon_overlay.value_of_css_property('font-family'), \
-                  close_icon_overlay.value_of_css_property('font-family')
-            assert close_icon_overlay.value_of_css_property('color') == APERTA_GREY_DARK, \
-                  close_icon_overlay.value_of_css_property('color')
+            assert APPLICATION_TYPEFACE in \
+                close_icon_overlay.value_of_css_property('font-family'), \
+                close_icon_overlay.value_of_css_property('font-family')
+            assert close_icon_overlay.value_of_css_property('color') == \
+                APERTA_GREY_DARK, close_icon_overlay.value_of_css_property('color')
             close_icon_overlay.click()
             # Need to allow the slightest time for the overlay to close to prevent covered element
             #   syndrome
@@ -458,7 +467,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
         self._wait_for_element(self._get(self._tb_more_withdraw_link))
         withdraw_link = self._get(self._tb_more_withdraw_link)
         withdraw_link.click()
-        self._get(self._wm_modal_textarea).send_keys('This a deployment test document...please ignore')
+        self._get(self._wm_modal_textarea).send_keys(
+            'This a deployment test document...please ignore')
         self._get(self._wm_modal_yes).click()
         # Give a little time for the db transaction
         time.sleep(3)
@@ -483,11 +493,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
         """
         self.set_timeout(15)
         try:
-          self._get(self._withdraw_banner_reactivate_button)
+            self._get(self._withdraw_banner_reactivate_button)
         except ElementDoesNotExistAssertionError:
-          return False
+            return False
         finally:
-          self.restore_timeout()
+            self.restore_timeout()
         return True
 
     def validate_reactivate_btn(self):
@@ -521,33 +531,17 @@ class ManuscriptViewerPage(AuthenticatedPage):
         """
         tasks = self._gets(self._task_headings)
         for task in tasks:
-          if task.text == task_name:
-            return True
-        return False
-
-    def is_task_marked_complete(self, task_name):
-        """
-        Check if a task is marked as completed
-        :param task_name: The name of the task to validate
-        :return: True if task is marked as completed and False otherwise
-        """
-        tasks = self._gets(self._task_headings)
-        for task in tasks:
-          if task.text == task_name:
-            completed_icon = task.find_element_by_css_selector('div div')
-            if 'active' in completed_icon.get_attribute('class'):
-              logging.info('Completed is true')
-              return True
-        logging.info('Completed is False')
+            if task.text == task_name:
+                return True
         return False
 
     def uncompleted_tasks(self):
         """Checks if every task is marked as completed and returns list of uncompleted tasks"""
         tasks = self._gets(self._task_headings)
-        uncompleted_tasks=[]
+        uncompleted_tasks = []
         for task in tasks:
             completed_icon = task.find_element(*self._task_heading_status_icon)
-            if not 'active' in completed_icon.get_attribute('class'):
+            if 'active' not in completed_icon.get_attribute('class'):
                 uncompleted_tasks.append(task.text)
         if uncompleted_tasks:
             logging.info('Uncompleted tasks: {0}'.format(str(uncompleted_tasks)))
@@ -563,11 +557,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
         """
         tasks = self._gets(self._task_headings)
         for task in tasks:
-          if task.text == task_name:
-            div_list = task.find_elements_by_xpath("../div")
-            # if task is open it should be 2 div under task: task-disclosure-heading and task-disclosure-body
-            # if task is closed, only 1: task-disclosure-heading
-            return len(div_list)==2
+            if task.text == task_name:
+                div_list = task.find_elements_by_xpath("../div")
+                # if task is open it should be 2 div under task:
+                # task-disclosure-heading and task-disclosure-body
+                # if task is closed, only 1: task-disclosure-heading
+                return len(div_list) == 2
 
         raise ElementDoesNotExistAssertionError('This task is not present')
 
@@ -575,10 +570,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
         """
         Click a task title
         NOTE: this covers only the author facing tasks, with the exception of initial_decision
-        NOTE also that the locators for these are specifically defined within the scope of the manuscript_viewer or
-            workflow page
-        NOTE: Note this method is temporarily bifurcated into click_card() and click_task() to support both the manuscript
-            and workflow contexts while we transition.
+        NOTE also that the locators for these are specifically defined within the scope of the
+            manuscript_viewer or workflow page
+        NOTE: Note this method is temporarily bifurcated into click_card() and click_task() to
+            support both the manuscript and workflow contexts while we transition.
         :param task_name: A string with the name of the task to click, like 'Cover Letter'
             or 'Billing'
         :return: True or False, if taskname is unknown.
@@ -586,11 +581,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
         tasks = self._gets(self._task_headings)
         self._scroll_into_view(self._get(self._task_headings))
         for task in tasks:
-          if task_name.lower() in task.text.lower():
-            self._scroll_into_view(task)
-            self._actions.move_to_element(task).perform()
-            task.click()
-            return True
+            if task_name.lower() in task.text.lower():
+                self._scroll_into_view(task)
+                self._actions.move_to_element(task).perform()
+                task.click()
+                return True
         logging.info('Unknown Task')
         return False
 
@@ -617,193 +612,200 @@ class ManuscriptViewerPage(AuthenticatedPage):
         tasks = self._gets(self._task_headings)
         # if task is marked as complete, leave is at is.
         if not click_override:
-          for task in tasks:
-            task_div = task.find_element_by_xpath('..')
-            if task_name in task.text \
-                and 'active' \
-                not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
-              self._scroll_into_view(self._get(self._paper_sidebar_manuscript_id))
-              manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
-              self._actions.move_to_element(manuscript_id_text).perform()
-              self.click_covered_element(task)
-              time.sleep(.5)
-              break
-            elif task_name in task.text and 'active' \
-                in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
-              return None
-          else:
-            return None
+            for task in tasks:
+                task_div = task.find_element_by_xpath('..')
+                if task_name in task.text and 'active' not in task_div.find_element(
+                        *self._task_heading_status_icon).get_attribute('class'):
+                    self._scroll_into_view(self._get(self._paper_sidebar_manuscript_id))
+                    manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
+                    self._actions.move_to_element(manuscript_id_text).perform()
+                    self.click_covered_element(task)
+                    time.sleep(.5)
+                    break
+                elif task_name in task.text and 'active' \
+                        in task_div.find_element(*self._task_heading_status_icon).get_attribute(
+                                'class'):
+                    return None
+            else:
+                return None
         else:
-          for task in tasks:
-            if task_name in task.text:
-              break
-          else:
-            return None
+            for task in tasks:
+                if task_name in task.text:
+                    break
+            else:
+                return None
         base_task = BaseTask(self._driver)
         base_task.set_timeout(60)
         if task_name == 'Additional Information':
-          ai_task = AITask(self._driver)
-          ai_task.task_ready()
-          # If the task is read only due to completion state, set read-write
-          if ai_task.completed_state():
-            ai_task.click_completion_button()
-            self._wait_on_lambda(lambda: ai_task.is_task_editable() == True)
-          if data:
-            ai_task.complete_ai(data)
-            self._wait_for_element(task.find_element_by_css_selector('div.active'))
-          # complete_addl info task
-          if not base_task.completed_state():
-            base_task.click_completion_button()
-          task.click()
-          self._wait_on_lambda(lambda: self.is_task_open('Additional Information') == False)
+            ai_task = AITask(self._driver)
+            ai_task.task_ready()
+            # If the task is read only due to completion state, set read-write
+            if ai_task.completed_state():
+                ai_task.click_completion_button()
+                self._wait_on_lambda(lambda: bool(ai_task.is_task_editable()))
+            if data:
+                ai_task.complete_ai(data)
+                self._wait_for_element(task.find_element_by_css_selector('div.active'))
+            # complete_addl info task
+            if not base_task.completed_state():
+                base_task.click_completion_button()
+            task.click()
+            self._wait_on_lambda(lambda: not bool(self.is_task_open('Additional Information')))
         elif task_name == 'Billing':
-          billing_task = BillingTask(self._driver)
-          billing_task.task_ready()
-          billing_task.complete(data)
-          self._wait_for_element(task.find_element_by_css_selector('div.active'))
-          self.click_covered_element(task)
-          self._wait_on_lambda(lambda: self.is_task_open('Billing') == False)
-        elif task_name == 'Review by':
-          review_report = ReviewerReportTask(self._driver)
-          review_report.task_ready()
-          outdata = review_report.complete_reviewer_report()
-          time.sleep(1)
-        elif task_name == 'Response to Reviewers':
-          revise_manuscript = ReviseManuscriptTask(self._driver)
-          revise_manuscript.task_ready()
-          revise_manuscript.validate_styles()
-          if data and 'response_number' not in data:
-            revise_manuscript.validate_empty_response()
-          revise_manuscript.response_to_reviewers(data)
-          # complete revise task
-          if not base_task.completed_state():
-            base_task.click_completion_button()
-            task.click()
-          time.sleep(3) #This sleep is probably also tinymce... Code after Response to Reviewers was failing because completing it took more time than allowed for.
-        elif task_name == 'Supporting Info':
-          supporting_info = SITask(self._driver)
-          supporting_info.task_ready()
-          supporting_info.validate_styles()
-          if data and 'file_name' in data:
-            supporting_info.add_file(data['file_name'])
-            time.sleep(5)
-
-            file_label = (By.CLASS_NAME, 'si-file-label-field')
-            self._get(file_label).send_keys("1")
-            time.sleep(.3)
-            self._get((By.CSS_SELECTOR, 'span.ember-power-select-placeholder')).click()
-            time.sleep(.3)
-            self._gets((By.CLASS_NAME, 'ember-power-select-option'))[1].click()
-            time.sleep(.3)
-            self._get((By.CLASS_NAME, 'si-file-save-edit-button')).click()
-
-            assert self._get(supporting_info.si_trash_icon)
-            edit_btn = self._get(supporting_info.si_pencil_icon)
-            edit_btn.click()
-            supporting_info.complete_si_item_form(data)
-          # complete task
-          if not base_task.completed_state():
-            base_task.click_completion_button()
-            # close task
-            task.click()
-          time.sleep(1)
-        elif task_name == 'Upload Manuscript':
-          # before checking that the complete is selected, in the accordion we need to
-          # check if it is open
-          # if task is open it should be 2 div under task: task-disclosure-heading and task-disclosure-body
-          # if task is closed, only 1: task-disclosure-heading
-          div_list = task.find_elements_by_xpath("../div")
-          if len(div_list) == 1:
-            # accordion is close it, open it:
-            logging.info('Accordion was closed, opening: {0}'.format(task.text))
-            task.click()
-          base_task.task_ready()
-          # Check completed_check status
-          if not base_task.completed_state():
-            base_task.move2completion_button(task)
-            base_task.click_completion_button()
-          self.click_covered_element(task)
-          time.sleep(2) #This sleep was added to fix a case where a following complete_task() call failed because this one wasn't done.
-        elif task_name in ('Cover Letter', 'Figures', 'Financial Disclosure', 'Reviewer Candidates', 'Preprint Posting'):
-          # before checking that the complete is selected, in the accordion we need to
-          # check if it is open
-          if click_override:
-            # Open Upload Manuscript Task
-            logging.info('Accordion was closed, opening: {0}'.format(task.text))
-            task.click()
-            base_task.click_completion_button()
+            billing_task = BillingTask(self._driver)
+            billing_task.task_ready()
+            billing_task.complete(data)
+            self._wait_for_element(task.find_element_by_css_selector('div.active'))
             self.click_covered_element(task)
-          else:
-            # if task is open it should be 2 div under task: task-disclosure-heading and task-disclosure-body
+            self._wait_on_lambda(lambda: not bool(self.is_task_open('Billing')))
+        elif task_name == 'Review by':
+            review_report = ReviewerReportTask(self._driver)
+            review_report.task_ready()
+            outdata = review_report.complete_reviewer_report()
+            time.sleep(1)
+        elif task_name == 'Response to Reviewers':
+            revise_manuscript = ReviseManuscriptTask(self._driver)
+            revise_manuscript.task_ready()
+            revise_manuscript.validate_styles()
+            if data and 'response_number' not in data:
+                revise_manuscript.validate_empty_response()
+            revise_manuscript.response_to_reviewers(data)
+            # complete revise task
+            if not base_task.completed_state():
+                base_task.click_completion_button()
+                task.click()
+            # This sleep is probably also tinymce... Code after Response to Reviewers was failing
+            # because completing it took more time than allowed for.
+            time.sleep(3)
+        elif task_name == 'Supporting Info':
+            supporting_info = SITask(self._driver)
+            supporting_info.task_ready()
+            supporting_info.validate_styles()
+            if data and 'file_name' in data:
+                supporting_info.add_file(data['file_name'])
+                time.sleep(5)
+
+                file_label = (By.CLASS_NAME, 'si-file-label-field')
+                self._get(file_label).send_keys("1")
+                time.sleep(.3)
+                self._get((By.CSS_SELECTOR, 'span.ember-power-select-placeholder')).click()
+                time.sleep(.3)
+                self._gets((By.CLASS_NAME, 'ember-power-select-option'))[1].click()
+                time.sleep(.3)
+                self._get((By.CLASS_NAME, 'si-file-save-edit-button')).click()
+
+                assert self._get(supporting_info.si_trash_icon)
+                edit_btn = self._get(supporting_info.si_pencil_icon)
+                edit_btn.click()
+                supporting_info.complete_si_item_form(data)
+            # complete task
+            if not base_task.completed_state():
+                base_task.click_completion_button()
+                # close task
+                task.click()
+            time.sleep(1)
+        elif task_name == 'Upload Manuscript':
+            # before checking that the complete is selected, in the accordion we need to
+            # check if it is open
+            # if task is open it should be 2 div under task: task-disclosure-heading and
+            # task-disclosure-body
             # if task is closed, only 1: task-disclosure-heading
             div_list = task.find_elements_by_xpath("../div")
             if len(div_list) == 1:
-              # accordion is close it, open it:
-              logging.info('Accordion was closed, opening: {0}'.format(task.text))
-              task.click()
+                # accordion is close it, open it:
+                logging.info('Accordion was closed, opening: {0}'.format(task.text))
+                task.click()
             base_task.task_ready()
-
-            if task_name == 'Financial Disclosure':
-                # click on 'No' in 'Financial Disclosure' card to complete the task
-                # since it is required field in the release 1.56,
-                # but this should be updated using POM for 'Financial Disclosure' card
-                # once APERTA-8895 gets done
-                radio_button_no = div_list[1].find_elements(*self._radio_buttons)[1]
-                radio_button_no.click()
-
             # Check completed_check status
             if not base_task.completed_state():
-              base_task.move2completion_button(task)
-              base_task.click_completion_button()
-              self.click_covered_element(task)
-              time.sleep(1)
+                base_task.move2completion_button(task)
+                base_task.click_completion_button()
+            self.click_covered_element(task)
+            # This sleep was added to fix a case where a following complete_task() call failed
+            # because this one wasn't done.
+            time.sleep(2)
+        elif task_name in ('Cover Letter', 'Figures', 'Financial Disclosure', 'Reviewer Candidates',
+                           'Preprint Posting'):
+            # before checking that the complete is selected, in the accordion we need to
+            # check if it is open
+            if click_override:
+                # Open Upload Manuscript Task
+                logging.info('Accordion was closed, opening: {0}'.format(task.text))
+                task.click()
+                base_task.click_completion_button()
+                self.click_covered_element(task)
+            else:
+                # if task is open it should be 2 div under task: task-disclosure-heading
+                # and task-disclosure-body
+                # if task is closed, only 1: task-disclosure-heading
+                div_list = task.find_elements_by_xpath("../div")
+                if len(div_list) == 1:
+                    # accordion is close it, open it:
+                    logging.info('Accordion was closed, opening: {0}'.format(task.text))
+                    task.click()
+                base_task.task_ready()
+
+                if task_name == 'Financial Disclosure':
+                    # click on 'No' in 'Financial Disclosure' card to complete the task
+                    # since it is required field in the release 1.56,
+                    # but this should be updated using POM for 'Financial Disclosure' card
+                    # once APERTA-8895 gets done
+                    radio_button_no = div_list[1].find_elements(*self._radio_buttons)[1]
+                    radio_button_no.click()
+
+                # Check completed_check status
+                if not base_task.completed_state():
+                    base_task.move2completion_button(task)
+                    base_task.click_completion_button()
+                    self.click_covered_element(task)
+                    time.sleep(1)
         elif task_name == 'Authors':
-          # Complete authors data before mark close
-          logging.info('Completing Author Task')
-          author_task = AuthorsTask(self._driver)
-          author_task.task_ready()
-          author_task.edit_author(author)
-          self.click_covered_element(task)
-          self._wait_on_lambda(lambda: self.is_task_open('Authors') == False)
+            # Complete authors data before mark close
+            logging.info('Completing Author Task')
+            author_task = AuthorsTask(self._driver)
+            author_task.task_ready()
+            author_task.edit_author(author)
+            self.click_covered_element(task)
+            self._wait_on_lambda(lambda: not bool(self.is_task_open('Authors')))
         elif task_name == 'New Taxon':
-          # Complete New Taxon data before mark close
-          logging.info('Completing New Taxon Task')
-          new_taxon_task = NewTaxonTask(self._driver)
-          new_taxon_task.task_ready()
-          if data:
-            new_taxon_task.validate_taxon_questions_action(data)
-            outdata = data
-          else:
-            scenario = new_taxon_task.generate_test_scenario()
-            new_taxon_task.validate_taxon_questions_action(scenario)
-            outdata = scenario
-          base_task.click_completion_button()
-          self.click_covered_element(task)
+            # Complete New Taxon data before mark close
+            logging.info('Completing New Taxon Task')
+            new_taxon_task = NewTaxonTask(self._driver)
+            new_taxon_task.task_ready()
+            if data:
+                new_taxon_task.validate_taxon_questions_action(data)
+                outdata = data
+            else:
+                scenario = new_taxon_task.generate_test_scenario()
+                new_taxon_task.validate_taxon_questions_action(scenario)
+                outdata = scenario
+            base_task.click_completion_button()
+            self.click_covered_element(task)
         elif task_name == 'Title And Abstract':
-          # Complete T&A data before mark close
-          logging.info('Completing Title And Abstract Task')
-          title_and_abstract_task = TitleAbstractTask(self._driver)
-          title_and_abstract_task.task_ready()
-          short_doi = title_and_abstract_task.get_short_doi()
-          if prod:
-            title_and_abstract_task.set_abstract(short_doi, prod=True)
-          else:
-            title_and_abstract_task.set_abstract(short_doi)
-          # Need a delay to ensure the card state is updated before clicking the completion button.
-          # Without this delay, the click of the completion button fails, unfortunately.
-          time.sleep(5)
-          base_task.click_completion_button()
-          self.click_covered_element(task)
-          self._wait_on_lambda(lambda: self.is_task_open('Title And Abstract') == False)
+            # Complete T&A data before mark close
+            logging.info('Completing Title And Abstract Task')
+            title_and_abstract_task = TitleAbstractTask(self._driver)
+            title_and_abstract_task.task_ready()
+            short_doi = title_and_abstract_task.get_short_doi()
+            if prod:
+                title_and_abstract_task.set_abstract(short_doi, prod=True)
+            else:
+                title_and_abstract_task.set_abstract(short_doi)
+            # Need a delay to ensure the card state is updated before clicking the completion
+            # button. Without this delay, the click of the completion button fails, unfortunately.
+            time.sleep(5)
+            base_task.click_completion_button()
+            self.click_covered_element(task)
+            self._wait_on_lambda(lambda: not bool(self.is_task_open('Title And Abstract')))
         elif task_name in ('Competing Interests', 'Data Availability', 'Early Version',
                            'Ethics Statement', 'Reporting Guidelines'):
-          # Complete Competing Interest data before mark close
-          logging.info('Completing {0} Task'.format(task.text))
-          base_task.task_ready()
-          base_task.click_completion_button()
-          self.click_covered_element(task)
+            # Complete Competing Interest data before mark close
+            logging.info('Completing {0} Task'.format(task.text))
+            base_task.task_ready()
+            base_task.click_completion_button()
+            self.click_covered_element(task)
         else:
-          raise ValueError('No information on this task: {0}'.format(task_name))
+            raise ValueError('No information on this task: {0}'.format(task_name))
         base_task.restore_timeout()
         return outdata
 
@@ -817,27 +819,28 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
     def click_submit_btn(self, review_overlay_validation=False):
         """Press the submit button
-        :param review_overlay_validation: boolean, validates Preview Submission Overlay if True; default is False
+        :param review_overlay_validation: boolean, validates Preview Submission Overlay if True;
+          default is False
         :return: void function
         """
         self._wait_for_element(self._get(self._submit_button), multiplier=2)
         self._get(self._submit_button).click()
         self._review_before_submission = self.is_review_before_submission()
         if self._review_before_submission:
-          if review_overlay_validation:
-            submission_review_overlay = SubmissionReviewOverlay(self._driver)
-            submission_review_overlay.overlay_ready()
-            submission_review_overlay.validate_styles_and_components()
-            submission_review_overlay.select_submit_or_edit_submission("Submit")
-          else:
-            self._wait_for_element(self._get(self._review_overlay_submit_button), multiplier=2)
-            self._get(self._review_overlay_submit_button).click()
+            if review_overlay_validation:
+                submission_review_overlay = SubmissionReviewOverlay(self._driver)
+                submission_review_overlay.overlay_ready()
+                submission_review_overlay.validate_styles_and_components()
+                submission_review_overlay.select_submit_or_edit_submission("Submit")
+            else:
+                self._wait_for_element(self._get(self._review_overlay_submit_button), multiplier=2)
+                self._get(self._review_overlay_submit_button).click()
 
     def is_preprint_on(self) -> bool:
         """
         A method that will determine for mmt if the pre-print feature flag is ON
         :return: True if preprint feature flag is ON, otherwise False
-        :type return: bool
+        :rtype return: bool
         """
         current_env = os.getenv('WEBDRIVER_TARGET_URL', '')
         logging.info(current_env)
@@ -862,13 +865,14 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
         # check if manuscript template is preprint eligible
         short_doi = self.get_paper_short_doi_from_url()
-        paper_id, paper_type, pp_eligible_mmt = PgSQL().query('SELECT p.id, p.paper_type, mmt.is_preprint_eligible '
-                                                              'FROM papers p, journals j, '
-                                                              'manuscript_manager_templates mmt '
-                                                              'WHERE p.journal_id = j.id '
-                                                              'AND mmt.journal_id = j.id '
-                                                              'AND mmt.paper_type = p.paper_type '
-                                                              'AND p.short_doi =%s;', (short_doi,))[0]
+        paper_id, paper_type, pp_eligible_mmt = \
+            PgSQL().query('SELECT p.id, p.paper_type, mmt.is_preprint_eligible '
+                          'FROM papers p, journals j, '
+                          'manuscript_manager_templates mmt '
+                          'WHERE p.journal_id = j.id '
+                          'AND mmt.journal_id = j.id '
+                          'AND mmt.paper_type = p.paper_type '
+                          'AND p.short_doi =%s;', (short_doi,))[0]
 
         if not pp_eligible_mmt:
             return False
@@ -882,8 +886,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     def confirm_submit_btn(self):
         """Confirm paper submission"""
         # There is a lot going on under the covers in submittal - we need this pregnant delay
-        if self._review_before_submission == None:
-             self._review_before_submission = self.is_review_before_submission()
+        if self._review_before_submission is None:
+            self._review_before_submission = self.is_review_before_submission()
         if not self._review_before_submission:
             confirm_btn = self._get(self._so_submit_confirm)
             confirm_btn.click()
@@ -929,10 +933,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
         dashboard = {'aperta': self._nav_aperta_dashboard_link,
                      'your_manuscripts': self._your_manuscripts_link}
         if item:
-          self._get(dashboard[item]).click()
+            self._get(dashboard[item]).click()
         else:
-          dashboard_link = dashboard[random.choice(dashboard)]
-          self._get(dashboard_link).click()
+            dashboard_link = dashboard[random.choice(dashboard)]
+            self._get(dashboard_link).click()
 
     def get_infobox(self):
         """Get the infobox element"""
@@ -967,29 +971,30 @@ class ManuscriptViewerPage(AuthenticatedPage):
         :return:
         """
         self._get(self._overlay_header_close)
-        self._so_paper_submit_title_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit h1')
+        self._so_paper_submit_title_text_submit = (
+            By.CSS_SELECTOR, 'div.overlay-title-text-submit h1')
         self._so_paper_submit_subhead_text_submit = (By.CSS_SELECTOR,
                                                      'div.overlay-title-text-submit + h5')
         main_head = self._get(self._so_paper_submit_title_text_submit)
         subhead = self._get(self._so_paper_submit_subhead_text_submit)
         if type_ == 'full_submit':
-          assert 'Are you sure?' in main_head.text, main_head.text
-          assert 'You are about to submit the paper' in subhead.text, subhead.text
+            assert 'Are you sure?' in main_head.text, main_head.text
+            assert 'You are about to submit the paper' in subhead.text, subhead.text
         elif type_ == 'congrats':
-          # assert 'Congratulations' in main_head.text, main_head.text
-          self._get(self._so_paper_submit_icon)
-          assert 'You\'ve successfully submitted your paper!' in subhead.text, subhead.text
+            # assert 'Congratulations' in main_head.text, main_head.text
+            self._get(self._so_paper_submit_icon)
+            assert 'You\'ve successfully submitted your paper!' in subhead.text, subhead.text
         elif type_ == 'congrats_is':
-          assert 'You have successfully submitted your manuscript for initial review. If the initial ' \
-                 'review is favorable, we will invite you to add some information to facilitate peer ' \
-                 'review.' in subhead.text, subhead.text
+            assert 'You have successfully submitted your manuscript for initial review. If the ' \
+                   'initial review is favorable, we will invite you to add some information to ' \
+                   'facilitate peer review.' in subhead.text, subhead.text
         elif type_ == 'congrats_full':
-          assert 'You have successfully submitted your manuscript. We will start the peer review ' \
-                 'process.' in subhead.text, subhead.text
+            assert 'You have successfully submitted your manuscript. We will start the peer ' \
+                   'review process.' in subhead.text, subhead.text
         if type_ in ('full_submit', 'initial_submit', 'initial_submit_full'):
-          title = self._get(self._so_paper_title)
-          assert paper_title in title.text, '{0} vs {1}'.format(paper_title, title.text)
-          self._get(self._so_submit_confirm)
+            title = self._get(self._so_paper_title)
+            assert paper_title in title.text, '{0} vs {1}'.format(paper_title, title.text)
+            self._get(self._so_submit_confirm)
 
     def validate_submit_success(self):
         """
@@ -1023,12 +1028,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
         select_items = (By.CSS_SELECTOR, 'ul.select2-results')
         items = self._get(select_items)
         for item in items.find_elements_by_tag_name('li'):
-          if item.text == user['name']:
-            item.click()
-            time.sleep(.5)
-            break
+            if item.text == user['name']:
+                item.click()
+                time.sleep(.5)
+                break
         else:
-          raise Exception("User {0} not found".format(user['name']))
+            raise Exception("User {0} not found".format(user['name']))
         time.sleep(1)
         self._get(self._add_collaborators_modal_save).click()
 
@@ -1070,28 +1075,28 @@ class ManuscriptViewerPage(AuthenticatedPage):
         # Convert the string to a bar_item elements index
         bar_items_index = None
         if version_selector == 'viewing':
-          bar_items_index = 0
+            bar_items_index = 0
         elif version_selector == 'compare':
-          bar_items_index = 1
+            bar_items_index = 1
 
         # Open the versioning box
         version_btn = self._get(self._tb_versions_link)
         version_btn.click()
         # Waits for versioning box be visible
         self._wait_for_element(
-          self._gets(self._bar_items)[1])
+                self._gets(self._bar_items)[1])
 
         # Get the bar items
         bar_items = self._gets(self._bar_items)
         # click on
         version_select = bar_items[bar_items_index].find_element_by_class_name(
-          'ember-power-select-trigger')
+                'ember-power-select-trigger')
         version_select.click()
         version_select_id = version_select.get_attribute('id')
         items_holder_selector = (By.ID, version_select_id.replace('trigger', 'content'))
         items_holder = self._get(items_holder_selector)
         items_holder.find_elements_by_class_name('ember-power-select-option')[
-          item_index].click()
+            item_index].click()
 
     def get_manuscript_versions(self):
         """
@@ -1100,22 +1105,23 @@ class ManuscriptViewerPage(AuthenticatedPage):
         """
         short_doi = self.get_short_doi()
         versions = []
-        results = PgSQL().query("select id,major_version,minor_version,created_at,paper_id,file_type from "
-                                "versioned_texts where paper_id = (SELECT ID from papers "
-                                "where short_doi = '{0}') order by id DESC;".format(short_doi))
+        results = PgSQL().query(
+            "select id,major_version,minor_version,created_at,paper_id,file_type from "
+            "versioned_texts where paper_id = (SELECT ID from papers "
+            "where short_doi = '{0}') order by id DESC;".format(short_doi))
         for version in results:
-          if version[1] is None:
-            version_number = 'draft'
-          else:
-            version_number = '{0}.{1}'.format(version[1], version[2])
+            if version[1] is None:
+                version_number = 'draft'
+            else:
+                version_number = '{0}.{1}'.format(version[1], version[2])
 
-          versions.append({
-            'id': version[0],
-            'version': version_number,
-            'date': version[3],
-            'paper_id': version[4],
-            'format': version[5]
-          })
+            versions.append({
+                'id': version[0],
+                'version': version_number,
+                'date': version[3],
+                'paper_id': version[4],
+                'format': version[5]
+            })
 
         return versions
 
@@ -1142,57 +1148,59 @@ class ManuscriptViewerPage(AuthenticatedPage):
         table_headers = self._gets(self._download_drawer_table_header)
         expected_table_headers = ['Manuscript Version', '* Format']
         for key, table_header in enumerate(table_headers):
-          assert table_header.text == expected_table_headers[key], \
-              'The download table header {0}: {1} is not the expected:' \
-              ' {2}'.format(key, table_header.text, expected_table_headers[key])
+            assert table_header.text == expected_table_headers[key], \
+                'The download table header {0}: {1} is not the expected:' \
+                ' {2}'.format(key, table_header.text, expected_table_headers[key])
 
-          # self.validate_table_heading_style(table_header)
+            # self.validate_table_heading_style(table_header)
 
         # Validate table items
         table_items = self._gets(self._download_drawer_items)
         for key, table_item in enumerate(table_items):
-          version_data = ms_versions[key]
-          expected_version_name = version_data['version']
-          # adding submission date: APERTA-9335
-          expected_version_date_local = self.utc_to_local_tz(version_data['date'])
-          expected_version_date = expected_version_date_local.strftime("%b %d, %Y")
+            version_data = ms_versions[key]
+            expected_version_name = version_data['version']
+            # adding submission date: APERTA-9335
+            expected_version_date_local = self.utc_to_local_tz(version_data['date'])
+            expected_version_date = expected_version_date_local.strftime("%b %d, %Y")
 
-          # Fix for adding the 'V' before the version number
-          if expected_version_name != 'draft':
-            expected_version_name = 'V{0} - {1}'.format(expected_version_name, expected_version_date)
+            # Fix for adding the 'V' before the version number
+            if expected_version_name != 'draft':
+                expected_version_name = 'V{0} - {1}'.format(expected_version_name,
+                                                            expected_version_date)
 
-          # Validate version name styles
-          version_name = table_item.find_element_by_class_name('paper-downloads-version')
-          assert version_name.text.lower() == expected_version_name.lower(), \
-              'Download table item {0} version name {1} is not the expected {2}'\
-              .format(key, version_name.text, expected_version_name)
-          self.validate_application_body_text(version_name)
+            # Validate version name styles
+            version_name = table_item.find_element_by_class_name('paper-downloads-version')
+            assert version_name.text.lower() == expected_version_name.lower(), \
+                'Download table item {0} version name {1} is not the expected {2}' \
+                .format(key, version_name.text, expected_version_name)
+            self.validate_application_body_text(version_name)
 
-          download_links = table_item.find_elements_by_class_name(
-            'paper-downloads-link')
+            download_links = table_item.find_elements_by_class_name(
+                    'paper-downloads-link')
 
-          expected_link_title = {'download-source': 'Word', 'download-docx': 'Word', 'download-pdf': 'PDF'}
+            expected_link_title = {'download-source': 'Word', 'download-docx': 'Word',
+                                   'download-pdf': 'PDF'}
 
-          # Validate table item links
-          for download_link in download_links:
-            link = download_link.find_element_by_tag_name('a')
-            download_link_classes = download_link.get_attribute('class').split(' ')
-            if 'paper-downloads-link--pdf' in download_link_classes:
-              assert 'text-align-right' in download_link_classes, \
-                  'The PDF link is not right aligned as expected'
+            # Validate table item links
+            for download_link in download_links:
+                link = download_link.find_element_by_tag_name('a')
+                download_link_classes = download_link.get_attribute('class').split(' ')
+                if 'paper-downloads-link--pdf' in download_link_classes:
+                    assert 'text-align-right' in download_link_classes, \
+                        'The PDF link is not right aligned as expected'
 
-            link_class = link.get_attribute('class')
-            assert link.text == expected_link_title[link_class],\
-                'The download link {0} of the item {1} title {2} is not the ' \
-                'expected {3}'.format(link_class, key, link.text,
-                                      expected_link_title[link_class])
+                link_class = link.get_attribute('class')
+                assert link.text == expected_link_title[link_class], \
+                    'The download link {0} of the item {1} title {2} is not the ' \
+                    'expected {3}'.format(link_class, key, link.text,
+                                          expected_link_title[link_class])
 
-            self.validate_default_link_style(link)
+                self.validate_default_link_style(link)
 
         self._get(self._download_drawer_close_btn).click()
 
     def validate_manuscript_downloaded_file(self, download_link_el,
-                                              format='pdf'):
+                                            format='pdf'):
         """
         validate_manuscript_downloaded_file: Validates if the manuscript
         download was successful
@@ -1204,13 +1212,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
         download_link_el.click()
         # Longer sleep for PDF generation
         if format == 'pdf':
-          time.sleep(15)
+            time.sleep(15)
         else:
-          time.sleep(5)
+            time.sleep(5)
 
         # Note that there is no validation of the doc or docx - we are not manipulating them at all
-        #   Just returning the last stored version - so not doing anything beyond validating download
-        #   completion.
+        #   Just returning the last stored version - so not doing anything beyond validating
+        #   download completion.
         os.chdir('/tmp')
         files = filter(os.path.isfile, os.listdir('/tmp'))
         files = [os.path.join('/tmp', f) for f in files]  # add path to each file
@@ -1218,29 +1226,29 @@ class ManuscriptViewerPage(AuthenticatedPage):
         newest_file = files[-1]
         logging.debug(newest_file)
         while newest_file.split('.')[-1] == 'part':
-          time.sleep(.5)
-          files = filter(os.path.isfile, os.listdir('/tmp'))
-          files = [os.path.join('/tmp', f) for f in files]  # add path to each file
-          files.sort(key=lambda x: os.path.getmtime(x))
-          newest_file = files[-1]
-          logging.debug(newest_file.split('.')[-1])
+            time.sleep(.5)
+            files = filter(os.path.isfile, os.listdir('/tmp'))
+            files = [os.path.join('/tmp', f) for f in files]  # add path to each file
+            files.sort(key=lambda x: os.path.getmtime(x))
+            newest_file = files[-1]
+            logging.debug(newest_file.split('.')[-1])
         logging.debug(newest_file)
 
         pdf_valid = False
         try:
-          if format == 'pdf':
-            logging.info('PDF to validate: {0}'.format(newest_file))
-            pdf_valid = PdfUtil.validate_pdf(newest_file)
-          else:
-            pdf_valid = True
+            if format == 'pdf':
+                logging.info('PDF to validate: {0}'.format(newest_file))
+                pdf_valid = PdfUtil.validate_pdf(newest_file)
+            else:
+                pdf_valid = True
         finally:
-          os.remove(newest_file)
-          os.chdir(original_dir)
+            os.remove(newest_file)
+            os.chdir(original_dir)
 
         # Raising error just after move to the original working dir
         if not pdf_valid:
-          logging.error('PDF file: {0} is invalid'.format(newest_file))
-          raise ('Invalid PDF generated for {0}'.format(newest_file))
+            logging.error('PDF file: {0} is invalid'.format(newest_file))
+            raise ('Invalid PDF generated for {0}'.format(newest_file))
 
     def validate_version_download_link(self, version_data, link, link_format):
         """
@@ -1251,15 +1259,16 @@ class ManuscriptViewerPage(AuthenticatedPage):
         :return: void function
         """
         expected_paper_id = 'paper_downloads/{0}'.format(version_data['paper_id'])
-        assert expected_paper_id in link, 'The paper id {0} is not on the link {1}'.format(expected_paper_id, link)
+        assert expected_paper_id in link, 'The paper id {0} is not on the link {1}'.format(
+            expected_paper_id, link)
 
         expected_export_format = 'export_format={0}'.format(link_format)
-        assert expected_export_format in link, 'The export format {0} is not on the link {1}'.format(
-          expected_export_format, link)
+        assert expected_export_format in link, 'The export format {0} is not on the link {1}'\
+            .format(expected_export_format, link)
 
         expected_version_id = 'versioned_text_id={0}'.format(version_data['id'])
         assert expected_version_id in link, 'The version id {0} is not on the link {1}'.format(
-          expected_version_id, link)
+                expected_version_id, link)
 
     def validate_download_btn_actions(self):
         """
@@ -1276,28 +1285,28 @@ class ManuscriptViewerPage(AuthenticatedPage):
         # Validate table items links action
         table_items = self._gets(self._download_drawer_items)
         for key, table_item in enumerate(table_items):
-          version_data = ms_versions[key]
-          item_version_name = version_data['version']
+            version_data = ms_versions[key]
+            item_version_name = version_data['version']
 
-          word_formats = ['doc', 'docx']
-          pdf_link = table_item.find_element_by_class_name('download-pdf')
+            word_formats = ['doc', 'docx']
+            pdf_link = table_item.find_element_by_class_name('download-pdf')
 
-          if version_data['format'] in word_formats:
-            word_link = table_item.find_element_by_class_name('download-docx')
-            logging.info('Validating word format file for version {0}'.format(
-              item_version_name))
+            if version_data['format'] in word_formats:
+                word_link = table_item.find_element_by_class_name('download-docx')
+                logging.info('Validating word format file for version {0}'.format(
+                        item_version_name))
+                self.validate_version_download_link(version_data,
+                                                    word_link.get_attribute('href'),
+                                                    'doc')
+                self.validate_manuscript_downloaded_file(word_link, format='word')
+
+            logging.info('Validating pdf format file for version {0}'.format(
+                    item_version_name))
+
             self.validate_version_download_link(version_data,
-                                                word_link.get_attribute('href'),
-                                                'doc')
-            self.validate_manuscript_downloaded_file(word_link, format='word')
-
-          logging.info('Validating pdf format file for version {0}'.format(
-            item_version_name))
-
-          self.validate_version_download_link(version_data,
-                                              pdf_link.get_attribute('href'),
-                                              'pdf')
-          self.validate_manuscript_downloaded_file(pdf_link)
+                                                pdf_link.get_attribute('href'),
+                                                'pdf')
+            self.validate_manuscript_downloaded_file(pdf_link)
 
         self._get(self._download_drawer_close_btn).click()
 
@@ -1316,10 +1325,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
         assert handle_line.is_displayed(), 'The handle line is not displayed'
         # Certify the handle line is over the other elements
         assert handle_line.value_of_css_property('z-index') == '2', \
-            'The handle line z-index {0} is not the expected 2'.format(handle_line.value_of_css_property('z-index'))
+            'The handle line z-index {0} is not the expected 2'.format(
+                handle_line.value_of_css_property('z-index'))
 
         assert handle_line.value_of_css_property('cursor') == 'ew-resize', \
-            'The handle line cursor {0} is not the expected ew-resize'.format(handle_line.value_of_css_property('cursor'))
+            'The handle line cursor {0} is not the expected ew-resize'.format(
+                handle_line.value_of_css_property('cursor'))
 
         # Validate handle box
         handle_box_expected_width = '23px'
@@ -1332,25 +1343,20 @@ class ManuscriptViewerPage(AuthenticatedPage):
         assert handle_box.is_displayed(), 'The handle box is not displayed'
 
         assert handle_box.value_of_css_property('width') == \
-               handle_box_expected_width, 'The handle box width {0} is not the ' \
-                                          'expected {1}'.format(
-          handle_box.value_of_css_property('width'), handle_box_expected_width)
+            handle_box_expected_width, 'The handle box width {0} is not the expected {1}'.format(
+                handle_box.value_of_css_property('width'), handle_box_expected_width)
 
         assert handle_box.value_of_css_property('height') == \
-               handle_box_expected_height, 'The handle box height {0} is not the ' \
-                                          'expected {1}'.format(
-          handle_box.value_of_css_property('height'), handle_box_expected_height)
+            handle_box_expected_height, 'The handle box height {0} is not the expected {1}'\
+            .format(handle_box.value_of_css_property('height'), handle_box_expected_height)
 
         assert handle_box.value_of_css_property('background-color') in \
-               handle_box_expected_bg, 'The handle box bg color {0} is not the ' \
-                                           'expected {1}'.format(
-          handle_box.value_of_css_property('background-color'),
-          handle_box_expected_bg)
+            handle_box_expected_bg, 'The handle box bg color {0} is not the expected {1}'\
+            .format(handle_box.value_of_css_property('background-color'), handle_box_expected_bg)
 
         assert handle_box.value_of_css_property('left') == \
-               handle_box_expected_left, 'The handle box left {0} is not the ' \
-                                        'expected {1}'.format(
-          handle_box.value_of_css_property('left'), handle_box_expected_left)
+            handle_box_expected_left, 'The handle box left {0} is not the expected {1}'\
+            .format(handle_box.value_of_css_property('left'), handle_box_expected_left)
 
         # Validate handle box lines
         assert len(handle_box_lines) == 3, 'The handle box have {0} lines when 3 ' \
@@ -1360,18 +1366,18 @@ class ManuscriptViewerPage(AuthenticatedPage):
         line_expected_height = '26px'
 
         for key, line in enumerate(handle_box_lines):
-          assert line.value_of_css_property('top') == line_expected_top, \
-              'The handle box line {0} top {1} is not the expected: {2}'.format(
-              line.value_of_css_property('top'), line_expected_top)
+            assert line.value_of_css_property('top') == line_expected_top, \
+                'The handle box line {0} top {1} is not the expected: {2}'.format(
+                        key, line.value_of_css_property('top'), line_expected_top)
 
-          assert line.value_of_css_property('padding-left') == line_expected_padding_left, \
-              'The handle box line {0} padding-left {1} is not the expected: {2}'.format(
-              key, line.value_of_css_property('padding-left'),
-              line_expected_padding_left)
+            assert line.value_of_css_property('padding-left') == line_expected_padding_left, \
+                'The handle box line {0} padding-left {1} is not the expected: {2}'.format(
+                        key, line.value_of_css_property('padding-left'),
+                        line_expected_padding_left)
 
-          assert line.value_of_css_property('height') == line_expected_height, \
-            'The handle box line {0} height {1} is not the expected: {2}'.format(
-              key, line.value_of_css_property('height'), line_expected_height)
+            assert line.value_of_css_property('height') == line_expected_height, \
+                'The handle box line {0} height {1} is not the expected: {2}'.format(
+                        key, line.value_of_css_property('height'), line_expected_height)
 
         # Validate tooltip
         self._actions.move_to_element(handle_box).perform()
@@ -1381,26 +1387,28 @@ class ManuscriptViewerPage(AuthenticatedPage):
         assert tooltip.is_displayed(), 'The handle box tooltip is not visible.'
         assert tooltip.text == tooltip_expected_text, \
             'The handle box tooltip text {0} is not the expected {1}'.format(
-              tooltip.text, tooltip_expected_text)
+                    tooltip.text, tooltip_expected_text)
 
     def check_failed_conversion_text(self, status=''):
         """
         A method to check if the correct failed conversion method is presented in the preview pane
         :param status: string, valid values are 'unsubmitted' or 'submitted' (case insensitive)
-        :return True if conversion message asserts, False if no, or incorrect, status passed to function
+        :return True if conversion message asserts, False if no, or incorrect, status passed to
+          function
         """
         failed_conversion_heading = self._get(self._failed_conversion_heading)
         if not status or status.lower() not in ('unsubmitted', 'submitted'):
-            logging.warning('You must pass a paper state of "unsubmitted" or "submitted" when calling '
-                          'check_failed_conversion_text')
+            logging.warning(
+                'You must pass a paper state of "unsubmitted" or "submitted" when calling '
+                'check_failed_conversion_text')
             return False
         elif status.lower() == 'unsubmitted':
             # validate unsubmitted failed conversion message - see APERTA-8858
-            assert failed_conversion_heading.text == 'Your file was uploaded successfully, but we were ' \
-                                                     'unable to render a preview at this time.', \
-                                                     failed_conversion_heading.text
-        else: #  status.lower() == 'submitted'
+            assert failed_conversion_heading.text == \
+                'Your file was uploaded successfully, but we were unable to render a preview at ' \
+                'this time.', failed_conversion_heading.text
+        else:  # status.lower() == 'submitted'
             # validate submitted failed conversion message - see APERTA-8858
-            assert failed_conversion_heading.text == 'Preview for this manuscript is unavailable.', \
-                failed_conversion_heading.text
+            assert failed_conversion_heading.text == \
+                'Preview for this manuscript is unavailable.', failed_conversion_heading.text
         return True

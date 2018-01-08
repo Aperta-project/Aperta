@@ -491,7 +491,7 @@ class AuthorsTask(BaseTask):
 
         add_author_add_btn.click()
         # Check if data is there
-        self._wait_for_not_element(self._add_author_add_btn, 1)
+        self._wait_for_not_element(self._add_author_add_btn, 0.5)
         authors = self._gets(self._author_items)
         all_auth_data = [x.text for x in authors]
         assert [x for x in all_auth_data if author['first'] in x], u'{0} not in {1}'.format(
@@ -518,8 +518,11 @@ class AuthorsTask(BaseTask):
 
         # fill the data
         group_name_input.send_keys(group_author['group_name'] + Keys.ENTER)
+        self._wait_for_text_to_be_present_in_element_value(
+                self._group_name_input, group_author['group_name'])
         group_inits_input.send_keys(group_author['group_inits'] + Keys.ENTER)
         first_input.send_keys(group_author['first'] + Keys.ENTER)
+
         middle_input.send_keys(group_author['middle'] + Keys.ENTER)
         last_input.send_keys(group_author['last'] + Keys.ENTER)
         email_input.send_keys(group_author['email'] + Keys.ENTER)
@@ -650,7 +653,8 @@ class AuthorsTask(BaseTask):
         self._scroll_into_view(manuscript_id_text)
         self.pause_to_save()
         self.click_completion_button()
-        self.pause_to_save()
+        self._wait_on_lambda(lambda: bool(self.is_task_marked_complete(task_name='Authors')),
+                             max_wait=3)
         completed = self.completed_state()
         logging.info('Completed State of the Author task is: {0}'.format(completed))
         if not completed:

@@ -35,22 +35,23 @@ class TemplateContext < Liquid::Drop
   #             e.g. [:object, :paper] means the source object is at self.object.paper
   # is_array: if true then the method returns an array instead of a single context
   #
-  def self.subcontext(subcontext_name, props = {})
-    MergeField.register_subcontext(self, subcontext_name, props)
+  def self.subcontext(subcontext_name, **args)
+    MergeField.register_subcontext(self, subcontext_name, **args)
     return if respond_to?(subcontext_name)
 
-    subcontext_type, subcontext_source, is_array = props.values_at(:type, :source, :is_array)
-    subcontext_class = class_for(subcontext_type || subcontext_name)
-    subcontext_source ||= [:object, subcontext_name]
-    subcontext_source = Array(subcontext_source)
+    options = {
+      subcontext_class: class_for(args[:type] || subcontext_name),
+      subcontext_source: Array(args[:source] || [:object, subcontext_name]),
+      is_array: args[:is_array]
+    }
 
     define_method subcontext_name do
-      define_subcontext(subcontext_name, subcontext_class, subcontext_source, is_array)
+      define_subcontext(subcontext_name, **options)
     end
   end
 
-  def self.subcontexts(subcontext_name, props = {})
-    subcontext(subcontext_name, props.merge(is_array: true))
+  def self.subcontexts(subcontext_name, **args)
+    subcontext(subcontext_name, **args.merge(is_array: true))
   end
 
   def self.whitelist(*args)
@@ -86,7 +87,7 @@ class TemplateContext < Liquid::Drop
 
   attr_reader :object
 
-  def define_subcontext(subcontext_name, subcontext_class, subcontext_source, is_array)
+  def define_subcontext(subcontext_name, subcontext_class:, subcontext_source:, is_array:)
     cache = instance_variable_get("@#{subcontext_name}")
     return cache if cache
 

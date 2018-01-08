@@ -82,14 +82,15 @@ class ApertaCNSTest(CommonTest):
         title = manuscript_page.get_paper_title_from_page()
         logging.info(u'Paper page title is: {0}'.format(title))
 
-    def test_core_validate_review_submission_overlay(self):
+    def test_core_validate_pp_submission_with_review_overlay(self):
         """
         test_cns:
         1. Validates Creating a new document with the preprint overlay in the create sequence.
           Modals: View Invites and Create New Submission and Preprint Posting
         2. Validate review submission overlay with preprint opt-in/opt-out
         """
-        logging.info('CNSTest::validate_core_review_submission_overlay')
+        logging.info('CNSTest::validate create submission with preprint overlay and '
+                     'review submission overlay')
         preprint_feature_flag, current_env = self.is_preprint_on()
         if not preprint_feature_flag:
             logging.warning('Preprint feature flag is Off in {0}, nothing to test.'

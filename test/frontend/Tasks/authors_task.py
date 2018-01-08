@@ -657,7 +657,7 @@ class AuthorsTask(BaseTask):
         self.pause_to_save()
         self.click_completion_button()
         time.sleep(3)
- 
+
         completed = self.completed_state()
         logging.info('Completed State of the Author task is: {0}'.format(completed))
         if not completed:

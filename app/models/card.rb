@@ -259,7 +259,7 @@ class Card < ActiveRecord::Base
   private
 
   def clean_permissions
-    card_permissions.delete_all
+    Permission.where(filter_by_card_id: id).delete_all
   end
 
   def check_destroyable

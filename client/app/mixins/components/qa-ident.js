@@ -5,6 +5,10 @@ export default Ember.Mixin.create({
 
   QAIdent: Ember.computed('content.ident', function() {
     const ident = this.get('content.ident');
-    return ident ? `qa--${ident}` : undefined;
+    if (ident) {
+      return `qa-ident-${ident}`.replace(/[^a-z_-]/g, '_');
+    } else {
+      return undefined;
+    }
   })
 });

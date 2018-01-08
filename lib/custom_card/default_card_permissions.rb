@@ -1,7 +1,6 @@
-# rubocop:disable Metrics/ModuleLength, Metrics/MethodLength, Style/TrailingCommaInLiteral
+# rubocop:disable Metrics/MethodLength, Style/TrailingCommaInLiteral, Layout/SpaceInsideBrackets
 module CustomCard
   class DefaultCardPermissions
-
     def initialize
       @permissions = default_card_permissions
     end

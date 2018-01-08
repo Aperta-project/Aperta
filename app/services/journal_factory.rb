@@ -36,8 +36,8 @@ class JournalFactory
     @journal.save!
     self.class.setup_default_mmt(@journal)
     ensure_default_roles_and_permissions_exist
-    assign_default_system_custom_cards
     assign_hints
+    assign_default_system_custom_cards
     seed_letter_templates
     @journal
   end
@@ -55,7 +55,7 @@ class JournalFactory
   end
 
   def assign_default_system_custom_cards
-    CustomCard::FileLoader.new(@journal).load
+    CustomCard::FileLoader.load(@journal)
   end
 
   # All standard tasks that users who see the workflow should see

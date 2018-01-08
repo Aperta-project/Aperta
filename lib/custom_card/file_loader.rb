@@ -1,7 +1,7 @@
 module CustomCard
   class FileLoader
     def self.load(journal)
-      new.load(journal)
+      new(journal).load
     end
 
     def initialize(journal)

@@ -119,6 +119,10 @@ class WorkflowPage(AuthenticatedPage):
     """Open the Preprint Posting Card from the workflow page"""
     self._get(self._preprint_posting_card).click()
 
+  def click_competing_interest_card(self):
+    """Open Competing Interest Card from the workflow page"""
+    self._get(self._competing_ints_card).click()
+
   def click_supporting_information_card(self):
     """Open the Supporting Information Card from the workflow page"""
     self._get(self._supporting_info_card).click()

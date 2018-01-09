@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import moment from 'moment';
+import { moment } from 'tahi/lib/aperta-moment';
 
 export default Ember.Component.extend({
   isRecordLost: Ember.computed('submittedAt', function() {

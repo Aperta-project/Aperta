@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import formatDate from 'tahi/lib/format-date';
+import formatDate from 'tahi/lib/aperta-moment';
 
 export default Ember.Component.extend({
   attributeBindings: ['data-test-id'],
@@ -29,7 +29,7 @@ export default Ember.Component.extend({
 
   reviewDueMessage: Ember.computed('model.roles', 'model.reviewDueAt', function() {
     if (this.get('model.roles').includes('Reviewer') && !Ember.isEmpty(this.get('model.reviewDueAt'))) {
-      return 'Your review is due ' + formatDate(this.get('model.reviewDueAt'), { format: 'MMMM DD' });
+      return 'Your review is due ' + formatDate(this.get('model.reviewDueAt'), 'long-month-day-2');
     } else {
       return '';
     }
@@ -37,7 +37,7 @@ export default Ember.Component.extend({
 
   originallyDueMessage: Ember.computed('model.roles','model.reviewDueAt', function() {
     if (this.get('model.roles').includes('Reviewer') && !Ember.isEmpty(this.get('model.reviewOriginallyDueAt'))) {
-      return 'Originally due ' + formatDate(this.get('model.reviewOriginallyDueAt'), { format: 'MMMM DD' });
+      return 'Originally due ' + formatDate(this.get('model.reviewOriginallyDueAt'), 'long-month-day-2');
     } else {
       return '';
     }

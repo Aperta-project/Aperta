@@ -55,7 +55,12 @@ ActiveRecord::Migration.maintain_test_schema! if
 truncate_opts = {
   except: %w[task_types cards card_contents card_task_types card_versions entity_attributes]
 }
-DatabaseCleaner.clean_with(:truncation, (ENV['SKIP_CARD_LOAD'] ? truncate_opts : {}))
+DatabaseCleaner.clean_with(:truncation, (ENV['CARD_LOAD'] ? {} : truncate_opts))
+
+# directories with compiled ember should have this file and the server should be running
+ember_path = EmberCLI.app(:client).paths.dist
+ember_built = ember_path.join('index.html').file? && Rails.root.join('tmp', 'pids', 'server.pid').file?
+ENV["SKIP_EMBER"] ||= 'true' unless ENV["BUILD_EMBER"] || !ember_built
 
 # Necessary to run a rake task from here
 Rake::Task.clear
@@ -107,12 +112,13 @@ RSpec.configure do |config|
     # rubocop:disable Style/GlobalVars
     next if $capybara_setup_done
     # Some info on env vars
-    puts "Here are some flags to speed up your tests!"
-    puts "'SKIP_EMBER=true' skip rebuilding ember and will use the previous build"
-    puts "'SKIP_CARD_LOAD=true' skips running 'rake cards:load' and uses exisiting cards in test db"
+    puts "Here are some relevant env vars"
+    puts "Using ember build from #{ember_path}, should be the same as your dev build location"
+    puts "'BUILD_EMBER=true' forces ember to (re)build"
+    puts "'CARD_LOAD=true' runs 'rake cards:load' and removes exisiting cards in test db"
     puts "'HEADLESS=true' runs test headlessly"
-
     Thread.new { EmberCLI.compile! } unless ENV["SKIP_EMBER"]
+
     Capybara.server_port = ENV['CAPYBARA_SERVER_PORT']
 
     # This allows the developer to specify a path to an older, insecure firefox
@@ -154,7 +160,7 @@ RSpec.configure do |config|
     # Load question seeds before any tests start since we don't want them
     # to be rolled back as part of a transaction
     Rake::Task['cards:load'].reenable
-    Thread.new { Rake::Task['cards:load'].invoke } unless ENV["SKIP_CARD_LOAD"]
+    Thread.new { Rake::Task['cards:load'].invoke } if Card.count.zero? || ENV["CARD_LOAD"]
 
     Thread.list.each { |t| t.join unless t == Thread.current }
     $capybara_setup_done = true

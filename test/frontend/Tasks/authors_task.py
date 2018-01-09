@@ -4,6 +4,7 @@ import logging
 import time
 import random
 
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
@@ -654,28 +655,32 @@ class AuthorsTask(BaseTask):
         # Scroll to top be sure complete button is accessible
         manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
         self._scroll_into_view(manuscript_id_text)
+        self._wait_for_element(self._get(self._completion_button))
         self.pause_to_save()
         self.click_completion_button()
-        time.sleep(3)
 
-        completed = self.completed_state()
-        logging.info('Completed State of the Author task is: {0}'.format(completed))
-        if not completed:
-            self.check_govt_employee_radio_btn(individual_author=True, govt_choice=govt_choice)
-            self.click_completion_button()
-            time.sleep(3)
-            # Following workaround is due to APERTA-9019
+        try:
+            self._wait_for_text_be_present_in_element(self._completion_button,
+                                                      'Make changes to this task')
+        except TimeoutException:
             completed = self.completed_state()
-            logging.info('Author task is: {0}. Running workaround'.format(completed))
+            logging.info('Completed State of the Author task is: {0}'.format(completed))
             if not completed:
+                self.check_govt_employee_radio_btn(individual_author=True, govt_choice=govt_choice)
                 self.click_completion_button()
-                time.sleep(2)
-            # Need to validate that we aren't failing on validation within this loop else
-            #     endlessness
-            try:
-                self.validate_completion_error()
-            except ElementDoesNotExistAssertionError:
-                logging.info('No validation errors completing Author Task')
+                time.sleep(3)
+                # Following workaround is due to APERTA-9019
+                completed = self.completed_state()
+                logging.info('Author task is: {0}. Running workaround'.format(completed))
+                if not completed:
+                    self.click_completion_button()
+                    time.sleep(2)
+                # Need to validate that we aren't failing on validation within this loop else
+                #     endlessness
+                try:
+                    self.validate_completion_error()
+                except ElementDoesNotExistAssertionError:
+                    logging.info('No validation errors completing Author Task')
 
     def _orcid_connect_exist(self):
         """

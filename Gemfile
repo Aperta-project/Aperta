@@ -93,6 +93,7 @@ end
 
 group :development, :test do
   gem 'awesome_print'
+  gem 'bootsnap'
   gem 'dotenv-rails', require: 'dotenv/rails-now'
   gem 'progressbar'
   gem 'pry-byebug'

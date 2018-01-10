@@ -4,6 +4,7 @@ import logging
 import time
 import random
 
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
@@ -39,12 +40,9 @@ class AuthorsTask(BaseTask):
 
         # Final Acknowledgements - Global
         self._authors_acknowledgement = (By.CLASS_NAME, 'authors-task-acknowledgements')
-        self._authors_ack_agree2name = (By.CSS_SELECTOR,
-                                        'p.authors-task-acknowledgements + div > label > input')
-        self._authors_ack_auth_crit = (By.CSS_SELECTOR,
-                                       'p.authors-task-acknowledgements + div + div> label > input')
-        self._authors_ack_agree2submit = (
-            By.CSS_SELECTOR, 'p.authors-task-acknowledgements + div + div + div > label > input')
+        self._authors_ack_agree2name = (By.NAME, 'authors--persons_agreed_to_be_named')
+        self._authors_ack_auth_crit = (By.NAME, 'authors--authors_confirm_icmje_criteria')
+        self._authors_ack_agree2submit = (By.NAME, 'authors--authors_agree_to_submission')
 
         # Individual Author Form
         self._individual_author_form = (By.CLASS_NAME, 'individual-author-form')
@@ -84,8 +82,6 @@ class AuthorsTask(BaseTask):
                                 "input[name='author--contributions--conceptualization']")
         self._author_contrib_lbl = (By.CSS_SELECTOR,
                                     'fieldset.author-contributions legend.required')
-        self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'a.author-cancel')
-        self._add_author_add_btn = (By.CSS_SELECTOR, 'div.author-form-buttons button')
         self._author_items = (By.CSS_SELECTOR, 'div.author-task-item-view')
         self._delete_author_div = (By.CSS_SELECTOR, 'div.authors-overlay-item-delete')
         self._edit_author = (By.CSS_SELECTOR, 'div.author-name')
@@ -94,11 +90,8 @@ class AuthorsTask(BaseTask):
         self._govt_employee_div = (By.CSS_SELECTOR, 'div.author-government')
         self._govt_employee_question = (By.CSS_SELECTOR, 'div.question-text')
         self._govt_employee_help = (By.CSS_SELECTOR, 'ul.question-help')
-        self._govt_employee_radio_yes = (
-            By.CSS_SELECTOR, 'div.author-government > div div + ul +div > div > label > input')
-        self._govt_employee_radio_no = (
-            By.CSS_SELECTOR, 'div.author-government > div div + ul +div > div > '
-                             'label + label > input')
+        self._govt_employee_radio_yes = (By.CSS_SELECTOR, 'input.author--government-employee-yes')
+        self._govt_employee_radio_no = (By.CSS_SELECTOR, 'input.author--government-employee-no')
 
         # Group Author Form
         self._group_author_form = (By.CLASS_NAME, 'group-author-form')
@@ -140,10 +133,9 @@ class AuthorsTask(BaseTask):
         self._ggovt_employee_question = (By.CSS_SELECTOR, 'div.question-text')
         self._ggovt_employee_help = (By.CSS_SELECTOR, 'ul.question-help')
         self._ggovt_employee_radio_yes = (
-            By.CSS_SELECTOR, 'div.author-government > div div + ul +div > div > label > input')
-        self._ggovt_employee_radio_no = (
-            By.CSS_SELECTOR, 'div.author-government > div div + ul +div > div > '
-                             'label + label > input')
+            By.CSS_SELECTOR, 'input.group-author--government-employee-yes')
+        self._ggovt_employee_radio_no = (By.CSS_SELECTOR,
+                                         'input.group-author--government-employee-no')
         self._handles = (By.CLASS_NAME, 'author-task-item-view-drag-handle')
 
         # Form Action Buttons
@@ -452,8 +444,6 @@ class AuthorsTask(BaseTask):
         institution_div, sec_institution_div = self._gets(self._institution_div)
         institution_input = institution_div.find_element_by_tag_name('input')
         sec_institution_input = sec_institution_div.find_element_by_tag_name('input')
-        govt_yes = self._get(self._govt_employee_radio_yes)
-        govt_no = self._get(self._govt_employee_radio_no)
 
         # fill the data
         first_input.send_keys(author['first'] + Keys.ENTER)
@@ -462,6 +452,7 @@ class AuthorsTask(BaseTask):
         initials_input.send_keys(author['initials'] + Keys.ENTER)
         email_input.send_keys(author['email'] + Keys.ENTER)
         title_input.send_keys(author['title'] + Keys.ENTER)
+        self._wait_for_text_to_be_present_in_element_value(self._title_input, author['title'])
 
         self.scroll_element_into_view_below_toolbar(department_input)
         department_input.send_keys(author['department'] + Keys.ENTER)
@@ -493,24 +484,15 @@ class AuthorsTask(BaseTask):
         self.select_institution(affiliations[1], author['2_institution'])
 
         # check one of the boxes in Author Contributions, as this is required
-        self._wait_for_element(self._get(self._designed_chkbx))
-        author_contribution_chck = self._get(self._designed_chkbx)
-        author_contribution_chck.click()
-        if not author_contribution_chck.is_selected():
-            self.click_covered_element(author_contribution_chck)
+        self.check_contribution(individual_author=True)
         govt_choice = random.choice(['Yes', 'No'])
         logging.info('Selecting Gov\'t Choice {0}'.format(govt_choice))
-        govt_div = self._get(self._govt_employee_div)
-        self._scroll_into_view(govt_div)
-        if govt_choice == 'Yes':
-            govt_yes.click()
-        else:
-            govt_no.click()
-        time.sleep(1)
+        self.check_govt_employee_radio_btn(individual_author=True, govt_choice=govt_choice)
         add_author_add_btn = self._get(self._add_author_add_btn)
+
         add_author_add_btn.click()
         # Check if data is there
-        time.sleep(3)
+        self._wait_for_not_element(self._add_author_add_btn, 0.5)
         authors = self._gets(self._author_items)
         all_auth_data = [x.text for x in authors]
         assert [x for x in all_auth_data if author['first'] in x], u'{0} not in {1}'.format(
@@ -534,38 +516,30 @@ class AuthorsTask(BaseTask):
         middle_input = self._get(self._gmiddle_input)
         last_input = self._get(self._glast_input)
         email_input = self._get(self._gemail_input)
-        govt_yes = self._get(self._ggovt_employee_radio_yes)
-        govt_no = self._get(self._ggovt_employee_radio_no)
+
+        self._scroll_into_view(self._get(self._group_author_edit_label))
 
         # fill the data
         group_name_input.send_keys(group_author['group_name'] + Keys.ENTER)
+        self._wait_for_text_to_be_present_in_element_value(
+                self._group_name_input, group_author['group_name'])
         group_inits_input.send_keys(group_author['group_inits'] + Keys.ENTER)
         first_input.send_keys(group_author['first'] + Keys.ENTER)
+
         middle_input.send_keys(group_author['middle'] + Keys.ENTER)
         last_input.send_keys(group_author['last'] + Keys.ENTER)
         email_input.send_keys(group_author['email'] + Keys.ENTER)
-
+        self._wait_for_text_to_be_present_in_element_value(
+                self._gemail_input, group_author['email'])
         # check one of the boxes in Author Contributions, as this is required
-        self._wait_for_element(self._get(self._gdesigned_chkbx))
-        group_author_contribution_chck = self._get(self._gdesigned_chkbx)
-        group_author_contribution_chck.click()
-        if not group_author_contribution_chck.is_selected():
-            self.click_covered_element(group_author_contribution_chck)
-            self.pause_to_save()
+        self.check_contribution(individual_author=False)
         govt_choice = random.choice(['Yes', 'No'])
         logging.info('Selecting Gov\'t Choice {0}'.format(govt_choice))
-        govt_div = self._get(self._govt_employee_div)
-        self._scroll_into_view(govt_div)
-        self._actions.move_to_element(govt_div).perform()
-        if govt_choice == 'Yes':
-            govt_yes.click()
-        else:
-            govt_no.click()
-        time.sleep(1)
+        self.check_govt_employee_radio_btn(individual_author=False, govt_choice=govt_choice)
         add_author_add_btn = self._get(self._add_author_add_btn)
         add_author_add_btn.click()
         # Check if data is there
-        time.sleep(3)
+        self._wait_for_not_element(self._add_author_add_btn, 0.5)
         authors = self._gets(self._author_items)
         for item in authors:
             logging.info(item.text)
@@ -626,15 +600,18 @@ class AuthorsTask(BaseTask):
         edit_btn = self._get(self._edit_author)
         self.click_covered_element(edit_btn)
         self.pause_to_save()
-        self._scroll_into_view(self._get(self._govt_employee_radio_yes))
-        if 'government' in author_data and author_data['government']:
-            self.click_covered_element(self._get(self._govt_employee_radio_yes))
-        else:
-            self.click_covered_element(self._get(self._govt_employee_radio_no))
-        self.pause_to_save()
-        self.click_covered_element(self._get(self._authors_ack_agree2name))
-        self.click_covered_element(self._get(self._authors_ack_auth_crit))
-        self.click_covered_element(self._get(self._authors_ack_agree2submit))
+
+        govt_choice = 'Yes' if 'government' in author_data and author_data['government'] else 'No'
+        self.check_govt_employee_radio_btn(individual_author=True, govt_choice=govt_choice)
+        self.select_acknowledge_checkboxes()
+
+        self._scroll_into_view(self._get(self._first_lbl))
+        # Need to complete the remaining required elements to successfully complete this card.
+        author_inits_input = self._get(self._author_inits_input)
+        author_inits_input.send_keys(author_data['initials'])
+        self._wait_for_text_to_be_present_in_element_value(self._author_inits_input,
+                                                           author_data['initials'])
+
         title_input = self._get(self._title_input)
         department_input = self._get(self._department_input)
         institutions = self._gets(self._institution_div)
@@ -668,46 +645,42 @@ class AuthorsTask(BaseTask):
         corresponding_chck = self._get(self._corresponding)
         if not corresponding_chck.is_selected():
             self.click_covered_element(corresponding_chck)
-        self._wait_for_element(self._get(self._designed_chkbx))
-        author_contribution_chck = self._get(self._designed_chkbx)
-        author_contribution_chck.click()
-        if not author_contribution_chck.is_selected():
-            self.click_covered_element(author_contribution_chck)
-        # Need to complete the remaining required elements to successfully complete this card.
-        author_inits_input = self._get(self._author_inits_input)
-        author_inits_input.send_keys(author_data['initials'])
+        self.check_contribution(individual_author=True)
+        govt_div = self._get(self._govt_employee_div)
+        self._scroll_into_view(govt_div)
+
         add_author_add_btn = self._get(self._add_author_add_btn)
-        self.click_covered_element(add_author_add_btn)
-        self.pause_to_save()
+        add_author_add_btn.click()
+        self._wait_for_not_element(self._add_author_add_btn, 0.5)
         # Scroll to top be sure complete button is accessible
         manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
         self._scroll_into_view(manuscript_id_text)
+        self._wait_for_element(self._get(self._completion_button))
         self.pause_to_save()
         self.click_completion_button()
-        self.pause_to_save()
-        completed = self.completed_state()
-        logging.info('Completed State of the Author task is: {0}'.format(completed))
-        if not completed:
-            self._scroll_into_view(self._get(self._govt_employee_radio_yes))
-            if 'government' in author_data and author_data['government']:
-                self.click_covered_element(self._get(self._govt_employee_radio_yes))
-            else:
-                self.click_covered_element(self._get(self._govt_employee_radio_no))
-            self.pause_to_save()
-            self.click_completion_button()
-            time.sleep(3)
-            # Following workaround is due to APERTA-9019
+
+        try:
+            self._wait_for_text_be_present_in_element(self._completion_button,
+                                                      'Make changes to this task')
+        except TimeoutException:
             completed = self.completed_state()
-            logging.info('Author task is: {0}. Running workaround'.format(completed))
+            logging.info('Completed State of the Author task is: {0}'.format(completed))
             if not completed:
+                self.check_govt_employee_radio_btn(individual_author=True, govt_choice=govt_choice)
                 self.click_completion_button()
-                time.sleep(2)
-            # Need to validate that we aren't failing on validation within this loop else
-            #     endlessness
-            try:
-                self.validate_completion_error()
-            except ElementDoesNotExistAssertionError:
-                logging.info('No validation errors completing Author Task')
+                time.sleep(3)
+                # Following workaround is due to APERTA-9019
+                completed = self.completed_state()
+                logging.info('Author task is: {0}. Running workaround'.format(completed))
+                if not completed:
+                    self.click_completion_button()
+                    time.sleep(2)
+                # Need to validate that we aren't failing on validation within this loop else
+                #     endlessness
+                try:
+                    self.validate_completion_error()
+                except ElementDoesNotExistAssertionError:
+                    logging.info('No validation errors completing Author Task')
 
     def _orcid_connect_exist(self):
         """
@@ -723,14 +696,6 @@ class AuthorsTask(BaseTask):
         finally:
             return orcid_connect_exist
 
-    # def press_submit_btn(self):
-    #     """Press sidebar submit button"""
-    #     self._get(self._sidebar_submit).click()
-    #
-    # def confirm_submit_btn(self):
-    #     """Press sidebar submit button"""
-    #     self._get(self._submit_confirm).click()
-    #
     def validate_coauthors_elements_absence(self):
         """
         Checks that the coauthor elements within the Authors task are not available.
@@ -745,3 +710,56 @@ class AuthorsTask(BaseTask):
             'Decline label is present'
         assert self._check_for_absence_of_element(self._no_response_lbl), \
             'No Response label is present'
+
+    def check_govt_employee_radio_btn(self, individual_author, govt_choice):
+        """
+        Clicks on selected radio button choice
+        :param individual_author: True for individual author, False for group author
+        :param govt_choice: specific choice, "Yes" or "No"
+        :return: void function
+        """
+        govt_div = self._get(self._govt_employee_div)
+        self._scroll_into_view(govt_div)
+        govt_yes_locator = self._govt_employee_radio_yes if individual_author \
+            else self._ggovt_employee_radio_yes
+        govt_no_locator = self._govt_employee_radio_no if individual_author \
+            else self._ggovt_employee_radio_no
+        govt_yes = self._get(govt_yes_locator)
+        govt_no = self._get(govt_no_locator)
+        if govt_choice.lower() == 'yes':
+            govt_yes.click()
+            self._wait_on_lambda(lambda: govt_yes.is_selected(), max_wait=1)
+        else:
+            govt_no.click()
+            self._wait_on_lambda(lambda: govt_no.is_selected(), max_wait=1)
+        self.pause_to_save()
+
+    def check_contribution(self, individual_author):
+        """
+        Checks Conceptualization checkbox in Author Contributions checklist
+        :param individual_author: True for individual author, False for group author
+        :return: void function
+        """
+        contribution_locator = self._designed_chkbx if individual_author else self._gdesigned_chkbx
+        self._wait_for_element(self._get(contribution_locator))
+        self.check_checkbox_item(contribution_locator)
+        self.pause_to_save()
+
+    def select_acknowledge_checkboxes(self):
+        """Checks  acknowledge statement checkboxes"""
+        self._scroll_into_view(self._get(self._add_author_add_btn))
+        self.check_checkbox_item(self._authors_ack_agree2name)
+        self.check_checkbox_item(self._authors_ack_auth_crit)
+        self.check_checkbox_item(self._authors_ack_agree2submit)
+        self.pause_to_save()
+
+    def check_checkbox_item(self, checkbox_locator):
+        """
+        The method to locate and click on checkbox if it's not selected
+        :param checkbox_locator: locator to find checkbox
+        :return: void function
+        """
+        checkbox_item = self._get(checkbox_locator)
+        if not checkbox_item.is_selected():
+            checkbox_item.click()
+        self._wait_on_lambda(lambda: checkbox_item.is_selected(), max_wait=1)

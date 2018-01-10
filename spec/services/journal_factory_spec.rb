@@ -188,8 +188,11 @@ describe JournalFactory do
         expect(journal.cards.count).to eq(default_cards.count)
 
         cards = @journal.cards.where(name: default_cards.map(&:titleize)).load
+        expect(cards.count).to eq(default_cards.count)
+
         cards.zip(default_cards).each do |card, file_name|
           default_permissions.match(file_name, card.card_permissions) do |default_roles, card_roles|
+            # if default_roles.size != card_roles.size then binding.pry end
             expect(default_roles).to match_array(card_roles)
           end
         end

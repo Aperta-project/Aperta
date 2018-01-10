@@ -8,13 +8,22 @@ module CustomCard
       validate_configuration
     end
 
-    def load
-      self.class.paths.each do |file_path|
-        xml = File.read(file_path)
-        file_name = self.class.base_name(file_path)
-        card = create_card(file_name.titleize, xml)
-        set_permissions(card, file_name)
+    def load(paths = self.class.paths)
+      Array(paths).each do |file_path|
+        load_card(file_path)
       end
+    end
+
+    def load_card(file_path)
+      xml = File.read(file_path)
+      file_name = self.class.base_name(file_path)
+      card = create_card(file_name.titleize, xml)
+      set_permissions(card, file_name)
+    end
+
+    def self.all(journals: [])
+      which_journals = Array(journals.presence || Journal.all)
+      which_journals.each { |journal| load(journal) }
     end
 
     def self.load(journal)

@@ -53,35 +53,6 @@ class ApertaCNSTest(CommonTest):
         title = manuscript_page.get_paper_title_from_page()
         logging.info(u'Paper page title is: {0}'.format(title))
 
-    def rest_core_validate_create_to_submit_with_preprint_overlay(self, init=True):
-        """
-        test_cns: Validates Creating a new document - needs extension to take it through to Submit
-        with the preprint
-        overlay in the create sequence.
-        Validates the presence of the following elements:
-          Optional Invitation Welcome text and button,
-          My Submissions Welcome Text, button, info text and manuscript display
-          Modals: View Invites and Create New Submission and Preprint Posting
-        """
-        logging.info('CNSTest::validate_core_create_to_submit_with_preprint_overlay')
-        current_path = os.getcwd()
-        logging.info(current_path)
-        user_type = random.choice(users)
-        dashboard_page = self.cas_login(email=user_type['email']) if init \
-            else DashboardPage(self.getDriver())
-        dashboard_page.page_ready()
-        dashboard_page.click_create_new_submission_button()
-        self.create_article(title='cns_w_preprint_overlay', journal='PLOS Wombat',
-                            type_='Preprint Eligible', random_bit=True, format_='word')
-        manuscript_page = ManuscriptViewerPage(self.getDriver())
-        manuscript_page.page_ready_post_create()
-        # APERTA-11897
-        # manuscript_page.validate_ihat_conversions_success(fail_on_missing=True)
-        # Outputting the title allows us to validate update following conversion
-        manuscript_page.get_paper_short_doi_from_url()
-        title = manuscript_page.get_paper_title_from_page()
-        logging.info(u'Paper page title is: {0}'.format(title))
-
     def test_core_validate_pp_submission_with_review_overlay(self):
         """
         test_cns:

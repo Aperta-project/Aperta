@@ -53,7 +53,7 @@ class ApertaProfileTest(CommonTest):
     profile_page.validate_nav_toolbar_elements(profile_user)
     profile_page.clear_transients()
 
-  def rest_core_avatar(self):
+  def test_core_avatar(self):
     """
     Tests editing of the avatar image for a user profile
     :return:
@@ -162,7 +162,7 @@ class ApertaProfileTest(CommonTest):
     profile_page.delete_affiliation(affiliation_to_delete)
     profile_page.validate_no_affiliation(affiliation_to_delete)
 
-  def rest_orcid(self):
+  def test_orcid(self):
     """
     test_profile: validate adding an orcid connection
                   validate linking and oath process

@@ -7,7 +7,7 @@ import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 
 import FactoryGuy from 'ember-data-factory-guy';
 import * as TestHelper from 'ember-data-factory-guy';
-import formatDate from 'tahi/lib/format-date';
+import formatDate from 'tahi/lib/aperta-moment';
 
 var app, paper, correspondence, server;
 

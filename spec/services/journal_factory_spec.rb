@@ -120,20 +120,6 @@ describe JournalFactory do
                             last_doi_issued: '1000001')
     end
 
-    context 'default system cards' do
-      let(:factory_params) do
-        { name: 'Journal of the Stars',
-          doi_journal_prefix: 'journal.SHORTJPREFIX1',
-          doi_publisher_prefix: 'SHORTJPREFIX1',
-          last_doi_issued: '1000001' }
-      end
-
-      it 'loads default system cards' do
-        expect(CustomCard::Loader).to receive(:all).with(journals: instance_of(Journal))
-        JournalFactory.create(factory_params)
-      end
-    end
-
     context 'role hints' do
       let!(:journal) do
         JournalFactory.create(name: 'Journal of the Stars',
@@ -163,8 +149,9 @@ describe JournalFactory do
       end
     end
 
-    context 'creating the default roles and permission for the journal' do
+    context 'creating the default roles, permission, and custom cards for the journal' do
       before(:all) do
+        CardTaskType.seed_defaults
         @journal = JournalFactory.create(name: 'Genetics Journal',
                                          doi_journal_prefix: 'journal.genetics',
                                          doi_publisher_prefix: 'genetics',
@@ -192,6 +179,20 @@ describe JournalFactory do
 
       it 'gives the journal its own Creator role' do
         expect(journal.creator_role).to be
+      end
+
+      let(:default_permissions) {CustomCard::DefaultCardPermissions.new(@journal)}
+
+      it 'loads default system cards with the expected roles and permissions' do
+        default_cards = CustomCard::FileLoader.names
+        expect(journal.cards.count).to eq(default_cards.count)
+
+        cards = @journal.cards.where(name: default_cards.map(&:titleize)).load
+        cards.zip(default_cards).each do |card, file_name|
+          default_permissions.match(file_name, card.card_permissions) do |default_roles, card_roles|
+            expect(default_roles).to match_array(card_roles)
+          end
+        end
       end
 
       context 'Creator role' do

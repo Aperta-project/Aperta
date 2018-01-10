@@ -11,7 +11,7 @@ class Journal < ActiveRecord::Base
 
   has_many :papers, inverse_of: :journal
   has_many :tasks, through: :papers, inverse_of: :journal
-  has_many :cards, -> { Card.active_cards }, inverse_of: :journal
+  has_many :cards, inverse_of: :journal
   has_many :card_versions, through: :cards, inverse_of: :journal
   has_many :roles, inverse_of: :journal
   has_many :assignments, as: :assigned_to

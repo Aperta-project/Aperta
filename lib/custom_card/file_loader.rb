@@ -1,33 +1,34 @@
 module CustomCard
   class FileLoader
-    def self.load(journal)
-      new(journal).load
-    end
-
     def initialize(journal)
-      @journal = journal
-      raise StandardError, 'Cannot create custom cards for journal with pre-existing cards' if @journal.cards.any?
+      raise StandardError, 'Cannot create custom cards for journal with pre-existing cards' if journal.cards.any?
 
-      home = Rails.root.join('lib/custom_card/configurations', 'xml_content')
-      @files = Dir["#{home}/*.xml"]
-      @permissions = DefaultCardPermissions.new
-      validate_permissions
+      @journal = journal
+      @permissions = DefaultCardPermissions.new(journal)
+      validate_configuration
     end
 
     def load
-      @files.each do |file_path|
-        file_name = base_name(file_path)
+      self.class.paths.each do |file_path|
         xml = File.read(file_path)
+        file_name = self.class.base_name(file_path)
         card = create_card(file_name.titleize, xml)
         set_permissions(card, file_name)
       end
     end
 
+    def self.load(journal)
+      new(journal).load
+    end
+
+    def self.names
+      paths.map { |file_path| base_name(file_path) }
+    end
+
   private
 
-    def validate_permissions
-      files = @files.map { |file_name| base_name(file_name) }
-      @permissions.validate(files)
+    def validate_configuration
+      @permissions.validate(self.class.names)
     end
 
     def create_card(card_name, xml)
@@ -39,7 +40,7 @@ module CustomCard
     end
 
     def set_permissions(card, file_name)
-      @permissions.apply(@journal, file_name) do |action, roles|
+      @permissions.apply(file_name) do |action, roles|
         CardPermissions.set_roles(card, action, roles)
       end
     end
@@ -48,7 +49,12 @@ module CustomCard
       CardTaskType.named(card_name) || CardTaskType.custom_card
     end
 
-    def base_name(file_name)
+    def self.paths
+      home = Rails.root.join('lib/custom_card/configurations', 'xml_content')
+      Dir["#{home}/*.xml"]
+    end
+
+    def self.base_name(file_name)
       File.basename(file_name, '.xml')
     end
   end

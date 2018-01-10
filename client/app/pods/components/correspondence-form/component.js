@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
+import { formatDate, formatFor, moment } from 'tahi/lib/aperta-moment';
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
   close: null,
@@ -10,24 +11,24 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   timeSent: Ember.computed('model.sentAt', function() {
     let sentAt = this.get('model.sentAt');
     let time = Ember.isBlank(sentAt) ? moment.utc() : moment.utc(sentAt);
-    return time.format('H:mm');
+    return formatDate(time, 'hour-minute-2');
   }),
 
   dateSent: Ember.computed('model', function() {
     let sentAt = this.get('model.sentAt');
     let date = Ember.isBlank(sentAt) ? moment.utc() : moment.utc(sentAt);
-    return date.format('MM/DD/YYYY');
+    return formatDate(date, 'month-day-year');
   }),
 
   prepareModelDate() {
     let date = this.get('dateSent');
     let time = this.get('timeSent');
-    let m = moment.utc(date + ' ' + time, 'MM/DD/YYYY H:m');
+    let m = moment.utc(date + ' ' + time, formatFor('month-day-year-time'));
     this.get('model').set('date', m.local().toJSON());
   },
 
   validateDate() {
-    let dateIsValid = moment(this.get('dateSent'), 'MM/DD/YYYY').isValid();
+    let dateIsValid = moment(this.get('dateSent'), formatFor('month-day-year')).isValid();
 
     if (!dateIsValid) {
       this.set('validationErrors.dateSent', 'Invalid Date.');
@@ -37,7 +38,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   },
 
   validateTime() {
-    let timeIsValid = moment(this.get('timeSent'), 'H:m').isValid();
+    let timeIsValid = moment(this.get('timeSent'), formatFor('hour-minute-1')).isValid();
 
     if (!timeIsValid) {
       this.set('validationErrors.timeSent', 'Invalid Time.');

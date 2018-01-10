@@ -19,16 +19,26 @@
   Submitted to Biomedical Journals (<a href="<%= recommendations_url %>"><%= recommendations_url %></a>).
   By agreeing to be listed as an author of this paper, you are confirming that you meet these criteria of authorship:
 </p>
-<%= render partial: 'token_co_authors/authorship_criteria' %>
+<ol id="authorship-criteria">
+  <li class="authorship-criteria-item">Substantial contribution to conception and design, or acquisition of data, or analysis and interpretation of data;&nbsp;and</li>
+  <li class="authorship-criteria-item">Drafting the article or revisiting it critically for important intellectual content;&nbsp;and</li>
+  <li class="authorship-criteria-item">Final approval of the version to be published;&nbsp;and</li>
+  <li class="authorship-criteria-item">Agreement to be accountable for all aspects of the work in ensuring that questions related to the accuracy or integrity of any part of the work are appropriately investigated and resolved.</li>
+</ol>
 <p>
   The full authorship list, as submitted, is:
-  <%= render partial: 'token_co_authors/author_list',
-     locals: { authors: @authors }
-  %>
+  <ol id="author-list">
+    <% @authors.each do |coauthor| %>
+      <li class="author-list-item">
+        <%= coauthor.full_name %>
+        <% if coauthor.try(:affiliation).present? %>: <%= coauthor.affiliation %><% end %>
+      </li>
+    <% end %>
+  </ol>
 </p>
 
 <%= render partial: 'email/button', locals: {
-  href: show_token_co_author_url(@coauthor.token),
+  href: client_coauthor_url(token: @coauthor.token),
   text: 'Confirm Authorship'
 } %>
 

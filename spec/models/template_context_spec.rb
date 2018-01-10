@@ -99,7 +99,7 @@ describe TemplateContext do
       expect(TemplateContext.feature_inactive_scenarios).to include('Preprint Decision')
       expect(TemplateContext.scenarios).to_not include('Preprint Decision')
 
-      FeatureFlag.find_by(name: 'PREPRINT').update(active: true)
+      FeatureFlag.find_by(name: 'PREPRINT').update!(active: true)
       expect(TemplateContext.feature_inactive_scenarios).to_not include('Preprint Decision')
       expect(TemplateContext.scenarios).to include('Preprint Decision')
     end

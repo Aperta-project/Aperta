@@ -41,7 +41,7 @@
           <tr class="assignment">
             <td><span>{{user-thumbnail user=assignment.user classNames="assignee-thumbnail"}}</span></td>
             <td><span class="assignee-full-name">{{assignment.user.name}}</span> has been assigned as {{assignment.role.name}}</td>
-            <td><span class="assignment-updated-at">{{format-date assignment.createdAt format="LLL"}}</span></td>
+            <td><span class="assignment-updated-at">{{format-date assignment.createdAt "long-date-short-time"}}</span></td>
             <td><span class="assignment-state">Assigned</span></td>
             <td><span class="fa fa-trash assignment-remove" {{action "destroyAssignment" assignment}}></span></td>
           </tr>

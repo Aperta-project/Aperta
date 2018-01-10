@@ -5,7 +5,7 @@ import { manualSetup } from 'ember-data-factory-guy';
 import hbs from 'htmlbars-inline-precompile';
 import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 import wait from 'ember-test-helpers/wait';
-import formatDate from 'tahi/lib/format-date';
+import formatDate from 'tahi/lib/aperta-moment';
 
 
 moduleForComponent('correspondence', 'Integration | Component | Correspondence', {

@@ -4,9 +4,22 @@ import { test } from 'ember-qunit';
 import FactoryGuy from 'ember-data-factory-guy';
 import * as TestHelper from 'ember-data-factory-guy';
 import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
+import customAssertions from 'tahi/tests/helpers/custom-assertions';
+let adminJournal, mmt;
 
 moduleForAcceptance('Integration: Manuscript Manager Templates', {
   beforeEach: function() {
+    customAssertions();
+    adminJournal = FactoryGuy.make('admin-journal', {
+      id: 1
+    });
+    mmt = FactoryGuy.make('manuscript-manager-template', {
+      id: 1,
+      journal: adminJournal
+    });
+    TestHelper.mockFindRecord('admin-journal').returns({
+      model: adminJournal
+    });
     return Ember.run(() => {
       $.mockjax({
         url: '/api/admin/journals/authorization',
@@ -22,28 +35,24 @@ moduleForAcceptance('Integration: Manuscript Manager Templates', {
         }
       });
     });
+  },
+
+  afterEach() {
+    $.mockjax.clear();
   }
 });
 
-test('Changing phase name', function(assert) {
-  var adminJournal, columnTitleSelect, mmt;
-  adminJournal = FactoryGuy.make('admin-journal', {
-    id: 1
-  });
-  mmt = FactoryGuy.make('manuscript-manager-template', {
-    id: 1,
-    journal: adminJournal
-  });
+function createPhaseTemplate() {
   FactoryGuy.make('phase-template', {
     id: 1,
     manuscriptManagerTemplate: mmt,
     name: 'Phase 1'
   });
-  TestHelper.mockFindRecord('admin-journal').returns({
-    model: adminJournal
-  });
+}
 
-  columnTitleSelect = 'h2.column-title:contains("Phase 1")';
+test('Changing phase name', function(assert) {
+  var columnTitleSelect = 'h2.column-title:contains("Phase 1")';
+  createPhaseTemplate();
 
   visit('/admin/mmt/journals/1/manuscript_manager_templates/1/edit');
 
@@ -55,29 +64,50 @@ test('Changing phase name', function(assert) {
   });
 });
 
+test('Deleting a phase with no cards', function(assert) {
+  createPhaseTemplate();
+  $.mockjax({
+    url: '/api/manuscript_manager_templates/1',
+    type: 'PUT',
+    status: 204,
+    responseText: ''});
+
+  visit('/admin/mmt/journals/1/manuscript_manager_templates/1/edit');
+  andThen(function() {
+    assert.textPresent('.column-title', 'Phase 1');
+  });
+  click('.remove-icon');
+  click('.paper-type-save-button'); // Click save to persist changes in the DB
+  andThen(function() {
+    assert.mockjaxRequestMade('/api/manuscript_manager_templates/1', 'PUT', 'it deletes the phase');
+    assert.textNotPresent('.column-title', 'Phase 1');
+  });
+});
+
+test('Deleting a newly created phase not yet saved in the database', function(assert) {
+  visit('/admin/mmt/journals/1/manuscript_manager_templates/1/edit');
+  click('.add-column');
+  andThen(function() {
+    assert.textPresent('.column-title', 'New Phase');
+  });
+  click('.remove-icon');
+  andThen(function() {
+    assert.mockjaxRequestNotMade('/api/manuscript_manager_templates/1', 'PUT');
+    assert.textNotPresent('.column-title', 'New Phase');
+  });
+});
+
 test('Adding an Ad-Hoc card', function(assert) {
-  var adminJournal, journalTaskType, mmt, pt;
-  journalTaskType = FactoryGuy.make('journal-task-type', {
+  var journalTaskType = FactoryGuy.make('journal-task-type', {
     id: 1,
     kind: "AdHocTask",
     title: "Ad Hoc"
   });
-  adminJournal = FactoryGuy.make('admin-journal', {
-    id: 1,
-    journalTaskTypes: [journalTaskType]
+  Ember.run(function() {
+    adminJournal.set('journalTaskTypes', [journalTaskType]);
   });
-  mmt = FactoryGuy.make('manuscript-manager-template', {
-    id: 1,
-    journal: adminJournal
-  });
-  pt = FactoryGuy.make('phase-template', {
-    id: 1,
-    manuscriptManagerTemplate: mmt,
-    name: "Phase 1"
-  });
-  TestHelper.mockFindRecord('admin-journal').returns({
-    model: adminJournal
-  });
+  createPhaseTemplate();
+
   visit('/admin/mmt/journals/1/manuscript_manager_templates/1/edit');
   click('.button--green:contains("Add New Card")');
   click('label:contains("Ad Hoc")');
@@ -110,28 +140,16 @@ test('Adding an Ad-Hoc card', function(assert) {
 });
 
 test('User cannot edit a non Ad-Hoc card', function(assert) {
-  var adminJournal, journalTaskType, mmt, pt;
-  journalTaskType = FactoryGuy.make('journal-task-type', {
+  var journalTaskType = FactoryGuy.make('journal-task-type', {
     id: 1,
     kind: "BillingTask",
     title: "Billing"
   });
-  adminJournal = FactoryGuy.make('admin-journal', {
-    id: 1,
-    journalTaskTypes: [journalTaskType]
+  Ember.run(function() {
+    adminJournal.set('journalTaskTypes', [journalTaskType]);
   });
-  mmt = FactoryGuy.make('manuscript-manager-template', {
-    id: 1,
-    journal: adminJournal
-  });
-  pt = FactoryGuy.make('phase-template', {
-    id: 1,
-    manuscriptManagerTemplate: mmt,
-    name: "Phase 1"
-  });
-  TestHelper.mockFindRecord('admin-journal').returns({
-    model: adminJournal
-  });
+  createPhaseTemplate();
+
   visit('/admin/mmt/journals/1/manuscript_manager_templates/1/edit');
   click('.button--green:contains("Add New Card")');
   click('label:contains("Billing")');
@@ -143,30 +161,17 @@ test('User cannot edit a non Ad-Hoc card', function(assert) {
 });
 
 test('User can enable a workflow as preprint eligible', function(assert){
-  var adminJournal, journalTaskType, mmt;
-
-  FactoryGuy.make('feature-flag', {id: 1, name: 'PREPRINT', active: true});
-  journalTaskType = FactoryGuy.make('journal-task-type', {
+  var journalTaskType = FactoryGuy.make('journal-task-type', {
     id: 1,
     kind: 'AdHocTask',
     title: 'Ad Hoc'
   });
-  adminJournal = FactoryGuy.make('admin-journal', {
-    id: 1,
-    journalTaskTypes: [journalTaskType]
+
+  FactoryGuy.make('feature-flag', {id: 1, name: 'PREPRINT', active: true});
+  Ember.run(function() {
+    adminJournal.set('journalTaskTypes', [journalTaskType]);
   });
-  mmt = FactoryGuy.make('manuscript-manager-template', {
-    id: 1,
-    journal: adminJournal
-  });
-  FactoryGuy.make('phase-template', {
-    id: 1,
-    manuscriptManagerTemplate: mmt,
-    name: 'Phase 1'
-  });
-  TestHelper.mockFindRecord('admin-journal').returns({
-    model: adminJournal
-  });
+  createPhaseTemplate();
 
   $.mockjax({
     url: '/api/manuscript_manager_templates/1',
@@ -185,28 +190,15 @@ test('User can enable a workflow as preprint eligible', function(assert){
 });
 
 test('Preprint eligible is hidden if feature flag is not set', function(assert){
-  var adminJournal, journalTaskType, mmt;
-  journalTaskType = FactoryGuy.make('journal-task-type', {
+  var journalTaskType = FactoryGuy.make('journal-task-type', {
     id: 1,
     kind: 'AdHocTask',
     title: 'Ad Hoc'
   });
-  adminJournal = FactoryGuy.make('admin-journal', {
-    id: 1,
-    journalTaskTypes: [journalTaskType]
+  Ember.run(function() {
+    adminJournal.set('journalTaskTypes', [journalTaskType]);
   });
-  mmt = FactoryGuy.make('manuscript-manager-template', {
-    id: 1,
-    journal: adminJournal
-  });
-  FactoryGuy.make('phase-template', {
-    id: 1,
-    manuscriptManagerTemplate: mmt,
-    name: 'Phase 1'
-  });
-  TestHelper.mockFindRecord('admin-journal').returns({
-    model: adminJournal
-  });
+  createPhaseTemplate();
 
   $.mockjax({
     url: '/api/manuscript_manager_templates/1',
@@ -218,4 +210,3 @@ test('Preprint eligible is hidden if feature flag is not set', function(assert){
     assert.elementNotFound('.preprint-eligible');
   });
 });
-

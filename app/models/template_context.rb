@@ -92,6 +92,8 @@ class TemplateContext < Liquid::Drop
     source = source_chain.reduce(self) { |obj, meth| obj.send(meth) }
     contextualized_source = if is_array
                               source.map { |source_item| context_class.new(source_item) }
+                            elsif source.nil?
+                              nil
                             else
                               context_class.new(source)
                             end

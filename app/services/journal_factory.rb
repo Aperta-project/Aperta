@@ -577,7 +577,7 @@ class JournalFactory
         lt.scenario = 'Invitation'
         lt.subject = 'You\'ve been invited as an editor for the manuscript, {{ manuscript.title }}'
         lt.body = <<-TEXT.strip_heredoc
-        {% if  invitee.full_name %}
+        {% if  invitee %}
         <p>Dear Dr.{{ invitee.full_name }},</p>
         {% endif %}
         <p>I am writing to seek your advice as the academic editor on a manuscript entitled '{{ manuscript.title }}'. The corresponding author is {{author.full_name}}, and the manuscript is under consideration at {{ journal.name }}.</p>
@@ -966,7 +966,7 @@ class JournalFactory
         lt.scenario = 'Invitation'
         lt.subject = 'You have been invited as a reviewer for the manuscript, "{{ manuscript.title }}"'
         lt.body = <<-TEXT.strip_heredoc
-            {% if  invitee.full_name %}
+            {% if  invitee %}
             <p>Dear {{  invitee.full_name }},</p>
             {% endif %}
             <p>You've been invited as a Reviewer on "{{ manuscript.title }}", for {{ journal.name }}.</p>

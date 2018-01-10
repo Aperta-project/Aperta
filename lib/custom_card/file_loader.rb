@@ -46,7 +46,9 @@ module CustomCard
     end
 
     def task_type(card_name)
-      CardTaskType.named(card_name) || CardTaskType.custom_card
+      task_type = CardTaskType.named(card_name) || CardTaskType.custom_card
+      raise(StandardError, "Cannot find card task type for #{card_name}") unless task_type
+      task_type
     end
 
     def self.paths

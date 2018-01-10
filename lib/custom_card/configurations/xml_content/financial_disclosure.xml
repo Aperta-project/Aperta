@@ -3,6 +3,11 @@
   <DisplayChildren>
     <Radio ident="financial_disclosures--author_received_funding" value-type="boolean" required-field="true">
       <text>Did any of the authors receive specific funding for this work?</text>
+      <DisplayWithValue visible-with-parent-answer="false">
+        <Description>
+          <text>Your Financial Disclosure Statement will appear as: The author(s) received no specific funding for this work.</text>
+        </Description>
+      </DisplayWithValue>
       <DisplayWithValue visible-with-parent-answer="true">
         <Description>
           <text>Please describe all sources of funding that have supported your work.</text>
@@ -31,11 +36,6 @@
         </Repeat>
       </DisplayWithValue>
     </Radio>
-    <DisplayWithValue visible-with-parent-answer="false">
-      <Description>
-        <text>Your Financial Disclosure Statement will appear as: The author(s) received no specific funding for this work.</text>
-      </Description>
-    </DisplayWithValue>
     <FinancialDisclosureSummary>
     </FinancialDisclosureSummary>
   </DisplayChildren>

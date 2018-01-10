@@ -8,7 +8,7 @@ describe Admin::JournalsController, redis: true do
       :with_staff_admin_role
     )
   end
-  let(:user) { FactoryGirl.build_stubbed :user }
+  let(:user) { FactoryGirl.build_stubbed :user, :site_admin }
 
   describe '#create' do
     subject(:do_request) do
@@ -31,6 +31,7 @@ describe Admin::JournalsController, redis: true do
       before do
         stub_sign_in user
         expect(user).to receive(:site_admin?).and_return(true)
+        CardTaskType.seed_defaults
       end
 
       it 'creates a journal' do

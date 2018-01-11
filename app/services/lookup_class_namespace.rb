@@ -7,7 +7,7 @@
 class LookupClassNamespace
   POSSIBLE_TYPES = {
     # Tasks
-    "BillingTask"                    =>     "PlosBilling::BillingTask",
+    "BillingTask"                    =>     "BillingTask",
     "EditorsDiscussionTask"          =>     "EditorsDiscussionTask",
     "ChangesForAuthorTask"           =>     "ChangesForAuthorTask",
     "FinalTechCheckTask"             =>     "FinalTechCheckTask",

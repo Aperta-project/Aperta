@@ -152,11 +152,11 @@ module Typesetter
     private
 
     def billing_task
-      task('PlosBilling::BillingTask')
+      task('BillingTask')
     end
 
     def billing_answer_for(ident)
-      answer = task('PlosBilling::BillingTask').answer_for(ident)
+      answer = task('BillingTask').answer_for(ident)
       answer.value if answer
     end
 

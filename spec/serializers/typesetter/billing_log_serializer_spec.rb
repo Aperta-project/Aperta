@@ -34,7 +34,7 @@ describe Typesetter::BillingLogSerializer do
 
   describe 'doi' do
     let(:our_task) do
-      paper_task.call('PlosBilling::BillingTask')
+      paper_task.call('BillingTask')
     end
 
     it 'has doi' do

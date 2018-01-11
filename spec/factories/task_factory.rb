@@ -69,7 +69,7 @@ FactoryGirl.define do
       title "Authors"
     end
 
-    factory :billing_task, class: 'PlosBilling::BillingTask' do
+    factory :billing_task, class: 'BillingTask' do
       title "Billing"
       trait :with_card_content do
         after(:create) do |task|

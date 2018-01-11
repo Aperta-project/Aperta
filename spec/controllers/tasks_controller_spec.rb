@@ -62,7 +62,7 @@ describe TasksController, redis: true do
   describe "POST #create" do
     let(:task_params) do
       {
-        type: 'PlosBilling::BillingTask',
+        type: 'BillingTask',
         paper_id: paper.to_param,
         phase_id: paper.phases.last.id,
         title: 'Verify Signatures'
@@ -77,7 +77,7 @@ describe TasksController, redis: true do
 
     context "when the user has access" do
       before do
-        CardLoader.load("PlosBilling::BillingTask")
+        CardLoader.load("BillingTask")
         stub_sign_in user
         allow(user).to receive(:can?)
           .with(:manage_workflow, paper)

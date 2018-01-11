@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe PlosBilling::SalesforceManuscriptUpdateWorker do
+describe SalesforceManuscriptUpdateWorker do
   describe 'sidekiq_retries_exhausted' do
     it 'queues up an email to tell site admins there was a problem' do
       msg = {
@@ -8,7 +8,7 @@ describe PlosBilling::SalesforceManuscriptUpdateWorker do
         'args' => [99],
         'error_message' => 'something bad happened'
       }
-      expect(PlosBilling::BillingSalesforceMailer).to \
+      expect(BillingSalesforceMailer).to \
         receive_message_chain('delay.notify_site_admins_of_syncing_error').
         with(99, 'Failed FooBar with [99]: something bad happened')
       described_class.sidekiq_retries_exhausted_block.call(msg)
@@ -29,7 +29,7 @@ describe PlosBilling::SalesforceManuscriptUpdateWorker do
     end
 
     it 'queues up an email to tell site admins there was a problem' do
-      expect(PlosBilling::BillingSalesforceMailer).to \
+      expect(BillingSalesforceMailer).to \
         receive_message_chain('delay.notify_site_admins_of_syncing_error').
         with(4, 'Failed SomeClass with [4]: some message')
       described_class.email_admin_on_sidekiq_error(msg)
@@ -85,10 +85,10 @@ describe PlosBilling::SalesforceManuscriptUpdateWorker do
       end
 
       it 'queues up an email to tell site admins there was a problem' do
-        expect(PlosBilling::BillingSalesforceMailer).to \
+        expect(BillingSalesforceMailer).to \
           receive_message_chain('delay.notify_site_admins_of_syncing_error') do |paper_id, message|
             expect(paper_id).to eq(paper.id)
-            expect(message).to match(/PlosBilling::SalesforceManuscriptUpdateWorker#perform failed due to an SalesforceServices::SyncInvalid/)
+            expect(message).to match(/SalesforceManuscriptUpdateWorker#perform failed due to an SalesforceServices::SyncInvalid/)
           end
         perform
       end

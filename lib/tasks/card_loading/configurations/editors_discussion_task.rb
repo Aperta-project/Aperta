@@ -5,7 +5,7 @@
 module CardConfiguration
   class EditorsDiscussionTask
     def self.name
-      "PlosBioInternalReview::EditorsDiscussionTask"
+      "EditorsDiscussionTask"
     end
 
     def self.title

@@ -1,0 +1,2 @@
+class EditorsDiscussionTaskSerializer < ::TaskSerializer
+end

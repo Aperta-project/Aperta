@@ -68,30 +68,6 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     return yield this.get('task.decisions');
   }),
 
-  applyTemplateReplacements(str) {
-    const name = this.get('selectedUser.full_name');
-    if (name) {
-      let regexp = new RegExp('\\[' + this.get('replaceTargetName') + '\\]', 'g');
-      str = str.replace(regexp, name);
-    }
-    return str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
-  },
-
-  buildInvitationBody() {
-    const template = this.get('task.invitationTemplate');
-    let body, salutation = '';
-
-    if (template.salutation && this.get('selectedUser.full_name')) {
-      salutation = this.applyTemplateReplacements(template.salutation) + '\n\n';
-    }
-
-    if (template.body) {
-      body = this.applyTemplateReplacements(template.body);
-    }
-
-    return '' + salutation + body;
-  },
-
   autoSuggestSourceUrl: computed('task.id', 'endpoint', function(){
     return eligibleUsersPath(this.get('task.id'), this.get('endpoint'));
   }),
@@ -173,8 +149,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
       this.get('createInvitation').perform({
         task: this.get('task'),
-        email: this.get('selectedUser.email'),
-        body: this.buildInvitationBody()
+        email: this.get('selectedUser.email')
       });
     },
 

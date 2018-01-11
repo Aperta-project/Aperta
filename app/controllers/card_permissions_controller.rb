@@ -35,9 +35,8 @@ class CardPermissionsController < ApplicationController
     check_roles(card)
     task_permissions = CardPermissions.set_roles(
       card,
-      Permission.find(params[:id]).action,
-      roles,
-      permission
+      permission.action,
+      roles
     )
     render status: :ok,
            json: task_permissions,

@@ -70,13 +70,15 @@ class InvitationsController < ApplicationController
   def create
     requires_user_can(:manage_invitations, task)
     @invitation = task.invitations.build(
-      invitation_params.merge(inviter: current_user)
+      invitation_create_params.merge(inviter: current_user)
     )
     invitation_queue = task.active_invitation_queue
     invitation_queue.add_invitation(invitation)
 
     @invitation.set_invitee
-    @invitation.save
+    @invitation.set_body
+
+    @invitation.save!
 
     render json: invitations_in_queue
   end
@@ -103,9 +105,7 @@ class InvitationsController < ApplicationController
   def decline
     raise AuthorizationError unless invitation.invitee == current_user
     invitation.update_attributes(
-      actor: current_user,
-      decline_reason: invitation_params[:decline_reason],
-      reviewer_suggestions: invitation_params[:reviewer_suggestions]
+      invitation_decline_params.merge(actor: current_user)
     )
     invitation.decline!
     Activity.invitation_declined!(invitation, user: current_user)
@@ -137,11 +137,10 @@ class InvitationsController < ApplicationController
     Activity.invitation_sent!(invitation, user: current_user)
   end
 
-  def invitation_params
+  def invitation_create_params
     params
       .require(:invitation)
       .permit(:actor_id,
-        :body,
         :decline_reason,
         :decision_id,
         :email,
@@ -154,6 +153,12 @@ class InvitationsController < ApplicationController
     params
       .require(:invitation)
       .permit(:id, :body, :email)
+  end
+
+  def invitation_decline_params
+    params
+      .require(:invitation)
+      .permit(:decline_reason, :reviewer_suggestions)
   end
 
   def invitation_accept_params

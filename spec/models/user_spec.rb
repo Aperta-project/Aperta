@@ -121,8 +121,9 @@ describe User do
     let(:inv1) { FactoryGirl.create :invitation, task: task, invitee: user, decision: decision }
     let(:inv2) { FactoryGirl.create :invitation, task: task, invitee: user, decision: decision }
     let(:another_task_invitation) { FactoryGirl.create :invitation, task: task, invitee: user, decision: decision }
+    let!(:invite_letter_template) { FactoryGirl.create(:letter_template, :academic_editor_invite, journal: paper.journal) }
 
-    it 'returns invitiations from multiple tasks' do
+    it 'returns invitations from multiple tasks' do
       inv1.invite!
       another_task_invitation.invite!
       expect(user.invitations_from_draft_decision)

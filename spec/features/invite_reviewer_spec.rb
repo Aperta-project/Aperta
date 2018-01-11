@@ -12,6 +12,11 @@ feature "Invite Reviewer", js: true do
   end
   let(:task) { FactoryGirl.create :paper_reviewer_task, :with_loaded_card, paper: paper }
 
+  let!(:invite_letter_template) { FactoryGirl.create(:letter_template, :reviewer_invite, journal: paper.journal) }
+  let!(:welcome_letter_template) { FactoryGirl.create(:letter_template, :reviewer_welcome, journal: paper.journal) }
+  let!(:accepted_letter_template) { FactoryGirl.create(:letter_template, :reviewer_accepted, journal: paper.journal) }
+  let!(:declined_letter_template) { FactoryGirl.create(:letter_template, :reviewer_declined, journal: paper.journal) }
+
   let(:editor) { create :user }
   let!(:reviewer1) { create :user, first_name: 'Henry' }
   let!(:reviewer2) { create :user, first_name: 'Henroff' }

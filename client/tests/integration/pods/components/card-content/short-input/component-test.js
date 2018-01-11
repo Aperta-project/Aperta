@@ -23,16 +23,19 @@ content=content
 disabled=disabled
 valueChanged=(action actionStub)
 }}`;
+
 test(`it disables the input if disabled=true`, function(assert) {
   this.set('disabled', true);
   this.render(template);
   assert.elementFound('input[disabled]');
 });
+
 test(`it displays the value from answer.value`, function(assert) {
   this.set('answer', Ember.Object.create({ value: 'Bar' }));
   this.render(template);
   assert.equal(this.$('input').val(), 'Bar');
 });
+
 test(`it sends 'valueChanged' on change`, function(assert) {
   assert.expect(1);
   this.set('answer', Ember.Object.create({ value: 'Old' }));
@@ -42,6 +45,7 @@ test(`it sends 'valueChanged' on change`, function(assert) {
   this.render(template);
   this.$('input').val('New').trigger('change').trigger('blur');
 });
+
 test(`it sends 'valueChanged' on input`, function(assert) {
   assert.expect(1);
   this.set('answer', Ember.Object.create({ value: 'Old' }));
@@ -51,6 +55,7 @@ test(`it sends 'valueChanged' on input`, function(assert) {
   this.render(template);
   this.$('input').val('New').trigger('input').trigger('blur');
 });
+
 test('hides errors on init and displays error messages if appropriate', function(assert) {
   let errorsArr = ['Oh Noes', 'You fool!'];
   this.set(

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Tahi::AssignTeam::AssignTeamTask do
+describe AssignTeamTask do
   subject(:task) { described_class.new(paper: paper) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let(:journal) { FactoryGirl.create(:journal) }

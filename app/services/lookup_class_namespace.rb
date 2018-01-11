@@ -13,7 +13,7 @@ class LookupClassNamespace
     "FinalTechCheckTask"             =>     "FinalTechCheckTask",
     "InitialTechCheckTask"           =>     "InitialTechCheckTask",
     "RevisionTechCheckTask"          =>     "RevisionTechCheckTask",
-    "AssignTeamTask"                 =>     "Tahi::AssignTeam::AssignTeamTask",
+    "AssignTeamTask"                 =>     "AssignTeamTask",
     "AuthorsTask"                    =>     "AuthorsTask",
     "DataAvailabilityTask"           =>     "DataAvailabilityTask",
     "FigureTask"                     =>     "FigureTask",

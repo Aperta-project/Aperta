@@ -5,7 +5,7 @@
 module CardConfiguration
   class InitialDecisionTask
     def self.name
-      "TahiStandardTasks::InitialDecisionTask"
+      "InitialDecisionTask"
     end
 
     def self.title

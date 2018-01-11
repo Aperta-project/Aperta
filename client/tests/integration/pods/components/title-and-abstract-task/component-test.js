@@ -72,7 +72,7 @@ var newTask = function(completed, paperEditable) {
   return {
     id: 2,
     title: 'Title and Abstract',
-    type: 'TahiStandardTasks::TitleAndAbstractTask',
+    type: 'TitleAndAbstractTask',
     completed: completed,
     completedProxy: completed,
     isMetadataTask: false,

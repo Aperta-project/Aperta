@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::RegisterDecisionTask do
+describe RegisterDecisionTask do
   subject(:task) do
     FactoryGirl.create(
       :register_decision_task,
@@ -25,15 +25,15 @@ describe TahiStandardTasks::RegisterDecisionTask do
   describe "#after_register" do
     context "decision is a revision" do
       before do
-        CardLoader.load("TahiStandardTasks::ReviseTask")
-        CardLoader.load("TahiStandardTasks::TitleAndAbstractTask")
+        CardLoader.load("ReviseTask")
+        CardLoader.load("TitleAndAbstractTask")
         allow(decision).to receive(:revision?).and_return(true)
       end
 
       it "calls #setup_new_revision with proper arguments" do
-        expect(TahiStandardTasks::ReviseTask)
+        expect(ReviseTask)
           .to receive(:setup_new_revision).with(task.paper, task.phase)
-        expect(TahiStandardTasks::UploadManuscriptTask)
+        expect(UploadManuscriptTask)
           .to receive(:setup_new_revision).with(task.paper, task.phase)
         task.after_register decision
       end
@@ -69,7 +69,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
     end
 
     it "will email using last completed decision" do
-      expect(TahiStandardTasks::RegisterDecisionMailer)
+      expect(RegisterDecisionMailer)
         .to receive_message_chain(:delay, :notify_author_email)
         .with(
           decision_id: decision_one.id,

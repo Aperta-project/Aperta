@@ -153,7 +153,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def add_authors_to_information(invitation)
-    authors_list = TahiStandardTasks::AuthorsList.authors_list(paper)
+    authors_list = AuthorsList.authors_list(paper)
     return unless authors_list.present?
     invitation.update! information: authors_list
   end

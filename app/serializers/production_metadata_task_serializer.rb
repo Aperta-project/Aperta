@@ -1,0 +1,2 @@
+class ProductionMetadataTaskSerializer < ::TaskSerializer
+end

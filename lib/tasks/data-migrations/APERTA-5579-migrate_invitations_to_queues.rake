@@ -43,14 +43,14 @@ module QueueMigration
   end
 
   def self.migrate_up
-    Task.where(type: 'TahiStandardTasks::PaperReviewerTask').find_each do |task|
+    Task.where(type: 'PaperReviewerTask').find_each do |task|
       task.paper.decisions.each do |decision|
         puts "making queue for decision #{decision.id}"
         queue = decision.invitation_queue || decision.create_invitation_queue!(task: task)
         put_invitations_into_queue(decision.invitations, queue)
       end
     end
-    Task.where(type: 'TahiStandardTasks::PaperEditorTask').find_each do |task|
+    Task.where(type: 'PaperEditorTask').find_each do |task|
       puts "making queue for task #{task.id}"
       queue = task.invitation_queue || task.create_invitation_queue!(task: task)
       put_invitations_into_queue(task.invitations, queue)

@@ -8,7 +8,7 @@ export default ApplicationSerializer.extend({
    * attribute on them.  We save the original (namespaced) class name into a 'qualifiedType'
    * attribute that you can find on any of the Task subclasses if you look in the ember data store.
    * We also demodulize any classnames when they're included as part of a polymorphic relationship.
-   * ie {owner: {type: 'TahiStandardTasks::CompetingInterestTask', id: 2} becomes
+   * ie {owner: {type: 'CompetingInterestTask', id: 2} becomes
    *    {owner: {type: 'CompetingInterestTask', id: 2}.
    *
    * That's fine for the read-only case; ember uses the type and id information

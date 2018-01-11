@@ -7,13 +7,13 @@ describe PaperFactory do
     FactoryGirl.create(:card_task_type)
   end
   let(:upload_card_task_type) do
-    FactoryGirl.create(:card_task_type, display_name: 'Upload Manuscript', task_class: 'TahiStandardTasks::UploadManuscriptTask')
+    FactoryGirl.create(:card_task_type, display_name: 'Upload Manuscript', task_class: 'UploadManuscriptTask')
   end
   let(:special_card) { FactoryGirl.create(:card, :versioned, card_task_type: upload_card_task_type) }
   let(:mmt) do
     FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|
       # create mmt template from specified task classes
-      task_klasses = [TahiStandardTasks::PaperReviewerTask]
+      task_klasses = [PaperReviewerTask]
 
       # create default cards necessary for a new mmt
       required_task_klasses = task_klasses + [Author]
@@ -94,9 +94,9 @@ describe PaperFactory do
       new_paper = PaperFactory.create(paper_attrs, user)
       expect(new_paper.tasks.size).to eq(3)
       expect(new_paper.tasks.pluck(:type)).to match_array([
-                                                            'TahiStandardTasks::PaperReviewerTask',
+                                                            'PaperReviewerTask',
                                                             'CustomCardTask',
-                                                            'TahiStandardTasks::UploadManuscriptTask'
+                                                            'UploadManuscriptTask'
                                                           ])
     end
 
@@ -114,7 +114,7 @@ describe PaperFactory do
     end
 
     it "calls the task_added_to_paper hook for each task" do
-      expect_any_instance_of(TahiStandardTasks::PaperReviewerTask).to receive(:task_added_to_paper)
+      expect_any_instance_of(PaperReviewerTask).to receive(:task_added_to_paper)
       subject
     end
 

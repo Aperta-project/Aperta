@@ -7,7 +7,7 @@ module CustomCard
     # CustomCard::Configurations class name (CustomCard::Configurations::MyCard)
     argument :configuration, type: :string, required: true
 
-    # legacy class name ("TahiStandardTasks::CoverLetterTask")
+    # legacy class name ("CoverLetterTask")
     argument :legacy_task_klass_name, type: :string, required: true
 
     def generate_custom_card_migration

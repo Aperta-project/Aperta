@@ -1,34 +1,22 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::ExportDelivery do
-  let!(:paper) do
-    FactoryGirl.create(:paper, publishing_state: 'accepted')
-  end
-  subject(:export_delivery) { FactoryGirl.build(:export_delivery, paper: paper, destination: 'apex') }
-
-  describe 'validations' do
-    it 'is valid' do
-      expect(export_delivery.valid?).to be(true)
+describe ExportDelivery do
+  describe "validating paper accepted" do
+    it "the paper must be accepted when delivering to apex" do
+      delivery = FactoryGirl.build(:export_delivery, destination: 'apex')
+      expect(delivery).to have(1).errors_on(:paper)
+      delivery.paper.update(publishing_state: 'accepted')
+      expect(delivery).to be_valid
     end
 
-    it 'requires a user' do
-      export_delivery.user = nil
-      expect(export_delivery.valid?).to be(false)
+    it "the paper can be in any publishing_state when delivering to preprint" do
+      delivery = FactoryGirl.build(:export_delivery, destination: 'preprint')
+      expect(delivery).to be_valid
     end
 
-    it 'requires a paper' do
-      export_delivery.paper = nil
-      expect(export_delivery.valid?).to be(false)
-    end
-
-    it 'requires a paper to be accepted' do
-      export_delivery.paper.publishing_state = nil
-      expect(export_delivery.valid?).to be(false)
-    end
-
-    it 'requires a task' do
-      export_delivery.task = nil
-      expect(export_delivery.valid?).to be(false)
+    it "the paper can be in any publishing_state when delivering to em" do
+      delivery = FactoryGirl.build(:export_delivery, destination: 'em')
+      expect(delivery).to be_valid
     end
   end
 end

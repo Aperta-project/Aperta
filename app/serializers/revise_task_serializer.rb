@@ -1,0 +1,2 @@
+class ReviseTaskSerializer < ::TaskSerializer
+end

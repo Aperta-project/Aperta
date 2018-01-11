@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::SendToApexTask do
+describe SendToApexTask do
   let!(:paper) do
     FactoryGirl.create(:paper, :with_tasks, publishing_state: 'accepted')
   end

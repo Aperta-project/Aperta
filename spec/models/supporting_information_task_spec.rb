@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::SupportingInformationTask do
+describe SupportingInformationTask do
   it_behaves_like 'is a metadata task'
 
   describe '.restore_defaults' do

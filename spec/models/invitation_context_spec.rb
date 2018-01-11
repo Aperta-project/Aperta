@@ -16,7 +16,7 @@ describe InvitationContext do
   def make_template(invitation)
     journal = invitation.paper.journal
     manuscript_manager_template = FactoryGirl.create(:manuscript_manager_template, paper_type: 'research', journal: journal)
-    journal_task_type = FactoryGirl.create(:journal_task_type, journal: journal, kind: 'TahiStandardTasks::PaperReviewerTask')
+    journal_task_type = FactoryGirl.create(:journal_task_type, journal: journal, kind: 'PaperReviewerTask')
     phase_template = FactoryGirl.create(:phase_template, manuscript_manager_template: manuscript_manager_template)
     FactoryGirl.create(:task_template, journal_task_type: journal_task_type, phase_template: phase_template)
   end

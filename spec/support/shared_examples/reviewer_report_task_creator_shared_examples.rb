@@ -89,7 +89,7 @@ RSpec.shared_examples_for 'creating a reviewer report task' do |reviewer_report_
 
   context 'when assigning a new reviewer' do
     it 'sends the welcome email' do
-      expect(TahiStandardTasks::ReviewerMailer).to \
+      expect(ReviewerMailer).to \
         receive_message_chain('delay.welcome_reviewer')
       subject.process
     end

@@ -3,10 +3,10 @@ require 'rails_helper'
 describe TaskFactory do
   let(:paper) { FactoryGirl.create(:paper) }
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
-  let(:klass) { TahiStandardTasks::ReviseTask }
+  let(:klass) { ReviseTask }
 
   before do
-    CardLoader.load("TahiStandardTasks::ReviseTask")
+    CardLoader.load("ReviseTask")
   end
 
   it "Creates a task" do
@@ -65,7 +65,7 @@ describe TaskFactory do
     end
 
     context "the card version is not present in the options" do
-      let(:klass) { TahiStandardTasks::UploadManuscriptTask }
+      let(:klass) { UploadManuscriptTask }
 
       context "a card with a matching name as the task exists" do
         let!(:existing_card) do

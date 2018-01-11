@@ -12,8 +12,8 @@ namespace :data do
         Author,
         GroupAuthor,
         ReviewerReport,
-        TahiStandardTasks::Funder,
-        TahiStandardTasks::ReviewerRecommendation,
+        Funder,
+        ReviewerRecommendation,
         ::Task.descendants - [CustomCardTask]
       ].flatten
 

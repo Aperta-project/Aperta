@@ -1,0 +1,2 @@
+class InitialDecisionTaskSerializer < ::TaskSerializer
+end

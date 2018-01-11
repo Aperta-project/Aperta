@@ -5,7 +5,7 @@
 module CardConfiguration
   class SimilarityCheckTask
     def self.name
-      "TahiStandardTasks::SimilarityCheckTask"
+      "SimilarityCheckTask"
     end
 
     def self.title

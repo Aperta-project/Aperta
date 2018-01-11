@@ -190,13 +190,13 @@ describe Typesetter::MetadataSerializer do
   describe 'publication_date' do
     let(:our_task) do
       paper.tasks.find_by(
-        type: 'TahiStandardTasks::ProductionMetadataTask'
+        type: 'ProductionMetadataTask'
       ).first!
     end
 
     context "with valid date" do
       before do
-        allow_any_instance_of(TahiStandardTasks::ProductionMetadataTask)
+        allow_any_instance_of(ProductionMetadataTask)
           .to receive(:publication_date).and_return("11/16/2015")
       end
 
@@ -207,7 +207,7 @@ describe Typesetter::MetadataSerializer do
 
     context "with no date" do
       before do
-        allow_any_instance_of(TahiStandardTasks::ProductionMetadataTask)
+        allow_any_instance_of(ProductionMetadataTask)
           .to receive(:publication_date).and_return(nil)
       end
 

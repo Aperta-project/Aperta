@@ -135,7 +135,7 @@ describe Invitation do
     end
 
     it "adds the author list to invitation.information" do
-      authors_list = TahiStandardTasks::AuthorsList.authors_list(paper)
+      authors_list = AuthorsList.authors_list(paper)
       expect(authors_list).to_not be_empty
       invitation.invite!
       expect(invitation.information)

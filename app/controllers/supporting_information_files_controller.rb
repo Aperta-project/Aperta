@@ -46,7 +46,7 @@ class SupportingInformationFilesController < ApplicationController
   end
 
   def build_new_supporting_information_file
-    task = TahiStandardTasks::SupportingInformationTask.find(params[:task_id])
+    task = SupportingInformationTask.find(params[:task_id])
     task.supporting_information_files.new(paper_id: task.paper_id)
   end
 

@@ -32,9 +32,9 @@ describe ReviewerReportTaskCreator do
 
   before do
     CardLoader.load("ReviewerReport")
-    CardLoader.load("TahiStandardTasks::ReviewerReportTask")
-    CardLoader.load("TahiStandardTasks::FrontMatterReviewerReport")
-    CardLoader.load("TahiStandardTasks::FrontMatterReviewerReportTask")
+    CardLoader.load("ReviewerReportTask")
+    CardLoader.load("FrontMatterReviewerReport")
+    CardLoader.load("FrontMatterReviewerReportTask")
     FactoryGirl.create :review_duration_period_setting_template
   end
 
@@ -46,10 +46,10 @@ describe ReviewerReportTaskCreator do
 
     it "sets the task to be a ReviewerReportTask" do
       task = subject.process
-      expect(task).to be_kind_of(TahiStandardTasks::ReviewerReportTask)
+      expect(task).to be_kind_of(ReviewerReportTask)
     end
 
-    it_behaves_like 'creating a reviewer report task', reviewer_report_type: TahiStandardTasks::ReviewerReportTask
+    it_behaves_like 'creating a reviewer report task', reviewer_report_type: ReviewerReportTask
   end
 
   context "when the paper is not configured to use the research reviewer report" do
@@ -59,9 +59,9 @@ describe ReviewerReportTaskCreator do
 
     it "sets the task to be a FrontMatterReviewerReportTask" do
       task = subject.process
-      expect(task).to be_kind_of(TahiStandardTasks::FrontMatterReviewerReportTask)
+      expect(task).to be_kind_of(FrontMatterReviewerReportTask)
     end
 
-    it_behaves_like 'creating a reviewer report task', reviewer_report_type: TahiStandardTasks::FrontMatterReviewerReportTask
+    it_behaves_like 'creating a reviewer report task', reviewer_report_type: FrontMatterReviewerReportTask
   end
 end

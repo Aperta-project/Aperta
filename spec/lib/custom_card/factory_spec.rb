@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe CustomCard::Factory do
   let!(:journal) { FactoryGirl.create(:journal) }
-  let!(:card_task_type) { FactoryGirl.create(:card_task_type, task_class: 'TahiStandardTasks::UploadManuscriptTask') }
+  let!(:card_task_type) { FactoryGirl.create(:card_task_type, task_class: 'UploadManuscriptTask') }
   let(:custom_card_factory) { CustomCard::Factory.new(journal: journal) }
 
   # fake custom card config to use for testing
@@ -13,7 +13,7 @@ describe CustomCard::Factory do
       end
 
       def self.task_class
-        'TahiStandardTasks::UploadManuscriptTask'
+        'UploadManuscriptTask'
       end
 
       def self.xml_content

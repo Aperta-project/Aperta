@@ -8,7 +8,7 @@ class CustomCardTask < Task
   DEFAULT_TITLE = 'Custom Card'.freeze
   has_many :export_deliveries,
     foreign_key: 'task_id',
-    class_name: "TahiStandardTasks::ExportDelivery",
+    class_name: "ExportDelivery",
     dependent: :destroy
   # unlike other answerables, a CustomCardTask class does not have
   # a concept of a latest card_version.  This is only determinable

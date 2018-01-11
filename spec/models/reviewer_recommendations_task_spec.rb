@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::ReviewerRecommendationsTask do
+describe ReviewerRecommendationsTask do
   subject(:task) { FactoryGirl.create(:reviewer_recommendations_task) }
 
   it_behaves_like 'is snapshottable'

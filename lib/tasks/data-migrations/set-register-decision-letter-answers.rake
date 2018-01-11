@@ -10,7 +10,7 @@ namespace :data do
     task set_register_decision_letter_answers: :environment do
       question = NestedQuestion.find_by!(ident: 'register_decision_questions--selected-template')
 
-      TahiStandardTasks::RegisterDecisionTask.all.includes(:paper).find_each do |task|
+      RegisterDecisionTask.all.includes(:paper).find_each do |task|
         most_recent_decision_with_a_verdict = task.paper.decisions.
           unscoped.
           where.not(verdict: nil).

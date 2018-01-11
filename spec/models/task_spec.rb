@@ -192,8 +192,8 @@ describe Task do
     end
 
     it 'works with Task descendants' do
-      expect(Task.safe_constantize('TahiStandardTasks::TaxonTask'))
-        .to eq(TahiStandardTasks::TaxonTask)
+      expect(Task.safe_constantize('TaxonTask'))
+        .to eq(TaxonTask)
     end
 
     it 'fails with non-tasks' do

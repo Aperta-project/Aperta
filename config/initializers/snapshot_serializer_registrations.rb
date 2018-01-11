@@ -19,13 +19,13 @@ ActionDispatch::Reloader.to_prepare do
       serialize QuestionAttachment, with: Snapshot::AttachmentSerializer
       serialize SupportingInformationFile, with: Snapshot::AttachmentSerializer
 
-      serialize TahiStandardTasks::AuthorsTask, with: Snapshot::AuthorTaskSerializer
-      serialize TahiStandardTasks::FigureTask, with: Snapshot::FigureTaskSerializer
-      serialize TahiStandardTasks::ReviewerRecommendationsTask, with: Snapshot::ReviewerRecommendationsTaskSerializer
-      serialize TahiStandardTasks::ReviseTask, with: Snapshot::ReviseTaskSerializer
-      serialize TahiStandardTasks::SupportingInformationTask, with: Snapshot::SupportingInformationTaskSerializer
-      serialize TahiStandardTasks::TaxonTask, with: Snapshot::TaxonTaskSerializer
-      serialize TahiStandardTasks::UploadManuscriptTask, with: Snapshot::UploadManuscriptTaskSerializer
+      serialize AuthorsTask, with: Snapshot::AuthorTaskSerializer
+      serialize FigureTask, with: Snapshot::FigureTaskSerializer
+      serialize ReviewerRecommendationsTask, with: Snapshot::ReviewerRecommendationsTaskSerializer
+      serialize ReviseTask, with: Snapshot::ReviseTaskSerializer
+      serialize SupportingInformationTask, with: Snapshot::SupportingInformationTaskSerializer
+      serialize TaxonTask, with: Snapshot::TaxonTaskSerializer
+      serialize UploadManuscriptTask, with: Snapshot::UploadManuscriptTaskSerializer
       serialize CustomCardTask, with: Snapshot::CustomCardTaskSerializer
     end
   end

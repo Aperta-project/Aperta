@@ -7,7 +7,7 @@ namespace :data do
         conversions =
           [
             {
-              type: TahiStandardTasks::TaxonTask.name,
+              type: TaxonTask.name,
               from: "taxon_zoological",
               to: "taxon--zoological",
               children: [
@@ -15,7 +15,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::TaxonTask.name,
+              type: TaxonTask.name,
               from: "taxon_botanical",
               to: "taxon--botanical",
               children: [
@@ -50,7 +50,7 @@ namespace :data do
             },
 
             {
-              type: TahiStandardTasks::CompetingInterestsTask.name,
+              type: CompetingInterestsTask.name,
               from: "competing_interests",
               to: "competing_interests--has_competing_interests",
               children: [
@@ -60,13 +60,13 @@ namespace :data do
 
 
             {
-              type: TahiStandardTasks::ReviewerReportTask.name,
+              type: ReviewerReportTask.name,
               from: "competing_interests",
               to: "reviewer_report--competing_interests",
               children: []
             },
             {
-              type: TahiStandardTasks::ReviewerReportTask.name,
+              type: ReviewerReportTask.name,
               from: "support_conclusions",
               to: "reviewer_report--plos_biology_suitable",
               children: [
@@ -74,7 +74,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::ReviewerReportTask.name,
+              type: ReviewerReportTask.name,
               from: "statistical_analysis",
               to: "reviewer_report--statistical_analysis",
               children: [
@@ -82,7 +82,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::ReviewerReportTask.name,
+              type: ReviewerReportTask.name,
               from: "standards",
               to: "reviewer_report--standards",
               children: [
@@ -90,20 +90,20 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::ReviewerReportTask.name,
+              type: ReviewerReportTask.name,
               from: "additional_comments",
               to: "reviewer_report--additional_comments",
               children: []
             },
             {
-              type: TahiStandardTasks::ReviewerReportTask.name,
+              type: ReviewerReportTask.name,
               from: "identity",
               to: "reviewer_report--identity",
               children: []
             },
 
             {
-              type: TahiStandardTasks::Funder.name,
+              type: Funder.name,
               from: "funder_had_influence",
               to: "funder--had_influence",
               children: [
@@ -112,20 +112,20 @@ namespace :data do
             },
 
             {
-              type: TahiStandardTasks::DataAvailabilityTask.name,
+              type: DataAvailabilityTask.name,
               from: "data_fully_available",
               to: "data_availability--data_fully_available",
               children: []
             },
             {
-              type: TahiStandardTasks::DataAvailabilityTask.name,
+              type: DataAvailabilityTask.name,
               from: "data_location",
               to: "data_availability--data_location",
               children: []
             },
 
             {
-              type: TahiStandardTasks::EthicsTask.name,
+              type: EthicsTask.name,
               from: "human_subjects",
               to: "ethics--human_subjects",
               children: [
@@ -133,7 +133,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::EthicsTask.name,
+              type: EthicsTask.name,
               from: "animal_subjects",
               to: "ethics--animal_subjects",
               children: [
@@ -142,14 +142,14 @@ namespace :data do
             },
 
             {
-              type: TahiStandardTasks::FigureTask.name,
+              type: FigureTask.name,
               from: "figure_complies",
               to: "figures--complies",
               children: []
             },
 
             {
-              type: TahiStandardTasks::FinancialDisclosureTask.name,
+              type: FinancialDisclosureTask.name,
               from: "author_received_funding",
               to: "financial_disclosures--author_received_funding",
               children: []
@@ -586,32 +586,32 @@ namespace :data do
             },
 
             {
-              type: TahiStandardTasks::ProductionMetadataTask.name,
+              type: ProductionMetadataTask.name,
               from: "publication_date",
               to: "production_metadata--publication_date",
               children: []
             },
             {
-              type: TahiStandardTasks::ProductionMetadataTask.name,
+              type: ProductionMetadataTask.name,
               from: "volume_number",
               to: "production_metadata--volume_number",
               children: []
             },
             {
-              type: TahiStandardTasks::ProductionMetadataTask.name,
+              type: ProductionMetadataTask.name,
               from: "issue_number",
               to: "production_metadata--issue_number",
               children: []
             },
             {
-              type: TahiStandardTasks::ProductionMetadataTask.name,
+              type: ProductionMetadataTask.name,
               from: "production_notes",
               to: "production_metadata--production_notes",
               children: []
             },
 
             {
-              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              type: PublishingRelatedQuestionsTask.name,
               from: "published_elsewhere",
               to: "publishing_related_questions--published_elsewhere",
               children: [
@@ -620,7 +620,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              type: PublishingRelatedQuestionsTask.name,
               from: "submitted_in_conjunction",
               to: "publishing_related_questions--submitted_in_conjunction",
               children: [
@@ -629,7 +629,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              type: PublishingRelatedQuestionsTask.name,
               from: "previous_interactions_with_this_manuscript",
               to: "publishing_related_questions--previous_interactions_with_this_manuscript",
               children: [
@@ -637,7 +637,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              type: PublishingRelatedQuestionsTask.name,
               from: "presubmission_inquiry",
               to: "publishing_related_questions--presubmission_inquiry",
               children: [
@@ -645,7 +645,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              type: PublishingRelatedQuestionsTask.name,
               from: "other_journal_submission",
               to: "publishing_related_questions--other_journal_submission",
               children: [
@@ -653,32 +653,32 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              type: PublishingRelatedQuestionsTask.name,
               from: "author_was_previous_journal_editor",
               to: "publishing_related_questions--author_was_previous_journal_editor",
               children: []
             },
             {
-              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              type: PublishingRelatedQuestionsTask.name,
               from: "intended_collection",
               to: "publishing_related_questions--intended_collection",
               children: []
             },
             {
-              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              type: PublishingRelatedQuestionsTask.name,
               from: "us_government_employees",
               to: "publishing_related_questions--us_government_employees",
               children: []
             },
 
             {
-              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              type: ReportingGuidelinesTask.name,
               from: "clinical_trial",
               to: "reporting_guidelines--clinical_trial",
               children: []
             },
             {
-              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              type: ReportingGuidelinesTask.name,
               from: "systematic_reviews",
               to: "reporting_guidelines--systematic_reviews",
               children: [
@@ -686,7 +686,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              type: ReportingGuidelinesTask.name,
               from: "meta_analyses",
               to: "reporting_guidelines--meta_analyses",
               children: [
@@ -694,32 +694,32 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              type: ReportingGuidelinesTask.name,
               from: "diagnostic_studies",
               to: "reporting_guidelines--diagnostic_studies",
               children: [ ]
             },
             {
-              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              type: ReportingGuidelinesTask.name,
               from: "epidemiological_studies",
               to: "reporting_guidelines--epidemiological_studies",
               children: [ ]
             },
             {
-              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              type: ReportingGuidelinesTask.name,
               from: "microarray_studies",
               to: "reporting_guidelines--microarray_studies",
               children: [ ]
             },
 
             {
-              type: TahiStandardTasks::ReviewerRecommendation.name,
+              type: ReviewerRecommendation.name,
               from: "recommend_or_oppose",
               to: "reviewer_recommendations--recommend_or_oppose",
               children: [ ]
             },
             {
-              type: TahiStandardTasks::ReviewerRecommendation.name,
+              type: ReviewerRecommendation.name,
               from: "reason",
               to: "reviewer_recommendations--reason",
               children: [ ]

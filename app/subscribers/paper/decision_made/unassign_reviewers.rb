@@ -3,8 +3,8 @@
 # process is owned by Paper::DecisionMade::UnassignReviewers
 # which lives in the main app.
 class Paper::DecisionMade::UnassignReviewers
-  REVIEWER_SPECIFIC_TASKS = ["TahiStandardTasks::FrontMatterReviewerReportTask",
-                             "TahiStandardTasks::ReviewerReportTask"]
+  REVIEWER_SPECIFIC_TASKS = ["FrontMatterReviewerReportTask",
+                             "ReviewerReportTask"]
 
   def self.call(_event_name, event_data)
     paper = event_data[:record]
@@ -15,7 +15,7 @@ class Paper::DecisionMade::UnassignReviewers
   def self.invalidate_invitations(paper)
     invitations = Invitation.joins(:task).where(
       'tasks.paper_id' => paper.id,
-      'tasks.type' => 'TahiStandardTasks::PaperReviewerTask',
+      'tasks.type' => 'PaperReviewerTask',
       'invitations.state' => 'invited')
 
     invitations.each(&:rescind!)

@@ -5,7 +5,7 @@
 require 'rails_helper'
 
 module QueryParserSpec
-  class FictionalReport < TahiStandardTasks::ReviewerReportTask
+  class FictionalReport < ReviewerReportTask
   end
 end
 
@@ -240,8 +240,8 @@ describe QueryParser do
 
     describe 'review queries' do
       let(:reviewer_report_types) do
-        [TahiStandardTasks::ReviewerReportTask,
-         TahiStandardTasks::FrontMatterReviewerReportTask,
+        [ReviewerReportTask,
+         FrontMatterReviewerReportTask,
          QueryParserSpec::FictionalReport
         ]
       end

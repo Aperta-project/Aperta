@@ -137,7 +137,7 @@ feature "Dashboard", js: true do
       FactoryGirl.create_pair(:invitation, :invited, task: task, invitee: user)
 
       # seed the Upload Manuscript card so that it can be created after a decision has been registered
-      ctt = CardTaskType.find_by(task_class: "TahiStandardTasks::UploadManuscriptTask")
+      ctt = CardTaskType.find_by(task_class: "UploadManuscriptTask")
       FactoryGirl.create(:card, :versioned, card_task_type: ctt)
     end
 

@@ -21,7 +21,7 @@ var newTask = function(completed, paper, setting) {
   return {
     id: 2,
     title: 'Title and Abstract',
-    type: 'TahiStandardTasks::TitleAndAbstractTask',
+    type: 'TitleAndAbstractTask',
     completed: completed,
     isMetadataTask: false,
     isSubmissionTask: true,

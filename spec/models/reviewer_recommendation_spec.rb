@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::ReviewerRecommendation do
+describe ReviewerRecommendation do
   describe "validations" do
     let(:recommendation) { FactoryGirl.build(:reviewer_recommendation) }
 

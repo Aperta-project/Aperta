@@ -15,12 +15,12 @@ describe TaskSerializer, serializer_test: true do
 
   describe '#is_metadata_task' do
     it 'returns false if task is not a metadata type' do
-      expect(deserialized_content[:task][:is_metadata_task]).to eq(false)
+      expect(deserialized_content[:ad_hoc_task][:is_metadata_task]).to eq(false)
     end
 
     it 'returns true if task is a metadata type' do
       Task.metadata_types << 'AdHocTask'
-      expect(deserialized_content[:task][:is_metadata_task]).to eq(true)
+      expect(deserialized_content[:ad_hoc_task][:is_metadata_task]).to eq(true)
       Task.metadata_types.delete('AdHocTask')
     end
   end
@@ -28,23 +28,23 @@ describe TaskSerializer, serializer_test: true do
   describe '#is_snapshot_task' do
     it 'returns false when task is not snapshottable' do
       task.snapshottable = false
-      expect(deserialized_content[:task][:is_snapshot_task]).to eq(false)
+      expect(deserialized_content[:ad_hoc_task][:is_snapshot_task]).to eq(false)
     end
 
     it 'returns true whe task is not snapshottable' do
       task.snapshottable = true
-      expect(deserialized_content[:task][:is_snapshot_task]).to eq(true)
+      expect(deserialized_content[:ad_hoc_task][:is_snapshot_task]).to eq(true)
     end
   end
 
   describe '#is_submission_task' do
     it 'returns false if task is not a submission type' do
-      expect(deserialized_content[:task][:is_submission_task]).to eq(false)
+      expect(deserialized_content[:ad_hoc_task][:is_submission_task]).to eq(false)
     end
 
     it 'returns true if task is a submission type' do
       Task.submission_types << 'AdHocTask'
-      expect(deserialized_content[:task][:is_submission_task]).to eq(true)
+      expect(deserialized_content[:ad_hoc_task][:is_submission_task]).to eq(true)
       Task.submission_types.delete('AdHocTask')
     end
 
@@ -61,7 +61,7 @@ describe TaskSerializer, serializer_test: true do
         let(:required_for_submission) { true }
 
         it 'returns true' do
-          expect(deserialized_content[:task][:is_submission_task]).to eq(true)
+          expect(deserialized_content[:custom_card_task][:is_submission_task]).to eq(true)
         end
       end
 
@@ -69,7 +69,7 @@ describe TaskSerializer, serializer_test: true do
         let(:required_for_submission) { false }
 
         it 'returns false' do
-          expect(deserialized_content[:task][:is_submission_task]).to eq(false)
+          expect(deserialized_content[:custom_card_task][:is_submission_task]).to eq(false)
         end
       end
     end
@@ -84,7 +84,7 @@ describe TaskSerializer, serializer_test: true do
     end
 
     it 'returns false if current_user does not exists in the context' do
-      expect(deserialized_content[:task][:assigned_to_me]).to eq(false)
+      expect(deserialized_content[:ad_hoc_task][:assigned_to_me]).to eq(false)
     end
 
     context 'and the user is participating in this task' do
@@ -98,7 +98,7 @@ describe TaskSerializer, serializer_test: true do
       end
 
       it 'returns true if current_user exists in the context' do
-        expect(deserialized_content[:task][:assigned_to_me]).to eq(true)
+        expect(deserialized_content[:ad_hoc_task][:assigned_to_me]).to eq(true)
       end
     end
   end
@@ -110,7 +110,7 @@ describe TaskSerializer, serializer_test: true do
       end
 
       it 'returns true' do
-        expect(deserialized_content[:task][:is_workflow_only_task]).to eq(true)
+        expect(deserialized_content[:ad_hoc_task][:is_workflow_only_task]).to eq(true)
       end
     end
 
@@ -120,7 +120,7 @@ describe TaskSerializer, serializer_test: true do
       end
 
       it 'returns false' do
-        expect(deserialized_content[:task][:is_workflow_only_task]).to eq(false)
+        expect(deserialized_content[:ad_hoc_task][:is_workflow_only_task]).to eq(false)
       end
     end
   end
@@ -129,11 +129,11 @@ describe TaskSerializer, serializer_test: true do
     it 'returns user when assigned to task' do
       user = create(:user)
       task.update(assigned_user: user)
-      expect(deserialized_content[:task][:assigned_user_id]).to be == user.id
+      expect(deserialized_content[:ad_hoc_task][:assigned_user_id]).to be == user.id
     end
 
     it 'returns nil when user is not assigned to task' do
-      expect(deserialized_content[:task][:assigned_user]).to be_nil
+      expect(deserialized_content[:ad_hoc_task][:assigned_user]).to be_nil
     end
   end
 end

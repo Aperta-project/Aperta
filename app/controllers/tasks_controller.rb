@@ -8,9 +8,8 @@ class TasksController < ApplicationController
   def index
     requires_user_can :view, paper
     tasks = paper.tasks.includes(:paper)
-
     # use task serializer instead of custom task serializer becuase it is lighter weight
-    respond_with tasks, each_serializer: TaskSerializer
+    respond_with tasks, serializer: TasksSerializer
   end
 
   def show

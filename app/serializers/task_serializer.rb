@@ -23,9 +23,13 @@ class TaskSerializer < ActiveModel::Serializer
 
   has_one :assigned_user, embed: :id
 
-  self.root = :task
+  self.root = true
 
   has_one :card_version, embed: :id, include: true
+
+  def root_name
+    object.class.name.demodulize.underscore.to_sym
+  end
 
   def viewable
     scope.can?(:view, object)

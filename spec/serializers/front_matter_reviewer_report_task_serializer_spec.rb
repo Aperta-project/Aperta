@@ -21,7 +21,7 @@ describe FrontMatterReviewerReportTaskSerializer, serializer_test: true do
       .and_return true
   end
 
-  let(:task_content) { deserialized_content[:task] }
+  let(:task_content) { deserialized_content[:front_matter_reviewer_report_task] }
   let(:decisions_content) { deserialized_content[:decisions] }
 
   it "serializes successfully" do

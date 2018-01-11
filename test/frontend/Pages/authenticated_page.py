@@ -1069,3 +1069,10 @@ class AuthenticatedPage(StyledPage):
       being, we have to introduce some fallibility to the process by introducing a pause.
       """
       time.sleep(.7)
+
+  def open_recent_activity(self):
+      """
+      Opens the recent activity overlay
+      :return: void function
+      """
+      self._get(self._recent_activity).click()

@@ -173,6 +173,22 @@ class StyledPage(PlosPage):
     assert paragraph.value_of_css_property('color') == APERTA_BLACK, \
         paragraph.value_of_css_property('color')
 
+  @staticmethod
+  def validate_card_question_text(question):
+    """
+    Ensure consistency in rendering application question text in cards
+    :param question: question to validate
+    :return: Void Function
+    """
+    assert APPLICATION_TYPEFACE in question.value_of_css_property('font-family').lower(), \
+        question.value_of_css_property('font-family')
+    assert question.value_of_css_property('font-size') == '16px', \
+        question.value_of_css_property('font-size')
+    assert question.value_of_css_property('font-weight') == '400', \
+        question.value_of_css_property('font-weight')
+    assert question.value_of_css_property('color') == APERTA_BLACK, \
+        question.value_of_css_property('color')
+
   # TODO: Define label style
 
   # NOTA BENE: This is incorrect per the v.1.1 style guide but correct per usage - the style guide

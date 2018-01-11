@@ -1,4 +1,6 @@
 require 'rails_helper'
+require 'support/rich_text_editor_helpers'
+
 include RichTextEditorHelpers
 
 feature 'Initial Decision', js: true, sidekiq: :inline! do

@@ -102,6 +102,9 @@ class AuthenticatedPage(StyledPage):
         self._paper_sidebar_state_information = (By.ID, 'submission-state-information')
         self._first_comment = (By.CLASS_NAME, 'discussion-topic-comment-field')
         self._paper_sidebar_manuscript_id = (By.CLASS_NAME, 'task-list-doi')
+        self._task_headings = (By.CLASS_NAME, 'task-disclosure-heading')
+        self._task_heading_status_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon')
+        self._task_heading_completed_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon active')
         # Cards - placeholder locators - these are over-ridden by definitions in the workflow and
         #  manuscript_viewer pages
         self._addl_info_card = None
@@ -216,7 +219,7 @@ class AuthenticatedPage(StyledPage):
         :return: None
         """
         logging.info('Attach file called with {0}'.format(file_name))
-        attach_button = self._get(self._file_attach_btn)
+        self._get(self._file_attach_btn)
         # The following element is inside a hidden div so must use iget()
         attach_input = self._iget(self._file_attach_input)
         logging.info('Sending filename to input field')
@@ -441,6 +444,7 @@ class AuthenticatedPage(StyledPage):
         url = self._driver.current_url
         signout_url = url.split('/')[0] + '//' + url.split('/')[2] + '/users/sign_out'
         self._driver.get(signout_url)
+        self._wait_on_lambda(lambda: 'sign_in' in self.get_current_url(), max_wait=10)
 
     def close_sheet(self):
         """
@@ -586,7 +590,7 @@ class AuthenticatedPage(StyledPage):
         """
         A method to return the paper id from the database via a query on the short_doi
         :param short_doi: The short doi available from the URL of a paper and also the
-        short_url in db
+          short_url in db
         :return: paper.id from db, an integer
         """
         journal_id = PgSQL().query('SELECT journal_id '
@@ -598,7 +602,7 @@ class AuthenticatedPage(StyledPage):
         """
         A method to return the paper id from the database via a query on the short_doi
         :param short_doi: The short doi available from the URL of a paper and also the
-        short_url in db
+          short_url in db
         :return: paper.id from db, an integer
         """
         paper_id = PgSQL().query('SELECT id FROM papers WHERE short_doi =%s;', (short_doi,))[0][0]
@@ -907,7 +911,6 @@ class AuthenticatedPage(StyledPage):
         :return: boolean, true if found
         """
         msg_match = False
-        name_match = False
         ra_entries = self._gets(self._recent_activity_table_row)
         for ra_entry in ra_entries:
             try:
@@ -1077,7 +1080,7 @@ class AuthenticatedPage(StyledPage):
         Finds institution name in the 'did-you-mean' list and clicks on it to place in the
         institution field
         :param parent_element: the parent web element to locate list of suggestions and
-        required name
+          required name
         :param institution_name: string: institution name to select
         :return: void function
         """
@@ -1099,3 +1102,19 @@ class AuthenticatedPage(StyledPage):
         being, we have to introduce some fallibility to the process by introducing a pause.
         """
         time.sleep(.7)
+
+    def is_task_marked_complete(self, task_name):
+        """
+        Check if a task is marked as completed
+        :param task_name: The name of the task to validate
+        :return: True if task is marked as completed and False otherwise
+        """
+        tasks = self._gets(self._task_headings)
+        for task in tasks:
+            if task.text == task_name:
+                completed_icon = task.find_element(*self._task_heading_status_icon)
+                if 'active' in completed_icon.get_attribute('class'):
+                    logging.info('Completed is true')
+                    return True
+        logging.info('Completed is False')
+        return False

@@ -8,7 +8,7 @@ module CoAuthorConfirmable
 
   included do
     validates :co_author_state,
-      inclusion: { in: %w(confirmed unconfirmed refuted),
+      inclusion: { in: %w[confirmed unconfirmed refuted],
                    message: "must be confirmed, unconfirmed or refuted" },
       allow_nil: true
   end
@@ -22,20 +22,15 @@ module CoAuthorConfirmable
   end
 
   def co_author_confirmed!
-    update_attributes!(
-      co_author_state: 'confirmed',
-      co_author_state_modified_at: Time.now.utc,
-      co_author_state_modified_by_id: nil # not every author has an associated user, so this is a crappy workaround
-    )
+    # not every author has an associated user, so this is a crappy workaround
+    update_coauthor_state('confirmed', nil)
   end
 
   def update_coauthor_state(status, user_id)
-    attrs = {
+    update_attributes!(
       co_author_state: status,
       co_author_state_modified_by_id: user_id,
       co_author_state_modified_at: Time.now.utc
-    }
-    update!(attrs)
+    )
   end
-
 end

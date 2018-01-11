@@ -492,7 +492,6 @@ class StyledPage(PlosPage):
         assert msg.value_of_css_property('background-color') in ('rgb(234, 253, 231)',
                                                                  TRANSPARENT), \
             msg.value_of_css_property('background-color')
-
     # OLD Non-clean, pre v.1. style guide definitions are all below here ##########################
     # Divider and Border Styles ===========================
     @staticmethod
@@ -856,10 +855,6 @@ class StyledPage(PlosPage):
         """
         assert APPLICATION_TYPEFACE in olul.value_of_css_property('font-family'), \
             olul.value_of_css_property('font-family')
-        assert olul.value_of_css_property('font-size') == '19.6px', \
-            olul.value_of_css_property('font-size')
-        assert olul.value_of_css_property('line-height') == '23.5167px', \
-            olul.value_of_css_property('line-height')
         # This color is not represented in the tahi palette
         assert olul.value_of_css_property('color') == APERTA_BLACK, olul.value_of_css_property(
             'color')

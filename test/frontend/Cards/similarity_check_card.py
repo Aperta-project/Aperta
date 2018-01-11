@@ -126,22 +126,38 @@ class SimilarityCheckCard(BaseCard):
                     self.validate_manual_report_confirmation()
                 else:  # 2)
                     if not self.completed_state():
-                        # it's still in pending status
-                        self.validate_pending()
+                        # it's still in pending status - triggered by previous submission
+                        self.validate_pending_triggered_by_previous_submission()
 
     def validate_pending(self):
         """
-        Validates card components - message and report title -  when the Report is pending
+        Validates card components - message and report title - when the Report is pending
         :return: void function
         """
         try:
+            self._wait_for_element(self._get(self._report_pending_spinner_message))
             report_pending_spinner_message = self._get(self._report_pending_spinner_message)
             assert "Pending" in report_pending_spinner_message.text
         except ElementDoesNotExistAssertionError:
             # we were waiting for Similarity Check completion,
-            # and the report is ready
+            # and now the report is ready
             report_title = self._get(self._sim_check_report_title)
             assert 'Similarity Check Report' in report_title.text.strip()
+        return True
+
+    def validate_pending_triggered_by_previous_submission(self):
+        """
+        Validates card components - message and report title - when the Report is pending
+        If Report was triggered by previous submission, we checking History Report
+        :return: void function
+        """
+        history_report = self.get_report_history()
+        try:
+            assert 'Pending' in history_report[2], \
+                '\'Pending\' is expected in {0}'.format(history_report)
+        except ElementDoesNotExistAssertionError:
+            assert 'Similarity check completed' in history_report[2], \
+                '\'Similarity check complete\' is expected in {0}'.format(history_report)
         return True
 
     def click_send_manual_report(self):
@@ -152,7 +168,7 @@ class SimilarityCheckCard(BaseCard):
 
     def validate_manual_report_confirmation(self):
         """
-        Validates confirmation step befor manual Report generation
+        Validates confirmation step before manual Report generation
         :return: void function
         """
         # AC 4.2.2 .The button triggers a confirm/cancel step before generation a report
@@ -199,6 +215,7 @@ class SimilarityCheckCard(BaseCard):
         self._get(self._sim_check_report_revision_number).click()
         self._wait_for_element(self._get(self._version_report))
         last_version_report = self._get(self._version_report).text.strip()
+        self._get(self._sim_check_report_revision_number).click()
 
         return report_history_title, versions, last_version_report
 

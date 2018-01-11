@@ -10,11 +10,18 @@ class Author < ActiveRecord::Base
   CORRESPONDING_QUESTION_IDENT = "author--published_as_corresponding_author".freeze
   GOVERNMENT_EMPLOYEE_QUESTION_IDENT = "author--government-employee".freeze
 
+  attr_accessor :validate_all
+
   has_one :author_list_item, as: :author, dependent: :destroy, autosave: true
 
   has_one :paper,
-          through: :author_list_item,
-          inverse_of: :authors
+          through: :author_list_item
+
+  has_one :task,
+          -> { where(type: 'TahiStandardTasks::AuthorsTask') },
+          class_name: 'TahiStandardTasks::AuthorsTask',
+          through: :paper,
+          source: :tasks
 
   include PgSearch
   pg_search_scope \
@@ -34,16 +41,32 @@ class Author < ActiveRecord::Base
   delegate :position, to: :author_list_item
 
   validates :first_name, :last_name, :author_initial,
-    :affiliation, :email, presence: true, if: :task_completed?
+    :affiliation, :email, presence: true, if: :fully_validate?
 
   validates :email,
     format: { with: Devise.email_regexp, message: "needs to be a valid email address" },
-    if: :task_completed?
+    if: :fully_validate?
 
   validates :contributions,
-    presence: { message: "one must be selected" }, if: :task_completed?
+    presence: { message: "one must be selected" }, if: :fully_validate?
 
   before_create :set_default_co_author_state
+
+  before_validation :strip_whitespace
+
+  STRIPPED_ATTRS = [
+    :first_name,
+    :last_name,
+    :middle_initial,
+    :email
+  ].freeze
+
+  def strip_whitespace
+    STRIPPED_ATTRS.each do |to_strip|
+      old_value = self[to_strip]
+      self[to_strip] = old_value.strip if old_value.present?
+    end
+  end
 
   def full_name
     "#{first_name} #{last_name}"
@@ -73,12 +96,8 @@ class Author < ActiveRecord::Base
     where(paper_id: paper)
   end
 
-  def task_completed?
-    task && task.completed
-  end
-
-  def task
-    Task.find_by(paper_id: paper_id, type: TahiStandardTasks::AuthorsTask.name)
+  def fully_validate?
+    validate_all || task.try(:completed)
   end
 
   def corresponding?

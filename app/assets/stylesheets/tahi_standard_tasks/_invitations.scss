@@ -116,9 +116,9 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   user-select: none; // This is important so as not to have strange drag and drop behavior
   line-height: 0.8em;
   .invitation-item-email {
-    user-select: all;
-    -moz-user-select: all;
-    -ms-user-select: all;
+    user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
   }
 }
 

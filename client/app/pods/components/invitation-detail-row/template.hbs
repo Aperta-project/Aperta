@@ -1,0 +1,221 @@
+{{#unless (eq uiState "edit")}}
+  <div class="invitation-item-header" {{action "toggleDetails"}}>
+    <div class="invitation-item-drag-handle {{if draggable "active"}} flex-element"></div>
+    <div class="invitation-item-full-name">
+      {{#if invitation.isAlternate}}
+        <i class="fa fa-link alternate-link-icon" aria-hidden="true"></i>
+      {{/if}}
+      <div class="invitation-item-email">
+        {{#if invitee}}
+          {{invitee.fullName}}
+          &lt;{{invitation.email}}&gt;
+        {{else}}
+          {{invitation.email}}
+        {{/if}}
+      </div>
+    </div>
+    <div class="invitation-item-status">
+      {{#if (and (eq uiState 'closed') (not invitation.pending))}}
+        {{#if invitation.invited}}
+          <span>Invited {{format-date invitation.invitedAt "short-date"}}</span>
+        {{else if invitation.accepted}}
+          {{#if invitation.reviewerReport}}
+            {{#if (eq invitation.reviewerReport.status 'completed')}}
+              <div class="invitation-item-review-completed-icon">
+                {{partial "svg/check"}}
+              </div>
+              <span>Completed {{format-date invitation.reviewerReport.statusDatetime "short-date"}}</span>
+            {{else}}
+              <span>
+                {{#if invitation.reviewerReport.dueDatetime.dueAt}}
+                  <p>Review due {{format-date invitation.reviewerReport.dueDatetime.dueAt "short-date"}}</p>
+                {{else}}
+                  <p>Review pending</p>
+                {{/if}}
+                {{#if (and invitation.actor notAcceptedByInvitee)}}
+                  <p class="not-bold">Accepted by <em>{{invitation.actor.fullName}}</em></p>
+                {{/if}}
+              </span>
+            {{/if}}
+          {{else}}
+            <span>Accepted {{format-date invitation.acceptedAt "short-date"}}</span>
+          {{/if}}
+        {{else if invitation.declined}}
+          <span>Declined {{format-date invitation.declinedAt "short-date"}}</span>
+        {{else if invitation.rescinded}}
+          <span>Rescinded {{format-date invitation.rescindedAt "short-date"}}</span>
+        {{/if}}
+      {{/if}}
+    </div>
+    <div class="invitation-item-body-preview">
+      {{#if invitation.declined}}
+        {{strip-html (space-out-breaks invitation.declineReason)}}
+      {{else}}
+        {{strip-html invitation.body}}
+      {{/if}}
+    </div>
+    <div class="invitation-item-spacer"></div>
+    <div class="invitation-item-actions">
+      {{#if displayEditButton}}
+        <span class="invitation-item-action invitation-item-action-edit {{if editDisabled "invitation-item-action--disabled"}}"
+              {{action "editInvitation" invitation bubbles=false}}>
+          <span class="fa fa-pencil invite-edit"></span>
+          {{#unless editDisabled}}
+            <span class="invitation-item-action-text">Edit</span>
+          {{/unless}}
+        </span>
+      {{/if}}
+      {{#if displayDestroyButton}}
+        <span class="invitation-item-action invitation-item-action-delete {{if destroyDisabled "invitation-item-action--disabled"}}"
+              {{action "destroyInvitation" invitation bubbles=false}}>
+          {{#tool-tip enabled=invitation.isPrimary title="Unlink alternates before deleting this primary"}}
+            <span class="fa fa-trash invite-remove"></span>
+            {{#unless disabled}}
+              <span class="invitation-item-action-text">Delete</span>
+            {{/unless}}
+          {{/tool-tip}}
+        </span>
+      {{/if}}
+      {{#if displayAcceptOnBehalfButton}}
+        {{#if invitee}}
+          <span class="invitation-item-action invitation-item-action-accept" {{action "toggleConfirmAccept" bubbles=false}}>
+            {{fa-icon icon="check-circle-o"}}
+            Accept invitation for reviewer
+          </span>
+        {{else}}
+          <span class="invitation-item-action invitation-item-action-accept" {{action "acceptInvitation" bubbles=false}}>
+            {{fa-icon icon="check-circle-o"}}
+            Accept invitation for reviewer
+          </span>
+        {{/if}}
+      {{/if}}
+      {{#if showConfirmAccept}}
+        <div class="confirm-overlay">
+            <h1>You are accepting this invitation on behalf of {{invitee.fullName}}<br />Are you sure?</h1>
+            <div class="overlay-action-buttons">
+              <button class="button-link" {{action "toggleConfirmAccept" bubbles=false}}>cancel</button>
+              <button class="button button-secondary button--green" {{action "acceptInvitation" invitation bubbles=false}}>Accept Invitation</button>
+            </div>
+        </div>
+      {{/if}}
+      {{#if displayRescindButton}}
+        <span class="invitation-item-action invitation-item-action-rescind {{if invitationsInFlight "invitation-item-action--disabled"}}"
+              {{action "toggleConfirmRescind" bubbles=false}}>
+          <span class="fa fa-ban invite-rescind"></span>
+          <span class="invitation-item-action-text">Rescind</span>
+        </span>
+      {{/if}}
+      {{#if showConfirmRescind}}
+        <div class="confirm-overlay">
+            <h1>You are rescinding the invitation to {{inviteeNameOrEmail}}<br />Are you sure?</h1>
+            <div class="overlay-action-buttons">
+              <button class="button-link" {{action "toggleConfirmRescind" bubbles=false}}>cancel</button>
+              <button class="button button-secondary button--green" {{action "rescindInvitation" invitation bubbles=false}}>Rescind Invitation</button>
+            </div>
+        </div>
+      {{/if}}
+      {{#if displaySendButton}}
+        <span class="invitation-item-action invitation-item-action-send {{if (or disabled invitationsInFlight) "invitation-item-action--disabled"}}"
+              {{action "sendInvitation" invitation bubbles=false}}>
+          <span class="fa fa-send invite-send"></span>
+          {{#unless disabled}}
+            <span class="invitation-item-action-text">Send</span>
+          {{/unless}}
+        </span>
+      {{/if}}
+    </div>
+  </div>
+{{else}}
+  <div class="invitation-item-header">
+    <div class="invitation-item-full-name">
+     {{#unless (eq invitation composedInvitation)}}
+      <b>
+        Edit invitation to:
+      </b>
+     {{/unless}}
+     {{inviteeNameAndEmail}}
+    </div>
+  </div>
+{{/unless}}
+
+{{#if (eq uiState "show")}}
+  <div class="invitation-item-details">
+    {{invitation-detail-row-accept-fields
+      invitation=invitation
+      displayAcceptFields=displayAcceptFields
+      cancelAccept=(action 'cancelAccept')
+      loading=invitationLoading
+      acceptInvitation=(perform acceptInvitation)}}
+    <div class="invitation-item-state-and-date">
+      {{#if invitation.accepted}}
+        <span>Accepted {{format-date invitation.acceptedAt "long-date-short-time"}}</span>
+        {{#if (and invitation.actor notAcceptedByInvitee)}}
+          <span> by {{invitation.actor.fullName}}</span>
+        {{/if}}
+        <hr>
+      {{else if invitation.rescinded}}
+        <span>Rescinded {{format-date invitation.rescindedAt "long-date-short-time"}}</span>
+        <hr>
+      {{/if}}
+    </div>
+    {{#if invitation.declined}}
+      <div class="invitation-item-state-and-date">
+        <span>Declined {{format-date invitation.declinedAt "long-date-short-time"}}</span>
+      </div>
+      <div class="invitation-item-decline-info">
+        <p>
+          <div class="invitation-item-decline-title">Reasons</div>
+          {{{invitation.declineReason}}}
+        </p>
+        <p>
+          <div class="invitation-item-decline-title">Reviewer Suggestions</div>
+          {{{invitation.reviewerSuggestions}}}
+        </p>
+      </div>
+      <hr>
+    {{/if}}
+    {{#unless invitation.pending}}
+      <div class="invitation-item-state-and-date">
+        <span>Invited {{format-date invitation.invitedAt "long-date-short-time"}}</span>
+      </div>
+    {{/unless}}
+{{!-- Leave weird indentation --}}
+<div class="invitation-show-body">{{{invitation.body}}}</div>
+  <div class="invite-edit-buttons">
+    {{#if allowAttachments}}
+      {{invitation-attachment-manager invitation=invitation
+                                      enableEditingAttachments=false
+                                      showAddButton=false}}
+    {{/if}}
+  </div>
+</div>
+{{else if (eq uiState "edit")}}
+  <div class="invitation-item-details">
+    {{rich-text-editor
+      value=invitation.body
+      data-editor='invitation-edit-body'
+      class="invitation-edit-body"
+      onContentsChanged=(action "updateContents")
+      disabled=owner.completed
+    }}
+
+    {{link-alternate
+      invitation=invitation
+      invitations=invitations
+      primarySelected=(action "primarySelected")
+    }}
+
+    <div class="invite-edit-buttons">
+      {{#if allowAttachments}}
+        {{invitation-attachment-manager invitation=invitation}}
+      {{/if}}
+      <div class="spacer"></div>
+      {{progress-spinner visible=rollback.isRunning size="small"}}
+      <button class="button-link button--green cancel" {{action "cancelEdit" invitation}}>cancel</button>
+      <button class="button-secondary button--green invitation-save-button"
+              {{action "save" invitation}}>
+        {{if (eq invitation composedInvitation) "Add to Queue" "Save"}}
+      </button>
+    </div>
+  </div>
+{{/if}}

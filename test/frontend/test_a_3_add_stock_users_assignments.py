@@ -7,6 +7,7 @@ This test case that populates all mmt needed for python test suite runs.
 import logging
 
 import pytest
+import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import all_orcid_users
@@ -31,9 +32,9 @@ class ApertaPopulateUsersTest(CommonTest):
     """
     test_add_stock_users_assignments: adds the stock users via forcing logins and then sets the
       appropriate assignments for those users.
-    reviewer_login, staff_admin_login, handling_editor_login, pub_svcs_login, academic_editor_login,
-     internal_editor_login, super_admin_login, cover_editor_login, prod_staff_login,
-     billing_staff_login
+    reviewer_login, reviewer_login2, reviewer_login3, staff_admin_login, handling_editor_login,
+        pub_svcs_login, academic_editor_login, internal_editor_login, super_admin_login,
+        cover_editor_login, prod_staff_login, billing_staff_login
     :return: void function
     """
     logging.info('test_add_stock_users_assignments')
@@ -54,6 +55,8 @@ class ApertaPopulateUsersTest(CommonTest):
         orcid_page.validate_orcid_login_elements()
         orcid_page.authorize_user(user)
         orcid_page.clean_orcid_cookies()
+        # Without the following delay, we throw an error and fail in the logout
+        time.sleep(1)
       dashboard_page.logout()
     self.set_staff_in_db()
     self.set_freelance_eds_in_db()

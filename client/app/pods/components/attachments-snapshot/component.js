@@ -4,7 +4,7 @@ import {
 } from 'tahi/lib/snapshots/snapshot-named-computed-property';
 import SnapshotsById from 'tahi/lib/snapshots/snapshots-by-id'
 
-import SnapshotAttachment from 'tahi/models/snapshot/attachment';
+import SnapshotAttachment from 'tahi/pods/snapshot/attachment/model';
 
 export default Ember.Component.extend({
   attachments1: null,

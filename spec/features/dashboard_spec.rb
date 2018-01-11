@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/pages/dashboard_page'
 
 feature "Dashboard", js: true do
   let!(:user) { FactoryGirl.create :user, :site_admin }

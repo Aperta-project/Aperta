@@ -224,6 +224,26 @@ describe ManuscriptManagerTemplatesController do
         expect(template.to_json).to eq(template_params.to_json)
       end
 
+      context "when the update doesn't change the MMT's attributes" do
+        let(:new_params) do
+          {
+            phase_templates: [
+              manuscript_manager_template_id: mmt.id,
+              name: 'Phase title',
+              position: 1,
+              task_templates: [
+                journal_task_type_id: journal_task_type.id,
+                title: 'Ad-hoc',
+                template: template_params
+              ]
+            ]
+          }
+        end
+        it "still updates the MMT's timestamp" do
+          expect { do_request }.to change { ManuscriptManagerTemplate.last.updated_at }
+        end
+      end
+
       context "with invalid params" do
         let(:new_params) { { paper_type: nil, template: {} } }
         it_behaves_like "a controller rendering an invalid model"

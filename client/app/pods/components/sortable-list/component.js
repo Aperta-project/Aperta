@@ -56,6 +56,7 @@ export default Ember.Component.extend({
         const newItems    = self.get('items');
         const item        = sourceItems.objectAt(oldIndex);
 
+        ui.item.remove();
         self.get('itemMovedBetweenList')(item, oldIndex, newIndex, newList, sourceItems, newItems);
       },
 

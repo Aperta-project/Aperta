@@ -454,7 +454,7 @@ reviewer_login = {'user': 'areviewer',
                   'affiliation-to': '',
                   }
 reviewer_login2 = {'user': 'areviewer2',
-                   'name': 'atest reviewer',
+                   'name': 'atest reviewer2',
                    'initials': 'ar2',
                    'email': 'sealresq+1037@gmail.com',
                    'orcidid': '0000-0002-3410-8410',
@@ -467,7 +467,7 @@ reviewer_login2 = {'user': 'areviewer2',
                    'affiliation-to': '',
                    }
 reviewer_login3 = {'user': 'areviewer3',
-                   'name': 'atest reviewer',
+                   'name': 'atest reviewer3',
                    'initials': 'ar3',
                    'email': 'sealresq+1038@gmail.com',
                    'orcidid': '0000-0002-1350-6890',
@@ -620,11 +620,11 @@ users = [creator_login1,
          creator_login7,
          creator_login8,
          creator_login9,
-         # creator_login10, # temporarily commented username with non ascii characters
-         # due to APERTA-11437
+         # temporarily commented username with non ascii characters due to APERTA-11437
+         # creator_login10,
          creator_login11,
-         # creator_login12, # temporarily commented username with non ascii characters
-         # due to APERTA-11437
+         # temporarily commented username with non ascii characters due to APERTA-11437
+         # creator_login12,
          creator_login13,
          creator_login14,
          creator_login15,
@@ -703,11 +703,11 @@ all_orcid_users = [
     creator_login7,
     creator_login8,
     creator_login9,
-    # creator_login10, # temporarily commented username with non-ascii characters
-    # due to APERTA-11437
+    # temporarily commented username with non-ascii characters due to APERTA-11437
+    # creator_login10,
     creator_login11,
-    # creator_login12, # temporarily commented username with non-ascii characters
-    # due to APERTA-11437
+    # temporarily commented username with non-ascii characters due to APERTA-11437
+    # creator_login12,
     creator_login13,
     creator_login14,
     creator_login15,
@@ -1959,8 +1959,8 @@ sim_check_off_mmt = {'name': 'Similarity Check test',
                      'uses_resrev_report': True,
                      'preprint_eligible': False,
                      'settings': (
-                     {'card_name': 'Similarity Check', 'setting': 'ithenticate_automation',
-                      'value': 'off'},)
+                         {'card_name': 'Similarity Check', 'setting': 'ithenticate_automation',
+                          'value': 'off'},)
                      }
 sim_check_full_submission_mmt = {'name': 'Similarity Check test on full submission',
                                  'user_tasks': ['Upload Manuscript'],

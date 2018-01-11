@@ -17,6 +17,7 @@ moduleForComponent('card-content/email-editor', 'Integration | Component | card 
     this.set('disabled', false);
     this.set('actionStub', function() {});
     this.set('preview', true);
+    this.set('repetition', null);
     this.set('content', Ember.Object.create({
       ident: 'test',
       letterTemplate: 'preprint-accept',
@@ -30,6 +31,7 @@ content=content
 disabled=disabled
 owner=owner
 answer=answer
+repetition=repetition
 valueChanged=(action actionStub)
 }}`;
 

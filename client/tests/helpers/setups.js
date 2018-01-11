@@ -1,4 +1,4 @@
-import Factory from '../helpers/factory';
+import Factory from 'tahi/tests/helpers/factory';
 
 export function addUserAsParticipant(task, user) {
   let participation = Factory.createRecord('Participation', {

@@ -36,13 +36,21 @@ describe TahiStandardTasks::AuthorsTask do
 
       task.update(completed: true)
 
-      expect(task.reload.valid?).to be(false)
+      expect(task.valid?).to be(false)
       expect(task.errors[:authors][invalid_author.id].messages).to be_present
     end
 
-    it "validates individual authors" do
-      task.update(completed: true)
-      expect(task.reload.valid?).to be(true)
+    it "validates individual authors when it's been completed but not persisted" do
+      invalid_author = FactoryGirl.create(
+        :author,
+        email: nil,
+        paper: task.paper
+      )
+
+      task.completed = true
+
+      expect(task.valid?).to be(false)
+      expect(task.errors[:authors][invalid_author.id].messages).to be_present
     end
   end
 end

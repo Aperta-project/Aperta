@@ -15,7 +15,7 @@ from Base.FrontEndTest import FrontEndTest
 from Base.PostgreSQL import PgSQL
 from Base.Resources import login_valid_pw, docs, docxs, pdfs, users, editorial_users, \
     external_editorial_users, au_login, co_login, rv_login, ae_login, he_login, fm_login, \
-    oa_login, production_urls
+    oa_login, production_urls, reviewer_users
 from .Pages.login_page import LoginPage
 from .Pages.akita_login_page import AkitaLoginPage
 from .Pages.dashboard import DashboardPage
@@ -68,6 +68,7 @@ class CommonTest(FrontEndTest):
         # Login to Aperta
         logging.info('Logging in as user: {0}'.format(email))
         login_page = LoginPage(self.getDriver())
+        login_page.page_ready_cas_login()
         login_page.login_cas()
         cas_signin_page = AkitaLoginPage(self.getDriver())
         cas_signin_page.enter_login_field(email)
@@ -257,15 +258,15 @@ class CommonTest(FrontEndTest):
 
         PgSQL().modify(
                 'INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
-                'created_at, updated_at) VALUES (%S, %S, %S, \'Paper\', now(), now());',
+                'created_at, updated_at) VALUES (%s, %s, %s, \'Paper\', now(), now());',
                 (handedit_user_id, handling_editor_role_for_env, paper_id))
         PgSQL().modify(
                 'INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
-                'created_at, updated_at) VALUES (%S, %S, %S, \'Paper\', now(), now());',
+                'created_at, updated_at) VALUES (%s, %s, %s, \'Paper\', now(), now());',
                 (covedit_user_id, cover_editor_role_for_env, paper_id))
         PgSQL().modify(
                 'INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
-                'created_at, updated_at) VALUES (%S, %S, %S, \'Paper\', now(), now());',
+                'created_at, updated_at) VALUES (%s, %s, %s, \'Paper\', now(), now());',
                 (acadedit_user_id, academic_editor_role_for_env, paper_id))
 
     @staticmethod
@@ -319,7 +320,7 @@ class CommonTest(FrontEndTest):
             logging.info('Internal Editor user lack Internal Editor role. Adding...')
             PgSQL().modify(
                     'INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
-                    'created_at, updated_at) VALUES (%S, %S, %S, \'Journal\', now(), now());',
+                    'created_at, updated_at) VALUES (%s, %s, %s, \'Journal\', now(), now());',
                     (intedit_user_id, internal_editor_role_for_env, wombat_journal_id))
 
         try:
@@ -335,7 +336,7 @@ class CommonTest(FrontEndTest):
             logging.info('Staff Admin user lack Staff Admin role. Adding...')
             PgSQL().modify(
                     'INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
-                    'created_at, updated_at) VALUES (%S, %S, %S, \'Journal\', now(), now());',
+                    'created_at, updated_at) VALUES (%s, %s, %s, \'Journal\', now(), now());',
                     (staffadm_user_id, staff_admin_role_for_env, wombat_journal_id))
 
         try:
@@ -351,7 +352,7 @@ class CommonTest(FrontEndTest):
             logging.info('Billing Staff user lack Billing Staff role. Adding...')
             PgSQL().modify(
                     'INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
-                    'created_at, updated_at) VALUES (%S, %S, %S, \'Journal\', now(), now());',
+                    'created_at, updated_at) VALUES (%s, %s, %s, \'Journal\', now(), now());',
                     (billstaff_user_id, billstaff_role_for_env, wombat_journal_id))
 
         try:
@@ -367,7 +368,7 @@ class CommonTest(FrontEndTest):
             logging.info('Publishing Services user lack Publishing Services role. Adding...')
             PgSQL().modify(
                     'INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
-                    'created_at, updated_at) VALUES (%S, %S, %S, \'Journal\', now(), now());',
+                    'created_at, updated_at) VALUES (%s, %s, %s, \'Journal\', now(), now());',
                     (pubsvcs_user_id, pubsvcs_role_for_env, wombat_journal_id))
 
         try:
@@ -383,7 +384,7 @@ class CommonTest(FrontEndTest):
             logging.info('Production Staff user lack Production Staff role. Adding...')
             PgSQL().modify(
                     'INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
-                    'created_at, updated_at) VALUES (%S, %S, %S, \'Journal\', now(), now());',
+                    'created_at, updated_at) VALUES (%s, %s, %s, \'Journal\', now(), now());',
                     (prodstaff_user_id, prodstaff_role_for_env, wombat_journal_id))
 
     @staticmethod
@@ -420,7 +421,7 @@ class CommonTest(FrontEndTest):
             logging.info('Handling editor user lacks Freeland Editor role, adding...')
             PgSQL().modify(
                     'INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
-                    'created_at, updated_at) VALUES (%S, %S, %S, \'Journal\', now(), now());',
+                    'created_at, updated_at) VALUES (%s, %s, %s, \'Journal\', now(), now());',
                     (handedit_user_id, freelance_editor_role_for_env, wombat_journal_id))
 
         try:
@@ -436,7 +437,7 @@ class CommonTest(FrontEndTest):
             logging.info('Cover editor user lacks Freeland Editor role, adding...')
             PgSQL().modify(
                     'INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
-                    'created_at, updated_at) VALUES (%S, %S, %S, \'Journal\', now(), now());',
+                    'created_at, updated_at) VALUES (%s, %s, %s, \'Journal\', now(), now());',
                     (covedit_user_id, freelance_editor_role_for_env, wombat_journal_id))
 
     @staticmethod
@@ -467,7 +468,7 @@ class CommonTest(FrontEndTest):
             logging.info('Site Admin user lacks Site Admin role, adding...')
             PgSQL().modify(
                     'INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
-                    'created_at, updated_at) VALUES (%S, %S, 1, \'System\', now(), now());',
+                    'created_at, updated_at) VALUES (%s, %s, 1, \'System\', now(), now());',
                     (siteadmin_user_id, site_admin_role_for_env))
 
     @staticmethod
@@ -525,7 +526,30 @@ class CommonTest(FrontEndTest):
             mmt_phase_ids.append(mmt_phase_id_tuple[0])
         try:
             PgSQL().query('SELECT title FROM task_templates WHERE title = \'Preprint Posting\' '
-                          'AND phase_template_id = ANY(%S) ;', (mmt_phase_ids,))[0][0]
+                          'AND phase_template_id = ANY(%s) ;', (mmt_phase_ids,))[0][0]
         except IndexError:
             return False
         return True
+
+    @staticmethod
+    def pick_reviewer():
+        """Return a reviewer to use in test"""
+        reviewer = random.choice(reviewer_users)
+        logging.info('Selected reviewer is: {0}'.format(reviewer))
+        return reviewer
+
+    @staticmethod
+    def is_preprint_on() -> bool:
+        """
+        A method that will determine for mmt if the pre-print feature flag is ON
+        :return: True if preprint feature flag is ON, otherwise False
+        :type return: preprint_feature_flag, current_env
+        """
+        current_env = os.getenv('WEBDRIVER_TARGET_URL', '')
+        logging.info(current_env)
+        if current_env in production_urls:
+            return False
+        preprint_feature_flag = PgSQL().query('SELECT active '
+                                              'FROM feature_flags '
+                                              'WHERE name = \'PREPRINT\';')[0][0]
+        return preprint_feature_flag, current_env

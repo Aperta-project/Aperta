@@ -58,7 +58,9 @@ describe DefaultAuthorCreator do
 
       expect do
         author = DefaultAuthorCreator.new(paper, creator).create!
-        expect(author.task).to eq(authors_task)
+        expect(author).to be_valid
+        # the author.reload call below is only a fix for the test environment.
+        expect(author.reload.task).to eq(authors_task)
       end.to change { authors_task.authors.count }.by(1)
     end
   end

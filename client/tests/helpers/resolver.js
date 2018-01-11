@@ -1,5 +1,5 @@
-import Resolver from '../../resolver';
-import config from '../../config/environment';
+import Resolver from 'tahi/resolver';
+import config from 'tahi/config/environment';
 
 const resolver = Resolver.create();
 

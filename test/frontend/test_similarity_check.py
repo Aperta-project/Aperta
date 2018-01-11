@@ -25,6 +25,7 @@ from frontend.Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.Pages.workflow_page import WorkflowPage
 from .Pages.admin_workflows import AdminWorkflowsPage
 from .Pages.sim_check_settings import SimCheckSettings
+from .Tasks.upload_manuscript_task import UploadManuscriptTask
 
 __author__ = 'gtimonina@plos.org'
 
@@ -32,13 +33,24 @@ auto_options = (('at_first_full_submission', sim_check_full_submission_mmt['name
                 ('after_major_revise_decision', sim_check_major_revision_mmt['name']),
                 ('after_minor_revise_decision', sim_check_minor_revision_mmt['name']),
                 ('after_any_first_revise_decision', sim_check_first_revision_mmt['name']))
+doc_choice = \
+    ['frontend/assets/docs/HomeRun_Vector_Assembly_System_A_Flexible_and_Standardized_Cloning_'
+     'System_for_.docx',
+     'frontend/assets/docs/Cytoplasmic_Viruses_Rage_Against_the_Cellular_RNA_Decay_Machine.docx',
+     'frontend/assets/docs/Abby_normal_Contextual_Modulation.docx',
+     'frontend/assets/docs/Sex-stratified_genome-wide_association_studies_including_270000_'
+     'individuals_show_.docx',
+     'frontend/assets/docs/Rnf165_Ark2C_Enhances_BMP-Smad_Signaling_to_Mediate_Motor_Axon_'
+     'Extension.docx',
+     'frontend/assets/pdfs/Promoter_sequence_determines_the_relationship_between_expression_level'
+     '_and_noise.pdf',
+     'frontend/assets/pdfs/Word_Document_with_Inserted_Text_Box.pdf']
 
 
 @MultiBrowserFixture
 class SimilarityCheckTest(CommonTest):
     """
     Validate the elements, styles, functions of the Similarity Check card
-
     """
 
     def test_core_settings_validate_components_styles(self):
@@ -64,13 +76,26 @@ class SimilarityCheckTest(CommonTest):
 
         card_settings.click_cancel()
 
-    def rest_smoke_generate_manually_and_validate_access(self):
+    def test_smoke_generate_manually_and_validate_access(self):
         """
-        test_smoke_generate_manually_and_validate_access: two-in-one test
+        test_smoke_generate_manually_and_validate_access: 'two-in-one' test
         Validates the similarity check card presence in a workflow view, generating report manually,
         validates access while the report is generating as it may take several minutes.
         Validates form elements and styles.
         Testing default settings, automation is Off.
+        Steps:
+        1. Create new submission using workflow with auto option off, which is default
+        2. As an editorial user, open the manuscript and check that the card appears only in
+           workflow view, not in manuscript view
+        3. Open Similarity Check card in workflow view, check components and style
+        4. Generate report manually
+        5. After the report is generated, check Report result, the link to api.ithenticate.com,
+           navigate to result page and validate
+        6. Register Minor or Major decision
+        7. As an author, submit new version
+        8. As an editorial user, open Similarity Check Card to check that the card is marked as
+           completed for new revision
+        Access validation test is runnning between steps #4 and #5 of the main test.
         :return: void function
         """
         #
@@ -83,11 +108,9 @@ class SimilarityCheckTest(CommonTest):
 
         # log as an author and create new submission
         creator_user = random.choice(users)
-        doc_to_use = 'frontend/assets/docs/' \
-                     'Cytoplasmic_Viruses_Rage_Against_the_Cellular_RNA_Decay_Machine.docx'
-        # doc_to_use = 'frontend/assets/docs/' \
-        #              'Preclinical_Applications_of_3-Deoxy-3-18F_Fluorothymidine_in_' \
-        #              'Oncology-A_Systematic_.docx'
+        doc_to_use = random.choice(doc_choice)
+        logging.info('Chosen file to upload: {0}'.format(doc_to_use))
+
         title = 'Similarity Check test - manually generated report'
         short_doi, paper_url = self.create_new_submission(creator_user, title, doc_to_use,
                                                           mmt_name='Similarity Check test')
@@ -168,7 +191,7 @@ class SimilarityCheckTest(CommonTest):
 
         # analyze the result
         if report_validation_result:
-            # 10 min time out exception - error message is expected to be displaye
+            # 10 min time out exception - error message is expected to be displayed
             assert 'Report not available:' in report_validation_result, report_validation_result
         else:
             # results assertion
@@ -185,6 +208,7 @@ class SimilarityCheckTest(CommonTest):
         # check that the Report generation is not triggered for the next revision:
         # log as editorial user
         staff_user = random.choice(editorial_users)
+        logging.info('Logging in as editorial user: {0}'.format(staff_user['name']))
         workflow_page = self.go_to_ms_wokflow_as_editor(staff_user, paper_url)
 
         decision = random.choice(['Major Revision', 'Minor Revision'])
@@ -200,15 +224,27 @@ class SimilarityCheckTest(CommonTest):
         workflow_page.click_card('similarity_check')
         # check AC#6: If the card is marked complete, it is not marked as incomplete
         # when a new version is submitted
-        assert sim_check.completed_state()
+        assert sim_check.completed_state(), 'The card is expected to be completed'
         sim_check.validate_styles_and_components('off')
         # check Report History
         self.validate_report_history(sim_check, version='0.0')
 
     def validate_access(self, staff_user_to_skip):
         """
-        Validates access of internal and external
-        editorial users to the Similarity Check card
+        Validates access of internal and external editorial users to the Similarity Check card
+        Test runs between steps #4 and #5 of the main test -
+        test_smoke_generate_manually_and_validate_access().
+        Steps for access validation:
+        1. Create new submission using workflow with auto option off, which is default
+        2. As an internal editorial user, navigate to the Similarity Check card, check the card
+           title and buttons, check that the card is editable
+        3. Open 'Assign Team' card and assign cover and handling editors
+        4. Log in as cover and handling editors, navigate to the Similarity Check Card and
+           check that the card is accessible, but not editable
+        Notes: Step 2 repeats for all internal editorial users (excluding  cover and handling
+          editors) except staff user from the main test
+          Step 3 - only one time, with the first staff user
+          Step 4 - for both, cover and handling editors.
         :param staff_user_to_skip: staff user login to skip as it was checked in the previous test
         :return: void function
         """
@@ -242,8 +278,6 @@ class SimilarityCheckTest(CommonTest):
             workflow_page.click_card('similarity_check')
             sim_check = SimilarityCheckCard(self.getDriver())
             sim_check.card_ready()
-
-            # sim_check.validate_card_header(short_doi)
             card_title = sim_check._get(sim_check._card_heading)
             assert card_title.text == 'Similarity Check'
             sim_check.validate_generate_report_button()
@@ -294,10 +328,43 @@ class SimilarityCheckTest(CommonTest):
             # logout
             sim_check.logout()
 
-    def rest_core_trigger_automated_report(self):
+    def test_core_trigger_automated_report(self):
         """
-        trigger_automated_report:
-        Validates triggering the Report generation defined with card automation settings
+        test_core_trigger_automated_report:
+        Validates triggering the Report generation depending on card automation settings.
+        Steps:
+        1. Create new submission with auto option on (randomly chosen option)
+        2. As an editorial user, navigate to the Similarity Check card, validate components and
+             style, and the card state
+        Next steps depend on automation option:
+        3.1 'at_first_full_submission':
+          1. As an editorial user, open Similarity Check Card to check the Report is triggered
+          (pending)
+          2. Register Minor or Major decision (random choice)
+          3. As an author, submit new version
+          4. As an editorial user, open Similarity Check Card to check the Report is not triggered
+        3.2 'after_any_first_revise_decision':
+          1. As an editorial user, open Similarity Check Card to check the Report is not triggered
+             after first submission
+          2. Register Minor or Major decision (random choice)
+          3. As an author, submit new version
+          4. As an editorial user, open Similarity Check Card to check the Report is triggered
+          5. Register Minor or Major decision (random choice)
+          6. As an author, submit new version
+          7. As an editorial user, open Similarity Check Card to check the Report is not triggered
+        3.3 'after_major_revise_decision':
+          1. As an editorial user, open Similarity Check Card to check the Report is not triggered
+          2. Register Major decision
+          3. As an author, submit new version
+          4. As an editorial user, open Similarity Check Card to check the Report is triggered
+          5. Register Minor decision
+          6. As an author, submit new version
+          7. As an editorial user, open Similarity Check Card to check the Report is not triggered
+          8. Register Major decision
+          9. As an author, submit new version
+         10. As an editorial user, open Similarity Check Card to check the Report is not triggered
+        3.4 'after_minor_revise_decision' - same steps as in 3.3, but checking sequence
+             Minor->Major->Minor decisions instead of Major->Minor->Major
         :return: void function
         """
         current_path = os.getcwd()
@@ -305,29 +372,26 @@ class SimilarityCheckTest(CommonTest):
 
         logging.info('Test Similarity Check with Automation ON:: generate report '
                      'manually and validate access')
-        # auto_options = (('at_first_full_submission', sim_check_full_submission_mmt['name']),
-        #                 ('after_major_revise_decision', sim_check_major_revision_mmt['name']),
-        #                 ('after_minor_revise_decision', sim_check_minor_revision_mmt['name']),
-        #                 ('after_any_first_revise_decision', sim_check_first_revision_mmt['name']))
 
         auto_setting = random.choice(auto_options)
-        # TODO: delete after debugging:
+        logging.info('Testing with auto option, mmt name: {0}'.format(str(auto_setting)))
+
         auto_option = auto_setting[0]
         mmt_name = auto_setting[1]
 
         # log as an author and create new submission
         creator_user = random.choice(users)
+        logging.info('Logging in as editorial user: {0}'.format(creator_user['name']))
 
-        doc_to_use = 'frontend/assets/docs/' \
-                     'Preclinical_Applications_of_3-Deoxy-3-18F_Fluorothymidine_in_' \
-                     'Oncology-A_Systematic_.docx'  # error from ithenticate
-        doc_to_use = 'frontend/assets/docs/Cytoplasmic_Viruses_Rage_Against_the_Cellular_' \
-                     'RNA_Decay_Machine.docx'  # no error, index= 97
+        doc_to_use = random.choice(doc_choice)
+        logging.info('Chosen file to upload: {0}'.format(doc_to_use))
         title = 'Similarity Check test with auto trigger: ' + auto_option
-        short_doi, paper_url = self.create_new_submission(creator_user, title, doc_to_use, mmt_name)
+        short_doi, paper_url = self.create_new_submission(creator_user, title, doc_to_use,
+                                                          mmt_name)
 
         # log as editorial user
         staff_user = random.choice(editorial_users)
+        logging.info('Logging in as editorial user: {0}'.format(staff_user['name']))
         workflow_page = self.go_to_ms_wokflow_as_editor(staff_user, paper_url)
 
         workflow_page.click_card('similarity_check')
@@ -340,9 +404,12 @@ class SimilarityCheckTest(CommonTest):
             self.validate_report_history(sim_check, version='0.0')
 
             sim_check.click_close_button_bottom()
+            # Did not find any other reliable way to wait for accessibility cards after closing
+            # Similarity Check card, leave this sleep() for now
             time.sleep(3)
 
             decision = random.choice(['Major Revision', 'Minor Revision'])
+            logging.info('Chosen Decision to register: {0}'.format(decision))
             # register decision
             self.make_register_decision(workflow_page, decision)
             workflow_page.logout()
@@ -365,6 +432,7 @@ class SimilarityCheckTest(CommonTest):
             time.sleep(3)
 
             decision = random.choice(['Major Revision', 'Minor Revision'])
+            logging.info('First chosen Decision to register: {0}'.format(decision))
             # register decision
             self.make_register_decision(workflow_page, decision)
             workflow_page.logout()
@@ -377,22 +445,25 @@ class SimilarityCheckTest(CommonTest):
             sim_check.validate_styles_and_components(auto_option, triggered=True)
             self.validate_report_history(sim_check, version='1.0')
 
-            sim_check.click_close_button_bottom()
-            time.sleep(3)
-            decision = random.choice(['Major Revision', 'Minor Revision'])
-            # register decision
-            self.make_register_decision(workflow_page, decision)
-            workflow_page.logout()
-
-            # Login as user and complete Revise Manuscript (Response to Reviewers)
-            self.submit_new_version(short_doi, creator_user)
-            # log as editorial user and open the manuscript in workflow view
-            workflow_page = self.go_to_ms_wokflow_as_editor(staff_user, paper_url)
-            workflow_page.click_card('similarity_check')
-            sim_check.validate_styles_and_components(auto_option, triggered=False,
-                                                     auto_report_done=True)
-            # check Report History
-            self.validate_report_history(sim_check, version='1.0')
+            # Last step is disabled due to APERTA-12328
+            # TODO: remove comments once APERTA-12328 gets resolved
+            # sim_check.click_close_button_bottom()
+            # time.sleep(3)
+            # decision = random.choice(['Major Revision', 'Minor Revision'])
+            # logging.info('Second chosen Decision to register: {0}'.format(decision))
+            # # register decision
+            # self.make_register_decision(workflow_page, decision)
+            # workflow_page.logout()
+            #
+            # # Login as user and complete Revise Manuscript (Response to Reviewers)
+            # self.submit_new_version(short_doi, creator_user)
+            # # log as editorial user and open the manuscript in workflow view
+            # workflow_page = self.go_to_ms_wokflow_as_editor(staff_user, paper_url)
+            # workflow_page.click_card('similarity_check')
+            # sim_check.validate_styles_and_components(auto_option, triggered=False,
+            #                                          auto_report_done=True)
+            # # check Report History
+            # self.validate_report_history(sim_check, version='1.0')
 
         else:
             if auto_option == 'after_major_revise_decision':
@@ -430,34 +501,39 @@ class SimilarityCheckTest(CommonTest):
                                                      auto_report_done=True)
             self.validate_report_history(sim_check, version='1.0')
 
-            sim_check.click_close_button_bottom()
-            time.sleep(3)
-            # same register decision as in step 1, should not trigger automated report
-            # as only the first one must be a trigger
-            self.make_register_decision(workflow_page, decision=decision_steps[2])
-            workflow_page.logout()
+            # Last step is disabled due to APERTA-12328
+            # TODO: remove comments once APERTA-12328 gets resolved
+            # sim_check.click_close_button_bottom()
+            # time.sleep(3)
+            # # same register decision as in step 1, should not trigger automated report
+            # # as only the first one must be a trigger
+            # self.make_register_decision(workflow_page, decision=decision_steps[2])
+            # workflow_page.logout()
+            #
+            # # Login as user and complete Revise Manuscript (Response to Reviewers)
+            # self.submit_new_version(short_doi, creator_user)
+            # # log as editorial user and open the manuscript in workflow view
+            # workflow_page = self.go_to_ms_wokflow_as_editor(staff_user, paper_url)
+            # workflow_page.click_card('similarity_check')
+            # sim_check.validate_styles_and_components(auto_option, triggered=False,
+            #                                          auto_report_done=True)
+            # # check Report History
+            # self.validate_report_history(sim_check, version='1.0')
 
-            # Login as user and complete Revise Manuscript (Response to Reviewers)
-            self.submit_new_version(short_doi, creator_user)
-            # log as editorial user and open the manuscript in workflow view
-            workflow_page = self.go_to_ms_wokflow_as_editor(staff_user, paper_url)
-            workflow_page.click_card('similarity_check')
-            sim_check.validate_styles_and_components(auto_option, triggered=False,
-                                                     auto_report_done=True)
-            # check Report History
-            self.validate_report_history(sim_check, version='1.0')
-
-    def rest_core_disable_automation_by_manual_generation(self):
+    def test_core_disable_automation_by_manual_generation(self):
         """
-        test_core_generate_manually_with_auto_settings:
+        test_core_disable_automation_by_manual_generation:
         Validates APERTA-9958: Disable similarity check automation on manual report
         AC 1: User can disable report automation for an individual manuscript by running it manually
         AC 2: Once automation is disabled, it stays disabled for that manuscript
-
-        Validates the similarity check card presence in a workflow view, generating report manually,
-        validates access while the report is generating as it may take several minutes.
-        Validates form elements and styles.
-        Testing default settings, automation is Off.
+        Steps:
+        1. Create new submission with auto option on (any but 'after full submission', as we cannot
+             disable automation in this case)
+        2. As an editorial user, disable automation generating report manually
+        3. Register Minor or Major decision
+        4. As an author, submit new version
+        5. As an editorial user, open Similarity Check Card to check that auto option stays disabled
+             for that manuscript
         :return: void function
         """
         #
@@ -473,39 +549,25 @@ class SimilarityCheckTest(CommonTest):
         #                 ('after_any_first_revise_decision', sim_check_first_revision_mmt['name']))
 
         auto_setting = random.choice(auto_options[1:])
-        # TODO: delete after debugging:
+        auto_setting = auto_options[1]
+        logging.info('Testing with auto option, mmt name: {0}'.format(str(auto_setting)))
         auto_option = auto_setting[0]
         mmt_name = auto_setting[1]
 
         # log as an author and create new submission
         creator_user = random.choice(users)
-
-        doc_to_use = 'frontend/assets/docs/' \
-                     'Preclinical_Applications_of_3-Deoxy-3-18F_Fluorothymidine_in_' \
-                     'Oncology-A_Systematic_.docx'  # error from ithenticate
-        doc_to_use = 'frontend/assets/docs/Cytoplasmic_Viruses_Rage_Against_the_Cellular_' \
-                     'RNA_Decay_Machine.docx'  # no error, index= 97
+        logging.info('Logging in as user: {0}'.format(creator_user['name']))
+        doc_to_use = random.choice(doc_choice)
+        doc_to_use = doc_choice[0]
+        logging.info('Chosen file to upload: {0}'.format(doc_to_use))
         title = 'Similarity Check test manual send report - disable auto trigger: ' \
                 '{0}'.format(auto_option)
-        short_doi, paper_url = self.create_new_submission(creator_user, title, doc_to_use, mmt_name)
+        short_doi, paper_url = self.create_new_submission(creator_user, title, doc_to_use,
+                                                          mmt_name)
 
         # log as editorial user
         staff_user = random.choice(editorial_users)
-        logging.info('Logging in as user: {0}'.format(staff_user['name']))
-        dashboard_page = self.cas_login(email=staff_user['email'])
-        dashboard_page.go_to_manuscript(short_doi)
-        self._driver.navigated = True
-
-        paper_viewer = ManuscriptViewerPage(self.getDriver())
-        paper_viewer.page_ready()
-        # AC#2 - check the card appears only in workflow view, not in manuscript view
-        assert not paper_viewer.is_task_present("Similarity Check"), \
-            "Similarity Check card should not be available in Manuscript view"
-        # go to Workflow view
-        paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
-        paper_viewer.click_workflow_link()
-        workflow_page = WorkflowPage(self.getDriver())
-        workflow_page.page_ready()
+        workflow_page = self.go_to_ms_wokflow_as_editor(staff_user, paper_url)
 
         workflow_page.click_card('similarity_check')
         sim_check = SimilarityCheckCard(self.getDriver())
@@ -519,47 +581,19 @@ class SimilarityCheckTest(CommonTest):
         sim_check.validate_card_header(short_doi)
         sim_check.validate_styles_and_components(auto_option)
 
+        # generating report manually
         task_url, start_time, pending_message, report_title = sim_check.generate_manual_report()
         assert "Pending" in pending_message, '\'Pending\' is expected in the message: {0}'\
             .format(pending_message)
         assert 'Similarity Check Report' in report_title, '\'Similarity Check Report\' is ' \
                                                           'expected in: '.format(report_title)
 
-        sim_check.logout()
-
-        # Similarity checks may take up to several minutes to complete,
-
-        finish_time = datetime.now()
-        diff_time = finish_time - start_time
-
-        seconds_elapsed = diff_time.seconds
-        logging.info("Access validation test finished at: {0}"
-                     .format(finish_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')))
-
-        logging.info('Elapsed time in seconds: {0}'.format(str(seconds_elapsed)))
-
-        # log as staff_user
-        logging.info('Logging in as user: {0} to validate similarity check report'
-                     .format(staff_user['name']))
-        dashboard_page = self.cas_login(email=staff_user['email'])
-        dashboard_page.page_ready()
-        self._driver.get(task_url)
-
-        sim_check = SimilarityCheckCard(self.getDriver())
-        sim_check.card_ready()
-        seconds_to_wait = max(10, 600 - seconds_elapsed)
-        logging.info('Starting report validation, expected maximum time to wait in seconds: '
-                     '{0}'.format(str(seconds_to_wait)))
         self.validate_report_history(sim_check, version='0.0')
-
-        sim_check.logout()
-
-        # check that the Report generation is not triggered for the next revision:
-        # log as editorial user
-        staff_user = random.choice(editorial_users)
-        workflow_page = self.go_to_ms_wokflow_as_editor(staff_user, paper_url)
+        sim_check.click_close_button_bottom()
+        time.sleep(3)
 
         decision = random.choice(['Major Revision', 'Minor Revision'])
+        logging.info('Chosen Decision to register: {0}'.format(decision))
         # register decision
         self.make_register_decision(workflow_page, decision)
         workflow_page.logout()
@@ -567,12 +601,10 @@ class SimilarityCheckTest(CommonTest):
         # Login as user and complete Revise Manuscript (Response to Reviewers)
         self.submit_new_version(short_doi, creator_user)
 
-        # log as editorial user and open the manuscript in workflow view
+        # log as editorial user
         workflow_page = self.go_to_ms_wokflow_as_editor(staff_user, paper_url)
         workflow_page.click_card('similarity_check')
-        # check AC#6: If the card is marked complete, it is not marked as incomplete
-        # when a new version is submitted
-        assert sim_check.completed_state()
+        # checking styles and components - automation should stay disabled
         sim_check.validate_styles_and_components('off')
         # check Report History
         self.validate_report_history(sim_check, version='0.0')
@@ -645,7 +677,7 @@ class SimilarityCheckTest(CommonTest):
         """
         # log as editorial user
         # staff_user = random.choice(editorial_users)
-        logging.info('Logging in as user: {0}'.format(staff_user['name']))
+        logging.info('Logging in as editorial user: {0}'.format(staff_user['name']))
         dashboard_page = self.cas_login(email=staff_user['email'])
         dashboard_page._wait_on_lambda(
                 lambda: paper_url.split('/')[2] in dashboard_page.get_current_url())
@@ -657,7 +689,7 @@ class SimilarityCheckTest(CommonTest):
         workflow_page.page_ready()
         return workflow_page
 
-    def create_new_submission(self, creator_user, title, document, mmt_name):
+    def create_new_submission(self, creator_user, title, document, mmt_name, format_='word'):
         """
         Method to log in as a creator user and create new submission
         :param creator_user: specific creator user account
@@ -670,18 +702,26 @@ class SimilarityCheckTest(CommonTest):
         dashboard_page = self.cas_login(email=creator_user['email'])
         dashboard_page.click_create_new_submission_button()
 
-        # TODO: use any file, not only word
         self.create_article(title=title, journal='PLOS Wombat', type_=mmt_name,
                             document=document,
-                            random_bit=True, format_='word')
-        #
+                            random_bit=True, format_=format_)
+
         manuscript_page = ManuscriptViewerPage(self.getDriver())
         manuscript_page.page_ready()
         short_doi = manuscript_page.get_paper_short_doi_from_url()
         paper_url = manuscript_page.get_current_url_without_args()
         logging.info("Assigned paper short doi: {0}".format(short_doi))
         # Complete cards
-        manuscript_page.complete_task('Upload Manuscript')
+        doc_format = document.split('.')[-1] if document else 'word'
+        if doc_format == 'pdf':
+            manuscript_page.click_task('Upload Manuscript')
+            upms = UploadManuscriptTask(self.getDriver())
+            upms.task_ready()
+            upms.upload_source_file()
+            upms._wait_for_element(upms._get(upms._completion_button))
+            manuscript_page.complete_task('Upload Manuscript', click_override=True)
+        else:
+            manuscript_page.complete_task('Upload Manuscript')
         manuscript_page.complete_task('Title And Abstract')
         manuscript_page.click_submit_btn()
         manuscript_page.confirm_submit_btn()

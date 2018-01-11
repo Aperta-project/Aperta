@@ -226,6 +226,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
     removeRecord(record){
       record.deleteRecord();
+      record.unloadRecord();
       this.set('pendingChanges', true);
     },
 

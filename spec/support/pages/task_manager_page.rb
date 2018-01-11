@@ -1,3 +1,8 @@
+require 'support/pages/fragments/phase_fragment'
+require 'support/pages/page_fragment'
+require 'support/pages/paper_page'
+require 'support/pages/task_manager_page'
+
 class TaskManagerPage < Page
 
   path :root

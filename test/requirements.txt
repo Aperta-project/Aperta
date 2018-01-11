@@ -7,7 +7,7 @@ mysql-connector-repackaged==0.3.1
 psycopg2==2.7.3.2
 PyPDF2==1.26.0
 requests==2.18.4
-selenium==3.7.0
+selenium==3.8.0
 smart_getenv==1.1.0
 teamcity-messages==1.21
 pytest==3.2.5

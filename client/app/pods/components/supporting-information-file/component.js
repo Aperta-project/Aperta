@@ -33,6 +33,14 @@ export default Component.extend({
     'Figure'
   ],
 
+  hasSIErrors: computed('SIErrors', function() {
+    if(!this.get('SIErrors')) { return false; }
+
+    const id = this.get('file').id;
+    return !Ember.isEmpty(this.get('SIErrors')[id]);
+  }),
+
+  hasSaveErrors: computed.or('hasSIErrors', 'model.validationErrors.save'),
 
   uiStateClass: computed('uiState', function() {
     return `si-file-${this.get('uiState')}`;
@@ -118,9 +126,13 @@ export default Component.extend({
       this.get('model').validateAll();
       if(this.get('model').validationErrorsPresent()) { return; }
 
-      this.get('updateFile')(this.get('file'));
+      const file = this.get('file');
+
+      this.get('resetSIErrorsForFile')(file);
+      this.get('updateFile')(file);
       this.set('uiState', 'view');
     },
+
     uploadFinished(){
       this.get('model').clearAllValidationErrors();
     }

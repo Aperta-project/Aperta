@@ -181,6 +181,13 @@ class SITaskTest(CommonTest):
     doc2upload = 'frontend/assets/supportingInfo/S2_figure.tif'
     fn = os.path.join(os.getcwd(), doc2upload)
     supporting_info.add_file(fn)
+    data = {}
+    data['figure'] = 'S2'
+    choices = ('Table', 'Data', 'Text', 'Figure', 'Other')
+    file_type = random.choice(choices)
+    logging.info('Selected file type: {0}'.format(file_type))
+    data['type'] = file_type
+    supporting_info.complete_si_item_form(data)
     supporting_info.validate_uploads([fn])
     # Do the Replace
     # click edit

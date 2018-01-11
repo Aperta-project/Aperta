@@ -90,11 +90,10 @@
     "yuidocjs": "^0.10.2"
   },
   "ember-addon": {
-    "paths": [
-
-    ]
+    "paths": []
   },
   "devDependencies": {
+    "ember-cli-sass": "^7.1.3",
     "ember-promise-helpers": "^1.0.3"
   }
 }

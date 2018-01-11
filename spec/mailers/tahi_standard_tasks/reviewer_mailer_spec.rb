@@ -7,6 +7,11 @@ describe TahiStandardTasks::ReviewerMailer do
   let(:paper) { FactoryGirl.create(:paper, :submitted_lite) }
   let(:reviewer) { FactoryGirl.create(:user) }
   let(:reviewer_task) { FactoryGirl.create(:paper_reviewer_task, paper: paper) }
+  let!(:invite_letter_template) { FactoryGirl.create(:letter_template, :reviewer_invite, journal: paper.journal) }
+  let!(:welcome_letter_template) { FactoryGirl.create(:letter_template, :reviewer_welcome, journal: paper.journal) }
+  let!(:accepted_letter_template) { FactoryGirl.create(:letter_template, :reviewer_accepted, journal: paper.journal) }
+  let!(:declined_letter_template) { FactoryGirl.create(:letter_template, :reviewer_declined, journal: paper.journal) }
+
   let(:invitation) do
     FactoryGirl.create(
       :invitation,

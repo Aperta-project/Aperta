@@ -292,16 +292,13 @@ describe InvitationsController do
         format: 'json',
         invitation: {
           email: email_to_invite,
-          task_id: task.id,
-          body: invitation_body
+          task_id: task.id
         }
       )
     end
 
     let(:email_to_invite) { invitee.email }
-    let(:invitation_body) do
-      'Hard to find a black cat in a dark room, especially if there is no cat.'
-    end
+    let!(:invite_letter_template) { FactoryGirl.create(:letter_template, :academic_editor_invite, journal: paper.journal) }
 
     it_behaves_like 'an unauthenticated json request'
 
@@ -324,6 +321,7 @@ describe InvitationsController do
           expect(invitation.state).to eq('pending')
           expect(invitation.invitee).to eq(invitee)
           expect(invitation.email).to eq(invitee.email)
+          expect(invitation.body).to be
         end
       end
     end
@@ -609,11 +607,14 @@ describe InvitationsController do
           id: invitation.to_param,
           format: :json,
           invitation: {
-            decline_reason: 'This is my decline reason',
-            reviewer_suggestions: 'Added reviewer suggesions'
+            decline_reason: decline_reason,
+            reviewer_suggestions: reviewer_suggestions
           }
         )
       end
+
+      let(:decline_reason) { 'This is my decline reason' }
+      let(:reviewer_suggestions) { 'Added reviewer suggesions' }
 
       it_behaves_like 'an unauthenticated json request'
 
@@ -629,6 +630,19 @@ describe InvitationsController do
           expect(invitation.actor).to eq(invitee)
           expect(invitation.decline_reason).to eq('This is my decline reason')
           expect(invitation.reviewer_suggestions).to eq('Added reviewer suggesions')
+        end
+
+        it 'sets the decline reason on the invitation' do
+          expect { do_request }.to change { invitation.reload[:decline_reason] }.from(nil).to(decline_reason)
+        end
+
+        it 'sets the reviewer_suggestions on the invitation' do
+          expect { do_request }.to change { invitation.reload[:reviewer_suggestions] }.from(nil).to(reviewer_suggestions)
+        end
+
+        it 'sets the actor on the invitation' do
+          initial_actor = invitation.actor
+          expect { do_request }.to change { invitation.reload.actor }.from(initial_actor).to(user)
         end
 
         it 'creates an Activity' do

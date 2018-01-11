@@ -93,7 +93,9 @@ class TemplateContext < Liquid::Drop
 
     source = subcontext_source.reduce(self) { |obj, meth| obj.send(meth) }
     wrappped_source = if is_array
-                        source.map { |source_item| subcontext_class.new(source_item) }
+                        source.map { |source_item| source_item.nil? ? nil : subcontext_class.new(source_item) }
+                      elsif source.nil?
+                        nil
                       else
                         subcontext_class.new(source)
                       end

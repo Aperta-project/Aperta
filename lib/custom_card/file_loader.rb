@@ -38,6 +38,7 @@ module CustomCard
 
     def validate_configuration
       @permissions.validate(self.class.names)
+      CardTaskType.seed_defaults
     end
 
     def create_card(card_name, xml)

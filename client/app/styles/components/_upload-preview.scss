@@ -1,0 +1,27 @@
+.upload-preview-filename {
+  color: $aperta-white;
+  position: absolute;
+  left: 12px;
+  top: 10px;
+}
+
+.upload-preview-image-wrapper {
+  overflow: hidden;
+  width: 75px;
+}
+
+.upload-error-button {
+  color: $aperta-green;
+  font-size: 40px;
+  line-height: 0.5;
+
+  &:hover {
+    color: $aperta-green-dark;
+  }
+}
+
+.upload-error-text {
+  display: block;
+  margin-top: 35px;
+  color: $aperta-red;
+}

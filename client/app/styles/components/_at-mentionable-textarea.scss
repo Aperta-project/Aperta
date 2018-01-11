@@ -1,0 +1,41 @@
+.atwho-container {
+  .atwho-view {
+    li {
+      border: 0px;
+    }
+
+    .at-who-name {
+      strong {
+        color: $aperta-black;
+      }
+    }
+
+    .at-who-username, .at-who-email {
+      color: $aperta-grey;
+      font-size: 12px;
+      padding-left: 3px;
+
+      strong {
+        color: $aperta-grey;
+      }
+    }
+
+    .cur {
+      .at-who-name {
+        color: $aperta-white;
+
+        strong {
+          color: $aperta-white;
+        }
+      }
+
+      .at-who-username, .at-who-email {
+        color: $aperta-black;
+
+        strong {
+          color: $aperta-black;
+        }
+      }
+    }
+  }
+}

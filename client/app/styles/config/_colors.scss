@@ -1,0 +1,38 @@
+/* GREEN - PRIMARY COLOR
+----------------------------------------------------------------------------- */
+
+$aperta-green: #39a329;
+$aperta-green-light: #8ecb87;
+$aperta-green-dark: #0f7400;
+
+
+/* BLUE - ADMIN
+----------------------------------------------------------------------------- */
+
+$aperta-blue: #2d85de;
+$aperta-blue-light: #d7ebfe;
+$aperta-blue-lighter: #e7f3fe;
+$aperta-blue-dark: #205e9c;
+
+
+/* GREY
+----------------------------------------------------------------------------- */
+
+$aperta-black: #333333;
+$aperta-grey: #878787;
+$aperta-grey-dark: #878787; // deprecated
+$aperta-grey-light: #d5d5d5;
+$aperta-grey-lighter: #e5e5e5;
+$aperta-grey-xlight: #f5f5f5;
+$aperta-white: #fff;
+$aperta-grey-xlighter: #f9f9f9;
+
+
+/* RED
+----------------------------------------------------------------------------- */
+
+$red-base: rgb(206, 11, 36);
+$aperta-red: $red-base;
+$aperta-red-light: lighten($red-base, 50%);
+$aperta-red-dark: darken($red-base, 10%);
+$aperta-red-background: #f7efe9;

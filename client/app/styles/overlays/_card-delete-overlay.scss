@@ -1,0 +1,17 @@
+.card-delete-overlay {
+  text-align: center;
+
+  h2 {
+    position: relative;
+    top: -40px;
+  }
+
+  .submit-action-buttons {
+    float: none;
+    text-align: inherit;
+
+    > div {
+      margin-bottom: 20px;
+    }
+  }
+}

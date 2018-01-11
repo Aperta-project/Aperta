@@ -1,0 +1,14 @@
+.admin-journal-settings {
+  .journal-thumbnail {
+    float: none;
+  }
+
+  .admin-journal-settings-buttons {
+    display: flex;
+    margin-top: 25px;
+
+    button {
+      margin-right: 30px;
+    }
+  }
+}

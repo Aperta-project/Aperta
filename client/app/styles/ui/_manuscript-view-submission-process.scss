@@ -1,0 +1,75 @@
+.paper-submission-process {
+  &.show-process #submission-process {
+    display: inline-block;;
+  }
+}
+
+#submission-process {
+  #inner {
+    position: relative;
+    padding:20px 30px 30px 50px;
+    border: 1px solid #E1F6DD;
+    background-color: #EAFDE8;
+  }
+
+  #sp-close {
+    @include position(absolute, 0px 0px auto auto);
+    padding: 3px 20px 3px 13px;
+    color: $aperta-green;
+    font-size: 4rem;
+    cursor: pointer;
+  }
+
+  p {
+    font-size: 85%;
+  }
+  h4 {
+    margin-top: 0;
+  }
+
+  .balls-and-columns {
+    p {
+      color: #333;
+    }
+    #balls {
+      margin-bottom: 2px;
+      .ball {
+        color: white;
+        background-color:#39A329;
+      }
+    }
+    #lines {
+      margin-top: 35px;
+      .line {
+        border-top: 1px solid #39A329;
+      }
+    }
+    h5 {
+      color: #66AA4A;
+    }
+  }
+}
+
+#submission-process-toggle {
+  color: $aperta-green;
+  font-size: 17px;
+  float:right;
+  margin: 0px 5px 10px 10px;
+  cursor: pointer;
+}
+
+.paper-submission-wrapper {
+    padding-bottom: 8%;
+
+  .task-list-doi {
+    float: left;
+  }
+
+  .submission-process-link {
+    float: right;
+
+    #submission-panel {
+      text-decoration: none;
+    }
+  }
+}

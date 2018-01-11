@@ -1,0 +1,52 @@
+$progress-spinner-size-large:  50px;
+$progress-spinner-size-medium: 40px;
+$progress-spinner-size-small:  30px;
+$progress-spinner-size-mini:   18px;
+
+@mixin color-way($dark, $light) {
+  border-top: 2px solid $dark;
+  border-bottom: 2px solid $light;
+  border-left: 2px solid $dark;
+  border-right: 2px solid $light;
+}
+
+
+.progress-spinner {
+  flex-shrink: 0;
+  display: none;
+  border-radius: 100%;
+  @include animation(rotate 1.25s linear infinite);
+}
+
+.progress-spinner--block  { display: block; }
+.progress-spinner--inline { display: inline-block; }
+
+
+// - Color Modifiers ----------------------
+
+.progress-spinner--green { @include color-way($aperta-green-dark, $aperta-green-light); }
+.progress-spinner--blue  { @include color-way($aperta-blue-dark, $aperta-blue-light); }
+.progress-spinner--white { @include color-way($aperta-grey-light, $aperta-white); }
+
+
+// - Size Modifiers -----------------------
+
+.progress-spinner--mini   { @include size($progress-spinner-size-mini,   $progress-spinner-size-mini); }
+.progress-spinner--small  { @include size($progress-spinner-size-small,  $progress-spinner-size-small); }
+.progress-spinner--medium { @include size($progress-spinner-size-medium, $progress-spinner-size-medium); }
+.progress-spinner--large  { @include size($progress-spinner-size-large,  $progress-spinner-size-large); }
+
+
+// - Position Modifiers -------------------
+
+.progress-spinner--absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  &.progress-spinner--small { margin: -#{$progress-spinner-size-small/2} 0 0 -#{$progress-spinner-size-small/2}; }
+  &.progress-spinner--large { margin: -#{$progress-spinner-size-large/2} 0 0 -#{$progress-spinner-size-large/2}; }
+}
+
+// depends on --block modifier:
+.progress-spinner--middle { margin: 0 auto; }

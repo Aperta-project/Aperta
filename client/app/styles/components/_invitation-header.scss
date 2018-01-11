@@ -1,0 +1,20 @@
+.invitation-header {
+  .invitation-metadata {
+    margin-bottom: 3px;
+
+    .fa-envelope {
+      color: $aperta-grey;
+      margin-right: 4px;
+    }
+
+    .invitation-type {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .invitation-paper-type {
+      margin-bottom: 0.5rem;
+      padding-top: 1.5rem;
+    }
+  }
+}

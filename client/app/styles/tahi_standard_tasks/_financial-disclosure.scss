@@ -1,0 +1,19 @@
+.remove-funder {
+  cursor: pointer;
+  float: right;
+  margin: 13px 5px 10px 0;
+
+  &:before {
+    font-size: 1.2em;
+  }
+}
+
+.block-title {
+  display: inline-block;
+  margin-bottom: 22px;
+}
+
+p.question-text {
+  font-size: 1.2em;
+  margin-left: 0;
+}

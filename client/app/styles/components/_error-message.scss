@@ -1,0 +1,20 @@
+.error-message {
+  color: $aperta-red;
+  font-size: 12px;
+  display: inline-block;
+  margin-left: 15px;
+
+  &.error-message--no-indent {
+    margin-left: 0;
+  }
+
+  &.validation-error {
+    i {
+      padding-right: 3px;
+    }
+  }
+}
+
+.error-message--hidden {
+  display: none;
+}

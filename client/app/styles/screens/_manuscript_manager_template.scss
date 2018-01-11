@@ -1,0 +1,58 @@
+.manuscript-manager-template-columns {
+  height: 100%;
+}
+
+.edit-paper-type-field {
+  width: 330px;
+  height: 40px;
+  margin-left: 2rem;
+  color: $aperta-blue;
+  font-size: 20px;
+  border: 1px solid $aperta-blue;
+  border-radius: 5px;
+  padding-left: 8px;
+
+  &.error {
+    border-color: $aperta-red;
+  }
+}
+
+.mmt-edit-error-message { display: inline; }
+.mmt-edit-error-message.error-message--hidden {
+  display: none;
+  margin-left: 10px;
+}
+
+.paper-type-name {
+  align-self: center;
+  display: inline-block;
+  color: $aperta-blue;
+  font-size: 2.0rem;
+  cursor: pointer;
+
+  .fa {
+    position: relative;
+    top: -2px;
+    margin-left: 2px;
+    font-size: 16px;
+    opacity: 0.5;
+  }
+
+  &:hover .fa {
+    opacity: 1;
+  }
+}
+
+.paper-type-save-button {
+  margin-left: 2rem;
+}
+
+.manuscript-manager-template-option {
+  align-self: center;
+  margin-left: 2rem;
+
+  label {
+    // bootstrap override
+    margin-bottom: 0;
+  }
+}

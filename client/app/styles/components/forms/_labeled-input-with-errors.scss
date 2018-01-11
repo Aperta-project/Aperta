@@ -1,0 +1,20 @@
+.labeled-input-with-errors {
+
+  .input-with-notification-icon {
+    position: relative;
+
+    .fa-exclamation-triangle {
+      color: $aperta-red;
+      position: absolute;
+      right: 10px;
+      bottom: 30%;
+    }
+
+    .labeled-input-with-errors-errored {
+      border-color: $aperta-red;
+      &:focus {
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px transparentize($aperta-red, 0.6);
+      }
+    }
+  }
+}

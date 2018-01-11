@@ -1,0 +1,48 @@
+$scheduled-event-row-padding: 10px;
+
+.scheduled-events {
+  .scheduled-events-table {
+    display: table;
+  }
+
+  .scheduled-event-row {
+    display: table-row;
+  }
+
+  .scheduled-event-cell {
+    display: table-cell;
+  }
+
+  .scheduled-event {
+    color: $aperta-grey;
+    vertical-align: baseline;
+  }
+
+  .scheduled-event-description {
+    min-width: 1%;
+    padding-bottom: $scheduled-event-row-padding;
+  }
+
+  .scheduled-event-status {
+    font-weight: 600;
+    padding-left: 20px;
+    padding-bottom: $scheduled-event-row-padding;
+
+    .switch {
+      margin: 0;
+      vertical-align: bottom;
+
+      .interior-text {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .event-active {
+    color: $aperta-black;
+  }
+
+  .event-errored .scheduled-event-status {
+    color: $aperta-red;
+  }
+}

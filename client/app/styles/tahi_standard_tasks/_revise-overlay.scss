@@ -1,0 +1,23 @@
+.revise-overlay-response-field {
+  margin-bottom: 1rem;
+  min-height: 15rem;
+}
+
+.revise-task .error-message {
+  margin-bottom: 1rem;
+  margin-left: 0; //override default
+}
+
+.revise-save-button {
+  margin-bottom: 1rem;
+}
+
+.response-to-reviewers > .row > div {
+  padding-right: 0px;
+}
+
+.response-to-reviewers a.link_ref {
+  font-size: 13px;
+  display: inline-block;
+  margin-top: 8px;
+}

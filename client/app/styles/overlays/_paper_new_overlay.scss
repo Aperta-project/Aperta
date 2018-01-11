@@ -1,0 +1,104 @@
+.paper-new-overlay .overlay-title-text h1 {
+  padding-top: 75px;
+}
+
+.paper-new-overlay .form-group {
+  margin-bottom: 30px;
+}
+
+.paper-new-paper-saving {
+  float: right;
+  font-size: 15px;
+  font-style: italic;
+
+  .progress-spinner {
+    position: relative;
+    top: 11px;
+    margin: 0 12px 0 5px;
+  }
+}
+
+.paper-new-label {
+  margin-bottom: 0.85rem;
+  color: $aperta-black;
+  font-size: 16px;
+  margin-bottom: .5rem;
+  font-weight: bold;
+}
+
+.paper-new-input {
+  width: 100%;
+  border: 1px solid $aperta-grey-light;
+  border-radius: 5px;
+  padding: 15px 50px 15px 15px;
+  font-size: 14px;
+}
+
+.paper-new-valid-icon {
+  position: absolute;
+  top: 49px;
+  right: -35px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: #fff;
+  text-align: center;
+  background-color: $aperta-green;
+}
+
+.paper-new-submit-actions {
+  padding: 25px 0;
+
+  .paper-new-upload-button {
+    width: 48%;
+    padding: 13px 0;
+    font-size: 22px;
+    margin-bottom: 10px;
+
+    .fa {
+      margin-right: 10px;
+      font-size: 115%;
+    }
+  }
+}
+
+
+// -- Select Fields
+
+.paper-new-select {
+  .ember-power-select-status-icon {
+    right: 15px;
+  }
+
+  .paper-new-select-trigger {
+    border: 1px solid $aperta-grey-light;
+    border-radius: 5px;
+    padding: 15px;
+    color: #222;
+    font-size: 14px;
+    cursor: pointer;
+
+    &[aria-disabled="true"] {
+      border-color: #dedede;
+      cursor: not-allowed;
+      background: #fff;
+
+      .ember-power-select-placeholder {
+        color: #bbb;
+      }
+    }
+  }
+}
+
+.paper-new-select-dropdown {
+  .ember-power-select-option {
+    padding: 10px 15px;
+    font-size: 14px;
+
+    &[aria-current="true"] {
+      color: #000;
+      background: #eee;
+    }
+  }
+}

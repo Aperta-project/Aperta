@@ -1,0 +1,253 @@
+@import 'bourbon';
+@import 'config/variables';
+@import 'config/colors';
+@import 'config/webfonts';
+@import 'ui/buttons';
+@import 'font-awesome';
+
+html { box-sizing: border-box; }
+*, *:before, *:after { box-sizing: inherit; }
+
+
+html {
+  background-color: #ddd;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment :fixed;
+}
+
+body {
+  font-size: 14px;
+  line-height: 1.428571429;
+}
+
+body, h1, input {
+  font-family: $aperta-font-family;
+  font-weight: normal;
+}
+
+
+html.bg-1 { background-image: url(image-path('auth/bg-1.jpg'));
+  #login-ccby::before { content: "Image credit: Vadim Kurland on Flickr under a "; }
+}
+html.bg-2 { background-image: url(image-path('auth/bg-2.jpg'));
+  #login-ccby::before { content: "Image credit: Sid Mosdell on Flickr under a "; }
+}
+
+#login-attribution {
+  display: block;
+  position: fixed;
+  bottom: 5px;
+  right: 10px;
+  color: white;
+}
+#login-attribution a {
+  color: white;
+  text-decoration: underline;
+}
+
+#aperta-container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 120px 0 20px 0;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+
+input { font-size: 14px; }
+input:focus, textarea:focus, *[contenteditable] { outline: none; }
+
+a, button, .fa, { transition: all 0.1s ease-in-out; }
+
+a {
+  color: $aperta-green;
+  text-decoration: none;
+
+  &:focus, &:hover {
+    text-decoration: underline;
+  }
+}
+
+.auth-flash {
+  flex: 0 0 100%;
+  padding: 15px 20px;
+
+  span {
+    float: right;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    text-shadow: 0 1px 0 #fff;
+    position: relative;
+    top: -10px;
+    right: -21px;
+    padding: 0 7px 3px 7px;
+    cursor: pointer;
+  }
+}
+
+// only for /users/sign_in
+.new_user {
+  .auth-flash {
+    margin-bottom: 30px;
+  }
+}
+
+.auth-flash--alert {
+  border: 1px solid #EBE4DB;
+  color: #853F59;
+  background: #F6EFE8;
+}
+
+.auth-flash--notice {
+  border: 1px solid #d7f0d1;
+  color: $aperta-green;
+  background: #eafde7;
+}
+
+.auth-container {
+  padding: 0 60px 35px 60px;
+  background: rgba(255,255,255, 0.95);
+
+  .methods {
+    flex: 0 1 auto;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+  }
+
+  .logo {
+    text-align: center;
+  }
+
+  h1 {
+    flex: 0 0 100%;
+    margin-top: 1px;
+    margin-bottom: 0px;
+    text-align: center;
+    font-size: 44px;
+  }
+
+  p {
+    text-align: center;
+    margin: 0 0 25px 0;
+    flex: 0 0 100%;
+    font-size: 16px;
+  }
+
+  .auth-register {
+    color: #83ba78;
+    font-weight: 500;
+    font-size: 16px;
+    text-decoration: none;
+
+    &:focus, &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .available-journals-message {
+    text-align: center;
+    background-color: #e4e4e4;
+    padding: 15px;
+    width: 100%;
+    margin-bottom: 15px;
+
+    p {
+      font-size: 14px;
+      margin-bottom: 10px;
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.auth-group {
+  flex: 1 0 auto;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  padding: 10px 0;
+  border-left: 1px solid #cccccd;
+
+  & > * {
+    flex: 0 0 auto;
+  }
+
+  &:first-of-type {
+    border-left: 0px;
+  }
+}
+
+.auth-remember-me {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.auth-field {
+  margin-bottom: 15px;
+}
+
+.auth-field--text-input input {
+  width: 205px;
+  border: 1px solid #cccccd;
+  border-radius: 4px;
+  padding: 6px 12px;
+}
+
+.auth-3rd-party-button {
+  display: block;
+  width: 170px;
+  padding: 10px 20px;
+  margin-bottom: 7px;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: none;
+  background: #eee;
+
+  &:hover { color: #fff; }
+}
+
+.button-secondary.auth-3rd-party-button {
+  background: transparent;
+  border-color: $aperta-green;
+  text-transform: none;
+
+  &:hover { color: $aperta-green; }
+}
+
+.auth-orcid {
+  background: #7ab727;
+}
+
+.auth-cas {
+  background: $aperta-green;
+}
+
+.auth-linkedin {
+  background: #063d73;
+}
+
+.auth-google {
+  background: #970d0c;
+}
+
+.auth-signup {
+  text-transform: uppercase;
+}
+
+.auth-signin {
+  padding-right: 55px;
+  padding-left: 55px;
+}
+
+.auth-logo {
+  padding-top: 50px;
+  max-width: 170px;
+  height: auto;
+}

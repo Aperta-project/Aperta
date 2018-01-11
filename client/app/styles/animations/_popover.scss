@@ -1,0 +1,14 @@
+@keyframes animation-popover {
+  0% {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0);
+  }
+}
+
+.animation-popover {
+  animation: animation-popover 0.2s;
+}

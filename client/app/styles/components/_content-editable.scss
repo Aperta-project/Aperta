@@ -1,0 +1,47 @@
+h2[contenteditable=true] {
+  margin-top: 0;
+  padding: 5px 0;
+  // Bootstrap's default height is 33px and we add 4px for the above padding.
+  // This is required for Firefox, without which the H2 height shrinks to 0
+  // when empty.
+  min-height: 37px;
+}
+
+label[contenteditable=true] {
+  background-color: $aperta-white;
+  padding: 5px;
+}
+
+div[contenteditable=true] {
+  background-color: $aperta-white;
+  white-space: pre-wrap;
+  min-height: 20px;
+}
+
+.two-element-form {
+  overflow: hidden;
+  margin-bottom: 5px;
+
+  .inline-edit-display {
+    float: left;
+    width: 95%;
+    margin: 3px;
+    display: list-item;    
+    padding: 5px;
+  }
+
+  input[type=checkbox] {
+    margin-top: 10px;
+    height: 40px;
+  }
+
+}
+
+.content-editable-muted {
+  color: #aaa;
+}
+
+div[contenteditable=true].author-response {
+  height: 100px;
+  border-radius: 4px;
+}

@@ -1,0 +1,34 @@
+@import 'check-box.scss';
+@import 'text-view.scss';
+@import 'short-input.scss';
+@import 'radio.scss';
+@import 'paragraph-input.scss';
+@import 'dropdown.scss';
+@import 'file-uploader.scss';
+@import 'date-picker.scss';
+@import 'tabbed-textarea.scss';
+@import 'toggle-switch.scss';
+@import 'tech-check.scss';
+@import 'sendback-reason.scss';
+@import 'display-children';
+@import 'repeat';
+
+// These are base rules for all card content types
+.card-content {
+    .question-text, .content-text {
+        font-size: 16px;
+        line-height: 20px;
+    }
+}
+
+.card-form-element {
+  width: 100%;
+}
+
+.card-form-label {
+  display: block;
+}
+
+.card-form-text {
+  margin-bottom: 10px;
+}

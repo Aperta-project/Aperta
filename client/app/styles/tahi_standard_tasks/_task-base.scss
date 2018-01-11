@@ -1,0 +1,21 @@
+.task.read-only {
+  *:not(.mce-btn) > button, .button {
+    &:not(.display-while-disabled) {
+      display: none;
+    }
+  }
+
+  .task-completed-section {
+    display: none;
+  }
+
+  &.user-can-make-editable {
+    .task-completed-section {
+      display: block;
+
+      button, .button {
+        display: inline;
+      }
+    }
+  }
+}

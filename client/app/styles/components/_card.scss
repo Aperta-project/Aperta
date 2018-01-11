@@ -1,0 +1,84 @@
+// Description goes here
+//
+// .card--completed - Use if Task is completed
+//
+// Styleguide UI.Card
+
+.card:focus,
+.card:hover {
+  .card-remove { opacity: 1; }
+
+  .card-content {
+    color: #fff;
+    text-decoration: none;
+    background-color: $aperta-green;
+  }
+}
+
+.card-remove {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px 5px 0 0;
+  font-size: 14px;
+  color: $aperta-grey-dark;
+  cursor: pointer;
+  @extend .fa, .fa-close;
+  opacity: 0;
+}
+.card-remove:hover {
+  color:$aperta-green;
+}
+
+.card {
+  display: block;
+  position: relative;
+  transition: transform 0.15s, box-shadow 0.15s;
+
+  .badge {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    padding: 1px 5px;
+  }
+
+  .card-diff-icon {
+    color: $aperta-green;
+    margin-right: 7px;
+    margin-top: 3px;
+    float: left;
+  }
+}
+
+// .card modifier:
+.card--completed {
+  .card-content {
+    color: $aperta-grey-light - #666;
+    background: $aperta-grey-light;
+  }
+}
+
+.card--completed:hover .card-content,
+.card--completed:focus .card-content {
+  color: #fff;
+  background: $aperta-grey-light - #333;
+
+  .fa { color: #fff; }
+}
+
+// .card modifier:
+.card--dragging {
+  transform: rotate(2deg) scale(1.05);
+  box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2), 0 2px 25px rgba(0, 0, 0, 0.1);
+}
+
+.required-field {
+  position: relative;
+  top: 0.75rem;
+  font-size: 21px;
+  color: $aperta-red;
+}
+
+.custom-card-task .dual-column {
+  padding-right: 1em;
+}

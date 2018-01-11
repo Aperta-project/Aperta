@@ -1,0 +1,24 @@
+.reviewer-report-wrapper .flex-element input[type=radio] {
+  margin-right: 5px;
+}
+
+.reviewer-report-confirmation {
+  margin-left: 30px;
+  margin-top: 40px;
+}
+
+.form-control.taller {
+  height: 265px;
+}
+
+.reviewer-form .answer-text {
+  border:1px solid $aperta-grey-light;
+  border-radius:4px;
+  margin-bottom:10px;
+  padding: 4px;
+}
+
+.report-edit-description {
+  font-size: .8em;
+  margin-top: .5em;
+}

@@ -1,0 +1,10 @@
+.card-content-short-input {
+    margin-top: 10px;
+    .card-form-label {
+      font-size:16px;
+    }
+}
+
+.card-input {
+    @extend .form-control;   
+}

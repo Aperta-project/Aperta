@@ -1,0 +1,76 @@
+.auto-suggest {
+  list-style-type: none;
+  overflow: auto;
+  position: absolute;
+  top: 100%;
+  left: 0px;
+  z-index: z('floating-list-active');
+  border: 1px solid $aperta-grey-light;
+  border-top: 0;
+  width: 100%;
+}
+
+.auto-suggest-item {
+  background: rgba(255,255,255, 0.96);
+  cursor: pointer;
+  padding: 0 25px;
+  overflow: hidden;
+  line-height: 30px;
+  color: #000;
+  font-size: 14px;
+}
+
+.auto-suggest-item:hover {
+  background: rgba(230, 230, 230, 0.95);
+}
+
+.auto-suggest-item--highlight,
+.auto-suggest-item--highlight:hover {
+  border-right-color: rgb(38, 131, 226);
+  border-left-color: rgb(38, 131, 226);
+  background: rgba(38, 131, 226, 0.95);
+  color: #fff;
+}
+
+.auto-suggest-border .auto-suggest-no-border {
+  display: block;
+  margin: 0;
+  border: 0;
+  background-color: transparent;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.auto-suggest-border {
+  position: relative;
+
+  &.error {
+    border-color: $aperta-red;
+  }
+
+  .error-message {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.75rem;
+  }
+
+  .invite-error-message {
+    margin-left: -20px;
+    .error-message {
+      position: relative;
+    }
+  }
+}
+
+.auto-suggest-border .auto-suggest {
+  border-top: 1px solid $aperta-grey-light;
+}
+
+.auto-suggest-border .progress-spinner {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
+}

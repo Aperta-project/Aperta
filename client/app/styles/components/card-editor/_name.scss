@@ -1,0 +1,63 @@
+.card-editor-name-container {
+
+  position: relative;
+
+  h1 {
+    color: $aperta-grey;
+    font-size: 30px;
+    margin-left: 5px;
+    cursor: pointer;
+
+    &.editing {
+      visibility: hidden;
+    }
+
+    i {
+      position: relative;
+      bottom: 5px;
+      left: 10px;
+      font-size: 16px;
+    }
+  }
+
+  .card-editor-name-form {
+    width: 550px;
+    background-color: transparentize($aperta-blue-light, 0.2);
+    border-radius: 4px;
+
+    // properly surround the 'view' display mode of the card title
+    position: absolute;
+    top: -26px;
+    left: -18px;
+
+    padding: 0 25px 0 10px;
+
+    .card-editor-name-row {
+      display: flex;
+      align-items: center;
+
+      .card-editor-name-field {
+        flex: 3 1 auto;
+        input {
+          color: $aperta-grey;
+          height: auto;
+          padding: 0 12px;
+          font-size: 30px;
+        }
+      }
+
+      .card-editor-name-action-buttons {
+        // align buttons with selectbox while compensating for any
+        // label or error message
+        margin-top: 15px;
+      }
+    }
+
+    .card-editor-name-note {
+      color: $aperta-grey;
+      font-size: 14px;
+      font-style: italic;
+    }
+  }
+
+}

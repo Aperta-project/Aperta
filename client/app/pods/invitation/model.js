@@ -31,6 +31,7 @@ export default DS.Model.extend({
   reviewerReport: DS.belongsTo('reviewer_report'),
   paperShortDoi: DS.attr('string'),
   journalName: DS.attr('string'),
+  dueIn: DS.attr('number'),
 
   isAlternate: Ember.computed.notEmpty('primary'),
   isPrimary: Ember.computed.notEmpty('alternates'),

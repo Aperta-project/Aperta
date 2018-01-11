@@ -1,5 +1,5 @@
 .invitation-email-entry {
-  padding: $invite-padding-vertical $invite-padding-horizontal $invite-padding-bottom;
+  padding: $invite-padding-vertical $invite-padding-horizontal 1.5rem;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -10,10 +10,20 @@
     min-width: 216px;
     margin-right: 14px;
   }
+
+  .invitation-item-due {
+    width: 40%;
+  }
 }
 
 .invitation-email-entry-progress {
   position: relative;
   top: 3px;
   margin-left: 8px;
+}
+
+.errored {
+  .invitation-email-entry {
+    padding-bottom: $invite-padding-bottom;
+  }
 }

@@ -14,7 +14,8 @@ class InvitationSerializer < ActiveModel::Serializer
              :rescinded_at,
              :position,
              :decision_id,
-             :valid_new_positions_for_invitation
+             :valid_new_positions_for_invitation,
+             :due_in
 
   has_one :invitee, serializer: UserSerializer, embed: :id, root: :users, include: true
   has_one :actor, serializer: UserSerializer, embed: :id, root: :users, include: true

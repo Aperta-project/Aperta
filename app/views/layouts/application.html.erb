@@ -1,48 +1,14 @@
 <!DOCTYPE html>
-<html class="bg-<%= (rand() * 2).to_i + 1 %>">
-  <head>
-    <%= git_commit_id_meta_tag %>
+<html>
+<head>
+  <title>PlosBioTechCheck</title>
+  <%= stylesheet_link_tag    "application", media: "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
 
-    <title>
-      <%= app_name %>
-    </title>
-    <%= stylesheet_link_tag "auth", media: "all" %>
+<%= yield %>
 
-    <link rel="shortcut icon" href="https://www.plos.org/wp-content/themes/plos_new/favicon.ico" />
-    <%- unless Rails.env.test? %>
-      <%= stylesheet_link_tag "//fonts.googleapis.com/css?family=Cabin:400,700,400italic" %>
-    <% end %>
-    <%= csrf_meta_tags %>
-    <% if !(Rails.env.test? || Rails.env.development?) %>
-      <%= render "shared/bugsnag_javascript" %>
-    <% end %>
-  </head>
-  <body class="sessions">
-    <% unless Rails.env.test? %>
-      <!-- Google Tag Manager -->
-      <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-TP26BH"
-      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-TP26BH');</script>
-
-      <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MQQMGF"
-      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-MQQMGF');</script>
-      <!-- End Google Tag Manager -->
-    <% end %>
-
-    <div id="aperta-container" class="<%= yield(:tahi_container_class) %>">
-      <%= yield %>
-    </div>
-    <div id="login-attribution">
-      <span id="login-ccby"><a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> license</span>
-    </div>
-  </body>
+</body>
 </html>

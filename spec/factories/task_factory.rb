@@ -82,7 +82,7 @@ FactoryGirl.define do
       end
     end
 
-    factory :changes_for_author_task, class: 'PlosBioTechCheck::ChangesForAuthorTask' do
+    factory :changes_for_author_task, class: 'ChangesForAuthorTask' do
       title "Changes for Author"
       body initialTechCheckBody: 'Default changes for author body'
     end
@@ -116,7 +116,7 @@ FactoryGirl.define do
       title "Financial Disclosure"
     end
 
-    factory :final_tech_check_task, class: 'PlosBioTechCheck::FinalTechCheckTask' do
+    factory :final_tech_check_task, class: 'FinalTechCheckTask' do
       title 'Final Tech Check'
     end
 
@@ -128,7 +128,7 @@ FactoryGirl.define do
       title "Initial Decision"
     end
 
-    factory :initial_tech_check_task, class: 'PlosBioTechCheck::InitialTechCheckTask' do
+    factory :initial_tech_check_task, class: 'InitialTechCheckTask' do
       title 'Initial Tech Check'
     end
 
@@ -177,7 +177,7 @@ FactoryGirl.define do
       title "Revise Manuscript"
     end
 
-    factory :revision_tech_check_task, class: 'PlosBioTechCheck::RevisionTechCheckTask' do
+    factory :revision_tech_check_task, class: 'RevisionTechCheckTask' do
       title 'Revision Tech Check'
     end
 

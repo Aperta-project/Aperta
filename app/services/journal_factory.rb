@@ -128,7 +128,7 @@ class JournalFactory
       # Cover editors cannot view, edit, or otherwise do anything on the
       # BillingTask, the ChangesForAuthorTask, or the PaperEditorTask
       task_klasses = STANDARD_TASKS - [
-        PlosBioTechCheck::ChangesForAuthorTask,
+        ChangesForAuthorTask,
         PaperEditorTask
       ]
       task_klasses.each do |klass|
@@ -174,7 +174,7 @@ class JournalFactory
       # Reviewer(s) get access to all submission tasks, except a few
       task_klasses = SUBMISSION_TASKS
       task_klasses -= [
-        PlosBioTechCheck::ChangesForAuthorTask,
+        ChangesForAuthorTask,
         PlosBilling::BillingTask,
         ReviewerRecommendationsTask
       ]
@@ -350,7 +350,7 @@ class JournalFactory
       # Handling editors cannot view, edit, or otherwise do anything on the
       # BillingTask, the ChangesForAuthorTask, or the PaperEditorTast
       task_klasses = STANDARD_TASKS - [
-        PlosBioTechCheck::ChangesForAuthorTask,
+        ChangesForAuthorTask,
         PaperEditorTask
       ]
       task_klasses.each do |klass|
@@ -520,7 +520,7 @@ class JournalFactory
       # Changes For Author tasks. However, AEs can view all
       # ReviewerReportTask(s) and its descendants, but cannot edit them.
       task_klasses -= [
-        PlosBioTechCheck::ChangesForAuthorTask,
+        ChangesForAuthorTask,
         PlosBilling::BillingTask,
         RegisterDecisionTask
       ]

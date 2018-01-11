@@ -161,7 +161,7 @@ module Typesetter
     end
 
     def final_tech_check_task
-      task('PlosBioTechCheck::FinalTechCheckTask')
+      task('FinalTechCheckTask')
     end
   end
 end

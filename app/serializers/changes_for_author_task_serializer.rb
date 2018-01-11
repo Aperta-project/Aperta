@@ -1,0 +1,2 @@
+class ChangesForAuthorTaskSerializer < ::TaskSerializer
+end

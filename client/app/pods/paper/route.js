@@ -1,4 +1,4 @@
-import AuthorizedRoute from 'tahi/routes/authorized';
+import AuthorizedRoute from 'tahi/pods/authorized/route';
 import PopoutParentRouteMixin from 'ember-popout/mixins/popout-parent-route';
 import Ember from 'ember';
 

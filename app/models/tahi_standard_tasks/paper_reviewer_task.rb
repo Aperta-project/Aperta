@@ -50,46 +50,9 @@ module TahiStandardTasks
       Role::REVIEWER_ROLE
     end
 
-    def invitation_template
-      LetterTemplate.new(
-        salutation: "Dear [REVIEWER NAME],",
-        body: invitation_body_template
-      )
-    end
-
     def accept_allowed?(invitation)
       # Prevents accepting invitation without an invitee
       invitation.invitee.present?
-    end
-
-    private
-
-    def invitation_body_template
-      template = <<-TEXT.strip_heredoc
-<p>You've been invited as a Reviewer on "{{ manuscript.title }}", for {{ journal.name }}.</p>
-<p>The abstract is included below. We would ideally like to have reviews returned to us within {{ invitation.due_in_days }} days. If you require additional time, please do let us know so that we may plan accordingly.</p>
-<p>Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.</p>
-<p>We look forward to hearing from you.</p>
-<p>Sincerely,</p>
-<p>{{ journal.name }} Team</p>
-<p>***************** CONFIDENTIAL *****************</p>
-<p>{{ manuscript.paper_type }}</p>
-<p>Manuscript Title:<br>
-{{ manuscript.title }}</p>
-<p>Authors:<br>
-{% for author in manuscript.authors %}
-{{ forloop.index }}. {{ author.last_name }}, {{ author.first_name }}<br>
-{% endfor %}</p>
-<p>Abstract:<br>
-{{ manuscript.abstract | default: 'Abstract is not available' }}</p>
-TEXT
-      # Note that this will become a LetterTemplate. When that
-      # happens, the rendering part below simplifies to a call on the
-      # LetterTemplate object.
-      context = InvitationScenario.new(self)
-      # Use LetterTemplate, not TahiStandardTasks::LetterTemplate
-      lt = ::LetterTemplate.new(body: template)
-      lt.render(context).body
     end
   end
 end

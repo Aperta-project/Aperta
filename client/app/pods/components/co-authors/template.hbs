@@ -1,0 +1,45 @@
+<div class='feedback-header flex-bar'>
+  <span class='aperta-logo'>Aperta</span>
+</div>
+<div class="confirmation-container">
+  <div class='logo'>
+    <img class='plos auth-logo' src="{{author.journalLogoUrl}}" />
+  </div>
+
+  {{#if isConfirmable}}
+    <div class="pending-confirmation">
+      <h2 class='confirmation-metadata'><i class="fa fa-envelope email-icon"></i> Co-author Confirmation |
+        <span class="date">{{format-date author.createdAt "short-date"}}</span>
+      </h2>
+      <h3 class="dashboard-paper-title">{{{author.paperTitle}}}</h3>
+
+      <h4>The full authorship list, as submitted is:</h4>
+      <ol id="author-list">
+        {{#each author.coauthors as |coauthor|}}
+          <li class="author-list-item">
+            {{coauthor.fullName}}{{#if coauthor.affiliation}}: {{coauthor.affiliation}}{{/if}}
+          </li>
+        {{/each}}
+      </ol>
+
+      <h4>By agreeing to be listed as an author of this paper, you are confirming that you meet these criteria of authorship:</h4>
+      <ol id="authorship-criteria">
+        <li class="authorship-criteria-item">Substantial contribution to conception and design, or acquisition of data, or analysis and interpretation of data;&nbsp;and</li>
+        <li class="authorship-criteria-item">Drafting the article or revisiting it critically for important intellectual content;&nbsp;and</li>
+        <li class="authorship-criteria-item">Final approval of the version to be published;&nbsp;and</li>
+        <li class="authorship-criteria-item">Agreement to be accountable for all aspects of the work in ensuring that questions related to the accuracy or integrity of any part of the work are appropriately investigated and resolved.</li>
+      </ol>
+
+      <button class="button-primary button--green" {{action 'save'}}>Confirm Authorship</button>
+      <p class="refute-authorship">To refute authorship, please reply to the email you recieved.</p>
+    </div>
+  {{/if}}
+
+  {{#if isConfirmed}}
+    <div class='message thank-you'>
+      <h1>Thank You!</h1>
+    </div>
+  {{/if}}
+
+</div>
+

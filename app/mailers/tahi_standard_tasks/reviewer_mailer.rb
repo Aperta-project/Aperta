@@ -2,6 +2,7 @@ module TahiStandardTasks
   class ReviewerMailer < ApplicationMailer
     include Rails.application.routes.url_helpers
     include MailerHelper
+    include ::EmailFromLiquidTemplate
     add_template_helper ClientRouteHelper
     add_template_helper TemplateHelper
     layout "mailer"
@@ -27,57 +28,47 @@ module TahiStandardTasks
 
     def reviewer_accepted(invitation_id:)
       @invitation = Invitation.find_by(id: invitation_id)
-      return if @invitation.blank?
-
-      @assigner = @invitation.inviter
-      return if @assigner.blank?
+      return if @invitation.blank? || @invitation.inviter.blank?
 
       @invite_reviewer_task = @invitation.task
       @paper = @invite_reviewer_task.paper
       @journal = @paper.journal
 
-      @reviewer = @invitation.invitee
-      @reviewer_name = @reviewer.try(:full_name) || @invitation.email
-
-      mail(
-        to: @assigner.email,
-        subject: "Reviewer invitation was accepted on the manuscript, \"#{@paper.display_title}\""
+      send_mail_from_letter_template(
+        journal: @journal,
+        letter_ident: 'reviewer-accepted',
+        scenario: InvitationScenario.new(@invitation),
+        check_blanks: false
       )
     end
 
     def reviewer_declined(invitation_id:)
       @invitation = Invitation.find_by(id: invitation_id)
-      return if @invitation.blank?
-
-      @assigner = @invitation.inviter
-      return if @assigner.blank?
+      return if @invitation.blank? || @invitation.inviter.blank?
 
       @invite_reviewer_task = @invitation.task
       @paper = @invite_reviewer_task.paper
       @journal = @paper.journal
 
-      @reviewer = @invitation.invitee
-      @reviewer_name = @reviewer.try(:full_name) || @invitation.email
-
-      mail(
-        to: @assigner.email,
-        subject: "Reviewer invitation was declined on the manuscript, \"#{@paper.display_title}\""
+      send_mail_from_letter_template(
+        journal: @journal,
+        letter_ident: 'reviewer-declined',
+        scenario: InvitationScenario.new(@invitation),
+        check_blanks: false
       )
     end
 
     def welcome_reviewer(assignee_id:, paper_id:)
       @paper = Paper.find(paper_id)
+      @reviewer_report = ReviewerReport.where( user_id: assignee_id, decision: @paper.draft_decision).first
       @journal = @paper.journal
-      @assignee = User.find_by(id: assignee_id)
-      @assignee_name = display_name(@assignee)
-      @reviewer_report =
-        ReviewerReport.where(user: @assignee,
-                             decision: @paper.draft_decision).first
-      @review_due_at = @reviewer_report.due_at || 10.days.from_now
       @invitation = @reviewer_report.invitation
-      mail(
-        to: @assignee.try(:email),
-        subject: "Thank you for agreeing to review for #{@journal.name}"
+
+      send_mail_from_letter_template(
+        journal: @journal,
+        letter_ident: 'reviewer-welcome',
+        scenario: ReviewerReportScenario.new(@reviewer_report),
+        check_blanks: false
       )
     end
 

@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import QAIdent from 'tahi/mixins/components/qa-ident';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(QAIdent, {
   classNames: ['card-content-template'],
   restless: Ember.inject.service('restless'),
 

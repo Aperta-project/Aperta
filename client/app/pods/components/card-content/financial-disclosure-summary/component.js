@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
+import QAIdent from 'tahi/mixins/components/qa-ident';
 
 let computedFromAnswer = function(ident) {
   return Ember.computed('answers.@each.value', 'repetition', function() {
@@ -64,7 +65,7 @@ const Funder = Ember.Object.extend({
   },
 });
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(QAIdent, {
   classNames: ['card-content-financial-disclosure-summary'],
   store: Ember.inject.service(),
 

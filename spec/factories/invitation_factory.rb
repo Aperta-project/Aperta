@@ -12,6 +12,8 @@ FactoryGirl.define do
     position 0 # position column is null: false
 
     after(:build) do |invitation, evaluator|
+      FactoryGirl.create(:letter_template, :academic_editor_invite, journal: invitation.paper.journal) unless LetterTemplate.exists?(journal: invitation.paper.journal, ident: "academic-editor-invite")
+      FactoryGirl.create(:letter_template, :reviewer_invite, journal: invitation.paper.journal) unless LetterTemplate.exists?(journal: invitation.paper.journal, ident: "reviewer-invite")
       invitation.email = evaluator.invitee.email if evaluator.invitee
     end
 

@@ -26,7 +26,6 @@ gem 'faraday'
 gem 'faraday_middleware', '~> 0.10'
 gem 'fog', '~> 1.36.0'
 gem 'gepub', '~> 0.7.0beta4'
-gem 'health_check'
 gem 'jwt'
 gem 'kaminari'
 gem 'liquid'
@@ -94,6 +93,7 @@ end
 
 group :development, :test do
   gem 'awesome_print'
+  gem 'bootsnap'
   gem 'dotenv-rails', require: 'dotenv/rails-now'
   gem 'progressbar'
   gem 'pry-byebug'

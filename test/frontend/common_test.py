@@ -537,3 +537,19 @@ class CommonTest(FrontEndTest):
         reviewer = random.choice(reviewer_users)
         logging.info('Selected reviewer is: {0}'.format(reviewer))
         return reviewer
+
+    @staticmethod
+    def is_preprint_on() -> bool:
+        """
+        A method that will determine for mmt if the pre-print feature flag is ON
+        :return: True if preprint feature flag is ON, otherwise False
+        :type return: preprint_feature_flag, current_env
+        """
+        current_env = os.getenv('WEBDRIVER_TARGET_URL', '')
+        logging.info(current_env)
+        if current_env in production_urls:
+            return False
+        preprint_feature_flag = PgSQL().query('SELECT active '
+                                              'FROM feature_flags '
+                                              'WHERE name = \'PREPRINT\';')[0][0]
+        return preprint_feature_flag, current_env

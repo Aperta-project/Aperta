@@ -7,7 +7,7 @@ class UserSerializer < ActiveModel::Serializer
     :username
 
   has_many :affiliations, embed: :id
-  has_one :orcid_account, embed: :id
+  has_one :orcid_account, embed: :id, include: true
 
   private
 

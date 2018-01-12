@@ -43,8 +43,6 @@ export default {
       if (status === 422) { return; }
       // session invalid, redirect to sign in
       if (status === 401) { return document.location.href = '/users/sign_in'; }
-      // health service handles its own alert messages, so we just return
-      if ((status === 500 || status === 503 || status === 307) && url.match(/^\/health/) ) { return; }
 
       let msg = `Error with ${type} request to ${url}. Server returned ${status}: ${statusText}. ${thrownError}`;
       logError(new Error(msg));

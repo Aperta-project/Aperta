@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe UserSerializer, serializer_test: true do
-  subject(:serializer) { described_class.new(user) }
+  subject(:serializer) { described_class.new(user, scope: user, scope_name: :current_user) }
   let(:user) do
     FactoryGirl.build_stubbed(
       :user,
@@ -35,6 +35,10 @@ describe UserSerializer, serializer_test: true do
         orcid_account_id: orcid_account.id,
         username: user.username
       )
+    end
+
+    it 'sideloads the orcid account' do
+      expect(serializer.as_json[:orcid_accounts][0][:id]).to eq(orcid_account.id)
     end
 
     context 'and ORCID_CONNECT_ENABLED is false' do

@@ -3,6 +3,6 @@ module TahiStandardTasks
     embed :ids
     has_many :academic_editors
     has_many :invitations, include: true
-    attributes :invitation_template, :invitee_role
+    attributes :invitee_role
   end
 end

@@ -24,24 +24,6 @@ module TahiDevise
       sign_in_and_redirect(user, event: :authentication)
     end
 
-    # We are using the "Orcid Member API", which gives us access to privilaged information.
-    # It let's us query for detailed profile information. Unfortunately, Orcid's default is
-    # that email addresses are private. The user can change their email address to be public,
-    # and we can get it back, but let's face it, nobody's going to do that. Even though we
-    # are reading "limited access data", the field is private and this prevents Orcid
-    # from sending us the email address.
-    #
-    # So, redirect to a page that prefills any orcid profile information and collects email.
-    #
-    def orcid
-      if credential.present?
-        sign_in_and_redirect(credential.user, event: :authentication)
-      else
-        session["devise.provider"] = { "orcid" => auth }
-        redirect_to new_user_registration_url
-      end
-    end
-
     private
 
     def credential

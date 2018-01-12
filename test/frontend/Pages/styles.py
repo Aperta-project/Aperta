@@ -756,7 +756,7 @@ class StyledPage(PlosPage):
             link.value_of_css_property('font-size')
         assert link.value_of_css_property('line-height') == '20px', \
             link.value_of_css_property('line-height')
-        assert link.value_of_css_property('background-color') in ('transparent', TRANSPARENT), \
+        assert link.value_of_css_property('background-color') == TRANSPARENT, \
             link.value_of_css_property('background-color')
         assert link.value_of_css_property('color') == APERTA_BLUE, link.value_of_css_property(
             'color')

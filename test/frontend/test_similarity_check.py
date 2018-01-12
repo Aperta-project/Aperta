@@ -575,8 +575,7 @@ class SimilarityCheckTest(CommonTest):
 
         auto_settings_db = sim_check.get_sim_check_auto_settings(short_doi=short_doi)
         assert auto_settings_db == auto_option, 'Automation setting in db: \'{0}\' is not ' \
-                                          'the expected: \'{1}\''.format(auto_settings_db,
-                                                                         auto_option)
+            'the expected: \'{1}\''.format(auto_settings_db, auto_option)
 
         sim_check.validate_card_header(short_doi)
         sim_check.validate_styles_and_components(auto_option)
@@ -689,7 +688,7 @@ class SimilarityCheckTest(CommonTest):
         workflow_page.page_ready()
         return workflow_page
 
-    def create_new_submission(self, creator_user, title, document, mmt_name, format_='word'):
+    def create_new_submission(self, creator_user, title, document, mmt_name):
         """
         Method to log in as a creator user and create new submission
         :param creator_user: specific creator user account
@@ -704,7 +703,7 @@ class SimilarityCheckTest(CommonTest):
 
         self.create_article(title=title, journal='PLOS Wombat', type_=mmt_name,
                             document=document,
-                            random_bit=True, format_=format_)
+                            random_bit=True, format_='word')
 
         manuscript_page = ManuscriptViewerPage(self.getDriver())
         manuscript_page.page_ready()

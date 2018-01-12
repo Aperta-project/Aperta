@@ -803,6 +803,44 @@ class StyledPage(PlosPage):
     assert link.value_of_css_property('font-weight') == '400', \
         link.value_of_css_property('font-weight')
 
+  # Diffing/Versioning Styles =====================
+  @staticmethod
+  def validate_diff_redaction_style(element):
+      """
+      Validate the redaction style of card versions view - note this only validates
+      the strikethrough and background color
+      :param element: a element against which to evaluate style
+      :return: void function
+      """
+      assert element.value_of_css_property('background-color') == 'rgba(253, 219, 223, 0.5)', \
+          element.value_of_css_property('background-color')
+      assert element.value_of_css_property('text-decoration') == 'line-through', \
+          element.value_of_css_property('text-decoration')
+
+  @staticmethod
+  def validate_diff_addition_style(element):
+      """
+      Validate the addition style of card versions view - note this only validates
+      the background color
+      :param element: a element against which to evaluate style
+      :return: void function
+      """
+      assert element.value_of_css_property('background-color') == 'rgba(142, 203, 135, 0.5)', \
+          element.value_of_css_property('background-color')
+
+  @staticmethod
+  def validate_diff_no_change_style(element):
+      """
+      Validate the no difference style of card versions view - note this only validates
+      the color
+      :param element: a element against which to evaluate style
+      :return: void function
+      """
+      assert element.value_of_css_property('color') == 'rgba(135, 135, 135, 0)', \
+          element.value_of_css_property('color')
+
+
+
   # Confirmation Styles =====================
   @staticmethod
   def validate_cancel_confirmation_style(cancel):

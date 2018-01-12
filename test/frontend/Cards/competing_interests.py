@@ -50,7 +50,7 @@ class CompetingInterestsCard(BaseCard):
         assert question_link.text == 'PLOS Policy on Declaration and Evaluation of Competing ' \
                                      'Interests', question_link.text
         assert question_link.get_attribute('href') == \
-               'http://journals.plos.org/plosbiology/s/competing-interests', \
+            'http://journals.plos.org/plosbiology/s/competing-interests', \
             question_link.get_attribute('href')
         assert question_link.get_attribute('target') == '_blank', question_link.get_attribute(
             'target')
@@ -79,26 +79,26 @@ class CompetingInterestsCard(BaseCard):
         """
         Filling out the competing interests card with specified top level selection
         :param choice: If supplied, will fill out the form accordingly, else, will make a random
-        choice. Expected 'Yes' or 'No' (case insensitive)
+        choice. Expected 'Yes' or 'No' (case sensitive)
         """
         content = str()
         yes_radio = self._get(self._yes_radio)
         no_radio = self._get(self._no_radio)
         if not choice:
-            choice = random.choice(['yes', 'no'])
+            choice = random.choice(['Yes', 'No'])
             logging.info('Randomly selected Competing Interest Choice is: {0}'.format(choice))
-        if choice.lower() == 'yes':
+        if choice == 'Yes':
             yes_radio.click()
             rte_id, iframe = self.get_rich_text_editor_instance('competing_interests--statement')
             assert iframe, 'No "Yes" Subform input area found in Competing Interests card'
-            content = 'Kilroy was here - and chose Yes!.'
+            content = 'Kilroy was here - and said there was a conflict!.'
             self.tmce_set_rich_text(iframe, content=content)
             self.pause_to_save()
-        elif choice == 'no':
+        elif choice == 'No':
             no_radio.click()
         else:
             raise ValueError('The choice passed into the complete_form method is invalid: '
-                             '{0}'.format(choice))
+                             '{0}. Note choice is case sensitive.'.format(choice))
         self.pause_to_save()
         return choice, content
 

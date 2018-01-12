@@ -32,7 +32,7 @@ class CompetingInterestsCardTest(CommonTest):
         collection for Export to Apex
     """
 
-    def rest_smoke_ci_styles_elements(self):
+    def test_smoke_ci_styles_elements(self):
         """
         Validates the elements, styles of the Competing Interests card in both Paper Viewer and
             Workflow contexts, sets the Yes radio button in paper viewer context to display the
@@ -79,7 +79,7 @@ class CompetingInterestsCardTest(CommonTest):
         ci_card.validate_styles()
         ci_card.validate_common_elements_styles(short_doi)
 
-    def rest_core_ci_selection(self):
+    def test_core_ci_selection(self):
         """
         Validates setting and saving the selection state and competing interests statement
         :return: void function
@@ -232,13 +232,15 @@ class CompetingInterestsCardTest(CommonTest):
         # Close Task
         manuscript_page.click_task('Competing Interests')
         # Go into Versions view - compare 0.0 to current draft
-        manuscript_page.select_manuscript_version_item('compare',1)
+        manuscript_page.select_manuscript_version_item('compare', 1)
         manuscript_page._wait_for_element(manuscript_page._get(
             manuscript_page._paper_sidebar_diff_icons))
         paper_diff = ManuscriptViewerPage(self.getDriver())
         paper_diff.click_task('Competing Interests')
-        # TODO: The actual diff view validation
-        time.sleep(30)
+        ci_task = CompetingInterestsTask(self.getDriver())
+        ci_task.diff_view_ready()
+        ci_task.validate_diffed_text(choice, new_choice)
+        ci_task.validate_diffed_tinymce_text(ci_statement, new_ci_statement)
 
 
 if __name__ == '__main__':

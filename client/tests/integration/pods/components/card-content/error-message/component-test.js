@@ -2,6 +2,7 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
+
 moduleForComponent(
   'card-content/error-message',
   'Integration | Component | card content | error message',
@@ -13,9 +14,12 @@ moduleForComponent(
   }
 );
 
-test('it renders the message from the scenario based on the content key', function(
-  assert
-) {
+let template = hbs`{{card-content/error-message
+preview=false
+scenario=scenario
+content=content}}`;
+
+test('it renders the message from the scenario based on the content key', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
 
@@ -28,9 +32,7 @@ test('it renders the message from the scenario based on the content key', functi
   );
 
   this.set('content', Ember.Object.create({ key: 'errors.nestedError' }));
-  this.render(
-    hbs`{{card-content/error-message preview=false scenario=scenario content=content}}`
-  );
+  this.render(template);
 
   assert.textPresent(
     '.error-message',

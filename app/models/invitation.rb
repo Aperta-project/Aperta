@@ -66,6 +66,7 @@ class Invitation < ActiveRecord::Base
     event(:invite,
       after_commit: [:set_invitee,
                      :set_invited_at,
+                     :set_body,
                      :notify_invitation_invited]) do
       transitions from: :pending, to: :invited, guards: :invite_allowed?
     end
@@ -135,6 +136,14 @@ class Invitation < ActiveRecord::Base
 
   def set_invitee
     update(invitee: User.find_by(email: email))
+  end
+
+  def set_body
+    scenario = InvitationScenario.new(self)
+    letter_templates = paper.journal.letter_templates
+    ident = invitee_role == Role::REVIEWER_ROLE ? 'reviewer-invite' : 'academic-editor-invite'
+    letter_template = letter_templates.find_by(ident: ident)
+    update(body: letter_template.render(scenario).body)
   end
 
   private

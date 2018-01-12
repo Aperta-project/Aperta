@@ -1,7 +1,18 @@
+ENV["RAILS_ENV"] ||= 'test'
+require 'bootsnap'
+
+Bootsnap.setup(
+  cache_dir:            'tmp/cache',
+  development_mode:     ENV["RAILS_ENV"] == 'development',
+  load_path_cache:      true,      # Optimize the LOAD_PATH with a cache
+  autoload_paths_cache: true,      # Optimize ActiveSupport autoloads with cache
+  disable_trace:        true,      # (Alpha) Set `RubyVM::InstructionSequence.compile_option ={trace_instruction: false }`
+  compile_cache_yaml:   true
+)
+
 require 'codeclimate-test-reporter'
 CodeClimate::TestReporter.start
 
-ENV["RAILS_ENV"] ||= 'test'
 require 'spec_helper'
 require 'rspec/matchers'
 require 'equivalent-xml'
@@ -41,7 +52,15 @@ ActiveRecord::Migration.maintain_test_schema! if
   defined?(ActiveRecord::Migration)
 
 # Truncate the database right now
-DatabaseCleaner.clean_with(:truncation)
+truncate_opts = {
+  except: %w[task_types cards card_contents card_task_types card_versions entity_attributes]
+}
+DatabaseCleaner.clean_with(:truncation, (ENV['CARD_LOAD'] ? {} : truncate_opts))
+
+# directories with compiled ember should have this file and the server should be running
+ember_path = EmberCLI.app(:client).paths.dist
+ember_built = ember_path.join('index.html').file? && Rails.root.join('tmp', 'pids', 'server.pid').file?
+ENV["SKIP_EMBER"] ||= 'true' unless ENV["BUILD_EMBER"] || !ember_built
 
 # Necessary to run a rake task from here
 Rake::Task.clear
@@ -85,16 +104,21 @@ RSpec.configure do |config|
     # truncate task_types, cards, and card_contents, we want to keep these tables
     # around.
     # Ensure this comes after the generic setup (see above)
-    DatabaseCleaner[:active_record].strategy = :truncation, {
-      except: %w[task_types cards card_contents card_task_types card_versions entity_attributes]
-    }
+    DatabaseCleaner[:active_record].strategy = :truncation, truncate_opts
 
     # Fix to make sure this happens only once
     # This cannot be a :suite block, because that does not know if a js feature
     # is being run.
     # rubocop:disable Style/GlobalVars
     next if $capybara_setup_done
-    EmberCLI.compile!
+    # Some info on env vars
+    puts "Here are some relevant env vars"
+    puts "Using ember build from #{ember_path}, should be the same as your dev build location"
+    puts "'BUILD_EMBER=true' forces ember to (re)build"
+    puts "'CARD_LOAD=true' runs 'rake cards:load' and removes exisiting cards in test db"
+    puts "'HEADLESS=true' runs test headlessly"
+    Thread.new { EmberCLI.compile! } unless ENV["SKIP_EMBER"]
+
     Capybara.server_port = ENV['CAPYBARA_SERVER_PORT']
 
     # This allows the developer to specify a path to an older, insecure firefox
@@ -115,7 +139,9 @@ RSpec.configure do |config|
       client = Selenium::WebDriver::Remote::Http::Default.new
       client.read_timeout = 90
       client.open_timeout = 90
-      options = Selenium::WebDriver::Firefox::Options.new
+      options_args = { args: [] }
+      options_args[:args] << '-headless' if ENV['HEADLESS']
+      options = Selenium::WebDriver::Firefox::Options.new(options_args)
       options.profile = profile
       Capybara::Selenium::Driver
         .new(app, browser: :firefox, options: options, http_client: client)
@@ -134,8 +160,9 @@ RSpec.configure do |config|
     # Load question seeds before any tests start since we don't want them
     # to be rolled back as part of a transaction
     Rake::Task['cards:load'].reenable
-    Rake::Task['cards:load'].invoke
+    Thread.new { Rake::Task['cards:load'].invoke } if Card.count.zero? || ENV["CARD_LOAD"]
 
+    Thread.list.each { |t| t.join unless t == Thread.current }
     $capybara_setup_done = true
     # rubocop:enable Style/GlobalVars
   end

@@ -1,11 +1,7 @@
 <%= render partial: 'email/journal_logo_or_name', locals: { journal: @paper.journal } %>
 <br><br>
 
-<p class="user-name">Hello <%= @assigner.first_name %></p>
-
-<p>
-  <%= @reviewer_name %> has accepted your invitation to review the Manuscript: "<%= @paper.display_title(sanitized: false) %>".
-</p>
+<%= @body.html_safe %>
 
 <%= render partial: 'email/button', locals: {
   href: client_paper_task_url(@paper, @invite_reviewer_task),

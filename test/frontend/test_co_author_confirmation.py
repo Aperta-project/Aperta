@@ -60,6 +60,7 @@ class CoAuthorConfirmationTest(CommonTest):
         manuscript_page.complete_task('Figures')
         manuscript_page.complete_task('Supporting Info')
         manuscript_page.complete_task('Additional Information')
+        manuscript_page.complete_task('Financial Disclosure')
         manuscript_page.complete_task('Early Version')
         # Now, on the Authors card, we add a co-author
         manuscript_page.click_task('Authors')
@@ -178,6 +179,7 @@ class CoAuthorConfirmationTest(CommonTest):
         manuscript_page.complete_task('Figures')
         manuscript_page.complete_task('Supporting Info')
         manuscript_page.complete_task('Additional Information')
+        manuscript_page.complete_task('Financial Disclosure')
         manuscript_page.complete_task('Early Version')
         # Now, on the Authors card, we add a co-author
         manuscript_page.click_task('Authors')
@@ -244,6 +246,7 @@ class CoAuthorConfirmationTest(CommonTest):
         manuscript_page.complete_task('Figures')
         manuscript_page.complete_task('Supporting Info')
         manuscript_page.complete_task('Additional Information')
+        manuscript_page.complete_task('Financial Disclosure')
         manuscript_page.complete_task('Early Version')
         # Now, on the Authors card, we add a co-author
         manuscript_page.click_task('Authors')

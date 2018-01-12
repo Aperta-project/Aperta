@@ -14,6 +14,7 @@ feature "Invite Academic Editor", js: true do
     )
   end
   let(:task) { FactoryGirl.create :paper_editor_task, :with_loaded_card, paper: paper }
+  let!(:invite_letter_template) { FactoryGirl.create(:letter_template, :academic_editor_invite, journal: paper.journal) }
 
   let(:staff_admin) { create :user }
   let!(:editor1) { create :user, first_name: 'Henry' }

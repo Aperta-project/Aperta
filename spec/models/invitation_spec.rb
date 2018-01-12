@@ -4,6 +4,7 @@ describe Invitation do
   subject(:invitation) { FactoryGirl.build :invitation, task: task }
   let(:paper) { FactoryGirl.create(:paper, :submitted_lite, :with_author) }
   let(:task) { FactoryGirl.create :invitable_task, paper: paper }
+  let!(:invite_letter_template) { FactoryGirl.create(:letter_template, :academic_editor_invite, journal: paper.journal) }
 
   describe ".invited" do
     let!(:open_invitation_1) { FactoryGirl.create(:invitation, :invited) }

@@ -2,14 +2,15 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup } from 'ember-data-factory-guy';
-
+import Ember from 'ember';
+let task;
 moduleForComponent('task-disclosure', 'Integration | Component | task disclosure', {
   integration: true,
 
   beforeEach() {
     manualSetup(this.container);
 
-    let task  = FactoryGuy.make('custom-card-task', {
+    task  = FactoryGuy.make('custom-card-task', {
       title: 'Cat',
       viewable: true
     });
@@ -71,4 +72,37 @@ test('it is disabled if the task is not viewable', function(assert) {
 
   assert.equal(this.$('.task-disclosure-body').length, 0, 'body remains hidden');
 
+});
+
+test('it displays body if user opted out to preprint', function(assert) {
+  this.set('defaultPreprintTaskOpen', true);
+  Ember.run(function() {
+    task.set('title', 'Preprint Posting');
+    task.set('answers', [FactoryGuy.make('answer', {value: false})]);
+  });
+
+  this.render(hbs`
+    {{#task-disclosure task=task
+      defaultPreprintTaskOpen=defaultPreprintTaskOpen }}
+      Meow
+    {{/task-disclosure}}
+  `);
+
+  assert.equal(this.$('.task-disclosure-body').length, 1, 'body is displayed');
+});
+
+test('it hides body if user opted in to preprint', function(assert) {
+  this.set('defaultPreprintTaskOpen', true);
+  Ember.run(function() {
+    task.set('title', 'Preprint Posting');
+    task.set('answers', [FactoryGuy.make('answer', {value: true})]);
+  });
+  this.render(hbs`
+    {{#task-disclosure task=task
+      defaultPreprintTaskOpen=defaultPreprintTaskOpen }}
+      Meow
+    {{/task-disclosure}}
+  `);
+
+  assert.equal(this.$('.task-disclosure-body').length, 0, 'body remains hidden');
 });

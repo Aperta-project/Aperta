@@ -176,6 +176,25 @@ describe CardPermissionsController do
         expect { do_request }.to(change { edit_permission.roles.reload.count }.from(1).to(2))
       end
 
+      context "the other role has specific states that apply to it" do
+        before do
+          stub_sign_in user
+        end
+        let!(:other_role) { FactoryGirl.create(:role, journal: journal, name: "Reviewer") }
+        it "adds a new permission for the other role" do
+          expect { do_request }.to(change { other_role.permissions.reload.count }.from(0).to(1))
+        end
+
+        it "adds a new permission for the other role with the appropriate states" do
+          do_request
+          expect(other_role.permissions.reload.first.states.map(&:name)).to contain_exactly(*Paper::REVIEWABLE_STATES.map(&:to_s))
+        end
+
+        it "does not add the new role to the existing edit permission" do
+          expect { do_request }.not_to(change { edit_permission.roles.reload.count })
+        end
+      end
+
       it "does not add the role to the card version view permission" do
         stub_sign_in user
         expect { do_request }.not_to(change { card_version_view_permission.roles.reload.count })

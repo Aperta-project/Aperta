@@ -186,7 +186,7 @@ class Paper < ActiveRecord::Base
     event(:invite_full_submission) do
       transitions from: :initially_submitted,
                   to: :invited_for_full_submission,
-                  after: [:allow_edits!, :new_draft!]
+                  after: [:allow_edits!, :new_draft!, :set_active!]
     end
 
     event(:minor_check) do
@@ -207,19 +207,19 @@ class Paper < ActiveRecord::Base
     event(:minor_revision) do
       transitions from: :submitted,
                   to: :in_revision,
-                  after: [:allow_edits!, :new_draft!]
+                  after: [:allow_edits!, :new_draft!, :set_active!]
     end
 
     event(:major_revision) do
       transitions from: :submitted,
                   to: :in_revision,
-                  after: [:allow_edits!, :new_draft!]
+                  after: [:allow_edits!, :new_draft!, :set_active!]
     end
 
     event(:accept) do
       transitions from: :submitted,
                   to: :accepted,
-                  after: [:set_accepted_at!]
+                  after: [:set_accepted_at!, :set_active!]
     end
 
     event(:reject) do
@@ -706,6 +706,10 @@ class Paper < ActiveRecord::Base
 
   def new_minor_version!
     draft.be_minor_version!
+  end
+
+  def set_active!
+    update!(active: true)
   end
 
   def set_editable!

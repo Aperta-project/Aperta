@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 module PlosBioTechCheck
-  describe InitialTechCheckController do
+  describe TechCheckController do
     let(:user) { FactoryGirl.build_stubbed :user }
-    let(:task) { FactoryGirl.build_stubbed :initial_tech_check_task }
+    let(:task) { FactoryGirl.build_stubbed :final_tech_check_task }
     let(:notify_service) do
       instance_double(NotifyAuthorOfChangesNeededService, notify!: nil)
     end
@@ -14,7 +14,7 @@ module PlosBioTechCheck
       end
 
       before do
-        allow(InitialTechCheckTask).to receive(:find)
+        allow(Task).to receive(:find)
           .with(task.to_param)
           .and_return task
       end

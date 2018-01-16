@@ -11,14 +11,5 @@ module UserDevise
         super
       end
     end
-
-    # prefill user data using data being returned from cas (via omniauth)
-    def self.new_with_session(_, session)
-      super.tap do |user|
-        if session["devise.provider"]
-          user.auto_generate_password
-        end
-      end
-    end
   end
 end

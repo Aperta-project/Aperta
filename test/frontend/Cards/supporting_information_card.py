@@ -27,6 +27,7 @@ class SICard(BaseCard):
     self._file_link = (By.CSS_SELECTOR, 'a.si-file-filename')
     self._upload_help_text = (By.CSS_SELECTOR, 'span.button-primary + div')
     self._si_filename = (By.CLASS_NAME, 'si-file-filename')
+    self._file_link_open = (By.CSS_SELECTOR, '.si-file-filename > a')
    #POM Actions
 
   def validate_styles(self, short_doi):
@@ -68,7 +69,18 @@ class SICard(BaseCard):
     :param uploads: Iterable with string with the file name to check in SI task
     :return: None
     """
-    site_uploads = self._gets(self._file_link)
+    site_uploads_collapsed = self._gets(self._file_link)
+    site_uploads_opened = None
+    try:
+        site_uploads_opened = self._gets(self._file_link_open)
+    except ElementDoesNotExistAssertionError:
+        logging.info('There are no opened SI upload divs')
+
+    if site_uploads_opened:
+        site_uploads = site_uploads_collapsed + site_uploads_opened
+    else:
+        site_uploads = site_uploads_collapsed
+
     timeout = 15
     counter = 0
     while len(uploads) != len(site_uploads) or counter == timeout:

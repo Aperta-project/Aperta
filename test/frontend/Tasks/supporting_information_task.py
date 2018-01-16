@@ -36,6 +36,7 @@ class SITask(BaseTask):
     self._si_file_del_btn = (By.CLASS_NAME, 'si-file-delete-button')
     self._si_file_other_input = (By.CLASS_NAME, 'power-select-other-input')
     self._file_link = (By.CSS_SELECTOR, 'a.si-file-filename')
+    self._file_link_open = (By.CSS_SELECTOR, '.si-file-filename > a')
     self._si_file_view = (By.CLASS_NAME, 'si-file-view')
     # Change followin markers when APERTA-8609 is addressed
     self._si_task_main_content = (By.XPATH, '//div[@class="task-main-content"][2]')
@@ -160,7 +161,12 @@ class SITask(BaseTask):
     :param uploads: Iterable with string with the file name to check in SI task
     :return: None
     """
-    site_uploads = self._gets(self._file_link)
+    site_uploads = None
+    try:
+        site_uploads = self._gets(self._file_link)
+    except ElementDoesNotExistAssertionError:
+        site_uploads = self._gets(self._file_link_open)
+
     timeout = 15
     counter = 0
     while len(uploads) != len(site_uploads) or counter == timeout:

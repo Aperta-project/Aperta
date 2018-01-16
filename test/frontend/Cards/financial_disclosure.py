@@ -84,12 +84,8 @@ class FinancialDisclosureCard(BaseCard):
       self.validate_overlay_card_title_style(card_title)
       intro_text = self._get(self._intro_text)
       self.validate_application_body_text(intro_text)
-      assert intro_text.text == 'A copy of your uncorrected proof will be published online ahead ' \
-                                'of the final version of your manuscript, should your manuscript ' \
-                                'be accepted. If you do NOT consent to having an early version of ' \
-                                'your paper published online, please uncheck the box below. Please ' \
-                                'note, if you change your mind, you may choose to opt out up until ' \
-                                'final acceptance.', intro_text.text
+      assert intro_text.text == 'Did any of the authors receive specific funding for this ' \
+                                  'work?', intro_text.text
       opt_in_checkbox = self._get(self._accman_consent_checkbox)
       # APERTA-8500
       # self.validate_checkbox(opt_in_checkbox)

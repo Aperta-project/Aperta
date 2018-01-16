@@ -70,9 +70,9 @@ class FinancialDisclosureTest(CommonTest):
         workflow_page.click_card('financial_disclosure')
         findisc_card = FinancialDisclosureCard(self.getDriver())
         findisc_card.card_ready()
-        findisc_card.validate_styles()
+        findisc_card.validatevalidate_common_elements_styles()
 
-    def test_core_findisc_function(self):
+    def rest_core_findisc_function(self):
         """
         Validates specifying and saving one or more financial disclosure statements
         :return: void function

@@ -117,7 +117,7 @@ class AuthenticatedPage(StyledPage):
         self._early_version_card = None
         self._ethics_statement_card = None
         self._figures_card = None
-        self._fin_disclose_card = None
+        self._financial_disclosure_card = None
         self._new_taxon_card = None
         self._report_guide_card = None
         self._review_cands_card = None
@@ -662,7 +662,7 @@ class AuthenticatedPage(StyledPage):
         elif cardname.lower() == 'figures':
             card_title = self._get(self._figures_card)
         elif cardname.lower() == 'financial_disclosure':
-            card_title = self._get(self._fin_disclose_card)
+            card_title = self._get(self._financial_disclosure_card)
         elif cardname.lower() == 'new_taxon':
             card_title = self._get(self._new_taxon_card)
         elif cardname.lower() == 'reporting_guidelines':

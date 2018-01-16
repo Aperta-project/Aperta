@@ -69,6 +69,7 @@ class BaseCard(AuthenticatedPage):
 
     def click_completion_button(self):
         """Click completed checkbox"""
+        self._wait_for_element(self._get(self._completion_button), multiplier=2)
         self._scroll_into_view(self._get(self._completion_button))
         self._get(self._completion_button).click()
 

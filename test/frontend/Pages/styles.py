@@ -804,11 +804,13 @@ class StyledPage(PlosPage):
         link.value_of_css_property('font-weight')
 
   # Diffing/Versioning Styles =====================
+  # The following three styles are not present in the style guide but were reviewed by Sam on
+  #     20180117
   @staticmethod
   def validate_diff_redaction_style(element):
       """
       Validate the redaction style of card versions view - note this only validates
-      the strikethrough and background color
+      the strike-through and background color
       :param element: a element against which to evaluate style
       :return: void function
       """

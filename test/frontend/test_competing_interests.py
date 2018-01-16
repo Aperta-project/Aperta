@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This test case validates style and function of Competing Interests Card in both paper viewer and
@@ -36,7 +36,7 @@ class CompetingInterestsCardTest(CommonTest):
         """
         Validates the elements, styles of the Competing Interests card in both Paper Viewer and
             Workflow contexts, sets the Yes radio button in paper viewer context to display the
-            input subform and enters a basic reason. Validates those values in workflow view.
+            input sub-form and enters a basic reason. Validates those values in workflow view.
             Intrinsically validates the use of the correct ident for the key data.
         :return: void function
         """
@@ -53,11 +53,13 @@ class CompetingInterestsCardTest(CommonTest):
         manuscript_page = ManuscriptViewerPage(self.getDriver())
         manuscript_page.page_ready_post_create()
         short_doi = manuscript_page.get_short_doi()
-        # Validate E&S for Paper Viewer context
+        # Validate Elements and Styles for Paper Viewer context
         manuscript_page.click_task('Competing Interests')
         ci_task = CompetingInterestsTask(self.getDriver())
         ci_task.task_ready()
+        # The following method call leaves the card in a state where the Yes radio is selected
         ci_task.validate_styles()
+        ci_task.validate_common_elements_styles()
         ci_task.logout()
 
         # login as privileged user to validate the presentation of the data on the CI Card
@@ -76,8 +78,10 @@ class CompetingInterestsCardTest(CommonTest):
         workflow_page.click_competing_interest_card()
         ci_card = CompetingInterestsCard(self.getDriver())
         ci_card.card_ready()
-        ci_card.validate_styles()
-        ci_card.validate_common_elements_styles(short_doi)
+        ci_card.validate_styles(selected='Yes')
+        # APERTA-12445 Permission to add participants is not exposed/configured so there is a
+        #     failure of the following call
+        # ci_card.validate_common_elements_styles(short_doi)
 
     def test_core_ci_selection(self):
         """
@@ -149,7 +153,7 @@ class CompetingInterestsCardTest(CommonTest):
         ci_card.click_completion_button()
         choice, content = ci_card.complete_form('')
         ci_card.validate_state(choice, content)
-        # And recomplete when we are all done
+        # And re-complete when we are all done
         ci_card.click_completion_button()
 
     def test_full_ci_diff_view(self):
@@ -206,7 +210,7 @@ class CompetingInterestsCardTest(CommonTest):
         self._driver.navigated = True
         paper_viewer = ManuscriptViewerPage(self.getDriver())
         paper_viewer.page_ready()
-        # go to workflow and open Send to Apex Card
+        # go to workflow and open Register Decision Card
         paper_viewer.click_workflow_link()
         workflow_page = WorkflowPage(self.getDriver())
         workflow_page.page_ready()

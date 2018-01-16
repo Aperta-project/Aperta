@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import logging
 import random
@@ -35,6 +35,7 @@ class CompetingInterestsTask(BaseTask):
     def validate_styles(self):
         """
         Validate elements and styles in the Competing Interests Card in paper viewer context
+        Note: Leaves card in state of having Yes radio selected
         """
         intro_text = self._get(self._intro_text)
         self.validate_card_question_text(intro_text)
@@ -86,6 +87,7 @@ class CompetingInterestsTask(BaseTask):
         Filling out the competing interests card with specified top level selection
         :param choice: If supplied, will fill out the form accordingly, else, will make a random
         choice. Expected 'Yes' or 'No' (case sensitive) if supplied
+        :return: tuple of choice and the string input into the tinyMCE area
         """
         content = str()
         yes_radio = self._get(self._yes_radio)

@@ -141,7 +141,7 @@ class BaseTask(AuthenticatedPage):
         A basic method to test that a task is fully populated before we interact with it.
         :return: Void Function
         """
-        self._wait_for_element(self._get(self._completion_button), multiplier=2)
+        self._wait_for_element(self._get(self._completion_button), multiplier=2.5)
 
     def diff_view_ready(self):
         """Ensure the diff view is ready before proceeding"""

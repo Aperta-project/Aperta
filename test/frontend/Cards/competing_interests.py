@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Page object definition for the Competing Interests card
@@ -10,7 +10,8 @@ from selenium.webdriver.common.by import By
 
 from frontend.Cards.basecard import BaseCard
 
-__author__ = 'gholmes@plos.org'
+__author__ = 'jgray@plos.org'
+__original_author__ = 'gholmes@plos.org'
 
 
 class CompetingInterestsCard(BaseCard):
@@ -21,7 +22,7 @@ class CompetingInterestsCard(BaseCard):
     def __init__(self, driver):
         super(CompetingInterestsCard, self).__init__(driver)
         # Locators - Instance members
-        self._intro_text = (By.CSS_SELECTOR, '.question-text')
+        self._intro_text = (By.CLASS_NAME, 'question-text')
         self._intro_text_link = (By.CSS_SELECTOR, '.question-text > a')
         self._yes_radio = (By.CSS_SELECTOR, 'label > input')
         self._yes_label = (By.XPATH, "//*[@class='card-form-label'][contains(text(),'Yes')]")
@@ -33,10 +34,12 @@ class CompetingInterestsCard(BaseCard):
         self._yes_subform_instructs = (By.CSS_SELECTOR, '.card-form-text')
         self._no_statement = (By.CSS_SELECTOR, '.card-content-view-text')
 
-    def validate_styles(self):
+    def validate_styles(self, selected=''):
         """
         Validate elements and styles in the Competing Interests Card in workflow context
+        :param selected: boolean Yes::No indicating which radio is selected when calling
         """
+
         intro_text = self._get(self._intro_text)
         self.validate_card_question_text(intro_text)
         assert 'You are responsible for recognizing and disclosing on behalf of all authors any ' \
@@ -55,11 +58,20 @@ class CompetingInterestsCard(BaseCard):
         assert question_link.get_attribute('target') == '_blank', question_link.get_attribute(
             'target')
         yes_radio = self._get(self._yes_radio)
-        assert yes_radio.is_selected()
+        if not selected:
+            assert not yes_radio.is_selected()
+        elif selected == 'Yes':
+            assert yes_radio.is_selected()
+        elif selected != 'No':
+            logging.warning('Invalid selection state for financial decision card: '
+                            '{0}'.format(selected))
         yes_label = self._get(self._yes_label)
         self.validate_checkbox_label(yes_label)
         no_radio = self._get(self._no_radio)
-        assert not no_radio.is_selected()
+        if not selected or selected == 'Yes':
+            assert not no_radio.is_selected()
+        else:
+            assert no_radio.is_selected()
         no_label = self._get(self._no_label)
         self.validate_checkbox_label(no_label)
         yes_radio.click()
@@ -71,15 +83,16 @@ class CompetingInterestsCard(BaseCard):
                "interests.\"\n\nPlease note that if your manuscript is accepted, this statement " \
                "will be published." in subform_instructs.text, subform_instructs.text
         rte_id, iframe = self.get_rich_text_editor_instance('competing_interests--statement')
-        assert iframe, 'No "Yes" Subform input area found in Competing Interests card'
+        assert iframe, 'No "Yes" Sub-form input area found in Competing Interests card'
         competing_interest_input = self.tmce_get_rich_text(iframe)
         assert competing_interest_input == 'Kilroy was here.', competing_interest_input
 
-    def complete_form(self, choice):
+    def complete_form(self, choice: str) -> tuple:
         """
         Filling out the competing interests card with specified top level selection
         :param choice: If supplied, will fill out the form accordingly, else, will make a random
-        choice. Expected 'Yes' or 'No' (case sensitive)
+        choice. Expected 'Yes' or 'No' (case sensitive) if supplied
+        :return: tuple of choice and the string input into the tinyMCE area
         """
         content = str()
         yes_radio = self._get(self._yes_radio)

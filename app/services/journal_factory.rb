@@ -55,7 +55,7 @@ class JournalFactory
   end
 
   def assign_default_system_custom_cards
-    CustomCard::FileLoader.load(@journal)
+    JournalWorker.perform_async(@journal.id)
   end
 
   # All standard tasks that users who see the workflow should see

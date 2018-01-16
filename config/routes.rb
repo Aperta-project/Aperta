@@ -100,7 +100,6 @@ Tahi::Application.routes.draw do
     end
     resources :discussion_participants, only: [:create, :destroy, :show]
     resources :discussion_replies, only: [:show, :create, :update]
-    resources :errors, only: :create
     resources :feedback, only: :create
     resources :figures, only: [:show, :destroy, :update] do
       put :update_attachment, on: :member

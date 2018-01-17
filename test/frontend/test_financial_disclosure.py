@@ -70,7 +70,7 @@ class FinancialDisclosureTest(CommonTest):
         workflow_page.click_card('financial_disclosure')
         findisc_card = FinancialDisclosureCard(self.getDriver())
         findisc_card.card_ready()
-        findisc_card.validatevalidate_common_elements_styles()
+        findisc_card.validate_common_elements_styles()
 
     def rest_core_findisc_function(self):
         """

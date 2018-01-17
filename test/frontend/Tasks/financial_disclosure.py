@@ -53,7 +53,7 @@ class FinancialDisclosureTask(BaseTask):
         self._subform_addl_comments_field = (By.CSS_SELECTOR,
                                              'h4 + div + div + div + div > div > div > input')
         self._subform_funder_role_radio_question = (
-            By.CSS_SELECTOR, 'fieldset.qa-ident-funder--had_influence > div.card-form-text-error')
+            By.CSS_SELECTOR, 'fieldset.qa-ident-funder--had_influence > div.card-form-text')
         self._subform_funder_role_radio_yes = (By.CSS_SELECTOR, 'div.card-radio > label > input')
         self._subform_funder_role_radyes_lbl = (By.CSS_SELECTOR,
                                                 'div.card-radio > label > input + span')
@@ -125,6 +125,7 @@ class FinancialDisclosureTask(BaseTask):
         assert funder_subform_title.text == 'FUNDER', funder_subform_title.text
         funder_subform_name_lbl = subform_encl_div.find_element(*self._subform_funder_name_label)
         self.validate_input_field_external_label_style(funder_subform_name_lbl)
+        self._scroll_into_view(funder_subform_name_lbl)
         assert funder_subform_name_lbl.text == 'Funder Name:', funder_subform_name_lbl.text
         subform_encl_div.find_element(*self._subform_funder_name_field)
         funder_subform_grant_lbl = subform_encl_div.find_element(*self._subform_grant_number_label)
@@ -140,8 +141,6 @@ class FinancialDisclosureTask(BaseTask):
         assert funder_subform_comments_lbl.text == 'Additional Comments:', \
             funder_subform_comments_lbl.text
         subform_encl_div.find_element(*self._subform_addl_comments_field)
-
-
         funder_subform_role_question = subform_encl_div.find_element(*self._subform_funder_role_radio_question)
         self.validate_input_field_external_label_style(funder_subform_role_question)
         assert funder_subform_role_question.text == \
@@ -197,7 +196,6 @@ class FinancialDisclosureTask(BaseTask):
         self.pause_to_save()
         # The one thing that *should* change with the subform Yes selection/entering a role is
         #     the fun_summary text should reflect the entered text
-        fun_summary = self._get(self._funder_summary_statement)
         assert fun_summary.text == '[funder name]\nThe funder washed my car while I worked on ' \
                                    'this manuscript.', fun_summary.text
 

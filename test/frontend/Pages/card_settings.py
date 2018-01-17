@@ -8,12 +8,12 @@ also includes Page Object Model for the card settings overlay.
 
 from selenium.webdriver.common.by import By
 
-from frontend.Cards.basecard import BaseCard
+from .authenticated_page import AuthenticatedPage
 
 __author__ = 'gtimonina@plos.org'
 
 
-class CardSettings(BaseCard):
+class CardSettings(AuthenticatedPage):
     """
     Model the Card Settings Page on Workflow Tab elements and their functions
     """

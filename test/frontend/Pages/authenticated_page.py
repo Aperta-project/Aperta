@@ -630,7 +630,7 @@ class AuthenticatedPage(StyledPage):
           financial_disclosure, new_taxon, reporting_guidelines, reviewer_candidates, revise_task,
           supporting_info, upload_manuscript, assign_admin, assign_team, editor_discussion,
           final_tech_check, initial_decision, invite_academic_editor, invite_reviewers,
-          production_metadata, register_decision, reviewer_report, revision_tech_check
+          production_metadata, register_decision, reviewer_report, revision_tech_check,
           similarity check or send_to_apex
         :param title: String with card title to rule out when there are cards with the same name
         NOTE: this does not cover the ad hoc card
@@ -1118,3 +1118,10 @@ class AuthenticatedPage(StyledPage):
                     return True
         logging.info('Completed is False')
         return False
+
+    def open_recent_activity(self):
+        """
+        Opens the recent activity overlay
+        :return: void function
+        """
+        self._get(self._recent_activity).click()

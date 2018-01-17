@@ -24,28 +24,28 @@ class SimilarityCheckCard(BaseCard):
 
         # Locators - Instance members
         self._sim_check_task_overlay = (By.CSS_SELECTOR, '.task.similarity-check-task')
-        self._instruction = (By.CSS_SELECTOR, 'div.ember-view.task>div>p')
+        self._instruction = (By.CSS_SELECTOR, 'div.ember-view.task > div > p')
         self._automation_disabled_info = (By.CSS_SELECTOR, 'div.auto-report-off p')
         self._automated_report_status = (By.CSS_SELECTOR, '.task.similarity-check-task p')
         self._automated_report_status_active = (By.CSS_SELECTOR, 'div.automated-report-status p')
         self._generate_report_button = (By.CSS_SELECTOR, 'button.generate-confirm')
         self._confirm_container = (By.CSS_SELECTOR, 'div.confirm-container')
-        self._confirm_form = (By.CSS_SELECTOR, 'div div')
-        self._confirm_text = (By.CSS_SELECTOR, 'div.confirm-container>h4')
+        self._confirm_form = (By.CSS_SELECTOR, 'div > div')
+        self._confirm_text = (By.CSS_SELECTOR, 'div.confirm-container > h4')
         self._manually_generate_cancel_link = (By.CSS_SELECTOR, 'button.button-link')
         self._manually_generate_button = (By.CSS_SELECTOR, 'button.generate-report')
         self._report_pending_spinner = (By.CSS_SELECTOR, 'div.progress-spinner')
         self._report_pending_spinner_message = (By.CSS_SELECTOR,
                                                 'div.ember-view.progress-spinner-message')
-        self._sim_check_report_title = (By.CSS_SELECTOR, '.latest-versioned-text>h3')
+        self._sim_check_report_title = (By.CSS_SELECTOR, '.latest-versioned-text > h3')
         self._sim_check_report_completed = (By.CSS_SELECTOR, '.latest-versioned-text p')
         self._sim_check_report_score_text = (By.CSS_SELECTOR, '.latest-versioned-text p + p')
         self._sim_check_report_link = (By.CSS_SELECTOR, '.similarity-check a')
         self._sim_check_report_score = (By.CLASS_NAME, 'score')
-        self._sim_check_report_history = (By.CSS_SELECTOR, '.task.similarity-check-task>div>h3')
+        self._sim_check_report_history = (By.CSS_SELECTOR, '.task.similarity-check-task > div > h3')
         self._sim_check_report_revision_number = (By.CSS_SELECTOR,
                                                   '.similarity-check-bar-revision-number')
-        self._version_report = (By.CSS_SELECTOR, '.similarity-check-bar>.similarity-check')
+        self._version_report = (By.CSS_SELECTOR, '.similarity-check-bar > .similarity-check')
         self._btn_done = (By.CSS_SELECTOR, 'span.task-completed-section button')
         self._author = (By.CLASS_NAME, 'paper-creator')
 
@@ -82,9 +82,9 @@ class SimilarityCheckCard(BaseCard):
 
         # auto options (defined in APERTA-9958)
         auto_report_options_text = {'at_first_full_submission': 'first full submission',
-                               'after_major_revise_decision': 'major revision',
-                               'after_minor_revise_decision': 'minor revision',
-                               'after_any_first_revise_decision': 'any first revision'}
+                                    'after_major_revise_decision': 'major revision',
+                                    'after_minor_revise_decision': 'minor revision',
+                                    'after_any_first_revise_decision': 'any first revision'}
 
         if ithenticate_automation == 'off':
             auto_info = self._get(self._automation_disabled_info)
@@ -101,10 +101,10 @@ class SimilarityCheckCard(BaseCard):
                                                 'manuscript.', auto_info[0].text.strip()
 
         if triggered:
+            self.validate_pending()
             # check it is pending and "generate button is not enabled
             send_for_manual_report_button = self._iget(self._generate_report_button)
             assert not send_for_manual_report_button.is_enabled()
-            self.validate_pending()
         else:
             if ithenticate_automation == 'off':
                 # check if the button is enable when the card is incomplete
@@ -179,14 +179,15 @@ class SimilarityCheckCard(BaseCard):
         self._wait_for_element(self._get(self._confirm_container))
         # assert self._get(self._confirm_container)
         confirm_container = self._get(self._confirm_container)
-        self.validate_generate_confirmation_style(confirm_container)
-
+        self.validate_cancel_confirmation_style(confirm_container)
+        self.validate_container_confirmation_style(confirm_container)
         confirm_text = self._get(self._confirm_text)
-        expected_confirm_text = ['Manually generating the report will disable the automated ' \
-                                'similarity check for this manuscript', 'Are you sure?']
+        expected_confirm_text = ['Manually generating the report will disable the automated '
+                                 'similarity check for this manuscript', 'Are you sure?']
         assert confirm_text.text.strip() in expected_confirm_text, \
             'Confirmation text is: \'{0}\', expected: \'{1}\'' \
-                .format(confirm_text.text.strip(), expected_confirm_text)
+            .format(confirm_text.text.strip(), expected_confirm_text)
+
         confirm_cancel = self._get(self._manually_generate_cancel_link)
         self.validate_cancel_confirmation_style(confirm_cancel)
 
@@ -195,10 +196,11 @@ class SimilarityCheckCard(BaseCard):
         self.validate_secondary_big_green_button_style(confirm_generate_button)
         # click on 'cancel' - confirm container should not be displayed
         confirm_cancel.click()
-        gen_report = self._get(self._sim_check_task_overlay)
-        gen_report.find_element(*self._confirm_form)
-        # gen_report.find_element_by_css_selector('div div')
-        assert 'confirm-container' not in gen_report.get_attribute('class')
+        gen_report_info = self._get(self._sim_check_task_overlay)
+        gen_report_divs = gen_report_info.find_elements(*self._confirm_form)
+        classes = [div.get_attribute('class') for div in gen_report_divs]
+        assert 'confirm-container' not in classes, 'No \'confirm-container\' class is expected ' \
+                                                   'in {0}'.format(str(classes))
         # click "GENERATE REPORT' again
         self.validate_generate_report_button()
 
@@ -230,7 +232,8 @@ class SimilarityCheckCard(BaseCard):
         send_for_manual_report_button = self._get(self._generate_report_button)
         send_for_manual_report_button.click()
 
-        # AC Button to send for manual report: The button is only enabled if the report status is not pending
+        # AC Button to send for manual report: The button is only enabled if the report status
+        # is not pending
         confirm_generate_button = self._get(self._manually_generate_button)
         confirm_generate_button.click()
         report_pending_spinner_message = self._get(self._report_pending_spinner_message)
@@ -281,7 +284,7 @@ class SimilarityCheckCard(BaseCard):
             try:
                 error_message = self._get(self._flash_error_msg)
                 return error_message.text.strip(), validation_seconds, None, None
-            except:
+            except ElementDoesNotExistAssertionError:
                 return 'No error message', validation_seconds, None, None
 
         score = self._get(self._sim_check_report_score)
@@ -322,27 +325,6 @@ class SimilarityCheckCard(BaseCard):
             assert not send_for_manual_report_button.is_displayed()
         else:
             assert send_for_manual_report_button.is_displayed()
-
-    def validate_generate_confirmation_style(self, confirm_container):
-        """
-        Validate confirm container style checking CSS properties
-        :param confirm_container: Web element to validate
-        :return: void function
-        """
-        assert 'source-sans-pro' in confirm_container.value_of_css_property('font-family'), \
-            confirm_container.value_of_css_property('font-family')
-        assert confirm_container.value_of_css_property('font-size') == '14px', \
-            confirm_container.value_of_css_property('font-size')
-        assert confirm_container.value_of_css_property('font-weight') == '400', \
-            confirm_container.value_of_css_property('font-weight')
-        assert confirm_container.value_of_css_property('line-height') == '20px', \
-            confirm_container.value_of_css_property('line-height')
-        assert confirm_container.value_of_css_property('color') == 'rgb(255, 255, 255)', \
-            confirm_container.value_of_css_property('color')
-        assert confirm_container.value_of_css_property('text-align') == 'center', \
-            confirm_container.value_of_css_property('text-align')
-        assert confirm_container.value_of_css_property('background-color') == 'rgb(57, 163, 41)', \
-            confirm_container.value_of_css_property('background-color')
 
     def get_sim_check_auto_settings(self, short_doi):
         """

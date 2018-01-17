@@ -845,6 +845,28 @@ class StyledPage(PlosPage):
         assert delete.value_of_css_property('background-color') == WHITE, \
             delete.value_of_css_property('background-color')
 
+    @staticmethod
+    def validate_container_confirmation_style(confirm_container):
+        """
+        Validate confirm container style checking CSS properties
+        :param confirm_container: Web element to validate
+        :return: void function
+        """
+        assert 'source-sans-pro' in confirm_container.value_of_css_property('font-family'), \
+            confirm_container.value_of_css_property('font-family')
+        assert confirm_container.value_of_css_property('font-size') == '14px', \
+            confirm_container.value_of_css_property('font-size')
+        assert confirm_container.value_of_css_property('font-weight') == '400', \
+            confirm_container.value_of_css_property('font-weight')
+        assert confirm_container.value_of_css_property('line-height') == '20px', \
+            confirm_container.value_of_css_property('line-height')
+        assert confirm_container.value_of_css_property('color') == WHITE, \
+            confirm_container.value_of_css_property('color')
+        assert confirm_container.value_of_css_property('text-align') == 'center', \
+            confirm_container.value_of_css_property('text-align')
+        assert confirm_container.value_of_css_property('background-color') == APERTA_GREEN, \
+            confirm_container.value_of_css_property('background-color')
+
     #  List Styles ==============================
     @staticmethod
     def validate_application_list_style(olul):

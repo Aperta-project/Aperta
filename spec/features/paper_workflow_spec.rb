@@ -98,11 +98,9 @@ feature "Paper workflow", js: true, selenium: true do
     phase = task_manager_page.phase 'Submission Data'
     phase.find('a', text: 'ADD NEW CARD').click
 
-    using_wait_time(30) do
-      within '.overlay' do
-        find('label', text: card.name).click
-        find('button', text: 'ADD').click
-      end
+    within '.overlay' do
+      find('label', text: card.name).click
+      find('button', text: 'ADD').click
     end
 
     expect(task_manager_page).to have_css('.card-title', text: card.name, visible: false)

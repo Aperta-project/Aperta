@@ -786,7 +786,7 @@ class AuthenticatedPage(StyledPage):
                     self._get(self._add_participant_btn).click()
                 except ElementDoesNotExistAssertionError:
                     raise (ElementDoesNotExistAssertionError,
-                           'This may fail when the user names has less than 3 character. '
+                           'This may fail when the user name has less than 3 character. '
                            'Reported in APERTA-7862')
                 time.sleep(.5)
                 participant_field = self._get(self._participant_field)

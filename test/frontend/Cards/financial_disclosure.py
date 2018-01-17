@@ -72,41 +72,42 @@ class FinancialDisclosureCard(BaseCard):
 
     # POM Actions
     def validate_state(self, choice, name, grant, site, comment, subform_role_choice, role):
-      """
-      Validate the card view matches what was entered in task view
-      :param choice: top level radio selection Yes or No
-      :param name: the funder name
-      :param grant: the funder grant number
-      :param site: the funder website
-      :param comment: the comment about the funder
-      :param subform_role_choice: whether the funder had a role in the study Yes or No
-      :param role: the role of the funder
-      :return: void function
-      """
-      yes_rad = self._get(self._yes_radio)
-      no_rad = self._get(self._no_radio)
-      if choice == 'Yes':
-          yes_rad.is_selected()
-          subform_encl_div = self._get(self._subform_enclosing_div)
-          funder_subform_name = subform_encl_div.find_element(*self._subform_funder_name_field)
-          assert funder_subform_name.get_attribute('value') == name, \
-              funder_subform_name.get_attribute('value')
-          funder_subform_grant = subform_encl_div.find_element(*self._subform_grant_number_field)
-          assert funder_subform_grant.get_attribute('value') == grant, \
-              funder_subform_grant.get_attribute('value')
-          funder_subform_site = subform_encl_div.find_element(*self._subform_website_field)
-          assert funder_subform_site.get_attribute('value') == site, \
-              funder_subform_site.get_attribute('value')
-          funder_subform_comments = subform_encl_div.find_element(
-              *self._subform_addl_comments_field)
-          assert funder_subform_comments.get_attribute('value') == comment, \
-              funder_subform_comments.get_attribute('value')
-          if subform_role_choice == 'Yes':
-              funder_subform_role = subform_encl_div.find_element(*self._subform_funder_role_field)
-              subform_encl_div.find_element(*self._subform_funder_role_radio_yes).is_selected()
-              assert funder_subform_role.get_attribute('value') == role, \
-                  funder_subform_role.get_attribute('value')
-          else:
-              subform_encl_div.find_element(*self._subform_funder_role_radio_no).is_selected()
-      else:
-          no_rad.is_selected()
+        """
+        Validate the card view matches what was entered in task view
+        :param choice: top level radio selection Yes or No
+        :param name: the funder name
+        :param grant: the funder grant number
+        :param site: the funder website
+        :param comment: the comment about the funder
+        :param subform_role_choice: whether the funder had a role in the study Yes or No
+        :param role: the role of the funder
+        :return: void function
+        """
+        yes_rad = self._get(self._yes_radio)
+        no_rad = self._get(self._no_radio)
+        if choice == 'Yes':
+            yes_rad.is_selected()
+            subform_encl_div = self._get(self._subform_enclosing_div)
+            funder_subform_name = subform_encl_div.find_element(*self._subform_funder_name_field)
+            assert funder_subform_name.get_attribute('value') == name, \
+                funder_subform_name.get_attribute('value')
+            funder_subform_grant = subform_encl_div.find_element(*self._subform_grant_number_field)
+            assert funder_subform_grant.get_attribute('value') == grant, \
+                funder_subform_grant.get_attribute('value')
+            funder_subform_site = subform_encl_div.find_element(*self._subform_website_field)
+            assert funder_subform_site.get_attribute('value') == site, \
+                funder_subform_site.get_attribute('value')
+            funder_subform_comments = subform_encl_div.find_element(
+                *self._subform_addl_comments_field)
+            assert funder_subform_comments.get_attribute('value') == comment, \
+                funder_subform_comments.get_attribute('value')
+            if subform_role_choice == 'Yes':
+                funder_subform_role = \
+                    subform_encl_div.find_element(*self._subform_funder_role_field)
+                subform_encl_div.find_element(*self._subform_funder_role_radio_yes).is_selected()
+                assert funder_subform_role.get_attribute('value') == role, \
+                    funder_subform_role.get_attribute('value')
+            else:
+                subform_encl_div.find_element(*self._subform_funder_role_radio_no).is_selected()
+        else:
+            no_rad.is_selected()

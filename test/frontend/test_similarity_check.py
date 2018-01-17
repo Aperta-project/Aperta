@@ -25,7 +25,7 @@ import random
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users, super_admin_login, handling_editor_login, \
     cover_editor_login, sim_check_full_submission_mmt, sim_check_major_revision_mmt, \
-    sim_check_minor_revision_mmt, sim_check_first_revision_mmt
+    sim_check_minor_revision_mmt, sim_check_first_revision_mmt, docs, pdfs
 from frontend.common_test import CommonTest
 from frontend.Cards.assign_team_card import AssignTeamCard
 from frontend.Cards.register_decision_card import RegisterDecisionCard
@@ -42,19 +42,7 @@ auto_options = (('at_first_full_submission', sim_check_full_submission_mmt['name
                 ('after_major_revise_decision', sim_check_major_revision_mmt['name']),
                 ('after_minor_revise_decision', sim_check_minor_revision_mmt['name']),
                 ('after_any_first_revise_decision', sim_check_first_revision_mmt['name']))
-doc_choice = \
-    ['frontend/assets/docs/HomeRun_Vector_Assembly_System_A_Flexible_and_Standardized_Cloning_'
-     'System_for_.docx',
-     'frontend/assets/docs/Cytoplasmic_Viruses_Rage_Against_the_Cellular_RNA_Decay_Machine.docx',
-     'frontend/assets/docs/Abby_normal_Contextual_Modulation.docx',
-     'frontend/assets/docs/Sex-stratified_genome-wide_association_studies_including_270000_'
-     'individuals_show_.docx',
-     'frontend/assets/docs/Rnf16l_Ark2C_Enhances_BMP-Smad_Signaling_to_Mediate_Motor_Axon_'
-     'Extension.docx',
-     'frontend/assets/pdfs/Promoter_sequence_determines_the_relationship_between_expression_level'
-     '_and_noise.pdf',
-     'frontend/assets/pdfs/Word_Document_with_Inserted_Text_Box.pdf']
-# TODO: randomize uzing full lists in Resources.py
+doc_choice = docs + pdfs
 
 
 @MultiBrowserFixture

@@ -431,6 +431,7 @@ class AuthorsTask(BaseTask):
         logging.info('Adding a new author')
         # Add a new author
         logging.info('Opening the individual author form')
+        authors_before = len(self._gets(self._author_items))
         self._get(self._add_new_author_btn).click()
         self._get(self._add_individual_author_link).click()
         # Check form elements
@@ -445,8 +446,13 @@ class AuthorsTask(BaseTask):
         institution_input = institution_div.find_element_by_tag_name('input')
         sec_institution_input = sec_institution_div.find_element_by_tag_name('input')
 
+        self._wait_for_element(self._get(self._author_lbls))
+        self._scroll_into_view(self._get(self._individual_author_edit_label))
+
         # fill the data
         first_input.send_keys(author['first'] + Keys.ENTER)
+        self._wait_for_text_to_be_present_in_element_value(
+                self._first_input, author['first'])
         middle_input.send_keys(author['middle'] + Keys.ENTER)
         last_input.send_keys(author['last'] + Keys.ENTER)
         initials_input.send_keys(author['initials'] + Keys.ENTER)
@@ -492,7 +498,7 @@ class AuthorsTask(BaseTask):
 
         add_author_add_btn.click()
         # Check if data is there
-        self._wait_for_not_element(self._add_author_add_btn, 0.5)
+        self._wait_on_lambda(lambda: len(self._gets(self._author_items)) == authors_before + 1)
         authors = self._gets(self._author_items)
         all_auth_data = [x.text for x in authors]
         assert [x for x in all_auth_data if author['first'] in x], u'{0} not in {1}'.format(
@@ -505,6 +511,7 @@ class AuthorsTask(BaseTask):
     def add_group_author_task_action(self):
         """Validate working of Author Card. Adds new group author"""
         logging.info('Adding a new group author')
+        authors_before = len(self._gets(self._author_items))
         # Add a new author
         logging.info('Opening the group author form')
         self._get(self._add_new_author_btn).click()
@@ -517,6 +524,7 @@ class AuthorsTask(BaseTask):
         last_input = self._get(self._glast_input)
         email_input = self._get(self._gemail_input)
 
+        self._wait_for_element(self._get(self._author_lbls))
         self._scroll_into_view(self._get(self._group_author_edit_label))
 
         # fill the data
@@ -539,7 +547,7 @@ class AuthorsTask(BaseTask):
         add_author_add_btn = self._get(self._add_author_add_btn)
         add_author_add_btn.click()
         # Check if data is there
-        self._wait_for_not_element(self._add_author_add_btn, 0.5)
+        self._wait_on_lambda(lambda: len(self._gets(self._author_items)) == authors_before + 1)
         authors = self._gets(self._author_items)
         for item in authors:
             logging.info(item.text)

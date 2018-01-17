@@ -3,6 +3,6 @@ class JournalWorker
 
   def perform(journal_id)
     journal = Journal.find(journal_id)
-    CustomCard::FileLoader.load(journal) if journal
+    CustomCard::FileLoader.load(journal)
   end
 end

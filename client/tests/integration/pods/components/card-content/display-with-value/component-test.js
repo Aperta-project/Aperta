@@ -37,7 +37,6 @@ let fakeTextContent = Ember.Object.extend({
   }
 });
 
-
 test(
   `when disabled, it marks its children as disabled`,
   function(assert) {

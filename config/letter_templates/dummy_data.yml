@@ -5,6 +5,24 @@ author:
   first_name: 'David'
   last_name: 'Cash'
   full_name: 'David Cash'
+invitation:
+  state: 'invited'
+  due_in_days: 42
+  decline_reason: 'This was obviously a fake invite, and I am not a real scientist.'
+  reviewer_suggestions: 'A real scientist would be better suited to review this manuscript.'
+invitee:
+  email: 'invitee@plos.org'
+  first_name: 'Indiana'
+  last_name: 'Invitedottir'
+  full_name: 'Indiana Invitedottir'
+  title: 'Doctor'
+invitee_name_or_email: 'Indiana Invitedottir'
+inviter:
+  email: 'inviter@plos.org'
+  first_name: 'Ignatius'
+  last_name: 'Invitorson'
+  full_name: 'Ignatius Invitorson'
+  title: 'Doctor'
 journal:
   logo_url: 'https://www.plos.org/uploads/image/file/27230/sm_plos-logo-sm.png'
   name: 'PLOS'
@@ -22,12 +40,14 @@ manuscript:
         email: 'john.doe@plos.org'
         first_name: 'John'
         last_name: 'Doe'
+        full_name: 'John Doe'
   corresponding_authors:
     -  affiliation: 'XYZ University'
        author_initial: 'J'
        email: 'jerry@plos.org'
        first_name: 'Jerry'
        last_name: 'Moreland'
+       full_name: 'Jerry Moreland'
   creator:
     email: 'marguerite@plos.org'
     first_name: 'Marguerite'

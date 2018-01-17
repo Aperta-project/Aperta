@@ -1,6 +1,6 @@
 .asterisk-field {
   font-size: 18px;
-  color: $aperta-green;
+  color: $aperta-red;
 }
 
 .title-and-abstract-header {
@@ -9,7 +9,7 @@
     &::after {
       content: '*';
       font-size: 18px;
-      color: $aperta-green;
+      color: $aperta-red;
       font-weight: bold;
     }
 }

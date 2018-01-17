@@ -4,7 +4,6 @@ import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import hbs from 'htmlbars-inline-precompile';
 
-
 moduleForComponent('card-content/sendback-reason', 'Integration | Component | card content | sendback reason', {
   integration: true,
   beforeEach() {

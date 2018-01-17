@@ -33,6 +33,7 @@ const formats = {
   'long-date-time-2':          'MMMM DD, YYYY H:mm', // "September 04, 1986 20:30"
   'long-date-day-ordinal':     'MMMM Do YYYY', // "September 4th 1986"
   'short-date':                'MMM D, YYYY', // (alias: ll) "Sep 4, 1986"
+  'short-date-long-day':       'MMM DD, YYYY', // "Sep 04, 1986"
   'month-day-year':            'MM/DD/YYYY', // "09/04/1986"
   'month-day-year-time':       'MM/DD/YYYY H:m', // ""09/04/1986 20:30""
   'hour-minute-1':             'H:m', // "20:30"

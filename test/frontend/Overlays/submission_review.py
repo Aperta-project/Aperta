@@ -44,7 +44,9 @@ class SubmissionReviewOverlay(AuthenticatedPage):
 
     def overlay_ready(self):
         """"Ensure the overlay is ready to test"""
-        self._wait_for_element(self._get(self._review_overlay_submit_button), 1)
+        # for some reason the last element that is showing up is the Abstract text, we are waiting
+        # for all 6 elements to be presented on the overlay, and it is ready to be tested
+        self._wait_on_lambda(lambda: len(self._gets(self._metadata)) == 6)
 
     def go_back_edit_submission(self):
         """"

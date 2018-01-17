@@ -29,6 +29,7 @@ feature "Invite Reviewer", js: true do
       inviter: inviter
     )
   end
+  let!(:letter_template) { FactoryGirl.create(:letter_template, :reviewer_declined, journal: paper.journal) }
 
   let(:dashboard) { DashboardPage.new }
   let(:invitation_overlay) { InvitationOverlay.new }

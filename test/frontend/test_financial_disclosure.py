@@ -70,9 +70,10 @@ class FinancialDisclosureTest(CommonTest):
         workflow_page.click_card('financial_disclosure')
         findisc_card = FinancialDisclosureCard(self.getDriver())
         findisc_card.card_ready()
-        findisc_card.validate_common_elements_styles()
+        # APERTA-12445 - We lack a permission to allow adding permissions currently
+        # findisc_card.validate_common_elements_styles(short_doi)
 
-    def rest_core_findisc_function(self):
+    def test_core_findisc_function(self):
         """
         Validates specifying and saving one or more financial disclosure statements
         :return: void function
@@ -94,7 +95,7 @@ class FinancialDisclosureTest(CommonTest):
         manuscript_page.click_task('Financial Disclosure')
         findisc_task = FinancialDisclosureTask(self.getDriver())
         findisc_task.task_ready()
-        selection_state = findisc_task.complete_form()
+        choice, name, grant, site, comment, subform_role_choice, role = findisc_task.complete_form()
         findisc_task.click_completion_button()
         findisc_task.logout()
 
@@ -112,10 +113,12 @@ class FinancialDisclosureTest(CommonTest):
         paper_viewer.click_workflow_link()
         workflow_page = WorkflowPage(self.getDriver())
         workflow_page.page_ready()
-        workflow_page.click_card('early_version')
+        workflow_page.click_card('financial_disclosure')
         findisc_card = FinancialDisclosureCard(self.getDriver())
         findisc_card.card_ready()
-        findisc_card.validate_state(selection_state=selection_state)
+        # Mark Card Incomplete
+        findisc_card.click_completion_button()
+        findisc_card.validate_state(choice, name, grant, site, comment, subform_role_choice, role)
 
 
 if __name__ == '__main__':

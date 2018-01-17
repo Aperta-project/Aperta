@@ -71,49 +71,42 @@ class FinancialDisclosureCard(BaseCard):
             By.CSS_SELECTOR, 'fieldset > div.card-content-short-input input.ember-text-field')
 
     # POM Actions
-    def validate_styles(self):
+    def validate_state(self, choice, name, grant, site, comment, subform_role_choice, role):
       """
-      Validate styles in the Financial Disclosure Card
+      Validate the card view matches what was entered in task view
+      :param choice: top level radio selection Yes or No
+      :param name: the funder name
+      :param grant: the funder grant number
+      :param site: the funder website
+      :param comment: the comment about the funder
+      :param subform_role_choice: whether the funder had a role in the study Yes or No
+      :param role: the role of the funder
       :return: void function
       """
-      completed = self.completed_state()
-      if completed:
-        self.click_completion_button()
-      card_title = self._get(self._card_heading)
-      assert card_title.text == 'Financial Disclosure', card_title.text
-      self.validate_overlay_card_title_style(card_title)
-      intro_text = self._get(self._intro_text)
-      self.validate_application_body_text(intro_text)
-      assert intro_text.text == 'Did any of the authors receive specific funding for this ' \
-                                  'work?', intro_text.text
-      opt_in_checkbox = self._get(self._accman_consent_checkbox)
-      # APERTA-8500
-      # self.validate_checkbox(opt_in_checkbox)
-      assert opt_in_checkbox.is_selected(), 'Default value for EV should be selected, it isn\'t'
-      opt_in_label = self._get(self._accman_consent_label)
-      self.validate_checkbox_label(opt_in_label)
-
-    def validate_state(self, selection_state=''):
-      """
-      Validate the Selection state in card view matches what is expected
-      :param selection_state: The expected state of the card
-      :return: void function
-      """
-      opt_in_checkbox = self._get(self._accman_consent_checkbox)
-      assert selection_state in (True, False), 'Selection state can only be True or False. ' \
-                                               'Supplied: {0}'.format(selection_state)
-      if selection_state:
-        try:
-          opt_in_checkbox.is_selected()
-        except:
-          raise(ValueError, 'EV opt-in state expected to be True, '
-                            'actual state: {0}'.format(not selection_state))
-        return
+      yes_rad = self._get(self._yes_radio)
+      no_rad = self._get(self._no_radio)
+      if choice == 'Yes':
+          yes_rad.is_selected()
+          subform_encl_div = self._get(self._subform_enclosing_div)
+          funder_subform_name = subform_encl_div.find_element(*self._subform_funder_name_field)
+          assert funder_subform_name.get_attribute('value') == name, \
+              funder_subform_name.get_attribute('value')
+          funder_subform_grant = subform_encl_div.find_element(*self._subform_grant_number_field)
+          assert funder_subform_grant.get_attribute('value') == grant, \
+              funder_subform_grant.get_attribute('value')
+          funder_subform_site = subform_encl_div.find_element(*self._subform_website_field)
+          assert funder_subform_site.get_attribute('value') == site, \
+              funder_subform_site.get_attribute('value')
+          funder_subform_comments = subform_encl_div.find_element(
+              *self._subform_addl_comments_field)
+          assert funder_subform_comments.get_attribute('value') == comment, \
+              funder_subform_comments.get_attribute('value')
+          if subform_role_choice == 'Yes':
+              funder_subform_role = subform_encl_div.find_element(*self._subform_funder_role_field)
+              subform_encl_div.find_element(*self._subform_funder_role_radio_yes).is_selected()
+              assert funder_subform_role.get_attribute('value') == role, \
+                  funder_subform_role.get_attribute('value')
+          else:
+              subform_encl_div.find_element(*self._subform_funder_role_radio_no).is_selected()
       else:
-        opt_in_checkbox.is_selected()
-        try:
-          assert opt_in_checkbox.is_selected()
-        except AssertionError:
-          return
-        raise (ValueError, 'EV opt-in state expected to be False, '
-                           'actual state: {0}'.format(not selection_state))
+          no_rad.is_selected()

@@ -24,8 +24,6 @@ class PreprintPostingOverlay(AuthenticatedPage):
         self._title = (By.CLASS_NAME, 'overlay-header-title')
         self._preprint_image = (By.CLASS_NAME, 'preprint-background-image')
         self._preprint_benefits = (By.CSS_SELECTOR, '.card-content-view-text>p')
-        self._preprint_content_text = (By.CSS_SELECTOR, 'p.content-text')
-        self._preprint_content_text_em = (By.CSS_SELECTOR, 'p.content-text > b')
         self._preprint_input_radios = (By.TAG_NAME, 'input')
         self._preprint_input_radio_labels = (By.CSS_SELECTOR, 'span.card-form-label')
         self._preprint_overlay_continue_btn = (By.TAG_NAME, 'button')
@@ -87,6 +85,7 @@ class PreprintPostingOverlay(AuthenticatedPage):
         :return: Yes or No
         """
         radio_buttons = self._gets(self._preprint_input_radios)
+        self._wait_for_element(radio_buttons[0])
         yes_radio = radio_buttons[0]
         no_radio = radio_buttons[1]
         if not selection:

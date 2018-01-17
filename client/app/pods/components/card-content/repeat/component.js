@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
+import QAIdent from 'tahi/mixins/components/qa-ident';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(QAIdent, {
   classNames: ['card-content-repeat'],
   store: Ember.inject.service(),
   min: Ember.computed.readOnly('content.min'),

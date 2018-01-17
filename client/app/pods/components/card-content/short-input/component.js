@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
 import ValidateTextInput from 'tahi/mixins/validate-text-input';
+import QAIdent from 'tahi/mixins/components/qa-ident';
 
-export default Ember.Component.extend(ValidateTextInput, {
+export default Ember.Component.extend(QAIdent, ValidateTextInput, {
   classNames: ['card-content', 'card-content-short-input'],
   attributeBindings: ['isRequired:required', 'aria-required'],
   'aria-required': Ember.computed.reads('isRequiredString'),

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe TemplateContext do
-  describe '.context' do
+  describe '.subcontext' do
     let(:fake_model) { double("blah") }
     let(:context_class) { Class.new(TemplateContext) }
     let(:context_instance) { context_class.new(fake_model) }
@@ -22,6 +22,12 @@ describe TemplateContext do
         allow(fake_model).to receive(:paper).and_return(paper)
 
         expect(context_instance.paper.send(:object)).to eq paper
+      end
+
+      it 'does not create a context if the source object is nil' do
+        allow(fake_model).to receive(:paper).and_return(nil)
+
+        expect(context_instance.paper).to eq nil
       end
     end
 
@@ -93,7 +99,7 @@ describe TemplateContext do
       expect(TemplateContext.feature_inactive_scenarios).to include('Preprint Decision')
       expect(TemplateContext.scenarios).to_not include('Preprint Decision')
 
-      FeatureFlag.find_by(name: 'PREPRINT').update(active: true)
+      FeatureFlag.find_by(name: 'PREPRINT').update!(active: true)
       expect(TemplateContext.feature_inactive_scenarios).to_not include('Preprint Decision')
       expect(TemplateContext.scenarios).to include('Preprint Decision')
     end

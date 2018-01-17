@@ -17,6 +17,10 @@ class ReviewerReportContext < TemplateContext
     object.due_at.to_s(:due_with_hours)
   end
 
+  def due_at_with_minutes
+    object.due_at.to_s(:due_with_minutes)
+  end
+
   def rendered_answer_idents
     [
       'front_matter_reviewer_report--suitable--comment',

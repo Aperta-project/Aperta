@@ -63,6 +63,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
           user: admin,
           role: participant_paper.journal.task_participant_role
         ).destroy
+        wait_for_ajax
         expect(page).to_not have_text(participant_paper.title)
       end
     end

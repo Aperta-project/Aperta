@@ -45,7 +45,7 @@ module CustomCard
       card_type = task_type(card_name)
       card = Card.create_initial_draft!(name: card_name, journal: @journal, card_task_type: card_type)
       card.update_from_xml(xml)
-      card.reload.publish('Initial Version')
+      card.reload.publish!('Initial Version')
       card
     end
 

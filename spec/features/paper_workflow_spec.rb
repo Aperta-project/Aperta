@@ -95,15 +95,16 @@ feature "Paper workflow", js: true, selenium: true do
 
   scenario "Adding a new CustomCardTask" do
     task_manager_page = TaskManagerPage.new
-    name = 'Register Decision'
     phase = task_manager_page.phase 'Submission Data'
     phase.find('a', text: 'ADD NEW CARD').click
 
-    within '.overlay' do
-      find('label', text: name).click
-      find('button', text: 'ADD').click
+    using_wait_time(30) do
+      within '.overlay' do
+        find('label', text: card.name).click
+        find('button', text: 'ADD').click
+      end
     end
 
-    expect(task_manager_page).to have_css('.card-title', text: name, visible: false)
+    expect(task_manager_page).to have_css('.card-title', text: card.name, visible: false)
   end
 end

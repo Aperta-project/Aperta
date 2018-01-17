@@ -45,7 +45,7 @@ FactoryGirl.define do
       end
 
       unless evaluator.card_version
-        card = FactoryGirl.build(:card, journal: task.paper.journal)
+        card = FactoryGirl.create(:card, journal: task.paper.journal)
         task.card_version = FactoryGirl.create(:card_version, card: card)
       end
     end

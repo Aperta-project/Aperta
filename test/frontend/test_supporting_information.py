@@ -252,7 +252,7 @@ class SITaskTest(CommonTest):
 
     def test_full_multiple_si_uploads(self):
         """
-        test_figure_task: Validates the upload function for miltiple files in SI task
+        test_figure_task: Validates the upload function for multiple files in SI task
         and in SI Card
         :return: void function
         """

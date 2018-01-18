@@ -93,6 +93,7 @@ GEM
     bullet (4.14.7)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.9.0)
+    byebug (9.1.0)
     capistrano (3.4.0)
       i18n
       rake (>= 10.0.0)
@@ -464,6 +465,9 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-byebug (3.5.1)
+      byebug (~> 9.1)
+      pry (~> 0.10)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
     pry-remote (0.1.8)
@@ -758,6 +762,7 @@ DEPENDENCIES
   pg_search
   premailer-rails
   progressbar
+  pry-byebug
   pry-rails
   pry-remote
   pry-rescue

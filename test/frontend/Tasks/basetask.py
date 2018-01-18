@@ -160,9 +160,10 @@ class BaseTask(AuthenticatedPage):
         #     first element containing the text would be all we would evaluate.
         if old_value == new_value and new_value:
             # values exist - must look for no-diff text style
-            new_value_element = (
+            self._new_value_element_locator = (
               By.XPATH, '//span[contains(@class, "text-diff")]'
                         '/span[not (@class) and text()="{0}"]'.format(new_value))
+            new_value_element = self._get(self._new_value_element_locator)
             self.validate_diff_no_change_style(new_value_element)
         elif old_value != new_value and old_value and new_value:
             # values exist - must look for addition or redaction

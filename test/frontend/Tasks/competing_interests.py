@@ -100,6 +100,8 @@ class CompetingInterestsTask(BaseTask):
             rte_id, iframe = self.get_rich_text_editor_instance('competing_interests--statement')
             assert iframe, 'No "Yes" Subform input area found in Competing Interests card'
             content = 'Kilroy was here - and said there was a conflict!.'
+            self.tmce_clear_rich_text(iframe)
+            self.pause_to_save()
             self.tmce_set_rich_text(iframe, content=content)
             self.pause_to_save()
         elif choice == 'No':

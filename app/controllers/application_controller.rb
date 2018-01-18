@@ -35,12 +35,12 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up).concat %i(first_name last_name email username)
+    devise_parameter_sanitizer.permit(:sign_up, keys: %i[first_name last_name email username])
   end
 
   def unmunge_empty_arrays!(model_key, model_attributes)
     model_attributes.each do |key|
-      if params[model_key].has_key?(key) && params[model_key][key].nil?
+      if params[model_key].key?(key) && params[model_key][key].nil?
         params[model_key][key] = []
       end
     end
@@ -107,7 +107,7 @@ class ApplicationController < ActionController::Base
   end
 
   def add_user_info_to_bugsnag(notification)
-    return unless current_user.present?
+    return if current_user.blank?
 
     notification.user = {
       id: current_user.id,

@@ -176,7 +176,6 @@ class CommonTest(FrontEndTest):
                 logging.error('Unknown format specifier: {0} in method call.'.format(format_))
 
             fn = os.path.join(current_path, '{0}'.format(doc2upload))
-
         logging.info('Sending document: {0}'.format(fn))
         time.sleep(1)
         self._driver.find_element_by_id('upload-files').send_keys(fn)
@@ -553,3 +552,34 @@ class CommonTest(FrontEndTest):
                                               'FROM feature_flags '
                                               'WHERE name = \'PREPRINT\';')[0][0]
         return preprint_feature_flag, current_env
+
+    def submit_new_version(self, short_doi, creator_user):
+        """
+        Method to submit new version using the steps:
+          1. Log in as an author using creator_user account
+          2. Open the manuscript using short_doi
+          3. Complete 'Response to Reviewers', 'Title And Abstract', 'Upload Manuscript' cards
+          4. Submit new version
+          5. Log out
+        :param short_doi: string, used to go to the manuscript
+        :param creator_user: author account
+        :return: void function
+        """
+        # Login as user and complete Revise Manuscript (Response to Reviewers)
+        logging.info('Logging in as user: {0}'.format(creator_user))
+        dashboard_page = self.cas_login(email=creator_user['email'])
+        dashboard_page.go_to_manuscript(short_doi)
+        manuscript_page = ManuscriptViewerPage(self.getDriver())
+
+        manuscript_page.page_ready()
+        data = {'attach': 2}
+        manuscript_page.complete_task('Response to Reviewers', data=data)
+        # This needs to be completed after any decision
+        manuscript_page.complete_task('Title And Abstract')
+        manuscript_page.complete_task('Upload Manuscript')
+        # submit and logout
+        time.sleep(1)
+        manuscript_page.click_submit_btn()
+        manuscript_page.confirm_submit_btn()
+        manuscript_page.close_submit_overlay()
+        manuscript_page.logout()

@@ -39,8 +39,8 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
     end
 
     context "on the dashboard page" do
-      let!(:collaborator_paper) { FactoryGirl.create(:paper, journal: journal) }
-      let!(:participant_paper) { FactoryGirl.create(:paper, journal: journal) }
+      let(:collaborator_paper) { FactoryGirl.create(:paper, journal: journal) }
+      let(:participant_paper) { FactoryGirl.create(:paper, journal: journal) }
 
       scenario "access to papers" do
         # added as a collaborator

@@ -797,7 +797,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
             base_task.click_completion_button()
             self.click_covered_element(task)
             self._wait_on_lambda(lambda: not bool(self.is_task_open('Title And Abstract')))
-        elif task_name in ('Competing Interests', 'Data Availability', 'Early Version',
+        elif task_name == 'Competing Interests':
+            # Complete competing interests with minimal data so there is something to validate
+            logging.info('Completing Competing Interests Task')
+            ci_task = CompetingInterestsTask(self._driver)
+            ci_task.task_ready()
+
+        elif task_name in ('Data Availability', 'Early Version',
                            'Ethics Statement', 'Reporting Guidelines'):
             # Complete Competing Interest data before mark close
             logging.info('Completing {0} Task'.format(task.text))

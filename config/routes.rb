@@ -258,9 +258,7 @@ Tahi::Application.routes.draw do
     resources :feature_flags, only: [:index, :update]
 
     post 'changes_for_author/:id/submit_tech_check', controller: 'plos_bio_tech_check/changes_for_author', action: 'submit_tech_check', as: :submit_tech_check
-    post 'initial_tech_check/:id/send_email', controller: 'plos_bio_tech_check/tech_check', action: 'send_email', as: :send_itc_email
-    post 'revision_tech_check/:id/send_email', controller: 'plos_bio_tech_check/tech_check', action: 'send_email', as: :send_rtc_email
-    post 'final_tech_check/:id/send_email', controller: 'plos_bio_tech_check/tech_check', action: 'send_email', as: :send_ftc_email
+    post 'tech_check/:id/send_email', controller: 'plos_bio_tech_check/tech_check', action: 'send_email'
 
     resources :export_deliveries, only: [:create, :show], controller: 'tahi_standard_tasks/export_deliveries'
     resources :funders, only: [:create, :update, :destroy], controller: 'tahi_standard_tasks/funders'

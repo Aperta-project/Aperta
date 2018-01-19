@@ -169,8 +169,6 @@ class StyledPage(PlosPage):
             paragraph.value_of_css_property('font-family')
         assert paragraph.value_of_css_property('font-size') == '14px', \
             paragraph.value_of_css_property('font-size')
-        assert paragraph.value_of_css_property('font-weight') == '400', \
-            paragraph.value_of_css_property('font-weight')
         assert paragraph.value_of_css_property('color') == APERTA_BLACK, \
             paragraph.value_of_css_property('color')
 
@@ -494,6 +492,7 @@ class StyledPage(PlosPage):
             msg.value_of_css_property('background-color')
     # OLD Non-clean, pre v.1. style guide definitions are all below here ##########################
     # Divider and Border Styles ===========================
+
     @staticmethod
     def validate_light_background_border(border):
         """
@@ -587,8 +586,6 @@ class StyledPage(PlosPage):
             title.value_of_css_property('font-size')
         assert title.value_of_css_property('font-weight') == '500', \
             title.value_of_css_property('font-weight')
-        assert title.value_of_css_property('line-height') == '18px', \
-            title.value_of_css_property('line-height')
         assert title.value_of_css_property('color') == APERTA_BLACK, \
             title.value_of_css_property('color')
 
@@ -1831,32 +1828,25 @@ class StyledPage(PlosPage):
         assert APPLICATION_TYPEFACE in label.value_of_css_property('font-family')
         assert label.value_of_css_property('font-size') == '14px', \
             label.value_of_css_property('font-size')
-        assert label.value_of_css_property('font-weight') == '400', \
-            label.value_of_css_property('font-weight')
         assert label.value_of_css_property('color') == APERTA_GREY_DARK, \
             label.value_of_css_property('color')
-        assert label.value_of_css_property('line-height') == '25.7167px', \
-            label.value_of_css_property('line-height')
 
     @staticmethod
     def validate_input_field_external_label_style(label):
         """
         Ensure consistency in the rendering of page, card and overlay external input field labels
-          across the application
+            across the application
         :param label: label to validate
-        NOTE: Not currently defined in the style guide at all - This definition is based on the
-          implementation of the Invite AE card.
+        NOTE: This is now inconsistently defined in the v1.1 style guide - we specify 12px in the
+            typography section but 14px in the examples section. Speaking with Sam V. 14px is the
+            correct value.
         """
         assert APPLICATION_TYPEFACE in label.value_of_css_property('font-family'), \
             label.value_of_css_property('font-family')
-        assert label.value_of_css_property('font-size') == '18px', \
+        assert label.value_of_css_property('font-size') == '14px', \
             label.value_of_css_property('font-size')
-        assert label.value_of_css_property('font-weight') == '400', \
-            label.value_of_css_property('font-weight')
         assert label.value_of_css_property('color') == APERTA_BLACK, \
             label.value_of_css_property('color')
-        assert label.value_of_css_property('line-height') == '25.7167px', \
-            label.value_of_css_property('line-height')
 
     @staticmethod
     def validate_single_select_dropdown_style(field):

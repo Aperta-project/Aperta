@@ -88,8 +88,16 @@
   @extend .form-control;
   padding-top: 5px;
   height: auto;
-  @include placeholder($aperta-grey-light);
   margin-bottom: 5px;
+
+  &::-moz-placeholder {
+    color: $aperta-grey-light;
+    opacity: 1; // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526
+  }
+  &:-ms-input-placeholder { color: $aperta-grey-light; } // Internet Explorer 10+
+  &::-webkit-input-placeholder  { color: $aperta-grey-light; } // Safari and Chrome
+
+
 }
 
 .correspondence-label {

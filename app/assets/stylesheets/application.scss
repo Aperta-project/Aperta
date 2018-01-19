@@ -1,18 +1,19 @@
-/*
- *= require_self
-*/
-
-// https://github.com/Tahi-project/tahi/wiki/CSS-Guidelines
-
-
-@import 'bootstrap-sprockets';
-@import 'bootstrap';
-
-// NOTE: Bourbon is mostly used for vendor prefixing
-// When writing/editing styles, check to see if prefixing is necessary
-@import 'bourbon';
-
+///*
+// *= require_self
+//*/
+//
+//// https://github.com/Tahi-project/tahi/wiki/CSS-Guidelines
+//
+//
+//@import 'bootstrap-sprockets';
+//@import 'bootstrap';
+//
+//// NOTE: Bourbon is mostly used for vendor prefixing
+//// When writing/editing styles, check to see if prefixing is necessary
+//@import 'bourbon';
+//
 @import 'print';
-
+//
 @import 'viewer';
 @import 'apertaviewer';
+@import 'font-awesome';

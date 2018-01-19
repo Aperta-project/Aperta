@@ -1,8 +1,0 @@
-@keyframes animation-main-nav-small-screen {
-  0% {
-    transform: translateY(-#{$main-nav-width-mobile+10});
-  }
-  100% {
-    transform: translate(0);
-  }
-}

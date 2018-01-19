@@ -83,7 +83,8 @@
 }
 
 .assign-role-button {
-  @include size(25px, 30px);
+  width: 25px;
+  height: 30px;
   display: inline-block;
   position: relative;
   vertical-align: top;

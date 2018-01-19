@@ -4,11 +4,23 @@ var Funnel   = require('broccoli-funnel');
 
 module.exports = function(defaults) {
   var args = {
+    app: {
+      css: {
+        app: "/assets/css/tahi.css"
+      },
+      js: "/assets/js/tahi.js"
+    },
+
+    vendor: {
+      css: "/assets/css/vendor.css",
+      js: "/assets/js/vendor.js"
+    },
     hinting: false,
     storeConfigInMeta: false,
     'ember-font-awesome': {
-      includeFontAwesomeAssets: true,
-      useScss: true
+      includeFontAwesomeAssets: false,
+      useScss: true,
+      includeFontFiles: false,
     },
     'ember-cli-qunit': {
       useLintTree: false
@@ -16,6 +28,9 @@ module.exports = function(defaults) {
     sourcemaps: {
       enabled: true,
       extensions: ['js']
+    },
+    sassOptions: {
+      sourceMap: true
     },
     babel: {
       includePolyfill: true

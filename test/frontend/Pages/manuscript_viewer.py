@@ -242,15 +242,21 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
     def _check_version_btn_style(self):
         """
-        Test version button. This test checks styles but not funtion
+        Test version button. This test checks elements not function
         """
         version_btn = self._get(self._tb_versions_link)
         version_btn.click()
+        # A cheat to allow the drawer to animate fully
+        self.pause_to_save()
+        # The first element exists (manuscript html diff container) for doc/docx comparisons only,
+        #     the second (notice for lack of manuscript diff availability) only for pdf
+        self.set_timeout(10)
         try:
             self._get(self._tb_versions_diff_div)
         except ElementDoesNotExistAssertionError:
-            self._get(self._tb_versions_pdf_message)
-
+            self._wait_for_element(self._get(self._tb_versions_pdf_message), multiplier=2)
+        finally:
+            self.restore_timeout()
         bar_items = self._gets(self._bar_items)
         assert 'Now viewing:' in bar_items[0].text, bar_items[0].text
         assert 'Compare with:' in bar_items[1].text, bar_items[1].text

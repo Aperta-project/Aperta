@@ -106,6 +106,7 @@ end
 
 group :development do
   gem 'aws-sdk', '~> 2'
+  gem 'brakeman'
   gem 'bullet'
   gem 'capistrano-chruby'
   gem 'capistrano-rails'

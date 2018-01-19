@@ -70,7 +70,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
         self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
         self._tb_collaborator_list_item = (By.CLASS_NAME, 'contributor')
         self._tb_downloads_link = (By.ID, 'nav-downloads')
-        self._tb_ra_link = (By.ID, 'nav-recent-activity')
         self._close_ra_overlay = (By.CSS_SELECTOR, '.overlay-close')
         self._tb_more_link = (By.CSS_SELECTOR, 'div.more-dropdown-menu')
         self._tb_more_appeal_link = (By.ID, 'nav-appeal')
@@ -328,13 +327,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
         assert downloads_drawer.is_displayed(), 'The download drawer is not open when it should be.'
         close_download_drawer_btn = self._get(self._download_drawer_close_btn)
         close_download_drawer_btn.click()
-
-    def open_recent_activity(self):
-        """
-        Opens the recent activity overlay
-        :return: void function
-        """
-        self._get(self._tb_ra_link).click()
 
     def _check_recent_activity(self):
         """

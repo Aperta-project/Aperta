@@ -18,7 +18,6 @@ class WorkflowPage(AuthenticatedPage):
     """
     Model workflow page
     """
-
     def __init__(self, driver):
         super(WorkflowPage, self).__init__(driver, '/')
 
@@ -119,6 +118,10 @@ class WorkflowPage(AuthenticatedPage):
         assert self._get(self._toolbar_items)
         self.validate_wf_top_elements()
         assert self._get(self._column_header)
+
+    def click_competing_interest_card(self):
+        """Open Competing Interest Card from the workflow page"""
+        self._get(self._competing_ints_card).click()
 
     def click_initial_decision_card(self):
         """Open the Initial Decision Card from the workflow page"""

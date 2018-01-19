@@ -7,6 +7,8 @@ import logging
 import os
 import random
 
+import pytest
+
 from Base.Decorators import MultiBrowserFixture
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import users, editorial_users, admin_users, super_admin_login, \
@@ -134,6 +136,7 @@ class ManuscriptViewerTest(CommonTest):
             dashboard_page.logout()
         return self
 
+    @pytest.mark.single
     def test_initial_submission_infobox(self):
         """
         test_manuscript_viewer: Validate elements and styles of the initial submission infobox

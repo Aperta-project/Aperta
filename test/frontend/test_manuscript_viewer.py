@@ -36,7 +36,7 @@ class ManuscriptViewerTest(CommonTest):
       APERTA-3
     """
 
-    def rest_validate_components_styles(self):
+    def test_validate_components_styles(self):
         """
         test_manuscript_viewer: Validate elements and styles for the manuscript viewer page
         APERTA-3: validate page elements and styles
@@ -74,7 +74,7 @@ class ManuscriptViewerTest(CommonTest):
             manuscript_page.validate_page_elements_styles_functions(user=user['email'], admin=False)
         return self
 
-    def rest_role_aware_menus(self):
+    def test_role_aware_menus(self):
         """
         APERTA-3: Validates role aware menus
         """
@@ -268,7 +268,7 @@ class ManuscriptViewerTest(CommonTest):
             manuscript_page.get_submission_status_ready2submit_text()
         return self
 
-    def rest_paper_download(self):
+    def test_paper_download(self):
         """
         test_manuscript_viewer: Validates the download functions for different
         versions, formats, UI elements and styles

@@ -66,13 +66,6 @@ class PapersController < ApplicationController
   end
 
   ## SUPPLEMENTAL INFORMATION
-
-  def correspondence
-    requires_user_can(:view, paper)
-    correspondence = paper.correspondence
-    respond_with correspondence, each_serializer: CorrespondenceSerializer, root: 'correspondence'
-  end
-
   def comment_looks
     requires_user_can(:view, paper)
     comment_looks = paper.comment_looks.where(user: current_user)

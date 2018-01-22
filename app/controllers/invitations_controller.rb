@@ -152,7 +152,7 @@ class InvitationsController < ApplicationController
 
   def invitation_update_params
     attr_list = [:body, :email]
-    attr_list << :due_in unless params.dig(:invitation, :due_in).nil?
+    attr_list << :due_in if params.dig(:invitation, :due_in)
     params
       .require(:invitation)
       .permit(attr_list)

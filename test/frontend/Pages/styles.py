@@ -2379,5 +2379,5 @@ class StyledPage(PlosPage):
         :param element: a element against which to evaluate style
         :return: void function
         """
-        assert element.value_of_css_property('color') == 'rgba(135, 135, 135, 0)', \
+        assert element.value_of_css_property('color') == 'rgba(0, 0, 0, 0)', \
             element.value_of_css_property('color')

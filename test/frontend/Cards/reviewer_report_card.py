@@ -60,12 +60,13 @@ class ReviewerReportCard(BaseCard):
         :return void function
         """
         question_block_list = self._gets(self._question_block)
+        self._wait_for_element(question_block_list[0])
         qb1, qb2, qb3, qb4, qb5, qb6, qb7 = question_block_list
         if research_type:
             recc_entry, q2bentry, q2entry, q3entry, q4entry, q5entry, q6bentry, q6entry = data
             recommendation = qb1.find_element(*self._res_q1_answer)
-            assert recommendation.text.lower() == recc_entry.lower(), \
-                '{0} != {1}'.format(recommendation.text, recc_entry)
+            assert recommendation.text.strip().lower() == recc_entry.strip().lower(), \
+                '{0} != {1}'.format(recommendation.text.strip(), recc_entry.strip())
             self.validate_application_body_text(recommendation)
             q2bool = qb2.find_element(*self._res_q2_answer_bool)
             self.validate_application_body_text(q2bool)
@@ -98,8 +99,8 @@ class ReviewerReportCard(BaseCard):
             recc_entry, q2entry, q3bentry, q3entry, q4bentry, q4entry, q5entry, q6entry = data
             recommendation = qb1.find_element(*self._fm_q1_answer)
             self.validate_application_body_text(recommendation)
-            assert recommendation.text.lower() == recc_entry.lower(), \
-                '{0} != {1}'.format(recommendation.text, recc_entry)
+            assert recommendation.text.strip().lower() == recc_entry.strip().lower(), \
+                '{0} != {1}'.format(recommendation.text.strip(), recc_entry.strip())
             q2ans = qb2.find_element(*self._fm_q2_answer)
             self.validate_application_body_text(q2ans)
             assert q2ans.text == q2entry, '{0} != {1}'.format(q2ans.text, q2entry)

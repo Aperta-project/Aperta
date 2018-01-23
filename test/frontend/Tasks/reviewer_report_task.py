@@ -61,13 +61,17 @@ class ReviewerReportTask(BaseTask):
     # The following locators (except res_q6_ans) must be used with a find under each question block
     self._res_q1_answer = (By.CSS_SELECTOR, 'div.answer-text')
     self._res_q2_answer_bool = (By.CSS_SELECTOR, 'div.answer-text')
-    self._res_q2_answer = (By.XPATH, '//div[@class="ember-view"][2]/div[@class="answer-text"]')
+    self._res_q2_answer = (By.CSS_SELECTOR,
+                           'div[data-editor = "reviewer_report--competing_interests--detail"]'
+                           ' > div.answer-text')
     self._res_q3_answer = (By.CSS_SELECTOR, 'div.answer-text')
     self._res_q4_answer = (By.CSS_SELECTOR, 'div.answer-text')
     self._res_q5_answer = (By.CSS_SELECTOR, 'div.answer-text')
     self._res_q6_answer_bool = (By.CSS_SELECTOR, 'div.answer-text')
-    self._res_q6_answer = (By.XPATH,
-                           '//li[6]/div[@class="ember-view"][2]/div[@class="answer-text"]')
+    self._res_q6_answer = \
+      (By.CSS_SELECTOR,
+       'div[data-editor = "reviewer_report--suitable_for_another_journal--journal"] > '
+       'div.answer-text')
     # Front Matter Reviewer Report locators
     # Note these must be used with a find to be unique
     self._fm_yes_label = (By.CSS_SELECTOR, 'div.yes-no-with-comments > div > label')
@@ -352,6 +356,7 @@ class ReviewerReportTask(BaseTask):
     question_list = self._gets(self._questions)
     q1, q2, q3, q4, q5, q6, q7 = question_list
     question_block_list = self._gets(self._question_block)
+    self._wait_for_element(question_block_list[0])
     qb1, qb2, qb3, qb4, qb5, qb6, qb7 = question_block_list
     if q3.text == u'(Optional) If you\'d like your identity to be revealed to the authors, '\
                   u'please include your name here.':
@@ -359,8 +364,8 @@ class ReviewerReportTask(BaseTask):
     if research_type:
       recc_data, q2_bool_data, q2_data, q3_data, q4_data, q5_data, q6_bool_entry, q6_data = data
       recommendation = qb1.find_element(*self._res_q1_answer)
-      assert recommendation.text.lower() == recc_data.lower(), \
-          '{0} != {1}'.format(recommendation.text, recc_data)
+      assert recommendation.text.strip().lower() == recc_data.strip().lower(), \
+          '{0} != {1}'.format(recommendation.text.strip(), recc_data.strip())
       self.validate_application_body_text(recommendation)
       q2_page_bool = qb2.find_element(*self._res_q2_answer_bool)
       self.validate_application_body_text(q2_page_bool)
@@ -393,8 +398,8 @@ class ReviewerReportTask(BaseTask):
       recc_data, q2_data, q3_bool_data, q3_data, q4_bool_data, q4_data, q5_data, q6_data = data
       recommendation = qb1.find_element(*self._fm_q1_answer)
       self.validate_application_body_text(recommendation)
-      assert recommendation.text.lower() == recc_data.lower(), \
-          '{0} != {1}'.format(recommendation.text, recc_data)
+      assert recommendation.text.strip().lower() == recc_data.strip().lower(), \
+          '{0} != {1}'.format(recommendation.text.strip(), recc_data.strip())
       q2_page_ans = qb2.find_element(*self._fm_q2_answer)
       self.validate_application_body_text(q2_page_ans)
       if q2_data == True:

@@ -410,9 +410,11 @@ class ReviewerReportTask(BaseTask):
             self.validate_application_body_text(q6_page_ans)
             assert q6_page_ans.text == q6_data, '{0} != {1}'.format(q6_page_ans.text, q6_data)
         else:
+            question_block_list = self._gets(self._question_block)
+            qb1, qb2, qb3, qb4, qb5, qb6, qb7 = question_block_list
             recc_data, q2_data, q3_bool_data, q3_data, q4_bool_data, q4_data, q5_data, \
                 q6_data = data
-            self._wait_for_element(qb1.find_element(*self._res_q1_answer))
+            self._wait_for_element(qb1.find_element(*self._res_q1_answer), multiplier=2)
             recommendation = qb1.find_element(*self._res_q1_answer)
             self.validate_application_body_text(recommendation)
             assert recommendation.text.strip().lower() == recc_data.strip().lower(), \

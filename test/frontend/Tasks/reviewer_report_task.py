@@ -415,7 +415,7 @@ class ReviewerReportTask(BaseTask):
             recc_data, q2_data, q3_bool_data, q3_data, q4_bool_data, q4_data, q5_data, \
                 q6_data = data
             self._wait_for_element(qb1.find_element(*self._res_q1_answer), multiplier=2)
-            recommendation = qb1.find_element(*self._res_q1_answer)
+            recommendation = qb1.find_element(*self._fm_q1_answer)
             self.validate_application_body_text(recommendation)
             assert recommendation.text.strip().lower() == recc_data.strip().lower(), \
                 '{0} != {1}'.format(recommendation.text.strip(), recc_data.strip())

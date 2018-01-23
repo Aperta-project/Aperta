@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import logging
 import random
@@ -13,7 +13,7 @@ __author__ = 'jgray@plos.org'
 
 class FinancialDisclosureTask(BaseTask):
     """
-    Page Object Model for Early Version task
+    Page Object Model for the Financial Disclosure Task
     """
 
     def __init__(self, driver):
@@ -21,7 +21,7 @@ class FinancialDisclosureTask(BaseTask):
 
         # Locators - Instance members
         self._intro_text = (By.CSS_SELECTOR, 'div.card-form-text-error')
-        self._yes_radio = (By.TAG_NAME, 'div.card-radio input')
+        self._yes_radio = (By.CSS_SELECTOR, 'div.card-radio input')
         self._yes_radio_label = (By.CSS_SELECTOR, 'div.card-radio input + span')
         self._yes_radio_required_icon = (By.CSS_SELECTOR,
                                          'div.card-radio input + span + span.required-field')
@@ -33,25 +33,30 @@ class FinancialDisclosureTask(BaseTask):
         self._add_funder_link = (By.CSS_SELECTOR, 'a.add-repetition')
         self._funder_summary_div = (By.CSS_SELECTOR,
                                     'div.card-content-financial-disclosure-summary')
-        self._funder_summary_intro_text = (By.CSS_SELECTOR, 'p')
-        # The following locator can occur multiple times per summary div and should be used within
+        self._funder_summary_intro_text = (By.CSS_SELECTOR,
+                                           'div.card-content-financial-disclosure-summary > p')
+        # The following locators can occur multiple times per summary div and should be used within
         #     a find_element structure
         self._funder_summary_statement = (By.CSS_SELECTOR, 'p + div')
         self._funder_summary_statement_funder_name = (By.CSS_SELECTOR, 'div > strong')
         self._subform_enclosing_div = (By.CSS_SELECTOR, 'div.repeated-block')
-        # The following locators can occur for each subform enclosing div and should be used within
+        # The following locators can occur for each sub-form enclosing div and should be used within
         #     a find_element structure
         self._subform_title = (By.TAG_NAME, 'h4')
-        self._subform_funder_name_label = (By.CSS_SELECTOR, 'h4 + div > div > div')
-        self._subform_funder_name_field = (By.CSS_SELECTOR, 'h4 + div > div > div > input')
-        self._subform_grant_number_label = (By.CSS_SELECTOR, 'h4 + div + div > div > div')
-        self._subform_grant_number_field = (By.CSS_SELECTOR, 'h4 + div + div > div > div > input')
-        self._subform_website_label = (By.CSS_SELECTOR, 'h4 + div + div + div > div > div')
-        self._subform_website_field = (By.CSS_SELECTOR, 'h4 + div + div + div > div > div > input')
+        self._subform_funder_name_label = (By.CSS_SELECTOR, 'div.qa-ident-funder--name > div > div')
+        self._subform_funder_name_field = (By.CSS_SELECTOR,
+                                           'div.qa-ident-funder--name > div > div + div > input')
+        self._subform_grant_number_label = (By.CSS_SELECTOR,
+                                            '.qa-ident-funder--grant_number > div > div')
+        self._subform_grant_number_field = (By.CSS_SELECTOR,
+                                            '.qa-ident-funder--grant_number > div > div > input')
+        self._subform_website_label = (By.CSS_SELECTOR, '.qa-ident-funder--website > div > div')
+        self._subform_website_field = (By.CSS_SELECTOR,
+                                       '.qa-ident-funder--website > div > div > input')
         self._subform_addl_comments_label = (By.CSS_SELECTOR,
-                                             'h4 + div + div + div + div > div > div')
-        self._subform_addl_comments_field = (By.CSS_SELECTOR,
-                                             'h4 + div + div + div + div > div > div > input')
+                                             '.qa-ident-funder--additional_comments > div > div')
+        self._subform_addl_comments_field = (
+            By.CSS_SELECTOR, '.qa-ident-funder--additional_comments > div > div > input')
         self._subform_funder_role_radio_question = (
             By.CSS_SELECTOR, 'fieldset.qa-ident-funder--had_influence > div')
         self._subform_funder_role_radio_yes = (By.CSS_SELECTOR, 'div.card-radio > label > input')
@@ -78,8 +83,8 @@ class FinancialDisclosureTask(BaseTask):
         """
         intro_text = self._get(self._intro_text)
         self.validate_application_body_text(intro_text)
-        assert intro_text.text == 'Did any of the authors receive specific funding for this ' \
-                                  'work?', intro_text.text
+        assert intro_text.text == 'Did any of the authors receive specific funding for ' \
+                                  'this work?', intro_text.text
         yes_rad = self._get(self._yes_radio)
         assert not yes_rad.is_selected()
         yes_lbl = self._get(self._yes_radio_label)

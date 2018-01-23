@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Page object definition for the financial disclosure card
@@ -19,7 +19,7 @@ class FinancialDisclosureCard(BaseCard):
 
         # Locators - Instance members
         self._intro_text = (By.CSS_SELECTOR, 'div.card-form-text-error')
-        self._yes_radio = (By.TAG_NAME, 'div.card-radio input')
+        self._yes_radio = (By.CSS_SELECTOR, 'div.card-radio input')
         self._yes_radio_label = (By.CSS_SELECTOR, 'div.card-radio input + span')
         self._yes_radio_required_icon = (By.CSS_SELECTOR,
                                          'div.card-radio input + span + span.required-field')
@@ -33,7 +33,7 @@ class FinancialDisclosureCard(BaseCard):
                                     'div.card-content-financial-disclosure-summary')
         self._funder_summary_intro_text = (By.CSS_SELECTOR,
                                            'div.card-content-financial-disclosure-summary > p')
-        # The following locator can occur multiple times per summary div and should be used within
+        # The following locators can occur multiple times per summary div and should be used within
         #     a find_element structure
         self._funder_summary_statement = (By.CSS_SELECTOR,
                                           'div.card-content-financial-disclosure-summary > p div')
@@ -41,16 +41,20 @@ class FinancialDisclosureCard(BaseCard):
         # The following locators can occur for each subform enclosing div and should be used within
         #     a find_element structure
         self._subform_title = (By.TAG_NAME, 'h4')
-        self._subform_funder_name_label = (By.CSS_SELECTOR, 'h4 + div > div > div')
-        self._subform_funder_name_field = (By.CSS_SELECTOR, 'h4 + div > div > div > input')
-        self._subform_grant_number_label = (By.CSS_SELECTOR, 'h4 + div + div > div > div')
-        self._subform_grant_number_field = (By.CSS_SELECTOR, 'h4 + div + div > div > div > input')
-        self._subform_website_label = (By.CSS_SELECTOR, 'h4 + div + div + div > div > div')
-        self._subform_website_field = (By.CSS_SELECTOR, 'h4 + div + div + div > div > div > input')
+        self._subform_funder_name_label = (By.CSS_SELECTOR, 'div.qa-ident-funder--name > div > div')
+        self._subform_funder_name_field = (By.CSS_SELECTOR,
+                                           'div.qa-ident-funder--name > div > div + div > input')
+        self._subform_grant_number_label = (By.CSS_SELECTOR,
+                                            '.qa-ident-funder--grant_number > div > div')
+        self._subform_grant_number_field = (By.CSS_SELECTOR,
+                                            '.qa-ident-funder--grant_number > div > div > input')
+        self._subform_website_label = (By.CSS_SELECTOR, '.qa-ident-funder--website > div > div')
+        self._subform_website_field = (By.CSS_SELECTOR,
+                                       '.qa-ident-funder--website > div > div > input')
         self._subform_addl_comments_label = (By.CSS_SELECTOR,
-                                             'h4 + div + div + div + div > div > div')
-        self._subform_addl_comments_field = (By.CSS_SELECTOR,
-                                             'h4 + div + div + div + div > div > div > input')
+                                             '.qa-ident-funder--additional_comments > div > div')
+        self._subform_addl_comments_field = (
+            By.CSS_SELECTOR, '.qa-ident-funder--additional_comments > div > div > input')
         self._subform_funder_role_radio_question = (By.CSS_SELECTOR,
                                                     'fieldset > div.card-form-text')
         self._subform_funder_role_radio_yes = (By.CSS_SELECTOR, 'div.card-radio > label > input')

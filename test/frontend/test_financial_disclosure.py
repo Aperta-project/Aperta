@@ -46,7 +46,6 @@ class FinancialDisclosureTest(CommonTest):
         manuscript_page = ManuscriptViewerPage(self.getDriver())
         manuscript_page.page_ready_post_create()
         short_doi = manuscript_page.get_short_doi()
-        # figures
         manuscript_page.click_task('Financial Disclosure')
         findisc_task = FinancialDisclosureTask(self.getDriver())
         findisc_task.task_ready()
@@ -91,7 +90,6 @@ class FinancialDisclosureTest(CommonTest):
         manuscript_page = ManuscriptViewerPage(self.getDriver())
         manuscript_page.page_ready_post_create()
         short_doi = manuscript_page.get_short_doi()
-        # figures
         manuscript_page.click_task('Financial Disclosure')
         findisc_task = FinancialDisclosureTask(self.getDriver())
         findisc_task.task_ready()

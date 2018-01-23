@@ -64,6 +64,7 @@ class ReviewerReportCard(BaseCard):
         qb1, qb2, qb3, qb4, qb5, qb6, qb7 = question_block_list
         if research_type:
             recc_entry, q2bentry, q2entry, q3entry, q4entry, q5entry, q6bentry, q6entry = data
+            self._wait_for_element(qb1.find_element(*self._res_q1_answer))
             recommendation = qb1.find_element(*self._res_q1_answer)
             assert recommendation.text.strip().lower() == recc_entry.strip().lower(), \
                 '{0} != {1}'.format(recommendation.text.strip(), recc_entry.strip())
@@ -97,7 +98,7 @@ class ReviewerReportCard(BaseCard):
             assert q6ans.text == q6entry, '{0} != {1}'.format(q6ans.text, q6entry)
         else:
             recc_entry, q2entry, q3bentry, q3entry, q4bentry, q4entry, q5entry, q6entry = data
-            recommendation = qb1.find_element(*self._fm_q1_answer)
+            recommendation = qb1.find_element(*self._res_q1_answer)
             self.validate_application_body_text(recommendation)
             assert recommendation.text.strip().lower() == recc_entry.strip().lower(), \
                 '{0} != {1}'.format(recommendation.text.strip(), recc_entry.strip())

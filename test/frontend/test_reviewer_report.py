@@ -234,6 +234,7 @@ class ReviewerReportTest(CommonTest):
             if not found:
                 raise(AssertionError, 'Card "Review by {0} (#1)" not found'.format(reviewer_name))
             reviewer_report_card = ReviewerReportCard(self.getDriver())
+            reviewer_report_card.card_ready()
             reviewer_report_card.validate_reviewer_report(outdata)
 
     if __name__ == '__main__':

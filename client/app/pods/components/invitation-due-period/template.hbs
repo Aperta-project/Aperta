@@ -1,0 +1,11 @@
+<div {{action 'noop' bubbles=false}} class="due-input-container">
+  <span>Review due</span>
+  {{input type="number"
+    class="due-input form-control"
+    classBinding="errored:error"
+    value=value
+    input=(action 'onInputChange')
+    placeholder=placeholder
+    size=4}}
+  <span>days after acceptance {{yield}}</span>
+</div>

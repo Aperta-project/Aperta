@@ -58,3 +58,10 @@ test('undefined', function(assert) {
 
   assert.equal(pass, false, 'validation failed');
 });
+
+test('blank string', function(assert) {
+  const value = '';
+  const pass = validation(value);
+
+  assert.equal(pass, false, 'validation failed');
+});

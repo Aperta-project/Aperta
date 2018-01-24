@@ -2,7 +2,7 @@ class PaperSerializer < LitePaperSerializer
   attributes :abstract, :body, :current_user_roles, :doi, :gradual_engagement,
              :legends_allowed, :links, :manually_similarity_checked,
              :paper_type, :short_title, :submitted_at, :first_submitted_at, :versions_contain_pdf,
-             :preprint_eligible?, :preprint_opt_in?
+             :preprint_eligible?, :preprint_opt_in?, :review_duration_period
 
   %i(supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true

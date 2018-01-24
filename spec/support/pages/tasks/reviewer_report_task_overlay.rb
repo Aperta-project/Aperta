@@ -9,6 +9,7 @@ class ReviewerReportTaskOverlay < PaperTaskOverlay
   include RichTextEditorHelpers
 
   def ensure_no_review_history
+    wait_for_ajax
     expect(page).to have_no_selector(".review-history")
   end
 

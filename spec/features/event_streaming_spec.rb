@@ -45,11 +45,13 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
       scenario "access to papers" do
         # added as a collaborator
         collaborator_paper.add_collaboration(admin)
+        wait_for_ajax
         expect(page).to have_text(collaborator_paper.title)
 
         # removed as a collaborator
         collaborator_paper.remove_collaboration(admin)
-        expect(page).to_not have_text(collaborator_paper.title)
+        wait_for_ajax
+        expect(page).to not_have_text(collaborator_paper.title)
 
         # added as a task participant
         participant_paper.assignments.create!(

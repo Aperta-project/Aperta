@@ -158,6 +158,22 @@ class StyledPage(PlosPage):
             title.value_of_css_property('color')
 
     @staticmethod
+    def validate_card_question_text(question):
+        """
+        Ensure consistency in rendering application question text in cards
+        :param question: question to validate
+        :return: Void Function
+        """
+        assert APPLICATION_TYPEFACE in question.value_of_css_property('font-family').lower(), \
+            question.value_of_css_property('font-family')
+        assert question.value_of_css_property('font-size') == '16px', \
+            question.value_of_css_property('font-size')
+        assert question.value_of_css_property('font-weight') == '400', \
+            question.value_of_css_property('font-weight')
+        assert question.value_of_css_property('color') == APERTA_BLACK, \
+            question.value_of_css_property('color')
+
+    @staticmethod
     def validate_application_body_text(paragraph):
         """
         Ensure consistency in rendering application ordinary text and paragraph text across
@@ -492,8 +508,10 @@ class StyledPage(PlosPage):
         assert msg.value_of_css_property('background-color') in ('rgb(234, 253, 231)',
                                                                  TRANSPARENT), \
             msg.value_of_css_property('background-color')
+
     # OLD Non-clean, pre v.1. style guide definitions are all below here ##########################
     # Divider and Border Styles ===========================
+
     @staticmethod
     def validate_light_background_border(border):
         """
@@ -2325,3 +2343,41 @@ class StyledPage(PlosPage):
         assert button.value_of_css_property('color') == APERTA_GREEN
         assert button.value_of_css_property('font-weight') == '400'
         # TODO: Styles for create_new_topic since is not in the style guide
+
+    # Diffing/Versioning Styles =====================
+    # The following three styles are not present in the style guide but were reviewed by Sam on
+    #     20180117
+    @staticmethod
+    def validate_diff_redaction_style(element):
+        """
+        Validate the redaction style of card versions view - note this only validates
+        the strike-through and background color
+        :param element: a element against which to evaluate style
+        :return: void function
+        """
+        assert element.value_of_css_property('background-color') == 'rgba(253, 219, 223, 0.5)', \
+            element.value_of_css_property('background-color')
+        assert element.value_of_css_property('text-decoration') == 'line-through', \
+            element.value_of_css_property('text-decoration')
+
+    @staticmethod
+    def validate_diff_addition_style(element):
+        """
+        Validate the addition style of card versions view - note this only validates
+        the background color
+        :param element: a element against which to evaluate style
+        :return: void function
+        """
+        assert element.value_of_css_property('background-color') == 'rgba(142, 203, 135, 0.5)', \
+            element.value_of_css_property('background-color')
+
+    @staticmethod
+    def validate_diff_no_change_style(element):
+        """
+        Validate the no difference style of card versions view - note this only validates
+        the color
+        :param element: a element against which to evaluate style
+        :return: void function
+        """
+        assert element.value_of_css_property('color') == 'rgb(0, 0, 0)', \
+            element.value_of_css_property('color')

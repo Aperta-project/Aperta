@@ -51,7 +51,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
         # removed as a collaborator
         collaborator_paper.remove_collaboration(admin)
         wait_for_ajax
-        expect(page).to not_have_text(collaborator_paper.title)
+        expect(page).to have_no_content(collaborator_paper.title)
 
         # added as a task participant
         participant_paper.assignments.create!(

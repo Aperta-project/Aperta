@@ -115,6 +115,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   cursor: pointer;
   user-select: none; // This is important so as not to have strange drag and drop behavior
   line-height: 0.8em;
+  align-items: center;
   .invitation-item-email {
     user-select: text;
     -moz-user-select: text;
@@ -166,7 +167,6 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 .invitation-item--edit {
   .invitation-item-full-name {
     cursor: default;
-    padding-left: 2rem;
   }
 }
 
@@ -305,6 +305,9 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 }
 
 .invitation-item--edit {
+  .invitation-item-header {
+    padding-left: 2rem;
+  }
   .invitation-item-header,
   .invitation-item-details {
     background-color: $aperta-grey-light;

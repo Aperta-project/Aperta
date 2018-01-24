@@ -184,6 +184,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   rollback: concurrencyTask(function * (invitation) {
     yield invitation.reload();
     invitation.set('body', this.get('invitationBodyStateBeforeEdit'));
+    invitation.set('dueIn', this.get('invitationDueInStateBeforeEdit'));
     yield invitation.save();
     this.get('setRowState')('show');
   }),
@@ -226,7 +227,8 @@ export default Component.extend(DragNDrop.DraggableMixin, {
       if (this.get('editDisabled')) { return; }
 
       this.setProperties({
-        invitationBodyStateBeforeEdit: invitation.get('body')
+        invitationBodyStateBeforeEdit: invitation.get('body'),
+        invitationDueInStateBeforeEdit: invitation.get('dueIn')
       });
       this.get('setRowState')('edit');
     },

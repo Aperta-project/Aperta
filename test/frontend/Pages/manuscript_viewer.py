@@ -802,6 +802,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
             ci_task = CompetingInterestsTask(self._driver)
             ci_task.task_ready()
             outdata = ci_task.complete_form('No')
+            ci_task.click_completion_button()
+            self.click_covered_element(task)
         elif task_name in ('Data Availability', 'Early Version',
                            'Ethics Statement', 'Reporting Guidelines'):
             # Complete Competing Interest data before mark close

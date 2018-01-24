@@ -20,7 +20,12 @@
   padding-top: 0.8rem;
   padding-bottom: 0.9rem;
   line-height: 4rem; // override default
-  @include ellipsis;
+  display: flex;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
   cursor: pointer;
 }
 

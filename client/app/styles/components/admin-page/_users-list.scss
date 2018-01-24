@@ -19,9 +19,10 @@
     padding: 1rem;
     font-size: 1.8rem;
 
-    //@include placeholder(lighten($aperta-blue, 25%)) {
-    //  text-transform: uppercase;
-    //}
+    @include placeholder {
+      color: lighten($aperta-blue, 25%);
+      text-transform: uppercase;
+    }
   }
 
   button {

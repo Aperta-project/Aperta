@@ -90,14 +90,7 @@
   height: auto;
   margin-bottom: 5px;
 
-  &::-moz-placeholder {
-    color: $aperta-grey-light;
-    opacity: 1; // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526
-  }
-  &:-ms-input-placeholder { color: $aperta-grey-light; } // Internet Explorer 10+
-  &::-webkit-input-placeholder  { color: $aperta-grey-light; } // Safari and Chrome
-
-
+  @include placeholder { color: $aperta-grey-light; };
 }
 
 .correspondence-label {

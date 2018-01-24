@@ -33,10 +33,10 @@ describe CustomCard::FileLoader do
     let(:default_permissions) { CustomCard::DefaultCardPermissions.new(journal) }
 
     it 'loads default system cards with the expected roles and permissions' do
-      default_cards = CustomCard::FileLoader.names
+      default_cards = CustomCard::FileLoader.names.sort
       expect(journal.cards.count).to eq(default_cards.count)
 
-      cards = journal.cards.where(name: default_cards.map(&:titleize)).load
+      cards = journal.cards.order(:name).where(name: default_cards.map(&:titleize)).load
       expect(cards.count).to eq(default_cards.count)
 
       cards.zip(default_cards).each do |card, file_name|

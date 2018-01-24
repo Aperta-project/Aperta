@@ -1,8 +1,6 @@
 module CustomCard
   class FileLoader
     def initialize(journal)
-      raise StandardError, 'Cannot create custom cards for journal with pre-existing cards' if journal.cards.any?
-
       @journal = journal
       @permissions = DefaultCardPermissions.new(journal)
       validate_configuration
@@ -10,6 +8,7 @@ module CustomCard
     end
 
     def load(paths = self.class.paths)
+      return if @journal.cards.any?
       Array(paths).each do |file_path|
         load_card(file_path)
       end

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This behavioral test case validates Reviewer Report card
@@ -132,7 +132,7 @@ class ReviewerReportTest(CommonTest):
             card_title = 'Review by {0} (#1)'.format(reviewer['name'])
             workflow_page.click_card('fm_review_by', card_title)
             reviewer_report_card = ReviewerReportCard(self.getDriver())
-            # reviewer_report_card.card_ready() # not working - button.task-completed not there
+            reviewer_report_card.card_ready()
             reviewer_report_card.validate_reviewer_report(outdata, research_type=False)
 
     def test_core_rev_rep_research_actions(self):
@@ -194,7 +194,7 @@ class ReviewerReportTest(CommonTest):
         manuscript_page.page_ready()
         assert manuscript_page.click_task('Review by ')
         reviewer_report_task = ReviewerReportTask(self.getDriver())
-        # reviewer_report_task.task_ready() # not working - button.task-completed not there
+        reviewer_report_task.task_ready()
         reviewer_report_task.validate_task_elements_styles()
         journal_name = reviewer_report_task.get_journal_name_from_short_doi(short_doi)
         reviewer_report_task.validate_reviewer_report_edit_mode(journal_name)
@@ -234,6 +234,7 @@ class ReviewerReportTest(CommonTest):
             if not found:
                 raise(AssertionError, 'Card "Review by {0} (#1)" not found'.format(reviewer_name))
             reviewer_report_card = ReviewerReportCard(self.getDriver())
+            reviewer_report_card.card_ready()
             reviewer_report_card.validate_reviewer_report(outdata)
 
     if __name__ == '__main__':

@@ -212,9 +212,10 @@ class BaseTask(AuthenticatedPage):
         #     first element containing the text would be all we would evaluate.
         if old_value == new_value and new_value:
             # values exist - must look for no-diff text style
-            new_value_element = (
+            new_value_locator = (
                 By.XPATH, '//span[contains(@class, "text-diff")]'
                           '/span[not (@class)]/p[text()="{0}"]'.format(new_value))
+            new_value_element = self._get(new_value_locator)
             self.validate_diff_no_change_style(new_value_element)
         elif old_value != new_value and old_value and new_value:
             # values exist - must look for addition or redaction
@@ -222,8 +223,7 @@ class BaseTask(AuthenticatedPage):
                 By.XPATH, '//span[contains(@class, \'added\')]/p[text() = '
                           '\'{0}\']'.format(new_value))
             self._new_value_element_locator = (
-                By.XPATH, '//span[contains(@class, \'added\')]/p[text() = '
-                          '\'{0}\']'.format(new_value))
+                By.XPATH, '//span[contains(@class, \'added\') and ./p[text() = "{0}"]]'.format(new_value))
             old_value_element = self._get(self._old_value_element_locator)
             new_value_element = self._get(self._new_value_element_locator)
             self.validate_diff_redaction_style(old_value_element)
@@ -231,8 +231,8 @@ class BaseTask(AuthenticatedPage):
         elif not old_value and new_value:
             # previous value didn't exist - new one does
             self._new_value_element_locator = (
-                By.XPATH, '//span[contains(@class, \'added\')]/p[text() ='
-                          ' \'{0}\']'.format(new_value))
+                By.XPATH, '//span[contains(@class, \'added\') and ./p[text() = "{0}"]]'.format(new_value))
+            import pdb; pdb.set_trace()
             new_value_element = self._get(self._new_value_element_locator)
             self.validate_diff_addition_style(new_value_element)
         elif old_value and not new_value:

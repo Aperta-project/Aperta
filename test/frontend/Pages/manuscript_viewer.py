@@ -145,7 +145,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         self._question_mark_icon = (By.ID, 'submission-process-toggle')
         # While IDs are normally king, for this element, we don't hide the element, we just change
         # its class to "hide" it
-        self._infobox = (By.ID, 'inner')
+        self._infobox = (By.ID, 'submission-process')
         self._infobox_closer = (By.ID, 'sp-close')
         self._manuscript_viewer_status_area = (By.ID, 'submission-state-information')
         self._status_info_initial_submit_todo = (By.CSS_SELECTOR,
@@ -242,15 +242,21 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
     def _check_version_btn_style(self):
         """
-        Test version button. This test checks styles but not funtion
+        Test version button. This test checks elements not function
         """
         version_btn = self._get(self._tb_versions_link)
         version_btn.click()
+        # A cheat to allow the drawer to animate fully
+        self.pause_to_save()
+        # The first element exists (manuscript html diff container) for doc/docx comparisons only,
+        #     the second (notice for lack of manuscript diff availability) only for pdf
+        self.set_timeout(10)
         try:
             self._get(self._tb_versions_diff_div)
         except ElementDoesNotExistAssertionError:
-            self._get(self._tb_versions_pdf_message)
-
+            self._wait_for_element(self._get(self._tb_versions_pdf_message), multiplier=2)
+        finally:
+            self.restore_timeout()
         bar_items = self._gets(self._bar_items)
         assert 'Now viewing:' in bar_items[0].text, bar_items[0].text
         assert 'Compare with:' in bar_items[1].text, bar_items[1].text
@@ -941,12 +947,45 @@ class ManuscriptViewerPage(AuthenticatedPage):
         """Get the infobox element"""
         return self._get(self._infobox)
 
+    def validate_infobox(self, format):
+        self.set_timeout(1)
+        # APERTA-11669: No flash messages on creation of manuscript via pdf
+        # closing flash message for word files also closes the infobox,
+        #     we have to close the infobox explicitly for pdf
+        # TODO: remove next 3 lines once APERTA-11669 gets resolved
+        if format == 'pdf':
+            logging.info('Format is PDF -  must close infobox.')
+            self.close_infobox()
+        else:
+            # For doc/docx formats, we should present both the infobox and a success flash message
+            #    IF the flash success message is presented, the process validating that should
+            #    click to close the flash message which also will automatically close the infobox
+            #    If we get an infobox still open failure - it usually will mean we didn't present
+            #    the success message for some reason.
+            try:
+                self._get(self._infobox)
+            except ElementDoesNotExistAssertionError:
+                return
+            finally:
+                self.restore_timeout()
+            # In the case that the infobox is still present because we didn't present the flash
+            #     success message, attempt to close it anyway and then test
+            self.close_infobox()
+            self.pause_to_save()
+        try:
+            self._get(self._infobox)
+        except ElementDoesNotExistAssertionError:
+            return
+        finally:
+            self.restore_timeout()
+        assert False, "Infobox still open. AC2 fails"
+
     def close_infobox(self):
         """Close the infobox element, if present"""
         self._wait_for_element(self._get(self._infobox_closer))
         infobox_closer = self._get(self._infobox_closer)
         infobox_closer.click()
-        time.sleep(.5)
+        self.pause_to_save()
 
     def get_paper_doi_part(self):
         """

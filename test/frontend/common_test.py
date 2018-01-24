@@ -123,8 +123,8 @@ class CommonTest(FrontEndTest):
         dashboard = DashboardPage(self.getDriver())
         # Create new submission
         title = dashboard.title_generator(prefix=title, random_bit=random_bit)
-        logging.info('Creating paper in {0} journal, in {1} type with {2} as title'
-                     .format(journal, type_, title))
+        logging.info('Creating paper in {0} journal, in {1} type with {2} as title, format: {3}'
+                     .format(journal, type_, title, format_))
         # To work with the new TinyMCE instances, you must identify the data-editor value for
         #  div.rich-text-editor element within which your "field" is located and pass it as a value
         #  to the get_rich_text_editor_instance() call

@@ -1,0 +1,126 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "4523c398ebfab1faf00cc9eb4705f4ae1da0c39b0648e499eb90bfa98bf19b66",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "lib/ext/yaml_db.rb",
+      "line": 21,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"ALTER TABLE #{row[\"table_name\"]} ALTER CONSTRAINT #{row[\"constraint_name\"]} DEFERRABLE INITIALLY DEFERRED\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "YamlDb::SerializationHelper::Load",
+        "method": "s(:self).load"
+      },
+      "user_input": "row[\"table_name\"]",
+      "confidence": "Medium",
+      "note": "Only used in rake tasks"
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "4aa9bcd53ec9a6bf6a9c87878cd4fe8cd122a8816eac02ef06134cdbc6145045",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/paper_tracker_controller.rb",
+      "line": 53,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "query.joins(\"        LEFT JOIN assignments\\n        ON assignments.assigned_to_id = papers.id AND\\n        assignments.assigned_to_type='Paper' AND\\n        assignments.role_id IN (#{Role.where(:journal_id => journal_ids, :name => role).map(&:id).join(\", \")})\\n\".strip_heredoc).joins(\"        LEFT JOIN users\\n        ON users.id = assignments.user_id\\n\".strip_heredoc).select(\"papers.*, users.last_name\").order(\"users.last_name #{order_dir}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "PaperTrackerController",
+        "method": "order_by_role"
+      },
+      "user_input": "order_dir",
+      "confidence": "Weak",
+      "note": "User input is not used here"
+    },
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "4ec716437306da0ff5047b609d9ff872c9e80ba7410940a32623eb679f3ce55e",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "lib/tahi_utilities/sweeper.rb",
+      "line": 21,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "`rm #{`#{\"#{\"ls -1tr\"} #{from_folder}/#{matching_glob} #{\"2> /dev/null\"}\"}`.split(\"\\n\").join(\" \")}`",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "TahiUtilities::Sweeper",
+        "method": "s(:self).remove_old_files"
+      },
+      "user_input": "`#{\"#{\"ls -1tr\"} #{from_folder}/#{matching_glob} #{\"2> /dev/null\"}\"}`.split(\"\\n\").join(\" \")",
+      "confidence": "Medium",
+      "note": "Only used in rake tasks"
+    },
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "5ec67fead2ae186da34d36b7c890f4ba05e548137305a649f0e02925a283de5c",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "lib/heroku_exporter.rb",
+      "line": 46,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "system(\"heroku pgbackups:restore DATABASE_URL '#{s3_secure_url}' --app tahi-performance --confirm tahi-performance\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "HerokuExporter",
+        "method": "export_to_heroku!"
+      },
+      "user_input": "s3_secure_url",
+      "confidence": "Medium",
+      "note": "Only used in rake tasks"
+    },
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "9873214fc63149b11269f5c9b2214f562a81a12b1914c3d59976e9df5906e046",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "lib/heroku_exporter.rb",
+      "line": 15,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "system(\"pg_dump -F c -v -U tahi -h localhost #{database_name} -f #{dest_file_path}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "HerokuExporter",
+        "method": "snapshot!"
+      },
+      "user_input": "database_name",
+      "confidence": "Medium",
+      "note": "Only used in rake tasks"
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "d933463226a72e6fe08f59359b88cfd82218a39c7336180854de3f5cda83bbdb",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/paper_tracker_controller.rb",
+      "line": 34,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "query.reorder(\"#{column} #{order_dir}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "PaperTrackerController",
+        "method": "order"
+      },
+      "user_input": "column",
+      "confidence": "Weak",
+      "note": "Input sanitized via column, order_dir methods"
+    }
+  ],
+  "updated": "2018-01-16 11:49:29 -0800",
+  "brakeman_version": "4.1.1"
+}

@@ -32,7 +32,9 @@ rm Base/*.pyc
 rm frontend/*.pyc
 rm frontend/Pages/*.pyc
 
-pytest -v -m 'not setup and not deploy_verify' -n auto -l --timeout=600 --teamcity frontend
+pytest -v -m 'not setup and not deploy_verify and not single' -n auto -l --timeout=600 --teamcity frontend
+pytest -v -m 'single' -n 1 -l --timeout=600 --teamcity frontend
+
 pkill firefox
 pyenv deactivate
 pyenv version

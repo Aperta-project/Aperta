@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 A class to be inherited from every page for which one is authenticated and wants to access
@@ -95,8 +95,8 @@ class AuthenticatedPage(StyledPage):
         # Flash Messages
         self._flash_success_msg = (By.CSS_SELECTOR,
                                    'div.flash-message--success div.flash-message-content')
-        self._flash_error_msg = (
-            By.CSS_SELECTOR, 'div.flash-message--error div.flash-message-content')
+        self._flash_error_msg = (By.CSS_SELECTOR,
+                                 'div.flash-message--error div.flash-message-content')
         self._flash_closer = (By.CLASS_NAME, 'flash-message-remove')
         # Task list id needed in task and manuscript page
         self._paper_sidebar_state_information = (By.ID, 'submission-state-information')
@@ -117,7 +117,7 @@ class AuthenticatedPage(StyledPage):
         self._early_version_card = None
         self._ethics_statement_card = None
         self._figures_card = None
-        self._fin_disclose_card = None
+        self._financial_disclosure_card = None
         self._new_taxon_card = None
         self._report_guide_card = None
         self._review_cands_card = None
@@ -140,8 +140,8 @@ class AuthenticatedPage(StyledPage):
         self._revision_tech_check_card = None
         self._send_to_apex_card = None
         self._title_abstract_card = None
-        # Tasks - placeholder locators - these are over-ridden by definitions in the workflow and
-        # manuscript_viewer pages
+        # Tasks - placeholder locators - these are over-ridden by definitions in the workflow
+        # and manuscript_viewer pages
         self._addl_info_task = None
         self._authors_task = None
         self._billing_task = None
@@ -161,13 +161,14 @@ class AuthenticatedPage(StyledPage):
         self._revise_task = None
         self._supporting_info_task = None
         self._upload_manu_task = None
+        self._similarity_check_card = None
         # Global Overlay Locators
         self._overlay_header_title = (By.CLASS_NAME, 'overlay-header-title')
         self._overlay_header_close = (By.CLASS_NAME, 'overlay-close')
-        self._overlay_action_button_cancel = (
-            By.CSS_SELECTOR, 'div.overlay-action-buttons a.button-link')
-        self._overlay_action_button_save = (
-            By.CSS_SELECTOR, 'div.overlay-action-buttons button.button-primary')
+        self._overlay_action_button_cancel = (By.CSS_SELECTOR,
+                                              'div.overlay-action-buttons a.button-link')
+        self._overlay_action_button_save = (By.CSS_SELECTOR,
+                                            'div.overlay-action-buttons button.button-primary')
         # Attachment component
         self._replace_attachment = (By.CSS_SELECTOR, 'span.replace-attachment')
         self._attachment_div = (By.CSS_SELECTOR, 'div.attachment-manager')
@@ -196,12 +197,12 @@ class AuthenticatedPage(StyledPage):
         self._recent_activity_table = (By.CSS_SELECTOR, 'div.overlay-body table')
         self._recent_activity_table_row = (By.CSS_SELECTOR, 'div.overlay-body table tr')
         self._recent_activity_table_msg = (By.CSS_SELECTOR, 'td.activity-feed-overlay-message')
-        self._recent_activity_table_user_full_name = (
-            By.CSS_SELECTOR, 'td.activity-feed-overlay-user')
-        self._recent_activity_table_user_avatar = (
-            By.CSS_SELECTOR, 'td.activity-feed-overlay-user img')
-        self._recent_activity_table_timestamp = (
-            By.CSS_SELECTOR, 'td.activity-feed-overlay-timestamp')
+        self._recent_activity_table_user_full_name = \
+            (By.CSS_SELECTOR, 'td.activity-feed-overlay-user')
+        self._recent_activity_table_user_avatar = \
+            (By.CSS_SELECTOR, 'td.activity-feed-overlay-user img')
+        self._recent_activity_table_timestamp = \
+            (By.CSS_SELECTOR, 'td.activity-feed-overlay-timestamp')
         # Locator for 'did-you-mean' selection of institution
         self._institution_div = (By.CLASS_NAME, 'did-you-mean-input')
         self._institution_expanded = (By.CLASS_NAME, 'did-you-mean-expanded')
@@ -268,8 +269,8 @@ class AuthenticatedPage(StyledPage):
 
     def click_profile_nav(self):
         """
-        Click user avatar/name in main toolbar to open the sub-menu (accessing profile and logout
-        links)
+        Click user avatar/name in main toolbar to open the sub-menu
+        (accessing profile and logout links)
         :return: None
         """
         profile_menu_toggle = self._get(self._nav_profile_menu_toggle)
@@ -337,16 +338,16 @@ class AuthenticatedPage(StyledPage):
         # assert ec.value_of_css_property('font-size') == '10px'
         # assert ec.value_of_css_property('font-weight') == '700'
         # recent_activity_icon = self._get(self._recent_activity_icon)
-        # assert recent_activity_icon.get_attribute('d') == (
-        #             'M-171.3,403.5c-2.4,0-4.5,1.4-5.5,3.5c0,'
+        # assert recent_activity_icon.get_attribute('d') ==
+        #            ('M-171.3,403.5c-2.4,0-4.5,1.4-5.5,3.5c0,'
         #             '0-0.1,0-0.1,0h-9.9l-6.5-17.2  '
         #             'c-0.5-1.2-1.7-2-3-1.9c-1.3,0.1-2.4,1-2.7,2.3l-4.3,18.9l-4-43.4c-0.1-1'
         #             '.4-1.2-2.5-2.7-2.7c-1.4-0.1-2.7,0.7-3.2,2.1l-12.5,41.6  h-16.2c-1.6,0'
         #             '-3,1.3-3,3c0,1.6,1.3,3,3,3h18.4c1.3,0,2.5-0.9,2.9-2.1l8.7-29l4.3,46.8'
         #             'c0.1,1.5,1.3,2.6,2.8,2.7c0.1,0,0.1,0,0.2,0  c1.4,0,2.6-1,2.9-2.3l6.2-'
         #             '27.6l3.7,9.8c0.4,1.2,1.5,1.9,2.8,1.9h11.9c0.2,0,0.3-0.1,0.5-0.1c1.1,1'
-        #             '.7,3,2.8,5.1,2.8  c3.4,0,6.1-2.7,6.1-6.1C-165.3,406.2-168,403.5-171.3,
-        #             403.5z')
+        #             '.7,3,2.8,5.1,2.8  c3.4,0,6.1-2.7,6.1-6.1C-165.3,
+        #             406.2-168,403.5-171.3,403.5z')
         # assert recent_activity_icon.value_of_css_property('color') == APERTA_GREEN
         recent_activity_text = self._get(self._recent_activity)
         assert recent_activity_text
@@ -499,7 +500,7 @@ class AuthenticatedPage(StyledPage):
                 raise (AssertionError,
                        'Success message: {0} was not the expected text.'.format(success_msg.text))
                 # assert 'Finished loading Word file.' or 'Finished loading PDF file.'
-                # in success_msg.text, success_msg.text
+                #  in success_msg.text, success_msg.text
         if success_msg or failure_msg:
             try:
                 self.close_flash_message()
@@ -579,6 +580,8 @@ class AuthenticatedPage(StyledPage):
             short_doi = self.get_current_url().split('/')[-1]
             count += 1
         short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
+        short_doi = self.get_current_url().split('/')[-2] \
+            if short_doi in {'workflow', 'submit'} else short_doi
         logging.info("Assigned paper short doi: {0}".format(short_doi))
         return short_doi
 
@@ -586,8 +589,8 @@ class AuthenticatedPage(StyledPage):
     def get_journal_name_from_short_doi(short_doi):
         """
         A method to return the paper id from the database via a query on the short_doi
-        :param short_doi: The short doi available from the URL of a paper and also the short_url
-          in db
+        :param short_doi: The short doi available from the URL of a paper and also the
+          short_url in db
         :return: paper.id from db, an integer
         """
         journal_id = PgSQL().query('SELECT journal_id '
@@ -598,8 +601,8 @@ class AuthenticatedPage(StyledPage):
     def get_paper_id_from_short_doi(short_doi):
         """
         A method to return the paper id from the database via a query on the short_doi
-        :param short_doi: The short doi available from the URL of a paper and also the short_url
-          in db
+        :param short_doi: The short doi available from the URL of a paper and also the
+          short_url in db
         :return: paper.id from db, an integer
         """
         paper_id = PgSQL().query('SELECT id FROM papers WHERE short_doi =%s;', (short_doi,))[0][0]
@@ -612,7 +615,7 @@ class AuthenticatedPage(StyledPage):
           gradual_engagement state, and any submitted_at date/time object if present
         :param short_doi: short_doi of paper to query
         :return: a tuple of (publishing_state, gradual_engagement (boolean),
-          submitted_at (date/time))
+        submitted_at (date/time))
         """
         submission_data = PgSQL().query('SELECT publishing_state, gradual_engagement, submitted_at '
                                         'FROM papers '
@@ -627,8 +630,8 @@ class AuthenticatedPage(StyledPage):
           financial_disclosure, new_taxon, reporting_guidelines, reviewer_candidates, revise_task,
           supporting_info, upload_manuscript, assign_admin, assign_team, editor_discussion,
           final_tech_check, initial_decision, invite_academic_editor, invite_reviewers,
-          production_metadata, register_decision, reviewer_report, revision_tech_check or
-          send_to_apex
+          production_metadata, register_decision, reviewer_report, revision_tech_check,
+          similarity check or send_to_apex
         :param title: String with card title to rule out when there are cards with the same name
         NOTE: this does not cover the ad hoc card
         NOTE also that the locators for these are specifically defined within the scope of the
@@ -662,7 +665,7 @@ class AuthenticatedPage(StyledPage):
         elif cardname.lower() == 'figures':
             card_title = self._get(self._figures_card)
         elif cardname.lower() == 'financial_disclosure':
-            card_title = self._get(self._fin_disclose_card)
+            card_title = self._get(self._financial_disclosure_card)
         elif cardname.lower() == 'new_taxon':
             card_title = self._get(self._new_taxon_card)
         elif cardname.lower() == 'reporting_guidelines':
@@ -722,6 +725,8 @@ class AuthenticatedPage(StyledPage):
             card_title = self._get(self._send_to_apex_card)
         elif cardname.lower() == 'title_and_abstract':
             card_title = self._get(self._title_abstract_card)
+        elif cardname.lower() == 'similarity_check':
+            card_title = self._get(self._similarity_check_card)
         else:
             logging.info('Unknown Card')
             self.restore_timeout()
@@ -781,8 +786,8 @@ class AuthenticatedPage(StyledPage):
                     self._get(self._add_participant_btn).click()
                 except ElementDoesNotExistAssertionError:
                     raise (ElementDoesNotExistAssertionError,
-                           'This may fail when the user names has '
-                           'less than 3 character. Reported in APERTA-7862')
+                           'This may fail when the user name has less than 3 character. '
+                           'Reported in APERTA-7862')
                 time.sleep(.5)
                 participant_field = self._get(self._participant_field)
                 participant_field.send_keys(participant[user_search_string])
@@ -850,8 +855,8 @@ class AuthenticatedPage(StyledPage):
         :return: void function
         """
         withdraw_banner = self._get(self._withdraw_banner)
-        assert 'This paper has been withdrawn from {0} and is in View Only mode' \
-            .format(journal) in withdraw_banner.text, 'Banner text is not correct: {0}'\
+        assert 'This paper has been withdrawn from {0} and is in View Only mode'.format(journal) \
+               in withdraw_banner.text, 'Banner text is not correct: {0}' \
             .format(withdraw_banner.text)
 
         assert withdraw_banner.value_of_css_property('background-color') == 'rgb(135, 135, 135)', \
@@ -901,8 +906,8 @@ class AuthenticatedPage(StyledPage):
         """
         Confirms that msg is present in the workflow recent activity feed, executed by full name
         :param msg: The recent activity message you wish to validate
-        :param full_name: the full name of the executing user. If not present, only validate
-          message.
+        :param full_name: the full name of the executing user. If not present, only
+        validate message.
         :return: boolean, true if found
         """
         msg_match = False
@@ -910,8 +915,8 @@ class AuthenticatedPage(StyledPage):
         for ra_entry in ra_entries:
             try:
                 assert msg in self._get(self._recent_activity_table_msg).text
-                logging.info('Workflow RA message match found: {0}'.format(
-                        self._get(self._recent_activity_table_msg).text))
+                logging.info('Workflow RA message match found: {0}'
+                             .format(self._get(self._recent_activity_table_msg).text))
                 msg_match = True
                 if full_name:
                     try:
@@ -945,17 +950,16 @@ class AuthenticatedPage(StyledPage):
         A function to return the dynamic rich text editor id of one of the damned TinyMCE editor
           iframe instances.
         :param name: the data-editor value of the div.rich-text-editor element you wish to
-          interact with
-        :return rte_id: the dynamic data-id of the tinymce instance you may wish to use with a
-         setter or getter
-        :return iframe: the webelement for the iframe - that is necessary to traverse into the frame
-         for setting or getting actions
+         interact with
+        :return rte_id: the dynamic data-id of the tinymce instance you may wish to use with
+         a setter or getter
+        :return iframe: the webelement for the iframe - that is necessary to traverse into the
+         frame for setting or getting actions
         """
         if name:
             self._rich_text_editor = (By.CSS_SELECTOR,
                                       '.rich-text-editor[data-editor="{0}"]'.format(name))
-        else:
-            # no 'data-editor' attribute for migrated 'custom' cards like Cover Letter,
+        else:  # no 'data-editor' attribute for migrated 'custom' cards like Cover Letter,
             # Competing Interests, etc.
             self._rich_text_editor = (By.CSS_SELECTOR, '.rich-text-editor')
         self._rte_frame = (By.TAG_NAME, 'iframe')
@@ -1034,10 +1038,10 @@ class AuthenticatedPage(StyledPage):
         """
         Looks for the presence of links: to the uploded file, 'Replace' and 'Delete' links
         :param: file_box_locator is the parent locator to locate links to file to be downloaded,
-          replaced or deleted
+        replaced or deleted
         :param: task_editable:  boolean, True if the task is in editable state, else False
         :param: check_delete_link: boolean, False if delete link is not needed, like in
-          'Upload Manuscript' task, else True
+        'Upload Manuscript' task, else True
         :return: void function
         """
         # file link should be present in any state
@@ -1060,7 +1064,7 @@ class AuthenticatedPage(StyledPage):
         """
         Looks for the existence of 'Replace' link to replace file
         :param: parent_locator is the anchor locator to locate links to file to be downloaded,
-          replaced or deleted
+        replaced or deleted
         :param: relative_locator is the relative locator to find the file links
         :return: True if present, else False
         """
@@ -1075,8 +1079,8 @@ class AuthenticatedPage(StyledPage):
         """
         Finds institution name in the 'did-you-mean' list and clicks on it to place in the
         institution field
-        :param parent_element: the parent web element to locate list of suggestions and required
-          name
+        :param parent_element: the parent web element to locate list of suggestions and
+          required name
         :param institution_name: string: institution name to select
         :return: void function
         """
@@ -1114,3 +1118,10 @@ class AuthenticatedPage(StyledPage):
                     return True
         logging.info('Completed is False')
         return False
+
+    def open_recent_activity(self):
+        """
+        Opens the recent activity overlay
+        :return: void function
+        """
+        self._get(self._recent_activity).click()

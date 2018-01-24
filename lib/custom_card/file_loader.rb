@@ -2,22 +2,25 @@ module CustomCard
   class FileLoader
     def initialize(journal)
       @journal = journal
+      @cards = Set.new(journal.cards.map(&:name))
       @permissions = DefaultCardPermissions.new(journal)
       validate_configuration
       CardTaskType.seed_defaults
     end
 
     def load(paths = self.class.paths)
-      return if @journal.cards.any?
       Array(paths).each do |file_path|
         load_card(file_path)
       end
     end
 
     def load_card(file_path)
-      xml = File.read(file_path)
       file_name = self.class.base_name(file_path)
-      card = create_card(file_name.titleize, xml)
+      name = file_name.titleize
+      return if @cards.include?(name)
+
+      xml = File.read(file_path)
+      card = create_card(name, xml)
       set_permissions(card, file_name)
     end
 

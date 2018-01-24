@@ -6,6 +6,7 @@ module CustomCard
       @journal = journal
       @permissions = DefaultCardPermissions.new(journal)
       validate_configuration
+      CardTaskType.seed_defaults
     end
 
     def load(paths = self.class.paths)
@@ -34,11 +35,10 @@ module CustomCard
       paths.map { |file_path| base_name(file_path) }
     end
 
-  private
+    private
 
     def validate_configuration
       @permissions.validate(self.class.names)
-      CardTaskType.seed_defaults
     end
 
     def create_card(card_name, xml)
@@ -61,8 +61,11 @@ module CustomCard
       task_type
     end
 
+    private_class_method
+
+    PATH = %w[lib custom_card configurations xml_content].freeze
     def self.paths
-      home = Rails.root.join('lib/custom_card/configurations', 'xml_content')
+      home = Rails.root.join(*PATH)
       Dir["#{home}/*.xml"]
     end
 

@@ -157,7 +157,7 @@ class ReviewerReport < ActiveRecord::Base
   end
 
   def review_duration_period
-    paper.review_duration_period
+    invitation.due_in || paper.review_duration_period
   end
 
   def thank_reviewer

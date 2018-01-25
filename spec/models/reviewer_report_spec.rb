@@ -13,6 +13,7 @@ describe ReviewerReport do
       declined_at: DateTime.now.utc + 10,
       rescinded_at: DateTime.now.utc + 20,
       accepted_at: DateTime.now.utc + 30,
+      due_in: 10,
       state: state)
     subject.decision.invitations << invitation
   end
@@ -153,6 +154,7 @@ describe ReviewerReport do
   describe '#set_due_datetime' do
     before do
       FactoryGirl.create :review_duration_period_setting_template
+      add_invitation(:accepted)
     end
 
     it 'schedues events afterwards' do
@@ -163,6 +165,7 @@ describe ReviewerReport do
   describe '#cancel_reminders' do
     before do
       FactoryGirl.create :review_duration_period_setting_template
+      add_invitation(:accepted)
     end
 
     it 'cancels all events with passive or active state' do

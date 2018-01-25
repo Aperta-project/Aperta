@@ -98,6 +98,7 @@ export default DS.Model.extend({
 
   reviewDueAt: attr('date'),
   reviewOriginallyDueAt: attr('date'),
+  reviewDurationPeriod: attr('number'),
 
   paper_shortDoi: computed.oneWay('shortDoi'),
   allAuthorsUnsorted: computed.union('authors', 'groupAuthors'),

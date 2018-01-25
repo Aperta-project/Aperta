@@ -66,7 +66,6 @@ class Invitation < ActiveRecord::Base
     event(:invite,
       after_commit: [:set_invitee,
                      :set_invited_at,
-                     :set_body,
                      :notify_invitation_invited]) do
       transitions from: :pending, to: :invited, guards: :invite_allowed?
     end

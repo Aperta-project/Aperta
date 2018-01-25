@@ -29,10 +29,7 @@ module.exports = function(defaults) {
       enabled: true,
       extensions: ['js']
     },
-    sassOptions: {
-      sourceMap: true
-    },
-    babel: {
+    'ember-cli-babel': {
       includePolyfill: true
     },
     codemirror: {

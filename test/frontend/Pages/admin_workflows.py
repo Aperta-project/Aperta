@@ -526,12 +526,17 @@ class AdminWorkflowsPage(BaseAdminPage):
         self._wait_for_element(self._get(card_locator))
         card_link = self._get(card_locator)
         settings_icon = card_link.find_element(*self._card_settings)
+        self._wait_for_element(settings_icon)
         # Hover color of the Similarity Check settings cog should be Admin blue
         color_before = settings_icon.value_of_css_property('color')
         logging.info('Icon color before moving to it: {0}'.format(color_before))
         logging.info('Moving to settings gear icon')
-        self._actions.move_to_element(settings_icon).click_and_hold().perform()
+        self._actions.move_to_element(settings_icon).click_and_hold(settings_icon).perform()
         self.pause_to_save()
+        # sometimes move_to_element() does not work, trying to repeat moving
+        if settings_icon.value_of_css_property('color') == color_before:
+            self._actions.move_to_element(settings_icon).click_and_hold(settings_icon).perform()
+            self.pause_to_save()
         logging.info('Icon color is: {0}'.format(settings_icon.value_of_css_property('color')))
         self._wait_on_lambda(lambda: settings_icon.value_of_css_property('color') != color_before)
         assert settings_icon.value_of_css_property('color') == APERTA_BLUE, \

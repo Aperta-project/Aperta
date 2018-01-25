@@ -75,7 +75,7 @@ class ProductionMedataCard(BaseCard):
     prov = prov_div.find_element_by_tag_name('span')
     assert prov.text == 'Provenance', prov.text
     self.validate_input_field_external_label_style(prov)
-    # test submiting without required fields to check for errors
+    # test submitting without required fields to check for errors
     # press I am done with this task
     done_btn = self._get(self._completion_button)
     done_btn.click()

@@ -23,6 +23,7 @@ from frontend.Tasks.additional_information_task import AITask
 from frontend.Tasks.authors_task import AuthorsTask
 from frontend.Tasks.basetask import BaseTask
 from frontend.Tasks.billing_task import BillingTask
+from frontend.Tasks.competing_interests import CompetingInterestsTask
 from frontend.Tasks.new_taxon_task import NewTaxonTask
 from frontend.Tasks.revise_manuscript_task import ReviseManuscriptTask
 from frontend.Tasks.reviewer_report_task import ReviewerReportTask
@@ -795,7 +796,15 @@ class ManuscriptViewerPage(AuthenticatedPage):
             base_task.click_completion_button()
             self.click_covered_element(task)
             self._wait_on_lambda(lambda: not bool(self.is_task_open('Title And Abstract')))
-        elif task_name in ('Competing Interests', 'Data Availability', 'Early Version',
+        elif task_name == 'Competing Interests':
+            # Complete competing interests with minimal data so there is something to validate
+            logging.info('Completing Competing Interests Task')
+            ci_task = CompetingInterestsTask(self._driver)
+            ci_task.task_ready()
+            outdata = ci_task.complete_form('No')
+            ci_task.click_completion_button()
+            self.click_covered_element(task)
+        elif task_name in ('Data Availability', 'Early Version',
                            'Ethics Statement', 'Reporting Guidelines'):
             # Complete Competing Interest data before mark close
             logging.info('Completing {0} Task'.format(task.text))

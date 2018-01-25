@@ -72,7 +72,8 @@ class WorkflowPage(AuthenticatedPage):
         self._ethics_statement_card = (By.CSS_SELECTOR, 'div.ethics-task > a')
         self._figures_card = (By.CSS_SELECTOR, 'div.figure-task > a')
         self._final_tech_check_card = (By.CSS_SELECTOR, 'div.final-tech-check-task > a')
-        self._financial_disclosure_card = (By.CSS_SELECTOR, 'div.financial-disclosure-task > a')
+        self._financial_disclosure_card = (
+            By.XPATH, '//span[(contains (@class, "card-title") and text()="Financial Disclosure")]')
         self._initial_decision_card = (By.CSS_SELECTOR, 'div.initial-decision-task > a')
         self._initial_tech_check_card = (By.CSS_SELECTOR, 'div.initial-tech-check-task > a')
         self._invite_ae_card = (By.CSS_SELECTOR, 'div.paper-editor-task > a')

@@ -165,7 +165,7 @@ class PlosPage(object):
         """
         Checks for the existence of an invisible element returning a boolean
         :param locator: the page element to check on
-        :return: True if found, else False
+        :return: True if found in DOM AND invisible, else False
         """
         self.set_timeout(2)
         try:

@@ -498,6 +498,7 @@ ActiveRecord::Schema.define(version: 20180105161700) do
     t.datetime "rescinded_at"
     t.integer  "position",                                 null: false
     t.integer  "invitation_queue_id"
+    t.integer  "due_in"
   end
 
   add_index "invitations", ["actor_id"], name: "index_invitations_on_actor_id", using: :btree

@@ -34,7 +34,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
 
         # destroy
         deleted_task = submission_phase.tasks.first.destroy!
-        expect(page).to_not have_content deleted_task.title
+        expect(page).not_to have_content deleted_task.title
       end
     end
 
@@ -45,11 +45,13 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
       scenario "access to papers" do
         # added as a collaborator
         collaborator_paper.add_collaboration(admin)
+        wait_for_ajax
         expect(page).to have_text(collaborator_paper.title)
 
         # removed as a collaborator
         collaborator_paper.remove_collaboration(admin)
-        expect(page).to_not have_text(collaborator_paper.title)
+        wait_for_ajax
+        expect(page).to have_no_content(collaborator_paper.title)
 
         # added as a task participant
         participant_paper.assignments.create!(
@@ -64,7 +66,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
           role: participant_paper.journal.task_participant_role
         ).destroy
         wait_for_ajax
-        expect(page).to_not have_text(participant_paper.title)
+        expect(page).not_to have_text(participant_paper.title)
       end
     end
   end

@@ -7,6 +7,8 @@ import logging
 import os
 import random
 
+import pytest
+
 from Base.Decorators import MultiBrowserFixture
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import users, editorial_users, admin_users, super_admin_login, \
@@ -134,6 +136,7 @@ class ManuscriptViewerTest(CommonTest):
             dashboard_page.logout()
         return self
 
+    @pytest.mark.single
     def test_initial_submission_infobox(self):
         """
         test_manuscript_viewer: Validate elements and styles of the initial submission infobox
@@ -164,10 +167,10 @@ class ManuscriptViewerTest(CommonTest):
         dashboard_page.page_ready()
         dashboard_page.click_create_new_submission_button()
         # due to APERTA-11669 we need to know document format to check AC2
-        format = random.choice(['pdf', 'word'])
+        format_ = random.choice(['pdf', 'word'])
         self.create_article(title='Test Manuscript Viewer - initial submission infobox',
                             journal='PLOS Wombat', type_='Images+InitialDecision', random_bit=True,
-                            format_=format)
+                            format_=format_)
         manuscript_page = ManuscriptViewerPage(self.getDriver())
         # Note that the following method closes the infobox as well as the success/failure
         # flash alert
@@ -178,23 +181,8 @@ class ManuscriptViewerTest(CommonTest):
         assert 'Please provide the following information to submit your manuscript for Initial ' \
                'Submission.' in manuscript_page.get_submission_status_initial_submission_todo(), \
             manuscript_page.get_submission_status_initial_submission_todo()
-        manuscript_page.set_timeout(1)
-
         # AC2: Test closing the info box
-        # APERTA-11669: No flash messages on creation of manuscript via pdf
-        # closing flash message for word files closes also infobox, we have to close infobox for pdf
-        # TODO: remove next 2 lines once APERTA-11669 gets resolved
-        if format == 'pdf':
-            manuscript_page.close_infobox()
-        try:
-            manuscript_page.get_infobox()
-        except ElementDoesNotExistAssertionError:
-            assert True
-        else:
-            assert False, "Infobox still open. AC2 fails"
-        manuscript_page.restore_timeout()
-        # AC3 Green info box appears for initial manuscript view only - whether the user closes or
-        #   leaves it open
+        manuscript_page.validate_infobox(format_)
         manuscript_page.click_aperta_dashboard_link()
         self._driver.get(paper_url)
         manuscript_page = ManuscriptViewerPage(self.getDriver())

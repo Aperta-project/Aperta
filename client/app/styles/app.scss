@@ -2,8 +2,9 @@
 
 @import 'ember-power-select';
 
-@import "bourbon";
+@import 'font-awesome';
 @import 'bootstrap';
+@import "bourbon";
 
 @import 'config/functions';
 @import 'config/variables';
@@ -11,8 +12,6 @@
 @import 'config/z-index';
 
 @import 'config/mixins';
-
-@import 'auth';
 
 @import 'config/global-resets';
 

@@ -6,7 +6,6 @@ export default TaskComponent.extend({
   restless: Ember.inject.service(),
 
   // Set in tech check task this inherits from base
-  // emailEndpoint
   // bodyKey
 
   authoringMode: false,
@@ -58,8 +57,7 @@ export default TaskComponent.extend({
       this.set('emailSending', true);
       this.setLetter(()=> {
         const taskId = this.get('task.id');
-        const endpoint = this.get('emailEndpoint');
-        const path = '/api/' + endpoint + '/' + taskId + '/send_email';
+        const path = `/api/tech_check/${taskId}/send_email`;
         this.get('restless').post(path).then(()=> {
           this.get('task.paper').reload();
           this.set('emailSending', false);

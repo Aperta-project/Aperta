@@ -1,5 +1,5 @@
 module PlosBioTechCheck
-  class RevisionTechCheckController < ApplicationController
+  class TechCheckController < ApplicationController
     before_action :authenticate_user!
 
     def send_email
@@ -14,7 +14,7 @@ module PlosBioTechCheck
     private
 
     def task
-      @task ||= RevisionTechCheckTask.find(params[:id])
+      @task ||= Task.find(params[:id])
     end
   end
 end

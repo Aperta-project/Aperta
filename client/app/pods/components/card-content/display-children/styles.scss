@@ -1,0 +1,17 @@
+& {
+  .card-content-field-set {
+    padding: 10px;
+    margin: 10px 0;
+    background: $aperta-grey-xlight;
+
+    p { margin: 0 0 1rem 0; }
+
+    &.large-description-text-container {
+      p.description {
+        margin-bottom: 10px;
+        font-size: 16px;
+        line-height: 20px;
+      }
+    }
+  }
+}

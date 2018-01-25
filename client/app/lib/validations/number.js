@@ -2,12 +2,6 @@ import Ember from 'ember';
 
 export const defaultMessage = 'must be a number';
 
-export const validation = function(value, options) {
-  if (options && options.allowBlank && Ember.isEmpty(value)) {
-    return true;
-  }
-
-  if(value === null) { return false; }
-
-  return !window.isNaN(value);
+export const validation = function(value, options={}) {
+  return Ember.isEmpty(value) ? !!options.allowBlank : !window.isNaN(value);
 };

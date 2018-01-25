@@ -34,6 +34,7 @@
     "ember-cli-app-version": "^3.0.0",
     "ember-cli-at-js": "0.0.3",
     "ember-cli-babel": "^6.3.0",
+    "ember-cli-bourbon": "1.2.2",
     "ember-cli-content-security-policy": "0.4.0",
     "ember-cli-deprecation-workflow": "0.2.3",
     "ember-cli-eslint": "^4.0.0",
@@ -45,6 +46,7 @@
     "ember-cli-qunit": "^4.0.0",
     "ember-cli-rails-addon": "0.10.0",
     "ember-cli-release": "^0.2.9",
+    "ember-cli-sass": "7.1.3",
     "ember-cli-shims": "^1.1.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-test-loader": "^1.1.0",
@@ -70,10 +72,12 @@
     "ember-native-dom-helpers": "^0.5.4",
     "ember-popout": "1.0.0",
     "ember-power-select": "1.0.0",
+    "ember-promise-helpers": "1.0.3",
     "ember-prop-types": "5.0.2",
     "ember-pusher": "^1.1.0",
     "ember-resolver": "^4.0.0",
     "ember-route-action-helper": "2.0.3",
+    "ember-sass-bootstrap": "0.2.0",
     "ember-sinon": "0.5.0",
     "ember-source": "~2.15.0",
     "ember-truth-helpers": "^1.2.0",
@@ -91,10 +95,5 @@
   "ember-addon": {
     "paths": []
   },
-  "devDependencies": {
-    "ember-cli-bourbon": "^1.2.2",
-    "ember-cli-sass": "^7.1.3",
-    "ember-promise-helpers": "^1.0.3",
-    "ember-sass-bootstrap": "^0.2.0"
-  }
+  "devDependencies": {}
 }

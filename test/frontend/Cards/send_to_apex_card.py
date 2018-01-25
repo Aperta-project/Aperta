@@ -155,13 +155,13 @@ class SendToApexCard(BaseCard):
                         'secondary_affiliation': None,
                         'title': creator_login1['affiliation-title'],
                         'type': 'author'}
-        asset_competing_interests = {'competing_interests': None,
+        asset_competing_interests = {'competing_interests': False,
                                      'competing_interests_statement': 'The authors have declared '
                                                                       'that no competing interests '
                                                                       'exist.'}
         asset_data_availability = {'data_fully_available': None,
                                    'data_location_statement': None}
-        asset_financial_disclosure = {'author_received_funding': None,
+        asset_financial_disclosure = {'author_received_funding': False,
                                       'funders': [],
                                       'funding_statement': 'The author(s) received no specific '
                                                            'funding for this work.'}
@@ -178,17 +178,21 @@ class SendToApexCard(BaseCard):
                         'Data point from json file: {0} does not match to data point of the ' \
                         'source manuscript taken from the GUI: {1}'.format(value, asset_author[key])
             for key, value in competing_interests.items():
-                assert value == asset_competing_interests[key], \
-                    'Data point from json file: {0} does not match to data point of the source ' \
-                    'manuscript taken from the GUI: {1}'.format(value, asset_author[key])
+                    assert value == \
+                        asset_competing_interests[key], 'Data point from json file: {0} does not ' \
+                                                        'match to data point of the source ' \
+                                                        'manuscript taken from the GUI: ' \
+                                                        '{1}'.format(value,
+                                                                     asset_competing_interests[key])
             for key, value in data_availability.items():
                 assert value == asset_data_availability[key], \
                     'Data point from json file: {0} does not match to data point of the source ' \
-                    'manuscript taken from the GUI: {1}'.format(value, asset_author[key])
+                    'manuscript taken from the GUI: {1}'.format(value, asset_data_availability[key])
             for key, value in financial_disclosure.items():
                 assert value == asset_financial_disclosure[key], \
                     'Data point from json file: {0} does not match to data point of the source ' \
-                    'manuscript taken from the GUI: {1}'.format(value, asset_author[key])
+                    'manuscript taken from the GUI: {1}'.format(value,
+                                                                asset_financial_disclosure[key])
             assert early_article_posting, \
                 'Data point from json file: {0} does not match to data point of the source ' \
                 'manuscript taken from the GUI: {1}'.format(early_article_posting, True)

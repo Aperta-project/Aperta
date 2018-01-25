@@ -16,16 +16,14 @@ decision
 - An MMT named "Similarity Check test on first revision", automation: on, after any first revise
 decision
 """
-# TODO: Validate Diff View of the card
 
-from datetime import datetime
 import logging
 import random
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users, super_admin_login, handling_editor_login, \
     cover_editor_login, sim_check_full_submission_mmt, sim_check_major_revision_mmt, \
-    sim_check_minor_revision_mmt, sim_check_first_revision_mmt, docs, pdfs
+    sim_check_minor_revision_mmt, sim_check_first_revision_mmt, sim_check_off_mmt
 from frontend.common_test import CommonTest
 from frontend.Cards.assign_team_card import AssignTeamCard
 from frontend.Cards.register_decision_card import RegisterDecisionCard
@@ -41,8 +39,25 @@ __author__ = 'gtimonina@plos.org'
 auto_options = (('at_first_full_submission', sim_check_full_submission_mmt['name']),
                 ('after_major_revise_decision', sim_check_major_revision_mmt['name']),
                 ('after_minor_revise_decision', sim_check_minor_revision_mmt['name']),
-                ('after_any_first_revise_decision', sim_check_first_revision_mmt['name']))
-doc_choice = docs + pdfs
+                ('after_any_first_revise_decision', sim_check_first_revision_mmt['name']),
+                ('off', sim_check_off_mmt['name']))
+doc_choice = \
+    ['frontend/assets/docs/HomeRun_Vector_Assembly_System_A_Flexible_and_Standardized_Cloning_'
+     'System_for_.docx',
+     'frontend/assets/docs/Cytoplasmic_Viruses_Rage_Against_the_Cellular_RNA_Decay_Machine.docx',
+     'frontend/assets/docs/Abby_normal_Contextual_Modulation.docx',
+     'frontend/assets/docs/DNA_Fragments_Assembly_Based_on_Nicking_Enzyme_System.docx',
+     'frontend/assets/docs/The_eyes_dont_have_it_Lie_detection_and_Neuro-Linguistic_Programming'
+     '.doc',
+     'frontend/assets/pdfs/Promoter_sequence_determines_the_relationship_between_expression_level'
+     '_and_noise.pdf',
+     'frontend/assets/pdfs/Word_Document_with_Inserted_Text_Box.pdf',
+     'frontend/assets/pdfs/Genome-wide_diversity_in_the_Levant_reveals_recent_structuring_by_'
+     'culture.pdf',
+     'frontend/assets/pdfs/The_Impact_of_Psychological_Stress_on_Mens_Judgements_of_'
+     'Female_Body_Size.pdf',
+     'frontend/assets/pdfs/Chemical_Synthesis_of_Bacteriophage_G4.pdf',
+     'frontend/assets/pdfs/Mentalizing_Deficits_Constrain_Belief_in_a_Personal_God.pdf']
 
 
 @MultiBrowserFixture
@@ -74,11 +89,10 @@ class SimilarityCheckTest(CommonTest):
 
         card_settings.click_cancel()
 
-    def test_smoke_validate_style_component_generate_manually_validate_access(self):
+    def test_smoke_validate_styles_components_generate_manually(self):
         """
-        test_smoke_generate_manually_and_validate_access: 'two-in-one' test
-        Validates the similarity check card presence in a workflow view, generating report manually,
-        validates access while the report is generating as it may take several minutes.
+        test_smoke_validate_styles_components_generate_manually:
+        Validates the similarity check card presence in a workflow view, generating report manually.
         Validates form elements and styles.
         Testing default settings, automation is Off.
         Steps:
@@ -93,12 +107,11 @@ class SimilarityCheckTest(CommonTest):
         7. As an author, submit new version
         8. As an editorial user, open Similarity Check Card to check that the card is marked as
            completed for new revision
-        Access validation test is running between steps #4 and #5 of the main test.
         :return: void function
         """
 
-        logging.info('Test Similarity Check with Automation Off:: generate report '
-                     'manually and validate access')
+        logging.info('Test Similarity Check with Automation Off:: validate styles and components, '
+                     'generate report manually')
 
         # log as an author and create new submission
         creator_user = random.choice(users)
@@ -141,40 +154,12 @@ class SimilarityCheckTest(CommonTest):
         sim_check.validate_card_header(short_doi)
         sim_check.validate_styles_and_components(auto_setting_default)
 
-        task_url, start_time, pending_message, report_title = sim_check.generate_manual_report()
+        # generate report
+        start_time, pending_message, report_title = sim_check.generate_manual_report()
         assert "Pending" in pending_message, '\'Pending\' is expected in the message: {0}'\
             .format(pending_message)
         assert 'Similarity Check Report' in report_title, '\'Similarity Check Report\' is ' \
                                                           'expected in: '.format(report_title)
-        sim_check.logout()
-
-        # Similarity checks may take up to several minutes to complete,
-        # so we'll use this time to run  access validation test
-        logging.info("Switching to Access validation test at: {0}"
-                     .format(start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')))
-        self.validate_access(staff_user)
-
-        finish_time = datetime.now()
-        diff_time = finish_time - start_time
-
-        seconds_elapsed = diff_time.seconds
-        logging.info("Access validation test finished at: {0}"
-                     .format(finish_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')))
-
-        logging.info('Elapsed time in seconds: {0}'.format(str(seconds_elapsed)))
-
-        # log as staff_user
-        logging.info('Logging in as user: {0} to validate similarity check report'
-                     .format(staff_user['name']))
-        dashboard_page = self.cas_login(email=staff_user['email'])
-        dashboard_page.page_ready()
-        self._driver.get(task_url)
-
-        sim_check = SimilarityCheckCard(self.getDriver())
-        sim_check.card_ready()
-        seconds_to_wait = max(10, 600 - seconds_elapsed)
-        logging.info('Starting report validation with maximum time to wait in seconds: '
-                     '{0}'.format(str(seconds_to_wait)))
         self.validate_report_history(sim_check, version='0.0')
 
         report_validation_result, validation_seconds, paper_data, report_data = \
@@ -223,41 +208,43 @@ class SimilarityCheckTest(CommonTest):
         # check Report History
         self.validate_report_history(sim_check, version='0.0')
 
-    def validate_access(self, staff_user_to_skip):
+    def test_smoke_validate_access_and_recent_activity(self):
         """
         Validates access of internal and external editorial users to the Similarity Check card.
         Validates Recent Activity feed item after Marking the card Complete/Incomplete.
-        Test runs between steps #4 and #5 of the main test -
-        test_smoke_generate_manually_and_validate_access().
-        Steps for access validation:
+        Scenario for access validation:
         1. Create new submission using workflow with auto option off, which is default
         2. As an internal editorial user, navigate to the Similarity Check card, check the card
            title and buttons, check that the card is editable
         3. Open 'Assign Team' card and assign cover and handling editors
-        4. Log in as cover and handling editors, navigate to the Similarity Check Card and
+        4. Mark task as complete and check recent activity
+        5. Mark task as incomplete and check recent activity
+        6. Log in as cover and handling editors, navigate to the Similarity Check Card and
            check that the card is accessible, but not editable
         Notes: Step 2 repeats for all internal editorial users (excluding  cover and handling
-          editors) except staff user from the main test
-          Step 3 - only one time, with the first staff user
-          Step 4 - for both, cover and handling editors.
-        :param staff_user_to_skip: staff user login to skip as it was checked in the previous test
+          editors)
+          Steps 3-5: only one time, with the first staff user
+          Step 6: for both, cover and handling editors.
         :return: void function
         """
-        logging.info('Test Similarity Check::validate_access, default settings')
+        # excluding 'after full submission' option
+        auto_setting = random.choice(auto_options[1:])
+        auto_option = auto_setting[0]
+        mmt_name = auto_setting[1]
+        logging.info('Test Similarity Check::validate_access, auto option: '
+                     '{0}'.format(str(auto_setting)))
 
         # log as author and create new submission using 'Similarity Check test' mmt
         creator_user = random.choice(users)
-        title = 'Similarity Check test with default settings - validate access'
+        title = 'Similarity Check test with default settings - validate access, ' \
+                '{0}'.format(auto_option)
         short_doi, paper_url = self.create_new_submission_complete_tasks_and_submit(
-                creator_user, title, '', 'Similarity Check test')
+                creator_user, title, '', mmt_name)
 
         # set handler_and_cover_assigned to false to make sure handling and cover editors
         # assigned only once
         handler_and_cover_assigned = False
         for staff_user in editorial_users:
-            # skip staff user who was chosen and checked in the previous test
-            if staff_user == staff_user_to_skip:
-                continue
             logging.info('Logging in as user: {0}'.format(staff_user['name']))
             dashboard_page = self.cas_login(email=staff_user['email'])
             dashboard_page.page_ready()
@@ -398,7 +385,8 @@ class SimilarityCheckTest(CommonTest):
         logging.info('Test Similarity Check with Automation ON:: generate report '
                      'manually and validate access')
 
-        auto_setting = random.choice(auto_options)
+        # excluding 'off' option
+        auto_setting = random.choice(auto_options[:4])
         logging.info('Testing with auto option, mmt name: {0}'.format(str(auto_setting)))
 
         auto_option = auto_setting[0]
@@ -410,7 +398,7 @@ class SimilarityCheckTest(CommonTest):
 
         doc_to_use = random.choice(doc_choice)
         logging.info('Chosen file to upload: {0}'.format(doc_to_use))
-        title = 'Similarity Check test with auto trigger: ' + auto_option
+        title = 'Similarity Check test with auto trigger: {0}'.format(auto_option)
         short_doi, paper_url = self.create_new_submission_complete_tasks_and_submit(
                 creator_user, title, doc_to_use, mmt_name)
 
@@ -572,7 +560,8 @@ class SimilarityCheckTest(CommonTest):
         logging.info('Test Similarity Check with Automation On:: disable automation by '
                      'sending report manually')
 
-        auto_setting = random.choice(auto_options[1:])
+        # excluding 'off' and 'after full submission' options
+        auto_setting = random.choice(auto_options[1:4])
         logging.info('Testing with auto option, mmt name: {0}'.format(str(auto_setting)))
         auto_option = auto_setting[0]
         mmt_name = auto_setting[1]
@@ -603,7 +592,7 @@ class SimilarityCheckTest(CommonTest):
         sim_check.validate_styles_and_components(auto_option)
 
         # generating report manually
-        task_url, start_time, pending_message, report_title = sim_check.generate_manual_report()
+        start_time, pending_message, report_title = sim_check.generate_manual_report()
         assert "Pending" in pending_message, '\'Pending\' is expected in the message: {0}'\
             .format(pending_message)
         assert 'Similarity Check Report' in report_title, '\'Similarity Check Report\' is ' \

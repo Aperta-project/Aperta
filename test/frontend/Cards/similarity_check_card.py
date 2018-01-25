@@ -224,8 +224,7 @@ class SimilarityCheckCard(BaseCard):
     def generate_manual_report(self):
         """
         Generate report manually by clicking on 'Generate Report' button
-        :return: task_url: url to get back and check results,
-            start_time: time when the generate report call has started, to track and calculate
+        :return: start_time: time when the generate report call has started, to track and calculate
             remaining time to wait for the Report from iThenicate,
             pending_message, report_title - text to validate
         """
@@ -247,13 +246,11 @@ class SimilarityCheckCard(BaseCard):
 
         report_title = self._get(self._sim_check_report_title)
         report_title_text = report_title.text.strip()
-        # assert 'Similarity Check Report' in report_title.text.strip(), report_title.text.strip()
         self.validate_application_h3_style(report_title)
-        # save task url and current time to go back to the task after report is generated
-        task_url = self.get_current_url()
+        # save current time to go back to the task after report is generated
         start_time = datetime.now()
 
-        return task_url, start_time, pending_message, report_title_text
+        return start_time, pending_message, report_title_text
 
     def get_report_result(self, start_time=None):
         """
@@ -271,10 +268,10 @@ class SimilarityCheckCard(BaseCard):
         paper_title = html_header_title.text
         try:
             if start_time is None:
-                seconds_to_wait = 500
+                seconds_to_wait = 300
             else:
                 diff_time = datetime.now() - start_time
-                seconds_to_wait = max(10, 500 - diff_time.seconds)
+                seconds_to_wait = max(10, 300 - diff_time.seconds)
 
             self._wait_on_lambda(lambda: bool(self.completed_state()),
                                  max_wait=seconds_to_wait)  # score and style

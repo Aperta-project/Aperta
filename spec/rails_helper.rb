@@ -80,7 +80,7 @@ RSpec.configure do |config|
   config.order = 'random'
 
   config.include FeatureHelpers, type: :feature
-  config.include Devise::TestHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :controller
   config.include AuthorizationControllerSpecHelper, type: :controller
   config.include FactoryGirl::Syntax::Methods
   config.include TahiHelperMethods

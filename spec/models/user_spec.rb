@@ -153,25 +153,6 @@ describe User do
     end
   end
 
-  describe ".new_with_session" do
-    let(:personal_details) { { "personal_details" => { "given_names" => "Joe", "family_name" => "Smith" } } }
-    let(:orcid_session) do
-      { "devise.provider" => { "orcid" => { "uid" => "myuid",
-                                            "info" => { "orcid_bio" => personal_details } } } }
-    end
-
-    it "will prefill new user form with orcid info" do
-      user = User.new_with_session(nil, orcid_session)
-      expect(user.first_name).to eq('Joe')
-      expect(user.last_name).to eq('Smith')
-    end
-
-    it "will auto generate a password" do
-      user = User.new_with_session(nil, orcid_session)
-      expect(user.password).not_to be_empty
-    end
-  end
-
   context "password authentication" do
     let(:user) { User.new }
     before { expect(Rails.configuration).to receive(:password_auth_enabled).and_return(enabled) }

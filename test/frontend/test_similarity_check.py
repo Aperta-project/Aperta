@@ -20,8 +20,6 @@ decision
 import logging
 import random
 
-import pytest
-
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users, super_admin_login, handling_editor_login, \
     cover_editor_login, sim_check_full_submission_mmt, sim_check_major_revision_mmt, \
@@ -68,7 +66,6 @@ class SimilarityCheckTest(CommonTest):
     Validate the elements, styles, functions of the Similarity Check card
     """
 
-    @pytest.mark.simcheck
     def test_core_settings_validate_components_styles(self):
         """
         Validates elements and styles for the Similarity Check Settings page
@@ -92,7 +89,6 @@ class SimilarityCheckTest(CommonTest):
 
         card_settings.click_cancel()
 
-    @pytest.mark.simcheck
     def test_smoke_validate_styles_components_generate_manually(self):
         """
         test_smoke_validate_styles_components_generate_manually:
@@ -212,7 +208,6 @@ class SimilarityCheckTest(CommonTest):
         # check Report History
         self.validate_report_history(sim_check, version='0.0')
 
-    @pytest.mark.simcheck
     def test_smoke_validate_access_and_recent_activity(self):
         """
         Validates access of internal and external editorial users to the Similarity Check card.
@@ -348,7 +343,6 @@ class SimilarityCheckTest(CommonTest):
             # logout
             sim_check.logout()
 
-    @pytest.mark.simcheck
     def test_core_trigger_automated_report(self):
         """
         test_core_trigger_automated_report:
@@ -546,7 +540,6 @@ class SimilarityCheckTest(CommonTest):
         workflow_page._wait_on_lambda(lambda: workflow_page.get_current_url()
                                       .split('/')[-1] == 'workflow')
 
-    @pytest.mark.simcheck
     def test_core_disable_automation_by_manual_generation(self):
         """
         test_core_disable_automation_by_manual_generation:

@@ -69,12 +69,10 @@
     padding: 1rem;
     font-size: 1.8rem;
 
-    &::-moz-placeholder {
+    @include placeholder {
       color: lighten($aperta-blue, 25%);
-      opacity: 1; // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526
+      text-transform: uppercase;
     }
-    &:-ms-input-placeholder { color: lighten($aperta-blue, 25%); } // Internet Explorer 10+
-    &::-webkit-input-placeholder  { color: lighten($aperta-blue, 25%); } // Safari and Chrome
 
   }
 

@@ -1,6 +1,8 @@
+require 'securerandom'
+
 FactoryGirl.define do
   factory :card do
-    sequence(:name) { |n| "Test Card #{n}" }
+    sequence(:name) { |n| "Test Card #{n} #{SecureRandom.uuid}" }
     journal
     latest_version 1
     card_task_type

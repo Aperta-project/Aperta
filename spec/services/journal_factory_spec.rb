@@ -120,20 +120,6 @@ describe JournalFactory do
                             last_doi_issued: '1000001')
     end
 
-    context 'default system cards' do
-      let(:factory_params) do
-        { name: 'Journal of the Stars',
-          doi_journal_prefix: 'journal.SHORTJPREFIX1',
-          doi_publisher_prefix: 'SHORTJPREFIX1',
-          last_doi_issued: '1000001' }
-      end
-
-      it 'loads default system cards' do
-        expect(CustomCard::Loader).to receive(:all).with(journals: instance_of(Journal))
-        JournalFactory.create(factory_params)
-      end
-    end
-
     context 'role hints' do
       let!(:journal) do
         JournalFactory.create(name: 'Journal of the Stars',
@@ -163,7 +149,7 @@ describe JournalFactory do
       end
     end
 
-    context 'creating the default roles and permission for the journal' do
+    context 'creating the default roles, permission, and custom cards for the journal' do
       before(:all) do
         @journal = JournalFactory.create(name: 'Genetics Journal',
                                          doi_journal_prefix: 'journal.genetics',

@@ -40,7 +40,7 @@ feature "Journal Administration", js: true do
         click_on "Save"
       end
 
-      using_wait_time(60) do # Creating a journal takes time
+      using_wait_time(120) do # Creating a journal takes time
         expect(admin_page).to have_journal_names(journal.name, journal2.name, 'New Journal Cool Cool')
       end
 

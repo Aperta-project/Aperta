@@ -9,10 +9,8 @@
       </text>
     </Description>
     <CheckBox ident="early-posting--consent" value-type="boolean">
-      <default-answer-value>
-        true
-      </default-answer-value>
       <label>Yes, I agree to publish an early version of my article</label>
+      <default-answer-value>true</default-answer-value>
     </CheckBox>
   </DisplayChildren>
 </card>

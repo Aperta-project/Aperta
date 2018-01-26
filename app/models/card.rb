@@ -29,7 +29,7 @@ class Card < ActiveRecord::Base
   after_destroy :clean_permissions
 
   scope :archived, -> { where.not(archived_at: nil) }
-  scope :active_cards, -> { where.not(name: Card.feature_inactive_cards) }
+  scope :active, -> { where.not(name: feature_inactive_cards) }
 
   # temporarly added for https://jira.plos.org/jira/browse/APERTA-10345
   # we should remove this once the preprint feature flag is removed
@@ -245,6 +245,15 @@ class Card < ActiveRecord::Base
     self.state = "draft"
     self.notifications_enabled = false # silence notifications
     destroy!
+  end
+
+  def card_permissions
+    role_perms = Hash.new { |hash, key| hash[key] = Set.new }
+    card_perms = Permission.where(filter_by_card_id: id).includes(:roles)
+    card_perms.each_with_object(role_perms) do |perm, hash|
+      perm.roles.each { |role| hash[role.name] << perm.action }
+    end
+    Hash[role_perms.transform_values(&:sort)]
   end
 
   private

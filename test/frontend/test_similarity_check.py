@@ -531,7 +531,8 @@ class SimilarityCheckTest(CommonTest):
             # # check Report History
             # self.validate_report_history(sim_check, version='1.0')
 
-    def wait_for_card_to_be_closed(self, workflow_page):
+    @staticmethod
+    def wait_for_card_to_be_closed(workflow_page):
         """
         The method to wait for task to be closed in the workflow view
         :param workflow_page: the instance of workflow page

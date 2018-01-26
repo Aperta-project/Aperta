@@ -323,7 +323,8 @@ class SimilarityCheckCard(BaseCard):
         else:
             assert send_for_manual_report_button.is_displayed()
 
-    def get_sim_check_auto_settings(self, short_doi):
+    @staticmethod
+    def get_sim_check_auto_settings(short_doi):
         """
         A method to return the settings for automated sending report; Similarity Check task
         via a query

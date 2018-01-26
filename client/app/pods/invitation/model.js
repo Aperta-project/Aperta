@@ -28,7 +28,7 @@ export default DS.Model.extend({
   htmlSafeTitle: Ember.computed('title', function () {
     return Ember.String.htmlSafe(this.get('title'));
   }),
-  reviewerReport: DS.belongsTo('reviewer_report'),
+  reviewerReport: DS.belongsTo('reviewer_report', { async: true }),
   paperShortDoi: DS.attr('string'),
   journalName: DS.attr('string'),
   dueIn: DS.attr('number'),

@@ -1,8 +1,8 @@
 @import 'bourbon';
-@import 'config/variables';
-@import 'config/colors';
+@import '../../../client/app/styles/config/variables';
+@import '../../../client/app/styles/config/colors';
 @import 'config/webfonts';
-@import 'ui/buttons';
+@import '../../../client/app/styles/ui/buttons';
 @import 'font-awesome';
 
 html { box-sizing: border-box; }

@@ -4,9 +4,24 @@ var Funnel   = require('broccoli-funnel');
 
 module.exports = function(defaults) {
   var args = {
+    app: {
+      css: {
+        app: "/assets/css/tahi.css"
+      },
+      js: "/assets/js/tahi.js"
+    },
+
+    vendor: {
+      css: "/assets/css/vendor.css",
+      js: "/assets/js/vendor.js"
+    },
     hinting: false,
     storeConfigInMeta: false,
-    emberCliFontAwesome: { includeFontAwesomeAssets: true },
+    'ember-font-awesome': {
+      includeFontAwesomeAssets: false,
+      useScss: true,
+      includeFontFiles: false,
+    },
     'ember-cli-qunit': {
       useLintTree: false
     },

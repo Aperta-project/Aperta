@@ -15,11 +15,11 @@
 
     {{content-for "head-footer"}}
     {{content-for "test-head-footer"}}
-    <style>
-      #ember-testing-container {
-        z-index: -1;
-      }
-    </style>
+    <!--<style>-->
+      <!--#ember-testing-container {-->
+        <!--z-index: -1;-->
+      <!--}-->
+    <!--</style>-->
   </head>
   <body>
     {{content-for "body"}}
@@ -40,8 +40,8 @@
     <script>
       //ugly hack to get paths right in test mode. should be re-visited at a later date
       $('head').append(
-        '<link rel="stylesheet" type="text/css" href="/' + 
-        ['assets', 'application'].join("/") + '.css">');
+        '<link rel="stylesheet" type="text/css" href="/' +
+        ['assets', 'tahi'].join("/") + '.css">');
     </script>
   </body>
 </html>

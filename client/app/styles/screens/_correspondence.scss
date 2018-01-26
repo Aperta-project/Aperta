@@ -88,8 +88,9 @@
   @extend .form-control;
   padding-top: 5px;
   height: auto;
-  @include placeholder { color: $aperta-grey-light; };
   margin-bottom: 5px;
+
+  @include placeholder { color: $aperta-grey-light; };
 }
 
 .correspondence-label {

@@ -1,0 +1,34 @@
+@import "pod-styles";
+
+@import 'ember-power-select';
+
+@import 'font-awesome';
+@import 'bootstrap';
+@import "bourbon";
+
+@import 'config/functions';
+@import 'config/variables';
+@import 'config/colors';
+@import 'config/z-index';
+
+@import 'config/mixins';
+
+@import 'config/global-resets';
+
+@import 'animations/base';
+@import 'components/base';
+@import 'overlays/base';
+@import 'screens/base';
+@import 'ui/base';
+
+// This is bad and you should feel bad
+@import 'dumping-ground';
+
+// STANDARD CARDS
+@import 'tahi_standard_tasks/application';
+
+// DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE
+@import 'plos_bio_internal_review/application';
+@import 'plos_bio_tech_check/application';
+@import 'plos_billing/application';
+@import 'tahi/assign_team/application';

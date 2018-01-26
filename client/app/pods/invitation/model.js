@@ -22,7 +22,7 @@ export default DS.Model.extend({
   alternates: DS.hasMany('invitation', { inverse: 'primary' }),
   reviewerSuggestions: DS.attr('string'),
   state: DS.attr('string'),
-  task: DS.belongsTo('task', { polymorphic: true }),
+  task: DS.belongsTo('task', { polymorphic: true, async: true }),
   decision: DS.belongsTo('decision', {async: false}),
   title: DS.attr('string'),
   htmlSafeTitle: Ember.computed('title', function () {

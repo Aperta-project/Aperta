@@ -11,6 +11,5 @@ export default TechCheckBase.extend({
     );
   },
 
-  emailEndpoint: 'initial_tech_check',
   bodyKey: 'initialTechCheckBody'
 });

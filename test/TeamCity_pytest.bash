@@ -14,6 +14,7 @@ ASSETS_DIR=$SCRIPT_DIR/frontend/assets
 
 pyenv activate tahi-int3
 pyenv version
+wget https://github.com/mozilla/geckodriver/releases/download/v0.18.0/geckodriver-v0.18.0-linux32.tar.gz
 cd $ASSETS_DIR
 wget http://bighector.plos.org/aperta/testing_assets.tar.gz
 TESTING_ASSETS="testing_assets.tar.gz"
@@ -26,7 +27,7 @@ else
 fi
 rm $TESTING_ASSETS
 cd $SCRIPT_DIR
-
+pip install --upgrade requirements.txt
 rm Output/*.png
 rm Base/*.pyc
 rm frontend/*.pyc

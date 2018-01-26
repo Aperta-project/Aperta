@@ -27,7 +27,7 @@ else
 fi
 rm $TESTING_ASSETS
 cd $SCRIPT_DIR
-
+pip install --upgrade requirements.txt
 rm Output/*.png
 rm Base/*.pyc
 rm frontend/*.pyc

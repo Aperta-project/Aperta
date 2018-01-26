@@ -31,8 +31,5 @@ describe TahiStandardTasks::FrontMatterReviewerReportTaskSerializer, serializer_
       is_submitted: true,
       decision_ids: [decision.id]
     ))
-
-    actual_decision_ids = decisions_content.map { |h| h[:id] }
-    expect(actual_decision_ids).to contain_exactly(decision.id)
   end
 end

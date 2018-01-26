@@ -9,7 +9,8 @@ class ReviewerReportTaskOverlay < PaperTaskOverlay
   include RichTextEditorHelpers
 
   def ensure_no_review_history
-    expect(page).to_not have_selector(".review-history")
+    wait_for_ajax
+    expect(page).to have_no_selector(".review-history")
   end
 
   # Ensures given review(s) is on the page.

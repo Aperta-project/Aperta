@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<card required-for-submission="false" workflow-display-only="false">
+  <DisplayChildren>
+    <DisplayChildren child-tag="li" custom-class="question-list" custom-child-class="question" wrapper-tag="ol">
+      <Description>
+        <text>Authors should check the <a target="_blank" href="http://www.equator-network.org">EQUATOR Network</a> site for any reporting guidelines that apply to their study design, and ensure that any required Supporting Information (checklists, protocols, flowcharts, etc.) be included in the article submission.</text>
+      </Description>
+    </DisplayChildren>
+    <DisplayChildren custom-class="question-list">
+      <Description>
+        <text>Select all that apply</text>
+      </Description>
+      <DisplayChildren custom-class="left-indent">
+        <CheckBox ident="reporting_guidelines--clinical_trial" value-type="boolean" allow-annotations="false" required-field="false">
+          <label>Clinical Trial</label>
+        </CheckBox>
+        <CheckBox ident="reporting_guidelines--systematic_reviews" value-type="boolean" allow-annotations="false" required-field="false">
+          <label>Systematic Reviews</label>
+          <DisplayWithValue visible-with-parent-answer="true">
+            <DisplayChildren custom-class="card-content-field-set large-description-text-container">
+              <FileUploader ident="reporting_guidelines--systematic_reviews--checklist" value-type="attachment" allow-multiple-uploads="false" allow-file-captions="false" allow-annotations="false" required-field="false">
+                <text>Provide a completed PRISMA checklist as supporting information. You can <a target="_blank" href="http://www.prisma-statement.org">download it here.</a></text>
+                <label>Upload Review Checklist</label>
+              </FileUploader>
+            </DisplayChildren>
+          </DisplayWithValue>
+        </CheckBox>
+        <CheckBox ident="reporting_guidelines--meta_analyses" value-type="boolean" allow-annotations="false" required-field="false">
+          <label>Meta Analyses</label>
+          <DisplayWithValue visible-with-parent-answer="true">
+            <DisplayChildren custom-class="card-content-field-set large-description-text-container">
+              <FileUploader ident="reporting_guidelines--meta_analyses--checklist" value-type="attachment" allow-multiple-uploads="false" allow-file-captions="false" allow-annotations="false" required-field="false">
+                <text>Provide a completed PRISMA checklist as supporting information. You can <a target="_blank" href="http://www.prisma-statement.org">download it here.</a></text>
+                <label>Upload PRISMA Checklist</label>
+              </FileUploader>
+            </DisplayChildren>
+          </DisplayWithValue>
+        </CheckBox>
+        <CheckBox ident="reporting_guidelines--diagnostic_studies" value-type="boolean" allow-annotations="false" required-field="false">
+          <label>Diagnostic studies</label>
+        </CheckBox>
+        <CheckBox ident="reporting_guidelines--epidemiological_studies" value-type="boolean" allow-annotations="false" required-field="false">
+          <label>Epidemiological studies</label>
+        </CheckBox>
+        <CheckBox ident="reporting_guidelines--microarray_studies" value-type="boolean" allow-annotations="false" required-field="false">
+          <label>Microarray studies</label>
+        </CheckBox>
+      </DisplayChildren>
+    </DisplayChildren>
+  </DisplayChildren>
+</card>

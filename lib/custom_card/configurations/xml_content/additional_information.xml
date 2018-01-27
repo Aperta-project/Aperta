@@ -13,7 +13,7 @@
           <ParagraphInput ident="publishing_related_questions--published_elsewhere--taken_from_manuscripts" value-type="html" editor-style="inline">
             <text>Results, data or figures</text>
           </ParagraphInput>
-          <FileUploader ident="publishing_related_questions--published_elsewhere--upload_related_work" allow-multiple-uploads="true" value-type="attachment">
+          <FileUploader ident="publishing_related_questions--published_elsewhere--upload_related_work" value-type="attachment" allow-multiple-uploads="true" allow-file-captions="true">
             <label>UPLOAD FILE</label>
           </FileUploader>
         </DisplayChildren>
@@ -38,7 +38,7 @@
             <text>Journal</text>
           </ShortInput>
           <CheckBox ident="publishing_related_questions--submitted_in_conjunction--handled_together" value-type="boolean">
-            <text>This submission and the manuscript I'm submitting should be handled together</text>
+            <label>This submission and the manuscript I'm submitting should be handled together</label>
           </CheckBox>
         </DisplayChildren>
       </DisplayWithValue>
@@ -51,7 +51,7 @@
         </html>
       </text>
       <CheckBox ident="publishing_related_questions--previous_interactions_with_this_manuscript" value-type="boolean">
-        <text>I have had previous interactions about this manuscript with a staff editor or Academic Editor of this journal.</text>
+        <label>I have had previous interactions about this manuscript with a staff editor or Academic Editor of this journal.</label>
         <DisplayWithValue visible-with-parent-answer="true">
           <DisplayChildren custom-class="card-content-field-set">
             <ShortInput ident="publishing_related_questions--previous_interactions_with_this_manuscript--submission_details" value-type="text">
@@ -61,7 +61,7 @@
         </DisplayWithValue>
       </CheckBox>
       <CheckBox ident="publishing_related_questions--presubmission_inquiry" value-type="boolean">
-        <text>I submitted a presubmission inquiry for this manuscript.</text>
+        <label>I submitted a presubmission inquiry for this manuscript.</label>
         <DisplayWithValue visible-with-parent-answer="true">
           <DisplayChildren custom-class="card-content-field-set">
             <ShortInput ident="publishing_related_questions--presubmission_inquiry--submission_details" value-type="text">
@@ -71,7 +71,7 @@
         </DisplayWithValue>
       </CheckBox>
       <CheckBox ident="publishing_related_questions--other_journal_submission" value-type="boolean">
-        <text>This manuscript was previously submitted to a different PLOS journal as either a presubmission inquiry or a full submission.</text>
+        <label>This manuscript was previously submitted to a different PLOS journal as either a presubmission inquiry or a full submission.</label>
         <DisplayWithValue visible-with-parent-answer="true">
           <DisplayChildren custom-class="card-content-field-set">
             <ShortInput ident="publishing_related_questions--other_journal_submission--submission_details" value-type="text">
@@ -81,7 +81,7 @@
         </DisplayWithValue>
       </CheckBox>
       <CheckBox ident="publishing_related_questions--author_was_previous_journal_editor" value-type="boolean">
-        <text>One or more of the authors (including myself) currently serve, or have previously served, as an Academic Editor or Guest Editor for this journal.</text>
+        <label>One or more of the authors (including myself) currently serve, or have previously served, as an Academic Editor or Guest Editor for this journal.</label>
       </CheckBox>
     </Description>
     <ShortInput ident="publishing_related_questions--intended_collection" value-type="text">

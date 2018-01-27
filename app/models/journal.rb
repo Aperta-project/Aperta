@@ -11,7 +11,7 @@ class Journal < ActiveRecord::Base
 
   has_many :papers, inverse_of: :journal
   has_many :tasks, through: :papers, inverse_of: :journal
-  has_many :cards, -> { Card.active_cards }, inverse_of: :journal
+  has_many :cards, inverse_of: :journal
   has_many :card_versions, through: :cards, inverse_of: :journal
   has_many :roles, inverse_of: :journal
   has_many :assignments, as: :assigned_to
@@ -96,6 +96,10 @@ class Journal < ActiveRecord::Base
 
   def self.valid_doi?(doi)
     !!(doi =~ DOI_FORMAT)
+  end
+
+  def active_cards
+    cards.active
   end
 
   # Per https://confluence.plos.org/confluence/display/FUNC/DOI+Guidelines

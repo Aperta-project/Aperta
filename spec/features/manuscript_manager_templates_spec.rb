@@ -82,7 +82,7 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
       end
     end
 
-    let(:default_mmt_card_count) { 8 }
+    let(:default_mmt_card_count) { 7 }
     describe 'Task Templates' do
       scenario 'Adding a new Task Template' do
         phase = task_manager_page.phase('Get Reviews')

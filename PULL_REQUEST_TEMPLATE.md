@@ -65,7 +65,7 @@ If I need to migrate existing data:
 
 # QA Ticket
 
-JIRA issue: link-to-jira
+JIRA/TeamCity issue: link-to-jira/teamcity
 
 #### What this PR does:
 
@@ -100,6 +100,8 @@ Reviewer tasks:
         complexity of working around such use. Comment why when used.
 - [ ] Follows first PLOS style guidelines for Python, then PEP-8
 - [ ] Code is implemented in a Python 3 way
+- [ ] Teamcity PR designed to stabilize a failure in a test run should resolve ALL failures for the test file
+- [ ] Work implementing a new card addresses the points covered at: https://confluence.plos.org/confluence/display/TAHI/Considerations+when+creating+a+card+test+case
 - [ ] Code follows implementation guidance at: https://confluence.plos.org/confluence/display/FUNC/Implementing+your+python+end-to-end+tests
 
 #### After the Code Review:

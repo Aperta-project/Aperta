@@ -5,16 +5,15 @@ namespace :cards do
   task load: [:environment, 'card_task_types:seed'] do
     puts "Loading legacy Cards unattached to any specific Journal ..."
     CardLoader.load_standard(journal: nil)
-
     puts "Loading Custom Cards attached to each Journal ..."
-    CustomCard::Loader.all
+    CustomCard::FileLoader.all
   end
 
-  desc "Loads one specific legacy card into the db for testing purposes"
-  task :load_one, [:name, :journal] => :environment do |_, args|
+  desc "Loads one custom card into a journal"
+  task :load_one, [:path, :journal] => :environment do |_, args|
     journal = args[:journal] ? Journal.find(args[:journal]) : nil
-
-    puts "Loading single legacy Card unattached to any specific Journal..."
-    CardLoader.load(args[:name], journal: journal)
+    path = args[:name]
+    puts "Loading card from #{path} to journal #{journal.name}"
+    CardLoader::FileLoader.new(journal).load_card(path)
   end
 end

@@ -5,7 +5,7 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 rm geckodriver-v0.18.0-linux32.tar.gz
 
-wget https://github.com/mozilla/geckodriver/releases/download/v0.18.0/geckodriver-v0.18.0-linux32.tar.gz
+wget https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz
 tar -xvzf geckodriver*
 chmod +x geckodriver
 mv geckodriver /opt/teamcity/bin/
@@ -27,7 +27,7 @@ else
 fi
 rm $TESTING_ASSETS
 cd $SCRIPT_DIR
-
+pip install --upgrade requirements.txt
 rm Output/*.png
 rm Base/*.pyc
 rm frontend/*.pyc

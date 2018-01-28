@@ -1,3 +1,31 @@
 & {
+.card-content-check-box {
+  .content-text {
+    margin-top: 10px;
+  }
+
+  label {
+    .required-field {
+      position: inherit;
+      margin-left: 5px;
+      }
+    }
+  }
+
+  .card-checkbox {
+    .card-form-element {
+      display: flex;
+      align-items: flex-start;
+
+      input {
+        margin-right: 8px;
+      }
+
+      .card-form-label {
+        font-size: 14px;
+        font-weight: normal;
+	}
+      }
+  }
 
 }

@@ -1,5 +1,3 @@
-@import "pod-styles";
-
 @import 'ember-power-select';
 
 @import 'font-awesome';
@@ -20,6 +18,9 @@
 @import 'overlays/base';
 @import 'screens/base';
 @import 'ui/base';
+
+// Import after variables and mixins are defined
+@import "pod-styles";
 
 // This is bad and you should feel bad
 @import 'dumping-ground';

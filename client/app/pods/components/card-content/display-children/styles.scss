@@ -14,4 +14,132 @@
       }
     }
   }
+  .question-list {
+  list-style-type: none;
+  padding-left: 32px;
+  counter-reset: questionList;
+}
+
+  .question {
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 15px;
+  
+    &:before {
+      position: absolute;
+      font-size: 15px;
+      top: 1px;
+      left: -30px;
+      min-width: 20px;
+      min-height: 20px;
+      border-radius: 50%;
+      color: #fff;
+      text-align: center;
+      background: $aperta-green;
+      counter-increment: questionList;
+      content: counter(questionList);
+    }
+  }
+  
+  .question-info {
+    font-style: italic;
+  }
+  
+  .question-info-header {
+    font-weight: bold;
+    margin: 15px 0;
+  }
+  
+  .question-text {
+    margin-bottom: 10px;
+    font-size: 16px;
+    line-height: 20px;
+  
+    &.required::after {
+      content: ' *';
+      margin: 0 3px 0 -3px;
+      color: $aperta-red;
+    }
+  
+    p {
+      margin-right: 0;
+      margin-left: 0;
+      font-size: 16px;
+    }
+  
+    &.reviewer_report--attachments-question-text p {
+      margin-top: 10px;
+      &:first-line { font-weight: bold; }
+    }
+  }
+  
+  .question-dataset {
+    padding: 20px 30px;
+    margin: 15px 0;
+    background: rgba(213, 213, 213, 0.8);
+  
+    p { margin: 0 0 1rem 0; }
+  }
+  
+  .question-dataset-header {
+    @extend .question-text;
+    margin-bottom: 10px;
+  }
+  
+  .sub-question .question-text {
+    font-size: 14px;
+  }
+  
+  .question-help {
+    padding-left: 0;
+    margin: 15px 0;
+    list-style-type: none;
+  
+    li:before {
+      content: ">";
+      color: $aperta-green-dark;
+      font-size: 1.4em;
+      font-weight: 700;
+      margin-right: 0.1em;
+    }
+  
+    li {
+      div {
+        display: inline;
+        p {
+          display: inline;
+        }
+      }
+  
+    }
+  
+  }
+  
+  .yes-no-with-comments {
+    background: rgb(194, 232, 188);
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .question-checkbox {
+    position: relative;
+    padding-left: 1.75rem;
+  
+    input {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  
+    .model-question {
+      margin: 0;
+      padding-left: 20px;
+    }
+  
+    .additional-notes {
+      margin: 0;
+      padding-left: 20px;
+    }
+  }
+
 }

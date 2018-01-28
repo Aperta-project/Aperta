@@ -1,4 +1,5 @@
-.card-content-radio {
+& {
+  .card-content-radio {
   margin: 10px 0;
   .option {
     display: block;
@@ -14,8 +15,8 @@
   }
   textarea{
     margin: 0.5em 0;
+    }
   }
-}
 
 .card-radio {
   .card-form-element {
@@ -26,8 +27,8 @@
     font-size:14px;
     font-weight:normal;
     margin-left:5px;
+    }
   }
-}
 
 .card-form-text-error {
   p {
@@ -35,5 +36,6 @@
   }
   .error-message {
     margin-left:  0px;
+    }
   }
 }

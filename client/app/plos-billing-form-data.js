@@ -259,25 +259,25 @@ export default {
     },
     {
       name: 'PLOS Computational Biology',
-      price: 2500,
+      price: 2250,
       collectionSurcharge: 750,
       totalPrice: 3000
     },
     {
       name: 'PLOS Genetics',
-      price: 2500,
+      price: 2250,
       collectionSurcharge: 750,
       totalPrice: 3000
     },
     {
       name: 'PLOS Neglected Tropical Diseases',
-      price: 2500,
+      price: 2250,
       collectionSurcharge: 750,
       totalPrice: 3000
     },
     {
       name: 'PLOS Pathogens',
-      price: 2500,
+      price: 2250,
       collectionSurcharge: 750,
       totalPrice: 3000
     },

@@ -9,4 +9,7 @@
   .card-input {
       @extend .form-control;   
   }
+  .card-form-text {
+    margin-bottom: 10px;
+  }
 }

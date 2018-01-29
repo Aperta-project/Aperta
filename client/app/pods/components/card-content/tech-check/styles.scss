@@ -8,37 +8,4 @@
       }
     }
   }
-
-  .card-content-tech-check-email {
-    .button-primary {
-      margin-top: 30px;
-    }
-
-    .email-preview {
-      margin-top: 20px;
-    }
-    .preview-content {
-      margin-top: 20px;
-      background: $aperta-grey-xlight;
-      border-top: 2px solid $aperta-grey;
-      padding: 15px 20px;
-
-      div, li {
-        padding-top: 10px;
-      }
-
-      ol {
-        padding-left: 15px;
-      }
-    }
-    .preview-error {
-      vertical-align: middle;
-      padding-top: 30px;
-
-      p {
-        display: inline;
-        padding-left: 5px;
-      }
-    }
-  }
 }

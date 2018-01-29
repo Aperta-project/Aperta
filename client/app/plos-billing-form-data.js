@@ -64,7 +64,7 @@ export default {
     { id: 'Albania', text: 'Albania' },
     { id: 'Algeria', text: 'Algeria' },
     { id: 'Angola', text: 'Angola' },
-    { id: 'Argentina', text: 'Argentina' },
+    { id: 'Antigua and Barbuda', text: 'Antigua and Barbuda' },
     { id: 'Armenia', text: 'Armenia' },
     { id: 'Azerbaijan', text: 'Azerbaijan' },
     { id: 'Bangladesh', text: 'Bangladesh' },
@@ -92,7 +92,6 @@ export default {
     { id: 'Dominica', text: 'Dominica' },
     { id: 'Dominican Republic', text: 'Dominican Republic' },
     { id: 'East Timor', text: 'East Timor' },
-    { id: 'Ecuador', text: 'Ecuador' },
     { id: 'Egypt', text: 'Egypt' },
     { id: 'El Salvador', text: 'El Salvador' },
     { id: 'Equatorial Guinea', text: 'Equatorial Guinea' },
@@ -148,10 +147,8 @@ export default {
     { id: 'Niue', text: 'Niue' },
     { id: 'Pakistan', text: 'Pakistan' },
     { id: 'Palau', text: 'Palau' },
-    { id: 'Palestine, State of', text: 'Palestine, State of' },
     { id: 'Papua New Guinea', text: 'Papua New Guinea' },
     { id: 'Paraguay', text: 'Paraguay' },
-    { id: 'Peru', text: 'Peru' },
     { id: 'Philippines', text: 'Philippines' },
     { id: 'Rwanda', text: 'Rwanda' },
     { id: 'Saint Helena, Ascension and Tristan Da Cunha', text: 'Saint Helena, Ascension and Tristan Da Cunha' },
@@ -180,7 +177,6 @@ export default {
     { id: 'Tokelau', text: 'Tokelau' },
     { id: 'Tonga', text: 'Tonga' },
     { id: 'Tunisia', text: 'Tunisia' },
-    { id: 'Turkmenistan', text: 'Turkmenistan' },
     { id: 'Tuvalu', text: 'Tuvalu' },
     { id: 'Uganda', text: 'Uganda' },
     { id: 'Ukraine', text: 'Ukraine' },
@@ -188,7 +184,6 @@ export default {
     { id: 'Vanuatu', text: 'Vanuatu' },
     { id: 'Viet Nam', text: 'Viet Nam' },
     { id: 'West Bank and Gaza Strip', text: 'West Bank and Gaza Strip' },
-    { id: 'Western Sahara', text: 'Western Sahara' },
     { id: 'Yemen', text: 'Yemen' },
     { id: 'Zambia', text: 'Zambia' },
     { id: 'Zimbabwe', text: 'Zimbabwe' },
@@ -264,25 +259,25 @@ export default {
     },
     {
       name: 'PLOS Computational Biology',
-      price: 2250,
+      price: 2500,
       collectionSurcharge: 750,
       totalPrice: 3000
     },
     {
       name: 'PLOS Genetics',
-      price: 2250,
+      price: 2500,
       collectionSurcharge: 750,
       totalPrice: 3000
     },
     {
       name: 'PLOS Neglected Tropical Diseases',
-      price: 2250,
+      price: 2500,
       collectionSurcharge: 750,
       totalPrice: 3000
     },
     {
       name: 'PLOS Pathogens',
-      price: 2250,
+      price: 2500,
       collectionSurcharge: 750,
       totalPrice: 3000
     },

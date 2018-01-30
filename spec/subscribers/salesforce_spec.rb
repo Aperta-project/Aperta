@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe PlosBilling::Paper::Salesforce do
+describe Paper::Salesforce do
   let(:salesforce_manuscript_update_worker) do
-    class_double(PlosBilling::SalesforceManuscriptUpdateWorker)
+    class_double(SalesforceManuscriptUpdateWorker)
       .as_stubbed_const(transfer_nested_constants: true)
   end
   let(:user) { FactoryGirl.build_stubbed(:user) }

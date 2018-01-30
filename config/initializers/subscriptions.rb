@@ -11,7 +11,7 @@ Subscriptions.configure do
       Paper::Submitted::EmailCreator,
       Paper::Submitted::SnapshotPaper,
       Paper::Submitted::EmailCoauthors,
-      PlosBilling::Paper::Salesforce,
+      Paper::Salesforce,
       Paper::Submitted::ReopenRevisionTasks,
       Paper::Submitted::CreateReviewerReports
 
@@ -23,14 +23,14 @@ Subscriptions.configure do
 
   add 'paper:accepted', \
       Paper::DecisionMade::UnassignReviewers,
-      PlosBilling::Paper::Salesforce
+      Paper::Salesforce
 
   add 'paper:rejected', \
-      PlosBilling::Paper::Salesforce,
+      Paper::Salesforce,
       Paper::DecisionMade::UnassignReviewers
 
   add 'paper:withdrawn', \
-      PlosBilling::Paper::Salesforce,
+      Paper::Salesforce,
       Paper::DecisionMade::UnassignReviewers
 
   add 'discussion_reply:created', \

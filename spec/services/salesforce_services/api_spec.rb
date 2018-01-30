@@ -97,7 +97,7 @@ describe SalesforceServices::API do
     let(:paper) do |paper|
       task_params = {
         title: 'Billing',
-        type: 'PlosBilling::BillingTask',
+        type: 'BillingTask',
         paper_id: paper.id
       }
       FactoryGirl.create(:paper_with_task,

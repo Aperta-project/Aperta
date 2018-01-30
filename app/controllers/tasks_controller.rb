@@ -184,7 +184,7 @@ class TasksController < ApplicationController
   end
 
   def does_not_violate_single_billing_task_condition?
-    billing_type_string = 'PlosBilling::BillingTask'
+    billing_type_string = 'BillingTask'
     if task_type.to_s == billing_type_string
       paper.tasks.where(type: billing_type_string).count.zero?
     else

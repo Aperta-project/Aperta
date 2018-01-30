@@ -60,7 +60,7 @@ class JournalFactory
 
   # All standard tasks that users who see the workflow should see
   # Billing is special, and CustomCardTask is handled by a custom mechanism.
-  STANDARD_TASKS = (Task.descendants - [PlosBilling::BillingTask, CustomCardTask]).freeze
+  STANDARD_TASKS = (Task.descendants - [BillingTask, CustomCardTask]).freeze
   SUBMISSION_TASKS = (Task.submission_task_types - [CustomCardTask]).freeze
 
   # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
@@ -96,7 +96,7 @@ class JournalFactory
       # Collaborators can view and edit any metadata card except billing
       task_klasses = SUBMISSION_TASKS
       task_klasses += [AdHocForAuthorsTask]
-      task_klasses -= [PlosBilling::BillingTask]
+      task_klasses -= [BillingTask]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
@@ -175,7 +175,7 @@ class JournalFactory
       task_klasses = SUBMISSION_TASKS
       task_klasses -= [
         ChangesForAuthorTask,
-        PlosBilling::BillingTask,
+        BillingTask,
         ReviewerRecommendationsTask
       ]
       task_klasses += [AdHocForReviewersTask]
@@ -521,7 +521,7 @@ class JournalFactory
       # ReviewerReportTask(s) and its descendants, but cannot edit them.
       task_klasses -= [
         ChangesForAuthorTask,
-        PlosBilling::BillingTask,
+        BillingTask,
         RegisterDecisionTask
       ]
       task_klasses += [ReviewerReportTask]
@@ -544,13 +544,13 @@ class JournalFactory
     Role.ensure_exists(Role::FREELANCE_EDITOR_ROLE, journal: @journal)
 
     Role.ensure_exists(Role::BILLING_ROLE, journal: @journal, participates_in: [Task]) do |role|
-      (STANDARD_TASKS + [PlosBilling::BillingTask]).each do |klass|
+      (STANDARD_TASKS + [BillingTask]).each do |klass|
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass)
       end
 
-      role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask)
+      role.ensure_permission_exists(:edit, applies_to: BillingTask)
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
       role.ensure_permission_exists(:view, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: CardVersion)

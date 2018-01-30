@@ -1,0 +1,14 @@
+class BillingTask < ::Task
+  include SubmissionTask
+
+  DEFAULT_TITLE = 'Billing'.freeze
+  DEFAULT_ROLE_HINT = 'author'.freeze
+  REQUIRED_PERMISSIONS = [
+    { action: 'view', applies_to: 'BillingTask' },
+    { action: 'edit', applies_to: 'BillingTask' }
+  ].freeze
+
+  def active_model_serializer
+    TaskSerializer
+  end
+end

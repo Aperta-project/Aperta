@@ -13,7 +13,7 @@ describe SalesforceServices::BillingSync do
       salesforce_manuscript_id: 'abc123'
     )
   end
-  let(:billing_task) { instance_double(PlosBilling::BillingTask) }
+  let(:billing_task) { instance_double(BillingTask) }
   let(:salesforce_api) { class_double(SalesforceServices::API) }
 
   before do

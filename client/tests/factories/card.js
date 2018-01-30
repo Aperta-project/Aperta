@@ -59,7 +59,7 @@ let cardIdents = {
   'FinancialDisclosureTask': [
     'financial_disclosures--author_received_funding'
   ],
-  'PlosBilling::BillingTask': [
+  'BillingTask': [
     'plos_billing--first_name',
     'plos_billing--last_name',
     'plos_billing--title',

@@ -9,7 +9,8 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     noop(){},
     onInputChange: function (event) {
       this.clearAllValidationErrors();
-      this.validate('dueIn', event.target.value);
+      if (this.get('value') < 1) { this.set('value', 1); }
+      this.validate('dueIn', this.get('value'));
       if (this.get('onchange')) { this.get('onchange')(event); }
     }
   }

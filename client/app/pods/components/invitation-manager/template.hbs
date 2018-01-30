@@ -33,9 +33,7 @@
           {{user.full_name}} &lt;{{user.email}}&gt;
         {{/auto-suggest}}
         {{#if (eq inviteeRole "Reviewer")}}
-          {{invitation-due-period
-            value=dueIn
-            onchange=(action "updateReviewDurationPeriod")}}
+          {{invitation-due-period value=dueIn}}
         {{/if}}
         <button class="button-secondary button--green invitation-email-entry-button {{if disableButton "button--disabled"}}"
                 {{action "createInvitation"}}>

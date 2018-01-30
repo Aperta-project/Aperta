@@ -186,9 +186,6 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     },
     focusOut(){
       this.validateData();
-    },
-    updateReviewDurationPeriod(event) {
-      this.set('dueIn', event.target.value);
     }
   }
 });

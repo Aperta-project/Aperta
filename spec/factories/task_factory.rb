@@ -61,7 +61,7 @@ FactoryGirl.define do
       title "Do something awesome"
     end
 
-    factory :assign_team_task, class: 'Tahi::AssignTeam::AssignTeamTask' do
+    factory :assign_team_task, class: 'AssignTeamTask' do
       title "Assign Team"
     end
 

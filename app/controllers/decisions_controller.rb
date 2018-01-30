@@ -38,7 +38,7 @@ class DecisionsController < ApplicationController
 
   def update
     permitted = []
-    revise_task = decision.paper.last_of_task(TahiStandardTasks::ReviseTask)
+    revise_task = decision.paper.last_of_task(ReviseTask)
     if current_user.can?(:register_decision, decision.paper)
       permitted += [:verdict, :letter]
     end

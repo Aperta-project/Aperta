@@ -5,7 +5,7 @@
 module CardConfiguration
   class PaperEditorTask
     def self.name
-      "TahiStandardTasks::PaperEditorTask"
+      "PaperEditorTask"
     end
 
     def self.title

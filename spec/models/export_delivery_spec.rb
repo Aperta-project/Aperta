@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::ExportDelivery do
+describe ExportDelivery do
   let!(:paper) do
     FactoryGirl.create(:paper, publishing_state: 'accepted')
   end

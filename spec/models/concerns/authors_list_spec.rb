@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::AuthorsList do
+describe AuthorsList do
   let!(:paper) { FactoryGirl.create :paper }
   let!(:author1) do
     FactoryGirl.create :author, paper: paper, first_name: "FirstAuthor"

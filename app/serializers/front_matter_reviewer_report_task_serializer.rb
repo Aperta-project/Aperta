@@ -1,0 +1,2 @@
+class FrontMatterReviewerReportTaskSerializer < ReviewerReportTaskSerializer
+end

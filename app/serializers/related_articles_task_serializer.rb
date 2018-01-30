@@ -1,0 +1,2 @@
+class RelatedArticlesTaskSerializer < ::TaskSerializer
+end

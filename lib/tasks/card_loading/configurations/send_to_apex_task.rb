@@ -5,7 +5,7 @@
 module CardConfiguration
   class SendToApexTask
     def self.name
-      "TahiStandardTasks::SendToApexTask"
+      "SendToApexTask"
     end
 
     def self.title

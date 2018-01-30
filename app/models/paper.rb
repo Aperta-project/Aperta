@@ -54,7 +54,7 @@ class Paper < ActiveRecord::Base
   has_many :related_articles, dependent: :destroy
   has_many :withdrawals, dependent: :destroy
   has_many :correspondence
-  has_many :export_deliveries, class_name: 'TahiStandardTasks::ExportDelivery'
+  has_many :export_deliveries, class_name: 'ExportDelivery'
 
   has_many :authors,
            -> { order 'author_list_items.position ASC' },
@@ -635,7 +635,7 @@ class Paper < ActiveRecord::Base
   end
 
   def revise_task
-    tasks.find_by(type: 'TahiStandardTasks::ReviseTask')
+    tasks.find_by(type: 'ReviseTask')
   end
 
   # If we add more hooks like this we may want to make this more foolproof, but
@@ -690,7 +690,7 @@ class Paper < ActiveRecord::Base
     default = 10
     begin
       manuscript_manager_template
-        .try(:task_template_by_kind, "TahiStandardTasks::PaperReviewerTask")
+        .try(:task_template_by_kind, "PaperReviewerTask")
         .try(:setting, 'review_duration_period')
         .try(:value) || default
     rescue ActiveRecord::RecordNotFound

@@ -6,22 +6,22 @@ module JournalServices
 
         create_phase_template(name: "Submission Data", journal: journal, mmt: mmt,
                               phase_content: [
-                                TahiStandardTasks::TitleAndAbstractTask,
-                                TahiStandardTasks::FigureTask,
-                                TahiStandardTasks::SupportingInformationTask,
-                                TahiStandardTasks::AuthorsTask
+                                TitleAndAbstractTask,
+                                FigureTask,
+                                SupportingInformationTask,
+                                AuthorsTask
                               ])
 
         create_phase_template(name: "Invite Editor", journal: journal, mmt: mmt,
-                              phase_content: TahiStandardTasks::PaperEditorTask)
+                              phase_content: PaperEditorTask)
 
         create_phase_template(name: "Invite Reviewers", journal: journal, mmt: mmt,
-                              phase_content: TahiStandardTasks::PaperReviewerTask)
+                              phase_content: PaperReviewerTask)
 
         create_phase_template(name: "Get Reviews", journal: journal, mmt: mmt)
 
         create_phase_template(name: "Make Decision", journal: journal, mmt: mmt,
-                              phase_content: TahiStandardTasks::RegisterDecisionTask)
+                              phase_content: RegisterDecisionTask)
       end
     end
 

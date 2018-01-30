@@ -259,13 +259,13 @@ Tahi::Application.routes.draw do
     post 'changes_for_author/:id/submit_tech_check', controller: 'plos_bio_tech_check/changes_for_author', action: 'submit_tech_check', as: :submit_tech_check
     post 'tech_check/:id/send_email', controller: 'plos_bio_tech_check/tech_check', action: 'send_email'
 
-    resources :export_deliveries, only: [:create, :show], controller: 'tahi_standard_tasks/export_deliveries'
-    resources :funders, only: [:create, :update, :destroy], controller: 'tahi_standard_tasks/funders'
-    resources :reviewer_recommendations, only: [:create, :update, :destroy], controller: 'tahi_standard_tasks/reviewer_recommendations'
-    put 'tasks/:id/upload_manuscript', to: 'tahi_standard_tasks/upload_manuscript#upload', as: :upload_manuscript
-    post 'tasks/:id/upload_manuscript', to: 'tahi_standard_tasks/upload_manuscript#upload', as: :upload_new_manuscript
-    delete 'tasks/:id/delete_manuscript', to: 'tahi_standard_tasks/upload_manuscript#destroy_manuscript', as: :destroy_manuscript
-    delete 'tasks/:id/delete_sourcefile', to: 'tahi_standard_tasks/upload_manuscript#destroy_sourcefile', as: :destroy_sourcefile
+    resources :export_deliveries, only: [:create, :show], controller: 'export_deliveries'
+    resources :funders, only: [:create, :update, :destroy], controller: 'funders'
+    resources :reviewer_recommendations, only: [:create, :update, :destroy], controller: 'reviewer_recommendations'
+    put 'tasks/:id/upload_manuscript', to: 'upload_manuscript#upload', as: :upload_manuscript
+    post 'tasks/:id/upload_manuscript', to: 'upload_manuscript#upload', as: :upload_new_manuscript
+    delete 'tasks/:id/delete_manuscript', to: 'upload_manuscript#destroy_manuscript', as: :destroy_manuscript
+    delete 'tasks/:id/delete_sourcefile', to: 'upload_manuscript#destroy_sourcefile', as: :destroy_sourcefile
 
     resources :scheduled_events, only: [:update]
 

@@ -24,7 +24,7 @@ describe JournalServices::CreateDefaultManuscriptManagerTemplates do
         name: "A New Phase Name",
         journal: journal,
         mmt: mmt,
-        phase_content: TahiStandardTasks::SupportingInformationTask
+        phase_content: SupportingInformationTask
       )
 
       expect(phase_template.task_templates.length).to eq(1)

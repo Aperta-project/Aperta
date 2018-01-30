@@ -7,7 +7,7 @@ namespace :one_off do
 
   task :remove_intelligible_question_from_reviewer_report => :environment do
     ActiveRecord::Base.transaction do
-      task = TahiStandardTasks::ReviewerReportTask
+      task = ReviewerReportTask
       question = task.nested_questions.where(ident: 'intelligible').first
       deleted_position = question.position
 

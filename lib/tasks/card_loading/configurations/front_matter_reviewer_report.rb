@@ -10,7 +10,7 @@
 module CardConfiguration
   class FrontMatterReviewerReport
     def self.name
-      "TahiStandardTasks::FrontMatterReviewerReport"
+      "FrontMatterReviewerReport"
     end
 
     def self.title

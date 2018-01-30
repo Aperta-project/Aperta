@@ -5,7 +5,7 @@
 module CardConfiguration
   class RegisterDecisionTask
     def self.name
-      "TahiStandardTasks::RegisterDecisionTask"
+      "RegisterDecisionTask"
     end
 
     def self.title

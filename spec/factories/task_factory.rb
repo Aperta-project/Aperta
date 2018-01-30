@@ -65,7 +65,7 @@ FactoryGirl.define do
       title "Assign Team"
     end
 
-    factory :authors_task, class: 'TahiStandardTasks::AuthorsTask' do
+    factory :authors_task, class: 'AuthorsTask' do
       title "Authors"
     end
 
@@ -95,7 +95,7 @@ FactoryGirl.define do
       title "Competing Interests"
     end
 
-    factory :data_availability_task, class: 'TahiStandardTasks::DataAvailabilityTask' do
+    factory :data_availability_task, class: 'DataAvailabilityTask' do
       title "Data Availability"
     end
 
@@ -103,12 +103,12 @@ FactoryGirl.define do
       title "Editor Discussion"
     end
 
-    factory :figure_task, class: 'TahiStandardTasks::FigureTask' do
+    factory :figure_task, class: 'FigureTask' do
       title "Figures"
     end
 
     # Can be removed after APERTA-10460 has been moved to production
-    factory :legacy_financial_disclosure_task, class: 'TahiStandardTasks::FinancialDisclosureTask' do
+    factory :legacy_financial_disclosure_task, class: 'FinancialDisclosureTask' do
       title "Financial Disclosure"
     end
 
@@ -120,11 +120,11 @@ FactoryGirl.define do
       title 'Final Tech Check'
     end
 
-    factory :front_matter_reviewer_report_task, class: 'TahiStandardTasks::FrontMatterReviewerReportTask' do
+    factory :front_matter_reviewer_report_task, class: 'FrontMatterReviewerReportTask' do
       title "Front Matter Reviewer Report"
     end
 
-    factory :initial_decision_task, class: 'TahiStandardTasks::InitialDecisionTask' do
+    factory :initial_decision_task, class: 'InitialDecisionTask' do
       title "Initial Decision"
     end
 
@@ -141,39 +141,39 @@ FactoryGirl.define do
       title "Metadata Task"
     end
 
-    factory :paper_editor_task, class: 'TahiStandardTasks::PaperEditorTask' do
+    factory :paper_editor_task, class: 'PaperEditorTask' do
       title "Invite Editor"
     end
 
-    factory :paper_reviewer_task, class: 'TahiStandardTasks::PaperReviewerTask' do
+    factory :paper_reviewer_task, class: 'PaperReviewerTask' do
       title 'Invite Reviewers'
     end
 
-    factory :production_metadata_task, class: "TahiStandardTasks::ProductionMetadataTask" do
+    factory :production_metadata_task, class: "ProductionMetadataTask" do
       title "Production Metadata"
     end
 
-    factory :reporting_guidelines_task, class: 'TahiStandardTasks::ReportingGuidelinesTask' do
+    factory :reporting_guidelines_task, class: 'ReportingGuidelinesTask' do
       title "Reporting Guidelines"
     end
 
-    factory :related_articles_task, class: 'TahiStandardTasks::RelatedArticlesTask' do
+    factory :related_articles_task, class: 'RelatedArticlesTask' do
       title "Related Articles"
     end
 
-    factory :register_decision_task, class: 'TahiStandardTasks::RegisterDecisionTask' do
+    factory :register_decision_task, class: 'RegisterDecisionTask' do
       title "Register Decision"
     end
 
-    factory :reviewer_recommendations_task, class: 'TahiStandardTasks::ReviewerRecommendationsTask' do
+    factory :reviewer_recommendations_task, class: 'ReviewerRecommendationsTask' do
       title "Reviewer Candidates"
     end
 
-    factory :reviewer_report_task, class: 'TahiStandardTasks::ReviewerReportTask' do
+    factory :reviewer_report_task, class: 'ReviewerReportTask' do
       title "Reviewer Report"
     end
 
-    factory :revise_task, class: 'TahiStandardTasks::ReviseTask' do
+    factory :revise_task, class: 'ReviseTask' do
       title "Revise Manuscript"
     end
 
@@ -181,29 +181,29 @@ FactoryGirl.define do
       title 'Revision Tech Check'
     end
 
-    factory :send_to_apex_task, class: 'TahiStandardTasks::SendToApexTask' do
+    factory :send_to_apex_task, class: 'SendToApexTask' do
       title 'Send to Apex'
     end
 
-    factory :similarity_check_task, class: 'TahiStandardTasks::SimilarityCheckTask' do
+    factory :similarity_check_task, class: 'SimilarityCheckTask' do
       phase
       paper
       title 'Similarity Check'
     end
 
-    factory :supporting_information_task, class: 'TahiStandardTasks::SupportingInformationTask' do
+    factory :supporting_information_task, class: 'SupportingInformationTask' do
       title "Supporting Information"
     end
 
-    factory :taxon_task, class: 'TahiStandardTasks::TaxonTask' do
+    factory :taxon_task, class: 'TaxonTask' do
       title "Taxon"
     end
 
-    factory :title_and_abstract_task, class: 'TahiStandardTasks::TitleAndAbstractTask' do
+    factory :title_and_abstract_task, class: 'TitleAndAbstractTask' do
       title 'Title and Abstract'
     end
 
-    factory :upload_manuscript_task, class: 'TahiStandardTasks::UploadManuscriptTask' do
+    factory :upload_manuscript_task, class: 'UploadManuscriptTask' do
       title "Upload Manuscript"
     end
   end

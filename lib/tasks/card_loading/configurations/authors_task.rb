@@ -5,7 +5,7 @@
 module CardConfiguration
   class AuthorsTask
     def self.name
-      "TahiStandardTasks::AuthorsTask"
+      "AuthorsTask"
     end
 
     def self.title

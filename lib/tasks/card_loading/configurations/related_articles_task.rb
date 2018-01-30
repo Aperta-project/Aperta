@@ -5,7 +5,7 @@
 module CardConfiguration
   class RelatedArticlesTask
     def self.name
-      "TahiStandardTasks::RelatedArticlesTask"
+      "RelatedArticlesTask"
     end
 
     def self.title

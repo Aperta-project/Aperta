@@ -3,7 +3,7 @@ namespace :data do
     namespace :nested_questions do
       desc 'Sets the paper id on all nested question answers'
       task reviewer_report_task_to_reviewer_report: :environment do
-        relevant_tasks = ['TahiStandardTasks::ReviewerReportTask', 'TahiStandardTasks::FrontMatterReviewerReportTask']
+        relevant_tasks = ['ReviewerReportTask', 'FrontMatterReviewerReportTask']
         task_count = Task.where(type: relevant_tasks).count
         STDOUT.puts("Task count: #{task_count}")
 
@@ -43,7 +43,7 @@ namespace :data do
       end
 
       task answerless_reviewer_report_task_to_reviewer_report: :environment do
-        relevant_tasks = ['TahiStandardTasks::ReviewerReportTask', 'TahiStandardTasks::FrontMatterReviewerReportTask']
+        relevant_tasks = ['ReviewerReportTask', 'FrontMatterReviewerReportTask']
         task_id_set = Set.new Task.where(type: relevant_tasks).pluck(:id).uniq
 
         # Every accepted reviewer invitation should have a corresponding Reviewer Report. If it does not, this next block will create one.
@@ -112,9 +112,9 @@ namespace :data do
             answer.save(validate: false)
           end
           if question.ident.start_with?("front")
-            question.update!(owner_type: 'TahiStandardTasks::FrontMatterReviewerReportTask')
+            question.update!(owner_type: 'FrontMatterReviewerReportTask')
           else
-            question.update!(owner_type: 'TahiStandardTasks::ReviewerReportTask')
+            question.update!(owner_type: 'ReviewerReportTask')
           end
         end
 

@@ -5,7 +5,7 @@
 module CardConfiguration
   class ReviseTask
     def self.name
-      "TahiStandardTasks::ReviseTask"
+      "ReviseTask"
     end
 
     def self.title

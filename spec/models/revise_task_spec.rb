@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::ReviseTask do
+describe ReviseTask do
   describe "#setup_new_revision" do
     let!(:paper) do
       FactoryGirl.create(
@@ -11,7 +11,7 @@ describe TahiStandardTasks::ReviseTask do
     end
 
     let(:phase) { paper.phases[1] }
-    subject(:subject) { TahiStandardTasks::ReviseTask }
+    subject(:subject) { ReviseTask }
 
     context "with an existing revise task" do
       let!(:task) do
@@ -36,7 +36,7 @@ describe TahiStandardTasks::ReviseTask do
 
     context "with no existing revise task" do
       before do
-        CardLoader.load("TahiStandardTasks::ReviseTask")
+        CardLoader.load("ReviseTask")
       end
 
       it "creates a new revise task" do

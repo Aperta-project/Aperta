@@ -79,7 +79,7 @@ const newTask = function() {
   return {
     id: 2,
     title: 'Paper Reviewer',
-    type: 'TahiStandardTasks::PaperReviewerTask',
+    type: 'PaperReviewerTask',
     completed: false,
     isMetadataTask: false,
     isSubmissionTask: false,

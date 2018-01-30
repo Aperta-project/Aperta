@@ -7,7 +7,7 @@ namespace :data do
         only have the permissions appropriate to their role.
       DESC
       task remove_participant_roles: :environment do
-        relevant_tasks = ['TahiStandardTasks::ReviewerReportTask', 'TahiStandardTasks::FrontMatterReviewerReportTask']
+        relevant_tasks = ['ReviewerReportTask', 'FrontMatterReviewerReportTask']
         set_of_reviewer_report_ids = Task.where(type: relevant_tasks).pluck(:id)
         deletion_count = 0
         user_count = 0
@@ -69,7 +69,7 @@ namespace :data do
         # and iterate through them with ParticipationFactory
 
         # THIS MAY ADD BACK REVIEWERS AS PARTICIPANTS WHO WERE PREVIOUSLY REMOVED AS PARTICIPANTS
-        relevant_tasks = ['TahiStandardTasks::ReviewerReportTask', 'TahiStandardTasks::FrontMatterReviewerReportTask']
+        relevant_tasks = ['ReviewerReportTask', 'FrontMatterReviewerReportTask']
         set_of_reviewer_report_ids = Task.where(type: relevant_tasks).pluck(:id)
         set_of_reviewer_report_owner_role_ids = Role.where(name: 'Reviewer Report Owner').pluck(:id)
         added_count = 0

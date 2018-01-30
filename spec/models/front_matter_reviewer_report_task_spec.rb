@@ -1,15 +1,15 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::FrontMatterReviewerReportTask do
+describe FrontMatterReviewerReportTask do
   it_behaves_like 'a reviewer report task', factory: :front_matter_reviewer_report_task
 
   context 'DEFAULT_TITLE' do
-    subject { TahiStandardTasks::FrontMatterReviewerReportTask::DEFAULT_TITLE }
+    subject { FrontMatterReviewerReportTask::DEFAULT_TITLE }
     it { is_expected.to eq('Front Matter Reviewer Report') }
   end
 
   context 'DEFAULT_ROLE_HINT' do
-    subject { TahiStandardTasks::FrontMatterReviewerReportTask::DEFAULT_ROLE_HINT }
+    subject { FrontMatterReviewerReportTask::DEFAULT_ROLE_HINT }
     it { is_expected.to eq('reviewer') }
   end
 

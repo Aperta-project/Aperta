@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::UploadManuscriptTask do
+describe UploadManuscriptTask do
   describe '.restore_defaults' do
     it_behaves_like '<Task class>.restore_defaults update title to the default'
   end
@@ -99,7 +99,7 @@ describe "#setup_new_revision" do
   end
 
   let(:phase) { paper.phases[1] }
-  subject(:subject) { TahiStandardTasks::UploadManuscriptTask }
+  subject(:subject) { UploadManuscriptTask }
 
   context "with an existing upload manuscript task" do
     let!(:task) do
@@ -122,8 +122,8 @@ describe "#setup_new_revision" do
   end
 
   context "with no existing upload manuscript task" do
-    context "a Card corresponding to the TahiStandardTasks::UploadManuscriptTask CardTaskType exists with a published version" do
-      let(:card_task_type) { FactoryGirl.create(:card_task_type, task_class: 'TahiStandardTasks::UploadManuscriptTask') }
+    context "a Card corresponding to the UploadManuscriptTask CardTaskType exists with a published version" do
+      let(:card_task_type) { FactoryGirl.create(:card_task_type, task_class: 'UploadManuscriptTask') }
       let(:existing_card) { FactoryGirl.create(:card, :versioned, card_task_type: card_task_type) }
       let(:published_version) { existing_card.latest_published_card_version }
       it "creates a new upload manuscript task with that CardVersion" do

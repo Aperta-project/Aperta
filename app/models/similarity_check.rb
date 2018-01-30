@@ -81,7 +81,7 @@ class SimilarityCheck < ActiveRecord::Base
       self.ithenticate_report_id = document_response.report_id
       self.ithenticate_score = document_response.score
       self.ithenticate_report_completed_at = Time.current.utc
-      paper.tasks_for_type(TahiStandardTasks::SimilarityCheckTask)
+      paper.tasks_for_type(SimilarityCheckTask)
         .each(&:complete!)
       finish_report!
     else

@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe Snapshot::AuthorTaskSerializer do
   before do
-    CardLoader.load('TahiStandardTasks::AuthorsTask')
+    CardLoader.load('AuthorsTask')
     CardLoader.load('Author')
   end
 

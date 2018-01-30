@@ -110,7 +110,7 @@ describe TasksController, redis: true do
         let(:card) { FactoryGirl.create(:card, :versioned, journal: journal) }
         let(:task_params) do
           {
-            type: 'TahiStandardTasks::UploadManuscriptTask',
+            type: 'UploadManuscriptTask',
             paper_id: paper.to_param,
             phase_id: paper.phases.last.id,
             title: card.name,
@@ -120,10 +120,10 @@ describe TasksController, redis: true do
 
         it "creates a new task from a card template, using the latest published version" do
           expect(TaskFactory).to(receive(:create)
-                                   .with(TahiStandardTasks::UploadManuscriptTask, hash_including(card_version: anything))
+                                   .with(UploadManuscriptTask, hash_including(card_version: anything))
                                    .and_call_original)
-          expect { do_request }.to change(TahiStandardTasks::UploadManuscriptTask, :count).by(1)
-          expect(TahiStandardTasks::UploadManuscriptTask.last.card_version).to eq(card.latest_published_card_version)
+          expect { do_request }.to change(UploadManuscriptTask, :count).by(1)
+          expect(UploadManuscriptTask.last.card_version).to eq(card.latest_published_card_version)
         end
       end
     end

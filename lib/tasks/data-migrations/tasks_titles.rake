@@ -3,7 +3,7 @@ namespace :data do
     namespace :tasks do
       desc 'Sets the PRQ Tasks titles to Additional Information'
       task set_title_to_additional_information: :environment do
-        type = 'TahiStandardTasks::PublishingRelatedQuestionsTask'
+        type = 'PublishingRelatedQuestionsTask'
         Task.where(type: type).update_all(title: 'Additional Information')
       end
     end

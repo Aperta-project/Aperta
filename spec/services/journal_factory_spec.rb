@@ -73,15 +73,15 @@ describe JournalFactory do
       [CustomCardTask]
     end
     let(:restricted_invite_klasses) do
-      [TahiStandardTasks::PaperEditorTask]
+      [PaperEditorTask]
     end
     let(:changes_for_author_task_klasses) do
       [PlosBioTechCheck::ChangesForAuthorTask] +
         without_anonymous_classes(PlosBioTechCheck::ChangesForAuthorTask.descendants)
     end
     let(:reviewer_report_klasses) do
-      [TahiStandardTasks::ReviewerReportTask] +
-        without_anonymous_classes(TahiStandardTasks::ReviewerReportTask.descendants)
+      [ReviewerReportTask] +
+        without_anonymous_classes(ReviewerReportTask.descendants)
     end
     let(:tech_check_klasses) do
       [
@@ -460,7 +460,7 @@ describe JournalFactory do
               editable_task_klasses_regardless_of_paper_state
           end
           let(:editable_task_klasses_regardless_of_paper_state) do
-            [TahiStandardTasks::TitleAndAbstractTask]
+            [TitleAndAbstractTask]
           end
 
           it <<-DESC do
@@ -578,14 +578,14 @@ describe JournalFactory do
         describe 'permissions on tasks' do
           let(:accessible_task_klasses) do
             accessible_for_role = ::Task.submission_task_types
-            accessible_for_role << TahiStandardTasks::ReviewerReportTask
+            accessible_for_role << ReviewerReportTask
             accessible_for_role << AdHocForEditorsTask
             accessible_for_role - inaccessible_task_klasses
           end
           let(:inaccessible_task_klasses) do
             [PlosBilling::BillingTask,
              PlosBioTechCheck::ChangesForAuthorTask,
-             TahiStandardTasks::RegisterDecisionTask,
+             RegisterDecisionTask,
              CustomCardTask]
           end
           let(:all_inaccessible_task_klasses) do
@@ -639,7 +639,7 @@ describe JournalFactory do
 
           it 'is not able to edit the ReviewerRecommendationsTask' do
             expect(permissions).to_not include(
-              Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
+              Permission.where(action: 'edit', applies_to: 'ReviewerRecommendationsTask').last
             )
           end
 
@@ -751,7 +751,7 @@ describe JournalFactory do
               editable_task_klasses_regardless_of_paper_state
           end
           let(:editable_task_klasses_regardless_of_paper_state) do
-            [TahiStandardTasks::TitleAndAbstractTask]
+            [TitleAndAbstractTask]
           end
 
           it <<-DESC do
@@ -1209,7 +1209,7 @@ describe JournalFactory do
             [
               PlosBioTechCheck::ChangesForAuthorTask,
               PlosBilling::BillingTask,
-              TahiStandardTasks::ReviewerRecommendationsTask,
+              ReviewerRecommendationsTask,
               CustomCardTask
             ]
           end
@@ -1263,16 +1263,16 @@ describe JournalFactory do
             expect(permissions).not_to include(*billing_permissions)
           end
 
-          it 'can do nothing on the TahiStandardTasks::RegisterDecisionTask' do
+          it 'can do nothing on the RegisterDecisionTask' do
             register_decision_permissions = Permission.where(
-              applies_to: 'TahiStandardTasks::RegisterDecisionTask'
+              applies_to: 'RegisterDecisionTask'
             ).all
             expect(permissions).not_to include(*register_decision_permissions)
           end
 
-          it 'can do nothing on the TahiStandardTasks::ReviewerRecommendationsTask' do
+          it 'can do nothing on the ReviewerRecommendationsTask' do
             reviewer_recommendations_permissions = Permission.where(
-              applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask'
+              applies_to: 'ReviewerRecommendationsTask'
             ).all
             expect(permissions).not_to include(*reviewer_recommendations_permissions)
           end
@@ -1304,7 +1304,7 @@ describe JournalFactory do
         describe 'has Task permission to' do
           it 'can :edit assigned ReviewerReportTasks' do
             edit_permission = journal.reviewer_report_owner_role.permissions.where(
-              applies_to: 'TahiStandardTasks::ReviewerReportTask',
+              applies_to: 'ReviewerReportTask',
               action: :edit
             )
             expect(edit_permission.count).to eq(1)
@@ -1312,7 +1312,7 @@ describe JournalFactory do
               contain_exactly(*Paper::REVIEWABLE_STATES.map(&:to_s))
 
             view_permission = journal.reviewer_report_owner_role.permissions.where(
-              applies_to: 'TahiStandardTasks::ReviewerReportTask',
+              applies_to: 'ReviewerReportTask',
               action: :view
             )
             expect(view_permission.count).to eq(1)

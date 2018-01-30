@@ -5,7 +5,7 @@ namespace :data do
       task set_inviters: :environment do
         Invitation.all.includes(task: :paper).each do |invitation|
           task = invitation.task
-          next unless task.is_a?(TahiStandardTasks::PaperReviewerTask)
+          next unless task.is_a?(PaperReviewerTask)
 
           paper = invitation.task.paper
           if paper.academic_editors.any?

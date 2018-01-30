@@ -1,4 +1,5 @@
 & {
+  .card-content-repeat {
     margin-bottom: 10px;
 
     h4 {
@@ -10,6 +11,7 @@
       cursor: default;
       text-decoration: none;
     }
+  }
 
   .repeated-block {
     background-color: $aperta-grey-xlight;

@@ -99,7 +99,7 @@ FactoryGirl.define do
       title "Data Availability"
     end
 
-    factory :editors_discussion_task, class: 'PlosBioInternalReview::EditorsDiscussionTask' do
+    factory :editors_discussion_task, class: 'EditorsDiscussionTask' do
       title "Editor Discussion"
     end
 

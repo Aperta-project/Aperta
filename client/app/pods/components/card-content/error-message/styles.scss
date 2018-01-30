@@ -1,5 +1,4 @@
 & {
-.error-message {
   color: $aperta-red;
   font-size: 12px;
   display: inline-block;
@@ -14,7 +13,6 @@
       padding-right: 3px;
     }
   }
-}
 
 .error-message--hidden {
   display: none;

@@ -1,4 +1,5 @@
 & {
+  .card-content-paragraph-input {
     .form-control {
       min-height: 100px;
       }
@@ -13,6 +14,7 @@
           line-height: 20px;
         }
       }
+  }
   .card-form-text {
     margin-bottom: 10px;
   }

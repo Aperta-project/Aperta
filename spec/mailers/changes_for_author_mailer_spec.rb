@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe PlosBioTechCheck::ChangesForAuthorMailer do
+describe ChangesForAuthorMailer do
   let(:task) do
     FactoryGirl.build_stubbed(:changes_for_author_task, paper: paper)
   end

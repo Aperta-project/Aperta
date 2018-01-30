@@ -256,8 +256,8 @@ Tahi::Application.routes.draw do
 
     resources :feature_flags, only: [:index, :update]
 
-    post 'changes_for_author/:id/submit_tech_check', controller: 'plos_bio_tech_check/changes_for_author', action: 'submit_tech_check', as: :submit_tech_check
-    post 'tech_check/:id/send_email', controller: 'plos_bio_tech_check/tech_check', action: 'send_email'
+    post 'changes_for_author/:id/submit_tech_check', controller: 'changes_for_author', action: 'submit_tech_check', as: :submit_tech_check
+    post 'tech_check/:id/send_email', controller: 'tech_check', action: 'send_email'
 
     resources :export_deliveries, only: [:create, :show], controller: 'export_deliveries'
     resources :funders, only: [:create, :update, :destroy], controller: 'funders'

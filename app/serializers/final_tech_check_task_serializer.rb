@@ -1,0 +1,2 @@
+class FinalTechCheckTaskSerializer < ::TaskSerializer
+end

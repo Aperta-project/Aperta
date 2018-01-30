@@ -76,8 +76,8 @@ describe JournalFactory do
       [PaperEditorTask]
     end
     let(:changes_for_author_task_klasses) do
-      [PlosBioTechCheck::ChangesForAuthorTask] +
-        without_anonymous_classes(PlosBioTechCheck::ChangesForAuthorTask.descendants)
+      [ChangesForAuthorTask] +
+        without_anonymous_classes(ChangesForAuthorTask.descendants)
     end
     let(:reviewer_report_klasses) do
       [ReviewerReportTask] +
@@ -85,14 +85,14 @@ describe JournalFactory do
     end
     let(:tech_check_klasses) do
       [
-        PlosBioTechCheck::InitialTechCheckTask,
-        PlosBioTechCheck::RevisionTechCheckTask,
-        PlosBioTechCheck::FinalTechCheckTask
+        InitialTechCheckTask,
+        RevisionTechCheckTask,
+        FinalTechCheckTask
       ] +
         without_anonymous_classes(
-          PlosBioTechCheck::InitialTechCheckTask.descendants +
-          PlosBioTechCheck::RevisionTechCheckTask.descendants +
-          PlosBioTechCheck::FinalTechCheckTask.descendants
+          InitialTechCheckTask.descendants +
+          RevisionTechCheckTask.descendants +
+          FinalTechCheckTask.descendants
         )
     end
     let(:non_custom_task_klasses) do
@@ -522,9 +522,9 @@ describe JournalFactory do
             expect(permissions).not_to include(*billing_permissions)
           end
 
-          it 'can do nothing on the PlosBioTechCheck::ChangesForAuthorTask' do
+          it 'can do nothing on the ChangesForAuthorTask' do
             changes_for_author_permissions = Permission.where(
-              applies_to: 'PlosBioTechCheck::ChangesForAuthorTask'
+              applies_to: 'ChangesForAuthorTask'
             ).all
             expect(permissions).not_to include(*changes_for_author_permissions)
           end
@@ -584,7 +584,7 @@ describe JournalFactory do
           end
           let(:inaccessible_task_klasses) do
             [PlosBilling::BillingTask,
-             PlosBioTechCheck::ChangesForAuthorTask,
+             ChangesForAuthorTask,
              RegisterDecisionTask,
              CustomCardTask]
           end
@@ -654,9 +654,9 @@ describe JournalFactory do
             end
           end
 
-          it 'can do nothing on the PlosBioTechCheck::ChangesForAuthorTask' do
+          it 'can do nothing on the ChangesForAuthorTask' do
             changes_for_author_permissions = Permission.where(
-              applies_to: 'PlosBioTechCheck::ChangesForAuthorTask'
+              applies_to: 'ChangesForAuthorTask'
             ).all
             expect(permissions).not_to include(*changes_for_author_permissions)
           end
@@ -813,9 +813,9 @@ describe JournalFactory do
             expect(permissions).not_to include(*billing_permissions)
           end
 
-          it 'can do nothing on the PlosBioTechCheck::ChangesForAuthorTask' do
+          it 'can do nothing on the ChangesForAuthorTask' do
             changes_for_author_permissions = Permission.where(
-              applies_to: 'PlosBioTechCheck::ChangesForAuthorTask'
+              applies_to: 'ChangesForAuthorTask'
             ).all
             expect(permissions).not_to include(*changes_for_author_permissions)
           end
@@ -1207,7 +1207,7 @@ describe JournalFactory do
           end
           let(:inaccessible_task_klasses) do
             [
-              PlosBioTechCheck::ChangesForAuthorTask,
+              ChangesForAuthorTask,
               PlosBilling::BillingTask,
               ReviewerRecommendationsTask,
               CustomCardTask
@@ -1284,9 +1284,9 @@ describe JournalFactory do
             expect(permissions).not_to include(*billing_permissions)
           end
 
-          it 'can do nothing on the PlosBioTechCheck::ChangesForAuthorTask' do
+          it 'can do nothing on the ChangesForAuthorTask' do
             changes_for_author_permissions = Permission.where(
-              applies_to: 'PlosBioTechCheck::ChangesForAuthorTask'
+              applies_to: 'ChangesForAuthorTask'
             ).all
             expect(permissions).not_to include(*changes_for_author_permissions)
           end

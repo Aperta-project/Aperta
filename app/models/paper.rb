@@ -807,7 +807,7 @@ class Paper < ActiveRecord::Base
   end
 
   def initial_tech_check_tasks
-    tasks.where(type: PlosBioTechCheck::InitialTechCheckTask)
+    tasks.where(type: InitialTechCheckTask)
   end
 
   def trigger_event(*args)

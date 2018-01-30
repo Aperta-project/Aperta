@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe PlosBioTechCheck::RevisionTechCheckTask do
+describe RevisionTechCheckTask do
   subject(:task) { FactoryGirl.create :revision_tech_check_task, paper: paper }
   let(:paper) do
     FactoryGirl.create(

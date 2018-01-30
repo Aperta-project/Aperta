@@ -21,14 +21,14 @@ feature 'Revision Tech Check', js: true do
     # Editor
     login_as(editor, scope: :user)
     overlay = Page.view_task_overlay(paper, task)
-    expect(PlosBioTechCheck::ChangesForAuthorTask.count).to eq(0)
+    expect(ChangesForAuthorTask.count).to eq(0)
     overlay.create_author_changes_card
     overlay.expect_author_changes_saved
     overlay.mark_as_complete
     overlay.dismiss
     logout
 
-    change_author_task = PlosBioTechCheck::ChangesForAuthorTask.first
+    change_author_task = ChangesForAuthorTask.first
 
     # Author
     login_as(author, scope: :user)

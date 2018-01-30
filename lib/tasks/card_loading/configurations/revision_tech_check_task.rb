@@ -5,7 +5,7 @@
 module CardConfiguration
   class RevisionTechCheckTask
     def self.name
-      "PlosBioTechCheck::RevisionTechCheckTask"
+      "RevisionTechCheckTask"
     end
 
     def self.title

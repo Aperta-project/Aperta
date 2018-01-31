@@ -1,10 +1,9 @@
 & {
-  .card-content-field-set {
     padding: 10px;
     margin: 10px 0;
     background: $aperta-grey-xlight;
 
-    p { margin: 0 0 1rem 0; }
+    p { margin: 0 0 10px 0; }
 
     &.large-description-text-container {
       p.description {
@@ -12,7 +11,6 @@
         font-size: 16px;
         line-height: 20px;
       }
-    }
   }
   .question-list {
   list-style-type: none;

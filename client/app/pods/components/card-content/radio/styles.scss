@@ -1,10 +1,10 @@
-.card-content {
-    .question-text, .content-text {
+& { 
+  margin: 10px 0;
+ .question-text, 
+  .content-text {
         font-size: 16px;
         line-height: 20px;
-    }
-}
-  & { margin: 10px 0;
+  }
   .option {
     display: block;
     margin-left: 2.7rem;
@@ -20,28 +20,26 @@
   textarea{
     margin: 0.5em 0;
     }
-  }
-
-.card-radio {
-  .card-form-element {
-   margin-bottom:0;
-  }
-  .card-form-label {
-    display:inline;
-    font-size:14px;
-    font-weight:normal;
-    margin-left:5px;
+  .card-radio {
+    .card-form-element {
+      margin-bottom:0;
+      }
+    .card-form-label {
+      display:inline;
+      font-size:14px;
+      font-weight:normal;
+      margin-left:5px;
+      }
     }
-  }
-
-.card-form-text-error {
-  p {
-    margin: 0px;
-  }
-  .error-message {
-    margin-left:  0px;
+  .card-form-text-error {
+    p {
+      margin: 0px;
     }
-  }
-  .card-form-text {
-    margin-bottom: 10px;
-  }
+    .error-message {
+      margin-left:  0px;
+      }
+    }
+    .card-form-text {
+      margin-bottom: 10px;
+      }
+}

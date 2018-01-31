@@ -1,12 +1,10 @@
-& {
 .card-content {
     .question-text, .content-text {
         font-size: 16px;
         line-height: 20px;
     }
 }
-  .card-content-radio {
-  margin: 10px 0;
+  & { margin: 10px 0;
   .option {
     display: block;
     margin-left: 2.7rem;
@@ -47,4 +45,3 @@
   .card-form-text {
     margin-bottom: 10px;
   }
-}

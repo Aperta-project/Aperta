@@ -1,4 +1,3 @@
-& {
   @mixin slider-toggle-mixin($button-diameter) {
     $button-diameter-padded: $button-diameter + 2px;
 
@@ -17,9 +16,8 @@
       line-height:   $button-diameter-padded;
       padding-right: $button-diameter-padded + 3px;
     }
-  }
-
-  .card-content-toggle-switch {
+}
+& {
     .switch {
       position: relative;
       display: inline-block;
@@ -44,8 +42,7 @@
         @include slider-toggle-mixin(42px);
         min-width: 80px;
       }
-    }
-
+}
     // hide the native checkbox, so that it
     // can be replaced by the toggle UI
     .switch input { display: none; }
@@ -118,4 +115,4 @@
     }
   }
 
-}
+

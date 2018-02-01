@@ -96,7 +96,7 @@ export default Ember.Component.extend({
     yield timeout(this.get('debouncePeriod'));
     let answer = this.get('answer');
     return yield answer.save();
-  }).restartable(),
+  }).keepLatest(),
 
   actions: {
     updateAnswer(newVal) {

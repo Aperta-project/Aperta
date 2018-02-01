@@ -1,0 +1,19 @@
+& {
+    .form-control {
+      min-height: 100px;
+      }
+      textarea {
+        resize: vertical;
+      }
+
+      label,
+      .card-form-label {
+        &.content-text {
+          font-size: 16px;
+          line-height: 20px;
+        }
+      }
+  .card-form-text {
+    margin-bottom: 10px;
+  }
+}

@@ -50,13 +50,13 @@
     {{/unless}}
 
     {{#if groupByDecision}}
-      {{#each sortedPreviousDecisionsWithFilteredInvitations as |decision|}}
+      {{#each sortedPreviousDecisions as |decision|}}
         <div class='invitation-revision-round'>
           v{{decision.revisionNumber}} {{humanize decision.verdict}}
         </div>
-        {{i.group invitations=decision.filteredInvitations
-                  previousRound=true
-                  class='expired-invitations'}}
+        {{i.group invitations=(filter-by "inviteeRole" task.inviteeRole decision.invitations)
+            previousRound=true
+            class='expired-invitations'}}
       {{/each}}
     {{/if}}
   {{/with}}

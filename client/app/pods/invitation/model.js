@@ -22,13 +22,13 @@ export default DS.Model.extend({
   alternates: DS.hasMany('invitation', { inverse: 'primary' }),
   reviewerSuggestions: DS.attr('string'),
   state: DS.attr('string'),
-  task: DS.belongsTo('task', { polymorphic: true }),
+  task: DS.belongsTo('task', { polymorphic: true, async: true }),
   decision: DS.belongsTo('decision', {async: false}),
   title: DS.attr('string'),
   htmlSafeTitle: Ember.computed('title', function () {
     return Ember.String.htmlSafe(this.get('title'));
   }),
-  reviewerReport: DS.belongsTo('reviewer_report'),
+  reviewerReport: DS.belongsTo('reviewer_report', { async: true }),
   paperShortDoi: DS.attr('string'),
   journalName: DS.attr('string'),
   dueIn: DS.attr('number'),

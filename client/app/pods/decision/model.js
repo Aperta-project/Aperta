@@ -9,7 +9,7 @@ export default DS.Model.extend({
   createdAt: DS.attr('date'),
   draft: DS.attr('boolean'),
   initial: DS.attr('boolean'),
-  invitations: DS.hasMany('invitation', { async: false }),
+  invitations: DS.hasMany('invitation', { async: true }),
   latestRegistered: DS.attr('boolean'),
   letter: DS.attr('string'),
   majorVersion: DS.attr('number'),

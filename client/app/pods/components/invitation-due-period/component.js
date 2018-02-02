@@ -1,15 +1,11 @@
 import Ember from 'ember';
-import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
-export default Ember.Component.extend(ValidationErrorsMixin, {
+export default Ember.Component.extend({
   classNames: ['invitation-item-due'],
-  validations: { dueIn: ['number'] },
-  errored: Ember.computed.notEmpty('validationErrors.dueIn'),
   actions: {
     noop(){},
     onInputChange: function (event) {
-      this.clearAllValidationErrors();
-      this.validate('dueIn', event.target.value);
+      if (this.get('value') < 1) { this.set('value', 1); }
       if (this.get('onchange')) { this.get('onchange')(event); }
     }
   }

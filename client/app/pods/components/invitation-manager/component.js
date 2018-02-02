@@ -123,24 +123,9 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
   previousDecisions: computed.alias('task.paper.previousDecisions'),
 
-  previousDecisionsWithFilteredInvitations: computed(
-    'previousDecisions.@each.inviteeRole', function() {
-      return this.get('previousDecisions').map(decision => {
-        const allInvitations = decision.get('invitations');
-        const type = this.get('inviteeRole');
-        decision.set(
-          'filteredInvitations',
-          allInvitations.filterBy('inviteeRole', type)
-        );
-        return decision;
-      });
-    }
-  ),
-
   decisionSorting: ['id:desc'],
 
-  sortedPreviousDecisionsWithFilteredInvitations: computed.sort(
-      'previousDecisionsWithFilteredInvitations', 'decisionSorting'),
+  sortedPreviousDecisions: computed.sort('previousDecisions', 'decisionSorting'),
 
   actions: {
     cancelAction() {

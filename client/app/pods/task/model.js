@@ -36,7 +36,7 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
     inverse: 'source'
   }),
   invitations: DS.hasMany('invitation', {
-    async: false
+    async: true
   }),
 
   body: DS.attr(),

@@ -87,7 +87,7 @@ class ITCCard(BaseCard):
           'as well as any additional requirements listed.',
                     1: '',
                     2: 'In the Data Availability card, you have selected Yes in response to '
-          'Question 1, but you have not fill in the text box under Question 2 explaining how '
+          'Question 1, but you have not filled in the text box under Question 2 explaining how '
           'your data can be accessed. Please choose the most appropriate option from the list '
           'and paste into the text box.',
                     3: 'In the Data Availability card, you have mentioned your data has been '

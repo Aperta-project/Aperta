@@ -6,7 +6,7 @@
     p { margin: 0 0 10px 0; }
 
     &.large-description-text-container {
-      p.description {
+      .description {
         margin-bottom: 10px;
         font-size: 16px;
         line-height: 20px;
@@ -31,14 +31,14 @@
       min-width: 20px;
       min-height: 20px;
       border-radius: 50%;
-      color: #fff;
+      color: $aperta-white;
       text-align: center;
       background: $aperta-green;
       counter-increment: questionList;
       content: counter(questionList);
     }
   }
-
+}
   .question-info {
     font-style: italic;
   }
@@ -142,5 +142,3 @@
   .card-form-text {
     margin-bottom: 10px;
   }
-
-}

@@ -1,6 +1,6 @@
 & { 
   margin: 10px 0;
- .question-text, 
+  .question-text, 
   .content-text {
         font-size: 16px;
         line-height: 20px;
@@ -9,7 +9,7 @@
     display: block;
     margin-left: 2.7rem;
     input {
-      margin: 0px 5px;
+      margin: 0 5px;
       vertical-align: -1px;
     }
     .card-content-radio-label {
@@ -33,13 +33,14 @@
     }
   .card-form-text-error {
     p {
-      margin: 0px;
+      margin: 0;
     }
     .error-message {
-      margin-left:  0px;
+      margin-left:  0;
       }
     }
     .card-form-text {
       margin-bottom: 10px;
       }
 }
+

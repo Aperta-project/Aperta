@@ -1,0 +1,2 @@
+class PublishingRelatedQuestionsTaskSerializer < ::TaskSerializer
+end

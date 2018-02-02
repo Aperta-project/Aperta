@@ -5,7 +5,7 @@
 module CardConfiguration
   class TitleAndAbstractTask
     def self.name
-      "TahiStandardTasks::TitleAndAbstractTask"
+      "TitleAndAbstractTask"
     end
 
     def self.title

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::ProductionMetadataTask do
+describe ProductionMetadataTask do
   def create_task_with_answer(ident:, answer:, value_type: 'text')
     AnswerableFactory.create(
       FactoryGirl.create(:production_metadata_task),

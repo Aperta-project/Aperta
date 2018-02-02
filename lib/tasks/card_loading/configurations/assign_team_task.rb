@@ -5,7 +5,7 @@
 module CardConfiguration
   class AssignTeamTask
     def self.name
-      "Tahi::AssignTeam::AssignTeamTask"
+      "AssignTeamTask"
     end
 
     def self.title

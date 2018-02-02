@@ -7,7 +7,7 @@ namespace :data do
         conversions =
           [
             {
-              type: TahiStandardTasks::TaxonTask.name,
+              type: TaxonTask.name,
               from: "taxon_zoological",
               to: "taxon--zoological",
               children: [
@@ -15,7 +15,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::TaxonTask.name,
+              type: TaxonTask.name,
               from: "taxon_botanical",
               to: "taxon--botanical",
               children: [
@@ -50,7 +50,7 @@ namespace :data do
             },
 
             {
-              type: TahiStandardTasks::CompetingInterestsTask.name,
+              type: CompetingInterestsTask.name,
               from: "competing_interests",
               to: "competing_interests--has_competing_interests",
               children: [
@@ -60,13 +60,13 @@ namespace :data do
 
 
             {
-              type: TahiStandardTasks::ReviewerReportTask.name,
+              type: ReviewerReportTask.name,
               from: "competing_interests",
               to: "reviewer_report--competing_interests",
               children: []
             },
             {
-              type: TahiStandardTasks::ReviewerReportTask.name,
+              type: ReviewerReportTask.name,
               from: "support_conclusions",
               to: "reviewer_report--plos_biology_suitable",
               children: [
@@ -74,7 +74,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::ReviewerReportTask.name,
+              type: ReviewerReportTask.name,
               from: "statistical_analysis",
               to: "reviewer_report--statistical_analysis",
               children: [
@@ -82,7 +82,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::ReviewerReportTask.name,
+              type: ReviewerReportTask.name,
               from: "standards",
               to: "reviewer_report--standards",
               children: [
@@ -90,20 +90,20 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::ReviewerReportTask.name,
+              type: ReviewerReportTask.name,
               from: "additional_comments",
               to: "reviewer_report--additional_comments",
               children: []
             },
             {
-              type: TahiStandardTasks::ReviewerReportTask.name,
+              type: ReviewerReportTask.name,
               from: "identity",
               to: "reviewer_report--identity",
               children: []
             },
 
             {
-              type: TahiStandardTasks::Funder.name,
+              type: Funder.name,
               from: "funder_had_influence",
               to: "funder--had_influence",
               children: [
@@ -112,20 +112,20 @@ namespace :data do
             },
 
             {
-              type: TahiStandardTasks::DataAvailabilityTask.name,
+              type: DataAvailabilityTask.name,
               from: "data_fully_available",
               to: "data_availability--data_fully_available",
               children: []
             },
             {
-              type: TahiStandardTasks::DataAvailabilityTask.name,
+              type: DataAvailabilityTask.name,
               from: "data_location",
               to: "data_availability--data_location",
               children: []
             },
 
             {
-              type: TahiStandardTasks::EthicsTask.name,
+              type: EthicsTask.name,
               from: "human_subjects",
               to: "ethics--human_subjects",
               children: [
@@ -133,7 +133,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::EthicsTask.name,
+              type: EthicsTask.name,
               from: "animal_subjects",
               to: "ethics--animal_subjects",
               children: [
@@ -142,14 +142,14 @@ namespace :data do
             },
 
             {
-              type: TahiStandardTasks::FigureTask.name,
+              type: FigureTask.name,
               from: "figure_complies",
               to: "figures--complies",
               children: []
             },
 
             {
-              type: TahiStandardTasks::FinancialDisclosureTask.name,
+              type: FinancialDisclosureTask.name,
               from: "author_received_funding",
               to: "financial_disclosures--author_received_funding",
               children: []
@@ -157,461 +157,461 @@ namespace :data do
 
 
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "first_name",
               to: "plos_billing--first_name",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "last_name",
               to: "plos_billing--last_name",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "title",
               to: "plos_billing--title",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "department",
               to: "plos_billing--department",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "phone_number",
               to: "plos_billing--phone_number",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "email",
               to: "plos_billing--email",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "address1",
               to: "plos_billing--address1",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "address2",
               to: "plos_billing--address2",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "city",
               to: "plos_billing--city",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "state",
               to: "plos_billing--state",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "postal_code",
               to: "plos_billing--postal_code",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "country",
               to: "plos_billing--country",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "affiliation1",
               to: "plos_billing--affiliation1",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "affiliation2",
               to: "plos_billing--affiliation2",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "payment_method",
               to: "plos_billing--payment_method",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "pfa_question_1",
               to: "plos_billing--pfa_question_1",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "pfa_question_1a",
               to: "plos_billing--pfa_question_1a",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "pfa_question_1b",
               to: "plos_billing--pfa_question_1b",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "pfa_question_2",
               to: "plos_billing--pfa_question_2",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "pfa_question_2a",
               to: "plos_billing--pfa_question_2a",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "pfa_question_2b",
               to: "plos_billing--pfa_question_2b",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "pfa_question_3",
               to: "plos_billing--pfa_question_3",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "pfa_question_3a",
               to: "plos_billing--pfa_question_3a",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "pfa_question_4",
               to: "plos_billing--pfa_question_4",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "pfa_question_4a",
               to: "plos_billing--pfa_question_4a",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "pfa_amount_to_pay",
               to: "plos_billing--pfa_amount_to_pay",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "pfa_supporting_docs",
               to: "plos_billing--pfa_supporting_docs",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "pfa_additional_comments",
               to: "plos_billing--pfa_additional_comments",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "affirm_true_and_complete",
               to: "plos_billing--affirm_true_and_complete",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "agree_to_collections",
               to: "plos_billing--agree_to_collections",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "gpi_country",
               to: "plos_billing--gpi_country",
               children: []
             },
             {
-              type: PlosBilling::BillingTask.name,
+              type: BillingTask.name,
               from: "ringgold_institution",
               to: "plos_billing--ringgold_institution",
               children: []
             },
 
             {
-              type: PlosBioTechCheck::FinalTechCheckTask.name,
+              type: FinalTechCheckTask.name,
               from: "open_rejects",
               to: "plos_bio_final_tech_check--open_rejects",
               children: []
             },
             {
-              type: PlosBioTechCheck::FinalTechCheckTask.name,
+              type: FinalTechCheckTask.name,
               from: "human_subjects",
               to: "plos_bio_final_tech_check--human_subjects",
               children: []
             },
             {
-              type: PlosBioTechCheck::FinalTechCheckTask.name,
+              type: FinalTechCheckTask.name,
               from: "ethics_needed",
               to: "plos_bio_final_tech_check--ethics_needed",
               children: []
             },
             {
-              type: PlosBioTechCheck::FinalTechCheckTask.name,
+              type: FinalTechCheckTask.name,
               from: "data_available",
               to: "plos_bio_final_tech_check--data_available",
               children: []
             },
             {
-              type: PlosBioTechCheck::FinalTechCheckTask.name,
+              type: FinalTechCheckTask.name,
               from: "supporting_information",
               to: "plos_bio_final_tech_check--supporting_information",
               children: []
             },
             {
-              type: PlosBioTechCheck::FinalTechCheckTask.name,
+              type: FinalTechCheckTask.name,
               from: "dryad_url",
               to: "plos_bio_final_tech_check--dryad_url",
               children: []
             },
             {
-              type: PlosBioTechCheck::FinalTechCheckTask.name,
+              type: FinalTechCheckTask.name,
               from: "financial_disclosure",
               to: "plos_bio_final_tech_check--financial_disclosure",
               children: []
             },
             {
-              type: PlosBioTechCheck::FinalTechCheckTask.name,
+              type: FinalTechCheckTask.name,
               from: "tobacco",
               to: "plos_bio_final_tech_check--tobacco",
               children: []
             },
             {
-              type: PlosBioTechCheck::FinalTechCheckTask.name,
+              type: FinalTechCheckTask.name,
               from: "figures_legible",
               to: "plos_bio_final_tech_check--figures_legible",
               children: []
             },
             {
-              type: PlosBioTechCheck::FinalTechCheckTask.name,
+              type: FinalTechCheckTask.name,
               from: "cited",
               to: "plos_bio_final_tech_check--cited",
               children: []
             },
             {
-              type: PlosBioTechCheck::FinalTechCheckTask.name,
+              type: FinalTechCheckTask.name,
               from: "cover_letter",
               to: "plos_bio_final_tech_check--cover_letter",
               children: []
             },
             {
-              type: PlosBioTechCheck::FinalTechCheckTask.name,
+              type: FinalTechCheckTask.name,
               from: "billing_inquiries",
               to: "plos_bio_final_tech_check--billing_inquiries",
               children: []
             },
             {
-              type: PlosBioTechCheck::FinalTechCheckTask.name,
+              type: FinalTechCheckTask.name,
               from: "ethics_statement",
               to: "plos_bio_final_tech_check--ethics_statement",
               children: []
             },
             {
-              type: PlosBioTechCheck::InitialTechCheckTask.name,
+              type: InitialTechCheckTask.name,
               from: "open_rejects",
               to: "plos_bio_initial_tech_check--open_rejects",
               children: []
             },
             {
-              type: PlosBioTechCheck::InitialTechCheckTask.name,
+              type: InitialTechCheckTask.name,
               from: "human_subjects",
               to: "plos_bio_initial_tech_check--human_subjects",
               children: []
             },
             {
-              type: PlosBioTechCheck::InitialTechCheckTask.name,
+              type: InitialTechCheckTask.name,
               from: "ethics_needed",
               to: "plos_bio_initial_tech_check--ethics_needed",
               children: []
             },
             {
-              type: PlosBioTechCheck::InitialTechCheckTask.name,
+              type: InitialTechCheckTask.name,
               from: "data_available",
               to: "plos_bio_initial_tech_check--data_available",
               children: []
             },
             {
-              type: PlosBioTechCheck::InitialTechCheckTask.name,
+              type: InitialTechCheckTask.name,
               from: "supporting_information",
               to: "plos_bio_initial_tech_check--supporting_information",
               children: []
             },
             {
-              type: PlosBioTechCheck::InitialTechCheckTask.name,
+              type: InitialTechCheckTask.name,
               from: "dryad_url",
               to: "plos_bio_initial_tech_check--dryad_url",
               children: []
             },
             {
-              type: PlosBioTechCheck::InitialTechCheckTask.name,
+              type: InitialTechCheckTask.name,
               from: "financial_disclosure",
               to: "plos_bio_initial_tech_check--financial_disclosure",
               children: []
             },
             {
-              type: PlosBioTechCheck::InitialTechCheckTask.name,
+              type: InitialTechCheckTask.name,
               from: "tobacco",
               to: "plos_bio_initial_tech_check--tobacco",
               children: []
             },
             {
-              type: PlosBioTechCheck::InitialTechCheckTask.name,
+              type: InitialTechCheckTask.name,
               from: "figures_legible",
               to: "plos_bio_initial_tech_check--figures_legible",
               children: []
             },
             {
-              type: PlosBioTechCheck::InitialTechCheckTask.name,
+              type: InitialTechCheckTask.name,
               from: "cited",
               to: "plos_bio_initial_tech_check--cited",
               children: []
             },
             {
-              type: PlosBioTechCheck::InitialTechCheckTask.name,
+              type: InitialTechCheckTask.name,
               from: "cover_letter",
               to: "plos_bio_initial_tech_check--cover_letter",
               children: []
             },
             {
-              type: PlosBioTechCheck::InitialTechCheckTask.name,
+              type: InitialTechCheckTask.name,
               from: "billing_inquiries",
               to: "plos_bio_initial_tech_check--billing_inquiries",
               children: []
             },
             {
-              type: PlosBioTechCheck::InitialTechCheckTask.name,
+              type: InitialTechCheckTask.name,
               from: "ethics_statement",
               to: "plos_bio_initial_tech_check--ethics_statement",
               children: []
             },
 
             {
-              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              type: RevisionTechCheckTask.name,
               from: "open_rejects",
               to: "plos_bio_revision_tech_check--open_rejects",
               children: []
             },
             {
-              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              type: RevisionTechCheckTask.name,
               from: "human_subjects",
               to: "plos_bio_revision_tech_check--human_subjects",
               children: []
             },
             {
-              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              type: RevisionTechCheckTask.name,
               from: "ethics_needed",
               to: "plos_bio_revision_tech_check--ethics_needed",
               children: []
             },
             {
-              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              type: RevisionTechCheckTask.name,
               from: "data_available",
               to: "plos_bio_revision_tech_check--data_available",
               children: []
             },
             {
-              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              type: RevisionTechCheckTask.name,
               from: "supporting_information",
               to: "plos_bio_revision_tech_check--supporting_information",
               children: []
             },
             {
-              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              type: RevisionTechCheckTask.name,
               from: "dryad_url",
               to: "plos_bio_revision_tech_check--dryad_url",
               children: []
             },
             {
-              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              type: RevisionTechCheckTask.name,
               from: "financial_disclosure",
               to: "plos_bio_revision_tech_check--financial_disclosure",
               children: []
             },
             {
-              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              type: RevisionTechCheckTask.name,
               from: "tobacco",
               to: "plos_bio_revision_tech_check--tobacco",
               children: []
             },
             {
-              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              type: RevisionTechCheckTask.name,
               from: "figures_legible",
               to: "plos_bio_revision_tech_check--figures_legible",
               children: []
             },
             {
-              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              type: RevisionTechCheckTask.name,
               from: "cited",
               to: "plos_bio_revision_tech_check--cited",
               children: []
             },
             {
-              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              type: RevisionTechCheckTask.name,
               from: "cover_letter",
               to: "plos_bio_revision_tech_check--cover_letter",
               children: []
             },
             {
-              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              type: RevisionTechCheckTask.name,
               from: "billing_inquiries",
               to: "plos_bio_revision_tech_check--billing_inquiries",
               children: []
             },
             {
-              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              type: RevisionTechCheckTask.name,
               from: "ethics_statement",
               to: "plos_bio_revision_tech_check--ethics_statement",
               children: []
             },
 
             {
-              type: TahiStandardTasks::ProductionMetadataTask.name,
+              type: ProductionMetadataTask.name,
               from: "publication_date",
               to: "production_metadata--publication_date",
               children: []
             },
             {
-              type: TahiStandardTasks::ProductionMetadataTask.name,
+              type: ProductionMetadataTask.name,
               from: "volume_number",
               to: "production_metadata--volume_number",
               children: []
             },
             {
-              type: TahiStandardTasks::ProductionMetadataTask.name,
+              type: ProductionMetadataTask.name,
               from: "issue_number",
               to: "production_metadata--issue_number",
               children: []
             },
             {
-              type: TahiStandardTasks::ProductionMetadataTask.name,
+              type: ProductionMetadataTask.name,
               from: "production_notes",
               to: "production_metadata--production_notes",
               children: []
             },
 
             {
-              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              type: PublishingRelatedQuestionsTask.name,
               from: "published_elsewhere",
               to: "publishing_related_questions--published_elsewhere",
               children: [
@@ -620,7 +620,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              type: PublishingRelatedQuestionsTask.name,
               from: "submitted_in_conjunction",
               to: "publishing_related_questions--submitted_in_conjunction",
               children: [
@@ -629,7 +629,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              type: PublishingRelatedQuestionsTask.name,
               from: "previous_interactions_with_this_manuscript",
               to: "publishing_related_questions--previous_interactions_with_this_manuscript",
               children: [
@@ -637,7 +637,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              type: PublishingRelatedQuestionsTask.name,
               from: "presubmission_inquiry",
               to: "publishing_related_questions--presubmission_inquiry",
               children: [
@@ -645,7 +645,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              type: PublishingRelatedQuestionsTask.name,
               from: "other_journal_submission",
               to: "publishing_related_questions--other_journal_submission",
               children: [
@@ -653,32 +653,32 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              type: PublishingRelatedQuestionsTask.name,
               from: "author_was_previous_journal_editor",
               to: "publishing_related_questions--author_was_previous_journal_editor",
               children: []
             },
             {
-              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              type: PublishingRelatedQuestionsTask.name,
               from: "intended_collection",
               to: "publishing_related_questions--intended_collection",
               children: []
             },
             {
-              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              type: PublishingRelatedQuestionsTask.name,
               from: "us_government_employees",
               to: "publishing_related_questions--us_government_employees",
               children: []
             },
 
             {
-              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              type: ReportingGuidelinesTask.name,
               from: "clinical_trial",
               to: "reporting_guidelines--clinical_trial",
               children: []
             },
             {
-              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              type: ReportingGuidelinesTask.name,
               from: "systematic_reviews",
               to: "reporting_guidelines--systematic_reviews",
               children: [
@@ -686,7 +686,7 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              type: ReportingGuidelinesTask.name,
               from: "meta_analyses",
               to: "reporting_guidelines--meta_analyses",
               children: [
@@ -694,32 +694,32 @@ namespace :data do
               ]
             },
             {
-              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              type: ReportingGuidelinesTask.name,
               from: "diagnostic_studies",
               to: "reporting_guidelines--diagnostic_studies",
               children: [ ]
             },
             {
-              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              type: ReportingGuidelinesTask.name,
               from: "epidemiological_studies",
               to: "reporting_guidelines--epidemiological_studies",
               children: [ ]
             },
             {
-              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              type: ReportingGuidelinesTask.name,
               from: "microarray_studies",
               to: "reporting_guidelines--microarray_studies",
               children: [ ]
             },
 
             {
-              type: TahiStandardTasks::ReviewerRecommendation.name,
+              type: ReviewerRecommendation.name,
               from: "recommend_or_oppose",
               to: "reviewer_recommendations--recommend_or_oppose",
               children: [ ]
             },
             {
-              type: TahiStandardTasks::ReviewerRecommendation.name,
+              type: ReviewerRecommendation.name,
               from: "reason",
               to: "reviewer_recommendations--reason",
               children: [ ]

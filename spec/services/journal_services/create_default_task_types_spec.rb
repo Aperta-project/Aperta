@@ -24,7 +24,7 @@ describe JournalServices::CreateDefaultTaskTypes do
     JournalServices::CreateDefaultTaskTypes.call(journal)
     expect(
       journal.reload.journal_task_types.where(kind: ['CustomCardTask',
-                                                     'TahiStandardTasks::UploadManuscriptTask']).count
+                                                     'UploadManuscriptTask']).count
     ).to eq(0)
   end
 

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::TitleAndAbstractTask do
+describe TitleAndAbstractTask do
   describe "#Instance methods" do
     let!(:paper) do
       FactoryGirl.create :paper, :with_tasks
@@ -55,7 +55,7 @@ describe TahiStandardTasks::TitleAndAbstractTask do
       end
 
       let(:phase) { paper.phases[1] }
-      subject(:subject) { TahiStandardTasks::TitleAndAbstractTask }
+      subject(:subject) { TitleAndAbstractTask }
 
       context "with an existing revise task" do
         let!(:task) do

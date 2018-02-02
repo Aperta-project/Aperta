@@ -72,9 +72,9 @@ module TahiHelperMethods
 
   def register_paper_decision(paper, verdict)
     decision = paper.draft_decision
-    CardLoader.load("TahiStandardTasks::ReviseTask")
+    CardLoader.load("ReviseTask")
 
-    task = paper.last_of_task(TahiStandardTasks::RegisterDecisionTask) ||
+    task = paper.last_of_task(RegisterDecisionTask) ||
       create(:register_decision_task, :with_loaded_card, paper: paper)
 
     decision.update! verdict: verdict

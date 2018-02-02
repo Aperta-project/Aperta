@@ -7,7 +7,7 @@ FactoryGirl.define do
     global true
 
     factory :review_duration_period_setting_template do
-      key "TaskTemplate:TahiStandardTasks::PaperReviewerTask"
+      key "TaskTemplate:PaperReviewerTask"
       value_type "integer"
       setting_name "review_duration_period"
       value 10

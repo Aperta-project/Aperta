@@ -17,7 +17,7 @@ feature "Register Decision", js: true, sidekiq: :inline! do
   let(:reject_template) { FactoryGirl.create(:letter_template, :reject) }
 
   before do
-    allow(PlosBilling::SalesforceManuscriptUpdateWorker)
+    allow(SalesforceManuscriptUpdateWorker)
       .to receive(:perform_async).and_return(true)
     task.add_participant(user)
     paper.journal.letter_templates << accept_template

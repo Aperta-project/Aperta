@@ -5,7 +5,7 @@
 module CardConfiguration
   class ChangesForAuthorTask
     def self.name
-      "PlosBioTechCheck::ChangesForAuthorTask"
+      "ChangesForAuthorTask"
     end
 
     def self.title

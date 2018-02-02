@@ -5,7 +5,7 @@ describe CustomCard::Migrator do
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
   let(:task) { FactoryGirl.create(:paper_reviewer_task, paper: paper, phase: phase, card_version: existing_card.latest_card_version) }
-  let!(:existing_card) { FactoryGirl.create(:card, :versioned, journal: journal, name: "TahiStandardTasks::PaperReviewerTask") }
+  let!(:existing_card) { FactoryGirl.create(:card, :versioned, journal: journal, name: "PaperReviewerTask") }
   let(:content) { task.card.latest_card_version.card_contents.first }
   let!(:answer) { FactoryGirl.create(:answer, paper: paper, owner: task, card_content: content) }
   let(:configuration) do
@@ -15,7 +15,7 @@ describe CustomCard::Migrator do
       end
 
       def self.task_class
-        'TahiStandardTasks::PaperReviewerTask'
+        'PaperReviewerTask'
       end
     end
   end
@@ -73,7 +73,7 @@ describe CustomCard::Migrator do
     it 'sets the existing task type based on the configuration task_class' do
       task_id = task.id
       CustomCard::Migrator.new(legacy_task_klass_name: task.type, configuration_class: configuration).migrate
-      expect(Task.find(task_id).type).to eq('TahiStandardTasks::PaperReviewerTask')
+      expect(Task.find(task_id).type).to eq('PaperReviewerTask')
     end
 
     it 'changes existing Task titles to match the name in the configuration class' do
@@ -85,7 +85,7 @@ describe CustomCard::Migrator do
     it 'changes existing TaskTemplate titles to match the name in the configuration class' do
       jtt = FactoryGirl.create(:journal_task_type,
                                journal: journal,
-                               kind: 'TahiStandardTasks::PaperReviewerTask')
+                               kind: 'PaperReviewerTask')
       task_template = FactoryGirl.create(:task_template,
                                          journal_task_type: jtt,
                                          title: 'Old Title')

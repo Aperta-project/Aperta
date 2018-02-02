@@ -101,7 +101,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     create_reviewer_report_task
 
     # seed the Upload Manuscript card so that it can be created after a decision has been registered
-    ctt = CardTaskType.find_by(task_class: "TahiStandardTasks::UploadManuscriptTask")
+    ctt = CardTaskType.find_by(task_class: "UploadManuscriptTask")
     FactoryGirl.create(:card, :versioned, card_task_type: ctt)
 
     # Revision 0
@@ -137,7 +137,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     create_reviewer_report_task
 
     # seed the Upload Manuscript card so that it can be created after a decision has been registered
-    ctt = CardTaskType.find_by(task_class: "TahiStandardTasks::UploadManuscriptTask")
+    ctt = CardTaskType.find_by(task_class: "UploadManuscriptTask")
     FactoryGirl.create(:card, :versioned, card_task_type: ctt)
 
     # Revision 0

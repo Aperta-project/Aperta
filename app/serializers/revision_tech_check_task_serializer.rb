@@ -1,0 +1,2 @@
+class RevisionTechCheckTaskSerializer < ::TaskSerializer
+end

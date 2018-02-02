@@ -9,7 +9,7 @@ class CardTaskType < ActiveRecord::Base
   # maps display_name to task_class
   DEFAULT_NAMES = {
     'CustomCardTask' => 'Custom Card',
-    'TahiStandardTasks::UploadManuscriptTask' => 'Upload Manuscript'
+    'UploadManuscriptTask' => 'Upload Manuscript'
   }.freeze
 
   def self.default_attributes(klass)
@@ -31,7 +31,7 @@ class CardTaskType < ActiveRecord::Base
   def self.seed_defaults
     [
       default_attributes('CustomCardTask'),
-      default_attributes('TahiStandardTasks::UploadManuscriptTask')
+      default_attributes('UploadManuscriptTask')
     ].each do |hash|
       CardTaskType.find_or_create_by!(hash)
     end

@@ -7,7 +7,7 @@ namespace :data do
       |This is idempotent and safe to run multiple times.
     DESC
     task reviewer_report_owners: :environment do
-      TahiStandardTasks::ReviewerReportTask.all.each do |task|
+      ReviewerReportTask.all.each do |task|
         # Find the first participation for the current reviewer report task
         participation = task.participations
           .includes(:user)

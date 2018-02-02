@@ -2,14 +2,14 @@ namespace :tahi do
   desc "Restores default role for editor and reviewer tasks"
   task restore_original_task_roles: :environment do
     i = 0
-    editor_tasks = ["TahiStandardTasks::PaperReviewerTask", "TahiStandardTasks::RegisterDecisionTask"]
+    editor_tasks = ["PaperReviewerTask", "RegisterDecisionTask"]
 
     JournalTaskType.where('kind = ? OR kind = ?', *editor_tasks).each do |jtt|
       jtt.update! role: 'editor'
       i += 1
     end
 
-    JournalTaskType.where(kind: "TahiStandardTasks::ReviewerReportTask").each do |jtt|
+    JournalTaskType.where(kind: "ReviewerReportTask").each do |jtt|
       jtt.update! role: 'reviewer'
       i += 1
     end
@@ -19,7 +19,7 @@ namespace :tahi do
       i += 1
     end
 
-    Task.where(type: "TahiStandardTasks::ReviewerReportTask").each do |task|
+    Task.where(type: "ReviewerReportTask").each do |task|
       task.update_column 'role', 'reviewer'
       i += 1
     end

@@ -5,7 +5,7 @@
 module CardConfiguration
   class SupportingInformationTask
     def self.name
-      "TahiStandardTasks::SupportingInformationTask"
+      "SupportingInformationTask"
     end
 
     def self.title

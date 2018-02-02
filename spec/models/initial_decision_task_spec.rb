@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::InitialDecisionTask do
+describe InitialDecisionTask do
   let(:paper) { FactoryGirl.create :paper, :submitted_lite, :with_tasks }
   let(:task) { FactoryGirl.create :initial_decision_task, paper: paper }
   let(:decision) { paper.draft_decision }
@@ -56,7 +56,7 @@ describe TahiStandardTasks::InitialDecisionTask do
     end
 
     it "will email using last completed decision" do
-      expect(TahiStandardTasks::InitialDecisionMailer)
+      expect(InitialDecisionMailer)
         .to receive_message_chain(:delay, :notify)
         .with(decision_id: decision_one.id)
       task.send_email

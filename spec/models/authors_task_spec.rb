@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::AuthorsTask do
+describe AuthorsTask do
   before do
-    CardLoader.load('TahiStandardTasks::AuthorsTask')
+    CardLoader.load('AuthorsTask')
     CardLoader.load('Author')
   end
 

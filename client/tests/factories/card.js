@@ -35,7 +35,7 @@ let cardIdents = {
     'author--contributions--funding-acquisition',
     'author--contributions--formal-analysis'
   ],
-  'TahiStandardTasks::AuthorsTask': [
+  'AuthorsTask': [
     'authors--persons_agreed_to_be_named',
     'authors--authors_confirm_icmje_criteria',
     'authors--authors_agree_to_submission'
@@ -56,14 +56,10 @@ let cardIdents = {
     'group-author--contributions--funding-acquisition',
     'group-author--contributions--formal-analysis',
   ],
-  'TahiStandardTasks::FinancialDisclosureTask': [
+  'FinancialDisclosureTask': [
     'financial_disclosures--author_received_funding'
   ],
-  'TahiStandardTasks::Funder': [
-    'funder--had_influence',
-    'funder--had_influence--role_description',
-  ],
-  'PlosBilling::BillingTask': [
+  'BillingTask': [
     'plos_billing--first_name',
     'plos_billing--last_name',
     'plos_billing--title',

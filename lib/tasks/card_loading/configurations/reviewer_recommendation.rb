@@ -5,7 +5,7 @@
 module CardConfiguration
   class ReviewerRecommendation
     def self.name
-      "TahiStandardTasks::ReviewerRecommendation"
+      "ReviewerRecommendation"
     end
 
     def self.title

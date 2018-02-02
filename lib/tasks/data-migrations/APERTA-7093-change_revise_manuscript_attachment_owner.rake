@@ -3,11 +3,11 @@ namespace :data do
     namespace :revise_manuscript_attachment do
       desc 'Changes attachments owned by ReviseTasks to be owned by Decisions'
       task change_owner_to_decision: :environment do
-        revise_tasks = Task.where(type: TahiStandardTasks::ReviseTask)
+        revise_tasks = Task.where(type: ReviseTask)
         revise_tasks.update_all(title: 'Response to Reviewers')
 
         count = 0
-        Task.where(type: TahiStandardTasks::ReviseTask).each do |task|
+        Task.where(type: ReviseTask).each do |task|
           count += task.attachments.length
           decision = task.paper.decisions.order(major_version: :desc, minor_version: :desc).limit(1).first
           task.attachments.update_all(owner_type: 'Decision', owner_id: decision.id, type: 'DecisionAttachment')
@@ -23,7 +23,7 @@ namespace :data do
 
       desc 'Changes attachments owned by Decisions to be owned by ReviseTasks'
       task change_owner_to_task: :environment do
-        revise_tasks = Task.where(type: TahiStandardTasks::ReviseTask)
+        revise_tasks = Task.where(type: ReviseTask)
         revise_tasks.update_all(title: 'Revise Manuscript')
 
         count = DecisionAttachment.all.length
@@ -34,7 +34,7 @@ namespace :data do
         end
 
         count_after = 0
-        Task.where(type: TahiStandardTasks::ReviseTask).each do |task|
+        Task.where(type: ReviseTask).each do |task|
           count_after += task.attachments.length
         end
 

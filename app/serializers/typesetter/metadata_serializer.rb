@@ -67,7 +67,7 @@ module Typesetter
     end
 
     def production_metadata
-      task('TahiStandardTasks::ProductionMetadataTask')
+      task('ProductionMetadataTask')
     end
 
     def competing_interests

@@ -5,7 +5,7 @@
 module CardConfiguration
   class ProductionMetadataTask
     def self.name
-      "TahiStandardTasks::ProductionMetadataTask"
+      "ProductionMetadataTask"
     end
 
     def self.title

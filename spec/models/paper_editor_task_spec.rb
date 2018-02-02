@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::PaperEditorTask do
+describe PaperEditorTask do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) { FactoryGirl.create(:paper_with_phases, journal: journal) }
   let!(:author) { FactoryGirl.create(:author, paper: paper) }

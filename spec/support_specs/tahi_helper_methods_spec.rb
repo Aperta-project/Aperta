@@ -7,8 +7,8 @@ describe TahiHelperMethods do
     let(:decision) { paper.draft_decision }
 
     before do
-      CardLoader.load("TahiStandardTasks::RegisterDecisionTask")
-      CardLoader.load("TahiStandardTasks::TitleAndAbstractTask")
+      CardLoader.load("RegisterDecisionTask")
+      CardLoader.load("TitleAndAbstractTask")
     end
 
     it { is_expected.to change { paper.publishing_state }.from("submitted").to("in_revision") }

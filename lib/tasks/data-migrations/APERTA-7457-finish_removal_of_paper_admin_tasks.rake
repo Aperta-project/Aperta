@@ -15,12 +15,12 @@ namespace :data do
       JournalTaskType.where(id: templates.map(&:journal_task_type_id).uniq).destroy_all
 
       unless TahiStandardTasks.const_defined? :PaperAdminTask
-        class TahiStandardTasks::PaperAdminTask < Task
+        class PaperAdminTask < Task
         end
       end
 
       # Remove any remaining data on specific tasks
-      task_klass_str = 'TahiStandardTasks::PaperAdminTask'
+      task_klass_str = 'PaperAdminTask'
       Task.where(type: task_klass_str).destroy_all
 
       # Remove any permissions that exist on this no longer existent task

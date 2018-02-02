@@ -5,7 +5,7 @@ module CustomCard
   # to ensure that the correct permissions are carried over.
   #
   # Usage:
-  #   CustomCard::PermissionInquiry.new(legacy_class_name: "TahiStandardTasks::CoverLetterTask").legacy_permissions
+  #   CustomCard::PermissionInquiry.new(legacy_class_name: "CoverLetterTask").legacy_permissions
   #
   # Result:
   # { view: ["Academic Editor", "Billing Staff", "Collaborator", "Cover Editor"],

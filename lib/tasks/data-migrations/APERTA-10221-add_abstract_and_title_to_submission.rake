@@ -7,7 +7,7 @@ namespace :data do
       # is not already created.
       Journal.all.each do |journal|
         # Pulls a Journal Task type of the Kind Title And Abstract
-        journal_task_type = journal.journal_task_types.find_by(kind: TahiStandardTasks::TitleAndAbstractTask)
+        journal_task_type = journal.journal_task_types.find_by(kind: TitleAndAbstractTask)
 
         journal.manuscript_manager_templates.each do |mtm|
           task_created = nil
@@ -48,14 +48,14 @@ namespace :data do
       puts "*** Reordering Tasks ***"
       Paper.all.each do |paper|
         # Searches if the task is already created
-        task_to_change = paper.tasks.where(type: TahiStandardTasks::TitleAndAbstractTask).first
+        task_to_change = paper.tasks.where(type: TitleAndAbstractTask).first
 
         # Creates the tasks and assigns to the phase, if it is not created
         phase = paper.phases.where(position: 1).first
         if task_to_change
           phase.tasks << task_to_change
         else
-          task_to_change = TaskFactory.create(TahiStandardTasks::TitleAndAbstractTask, paper: paper, phase: phase)
+          task_to_change = TaskFactory.create(TitleAndAbstractTask, paper: paper, phase: phase)
         end
 
         task_to_change.completed = true if Paper::UNEDITABLE_STATES.include? paper.publishing_state.to_sym

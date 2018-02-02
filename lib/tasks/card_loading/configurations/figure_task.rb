@@ -5,7 +5,7 @@
 module CardConfiguration
   class FigureTask
     def self.name
-      "TahiStandardTasks::FigureTask"
+      "FigureTask"
     end
 
     def self.title

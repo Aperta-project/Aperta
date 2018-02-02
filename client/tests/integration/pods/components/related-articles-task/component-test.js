@@ -82,7 +82,7 @@ var newTask = function() {
   return {
     id: 2,
     title: 'Related Articles',
-    type: 'TahiStandardTasks::RelatedArticles',
+    type: 'RelatedArticles',
     completed: false,
     isMetadataTask: false,
     isSubmissionTask: false,

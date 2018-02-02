@@ -10,7 +10,7 @@ module CardConfiguration
   module NonstandardConfigurations
     class FinancialDisclosureTask
       def self.name
-        "TahiStandardTasks::FinancialDisclosureTask"
+        "FinancialDisclosureTask"
       end
 
       def self.title

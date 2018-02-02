@@ -29,7 +29,7 @@ feature "session invalidation", js: true do
   let!(:reviewer) { create :user }
   let!(:inviter) { create :user }
   let!(:reviewer_report_task) do
-    CardLoader.load("TahiStandardTasks::ReviewerReportTask")
+    CardLoader.load("ReviewerReportTask")
     paper.draft_decision.invitations << invitation_no_feedback
     ReviewerReportTaskCreator.new(
       originating_task: task,

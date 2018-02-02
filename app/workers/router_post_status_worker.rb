@@ -6,11 +6,11 @@ class RouterPostStatusWorker
   sidekiq_retry_in { 1.hour }
 
   def perform(export_delivery_id)
-    export_delivery = TahiStandardTasks::ExportDelivery.find(export_delivery_id)
-    service = TahiStandardTasks::ExportService.new export_delivery: export_delivery
+    export_delivery = ExportDelivery.find(export_delivery_id)
+    service = ExportService.new export_delivery: export_delivery
     result = service.export_status
     Rails.logger.warn("WARNING: Router returned: #{result[:job_status_description]}") if result[:job_status] != 'SUCCESS'
-    raise TahiStandardTasks::ExportService::StatusError, "Waiting for preprint post status" unless result[:preprint_posted]
+    raise ExportService::StatusError, "Waiting for preprint post status" unless result[:preprint_posted]
     export_delivery.posted!
   end
 end

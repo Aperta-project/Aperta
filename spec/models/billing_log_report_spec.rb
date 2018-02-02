@@ -9,7 +9,7 @@ describe BillingLogReport do
       accepted_at: accepted_date,
       task_params: {
         title: "Billing",
-        type: "PlosBilling::BillingTask",
+        type: "BillingTask",
         completed: true
       }
     )

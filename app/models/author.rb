@@ -18,8 +18,8 @@ class Author < ActiveRecord::Base
           through: :author_list_item
 
   has_one :task,
-          -> { where(type: 'TahiStandardTasks::AuthorsTask') },
-          class_name: 'TahiStandardTasks::AuthorsTask',
+          -> { where(type: 'AuthorsTask') },
+          class_name: 'AuthorsTask',
           through: :paper,
           source: :tasks
 

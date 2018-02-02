@@ -6,7 +6,7 @@ namespace :settings do
   # For the time being the ithenticate_automation setting is the only entry.
   task seed_setting_templates: :environment do
     [{ journal: nil,
-       key: "TaskTemplate:TahiStandardTasks::SimilarityCheckTask",
+       key: "TaskTemplate:SimilarityCheckTask",
        value_type: "string",
        global: true,
        setting_klass: "Setting",
@@ -21,7 +21,7 @@ namespace :settings do
        ] },
      {
        journal: nil,
-       key: "TaskTemplate:TahiStandardTasks::PaperReviewerTask",
+       key: "TaskTemplate:PaperReviewerTask",
        value_type: "integer",
        global: true,
        setting_klass: "Setting",

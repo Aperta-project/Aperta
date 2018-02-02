@@ -66,33 +66,33 @@ describe JournalFactory do
       )
     end
     let(:billing_task_klasses) do
-      [PlosBilling::BillingTask] +
-        without_anonymous_classes(PlosBilling::BillingTask.descendants)
+      [BillingTask] +
+        without_anonymous_classes(BillingTask.descendants)
     end
     let(:custom_card_klasses) do
       [CustomCardTask]
     end
     let(:restricted_invite_klasses) do
-      [TahiStandardTasks::PaperEditorTask]
+      [PaperEditorTask]
     end
     let(:changes_for_author_task_klasses) do
-      [PlosBioTechCheck::ChangesForAuthorTask] +
-        without_anonymous_classes(PlosBioTechCheck::ChangesForAuthorTask.descendants)
+      [ChangesForAuthorTask] +
+        without_anonymous_classes(ChangesForAuthorTask.descendants)
     end
     let(:reviewer_report_klasses) do
-      [TahiStandardTasks::ReviewerReportTask] +
-        without_anonymous_classes(TahiStandardTasks::ReviewerReportTask.descendants)
+      [ReviewerReportTask] +
+        without_anonymous_classes(ReviewerReportTask.descendants)
     end
     let(:tech_check_klasses) do
       [
-        PlosBioTechCheck::InitialTechCheckTask,
-        PlosBioTechCheck::RevisionTechCheckTask,
-        PlosBioTechCheck::FinalTechCheckTask
+        InitialTechCheckTask,
+        RevisionTechCheckTask,
+        FinalTechCheckTask
       ] +
         without_anonymous_classes(
-          PlosBioTechCheck::InitialTechCheckTask.descendants +
-          PlosBioTechCheck::RevisionTechCheckTask.descendants +
-          PlosBioTechCheck::FinalTechCheckTask.descendants
+          InitialTechCheckTask.descendants +
+          RevisionTechCheckTask.descendants +
+          FinalTechCheckTask.descendants
         )
     end
     let(:non_custom_task_klasses) do
@@ -349,7 +349,7 @@ describe JournalFactory do
             )
           end
           let(:inaccessible_task_klasses) do
-            [PlosBilling::BillingTask, CustomCardTask]
+            [BillingTask, CustomCardTask]
           end
           let(:all_inaccessible_task_klasses) do
             without_anonymous_classes(
@@ -460,7 +460,7 @@ describe JournalFactory do
               editable_task_klasses_regardless_of_paper_state
           end
           let(:editable_task_klasses_regardless_of_paper_state) do
-            [TahiStandardTasks::TitleAndAbstractTask]
+            [TitleAndAbstractTask]
           end
 
           it <<-DESC do
@@ -515,16 +515,16 @@ describe JournalFactory do
             end
           end
 
-          it 'can do nothing on the PlosBilling::BillingTask' do
+          it 'can do nothing on the BillingTask' do
             billing_permissions = Permission.where(
-              applies_to: 'PlosBilling::BillingTask'
+              applies_to: 'BillingTask'
             ).all
             expect(permissions).not_to include(*billing_permissions)
           end
 
-          it 'can do nothing on the PlosBioTechCheck::ChangesForAuthorTask' do
+          it 'can do nothing on the ChangesForAuthorTask' do
             changes_for_author_permissions = Permission.where(
-              applies_to: 'PlosBioTechCheck::ChangesForAuthorTask'
+              applies_to: 'ChangesForAuthorTask'
             ).all
             expect(permissions).not_to include(*changes_for_author_permissions)
           end
@@ -578,14 +578,14 @@ describe JournalFactory do
         describe 'permissions on tasks' do
           let(:accessible_task_klasses) do
             accessible_for_role = ::Task.submission_task_types
-            accessible_for_role << TahiStandardTasks::ReviewerReportTask
+            accessible_for_role << ReviewerReportTask
             accessible_for_role << AdHocForEditorsTask
             accessible_for_role - inaccessible_task_klasses
           end
           let(:inaccessible_task_klasses) do
-            [PlosBilling::BillingTask,
-             PlosBioTechCheck::ChangesForAuthorTask,
-             TahiStandardTasks::RegisterDecisionTask,
+            [BillingTask,
+             ChangesForAuthorTask,
+             RegisterDecisionTask,
              CustomCardTask]
           end
           let(:all_inaccessible_task_klasses) do
@@ -639,7 +639,7 @@ describe JournalFactory do
 
           it 'is not able to edit the ReviewerRecommendationsTask' do
             expect(permissions).to_not include(
-              Permission.where(action: 'edit', applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask').last
+              Permission.where(action: 'edit', applies_to: 'ReviewerRecommendationsTask').last
             )
           end
 
@@ -654,9 +654,9 @@ describe JournalFactory do
             end
           end
 
-          it 'can do nothing on the PlosBioTechCheck::ChangesForAuthorTask' do
+          it 'can do nothing on the ChangesForAuthorTask' do
             changes_for_author_permissions = Permission.where(
-              applies_to: 'PlosBioTechCheck::ChangesForAuthorTask'
+              applies_to: 'ChangesForAuthorTask'
             ).all
             expect(permissions).not_to include(*changes_for_author_permissions)
           end
@@ -751,7 +751,7 @@ describe JournalFactory do
               editable_task_klasses_regardless_of_paper_state
           end
           let(:editable_task_klasses_regardless_of_paper_state) do
-            [TahiStandardTasks::TitleAndAbstractTask]
+            [TitleAndAbstractTask]
           end
 
           it <<-DESC do
@@ -806,16 +806,16 @@ describe JournalFactory do
             end
           end
 
-          it 'can do nothing on the PlosBilling::BillingTask' do
+          it 'can do nothing on the BillingTask' do
             billing_permissions = Permission.where(
-              applies_to: 'PlosBilling::BillingTask'
+              applies_to: 'BillingTask'
             ).all
             expect(permissions).not_to include(*billing_permissions)
           end
 
-          it 'can do nothing on the PlosBioTechCheck::ChangesForAuthorTask' do
+          it 'can do nothing on the ChangesForAuthorTask' do
             changes_for_author_permissions = Permission.where(
-              applies_to: 'PlosBioTechCheck::ChangesForAuthorTask'
+              applies_to: 'ChangesForAuthorTask'
             ).all
             expect(permissions).not_to include(*changes_for_author_permissions)
           end
@@ -929,10 +929,10 @@ describe JournalFactory do
             expect(permissions_on_task.map(&:action) - TASK_ACTIONS).to eq([])
           end
 
-          it 'cannot :view or :edit the PlosBilling::BillingTask' do
+          it 'cannot :view or :edit the BillingTask' do
             expect(permissions).to_not include(
-              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
+              Permission.find_by(action: 'view', applies_to: 'BillingTask'),
+              Permission.find_by(action: 'edit', applies_to: 'BillingTask')
             )
           end
         end
@@ -1043,10 +1043,10 @@ describe JournalFactory do
             expect(permissions_on_task.map(&:action) - TASK_ACTIONS).to eq([])
           end
 
-          it 'cannot :view or :edit the PlosBilling::BillingTask' do
+          it 'cannot :view or :edit the BillingTask' do
             expect(permissions).to_not include(
-              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
+              Permission.find_by(action: 'view', applies_to: 'BillingTask'),
+              Permission.find_by(action: 'edit', applies_to: 'BillingTask')
             )
           end
         end
@@ -1159,10 +1159,10 @@ describe JournalFactory do
             expect(permissions_on_task.map(&:action) - TASK_ACTIONS).to eq([])
           end
 
-          it 'cannot :view or :edit the PlosBilling::BillingTask' do
+          it 'cannot :view or :edit the BillingTask' do
             expect(permissions).to_not include(
-              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
+              Permission.find_by(action: 'view', applies_to: 'BillingTask'),
+              Permission.find_by(action: 'edit', applies_to: 'BillingTask')
             )
           end
         end
@@ -1207,9 +1207,9 @@ describe JournalFactory do
           end
           let(:inaccessible_task_klasses) do
             [
-              PlosBioTechCheck::ChangesForAuthorTask,
-              PlosBilling::BillingTask,
-              TahiStandardTasks::ReviewerRecommendationsTask,
+              ChangesForAuthorTask,
+              BillingTask,
+              ReviewerRecommendationsTask,
               CustomCardTask
             ]
           end
@@ -1256,37 +1256,37 @@ describe JournalFactory do
             expect(permission.states.map(&:name)).to contain_exactly(*Paper::REVIEWABLE_STATES.map(&:to_s))
           end
 
-          it 'can do nothing on the PlosBilling::BillingTask' do
+          it 'can do nothing on the BillingTask' do
             billing_permissions = Permission.where(
-              applies_to: 'PlosBilling::BillingTask'
+              applies_to: 'BillingTask'
             ).all
             expect(permissions).not_to include(*billing_permissions)
           end
 
-          it 'can do nothing on the TahiStandardTasks::RegisterDecisionTask' do
+          it 'can do nothing on the RegisterDecisionTask' do
             register_decision_permissions = Permission.where(
-              applies_to: 'TahiStandardTasks::RegisterDecisionTask'
+              applies_to: 'RegisterDecisionTask'
             ).all
             expect(permissions).not_to include(*register_decision_permissions)
           end
 
-          it 'can do nothing on the TahiStandardTasks::ReviewerRecommendationsTask' do
+          it 'can do nothing on the ReviewerRecommendationsTask' do
             reviewer_recommendations_permissions = Permission.where(
-              applies_to: 'TahiStandardTasks::ReviewerRecommendationsTask'
+              applies_to: 'ReviewerRecommendationsTask'
             ).all
             expect(permissions).not_to include(*reviewer_recommendations_permissions)
           end
 
-          it 'can do nothing on the PlosBilling::BillingTask' do
+          it 'can do nothing on the BillingTask' do
             billing_permissions = Permission.where(
-              applies_to: 'PlosBilling::BillingTask'
+              applies_to: 'BillingTask'
             ).all
             expect(permissions).not_to include(*billing_permissions)
           end
 
-          it 'can do nothing on the PlosBioTechCheck::ChangesForAuthorTask' do
+          it 'can do nothing on the ChangesForAuthorTask' do
             changes_for_author_permissions = Permission.where(
-              applies_to: 'PlosBioTechCheck::ChangesForAuthorTask'
+              applies_to: 'ChangesForAuthorTask'
             ).all
             expect(permissions).not_to include(*changes_for_author_permissions)
           end
@@ -1304,7 +1304,7 @@ describe JournalFactory do
         describe 'has Task permission to' do
           it 'can :edit assigned ReviewerReportTasks' do
             edit_permission = journal.reviewer_report_owner_role.permissions.where(
-              applies_to: 'TahiStandardTasks::ReviewerReportTask',
+              applies_to: 'ReviewerReportTask',
               action: :edit
             )
             expect(edit_permission.count).to eq(1)
@@ -1312,7 +1312,7 @@ describe JournalFactory do
               contain_exactly(*Paper::REVIEWABLE_STATES.map(&:to_s))
 
             view_permission = journal.reviewer_report_owner_role.permissions.where(
-              applies_to: 'TahiStandardTasks::ReviewerReportTask',
+              applies_to: 'ReviewerReportTask',
               action: :view
             )
             expect(view_permission.count).to eq(1)
@@ -1404,7 +1404,7 @@ describe JournalFactory do
             can :view_participants  on all Tasks except billing tasks
           DESC
             without_anonymous_classes(
-              Task.descendants - [PlosBilling::BillingTask, CustomCardTask]
+              Task.descendants - [BillingTask, CustomCardTask]
             ).each do |task|
               TASK_ACTIONS.each do |action|
                 expect(permissions).to include(
@@ -1418,10 +1418,10 @@ describe JournalFactory do
             expect(permissions_on_task.map(&:action) - TASK_ACTIONS).to eq([])
           end
 
-          it 'cannot :view or :edit the PlosBilling::BillingTask' do
+          it 'cannot :view or :edit the BillingTask' do
             expect(permissions).to_not include(
-              Permission.find_by(action: 'view', applies_to: 'PlosBilling::BillingTask'),
-              Permission.find_by(action: 'edit', applies_to: 'PlosBilling::BillingTask')
+              Permission.find_by(action: 'view', applies_to: 'BillingTask'),
+              Permission.find_by(action: 'edit', applies_to: 'BillingTask')
             )
           end
         end
@@ -1449,10 +1449,10 @@ describe JournalFactory do
       context 'Billing staff' do
         let(:permissions) { journal.billing_role.permissions }
 
-        describe 'permission to PlosBilling::BillingTask' do
+        describe 'permission to BillingTask' do
           it 'can :view and :edit' do
             # Sometimes there is more than one 'edit' or 'view' permission for BillingTask so this fixes spec flakiness
-            permission_strings = permissions.where(applies_to: 'PlosBilling::BillingTask').pluck(:action)
+            permission_strings = permissions.where(applies_to: 'BillingTask').pluck(:action)
             expect(permission_strings).to contain_exactly('view', 'edit','view_discussion_footer', 'view_participants')
           end
         end
@@ -1483,7 +1483,7 @@ describe JournalFactory do
           it 'only authors and billing staff have any permission on the billing task' do
             not_allowed_roles = Role.where.not(name: [Role::CREATOR_ROLE, Role::BILLING_ROLE, Role::SITE_ADMIN_ROLE])
             not_allowed_roles.each do |role|
-              expect(role.permissions.where(applies_to: 'PlosBilling::BillingTask')).to be_empty
+              expect(role.permissions.where(applies_to: 'BillingTask')).to be_empty
             end
           end
         end

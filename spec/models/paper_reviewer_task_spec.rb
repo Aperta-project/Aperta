@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::PaperReviewerTask do
+describe PaperReviewerTask do
   subject(:task) do
     FactoryGirl.create(:paper_reviewer_task, paper: paper)
   end
@@ -50,7 +50,7 @@ describe TahiStandardTasks::PaperReviewerTask do
       it "queues the email" do
         task.invitation_accepted invitation
         expect(Sidekiq::Extensions::DelayedMailer).to have_queued_mailer_job(
-          TahiStandardTasks::ReviewerMailer,
+          ReviewerMailer,
           :reviewer_accepted,
           [{ invitation_id: invitation.id }]
         )
@@ -66,7 +66,7 @@ describe TahiStandardTasks::PaperReviewerTask do
       it "queues the email" do
         task.invitation_accepted invitation
         expect(Sidekiq::Extensions::DelayedMailer).to have_queued_mailer_job(
-          TahiStandardTasks::ReviewerMailer,
+          ReviewerMailer,
           :reviewer_accepted,
           [{ invitation_id: invitation.id }]
         )
@@ -81,7 +81,7 @@ describe TahiStandardTasks::PaperReviewerTask do
       it "queues the email" do
         task.invitation_declined invitation
         expect(Sidekiq::Extensions::DelayedMailer).to have_queued_mailer_job(
-          TahiStandardTasks::ReviewerMailer,
+          ReviewerMailer,
           :reviewer_declined,
           [{ invitation_id: invitation.id }]
         )
@@ -97,7 +97,7 @@ describe TahiStandardTasks::PaperReviewerTask do
       it "queues the email" do
         task.invitation_declined invitation
         expect(Sidekiq::Extensions::DelayedMailer).to have_queued_mailer_job(
-          TahiStandardTasks::ReviewerMailer,
+          ReviewerMailer,
           :reviewer_declined,
           [{ invitation_id: invitation.id }]
         )

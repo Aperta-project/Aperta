@@ -1,8 +1,8 @@
 # After a resubmission, we need to generate a new
 # reviewer report for any existing review tasks
 class Paper::Submitted::CreateReviewerReports
-  REVIEWER_SPECIFIC_TASKS = ["TahiStandardTasks::FrontMatterReviewerReportTask",
-                             "TahiStandardTasks::ReviewerReportTask"].freeze
+  REVIEWER_SPECIFIC_TASKS = ["FrontMatterReviewerReportTask",
+                             "ReviewerReportTask"].freeze
 
   def self.call(_, event_data)
     paper = event_data[:record]

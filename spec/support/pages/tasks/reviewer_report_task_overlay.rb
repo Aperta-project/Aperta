@@ -64,7 +64,7 @@ class ReviewerReportTaskOverlay < PaperTaskOverlay
     click_button "Yes, I’m sure"
   end
 
-  def reload(reviewer_report_task = TahiStandardTasks::ReviewerReportTask.last)
+  def reload(reviewer_report_task = ReviewerReportTask.last)
     paper = reviewer_report_task.paper
     visit "/papers/#{paper.id}/tasks/#{reviewer_report_task.id}"
   end

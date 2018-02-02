@@ -20,8 +20,8 @@ describe Paper do
   end
 
   before do
-    CardLoader.load("TahiStandardTasks::ReviseTask")
-    CardLoader.load("TahiStandardTasks::TitleAndAbstractTask")
+    CardLoader.load("ReviseTask")
+    CardLoader.load("TitleAndAbstractTask")
   end
 
   shared_examples_for "submission" do
@@ -1787,12 +1787,12 @@ describe Paper do
     let!(:revise_task) { create :revise_task, paper: paper }
 
     it "returns the task instance" do
-      task = paper.last_of_task(TahiStandardTasks::ReviseTask)
+      task = paper.last_of_task(ReviseTask)
       expect(task).to eq revise_task
     end
 
     it "returns nil if their is no task of the correct type" do
-      task = paper.last_of_task(TahiStandardTasks::AuthorsTask)
+      task = paper.last_of_task(AuthorsTask)
       expect(task).to be_nil
     end
   end

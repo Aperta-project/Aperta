@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::ExportDelivery do
+describe ExportDelivery do
   describe "validating paper accepted" do
     it "the paper must be accepted when delivering to apex" do
       delivery = FactoryGirl.build(:export_delivery, destination: 'apex')

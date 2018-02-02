@@ -5,7 +5,7 @@ namespace :data do
       task set_short_title: :environment do
         Paper.all.each do |paper|
           task = paper.tasks_for_type(
-            TahiStandardTasks::PublishingRelatedQuestionsTask).first
+            PublishingRelatedQuestionsTask).first
           next unless task
           question = task.nested_questions.find_by(
             ident: 'publishing_related_questions--short_title')

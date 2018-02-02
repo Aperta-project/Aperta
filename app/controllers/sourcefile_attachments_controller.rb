@@ -13,7 +13,7 @@ class SourcefileAttachmentsController < ApplicationController
   end
 
   def cancel
-    requires_user_can :edit, attachment.paper.tasks.where(type: 'TahiStandardTasks::UploadManuscriptTask').first
+    requires_user_can :edit, attachment.paper.tasks.where(type: 'UploadManuscriptTask').first
     attachment.cancel_download
 
     head :no_content

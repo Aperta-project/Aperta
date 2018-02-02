@@ -60,7 +60,7 @@ class JournalFactory
 
   # All standard tasks that users who see the workflow should see
   # Billing is special, and CustomCardTask is handled by a custom mechanism.
-  STANDARD_TASKS = (Task.descendants - [PlosBilling::BillingTask, CustomCardTask]).freeze
+  STANDARD_TASKS = (Task.descendants - [BillingTask, CustomCardTask]).freeze
   SUBMISSION_TASKS = (Task.submission_task_types - [CustomCardTask]).freeze
 
   # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
@@ -96,7 +96,7 @@ class JournalFactory
       # Collaborators can view and edit any metadata card except billing
       task_klasses = SUBMISSION_TASKS
       task_klasses += [AdHocForAuthorsTask]
-      task_klasses -= [PlosBilling::BillingTask]
+      task_klasses -= [BillingTask]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
@@ -128,8 +128,8 @@ class JournalFactory
       # Cover editors cannot view, edit, or otherwise do anything on the
       # BillingTask, the ChangesForAuthorTask, or the PaperEditorTask
       task_klasses = STANDARD_TASKS - [
-        PlosBioTechCheck::ChangesForAuthorTask,
-        TahiStandardTasks::PaperEditorTask
+        ChangesForAuthorTask,
+        PaperEditorTask
       ]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
@@ -145,9 +145,9 @@ class JournalFactory
       # Of those editable tasks all but the TitleAndAstractTask can only be
       # modified if the Paper itself is editable.
       editable_task_klasses = task_klasses -
-        [TahiStandardTasks::ReviewerReportTask] -
-        TahiStandardTasks::ReviewerReportTask.descendants -
-        [TahiStandardTasks::TitleAndAbstractTask]
+        [ReviewerReportTask] -
+        ReviewerReportTask.descendants -
+        [TitleAndAbstractTask]
       editable_task_klasses.each do |klass|
         role.ensure_permission_exists(
           :edit,
@@ -157,7 +157,7 @@ class JournalFactory
       end
 
       # The TitleAndAbstractTask is always editable, regardless of paper state.
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::TitleAndAbstractTask)
+      role.ensure_permission_exists(:edit, applies_to: TitleAndAbstractTask)
 
       # Discussions
       role.ensure_permission_exists(:edit, applies_to: DiscussionTopic)
@@ -174,9 +174,9 @@ class JournalFactory
       # Reviewer(s) get access to all submission tasks, except a few
       task_klasses = SUBMISSION_TASKS
       task_klasses -= [
-        PlosBioTechCheck::ChangesForAuthorTask,
-        PlosBilling::BillingTask,
-        TahiStandardTasks::ReviewerRecommendationsTask
+        ChangesForAuthorTask,
+        BillingTask,
+        ReviewerRecommendationsTask
       ]
       task_klasses += [AdHocForReviewersTask]
       task_klasses.each do |klass|
@@ -192,11 +192,11 @@ class JournalFactory
     Role.ensure_exists(Role::REVIEWER_REPORT_OWNER_ROLE, journal: @journal, participates_in: [Task]) do |role|
       role.ensure_permission_exists(
         :edit,
-        applies_to: TahiStandardTasks::ReviewerReportTask,
+        applies_to: ReviewerReportTask,
         states: Paper::REVIEWABLE_STATES
       )
 
-      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::ReviewerReportTask)
+      role.ensure_permission_exists(:view, applies_to: ReviewerReportTask)
       role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
@@ -256,7 +256,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Card)
 
       # The TitleAndAbstractTask is always editable, regardless of paper state.
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::TitleAndAbstractTask)
+      role.ensure_permission_exists(:edit, applies_to: TitleAndAbstractTask)
 
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
@@ -315,7 +315,7 @@ class JournalFactory
       end
 
       # The TitleAndAbstractTask is always editable, regardless of paper state.
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::TitleAndAbstractTask)
+      role.ensure_permission_exists(:edit, applies_to: TitleAndAbstractTask)
 
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
@@ -350,8 +350,8 @@ class JournalFactory
       # Handling editors cannot view, edit, or otherwise do anything on the
       # BillingTask, the ChangesForAuthorTask, or the PaperEditorTast
       task_klasses = STANDARD_TASKS - [
-        PlosBioTechCheck::ChangesForAuthorTask,
-        TahiStandardTasks::PaperEditorTask
+        ChangesForAuthorTask,
+        PaperEditorTask
       ]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
@@ -366,9 +366,9 @@ class JournalFactory
       # Of those editable tasks all but the TitleAndAstractTask can only be
       # modified if the Paper itself is editable.
       editable_task_klasses = task_klasses -
-        [TahiStandardTasks::ReviewerReportTask] -
-        TahiStandardTasks::ReviewerReportTask.descendants -
-        [TahiStandardTasks::TitleAndAbstractTask]
+        [ReviewerReportTask] -
+        ReviewerReportTask.descendants -
+        [TitleAndAbstractTask]
       editable_task_klasses.each do |klass|
         role.ensure_permission_exists(
           :edit,
@@ -378,7 +378,7 @@ class JournalFactory
       end
 
       # The TitleAndAbstractTask is always editable, regardless of paper state.
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::TitleAndAbstractTask)
+      role.ensure_permission_exists(:edit, applies_to: TitleAndAbstractTask)
 
       # Discussions
       role.ensure_permission_exists(:edit, applies_to: DiscussionTopic)
@@ -520,11 +520,11 @@ class JournalFactory
       # Changes For Author tasks. However, AEs can view all
       # ReviewerReportTask(s) and its descendants, but cannot edit them.
       task_klasses -= [
-        PlosBioTechCheck::ChangesForAuthorTask,
-        PlosBilling::BillingTask,
-        TahiStandardTasks::RegisterDecisionTask
+        ChangesForAuthorTask,
+        BillingTask,
+        RegisterDecisionTask
       ]
-      task_klasses += [TahiStandardTasks::ReviewerReportTask]
+      task_klasses += [ReviewerReportTask]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass)
       end
@@ -544,13 +544,13 @@ class JournalFactory
     Role.ensure_exists(Role::FREELANCE_EDITOR_ROLE, journal: @journal)
 
     Role.ensure_exists(Role::BILLING_ROLE, journal: @journal, participates_in: [Task]) do |role|
-      (STANDARD_TASKS + [PlosBilling::BillingTask]).each do |klass|
+      (STANDARD_TASKS + [BillingTask]).each do |klass|
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass)
       end
 
-      role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask)
+      role.ensure_permission_exists(:edit, applies_to: BillingTask)
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
       role.ensure_permission_exists(:view, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: CardVersion)

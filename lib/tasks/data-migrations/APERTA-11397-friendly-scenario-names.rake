@@ -20,13 +20,13 @@ namespace :data do
       # Remove module scopes
       # rubocop:disable Rails/SkipsModelValidations
       LetterTemplate
-        .where(scenario: 'TahiStandardTasks::RegisterDecisionScenario')
+        .where(scenario: 'RegisterDecisionScenario')
         .update_all(scenario: 'RegisterDecisionScenario')
       LetterTemplate
-        .where(scenario: 'TahiStandardTasks::PreprintDecisionScenario')
+        .where(scenario: 'PreprintDecisionScenario')
         .update_all(scenario: 'PreprintDecisionScenario')
       LetterTemplate
-        .where(scenario: 'TahiStandardTasks::PaperReviewerScenario')
+        .where(scenario: 'PaperReviewerScenario')
         .update_all(scenario: 'PaperReviewerScenario')
       # rubocop:enable Rails/SkipsModelValidations
 

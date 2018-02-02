@@ -919,19 +919,6 @@ ActiveRecord::Schema.define(version: 20180105161700) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "tahi_standard_tasks_funders", force: :cascade do |t|
-    t.string   "name"
-    t.string   "grant_number"
-    t.string   "website"
-    t.integer  "task_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "additional_comments"
-    t.integer  "card_version_id",     null: false
-  end
-
-  add_index "tahi_standard_tasks_funders", ["task_id"], name: "index_tahi_standard_tasks_funders_on_task_id", using: :btree
-
   create_table "task_templates", force: :cascade do |t|
     t.integer "journal_task_type_id"
     t.integer "phase_template_id"

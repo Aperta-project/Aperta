@@ -11,7 +11,7 @@ feature 'Initial Decision', js: true, sidekiq: :inline! do
       :initially_submitted_lite,
       task_params: {
         title: 'Initial Decision',
-        type: 'TahiStandardTasks::InitialDecisionTask'
+        type: 'InitialDecisionTask'
       }
   end
 
@@ -26,7 +26,7 @@ feature 'Initial Decision', js: true, sidekiq: :inline! do
         :with_integration_journal,
         task_params: {
           title: 'Initial Decision',
-          type: 'TahiStandardTasks::InitialDecisionTask'
+          type: 'InitialDecisionTask'
         }
     end
 
@@ -40,7 +40,7 @@ feature 'Initial Decision', js: true, sidekiq: :inline! do
 
   scenario 'Registers a decision on the paper' do
     text = 'Accepting this because I can'
-    expect(TahiStandardTasks::InitialDecisionMailer)
+    expect(InitialDecisionMailer)
       .to receive_message_chain(:delay, :notify)
     choose('Invite for full submission')
     wait_for_editors

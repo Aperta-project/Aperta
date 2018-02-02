@@ -5,7 +5,7 @@
 module CardConfiguration
   class BillingTask
     def self.name
-      "PlosBilling::BillingTask"
+      "BillingTask"
     end
 
     def self.title

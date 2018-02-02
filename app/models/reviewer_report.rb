@@ -96,7 +96,7 @@ class ReviewerReport < ActiveRecord::Base
              # note: this AR model does not yet exist, but
              # is being done as preparatory / consistency for
              # card config work
-             "TahiStandardTasks::FrontMatterReviewerReport"
+             "FrontMatterReviewerReport"
            end
     Card.find_by(name: name)
   end
@@ -161,7 +161,7 @@ class ReviewerReport < ActiveRecord::Base
   end
 
   def thank_reviewer
-    mailer = TahiStandardTasks::ReviewerMailer
+    mailer = ReviewerMailer
     case state
     when 'submitted'
       mailer.delay.thank_reviewer(reviewer_report_id: id)

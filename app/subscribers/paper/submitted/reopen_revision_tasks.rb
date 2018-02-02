@@ -4,10 +4,10 @@ class Paper::Submitted::ReopenRevisionTasks
   def self.call(_, event_data)
     paper = event_data[:record]
 
-    TahiStandardTasks::PaperReviewerTask
+    PaperReviewerTask
       .for_paper(paper)
       .each(&:incomplete!)
-    TahiStandardTasks::RegisterDecisionTask
+    RegisterDecisionTask
       .for_paper(paper)
       .each(&:incomplete!)
   end

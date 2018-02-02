@@ -55,7 +55,7 @@ feature 'Send to Apex task', js: true do
   end
 
   scenario 'User can send a paper to Send to Apex' do
-    export_delivery = TahiStandardTasks::ExportDelivery.where(paper_id: paper.id)
+    export_delivery = ExportDelivery.where(paper_id: paper.id)
     expect(export_delivery.count).to be 0
 
     overlay = Page.view_task_overlay(paper, task)

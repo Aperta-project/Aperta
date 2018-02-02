@@ -30,7 +30,7 @@ describe PlosBillingLogExportWorker do
 
   before do
     FactoryGirl.create(:billing_log_report)
-    CardLoader.load("PlosBilling::BillingTask")
+    CardLoader.load("BillingTask")
     paper.phases.first.tasks.concat(
       [
         billing_task,

@@ -66,7 +66,7 @@ class BillingLogReport < ActiveRecord::Base
   def accepted_papers_with_completed_billing_tasks
     Paper.accepted.joins(:tasks)
       .where(tasks: { completed: true,
-                      type: PlosBilling::BillingTask.sti_name })
+                      type: BillingTask.sti_name })
   end
 
   def billing_json(paper)

@@ -85,7 +85,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
   scenario 'A review can see their previous rounds of review' do
     # seed the Upload Manuscript card so that it can be created after a decision has been registered
-    ctt = CardTaskType.find_by(task_class: "TahiStandardTasks::UploadManuscriptTask")
+    ctt = CardTaskType.find_by(task_class: "UploadManuscriptTask")
     FactoryGirl.create(:card, :versioned, card_task_type: ctt)
 
     create_reviewer_invitation(paper)

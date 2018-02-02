@@ -2,7 +2,7 @@ namespace :data do
   namespace :migrate do
     desc 'Creates reviewer reports for every paper revision'
     task create_missing_reviewer_reports: :environment do
-      relevant_tasks = ['TahiStandardTasks::ReviewerReportTask', 'TahiStandardTasks::FrontMatterReviewerReportTask']
+      relevant_tasks = ['ReviewerReportTask', 'FrontMatterReviewerReportTask']
       task_count = Task.where(type: relevant_tasks).count
       puts("Task count: #{task_count}")
       reviewer_report_count = 0

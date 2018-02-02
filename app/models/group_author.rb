@@ -62,7 +62,7 @@ class GroupAuthor < ActiveRecord::Base
   end
 
   def task
-    Task.find_by(paper_id: paper_id, type: TahiStandardTasks::AuthorsTask.name)
+    Task.find_by(paper_id: paper_id, type: AuthorsTask.name)
   end
 
   def position=(position)

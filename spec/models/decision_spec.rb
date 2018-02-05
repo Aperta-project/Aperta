@@ -242,4 +242,17 @@ describe Decision do
       end
     end
   end
+
+  describe '#register!' do
+    let(:created_paper) { FactoryGirl.create :paper, :submitted_lite }
+    let(:task) { FactoryGirl.create(:reviewer_report_task, paper: created_paper) }
+    let(:reviewer_report) { FactoryGirl.create(:reviewer_report, task: task) }
+    it 'cancels asociated reviewer reports reminders' do
+      allow(reviewer_report).to receive(:review_duration_period).and_return(10)
+      reviewer_report.set_due_datetime
+      decision.reviewer_reports << reviewer_report
+      new_states = Array.new(3) { 'canceled' }
+      expect { decision.register!(task) }.to change { reviewer_report.scheduled_events.reload.map(&:state) }.to(new_states)
+    end
+  end
 end

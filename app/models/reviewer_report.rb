@@ -142,6 +142,10 @@ class ReviewerReport < ActiveRecord::Base
     admin_edits.active.present?
   end
 
+  def cancel_reminders
+    scheduled_events.cancelable.each(&:cancel!)
+  end
+
   private
 
   def set_submitted_at
@@ -168,9 +172,5 @@ class ReviewerReport < ActiveRecord::Base
     when 'review_pending'
       mailer.delay.welcome_reviewer(assignee_id: user.id, paper_id: paper.id)
     end
-  end
-
-  def cancel_reminders
-    scheduled_events.cancelable.each(&:cancel!)
   end
 end

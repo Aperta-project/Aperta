@@ -1,0 +1,46 @@
+& { 
+  margin: 10px 0;
+  .question-text, 
+  .content-text {
+        font-size: 16px;
+        line-height: 20px;
+  }
+  .option {
+    display: block;
+    margin-left: 2.7rem;
+    input {
+      margin: 0 5px;
+      vertical-align: -1px;
+    }
+    .card-content-radio-label {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+  textarea{
+    margin: 0.5em 0;
+    }
+  .card-radio {
+    .card-form-element {
+      margin-bottom:0;
+      }
+    .card-form-label {
+      display:inline;
+      font-size:14px;
+      font-weight:normal;
+      margin-left:5px;
+      }
+    }
+  .card-form-text-error {
+    p {
+      margin: 0;
+    }
+    .error-message {
+      margin-left:  0;
+      }
+    }
+    .card-form-text {
+      margin-bottom: 10px;
+      }
+}
+

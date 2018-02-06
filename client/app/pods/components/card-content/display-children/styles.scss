@@ -1,0 +1,16 @@
+& {
+    padding: 10px;
+    margin: 10px 0;
+    background: $aperta-grey-xlight;
+
+    p { margin: 0 0 10px 0; }
+
+    &.large-description-text-container {
+      .description {
+        margin-bottom: 10px;
+        font-size: 16px;
+        line-height: 20px;
+      }
+    }
+}
+

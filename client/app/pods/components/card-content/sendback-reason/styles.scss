@@ -1,4 +1,5 @@
-.card-content-sendback-reason {
+& {
+  .card-content-sendback-reason {
     .card-content-paragraph-input {
         margin-top: 0;
     }
@@ -11,13 +12,13 @@
 
     .fa-pencil {
         cursor: pointer;
-        margin-top: 30px;
     }
-}
+  }
 
-.sendback-reason-row {
-    display: flex;
-    .card-content-check-box {
-        margin-right: 5px;
-    }
+  .sendback-reason-row {
+      display: flex;
+      .card-content-check-box {
+          margin-right: 5px;
+      }
+  }
 }

@@ -58,6 +58,7 @@ class Decision < ActiveRecord::Base
               minor_version: paper.minor_version,
               registered_at: DateTime.now.utc
       originating_task.try(:after_register, self)
+      reviewer_reports.each(&:cancel_reminders)
     end
   end
 

@@ -206,16 +206,16 @@ describe Figure, redis: true do
   end
 
   describe '#title_from_filename' do
-    ["Figure 1.tiff", "figure 1.tiff", "fig. 1.tiff", "fig_1.tiff"].each do |filename|
-      it "returns 'Fig 1' when file is named #{filename}" do
-        expect(figure.file).to receive(:filename).and_return(filename)
+    ["Figure 1", "figure 1", "fig. 1", "fig_1", "fig+1", "fig#1", "foo/fig%231"].each do |filename|
+      it "returns 'Fig 1' when file is named #{filename}.tiff" do
+        expect(figure).to receive(:pending_url).twice.and_return("#{filename}.tiff")
         expect(figure.send(:title_from_filename)).to eq("Fig 1")
       end
     end
 
     ["1.tiff", "Figure.tiff", "Figure S1.tiff", "Figure ABC.tiff", "abc.tiff", "abc 1.tiff"].each do |filename|
       it "returns nil when file is named #{filename}" do
-        expect(figure.file).to receive(:filename).and_return(filename)
+        expect(figure).to receive(:pending_url).twice.and_return(filename)
         expect(figure.send(:title_from_filename)).to be_nil
       end
     end

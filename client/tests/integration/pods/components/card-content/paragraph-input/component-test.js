@@ -45,3 +45,15 @@ test('it displays error messages if present', function(assert){
   let text = 'Error class present on parent element';
   assert.ok(this.$('.card-content-paragraph-input').hasClass('has-error'), text);
 });
+
+test(`setting the value-type to text does not render a rich-text editor`, function(assert) {
+  this.set('content', Ember.Object.create({valueType: 'text', text: 'Some Text'}));
+  this.render(template);
+  assert.equal(0, window.tinymce.editors.length);
+});
+
+test(`setting the value-type to html renders the rich-text editor`, function(assert) {
+  this.set('content', Ember.Object.create({valueType: 'html', text: 'Some Text'}));
+  this.render(template);
+  assert.equal(1, window.tinymce.editors.length);
+});

@@ -71,20 +71,6 @@ test('it strips empty <p></p> tags from a pasted word text', function(assert) {
   });
 });
 
-test(`it doesn't send 'onContentsChanged' when contents don't change`, function(assert) {
-  assert.expect(0);
-  this.set('value', '<p>Old</p>');
-  this.set('changeStub', function(newVal) {
-    assert.equal(newVal, '<p>Old</p>', 'This should not be called');
-  });
-  this.render(hbs`{{rich-text-editor
-                  value=value
-                  onContentsChanged=(action changeStub)}}`);
-  let editor = window.tinymce.activeEditor;
-  editor.setContent('Old');
-  editor.target.triggerSave();
-});
-
 test(`it sends 'onContentsChanged' after keyed input`, function(assert) {
   assert.expect(1);
   this.set('value', '<p>Old</p>');

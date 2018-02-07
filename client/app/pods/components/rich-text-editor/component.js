@@ -163,20 +163,6 @@ export default Ember.Component.extend({
     let style = this.get('editorStyle') || 'expanded';
     let options = Object.assign({}, configs[style]);
     return this.configureCommon(options);
-  }),
+  })
 
-  // newValueCheck makes sure a model change has really occurred before triggering a save.
-  // TinyMCE fires ValueChanged when any input event happens inside of the editor. This
-  // will cut down on needlessly replaying the same data to rails.
-  newValueCheck(editorValue) {
-    const modelValue = this.get('value');
-
-    // This will be true for TinyMCE editors that have focus when meta keys are pressed, and on mouse clicks.
-    if (modelValue === editorValue) return;
-
-    // This will be true for TinyMCE on the first click into a blank editor.
-    if (Ember.isBlank(modelValue) && Ember.isBlank(editorValue)) return;
-
-    this.get('onNewValue')(editorValue);
-  }
 });

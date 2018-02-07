@@ -33,6 +33,11 @@ class Figure < Attachment
     insert_figures! if all_figures_done?
   end
 
+  def filename
+    # pending_url holds the actual URI encoded filename, Carrierwave mangles it something awful
+    pending_url ? URI.decode(pending_url.split('/').last.tr('+', ' ')) : super
+  end
+
   protected
 
   def build_title
@@ -44,7 +49,7 @@ class Figure < Attachment
 
   def title_from_filename
     title_rank_regex = /fig(ure)?[^[:alnum:]]*(?<label>\d+)/i
-    title_rank_regex.match(file.filename) do |match|
+    title_rank_regex.match(filename) do |match|
       return "Fig #{match['label']}"
     end
   end

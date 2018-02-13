@@ -1651,7 +1651,7 @@ figures = [  # 'frontend/assets/imgs/FIG1.TIF',
     'frontend/assets/imgs/snakebite_journal.pntd.0002302.g001.tiff',
     'frontend/assets/imgs/stripedshorecrab.eps',
     # 'frontend/assets/imgs/unuploadable_Fig_1.tif',
-    'frontend/assets/imgs/wild rhinos_journal.pone.0136643.g001.tiff',
+    'frontend/assets/imgs/wild_rhinos_journal.pone.0136643.g001.tiff',
 ]
 
 supporting_info_files = [

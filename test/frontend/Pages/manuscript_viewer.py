@@ -203,7 +203,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
                 logging.warning('No message displayed for conversion success or failure')
             if error_msg:
                 self.check_failed_conversion_text(status='unsubmitted')
-        self._wait_for_element(self._get(self._generic_task_item))
+        self._wait_for_element(self._get(self._generic_task_item), multiplier=1)
         current_url = self.get_current_url_without_args()
         logging.info(current_url)
         self.close_flash_message()

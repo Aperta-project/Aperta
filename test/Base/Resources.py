@@ -674,7 +674,6 @@ ascii_only_users = [creator_login1,
 
 editorial_users = [internal_editor_login,
                    staff_admin_login,
-                   super_admin_login,
                    prod_staff_login,
                    pub_svcs_login,
                    ]

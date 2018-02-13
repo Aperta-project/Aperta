@@ -262,18 +262,7 @@ class PaperTrackerPage(AuthenticatedPage):
 
     def validate_heading_and_subhead(self, username):
         """
-        Validating Main Heading - these have been removed as part of the
-        roles and permissions work. Not sure if they will be reintroduced
-        so leaving in place and commented out for now
-        #title = self._get(self._paper_tracker_title)
-        #self.validate_application_title_style(title)
-        # Validate Subhead
-        #subhead = self._get(self._paper_tracker_subhead)
-        # https://www.pivotaltracker.com/story/show/105230462
-        #assert application_typeface in subhead.value_of_css_property('font-family')
-        #assert subhead.value_of_css_property('font-size') == '18px'
-        #assert subhead.value_of_css_property('line-height') == '25.7167px'
-        #assert subhead.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+        Validating Main Heading
         """
 
         # Get total number of papers for users tracker

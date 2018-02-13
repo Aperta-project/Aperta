@@ -4,14 +4,14 @@
     display: inline-block;
     &:first-child { margin-left: 10px; }
   }
+}
 
-  .decision-label {
-    margin-right: 15px;
-    padding-left: 10px;
-    font-size: 20px;
-    font-weight: bold;
-    vertical-align: -4px;
-  }
+label.decision-label {
+  margin-right: 15px;
+  padding-left: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  vertical-align: -4px;
 }
 
 .register-decision-saving-cover {

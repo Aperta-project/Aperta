@@ -384,9 +384,9 @@ class ProfilePage(AuthenticatedPage):
         else:
             fn = os.getcwd() + '/frontend/assets/imgs/plos.gif'
         avatar_input.send_keys(fn)
-        # This stupid sleep keeps Firefox from puttin up the damn "Are you sure you want to leave
+        # This stupid sleep keeps Firefox from putting up the damn "Are you sure you want to leave
         #     the page dialog that causes a failure. I feel dirty.
-        time.sleep(1)
+        # time.sleep(1)
 
         # APERTA-8337
         # TODO: Figure out how to actually trigger the upload

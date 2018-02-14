@@ -6,36 +6,49 @@
       name=(concat role.name "-view")
       checked=(readonly viewAllowed)
       disabled=(readonly editAllowed)
-      action=(action "toggleViewPermission")}}
+      action=(action "togglePermission" "view")}}
 </td>
 <td class="centered">
   {{check-box
       name=(concat role.name "-edit")
       checked=(readonly editAllowed)
-      action=(action "toggleEditPermission")}}
+      action=(action "togglePermission" "edit")}}
 </td>
 <td class="centered">
   {{check-box
       name=(concat role.name "-discussion-view")
       checked=(readonly view_discussion_footerAllowed)
       disabled=(readonly edit_discussion_footerAllowed)
-      action=(action "toggleViewDiscussionFooterPermission")}}
+      action=(action "togglePermission" "view_discussion_footer")}}
 </td>
 <td class="centered">
   {{check-box
       name=(concat role.name "-discussion-edit")
       checked=(readonly edit_discussion_footerAllowed)
-      action=(action "toggleEditDiscussionFooterPermission")}}
+      action=(action "togglePermission" "edit_discussion_footer")}}
 </td>
 <td class="centered">
   {{check-box
       name=(concat role.name "-be_assigned")
       checked=(readonly be_assignedAllowed)
-      action=(action "toggleBeAssignedPermission")}}
+      action=(action "togglePermission" "be_assigned")}}
 </td>
 <td class="centered">
   {{check-box
       name=(concat role.name "-assign_others")
       checked=(readonly assign_othersAllowed)
-      action=(action "toggleAssignOthersAllowed")}}
+      action=(action "togglePermission" "assign_others")}}
+</td>
+<td class="centered">
+  {{check-box
+      name=(concat role.name "-view_participants")
+      checked=(readonly view_participantsAllowed)
+      disabled=(readonly manage_participantAllowed)
+      action=(action "togglePermission" "view_participants")}}
+</td>
+<td class="centered">
+  {{check-box
+      name=(concat role.name "-manage_participant")
+      checked=(readonly manage_participantAllowed)
+      action=(action "togglePermission" "manage_participant")}}
 </td>

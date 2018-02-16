@@ -119,7 +119,7 @@ class ApertaCNSTest(CommonTest):
             submission_review_overlay.validate_styles_and_components()
             ms_pdf_link = submission_review_overlay._get(
                     submission_review_overlay._review_ms_file_link)
-            ms_page.validate_manuscript_downloaded_file(ms_pdf_link, format='pdf')
+            ms_page.validate_manuscript_downloaded_file(ms_pdf_link, format_='pdf')
             submission_review_overlay.select_submit_or_edit_submission()
         else:
             logging.info("No Review Submission overlay for the manuscript")

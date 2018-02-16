@@ -624,15 +624,12 @@ class StyledPage(PlosPage):
             '{0} not found in {1}'.format(APPLICATION_TYPEFACE,
                                           title.value_of_css_property('font-family'))
         assert title.value_of_css_property('font-size') == font_size, \
-            '{0) is not equal to {1}'.format(title.value_of_css_property('font-size'), font_size)
-        assert title.value_of_css_property('font-weight') == font_weight, \
-            '{0) is not equal to {1}'.format(title.value_of_css_property('font-weight'),
-                                             font_weight)
+            '{0} is not equal to {1}'.format(title.value_of_css_property('font-size'), font_size)
         assert title.value_of_css_property('line-height') == line_height, \
-            '{0) is not equal to {1}'.format(title.value_of_css_property('line-height'),
+            '{0} is not equal to {1}'.format(title.value_of_css_property('line-height'),
                                              line_height)
         assert title.value_of_css_property('color') == color, \
-            '{0) is not equal to {1}'.format(title.value_of_css_property('color'), color)
+            '{0} is not equal to {1}'.format(title.value_of_css_property('color'), color)
 
     @staticmethod
     def validate_field_title_style(title):

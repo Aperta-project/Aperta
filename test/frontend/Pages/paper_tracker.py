@@ -237,7 +237,7 @@ class PaperTrackerPage(AuthenticatedPage):
         :return void function
         """
         large_result_set = False
-        total_count = self.validate_heading_and_subhead(username)[0]
+        total_count = self.get_paper_count_per_user(username)[0]
         logging.debug("Total count is {0}".format(total_count))
         initial_paginination = self._get(self._paper_tracker_pagination_summary)
         assert '{0} found'.format(total_count) in initial_paginination.text, \
@@ -260,20 +260,12 @@ class PaperTrackerPage(AuthenticatedPage):
             current_pagination = self._get(self._paper_tracker_pagination_summary)
             assert 'Page 1 of ' in current_pagination.text, current_pagination.text
 
-    def validate_heading_and_subhead(self, username):
+    def get_paper_count_per_user(self, username):
         """
-        Validating Main Heading - these have been removed as part of the
-        roles and permissions work. Not sure if they will be reintroduced
-        so leaving in place and commented out for now
-        #title = self._get(self._paper_tracker_title)
-        #self.validate_application_title_style(title)
-        # Validate Subhead
-        #subhead = self._get(self._paper_tracker_subhead)
-        # https://www.pivotaltracker.com/story/show/105230462
-        #assert application_typeface in subhead.value_of_css_property('font-family')
-        #assert subhead.value_of_css_property('font-size') == '18px'
-        #assert subhead.value_of_css_property('line-height') == '25.7167px'
-        #assert subhead.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+        Validating counts of papers presented in table upper and lower pagination by doing a
+        lookup on journals for a user then papers per journal.
+        :param username: The username of the user viewing the paper tracker page
+        :return total_count, journal_ids: total count of papers and journal_ids applicable to user
         """
 
         # Get total number of papers for users tracker

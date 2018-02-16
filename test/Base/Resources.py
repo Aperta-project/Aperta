@@ -674,7 +674,6 @@ ascii_only_users = [creator_login1,
 
 editorial_users = [internal_editor_login,
                    staff_admin_login,
-                   super_admin_login,
                    prod_staff_login,
                    pub_svcs_login,
                    ]
@@ -1250,7 +1249,6 @@ docxs = \
      'frontend/assets/docs/Word_Document_with_Inserted_Equation.docx',
      ]
 
-# Resources for future needs - we will be supporting pdf ingestion at some point
 pdfs = \
     [
         'frontend/assets/pdfs/ANATOMICAL_BRAIN_IMAGES_ALONE_CAN_ACCURATELY_DIAGNOSE_'
@@ -1327,8 +1325,6 @@ pdfs = \
         'frontend/assets/pdfs/Externally_Safe_Test.pdf',
         'frontend/assets/pdfs/Fecal_contamination_of_drinking-water_in_low_and_middle-income_'
         'countries_a_.pdf',
-        # The following two manuscripts are really unique in that they won't display/populate title
-        # and abstract
         'frontend/assets/pdfs/Fitness_costs_of_noise_in_biochemical_reaction_networks_and_the_'
         'evolutionary_edited.pdf',
         'frontend/assets/pdfs/Fitness_costs_of_noise_in_biochemical_reaction_networks_and_the_'
@@ -1651,7 +1647,7 @@ figures = [  # 'frontend/assets/imgs/FIG1.TIF',
     'frontend/assets/imgs/snakebite_journal.pntd.0002302.g001.tiff',
     'frontend/assets/imgs/stripedshorecrab.eps',
     # 'frontend/assets/imgs/unuploadable_Fig_1.tif',
-    'frontend/assets/imgs/wild rhinos_journal.pone.0136643.g001.tiff',
+    'frontend/assets/imgs/wild_rhinos_journal.pone.0136643.g001.tiff',
 ]
 
 supporting_info_files = [

@@ -5,6 +5,7 @@
 .geckodriver
 .idea/*
 .idea/inspectionProfiles/*
+.pytest_cache
 config/env.vagrant
 frontend/.cache
 frontent/Output/*.png

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Page Object Model for the Paper Editor Page. Validates global and dynamic elements and their styles
@@ -62,6 +62,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         self._task_headings = (By.CLASS_NAME, 'task-disclosure-heading')
         self._task_heading_status_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon')
         self._task_heading_completed_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon active')
+        self._task_headings_diff_mode = (By.CLASS_NAME, 'card-title')
         # Main Toolbar items
         self._tb_versions_link = (By.ID, 'nav-versions')
         self._tb_versions_diff_div = (By.CSS_SELECTOR, 'div.html-diff')
@@ -203,7 +204,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
                 logging.warning('No message displayed for conversion success or failure')
             if error_msg:
                 self.check_failed_conversion_text(status='unsubmitted')
-        self._wait_for_element(self._get(self._generic_task_item))
+        self._wait_for_element(self._get(self._generic_task_item), multiplier=1)
         current_url = self.get_current_url_without_args()
         logging.info(current_url)
         self.close_flash_message()
@@ -565,7 +566,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
         raise ElementDoesNotExistAssertionError('This task is not present')
 
-    def click_task(self, task_name):
+    def click_task(self, task_name, diff_mode=False):
         """
         Click a task title
         NOTE: this covers only the author facing tasks, with the exception of initial_decision
@@ -575,15 +576,20 @@ class ManuscriptViewerPage(AuthenticatedPage):
             support both the manuscript and workflow contexts while we transition.
         :param task_name: A string with the name of the task to click, like 'Cover Letter'
             or 'Billing'
+        :param diff_mode: boolean indicating if the paper viewer is in diff mode when attempting
+            call
         :return: True or False, if taskname is unknown.
         """
-        tasks = self._gets(self._task_headings)
+        if not diff_mode:
+            tasks = self._gets(self._task_headings)
+        else:
+            tasks = self._gets(self._task_headings_diff_mode)
         self._scroll_into_view(self._get(self._task_headings))
         for task in tasks:
             if task_name.lower() in task.text.lower():
                 self._scroll_into_view(task)
                 self._actions.move_to_element(task).perform()
-                task.click()
+                self.click_covered_element(task)
                 return True
         logging.info('Unknown Task')
         return False
@@ -843,7 +849,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
                 self._wait_for_element(self._get(self._review_overlay_submit_button), multiplier=2)
                 self._get(self._review_overlay_submit_button).click()
 
-    def is_preprint_on(self) -> bool:
+    @staticmethod
+    def is_preprint_on() -> bool:
         """
         A method that will determine for mmt if the pre-print feature flag is ON
         :return: True if preprint feature flag is ON, otherwise False
@@ -927,10 +934,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
         """Click on dashboard link"""
         self._get(self._nav_aperta_dashboard_link).click()
 
-    def click_your_manuscript_link(self):
-        """Click on Your Manuscripts link"""
-        self._get(self._your_manuscripts_link).click()
-
     def go_to_dashboard(self, item=''):
         """
         Go to the dashboard
@@ -938,7 +941,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
                      'your_manuscripts' for Your Manuscripts link)
         """
         dashboard = {'aperta': self._nav_aperta_dashboard_link,
-                     'your_manuscripts': self._your_manuscripts_link}
+                     'your_manuscripts': self._nav_your_manuscripts_link}
         if item:
             self._get(dashboard[item]).click()
         else:
@@ -949,13 +952,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
         """Get the infobox element"""
         return self._get(self._infobox)
 
-    def validate_infobox(self, format):
+    def validate_infobox(self, format_):
         self.set_timeout(1)
         # APERTA-11669: No flash messages on creation of manuscript via pdf
         # closing flash message for word files also closes the infobox,
         #     we have to close the infobox explicitly for pdf
         # TODO: remove next 3 lines once APERTA-11669 gets resolved
-        if format == 'pdf':
+        if format_ == 'pdf':
             logging.info('Format is PDF -  must close infobox.')
             self.close_infobox()
         else:
@@ -1146,9 +1149,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
         short_doi = self.get_short_doi()
         versions = []
         results = PgSQL().query(
-            "select id,major_version,minor_version,created_at,paper_id,file_type from "
-            "versioned_texts where paper_id = (SELECT ID from papers "
-            "where short_doi = '{0}') order by id DESC;".format(short_doi))
+            "SELECT id, major_version, minor_version, created_at, paper_id, file_type "
+            "FROM versioned_texts WHERE paper_id = (SELECT ID FROM papers "
+            "WHERE short_doi = '{0}') ORDER BY id DESC;".format(short_doi))
         for version in results:
             if version[1] is None:
                 version_number = 'draft'
@@ -1239,19 +1242,19 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
         self._get(self._download_drawer_close_btn).click()
 
-    def validate_manuscript_downloaded_file(self, download_link_el,
-                                            format='pdf'):
+    @staticmethod
+    def validate_manuscript_downloaded_file(download_link_el, format_='pdf'):
         """
         validate_manuscript_downloaded_file: Validates if the manuscript
         download was successful
         :param: download_link_el: The element to click to start the download
-        :param: format: The format of the manuscript to be downloaded
+        :param: format_: The format of the manuscript to be downloaded
         :return: void function
         """
         original_dir = os.getcwd()
         download_link_el.click()
         # Longer sleep for PDF generation
-        if format == 'pdf':
+        if format_ == 'pdf':
             time.sleep(15)
         else:
             time.sleep(5)
@@ -1274,9 +1277,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
             logging.debug(newest_file.split('.')[-1])
         logging.debug(newest_file)
 
-        pdf_valid = False
         try:
-            if format == 'pdf':
+            if format_ == 'pdf':
                 logging.info('PDF to validate: {0}'.format(newest_file))
                 pdf_valid = PdfUtil.validate_pdf(newest_file)
             else:
@@ -1290,7 +1292,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
             logging.error('PDF file: {0} is invalid'.format(newest_file))
             raise ('Invalid PDF generated for {0}'.format(newest_file))
 
-    def validate_version_download_link(self, version_data, link, link_format):
+    @staticmethod
+    def validate_version_download_link(version_data, link, link_format):
         """
         validate_version_download_link: Validates the download link url for a manuscript version
         :param version_data: The version data object. Object
@@ -1338,7 +1341,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
                 self.validate_version_download_link(version_data,
                                                     word_link.get_attribute('href'),
                                                     'doc')
-                self.validate_manuscript_downloaded_file(word_link, format='word')
+                self.validate_manuscript_downloaded_file(word_link, format_='word')
 
             logging.info('Validating pdf format file for version {0}'.format(
                     item_version_name))

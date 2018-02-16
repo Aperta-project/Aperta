@@ -208,8 +208,9 @@ class FinancialDisclosureTask(BaseTask):
                                      'manuscript.')
         self.pause_to_save()
         # Have to grab the summary anew to avoid a stale reference exception
+        fun_summary_div = self._get(self._funder_summary_div)
         fun_summary = fun_summary_div.find_element(*self._funder_summary_statement)
-        # The one thing that *should* change with the subform Yes selection/entering a role is
+        # The one thing that *should* change with the sub-form Yes selection/entering a role is
         #     the fun_summary text should reflect the entered text
         assert fun_summary.text == '[funder name]\nThe funder washed my bicycle while I worked ' \
                                    'on this manuscript.', fun_summary.text

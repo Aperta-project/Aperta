@@ -56,7 +56,7 @@ class ApertaCNSTest(CommonTest):
         title = manuscript_page.get_paper_title_from_page()
         logging.info(u'Paper page title is: {0}'.format(title))
 
-    def rest_core_validate_pp_submission_with_review_overlay(self):
+    def test_core_validate_pp_submission_with_review_overlay(self):
         """
         test_cns:
         1. Validates Creating a new document with the preprint overlay in the create sequence.

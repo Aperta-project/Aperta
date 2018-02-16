@@ -580,7 +580,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
             call
         :return: True or False, if taskname is unknown.
         """
-        time.sleep(3)
         if not diff_mode:
             tasks = self._gets(self._task_headings)
         else:

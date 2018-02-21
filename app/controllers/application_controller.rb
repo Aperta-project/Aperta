@@ -15,6 +15,8 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :store_location_for_login_redirect, unless: :devise_controller?
 
+  after_action :audit_data_security
+
   rescue_from ActiveRecord::RecordInvalid, with: :render_errors
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
@@ -33,6 +35,21 @@ class ApplicationController < ActionController::Base
   rescue_from AssertionError, with: :render_assertion_error
 
   protected
+
+  def audit_data_security
+    return unless request.format.json?
+
+    SecurityAudit.create(
+      user: current_user,
+      controller: controller_name,
+      action: action_name,
+      format: request.format,
+      path: request.path,
+      params: params.inspect,
+      status: response.status,
+      payload: response.body
+    )
+  end
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up).concat %i(first_name last_name email username)

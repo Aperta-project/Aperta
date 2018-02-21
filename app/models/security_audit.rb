@@ -1,6 +1,6 @@
 class SecurityAudit < ActiveRecord::Base
   DB_PARAMS = YAML.load_file(Rails.root.join('config', 'database.yml'))
-  establish_connection DB_PARAMS['security']
+  establish_connection DB_PARAMS['development']
 
   belongs_to :user
 

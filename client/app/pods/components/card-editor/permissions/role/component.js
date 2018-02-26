@@ -18,21 +18,15 @@ export default Ember.Component.extend({
   edit_discussion_footerAllowed: permissionExists('card', 'role', 'edit_discussion_footer'),
   be_assignedAllowed: permissionExists('card', 'role', 'be_assigned'),
   assign_othersAllowed: permissionExists('card', 'role', 'assign_others'),
-
-  togglePermission(permissionAction) {
-    if (this.get(`${permissionAction}Allowed`)) {
-      this.get('turnOffPermission')(this.get('role'), this.get('card'), permissionAction);
-    } else {
-      this.get('turnOnPermission')(this.get('role'), this.get('card'), permissionAction);
-    }
-  },
-
+  view_participantsAllowed: permissionExists('card', 'role', 'view_participants'),
+  manage_participantAllowed: permissionExists('card', 'role', 'manage_participant'),
   actions: {
-    toggleViewPermission() { this.togglePermission('view'); },
-    toggleEditPermission() { this.togglePermission('edit'); },
-    toggleViewDiscussionFooterPermission() { this.togglePermission('view_discussion_footer'); },
-    toggleEditDiscussionFooterPermission() { this.togglePermission('edit_discussion_footer'); },
-    toggleBeAssignedPermission() { this.togglePermission('be_assigned'); },
-    toggleAssignOthersAllowed() { this.togglePermission('assign_others'); }
+    togglePermission(permissionAction) {
+      if (this.get(`${permissionAction}Allowed`)) {
+        this.get('turnOffPermission')(this.get('role'), this.get('card'), permissionAction);
+      } else {
+        this.get('turnOnPermission')(this.get('role'), this.get('card'), permissionAction);
+      }
+    }
   }
 });

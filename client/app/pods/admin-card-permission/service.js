@@ -15,13 +15,14 @@ export default Ember.Service.extend({
    * @return {Ember.Array.<CardPermission>} All permissions that were modified
    */
 
-  editPermissions: ['edit', 'edit_discussion_footer', 'assign_others', 'be_assigned'],
+  editPermissions: ['edit', 'edit_discussion_footer', 'assign_others', 'be_assigned', 'manage_participant'],
 
   correspondingActions: {
     'edit': ['view'],
     'be_assigned': ['view', 'edit'],
     'assign_others': ['view', 'edit'],
-    'edit_discussion_footer': ['view_discussion_footer']
+    'edit_discussion_footer': ['view_discussion_footer'],
+    'manage_participant': ['view_participants']
   },
 
   addRoleToPermissionSensible(role, filterByCardId, permissionAction) {

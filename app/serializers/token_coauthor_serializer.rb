@@ -1,4 +1,4 @@
-class TokenCoauthorSerializer < ActiveModel::Serializer
+class TokenCoauthorSerializer < AuthzSerializer
   attributes :id, :created_at, :confirmation_state, :paper_title, :coauthors, :journal_logo_url
 
   def id
@@ -21,5 +21,12 @@ class TokenCoauthorSerializer < ActiveModel::Serializer
 
   def journal_logo_url
     object.paper.journal.logo_url
+  end
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

@@ -1,4 +1,4 @@
-class CardContentAsNestedQuestionSerializer < ActiveModel::Serializer
+class CardContentAsNestedQuestionSerializer < AuthzSerializer
   root :nested_question
   attributes :id, :parent_id, :text, :ident, :value_type, :owner, :position
 
@@ -11,5 +11,12 @@ class CardContentAsNestedQuestionSerializer < ActiveModel::Serializer
   # Previously used for ordering. Now we just use lft
   def position
     object.lft
+  end
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

@@ -1,7 +1,7 @@
 # The CardSerializer is only used in an admin context at the moment. All of the
 # card content for the latest version of the given card is serialized down as a
 # single nested structure
-class CardSerializer < ActiveModel::Serializer
+class CardSerializer < AuthzSerializer
   attributes :id, :name, :journal_id, :xml, :state, :addable, :workflow_only
   has_one :content, embed: :id
   has_many :card_versions, embed: :ids
@@ -45,5 +45,12 @@ class CardSerializer < ActiveModel::Serializer
 
   def latest_contents
     @latest_contents ||= object.content_root_for_version(:latest).preload_descendants
+  end
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

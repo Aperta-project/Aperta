@@ -1,4 +1,4 @@
-class InvitationSerializer < ActiveModel::Serializer
+class InvitationSerializer < AuthzSerializer
   attributes :id,
              :body,
              :created_at,
@@ -31,5 +31,12 @@ class InvitationSerializer < ActiveModel::Serializer
 
   def reviewer_report
     ReviewerReport.for_invitation(object)
+  end
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

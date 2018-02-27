@@ -1,5 +1,5 @@
 # Serializer for Roles and Permissions
-class PermissionsSerializer < ActiveModel::Serializer
+class PermissionsSerializer < AuthzSerializer
   def serializable_hash
     object.to_h.merge(id: id).as_json
   end
@@ -16,5 +16,12 @@ class PermissionsSerializer < ActiveModel::Serializer
   # of a fake id.
   def id
     1
+  end
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

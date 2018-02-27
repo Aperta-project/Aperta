@@ -1,4 +1,4 @@
-class AdminJournalSerializer < ActiveModel::Serializer
+class AdminJournalSerializer < AuthzSerializer
   attributes :id,
     :name,
     :logo_url,
@@ -47,5 +47,12 @@ class AdminJournalSerializer < ActiveModel::Serializer
 
   def letter_template_scenarios
     TemplateContext.scenarios.map { |name, klass| { name: name, merge_fields: klass.merge_fields } }
+  end
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

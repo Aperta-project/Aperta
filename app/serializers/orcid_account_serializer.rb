@@ -1,4 +1,4 @@
-class OrcidAccountSerializer < ActiveModel::Serializer
+class OrcidAccountSerializer < AuthzSerializer
   attributes :id,
     :identifier,
     :name,
@@ -27,5 +27,10 @@ class OrcidAccountSerializer < ActiveModel::Serializer
 
   def orcid_connect_enabled
     TahiEnv.orcid_connect_enabled?
+  end
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

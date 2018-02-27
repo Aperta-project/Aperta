@@ -1,5 +1,5 @@
 # Sends Answers to the frontend in the same shape as NestedQuestionAnswers
-class AnswerAsNestedQuestionAnswerSerializer < ActiveModel::Serializer
+class AnswerAsNestedQuestionAnswerSerializer < AuthzSerializer
   root :nested_question_answer
   attributes :id, :value_type, :value, :owner, :nested_question_id
   has_many :attachments, embed: :ids, include: true, root: :question_attachments
@@ -27,5 +27,12 @@ class AnswerAsNestedQuestionAnswerSerializer < ActiveModel::Serializer
 
   def can_see_active_edit?
     object.owner.active_admin_edit? && current_user.can?(:edit_answers, object.owner.paper)
+  end
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

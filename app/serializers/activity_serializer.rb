@@ -1,4 +1,4 @@
-class ActivitySerializer < ActiveModel::Serializer
+class ActivitySerializer < AuthzSerializer
   has_one :user, include: false, embed: :id
 
   attributes :message,
@@ -20,5 +20,12 @@ class ActivitySerializer < ActiveModel::Serializer
     else
       AvatarUploader::DEFAULT_URL
     end
+  end
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

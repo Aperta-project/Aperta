@@ -1,4 +1,4 @@
-class DueDatetimeSerializer < ActiveModel::Serializer
+class DueDatetimeSerializer < AuthzSerializer
   attributes :id, :due_at, :reviewer_report_id
 
   has_many :scheduled_events, embed: :ids, include: true
@@ -8,5 +8,12 @@ class DueDatetimeSerializer < ActiveModel::Serializer
   # going to trick ember into thinking it's a non-polymorphic relationship
   def reviewer_report_id
     object.due_id
+  end
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

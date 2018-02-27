@@ -1,6 +1,6 @@
 # Serializes properties for Ember
 # rubocop:disable Style/PredicateName
-class TaskSerializer < ActiveModel::Serializer
+class TaskSerializer < AuthzSerializer
   attributes :id,
              :assigned_to_me,
              :body,
@@ -75,5 +75,12 @@ class TaskSerializer < ActiveModel::Serializer
       nested_question_answers: task_nested_question_answers_path(object),
       snapshots: task_snapshots_path(object)
     }
+  end
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

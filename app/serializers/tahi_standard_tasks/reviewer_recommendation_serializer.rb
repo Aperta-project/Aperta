@@ -1,5 +1,5 @@
 module TahiStandardTasks
-  class ReviewerRecommendationSerializer < ActiveModel::Serializer
+  class ReviewerRecommendationSerializer < AuthzSerializer
     include CardContentShim
     attributes :id,
                :first_name,
@@ -19,5 +19,12 @@ module TahiStandardTasks
     def can_view?
       true
     end
+  end
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

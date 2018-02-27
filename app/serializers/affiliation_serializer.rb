@@ -1,4 +1,4 @@
-class AffiliationSerializer < ActiveModel::Serializer
+class AffiliationSerializer < AuthzSerializer
   has_one :user, include: true, embed: :id
   attributes :id,
     :name,
@@ -8,4 +8,11 @@ class AffiliationSerializer < ActiveModel::Serializer
     :department,
     :title,
     :country
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
+  end
 end

@@ -1,5 +1,5 @@
 # nodoc #
-class AuthorSerializer < ActiveModel::Serializer
+class AuthorSerializer < AuthzSerializer
   include CardContentShim
 
   attributes :affiliation, :author_initial, :department,
@@ -10,4 +10,11 @@ class AuthorSerializer < ActiveModel::Serializer
     :current_address_country, :current_address_postal
 
   has_one :user, serializer: UserSerializer, embed: :ids, include: true
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
+  end
 end

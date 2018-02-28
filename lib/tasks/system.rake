@@ -1,5 +1,6 @@
 namespace :system do
   USER_DEFAULT_PASSWORD = 'password'.freeze
+  USER_DEFAULT_EMAIL = 'admin@example.com'.freeze
 
   def truncate(table_name)
     ActiveRecord::Base.connection.execute("truncate #{table_name} cascade")
@@ -12,13 +13,26 @@ namespace :system do
       # exit(1)
     end
 
+    puts 'Migrating schema'
     Rake::Task['db:migrate'].invoke
+
+    puts 'Loading schema'
     Rake::Task['db:schema:load'].invoke
 
+    puts 'Initializing system'
     System.init
 
+    puts 'Creating initial admin user'
     Rake::Task['system:user'].invoke
+
+    puts 'Creating sample journal'
     Rake::Task['system:journal'].invoke
+
+    puts 'Creating default roles and permissions'
+    Rake::Task['roles-and-permissions:seed'].invoke
+
+    puts 'Assigning site admin role'
+    Rake::Task['roles-and-permissions:assign_site_admin'].invoke("email=#{USER_DEFAULT_EMAIL}")
 
     def seed_data
       path = Rails.root.join('db', 'data.yml')
@@ -35,28 +49,28 @@ namespace :system do
       result
     end
 
-    puts seed_data.inspect
+    # puts seed_data.inspect
   end
 
   desc 'Create the initial site admin user'
   task user: :environment do
     puts "Creating initial user"
-    # truncate('users')
+    truncate('users')
 
     User.create!(
       username: 'admin',
       first_name: 'Adam',
       last_name: 'Administrator',
-      email: 'admin@example.com',
+      email: USER_DEFAULT_EMAIL,
       password: USER_DEFAULT_PASSWORD,
       password_confirmation: USER_DEFAULT_PASSWORD,
     )
+
   end
 
   desc 'Create the initial sample journal'
   task journal: :environment do
-    puts "Creating sample journal"
-    # truncate('journals')
+    truncate('journals')
 
     JournalFactory.create(
       name: 'The Journal of Samples',

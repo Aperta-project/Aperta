@@ -8,4 +8,12 @@
 # come into play based on the kinds of assignments that will take part in.
 #
 class System < ActiveRecord::Base
+
+  def self.initialized?
+    exists?
+  end
+
+  def self.init
+    first_or_create!(description: 'The singleton system record represents the application.')
+  end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180105161700) do
+ActiveRecord::Schema.define(version: 20180220183823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -852,6 +852,21 @@ ActiveRecord::Schema.define(version: 20180105161700) do
   end
 
   add_index "scheduled_events", ["due_datetime_id"], name: "index_scheduled_events_on_due_datetime_id", using: :btree
+
+  create_table "security_audits", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "status"
+    t.string   "controller"
+    t.string   "action"
+    t.string   "format"
+    t.text     "path"
+    t.text     "params"
+    t.text     "key_names"
+    t.text     "data_types"
+    t.json     "payload"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "setting_templates", force: :cascade do |t|
     t.string  "key"

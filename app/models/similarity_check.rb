@@ -4,6 +4,7 @@
 # should avoid making more than one request per paper.
 #
 class SimilarityCheck < ActiveRecord::Base
+  include ViewableModel
   class IncorrectState < StandardError; end
 
   include EventStream::Notifiable

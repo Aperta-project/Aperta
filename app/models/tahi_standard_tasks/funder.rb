@@ -8,6 +8,7 @@ module TahiStandardTasks
     # production this line can be removed
     self.table_name = 'tahi_standard_tasks_funders'
     include Answerable
+    include ViewableModel
 
     belongs_to :task, foreign_key: :task_id
 

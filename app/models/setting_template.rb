@@ -16,6 +16,7 @@
 # will be associated to a specific journal. Initially we're only using global
 # settings.
 class SettingTemplate < ActiveRecord::Base
+  include ViewableModel
   # For a SettingTemplate the 'value' is really the default value the Setting
   # should take, but the extra specificity didn't seem worth having to discard
   # the mixin.

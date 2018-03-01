@@ -6,6 +6,8 @@
 class CardContent < ActiveRecord::Base
   include Attributable
   include XmlSerializable
+  include ViewableModel
+
   attr_writer :quick_children
 
   acts_as_nested_set

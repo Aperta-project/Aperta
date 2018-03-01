@@ -3,6 +3,7 @@ class Invitation < ActiveRecord::Base
   include AASM
   include Tokenable
   include CustomCastTypes
+  include ViewableModel
 
   attribute :body, HtmlString.new
   attribute :decline_reason, HtmlString.new

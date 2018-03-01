@@ -1,6 +1,7 @@
 # This class handles concerns about validations of Answers tied to
 # Card Content
 class CardContentValidation < ActiveRecord::Base
+  include ViewableModel
   belongs_to :card_content
 
   def validate_answer(answer)

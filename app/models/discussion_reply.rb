@@ -1,4 +1,5 @@
 class DiscussionReply < ActiveRecord::Base
+  include ViewableModel
   include ActionView::Helpers::TextHelper
   include EventStream::Notifiable
   include CustomCastTypes

@@ -1,5 +1,6 @@
 # Record of an admin editing someone else's content, e.g., reviewer reports
 class AdminEdit < ActiveRecord::Base
+  include ViewableModel
   belongs_to :reviewer_report
   belongs_to :user
 

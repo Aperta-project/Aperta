@@ -3,6 +3,7 @@
 # an array of possible values it could take when it's linked to a
 # SettingTemplate (as all settings in our system will be for the time being)
 class Setting < ActiveRecord::Base
+  include ViewableModel
   include SettingValues
 
   belongs_to :owner, polymorphic: true

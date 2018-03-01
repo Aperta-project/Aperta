@@ -7,6 +7,7 @@
 # Will return an array of hashes
 #
 class ReferenceJson < ActiveRecord::Base
+  include ViewableModel
   def self.institutional_accounts
     find_by(name: 'Institutional Account List')
   end

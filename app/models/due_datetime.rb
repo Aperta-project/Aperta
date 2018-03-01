@@ -31,6 +31,7 @@
 # relevant to display the original date in the UI.
 #
 class DueDatetime < ActiveRecord::Base
+  include ViewableModel
   belongs_to :due, polymorphic: true
 
   has_many :scheduled_events

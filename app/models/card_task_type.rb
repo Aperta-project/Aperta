@@ -3,6 +3,7 @@
 # Users can assign a CardType to a Card when creating a new Card in the
 # admin screen.
 class CardTaskType < ActiveRecord::Base
+  include ViewableModel
   validates :display_name, presence: true
   validates :task_class, presence: true
 

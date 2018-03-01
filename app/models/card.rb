@@ -1,5 +1,6 @@
 # Card is a container for CardContents
 class Card < ActiveRecord::Base
+  include ViewableModel
   include EventStream::Notifiable
   include CustomCardVisitors
   include XmlSerializable

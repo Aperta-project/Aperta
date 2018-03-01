@@ -1,4 +1,5 @@
 class CommentLook < ActiveRecord::Base
+  include ViewableModel
   include EventStream::Notifiable
 
   belongs_to :comment, inverse_of: :comment_looks

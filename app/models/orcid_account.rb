@@ -1,4 +1,5 @@
 class OrcidAccount < ActiveRecord::Base
+  include ViewableModel
   include EventStream::Notifiable
   include UrlBuilder
 

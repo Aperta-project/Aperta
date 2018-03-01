@@ -1,6 +1,7 @@
 # TaskTemplate gets consumed by the PaperFactory to create a task
 # when a paper is first created
 class TaskTemplate < ActiveRecord::Base
+  include ViewableModel
   include Configurable
 
   belongs_to :phase_template, inverse_of: :task_templates

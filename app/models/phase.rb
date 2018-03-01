@@ -1,4 +1,5 @@
 class Phase < ActiveRecord::Base
+  include ViewableModel
   has_many :tasks, inverse_of: :phase, dependent: :destroy
   belongs_to :paper, inverse_of: :phases
   has_one :journal, through: :paper

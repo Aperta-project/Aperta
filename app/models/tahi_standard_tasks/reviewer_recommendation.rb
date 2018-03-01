@@ -1,6 +1,7 @@
 module TahiStandardTasks
   class ReviewerRecommendation < ActiveRecord::Base
     include Answerable
+    include ViewableModel
 
     belongs_to :reviewer_recommendations_task
 

@@ -1,4 +1,5 @@
 class ManuscriptManagerTemplate < ActiveRecord::Base
+  include ViewableModel
   belongs_to :journal, inverse_of: :manuscript_manager_templates
   has_many :phase_templates, -> { order("position asc") },
                                 inverse_of: :manuscript_manager_template,

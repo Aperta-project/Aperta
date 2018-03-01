@@ -5,6 +5,7 @@
 #
 # The same applies for paper/number combinations
 class ReviewerNumber < ActiveRecord::Base
+  include ViewableModel
   belongs_to :paper
   belongs_to :user
 

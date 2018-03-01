@@ -1,5 +1,6 @@
 # Manuscript author model
 class Author < ActiveRecord::Base
+  include ViewableModel
   include Answerable
   include EventStream::Notifiable
   include Tokenable

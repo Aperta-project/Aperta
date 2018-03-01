@@ -3,6 +3,7 @@
 # CardContent.
 #
 class Answer < ActiveRecord::Base
+  include ViewableModel
   include Readyable
 
   belongs_to :card_content

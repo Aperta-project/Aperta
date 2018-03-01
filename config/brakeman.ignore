@@ -1,6 +1,45 @@
 {
   "ignored_warnings": [
     {
+      "warning_type": "Redirect",
+      "warning_code": 18,
+      "fingerprint": "16afc909540c267619649f2a3375e23c9068fcb6b2825d28582b8565929d9e29",
+      "check_name": "Redirect",
+      "message": "Possible unprotected redirect",
+      "file": "app/controllers/similarity_checks_controller.rb",
+      "line": 43,
+      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
+      "code": "redirect_to((SimilarityCheck.find(params.require(:id)).report_view_only_url or :back))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "SimilarityChecksController",
+        "method": "report_view_only"
+      },
+      "user_input": "SimilarityCheck.find(params.require(:id)).report_view_only_url",
+      "confidence": "High",
+      "note": "APERTA-12462"
+    },
+    {
+      "warning_type": "Cross-Site Request Forgery",
+      "warning_code": 86,
+      "fingerprint": "203ff193d4a23203c4ede561ad887e971258642a5b7a58e2e28a1d7d4043cb26",
+      "check_name": "ForgerySetting",
+      "message": "protect_from_forgery should be configured with 'with: :exception'",
+      "file": "app/controllers/application_controller.rb",
+      "line": 8,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_request_forgery/",
+      "code": "protect_from_forgery(:with => :reset_session)",
+      "render_path": null,
+      "location": {
+        "type": "controller",
+        "controller": "ApplicationController"
+      },
+      "user_input": null,
+      "confidence": "Medium",
+      "note": "APERTA-12459"
+    },
+    {
       "warning_type": "SQL Injection",
       "warning_code": 0,
       "fingerprint": "4523c398ebfab1faf00cc9eb4705f4ae1da0c39b0648e499eb90bfa98bf19b66",
@@ -119,8 +158,28 @@
       "user_input": "column",
       "confidence": "Weak",
       "note": "Input sanitized via column, order_dir methods"
+    },
+    {
+      "warning_type": "Redirect",
+      "warning_code": 18,
+      "fingerprint": "dca44e869b037884f1ccf080bebb28cbbea583b814ee55d44030f796ef262997",
+      "check_name": "Redirect",
+      "message": "Possible unprotected redirect",
+      "file": "app/controllers/resource_proxy_controller.rb",
+      "line": 13,
+      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
+      "code": "redirect_to(resource.url(params[:version]))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ResourceProxyController",
+        "method": "url"
+      },
+      "user_input": "params[:version]",
+      "confidence": "Weak",
+      "note": "APERTA-12462"
     }
   ],
-  "updated": "2018-01-16 11:49:29 -0800",
+  "updated": "2018-03-01 13:35:05 -0800",
   "brakeman_version": "4.1.1"
 }

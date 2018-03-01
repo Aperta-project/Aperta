@@ -15,12 +15,21 @@ module AuthorizationsControllerHelper
     rescue_from NotFoundError, with: :not_found
   end
 
+  def requires_that(not_found: false)
+    return if yield
+    raise NotFoundError if not_found
+    raise AuthorizationError
+  end
+
   def requires_user_can(permission, object, not_found: false)
-    return if current_user.can?(permission, object)
-    if not_found
-      raise NotFoundError
-    else
-      raise AuthorizationError
+    requires_that(not_found: not_found) do
+      current_user.can?(permission, object)
+    end
+  end
+
+  def requires_user_can_view(object, not_found: false)
+    requires_that(not_found: not_found) do
+      object.user_can_view?(current_user)
     end
   end
 

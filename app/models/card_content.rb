@@ -4,6 +4,7 @@
 # text, or widgets (developer-created chunks of functionality with
 # user-configured behavior)
 class CardContent < ActiveRecord::Base
+  include ViewableModel
   include Attributable
   include XmlSerializable
   include ViewableModel

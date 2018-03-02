@@ -13,6 +13,11 @@ class Activity < ActiveRecord::Base
     where(feed_name: feed_names, subject: subject).order('created_at DESC')
   end
 
+  def user_can_view?(my_user)
+    return true if my_user.can?(:manage_workflow, subject)
+    feed_name == 'manuscript' && my_user.can?(:view_recent_activity, subject)
+  end
+
   def self.for_paper_workflow(subject)
     where(
       subject_type: 'Correspondence',

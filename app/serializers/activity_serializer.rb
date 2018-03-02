@@ -21,11 +21,4 @@ class ActivitySerializer < AuthzSerializer
       AvatarUploader::DEFAULT_URL
     end
   end
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

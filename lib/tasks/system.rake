@@ -33,6 +33,7 @@ namespace :system do
 
     puts 'Assigning site admin role'
     Rake::Task['roles-and-permissions:assign_site_admin'].invoke(USER_DEFAULT_EMAIL)
+    Rake::Task['db:data:dump'].invoke
 
     def seed_data
       path = Rails.root.join('db', 'data.yml')
@@ -49,7 +50,7 @@ namespace :system do
       result
     end
 
-    # puts seed_data.inspect
+    puts seed_data.inspect
   end
 
   desc 'Create the initial site admin user'

@@ -6,6 +6,8 @@ class Phase < ActiveRecord::Base
 
   acts_as_list scope: :paper
 
+  delegate_view_permission_to :paper
+
   DEFAULT_PHASE_NAMES = [
     "Submission Data",
     "Invite Editor",

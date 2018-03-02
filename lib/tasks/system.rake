@@ -8,10 +8,7 @@ namespace :system do
 
   desc 'Initialize the system from scratch'
   task init: :environment do
-    if System.initialized?
-      puts 'System is already initialized.'
-      # exit(1)
-    end
+    abort("The system is already initialized.\nTo re-init, delete the system record, and run this command again.") if System.initialized?
 
     puts 'Migrating schema'
     Rake::Task['db:migrate'].invoke
@@ -54,7 +51,6 @@ namespace :system do
 
   desc 'Create the initial site admin user'
   task user: :environment do
-    puts "Creating initial user"
     truncate('users')
 
     User.create!(
@@ -70,9 +66,10 @@ namespace :system do
 
   desc 'Create the initial sample journal'
   task journal: :environment do
+    truncate('cards')
     truncate('journals')
 
-    JournalFactory.create(
+    journal = JournalFactory.create(
       name: 'The Journal of Samples',
       description: 'Sample Journal',
       logo: 'images/no-journal-image.gif',
@@ -82,5 +79,12 @@ namespace :system do
       staff_email: 'sample-journal-staff@example.com',
       pdf_allowed: true
     )
+
+    puts 'Loading custom cards'
+    start = Time.now
+    CustomCard::FileLoader.load(journal)
+    time = Time.now - start
+    count = Card.count
+    puts "#{count} custom #{'card'.pluralize(count)} loaded in #{time.round} seconds."
   end
 end

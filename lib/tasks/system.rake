@@ -7,8 +7,11 @@ namespace :system do
   end
 
   desc 'Initialize the system from scratch'
-  task init: :environment do
-    abort("The system is already initialized.\nTo re-init, delete the system record, and run this command again.") if System.initialized?
+  task :init, [:force] => :environment do |task, args|
+    if System.initialized?
+      message = "The system is already initialized.\nTo force init, pass [force] on the command line."
+      abort(message) unless args[:force]
+    end
 
     puts 'Migrating schema'
     Rake::Task['db:migrate'].invoke
@@ -29,7 +32,7 @@ namespace :system do
     Rake::Task['roles-and-permissions:seed'].invoke
 
     puts 'Assigning site admin role'
-    Rake::Task['roles-and-permissions:assign_site_admin'].invoke("email=#{USER_DEFAULT_EMAIL}")
+    Rake::Task['roles-and-permissions:assign_site_admin'].invoke(USER_DEFAULT_EMAIL)
 
     def seed_data
       path = Rails.root.join('db', 'data.yml')

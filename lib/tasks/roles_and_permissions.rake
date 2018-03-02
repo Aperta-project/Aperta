@@ -22,25 +22,10 @@ namespace :'roles-and-permissions' do
     end
   end
 
-  # There are multiple ways to pass arguments to a rake task,
-  # including command line and invocation from another rake task.
-  # This method handles all of them.
-
-  ARG_FORMAT     = /\Aemail=(\S+)\z/
-  SYNTAX_MESSAGE = 'This rake task requires a single email= parameter'.freeze
-
-  def parse_arguments(argv, args)
-    arg = argv.length == 2 ? argv[1] : args[:email]
-    match = ARG_FORMAT.match(arg)
-    abort(SYNTAX_MESSAGE) unless match
-    email = match[1]
-    abort(SYNTAX_MESSAGE) unless email.present?
-    email
-  end
-
   desc 'Assigns the Site Admin role to a user by email address'
   task :assign_site_admin, [:email] => :environment do |task, args|
-    email = parse_arguments(ARGV, args)
+    email = args[:email]
+    abort('This rake task requires a single email address parameter') unless email.present?
 
     user = User.where(email: email).first
     abort("No user with email '#{email}' could be found.") unless user.present?

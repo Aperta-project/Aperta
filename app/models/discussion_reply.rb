@@ -12,6 +12,8 @@ class DiscussionReply < ActiveRecord::Base
 
   before_create :process_at_mentions!
 
+  delegate_view_permission_to :discussion_topic
+
   def process_at_mentions!
     self.body = user_mentions.decorated_mentions
   end

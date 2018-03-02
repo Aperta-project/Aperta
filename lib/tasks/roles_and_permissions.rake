@@ -28,7 +28,7 @@ namespace :'roles-and-permissions' do
     abort('This rake task requires a single email address parameter') unless email.present?
 
     user = User.where(email: email).first
-    abort("No user with email '#{email}' could be found.") unless user.present?
+    abort("No user with email '#{email}' could be found.") if user.blank?
     abort("User '#{email}' is already a Site Admin.") if user.site_admin?
 
     user.assign_to!(role: Role.site_admin_role, assigned_to: System.first)

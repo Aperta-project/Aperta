@@ -1,10 +1,10 @@
 class AuthzSerializer < ActiveModel::Serializer
   def attributes
-    # Are we at the top level (e.g., not an has_many/has_one included
-    # serialier)? If so, skip this check - it should have happened in the
-    # controller.
-    if !options.fetch(:not_top_level, false)
-      options[:not_top_level] = true
+    # Skip authz checking for the first call only. Assume that authz happened at
+    # the controller level. This is an optimization only.
+    already_called = options.fetch(:already_called, false)
+    if !already_called
+      options[:already_called] = true
       super
     elsif can_view?
       super

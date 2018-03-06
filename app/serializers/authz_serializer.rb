@@ -4,13 +4,17 @@ class AuthzSerializer < ActiveModel::Serializer
     # the controller level. This is an optimization only.
     already_called = options.fetch(:already_called, false)
     if !already_called
-      options[:already_called] = true
       super
     elsif can_view?
       super
     else
       { id: object.try(:id) }.compact
     end
+  end
+
+  def include_associations!
+    options[:already_called] = true
+    super
   end
 
   private

@@ -4,6 +4,8 @@ class JournalTaskType < ActiveRecord::Base
   validates :role_hint, :title, presence: true
   after_create :log_created_record
 
+  delegate_view_permission_to :journal
+
   private
 
   def log_created_record

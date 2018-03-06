@@ -19,6 +19,10 @@ class FeatureFlag < ActiveRecord::Base
   # name: string (acts as ID)
   # active: boolean (true if the incomplete feature should be visible)
 
+  def user_can_view?(_user)
+    true # everyone can view these
+  end
+
   def self.contain_exactly!(flags)
     transaction do
       flags.each do |flag|

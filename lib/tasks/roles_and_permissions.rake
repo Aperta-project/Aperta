@@ -23,23 +23,13 @@ namespace :'roles-and-permissions' do
   end
 
   desc 'Assigns the Site Admin role to a user by email address'
-  task assign_site_admin: :environment do
-    email = ENV['email']
-    if email.blank?
-      puts 'This rake task requires an email= parameter'
-      exit(1)
-    end
+  task :assign_site_admin, [:email] => :environment do |task, args|
+    email = args[:email]
+    abort('This rake task requires a single email address parameter') unless email.present?
 
-    user = User.find_by(email: email)
-    if user.blank?
-      puts "No user with email '#{email}' could be found."
-      exit(1)
-    end
-
-    if user.site_admin?
-      puts "User '#{email}' is already a Site Admin."
-      exit(1)
-    end
+    user = User.where(email: email).first
+    abort("No user with email '#{email}' could be found.") if user.blank?
+    abort("User '#{email}' is already a Site Admin.") if user.site_admin?
 
     user.assign_to!(role: Role.site_admin_role, assigned_to: System.first)
 

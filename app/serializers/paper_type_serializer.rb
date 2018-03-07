@@ -15,8 +15,8 @@ class PaperTypeSerializer < AuthzSerializer
 
   private
 
-  # TODO: APERTA-12693 Stop overriding this
   def can_view?
+    # The purpose of this serializer is to be safe for authors to view.
     true
   end
 end

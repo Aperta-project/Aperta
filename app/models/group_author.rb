@@ -50,6 +50,8 @@ class GroupAuthor < ActiveRecord::Base
   alias_attribute :email, :contact_email
   alias_attribute :full_name, :name
 
+  delegate_view_permission_to :paper
+
   def paper_id
     ensured_author_list_item.paper_id
   end

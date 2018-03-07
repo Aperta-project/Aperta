@@ -10,11 +10,4 @@ class AuthorSerializer < AuthzSerializer
     :current_address_country, :current_address_postal
 
   has_one :user, serializer: UserSerializer, embed: :ids, include: true
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

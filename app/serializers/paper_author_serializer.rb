@@ -36,11 +36,4 @@ class PaperAuthorSerializer < AuthzSerializer
   def group_authors
     object.group_authors.reorder(id: :desc)
   end
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

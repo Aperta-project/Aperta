@@ -14,7 +14,9 @@ class AuthzSerializer < ActiveModel::Serializer
 
   def include_associations!
     options[:already_called] = true
-    super
+    retval = super
+    options[:already_called] = false
+    retval
   end
 
   private

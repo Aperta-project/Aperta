@@ -26,4 +26,8 @@ class RelatedArticle < ActiveRecord::Base
   # send_link_to_apex: bool, true if the relationship should be sent
   # to Apex for publication
   #
+
+  def user_can_view?(user)
+    user.can? :edit_related_articles, paper
+  end
 end

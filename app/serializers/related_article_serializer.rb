@@ -8,11 +8,4 @@ class RelatedArticleSerializer < AuthzSerializer
              :additional_info,
              :send_manuscripts_together,
              :send_link_to_apex
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

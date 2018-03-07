@@ -22,6 +22,8 @@ class ScheduledEvent < ActiveRecord::Base
 
   FINISHED_STATES = %w[completed inactive canceled errored deactivated].freeze
 
+  delegate_view_permission_to :due_datetime
+
   def should_disable?
     dispatch_at && dispatch_at < DateTime.now.in_time_zone && (active? || passive?)
   end

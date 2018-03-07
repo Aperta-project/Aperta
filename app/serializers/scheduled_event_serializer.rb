@@ -5,11 +5,4 @@ class ScheduledEventSerializer < AuthzSerializer
   def finished
     object.finished?
   end
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

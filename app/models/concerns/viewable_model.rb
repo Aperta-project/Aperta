@@ -17,7 +17,7 @@ module ViewableModel
   class_methods do
     def delegate_view_permission_to(method)
       define_method "user_can_view?" do |user|
-        user.can?(:view, send(method))
+        send(method).user_can_view?(user)
       end
     end
   end

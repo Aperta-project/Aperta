@@ -8,4 +8,9 @@ class CommentLook < ActiveRecord::Base
   has_one :task, through: :comment
 
   validates :comment, :user, presence: true
+
+  def user_can_view?(my_user)
+    # A user can view their own comment looks
+    my_user == user
+  end
 end

@@ -25,6 +25,10 @@ class Correspondence < ActiveRecord::Base
   validates :reason, presence: true, if: :deleted?
   validate :external_if_deleted
 
+  def user_can_view?(user)
+    user.can? :manage_workflow, paper
+  end
+
   def activities
     Activity.feed_for('workflow', self).map do |f|
       {

@@ -34,9 +34,4 @@ class CorrespondenceSerializer < AuthzSerializer
   def deleted?
     object.status == 'deleted'
   end
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

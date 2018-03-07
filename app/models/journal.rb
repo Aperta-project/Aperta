@@ -81,6 +81,11 @@ class Journal < ActiveRecord::Base
     class_name: 'Role'
   # rubocop:enable Metrics/LineLength
 
+  def user_can_view?(_user)
+    # Any user can view a journal.
+    true
+  end
+
   def setting_template_key
     'Journal'
   end

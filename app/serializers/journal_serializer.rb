@@ -14,11 +14,4 @@ class JournalSerializer < AuthzSerializer
   def coauthor_confirmation_enabled
     object.setting('coauthor_confirmation_enabled').value
   end
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

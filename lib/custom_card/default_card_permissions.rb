@@ -1,6 +1,8 @@
 # rubocop:disable Metrics/MethodLength, Style/TrailingCommaInLiteral, Layout/SpaceInsideBrackets
 module CustomCard
   class DefaultCardPermissions
+    attr_reader :permissions
+
     def initialize(journal)
       @journal = journal
       @permissions = default_card_permissions

@@ -9,11 +9,4 @@ class DueDatetimeSerializer < AuthzSerializer
   def reviewer_report_id
     object.due_id
   end
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

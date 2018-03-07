@@ -18,6 +18,10 @@ class TaskTemplate < ActiveRecord::Base
 
   acts_as_list scope: :phase_template
 
+  def user_can_view?(user)
+    user.can?(:administer, journal)
+  end
+
   # setting_template_key is defined in Configurable
   def setting_template_key
     if journal_task_type

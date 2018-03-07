@@ -8,11 +8,4 @@ class TaskTemplateSerializer < AuthzSerializer
   def settings_enabled
     object.setting_templates.present?
   end
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

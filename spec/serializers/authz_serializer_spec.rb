@@ -30,14 +30,13 @@ class TestAuthzObject
   end
 
   def id
-    1
+    # override
   end
 end
 
 describe AuthzSerializer do
   let(:user) { FactoryGirl.create(:user) }
   let(:foo) { { foo: 'foo' } }
-  let(:id) { { id: 1 } }
   let(:serializer) { TestAuthzSerializer.new(root_object, scope: scope) }
   let(:json) { serializer.as_json }
   let(:root_object) { TestAuthzObject.new }
@@ -49,6 +48,9 @@ describe AuthzSerializer do
   before do
     expect(root_object).to receive(:viewable).and_return(viewable_object)
     expect(root_object).to receive(:unviewable).and_return(unviewable_object)
+    allow(root_object).to receive(:id).and_return(1)
+    allow(viewable_object).to receive(:id).and_return(2)
+    allow(unviewable_object).to receive(:id).and_return(3)
   end
 
   context 'when the scope is the current user' do
@@ -72,19 +74,22 @@ describe AuthzSerializer do
     end
 
     it 'should not include the attributes of the unviewable object' do
-      expect(json[:test_authz][:unviewable]).to eq(id)
+      expect(json[:test_authz][:unviewable]).to eq(id: 3)
     end
 
     describe 'when using array serializer' do
       before do
         expect(other_root_object).to receive(:viewable).and_return(viewable_object)
         expect(other_root_object).to receive(:unviewable).and_return(unviewable_object)
-        expect(other_root_object).to receive(:user_can_view?).and_return(true)
+
+        # We expect this method *not* to be called at the root, because the root
+        # object should *not* check authz
+        allow(other_root_object).to receive(:user_can_view?).and_raise(Exception)
       end
 
       it 'should serialize both objects and call user_can_view? on the second object' do
         json = ActiveModel::ArraySerializer.new(array, scope: user, each_serializer: TestAuthzSerializer).as_json
-        expect(json).to contain_exactly(foo.merge(viewable: foo, unviewable: id), foo.merge(viewable: foo, unviewable: id))
+        expect(json).to contain_exactly(foo.merge(viewable: foo, unviewable: { id: 3 }), foo.merge(viewable: foo, unviewable: { id: 3 }))
       end
     end
   end

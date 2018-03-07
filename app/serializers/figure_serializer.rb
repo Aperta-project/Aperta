@@ -12,11 +12,4 @@ class FigureSerializer < AuthzSerializer
              :rank
 
   has_one :paper, embed: :id
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

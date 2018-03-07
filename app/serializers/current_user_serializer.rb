@@ -27,8 +27,8 @@ class CurrentUserSerializer < AuthzSerializer
     TahiEnv.orcid_connect_enabled?
   end
 
-  # TODO: APERTA-12693 Stop overriding this
   def can_view?
+    # Any user can view themself.
     true
   end
 end

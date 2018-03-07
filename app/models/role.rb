@@ -54,6 +54,10 @@ class Role < ActiveRecord::Base
     JOURNAL_SETUP_ROLE
   ].freeze
 
+  def user_can_view?(user)
+    true
+  end
+
   def self.user_role
     find_by(name: Role::USER_ROLE, journal: nil)
   end

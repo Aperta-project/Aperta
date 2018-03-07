@@ -38,7 +38,8 @@ describe AuthzSerializer do
   let(:user) { FactoryGirl.create(:user) }
   let(:foo) { { foo: 'foo' } }
   let(:id) { { id: 1 } }
-  let(:json) { TestAuthzSerializer.new(root_object, scope: user).as_json }
+  let(:serializer) { TestAuthzSerializer.new(root_object, scope: scope) }
+  let(:json) { serializer.as_json }
   let(:root_object) { TestAuthzObject.new }
   let(:other_root_object) { TestAuthzObject.new }
   let(:viewable_object) { TestAuthzObject.new }
@@ -48,36 +49,53 @@ describe AuthzSerializer do
   before do
     expect(root_object).to receive(:viewable).and_return(viewable_object)
     expect(root_object).to receive(:unviewable).and_return(unviewable_object)
-    expect(viewable_object).to receive(:user_can_view?).with(user).and_return(true).at_least(:once)
-    expect(unviewable_object).to receive(:user_can_view?).with(user).and_return(false).at_least(:once)
-
-    # We expect this method *not* to be called at the root, because the root
-    # object should *not* check authz
-    allow(root_object).to receive(:user_can_view?).and_raise(Exception)
   end
 
-  it 'should include the attributes at the top level' do
-    expect(json[:test_authz]).to match(hash_including(foo: 'foo'))
-  end
+  context 'when the scope is the current user' do
+    let(:scope) { user }
 
-  it 'should include the attributes of the viewable object' do
-    expect(json[:test_authz][:viewable]).to eq(foo)
-  end
-
-  it 'should not include the attributes of the unviewable object' do
-    expect(json[:test_authz][:unviewable]).to eq(id)
-  end
-
-  describe 'when using array serializer' do
     before do
-      expect(other_root_object).to receive(:viewable).and_return(viewable_object)
-      expect(other_root_object).to receive(:unviewable).and_return(unviewable_object)
-      expect(other_root_object).to receive(:user_can_view?).and_return(true)
+      expect(viewable_object).to receive(:user_can_view?).with(user).and_return(true).at_least(:once)
+      expect(unviewable_object).to receive(:user_can_view?).with(user).and_return(false).at_least(:once)
+
+      # We expect this method *not* to be called at the root, because the root
+      # object should *not* check authz
+      allow(root_object).to receive(:user_can_view?).and_raise(Exception)
     end
 
-    it 'should serialize both objects and call user_can_view? on the second object' do
-      json = ActiveModel::ArraySerializer.new(array, scope: user, each_serializer: TestAuthzSerializer).as_json
-      expect(json).to contain_exactly(foo.merge(viewable: foo, unviewable: id), foo.merge(viewable: foo, unviewable: id))
+    it 'should include the attributes at the top level' do
+      expect(json[:test_authz]).to match(hash_including(foo: 'foo'))
+    end
+
+    it 'should include the attributes of the viewable object' do
+      expect(json[:test_authz][:viewable]).to eq(foo)
+    end
+
+    it 'should not include the attributes of the unviewable object' do
+      expect(json[:test_authz][:unviewable]).to eq(id)
+    end
+
+    describe 'when using array serializer' do
+      before do
+        expect(other_root_object).to receive(:viewable).and_return(viewable_object)
+        expect(other_root_object).to receive(:unviewable).and_return(unviewable_object)
+        expect(other_root_object).to receive(:user_can_view?).and_return(true)
+      end
+
+      it 'should serialize both objects and call user_can_view? on the second object' do
+        json = ActiveModel::ArraySerializer.new(array, scope: user, each_serializer: TestAuthzSerializer).as_json
+        expect(json).to contain_exactly(foo.merge(viewable: foo, unviewable: id), foo.merge(viewable: foo, unviewable: id))
+      end
+    end
+  end
+
+  context 'when scope is nil' do
+    let(:scope) { nil }
+
+    it 'should always return true' do
+      expect(json[:test_authz]).to match(hash_including(foo: 'foo'))
+      expect(json[:test_authz][:viewable]).to eq(foo)
+      expect(json[:test_authz][:unviewable]).to eq(foo)
     end
   end
 end

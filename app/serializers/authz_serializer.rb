@@ -22,6 +22,8 @@ class AuthzSerializer < ActiveModel::Serializer
   private
 
   def can_view?
-    scope && object.user_can_view?(scope)
+    # Assume that if there is no scope, this is accessible
+    return true if scope.nil?
+    object.user_can_view?(scope)
   end
 end

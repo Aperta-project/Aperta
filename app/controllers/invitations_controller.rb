@@ -9,7 +9,7 @@ class InvitationsController < ApplicationController
   end
 
   def show
-    require_user_can_view(invitation)
+    requires_user_can_view(invitation)
     respond_with invitation
   end
 

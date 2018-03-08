@@ -32,11 +32,4 @@ class InvitationSerializer < AuthzSerializer
   def reviewer_report
     ReviewerReport.for_invitation(object)
   end
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

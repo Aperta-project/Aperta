@@ -25,6 +25,10 @@ module TahiStandardTasks
       in: %w(apex em preprint)
     }
 
+    def user_can_view?(user)
+      user.can?(:send_to_apex, paper)
+    end
+
     validate :paper_acceptance_state
 
     aasm column: :state do

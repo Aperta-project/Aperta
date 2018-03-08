@@ -17,7 +17,7 @@ module TahiStandardTasks
     end
 
     def show
-      requires_user_can(:send_to_apex, export_delivery.paper)
+      requires_user_can_view(export_delivery)
       render json: export_delivery
     end
 

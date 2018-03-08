@@ -94,11 +94,8 @@ class Invitation < ActiveRecord::Base
     possible_users - invited_users
   end
 
-  # Yes, this is purposefully a little weird to call attention to it.
-  # We've created APERTA-7529 to investigate making a new permission.
-  def can_be_viewed_by?(user)
-    user == invitee ||
-      user.can?(:manage_invitations, task)
+  def user_can_view?(user)
+    user == invitee || user.can?(:manage_invitations, task)
   end
 
   def recipient_name

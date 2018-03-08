@@ -36,11 +36,4 @@ class InvitationIndexSerializer < AuthzSerializer
   def journal_name
     object.paper.journal.name
   end
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

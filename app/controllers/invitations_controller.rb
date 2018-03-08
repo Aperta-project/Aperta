@@ -9,7 +9,7 @@ class InvitationsController < ApplicationController
   end
 
   def show
-    raise AuthorizationError unless invitation.can_be_viewed_by?(current_user)
+    require_user_can_view(invitation)
     respond_with invitation
   end
 

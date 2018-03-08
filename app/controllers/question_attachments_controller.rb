@@ -5,14 +5,14 @@ class QuestionAttachmentsController < ApplicationController
   respond_to :json
 
   def create
-    requires_user_can :edit, task_for(question_attachment)
+    requires_user_can :edit, question_attachment.find_task
     question_attachment.update(caption: attachment_params[:caption])
     process_attachments(question_attachment, attachment_params[:src])
     render json: { 'question-attachment': { id: question_attachment.id } }
   end
 
   def update
-    requires_user_can :edit, task_for(question_attachment)
+    requires_user_can :edit, question_attachment.find_task
     question_attachment.update caption: attachment_params[:caption]
     # This check is the result of a timeboxed fix for a bug that manifests
     # itself when a user tries to update the caption for a question attachment
@@ -34,12 +34,12 @@ class QuestionAttachmentsController < ApplicationController
   end
 
   def show
-    requires_user_can :view, task_for(question_attachment)
+    requires_user_can_view(question_attachment)
     respond_with question_attachment
   end
 
   def destroy
-    requires_user_can :edit, task_for(question_attachment)
+    requires_user_can :edit, question_attachment.find_task
     question_attachment.destroy
     respond_with question_attachment
   end
@@ -62,28 +62,6 @@ class QuestionAttachmentsController < ApplicationController
       end
     end
   end
-
-  # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-  def task_for(question_attachment)
-    @task ||= begin
-      owner = question_attachment
-      until owner.is_a? Task
-        if owner.respond_to?(:task) && !owner.task.nil?
-          owner = owner.task
-        elsif owner.respond_to?(:owner) && !owner.owner.nil?
-          owner = owner.owner
-        elsif owner.respond_to?(:card_content) && !owner.card_content.nil?
-          owner = owner.card_content
-        elsif owner.respond_to? :answer
-          owner = owner.answer
-        else
-          raise ArgumentError, "Cannot find task for question attachment"
-        end
-      end
-    end
-    owner
-  end
-  # rubocop:enable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
 
   def process_attachments(question_attachment, url)
     DownloadAttachmentWorker.perform_async(question_attachment.id,

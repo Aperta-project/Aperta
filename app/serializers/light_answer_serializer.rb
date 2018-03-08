@@ -5,11 +5,4 @@
 class LightAnswerSerializer < AuthzSerializer
   include ReadySerializable
   attributes :id
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

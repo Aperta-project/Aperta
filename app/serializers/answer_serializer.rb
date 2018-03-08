@@ -19,11 +19,4 @@ class AnswerSerializer < AuthzSerializer
     owner_instance = object.owner
     { id: owner_instance.id, type: owner_instance.class.name.demodulize }
   end
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

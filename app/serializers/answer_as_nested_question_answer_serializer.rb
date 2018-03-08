@@ -28,11 +28,4 @@ class AnswerAsNestedQuestionAnswerSerializer < AuthzSerializer
   def can_see_active_edit?
     object.owner.active_admin_edit? && current_user.can?(:edit_answers, object.owner.paper)
   end
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

@@ -25,6 +25,11 @@ describe Invitation do
       expect(invitation.valid?).to be(true)
     end
 
+    it 'requires a valid email address sans new line' do
+      invitation.email = "foo@bar.com\nwat"
+      expect(invitation).to_not be_valid
+    end
+
     it 'requires an invitee_role' do
       invitation.task = nil
       invitation.invitee_role = nil

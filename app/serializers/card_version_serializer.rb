@@ -11,9 +11,4 @@ class CardVersionSerializer < AuthzSerializer
   def contents
     @contents ||= object.content_root.preload_descendants
   end
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

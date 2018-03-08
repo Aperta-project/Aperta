@@ -40,6 +40,12 @@ class Card < ActiveRecord::Base
     end
   end
 
+  def user_can_view?(_user)
+    # TODO: This should probably be part of the core permissions system.
+    # These are just forms, anyone can see them.
+    true
+  end
+
   # A given card can have several states, but be mindful that the 'state' of a
   # given card also implies something about that card's card_versions.
   # * 'draft': the latest version is a draft and there are no published

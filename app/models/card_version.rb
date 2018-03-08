@@ -21,6 +21,8 @@ class CardVersion < ActiveRecord::Base
   validates :version, uniqueness: { scope: :card_id, message: "Card version numbers are unique for a given card" }
   validates :history_entry, presence: true, if: -> { published? }
 
+  delegate_view_permission_to :card
+
   def published?
     published_at.present?
   end

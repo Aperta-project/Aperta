@@ -46,11 +46,4 @@ class CardSerializer < AuthzSerializer
   def latest_contents
     @latest_contents ||= object.content_root_for_version(:latest).preload_descendants
   end
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

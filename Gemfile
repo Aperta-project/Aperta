@@ -62,6 +62,7 @@ gem 'sdoc'
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
 gem 'sidekiq-unique-jobs'
+gem 'sinatra', require: nil # used by sidekiq and for tests
 gem 'sort_alphabetical'
 gem 'syslogger'
 gem 'timeliness'
@@ -136,7 +137,6 @@ group :test do
   gem 'rspec_junit_formatter'
   gem 'selenium-webdriver'
   gem 'simplecov'
-  gem 'sinatra', require: nil
   gem 'test_after_commit'
   gem 'thin'
   gem 'timecop'

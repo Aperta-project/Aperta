@@ -22,11 +22,4 @@ class TokenCoauthorSerializer < AuthzSerializer
   def journal_logo_url
     object.paper.journal.logo_url
   end
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

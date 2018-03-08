@@ -33,7 +33,7 @@ class SimilarityChecksController < ::ApplicationController
 
   def show
     similarity_check = SimilarityCheck.find(params.require(:id))
-    requires_user_can(:perform_similarity_check, similarity_check.paper)
+    requires_user_can_view(similarity_check)
     respond_with(similarity_check)
   end
 

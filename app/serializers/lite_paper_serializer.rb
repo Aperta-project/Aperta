@@ -45,9 +45,4 @@ class LitePaperSerializer < AuthzSerializer
   def reviewer_report
     @reviewer_report ||= scope.reviewer_reports.joins(:task, :paper).where(papers: {id: id}).first
   end
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

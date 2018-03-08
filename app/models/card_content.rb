@@ -99,6 +99,8 @@ class CardContent < ActiveRecord::Base
       'sendback-reason': ['boolean']
     }.freeze.with_indifferent_access
 
+  delegate_view_permission_to :card_version
+
   # Although we want to validate the various combinations of content types
   # and value types, many of the CardContent records that have been created
   # via the CardLoader don't have a content_type set at all, so we'll skip

@@ -17,11 +17,4 @@ class CardContentSerializer < AuthzSerializer
     end
     hash
   end
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

@@ -29,8 +29,9 @@ class OrcidAccountSerializer < AuthzSerializer
     TahiEnv.orcid_connect_enabled?
   end
 
-  # TODO: APERTA-12693 Stop overriding this
   def can_view?
+    # See above. Contains no sensitive information. I don't know why this was
+    # implemented like this, but it was. -EGH
     true
   end
 end

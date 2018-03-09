@@ -28,11 +28,4 @@ class ErrorSerializer < AuthzSerializer
     model = Error.new(attributes)
     super(model, *args)
   end
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

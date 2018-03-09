@@ -7,8 +7,7 @@ class AssignmentSerializer < AuthzSerializer
 
   private
 
-  # TODO: APERTA-12693 Stop overriding this
   def can_view?
-    true
+    scope.can?(:assign_roles, object.assigned_to)
   end
 end

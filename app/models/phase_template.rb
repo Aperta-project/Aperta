@@ -10,4 +10,6 @@ class PhaseTemplate < ActiveRecord::Base
   validates :name, uniqueness: { scope: :manuscript_manager_template_id }
 
   acts_as_list scope: :manuscript_manager_template
+
+  delegate_view_permission_to :manuscript_manager_template
 end

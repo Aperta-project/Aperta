@@ -18,4 +18,8 @@ class ManuscriptManagerTemplate < ActiveRecord::Base
   def task_template_by_kind(kind)
     task_templates.joins(:journal_task_type).find_by(journal_task_types: { kind: kind })
   end
+
+  def user_can_view?(user)
+    user.can?(:administer, journal)
+  end
 end

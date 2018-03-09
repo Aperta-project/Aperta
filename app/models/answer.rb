@@ -28,7 +28,7 @@ class Answer < ActiveRecord::Base
   # See http://api.rubyonrails.org/classes/ActiveModel/Validator.html
   validates :value, value: true, on: :ready
 
-  delegate_view_permission_to :owner
+  delegate_view_permission_to :task
 
   def children
     Answer.where(owner: owner, card_content: card_content.children)

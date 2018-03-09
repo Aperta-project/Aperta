@@ -49,10 +49,7 @@ class AdminJournalSerializer < AuthzSerializer
     TemplateContext.scenarios.map { |name, klass| { name: name, merge_fields: klass.merge_fields } }
   end
 
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
   def can_view?
-    true
+    scope.can?(:administer, journal)
   end
 end

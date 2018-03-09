@@ -8,6 +8,7 @@ class AssignmentSerializer < AuthzSerializer
   private
 
   def can_view?
+    return true if scope.nil?
     scope.can?(:assign_roles, object.assigned_to)
   end
 end

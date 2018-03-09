@@ -33,11 +33,4 @@ class ReviewerReportSerializer < AuthzSerializer
   def status_datetime
     object.datetime
   end
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

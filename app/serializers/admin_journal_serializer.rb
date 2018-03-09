@@ -49,6 +49,8 @@ class AdminJournalSerializer < AuthzSerializer
     TemplateContext.scenarios.map { |name, klass| { name: name, merge_fields: klass.merge_fields } }
   end
 
+  private
+
   def can_view?
     scope.can?(:administer, journal)
   end

@@ -10,4 +10,6 @@ class Repetition < ActiveRecord::Base
 
   validates :card_content, presence: true
   validates :task, presence: true
+
+  delegate_view_permission_to :task
 end

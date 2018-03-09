@@ -7,4 +7,6 @@ class Notification < ActiveRecord::Base
   belongs_to :target, polymorphic: true
 
   validates :paper_id, :user_id, :target_id, presence: true
+
+  delegate_view_permission_to :target
 end

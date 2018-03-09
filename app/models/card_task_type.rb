@@ -13,6 +13,10 @@ class CardTaskType < ActiveRecord::Base
     'TahiStandardTasks::UploadManuscriptTask' => 'Upload Manuscript'
   }.freeze
 
+  def user_can_view?(_user)
+    true
+  end
+
   def self.default_attributes(klass)
     { display_name: DEFAULT_NAMES.fetch(klass), task_class: klass }
   end

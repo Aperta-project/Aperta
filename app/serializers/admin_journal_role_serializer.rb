@@ -15,6 +15,6 @@ class AdminJournalRoleSerializer < AuthzSerializer
   private
 
   def can_view?
-    scope.can?(:administer, journal)
+    scope.can?(:administer, Journal.find(journal_id))
   end
 end

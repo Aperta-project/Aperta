@@ -30,7 +30,7 @@ describe Admin::JournalsController, redis: true do
     context 'when the user has access' do
       before do
         stub_sign_in user
-        expect(user).to receive(:site_admin?).and_return(true)
+        expect(user).to receive(:site_admin?).and_return(true).at_least(:once)
         CardTaskType.seed_defaults
       end
 

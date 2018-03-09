@@ -65,7 +65,7 @@ describe Journal do
     end
 
     it 'requires a valid doi_journal_prefix' do
-      ["not-valid", "foo\nbar"].each do |input|
+      ["not-valid", "journal\n/foo"].each do |input|
         journal.doi_journal_prefix = input
         expect(journal).to_not be_valid
         expect(journal.errors[:doi_journal_prefix]).to contain_exactly('The DOI Journal Prefix is not valid. It must begin with \'journal\' and can contain any characters except /')

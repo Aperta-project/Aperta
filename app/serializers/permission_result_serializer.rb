@@ -18,7 +18,6 @@ class PermissionResultSerializer < AuthzSerializer
 
   private
 
-  # TODO: APERTA-12693 Stop overriding this
   def can_view?
     true
   end

@@ -14,6 +14,8 @@ class SupportingInformationFile < Attachment
 
   before_create :set_publishable
 
+  delegate_view_permission_to :paper
+
   def alt
     if file.present?
       regex = /#{::File.extname(filename)}$/

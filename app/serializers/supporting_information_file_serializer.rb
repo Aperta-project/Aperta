@@ -12,11 +12,4 @@ class SupportingInformationFileSerializer < AuthzSerializer
              :publishable,
              :created_at
   has_one :paper, embed: :id, include: false
-
-  private
-
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
-  end
 end

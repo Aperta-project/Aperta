@@ -7,6 +7,10 @@ class AdminEdit < ActiveRecord::Base
   scope :active, -> { where(active: true) }
   scope :completed, -> { where(active: false) }
 
+  def user_can_view?(user)
+    user.can?(:edit_answers, reviewer_report.paper)
+  end
+
   def self.edit_for(report)
     first_active = report.admin_edits.active.first
     if first_active.present?

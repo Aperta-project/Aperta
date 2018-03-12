@@ -8,8 +8,7 @@ class DiscussionParticipantSerializer < AuthzSerializer
 
   private
 
-  # TODO: APERTA-12693 Stop overriding this
   def can_view?
-    true
+    user.can?(:manage_participant, object)
   end
 end

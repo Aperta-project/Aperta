@@ -3,4 +3,6 @@
 class InvitationAttachment < Attachment
   # Invitation attachments are get publicly accessible URLs
   self.public_resource = true
+
+  delegate_view_permission_to :invitation
 end

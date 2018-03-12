@@ -33,6 +33,8 @@ class Attachment < ActiveRecord::Base
   scope :done, -> { where(status: STATUS_DONE) }
   scope :unknown, -> { where.not(status: STATUSES.values) }
 
+  delegate_view_permission_to :paper
+
   def public_resource
     value = @public_resource
     value = self.class.public_resource if @public_resource.nil?

@@ -5,10 +5,4 @@ class DiscussionParticipantSerializer < AuthzSerializer
           embed: :id,
           include: true,
           serializer: SensitiveInformationUserSerializer
-
-  private
-
-  def can_view?
-    user.can?(:manage_participant, object)
-  end
 end

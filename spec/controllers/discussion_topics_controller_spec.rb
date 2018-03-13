@@ -22,10 +22,8 @@ describe DiscussionTopicsController do
         stub_sign_in user
         allow(user).to receive(:filter_authorized)
           .with(:view, paper.discussion_topics)
-          .and_return instance_double(
-            'Authorizations::Query::Result',
-            objects: [topic_a]
-          )
+          .and_return instance_double('Authorizations::Query::Result', objects: [topic_a])
+        allow(user).to receive(:can?).with(:view, topic_a).and_return(true)
       end
 
       it "includes the paper's discussion topics" do
@@ -105,8 +103,8 @@ describe DiscussionTopicsController do
         allow(user).to receive(:can?)
           .with(:start_discussion, paper)
           .and_return true
-        allow_any_instance_of(Journal).to receive(:discussion_participant_role)
-          .and_return(role)
+        allow_any_instance_of(Journal).to receive(:discussion_participant_role).and_return(role)
+        allow(user).to receive(:can?).with(:view, an_instance_of(DiscussionTopic)).and_return(true)
       end
 
       it "creates a topic" do

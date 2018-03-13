@@ -3,8 +3,9 @@ class FilteredUserSerializer < AuthzSerializer
 
   private
 
-  # TODO: APERTA-12693 Stop overriding this
   def can_view?
+    # Any user can view "filtered users". See FilteredUsersController for more
+    # information.
     true
   end
 end

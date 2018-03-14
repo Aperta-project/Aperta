@@ -19,8 +19,13 @@ class DecisionSerializer < AuthzSerializer
 
   private
 
-  # TODO: APERTA-12693 Stop overriding this
-  def can_view?
-    true
+  def unauthorized_result
+    {
+      id:            object.try(:id),
+      draft:         object.try(:draft?),
+      registered_at: object.try(:registered_at),
+      major_version: object.try(:major_version),
+      minor_version: object.try(:minor_version)
+    }
   end
 end

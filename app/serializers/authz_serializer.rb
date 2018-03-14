@@ -8,7 +8,7 @@ class AuthzSerializer < ActiveModel::Serializer
     elsif can_view?
       super
     else
-      { id: object.try(:id) }.compact
+      unauthorized_result.compact
     end
   end
 
@@ -26,5 +26,9 @@ class AuthzSerializer < ActiveModel::Serializer
     # Assume that if there is no scope, this is accessible
     return true if scope.nil?
     object.user_can_view?(scope)
+  end
+
+  def unauthorized_result
+    { id: object.try(:id) }
   end
 end

@@ -7,4 +7,6 @@ class Affiliation < ActiveRecord::Base
   validates_with AffiliationDateValidator
 
   scope :by_date, -> { order(end_date: :desc, start_date: :asc) }
+
+  delegate_view_permission_to :user
 end

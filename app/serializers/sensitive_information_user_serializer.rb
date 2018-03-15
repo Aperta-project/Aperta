@@ -11,8 +11,9 @@ class SensitiveInformationUserSerializer < AuthzSerializer
 
   private
 
-  # TODO: APERTA-12693 Stop overriding this
   def can_view?
-    true
+    # This can only be used explicitly from the top level, never included from
+    # another serializer.
+    !options[:inside_association]
   end
 end

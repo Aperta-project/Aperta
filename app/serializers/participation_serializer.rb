@@ -1,6 +1,6 @@
 class ParticipationSerializer < AuthzSerializer
   attributes :id
-  has_one :user, embed: :ids, include: true
+  has_one :user, embed: :ids, include: true, serializer: FilteredUserSerializer
   has_one :task, embed: :id, polymorphic: true
 
   private

@@ -98,6 +98,10 @@ class Decision < ActiveRecord::Base
     invitations.where(invitee_id: invitee_id).order(:created_at).last
   end
 
+  def user_can_view?(user)
+    user.can?(:view_decisions, paper)
+  end
+
   private
 
   def paper_in_expected_state_given_verdict?

@@ -17,9 +17,25 @@ class DecisionSerializer < AuthzSerializer
   has_many :attachments, include: true
   has_one :paper, embed: :id, include: true
 
+  def include_verdict?
+    can_view_sensitive_details?
+  end
+
+  def include_letter?
+    can_view_sensitive_details?
+  end
+
+  def include_author_response?
+    can_view_sensitive_details?
+  end
+
   private
 
-  # TODO: APERTA-12693 Stop overriding this
+  def can_view_sensitive_details?
+    current_user.can?(:view, object.paper)
+  end
+
+  # Everyone can view basic info like draft status
   def can_view?
     true
   end

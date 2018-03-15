@@ -12,7 +12,7 @@ class PaperRoleEligibleUsersController < ApplicationController
       role: role,
       matching: params[:query]
     )
-    render json: eligible_users, each_serializer: UserSerializer, root: 'users'
+    render json: eligible_users, each_serializer: SensitiveInformationUserSerializer, root: 'users'
   end
 
   private

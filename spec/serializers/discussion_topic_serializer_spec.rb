@@ -44,8 +44,4 @@ describe DiscussionTopicSerializer, serializer_test: true do
       expect(deserialized_content).to match(hash_including(users: contain_exactly(hash_including(id: discussant.id))))
     end
   end
-
-  it 'includes email addresses for a discussion participant who is also a paper participant' do
-    expect(deserialized_content).to match(hash_including(users: include(hash_including(email: discussant.email))))
-  end
 end

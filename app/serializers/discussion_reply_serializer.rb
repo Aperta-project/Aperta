@@ -1,5 +1,5 @@
 class DiscussionReplySerializer < AuthzSerializer
   attributes :id, :discussion_topic_id, :body, :created_at
 
-  has_one :replier, embed: :id, include: true, root: 'users'
+  has_one :replier, embed: :id, include: true, root: 'users', serializer: FilteredUserSerializer
 end

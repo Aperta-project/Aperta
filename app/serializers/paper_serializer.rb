@@ -12,7 +12,7 @@ class PaperSerializer < LitePaperSerializer
     embed: :id,
     include: true,
     root: :users,
-    serializer: SensitiveInformationUserSerializer
+    serializer: FilteredUserSerializer
 
   has_many :collaborations,
            embed: :ids,

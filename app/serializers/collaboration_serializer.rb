@@ -1,6 +1,6 @@
 class CollaborationSerializer < AuthzSerializer
   attributes :id
-  has_one :user, embed: :id, include: true
+  has_one :user, embed: :id, include: true, serializer: FilteredUserSerializer
   has_one :paper, embed: :id
 
   def id

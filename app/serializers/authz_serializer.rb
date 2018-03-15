@@ -8,7 +8,7 @@ class AuthzSerializer < ActiveModel::Serializer
     elsif can_view?
       super
     else
-      unauthorized_result.compact
+      unauthorized_result
     end
   end
 

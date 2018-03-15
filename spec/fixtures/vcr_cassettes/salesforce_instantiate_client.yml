@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://salesforce%5Fhost/services/oauth2/token?client_id=salesforce_client_id&client_secret=salesforce_client_secret&grant_type=password&password=salesforce_pass&username=salesforce_user
+    uri: https://salesforce_host/services/oauth2/token?client_id=salesforce_client_id&client_secret=salesforce_client_secret&grant_type=password&password=salesforce_pass&username=salesforce_user
     body:
       encoding: UTF-8
       string: ''

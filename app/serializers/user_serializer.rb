@@ -15,8 +15,12 @@ class UserSerializer < AuthzSerializer
     TahiEnv.orcid_connect_enabled?
   end
 
-  # TODO: APERTA-12693 Stop overriding this
   def can_view?
-    true
+    # This is only called from the top level, where we do not check permissions,
+    # or from the author serializer. If it is called from the authors
+    # serializer, check if the user can manage the paper or authors or is the
+    # creator of the paper.
+    return false if options[:paper].blank?
+    scope.can?(:manage_paper_authors, options[:paper]) || scope == options[:paper].creator
   end
 end

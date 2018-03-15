@@ -10,4 +10,9 @@ class AuthorSerializer < AuthzSerializer
     :current_address_country, :current_address_postal
 
   has_one :user, serializer: UserSerializer, embed: :ids, include: true
+
+  def attributes
+    options[:paper] = object.paper
+    super
+  end
 end

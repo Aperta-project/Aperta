@@ -1,5 +1,5 @@
 class AffiliationSerializer < AuthzSerializer
-  has_one :user, include: true, embed: :id
+  has_one :user, embed: :id
   attributes :id,
     :name,
     :start_date,

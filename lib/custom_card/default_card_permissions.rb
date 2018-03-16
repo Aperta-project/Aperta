@@ -1,6 +1,8 @@
 # rubocop:disable Metrics/MethodLength, Style/TrailingCommaInLiteral, Layout/SpaceInsideBrackets
 module CustomCard
   class DefaultCardPermissions
+    attr_reader :permissions
+
     def initialize(journal)
       @journal = journal
       @permissions = default_card_permissions
@@ -49,15 +51,16 @@ module CustomCard
         'additional_information'  => {
           'Academic Editor'       => ['view'],
           'Billing Staff'         => ['view', 'view_participants'],
-          'Collaborator'          => ['view', 'view participants', 'edit', 'manage_participant'],
-          'Cover Editor'          => ['view', 'view participants', 'edit', 'manage_participant', 'view_discussion_footer'],
-          'Creator'               => ['view', 'view participants', 'edit', 'manage_participant'],
-          'Handling Editor'       => ['view', 'view participants', 'edit', 'manage_participant', 'view_discussion_footer'],
-          'Internal Editor'       => ['view', 'view participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
-          'Production Staff'      => ['view', 'view participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
-          'Publishing Services'   => ['view', 'view participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
-          'Reviewer'              => ['view', 'view participants'],
-          'Staff Admin'           => ['view', 'view participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer']
+          'Collaborator'          => ['view', 'view_participants', 'edit', 'manage_participant'],
+          'Cover Editor'          => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer'],
+          'Creator'               => ['view', 'view_participants', 'edit', 'manage_participant'],
+          'Handling Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer'],
+          'Internal Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
+          'Participant'           => ['view', 'view_participants'],
+          'Production Staff'      => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
+          'Publishing Services'   => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
+          'Reviewer'              => ['view', 'view_participants'],
+          'Staff Admin'           => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer']
         },
 
         'competing_interests'     => {
@@ -68,6 +71,7 @@ module CustomCard
           'Creator'               => ['view', 'view_participants', 'manage_participant', 'edit'],
           'Handling Editor'       => ['view', 'view_participants', 'manage_participant', 'edit'],
           'Internal Editor'       => ['view', 'view_participants', 'manage_participant', 'edit'],
+          'Participant'           => ['view', 'view_participants'],
           'Production Staff'      => ['view', 'view_participants', 'manage_participant', 'edit'],
           'Publishing Services'   => ['view', 'view_participants', 'manage_participant', 'edit'],
           'Reviewer'              => ['view', 'view_participants'],
@@ -75,16 +79,18 @@ module CustomCard
         },
 
         'cover_letter'            => {
-          'Academic Editor'       => ['view', 'view_participants',                               'view_discussion_footer'],
-          'Billing Staff'         => ['view', 'view_participants',         'manage_participant', 'view_discussion_footer'],
+          'Academic Editor'       => ['view'],
+          'Billing Staff'         => ['view', 'view_participants',                               'view_discussion_footer'],
           'Collaborator'          => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Cover Editor'          => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Creator'               => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Handling Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Internal Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
+          'Participant'           => ['view', 'view_participants'],
           'Production Staff'      => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Publishing Services'   => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
-          'Staff Admin'           => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
+          'Reviewer'              => ['view', 'view_participants'],
+          'Staff Admin'           => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer']
         },
 
         'data_availability'       => {
@@ -95,6 +101,7 @@ module CustomCard
           'Creator'               => ['view',                      'edit',                       'view_discussion_footer', 'edit_discussion_footer'],
           'Handling Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Internal Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
+          'Participant'           => ['view', 'view_participants'],
           'Production Staff'      => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Publishing Services'   => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Reviewer'              => ['view',                                                    'view_discussion_footer'],
@@ -109,6 +116,7 @@ module CustomCard
           'Creator'               => ['view', 'view_participants', 'edit', 'manage_participant'],
           'Handling Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer'],
           'Internal Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
+          'Participant'           => ['view', 'view_participants'],
           'Production Staff'      => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Publishing Services'   => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Reviewer'              => ['view', 'view_participants'],
@@ -123,6 +131,7 @@ module CustomCard
           'Creator'               => ['view',                      'edit',                       'view_discussion_footer', 'edit_discussion_footer'],
           'Handling Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Internal Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
+          'Participant'           => ['view', 'view_participants'],
           'Production Staff'      => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Publishing Services'   => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Reviewer'              => ['view',                                                    'view_discussion_footer'],
@@ -130,13 +139,14 @@ module CustomCard
         },
 
         'financial_disclosure'    => {
-          'Academic Editor'       => ['view', 'view_participants'],
+          'Academic Editor'       => ['view'],
           'Billing Staff'         => ['view', 'view_participants'],
           'Collaborator'          => ['view', 'view_participants', 'edit', 'manage_participant'],
           'Cover Editor'          => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer'],
           'Creator'               => ['view', 'view_participants', 'edit', 'manage_participant'],
           'Handling Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer'],
           'Internal Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
+          'Participant'           => ['view', 'view_participants'],
           'Production Staff'      => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Publishing Services'   => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Reviewer'              => ['view', 'view_participants'],
@@ -147,6 +157,7 @@ module CustomCard
           'Cover Editor'          => [        'view_participants',         'manage_participant', 'view_discussion_footer'],
           'Handling Editor'       => [        'view_participants',         'manage_participant', 'view_discussion_footer'],
           'Internal Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
+          'Participant'           => ['view', 'view_participants'],
           'Production Staff'      => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Publishing Services'   => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Staff Admin'           => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
@@ -154,7 +165,7 @@ module CustomCard
 
         'preprint_posting'        => {
           'Academic Editor'       => ['view'],
-          'Billing Staff'         => ['view', 'view_participants'],
+          'Billing Staff'         => ['view'],
           'Collaborator'          => ['view', 'view_participants', 'edit', 'manage_participant'],
           'Cover Editor'          => ['view', 'view_participants',         'manage_participant'],
           'Creator'               => ['view', 'view_participants', 'edit', 'manage_participant'],
@@ -177,6 +188,7 @@ module CustomCard
           'Creator'               => ['view',                      'edit',                       'view_discussion_footer', 'edit_discussion_footer'],
           'Handling Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Internal Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
+          'Participant'           => ['view', 'view_participants'],
           'Production Staff'      => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Publishing Services'   => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Reviewer'              => ['view',                                                    'view_discussion_footer'],
@@ -191,6 +203,7 @@ module CustomCard
           'Creator'               => ['view', 'view_participants', 'edit', 'manage_participant'],
           'Handling Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer'],
           'Internal Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
+          'Participant'           => ['view', 'view_participants'],
           'Production Staff'      => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Publishing Services'   => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
           'Reviewer'              => ['view', 'view_participants'],

@@ -19,8 +19,10 @@ describe PhasesController do
 
     context 'and the user is authenticated' do
       before { stub_sign_in user }
+      it_behaves_like "a forbidden json request"
 
       it "returns new the phase object as json" do
+        expect(user).to receive(:can?).with(:manage_workflow, paper).and_return(true)
         do_request
         json = JSON.parse(response.body)
         expect(json["phase"]["id"]).to eq(Phase.last.id)
@@ -39,12 +41,14 @@ describe PhasesController do
 
     context 'and the user is authenticated' do
       before { stub_sign_in user }
+      it_behaves_like "a forbidden json request"
 
       context "and the phase has tasks" do
         before do
           phase.update!(
             tasks: [FactoryGirl.build(:ad_hoc_task, :with_loaded_card, paper: paper)]
           )
+          expect(user).to receive(:can?).with(:manage_workflow, paper).and_return(true)
         end
 
         it 'responds with 400 BAD REQUEST' do
@@ -56,6 +60,7 @@ describe PhasesController do
       context "and the phase does not have tasks" do
         before do
           expect(phase.tasks).to be_empty
+          expect(user).to receive(:can?).with(:manage_workflow, paper).and_return(true)
         end
 
         it 'responds with 200 OK' do
@@ -77,7 +82,10 @@ describe PhasesController do
     context 'and the user is authenticated' do
       before { stub_sign_in user }
 
+      it_behaves_like "a forbidden json request"
+
       it "responds with 204 NO CONTENT" do
+        expect(user).to receive(:can?).with(:manage_workflow, paper).and_return(true)
         do_request
         expect(response.status).to eq(204)
       end

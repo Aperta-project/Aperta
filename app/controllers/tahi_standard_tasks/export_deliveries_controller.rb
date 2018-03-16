@@ -10,6 +10,12 @@ module TahiStandardTasks
 
     def create
       requires_user_can(:send_to_apex, task.paper)
+      export_delivery = ExportDelivery.create!(
+        destination: delivery_params[:destination] || 'apex',
+        paper: task.paper,
+        task: task,
+        user: current_user
+      )
       ExportService.delay(retry: false)
         .make_delivery(export_delivery_id: export_delivery.id)
 
@@ -17,6 +23,7 @@ module TahiStandardTasks
     end
 
     def show
+      export_delivery = ExportDelivery.includes(:user, :paper, :task).find(params[:id])
       requires_user_can(:send_to_apex, export_delivery.paper)
       render json: export_delivery
     end
@@ -29,20 +36,6 @@ module TahiStandardTasks
 
     def task
       Task.find(delivery_params[:task_id])
-    end
-
-    def export_delivery
-      @export_delivery ||=
-        if params[:id]
-          ExportDelivery.includes(:user, :paper, :task).find(params[:id])
-        else
-          ExportDelivery.create!(
-            destination: delivery_params[:destination] || 'apex',
-            paper: task.paper,
-            task: task,
-            user: current_user
-          )
-        end
     end
   end
 end

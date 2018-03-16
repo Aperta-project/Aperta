@@ -1,31 +1,25 @@
 class PhasesController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!, :authorize_user
   respond_to :json
 
   def index
-    paper = Paper.find_by_id_or_short_doi(params[:paper_id])
     respond_with paper.phases
   end
 
   def create
-    paper = Paper.find_by_id_or_short_doi(params[:phase][:paper_id])
-    phase = paper.phases.create!(new_phase_params)
-    respond_with phase
+    respond_with paper.phases.create!(new_phase_params)
   end
 
   def update
-    phase = Phase.find params[:id]
     phase.update_attributes! update_phase_params
     respond_with phase
   end
 
   def show
-    phase = Phase.find(params[:id])
     respond_with phase
   end
 
   def destroy
-    phase = Phase.find params[:id]
     if phase.tasks.empty? && phase.destroy
       render json: true
     else
@@ -41,5 +35,19 @@ class PhasesController < ApplicationController
 
   def update_phase_params
     params.require(:phase).permit(:name)
+  end
+
+  def phase
+    @phase ||= Phase.find_by(id: params[:id])
+  end
+
+  def paper
+    # rubocop:disable Rails/DynamicFindBy
+    @paper ||= Paper.find_by_id_or_short_doi(params[:paper_id] || params.dig(:phase, :paper_id))
+    # rubocop:enable Rails/DynamicFindBy
+  end
+
+  def authorize_user
+    requires_user_can(:manage_workflow, (params[:id] ? phase.paper : paper))
   end
 end

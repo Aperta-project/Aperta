@@ -27,7 +27,7 @@ class Invitation < ActiveRecord::Base
 
   before_validation :set_invitee_role
   validates :invitee_role, presence: true
-  validates :email, format: /.+@.+/
+  validates :email, format: /\A.+@.+\z/
   validates :task, presence: true
 
   belongs_to :invitation_queue

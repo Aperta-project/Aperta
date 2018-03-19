@@ -1,5 +1,5 @@
 module PlosBioTechCheck
-  class TechCheckController < ApplicationController
+  class TechCheckController < ::ApplicationController
     before_action :authenticate_user!
 
     def send_email

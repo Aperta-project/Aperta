@@ -27,14 +27,14 @@ class Journal < ActiveRecord::Base
   validates :doi_publisher_prefix,
     presence: { message: 'Please include a DOI Publisher Prefix' },
     format: {
-      with: PUBLISHER_PREFIX_FORMAT,
+      with: /\A#{PUBLISHER_PREFIX_FORMAT}\z/,
       message: 'The DOI Publisher Prefix is not valid. It can only contain word characters, numbers, -, and .',
       if: proc { |journal| journal.doi_publisher_prefix.present? }
     }
   validates :doi_journal_prefix,
     presence: { message: 'Please include a DOI Journal Prefix' },
     format: {
-      with: SUFFIX_FORMAT,
+      with: /\A#{SUFFIX_FORMAT}\z/,
       message: 'The DOI Journal Prefix is not valid. It must begin with \'journal\' and can contain any characters except /',
       if: proc { |journal| journal.doi_journal_prefix.present? }
     },

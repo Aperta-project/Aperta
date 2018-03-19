@@ -13,7 +13,7 @@ class Admin::JournalUsersController < ApplicationController
     end
 
     journal = Journal.find(params[:journal_id]) if params[:journal_id]
-    respond_with users, each_serializer: AdminJournalUserSerializer, root: 'admin_journal_users``', journal: journal
+    respond_with users, each_serializer: AdminJournalUserSerializer, root: 'admin_journal_users', journal: journal
   end
 
   def update # Updates role

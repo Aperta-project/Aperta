@@ -6,6 +6,6 @@ class ParticipationSerializer < AuthzSerializer
   private
 
   def can_view?
-    scope.can?(:view_participants, object.task)
+    scope.can?(:view_participants, object.assigned_to)
   end
 end

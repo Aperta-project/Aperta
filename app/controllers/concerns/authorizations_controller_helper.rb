@@ -12,7 +12,7 @@ module AuthorizationsControllerHelper
 
   included do
     rescue_from AuthorizationError, with: :unauthorized
-    rescue_from NotFoundError, with: :not_found
+    rescue_from NotFoundError, with: :render_not_found
   end
 
   def requires_that(not_found: false)
@@ -39,7 +39,7 @@ module AuthorizationsControllerHelper
     head :forbidden
   end
 
-  def not_found
+  def render_not_found
     render text: "Sorry, we're unable to find the page you requested.", status: 404
   end
 end

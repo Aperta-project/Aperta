@@ -13,6 +13,8 @@
 
 @import 'config/global-resets';
 
+@import 'tahi_standard_tasks/application';
+
 @import 'animations/base';
 @import 'components/base';
 @import 'overlays/base';
@@ -26,7 +28,6 @@
 @import 'dumping-ground';
 
 // STANDARD CARDS
-@import 'tahi_standard_tasks/application';
 
 // DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE
 @import 'plos_bio_internal_review/application';

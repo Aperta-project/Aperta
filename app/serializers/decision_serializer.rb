@@ -17,26 +17,15 @@ class DecisionSerializer < AuthzSerializer
   has_many :attachments, include: true
   has_one :paper, embed: :id, include: true
 
-  def include_verdict?
-    can_view_sensitive_details?
-  end
-
-  def include_letter?
-    can_view_sensitive_details?
-  end
-
-  def include_author_response?
-    can_view_sensitive_details?
-  end
-
   private
 
-  def can_view_sensitive_details?
-    current_user.can?(:view, object.paper)
-  end
-
-  # Everyone can view basic info like draft status
-  def can_view?
-    true
+  def unauthorized_result
+    {
+      id:            object.try(:id),
+      draft:         object.try(:draft?),
+      registered_at: object.try(:registered_at),
+      major_version: object.try(:major_version),
+      minor_version: object.try(:minor_version)
+    }
   end
 end

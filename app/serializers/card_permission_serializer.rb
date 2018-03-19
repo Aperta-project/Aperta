@@ -15,6 +15,6 @@ class CardPermissionSerializer < AuthzSerializer
   private
 
   def can_view?
-    scope.can?(:administer, object.journal)
+    scope.can?(:administer, Card.find(object.filter_by_card_id).journal)
   end
 end

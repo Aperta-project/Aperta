@@ -31,6 +31,7 @@ class AdminJournalUserSerializer < AuthzSerializer
   private
 
   def can_view?
+    return false if @options[:journal].blank?
     scope.can?(:administer, @options[:journal])
   end
 end

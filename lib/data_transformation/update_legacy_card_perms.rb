@@ -23,7 +23,7 @@ module DataTransformation
       permissions = Permission.includes(:roles).all
       default_permissions = CustomCard::DefaultCardPermissions.new({}) # journal doesn't matter here
       default_permissions.permissions.each do |card_key, role_permissions|
-        Card.where(name: card_key.titleize).each do |card|
+        Card.joins(:journal).where(name: card_key.titleize).each do |card|
           role_permissions.each do |role_name, actions|
             (actions & PARTICIPANT_PERMISSIONS).each do |action|
               has_permission = permissions_has_card_action_for_role?(permissions, card, action, role_name)

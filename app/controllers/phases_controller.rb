@@ -1,8 +1,10 @@
 class PhasesController < ApplicationController
-  before_action :authenticate_user!, :authorize_user
+  before_action :authenticate_user!
+  before_action :authorize_user, except: [:show, :index]
   respond_to :json
 
   def index
+    requires_user_can(:view, paper)
     respond_with paper.phases
   end
 
@@ -16,6 +18,7 @@ class PhasesController < ApplicationController
   end
 
   def show
+    requires_user_can(:view, phase.paper)
     respond_with phase
   end
 

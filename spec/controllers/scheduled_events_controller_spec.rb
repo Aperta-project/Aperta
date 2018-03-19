@@ -2,6 +2,7 @@ require 'rails_helper'
 # rubocop:disable Metrics/BlockLength
 describe ScheduledEventsController do
   let(:user) { FactoryGirl.create(:user) }
+  let(:task) { FactoryGirl.create(:task, title: 'Dueable Task') }
 
   describe "PUT /update (passive)" do
     let(:scheduled_event_active) { FactoryGirl.create(:scheduled_event, dispatch_at: DateTime.now.utc + 2.days) }
@@ -10,9 +11,16 @@ describe ScheduledEventsController do
     it_behaves_like 'an unauthenticated json request'
 
     context 'when the user is authenticated' do
-      before { stub_sign_in user }
+      before do
+        stub_sign_in user
+        expect(ScheduledEvent).to receive(:find).and_return(scheduled_event_active)
+        expect(scheduled_event_active).to receive_message_chain(:due_datetime, :due).and_return(task)
+      end
+      it_behaves_like "a forbidden json request"
 
       it 'returns updates event state to passive' do
+        allow(scheduled_event_active).to receive_message_chain(:due_datetime, :due).and_return(task)
+        expect(user).to receive(:can?).with(:edit, task).and_return(true)
         do_request
         expect(response.status).to eq(200)
         json = JSON.parse(response.body)
@@ -28,9 +36,16 @@ describe ScheduledEventsController do
     it_behaves_like 'an unauthenticated json request'
 
     context 'when the user is authenticated' do
-      before { stub_sign_in user }
+      before do
+        stub_sign_in user
+        expect(ScheduledEvent).to receive(:find).and_return(scheduled_event_passive)
+        expect(scheduled_event_passive).to receive_message_chain(:due_datetime, :due).and_return(task)
+      end
+
+      it_behaves_like "a forbidden json request"
 
       it 'returns updates event state to active' do
+        expect(user).to receive(:can?).with(:edit, task).and_return(true)
         do_request
         expect(response.status).to eq(200)
         json = JSON.parse(response.body)

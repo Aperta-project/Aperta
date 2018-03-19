@@ -22,7 +22,7 @@ class NestedQuestionAnswersController < ApplicationController
   private
 
   def fetch_and_update_answer
-    answer = fetch_or_create_answer
+    answer = fetch_or_build_answer
     if admin_edit?
       additional = answer_params[:additional_data] || {}
       additional[:pending_edit] = answer_params[:value]
@@ -44,9 +44,9 @@ class NestedQuestionAnswersController < ApplicationController
                 end
   end
 
-  def fetch_or_create_answer
+  def fetch_or_build_answer
     return fetch_answer if fetch_answer
-    @answer ||= card_content.answers.create(owner: owner, paper: owner.paper)
+    @answer ||= card_content.answers.build(owner: owner, paper: owner.paper)
   end
 
   def owner
@@ -82,7 +82,7 @@ class NestedQuestionAnswersController < ApplicationController
   def must_be_able_to_edit_task
     raise AuthorizationError unless current_user.can?(
       :edit,
-      fetch_or_create_answer.task
+      fetch_or_build_answer.task
     )
   end
 

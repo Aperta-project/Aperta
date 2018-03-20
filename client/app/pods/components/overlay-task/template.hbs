@@ -42,12 +42,11 @@
             {{/task-load}}
           </div>
           <footer class="overlay-footer">
-            {{#if (can 'edit_discussion_footer' task)}}
+            {{#if (can 'view_participants' task)}}
               {{participant-selector currentParticipants=participants
                                      paperId=task.paper.id
                                      label="Following:"
                                      canManage=(can "manage_participant" task)
-                                     canEditDiscussion=(can "edit_discussion_footer" task)
                                      onSelect=(action "saveNewParticipant")
                                      onRemove=(action "removeParticipant")
                                      searchStarted=(action "searchStarted")

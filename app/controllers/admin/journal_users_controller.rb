@@ -26,7 +26,7 @@ class Admin::JournalUsersController < ApplicationController
 
       update_user_details
     end
-    respond_with user, serializer: AdminJournalUserSerializer, journal: journal
+    respond_with user, serializer: AdminJournalUserSerializer
   end
 
   private

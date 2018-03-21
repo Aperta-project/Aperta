@@ -98,8 +98,8 @@ class Decision < ActiveRecord::Base
     invitations.where(invitee_id: invitee_id).order(:created_at).last
   end
 
-  def user_can_view?(user)
-    user.can?(:view_decisions, paper)
+  def user_can_view?(check_user)
+    check_user.can?(:view_decisions, paper)
   end
 
   private

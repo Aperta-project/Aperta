@@ -94,8 +94,8 @@ class Invitation < ActiveRecord::Base
     possible_users - invited_users
   end
 
-  def user_can_view?(user)
-    user == invitee || user.can?(:manage_invitations, task)
+  def user_can_view?(check_user)
+    check_user == invitee || check_user.can?(:manage_invitations, task)
   end
 
   def recipient_name

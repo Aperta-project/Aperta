@@ -36,8 +36,8 @@ class DueDatetime < ActiveRecord::Base
 
   has_many :scheduled_events
 
-  def user_can_view?(user)
-    user.can?(:view, due.task)
+  def user_can_view?(check_user)
+    check_user.can?(:view, due.task)
   end
 
   def self.set_for(object, length_of_time:)

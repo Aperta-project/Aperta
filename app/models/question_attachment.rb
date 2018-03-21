@@ -22,8 +22,8 @@ class QuestionAttachment < Attachment
     filename.nil?
   end
 
-  def user_can_view?(user)
-    user.can?(:view, find_task)
+  def user_can_view?(check_user)
+    check_user.can?(:view, find_task)
   end
 
   def find_task # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity,Metrics/AbcSize

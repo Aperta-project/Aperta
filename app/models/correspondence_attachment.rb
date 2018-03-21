@@ -5,7 +5,7 @@ class CorrespondenceAttachment < Attachment
   self.notifications_enabled = false
   self.snapshottable = false
 
-  def user_can_view?(user)
-    user.can?(:manage_workflow, paper)
+  def user_can_view?(check_user)
+    check_user.can?(:manage_workflow, paper)
   end
 end

@@ -54,7 +54,7 @@ class Role < ActiveRecord::Base
     JOURNAL_SETUP_ROLE
   ].freeze
 
-  def user_can_view?(user)
+  def user_can_view?(_check_user)
     true
   end
 

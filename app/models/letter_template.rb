@@ -20,8 +20,8 @@ class LetterTemplate < ActiveRecord::Base
   validate :bcc_ok?
   before_validation :canonicalize_email_addresses
 
-  def user_can_view?(user)
-    user.can?(:manage_users, Journal)
+  def user_can_view?(check_user)
+    check_user.can?(:manage_users, Journal)
   end
 
   def render(context, check_blanks: false)

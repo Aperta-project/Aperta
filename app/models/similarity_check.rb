@@ -16,8 +16,8 @@ class SimilarityCheck < ActiveRecord::Base
 
   validates :versioned_text, :state, presence: true
 
-  def user_can_view?(user)
-    user.can?(:perform_similarity_check, paper)
+  def user_can_view?(check_user)
+    check_user.can?(:perform_similarity_check, paper)
   end
 
   TIMEOUT_INTERVAL = 10.minutes

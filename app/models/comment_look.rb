@@ -9,8 +9,8 @@ class CommentLook < ActiveRecord::Base
 
   validates :comment, :user, presence: true
 
-  def user_can_view?(my_user)
+  def user_can_view?(check_user)
     # A user can view their own comment looks
-    my_user == user
+    check_user == user
   end
 end

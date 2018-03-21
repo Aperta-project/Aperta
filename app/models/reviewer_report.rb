@@ -147,8 +147,8 @@ class ReviewerReport < ActiveRecord::Base
     scheduled_events.cancelable.each(&:cancel!)
   end
 
-  def user_can_view?(user)
-    user.can?(:edit, task)
+  def user_can_view?(check_user)
+    check_user.can?(:edit, task)
   end
 
   private

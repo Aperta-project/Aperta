@@ -19,7 +19,7 @@ class FeatureFlag < ActiveRecord::Base
   # name: string (acts as ID)
   # active: boolean (true if the incomplete feature should be visible)
 
-  def user_can_view?(_user)
+  def user_can_view?(_check_user)
     true # everyone can view these
   end
 

@@ -13,7 +13,7 @@ class CardTaskType < ActiveRecord::Base
     'TahiStandardTasks::UploadManuscriptTask' => 'Upload Manuscript'
   }.freeze
 
-  def user_can_view?(_user)
+  def user_can_view?(_check_user)
     true
   end
 

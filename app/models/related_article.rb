@@ -27,7 +27,7 @@ class RelatedArticle < ActiveRecord::Base
   # to Apex for publication
   #
 
-  def user_can_view?(user)
-    user.can? :edit_related_articles, paper
+  def user_can_view?(check_user)
+    check_user.can? :edit_related_articles, paper
   end
 end

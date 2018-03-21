@@ -7,8 +7,8 @@ class AdminEdit < ActiveRecord::Base
   scope :active, -> { where(active: true) }
   scope :completed, -> { where(active: false) }
 
-  def user_can_view?(user)
-    user.can?(:edit_answers, reviewer_report.paper)
+  def user_can_view?(check_user)
+    check_user.can?(:edit_answers, reviewer_report.paper)
   end
 
   def self.edit_for(report)

@@ -10,14 +10,14 @@ module ViewableModel
 
   # Returns true if the user should be able to view this model. Override for
   # more complicated behavior.
-  def user_can_view?(user)
-    user.can?(:view, self)
+  def user_can_view?(check_user)
+    check_user.can?(:view, self)
   end
 
   class_methods do
     def delegate_view_permission_to(method)
-      define_method "user_can_view?" do |user|
-        send(method).user_can_view?(user)
+      define_method "user_can_view?" do |check_user|
+        send(method).user_can_view?(check_user)
       end
     end
   end

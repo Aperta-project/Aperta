@@ -29,6 +29,6 @@ class AuthzSerializer < ActiveModel::Serializer
   end
 
   def unauthorized_result
-    { id: object.try(:id) }
+    { id: object.id }
   end
 end

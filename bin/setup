@@ -94,7 +94,7 @@ Dir.chdir APP_ROOT do
       brew_install package
     end
   when :linux
-    system "sudo apt-get install -y imagemagick wget redis-server postgresql qpdf libsqlite3-dev zlib1g-dev libpq-dev"
+    system "sudo apt-get install -y imagemagick wget redis-server postgresql-9.4 qpdf libsqlite3-dev zlib1g-dev libpq-dev"
   end
 
   header 'Installing nvm'

@@ -154,6 +154,7 @@ module CustomCard
         },
 
         'preprint_decision'       => {
+          'Billing Staff'         => [        'view_participants'],
           'Cover Editor'          => [        'view_participants',         'manage_participant', 'view_discussion_footer'],
           'Handling Editor'       => [        'view_participants',         'manage_participant', 'view_discussion_footer'],
           'Internal Editor'       => ['view', 'view_participants', 'edit', 'manage_participant', 'view_discussion_footer', 'edit_discussion_footer'],
@@ -165,7 +166,7 @@ module CustomCard
 
         'preprint_posting'        => {
           'Academic Editor'       => ['view'],
-          'Billing Staff'         => ['view'],
+          'Billing Staff'         => ['view', 'view_participants'],
           'Collaborator'          => ['view', 'view_participants', 'edit', 'manage_participant'],
           'Cover Editor'          => ['view', 'view_participants',         'manage_participant'],
           'Creator'               => ['view', 'view_participants', 'edit', 'manage_participant'],

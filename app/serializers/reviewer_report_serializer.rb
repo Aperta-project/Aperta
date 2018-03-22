@@ -1,6 +1,6 @@
 # Serializes ReviewerReports.  Sends down its card content
 # as nested questions
-class ReviewerReportSerializer < ActiveModel::Serializer
+class ReviewerReportSerializer < AuthzSerializer
   include CardContentShim
 
   attributes :id,
@@ -32,5 +32,12 @@ class ReviewerReportSerializer < ActiveModel::Serializer
 
   def status_datetime
     object.datetime
+  end
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

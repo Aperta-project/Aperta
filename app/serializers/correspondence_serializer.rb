@@ -1,4 +1,4 @@
-class CorrespondenceSerializer < ActiveModel::Serializer
+class CorrespondenceSerializer < AuthzSerializer
   require 'link_sanitizer'
   attributes :id, :date, :subject, :recipient, :sender, :body,
              :recipients, :sent_at, :external, :description, :status,
@@ -33,5 +33,10 @@ class CorrespondenceSerializer < ActiveModel::Serializer
 
   def deleted?
     object.status == 'deleted'
+  end
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

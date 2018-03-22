@@ -1,4 +1,5 @@
 class Role < ActiveRecord::Base
+  include ViewableModel
   belongs_to :journal
   has_and_belongs_to_many :permissions
   has_many :assignments, dependent: :destroy

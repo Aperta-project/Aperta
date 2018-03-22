@@ -1,4 +1,5 @@
 class Notification < ActiveRecord::Base
+  include ViewableModel
   include EventStream::Notifiable
 
   belongs_to :paper, inverse_of: :notifications

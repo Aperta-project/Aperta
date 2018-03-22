@@ -1,4 +1,4 @@
-class AnswerSerializer < ActiveModel::Serializer
+class AnswerSerializer < AuthzSerializer
   include ReadySerializable
   attributes :id,
     :value,
@@ -18,5 +18,12 @@ class AnswerSerializer < ActiveModel::Serializer
     # but Ember expects to have a specific subclass.
     owner_instance = object.owner
     { id: owner_instance.id, type: owner_instance.class.name.demodulize }
+  end
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

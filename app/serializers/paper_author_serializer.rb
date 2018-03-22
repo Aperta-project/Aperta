@@ -1,7 +1,7 @@
 # When we update an Author, it may update the positions of all Authors
 # and GroupAuthors on the paper. This serializer serializes all of
 # them so those updated positions make it back to the front-end.
-class PaperAuthorSerializer < ActiveModel::Serializer
+class PaperAuthorSerializer < AuthzSerializer
   has_many :authors,
            serializer: AuthorSerializer,
            embed: :ids,
@@ -35,5 +35,12 @@ class PaperAuthorSerializer < ActiveModel::Serializer
 
   def group_authors
     object.group_authors.reorder(id: :desc)
+  end
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

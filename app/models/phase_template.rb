@@ -1,4 +1,5 @@
 class PhaseTemplate < ActiveRecord::Base
+  include ViewableModel
   belongs_to :manuscript_manager_template, inverse_of: :phase_templates
   has_many :task_templates, -> { order("position asc") },
                                 inverse_of: :phase_template,

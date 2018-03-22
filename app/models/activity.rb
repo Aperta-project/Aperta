@@ -2,6 +2,7 @@
 # Activities are used to make up a feed for various users in the system. The
 # feed is determined by the feed name assigned to each activity.
 class Activity < ActiveRecord::Base
+  include ViewableModel
   extend ClientRouteHelper
   belongs_to :subject, polymorphic: true
   belongs_to :user

@@ -1,4 +1,5 @@
 class PermissionState < ActiveRecord::Base
+  include ViewableModel
   WILDCARD = '*'.freeze
 
   def self.wildcard

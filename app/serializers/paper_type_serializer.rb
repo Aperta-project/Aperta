@@ -1,5 +1,5 @@
 # This serializes an author-safe version of manuscipt manager templates
-class PaperTypeSerializer < ActiveModel::Serializer
+class PaperTypeSerializer < AuthzSerializer
   attributes :id,
     :paper_type,
     :is_preprint_eligible,
@@ -11,5 +11,12 @@ class PaperTypeSerializer < ActiveModel::Serializer
   # overlay after the manuscript is first uploaded
   def task_names
     object.task_templates.select(&:required_for_submission).map(&:title)
+  end
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

@@ -4,6 +4,7 @@
 # chasing events are accounted for. This would also serve as contents of a queue
 # on which "Eventamatron" would work off to maintain the states of chasing events
 class ScheduledEvent < ActiveRecord::Base
+  include ViewableModel
   belongs_to :due_datetime
 
   include AASM

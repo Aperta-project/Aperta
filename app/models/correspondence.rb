@@ -1,5 +1,6 @@
 # Single class to handle internal and external correspondence
 class Correspondence < ActiveRecord::Base
+  include ViewableModel
   include EventStream::Notifiable
   self.table_name = "email_logs"
 

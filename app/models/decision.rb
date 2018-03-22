@@ -1,4 +1,5 @@
 class Decision < ActiveRecord::Base
+  include ViewableModel
   include EventStream::Notifiable
   include Versioned
   include CustomCastTypes

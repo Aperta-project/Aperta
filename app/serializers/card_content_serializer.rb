@@ -1,4 +1,4 @@
-class CardContentSerializer < ActiveModel::Serializer
+class CardContentSerializer < AuthzSerializer
   attributes :id,
              :content_type,
              :unsorted_child_ids,
@@ -16,5 +16,12 @@ class CardContentSerializer < ActiveModel::Serializer
       hash[attr.name.to_sym] = attr.value
     end
     hash
+  end
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

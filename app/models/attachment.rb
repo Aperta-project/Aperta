@@ -6,6 +6,7 @@
 # For the time being any subclass of Attachment will use the AttachmentUploader
 # as well.
 class Attachment < ActiveRecord::Base
+  include ViewableModel
   include EventStream::Notifiable
   include ProxyableResource
   include Snapshottable

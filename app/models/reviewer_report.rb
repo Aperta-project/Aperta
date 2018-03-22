@@ -1,5 +1,6 @@
 # This class represents the reviewer reports per decision round
 class ReviewerReport < ActiveRecord::Base
+  include ViewableModel
   include Answerable
   include AASM
 

@@ -5,6 +5,7 @@
 # other. Other times, they are related, but not simultaneously
 # published. Those relationships are one-way.
 class RelatedArticle < ActiveRecord::Base
+  include ViewableModel
   include CustomCastTypes
 
   belongs_to :paper

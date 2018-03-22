@@ -1,6 +1,7 @@
 # Defines a "behavior" which triggers some code on a certain event.
 
 class Behavior < ActiveRecord::Base
+  include ViewableModel
   include Attributable
 
   belongs_to :journal

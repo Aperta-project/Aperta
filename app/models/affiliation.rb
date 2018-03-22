@@ -1,4 +1,5 @@
 class Affiliation < ActiveRecord::Base
+  include ViewableModel
   belongs_to :user, inverse_of: :affiliations
 
   validates :user, :name, :email, presence: true

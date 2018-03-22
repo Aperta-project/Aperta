@@ -1,4 +1,5 @@
 class AuthorListItem < ActiveRecord::Base
+  include ViewableModel
   acts_as_list scope: :paper
 
   belongs_to :paper

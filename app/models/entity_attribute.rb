@@ -5,6 +5,7 @@
 # attached to an entity without changing the database schema. The names and
 # types of the attributes are managed in code: see Attributable.
 class EntityAttribute < ActiveRecord::Base
+  include ViewableModel
   include XmlSerializable
 
   # The entity to which this attribute belongs.

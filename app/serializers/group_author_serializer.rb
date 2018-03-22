@@ -1,6 +1,6 @@
 # Serializer for authors that aren't individuals; they live in the
 # same list as normal authors
-class GroupAuthorSerializer < ActiveModel::Serializer
+class GroupAuthorSerializer < AuthzSerializer
   include CardContentShim
 
   attributes :initial,
@@ -15,4 +15,11 @@ class GroupAuthorSerializer < ActiveModel::Serializer
              :paper_id,
              :name,
              :id
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
+  end
 end

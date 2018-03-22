@@ -1,4 +1,4 @@
-class AdminJournalUserSerializer < ActiveModel::Serializer
+class AdminJournalUserSerializer < AuthzSerializer
   attributes :id,
              :username,
              :first_name,
@@ -26,5 +26,12 @@ class AdminJournalUserSerializer < ActiveModel::Serializer
     else
       object.roles
     end
+  end
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
   end
 end

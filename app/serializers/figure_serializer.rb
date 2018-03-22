@@ -1,4 +1,4 @@
-class FigureSerializer < ActiveModel::Serializer
+class FigureSerializer < AuthzSerializer
   attributes :id,
              :filename,
              :alt,
@@ -12,4 +12,11 @@ class FigureSerializer < ActiveModel::Serializer
              :rank
 
   has_one :paper, embed: :id
+
+  private
+
+  # TODO: APERTA-12693 Stop overriding this
+  def can_view?
+    true
+  end
 end

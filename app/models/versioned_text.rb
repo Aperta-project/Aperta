@@ -6,6 +6,7 @@
 class VersionedText < ActiveRecord::Base
   include EventStream::Notifiable
   include Versioned
+  include ViewableModel
 
   # Base exception class for VersionedText
   class VersionedTextError < StandardError; end

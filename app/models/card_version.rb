@@ -3,6 +3,7 @@
 # as a container for information we need to version that isn't
 # card content
 class CardVersion < ActiveRecord::Base
+  include ViewableModel
   belongs_to :card, inverse_of: :card_versions
   belongs_to :published_by, class_name: 'User'
   has_many :card_contents, -> { includes(:entity_attributes, :card_content_validations) }, inverse_of: :card_version, dependent: :destroy

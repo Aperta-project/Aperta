@@ -2,6 +2,7 @@
 # and any other use cases where a letter template with variable replacement
 # would be useful.
 class LetterTemplate < ActiveRecord::Base
+  include ViewableModel
   belongs_to :journal
 
   validates :name, presence: { message: "This field is required" }, uniqueness: {

@@ -7,6 +7,7 @@ require 'securerandom'
 #
 # NOTE: THIS DOES NOT MOVE OR DELETE ANY EXISTING S3 FILES, IT JUST COPIES THEM
 class S3Migration < ActiveRecord::Base
+  include ViewableModel
   # UploaderOverrides updates the CarrierWave uploaders
   # that we are intending to migration files from. We do this at the class
   # and not instance level because CarrierWave caches a lot of stuff

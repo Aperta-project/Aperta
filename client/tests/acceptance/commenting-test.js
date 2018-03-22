@@ -157,7 +157,7 @@ test('A card with discussion view permissions and discussion edit permissions ca
   });
   Factory.createPermission('Paper', paper.id, ['view']);
   Factory.createPermission('AdHocTask', task.id,
-                          ['view', 'edit', 'view_discussion_footer', 'edit_discussion_footer']);
+                          ['view', 'edit', 'view_discussion_footer', 'edit_discussion_footer', 'view_participants']);
   TestHelper.mockPaperQuery(paper);
   mockFindRecord('task').returns({
     json: {task: {type: 'ad-hoc-task', id: task.id}}

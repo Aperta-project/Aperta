@@ -6,16 +6,11 @@
 
 ## Overview
 
-1. Run the setup script (`bin/setup`)
-1. Make sure the following servers are already running:
-    - PostgreSQL
-    - Redis (run manually with `redis-server`)
-1. Make sure the following ports are clear:
-    - 4567 (Slanger API)
-    - 40604 (Slanger websocket)
-    - 5000 (Rails server)
-1. Setup S3
-1. Run `foreman start`
+1. Ensure you have the required ruby version installed (see `.ruby-version`). We
+   recommend using rbenv or rvm to manage your ruby versions.
+2. Run the setup script (`bin/setup`)
+3. Setup S3.
+4. Run `foreman start`
 
 ## Automated Setup
 
@@ -54,7 +49,13 @@ Run `foreman start` to start the web server, worker, and slanger.
 
 # Troubleshooting
 
-TODO
+1. Make sure the following servers are already running:
+    - PostgreSQL
+    - Redis
+2. Make sure the following ports are clear:
+    - 4567 (Slanger API)
+    - 40604 (Slanger websocket)
+    - 5000 (Rails server)
 
 # Further information
 

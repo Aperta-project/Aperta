@@ -1,5 +1,5 @@
 # Responsible for serializing a ScheduledEvent model as an API response.
-class ScheduledEventSerializer < ActiveModel::Serializer
+class ScheduledEventSerializer < AuthzSerializer
   attributes :id, :name, :dispatch_at, :state, :finished
 
   def finished

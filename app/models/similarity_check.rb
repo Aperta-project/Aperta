@@ -4,6 +4,7 @@
 # should avoid making more than one request per paper.
 #
 class SimilarityCheck < ActiveRecord::Base
+  include ViewableModel
   class IncorrectState < StandardError; end
 
   include EventStream::Notifiable
@@ -14,6 +15,10 @@ class SimilarityCheck < ActiveRecord::Base
   has_one :file, through: :paper
 
   validates :versioned_text, :state, presence: true
+
+  def user_can_view?(check_user)
+    check_user.can?(:perform_similarity_check, paper)
+  end
 
   TIMEOUT_INTERVAL = 10.minutes
 

@@ -1,4 +1,4 @@
-class OrcidAccountSerializer < ActiveModel::Serializer
+class OrcidAccountSerializer < AuthzSerializer
   attributes :id,
     :identifier,
     :name,
@@ -27,5 +27,11 @@ class OrcidAccountSerializer < ActiveModel::Serializer
 
   def orcid_connect_enabled
     TahiEnv.orcid_connect_enabled?
+  end
+
+  def can_view?
+    # See above. Contains no sensitive information. I don't know why this was
+    # implemented like this, but it was. -EGH
+    true
   end
 end

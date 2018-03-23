@@ -3,7 +3,7 @@ class DiscussionRepliesController < ApplicationController
   respond_to :json
 
   def show
-    requires_user_can :view, discussion_reply.discussion_topic
+    requires_user_can_view(discussion_reply)
     respond_with(discussion_reply)
   end
 

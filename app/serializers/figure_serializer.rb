@@ -1,4 +1,4 @@
-class FigureSerializer < ActiveModel::Serializer
+class FigureSerializer < AuthzSerializer
   attributes :id,
              :filename,
              :alt,

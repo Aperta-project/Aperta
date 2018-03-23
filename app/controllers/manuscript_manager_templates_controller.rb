@@ -25,7 +25,7 @@ class ManuscriptManagerTemplatesController < ApplicationController
   end
 
   def show
-    requires_user_can(:administer, manuscript_manager_template.journal)
+    requires_user_can_view(manuscript_manager_template)
     respond_with manuscript_manager_template
   end
 

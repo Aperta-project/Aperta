@@ -2,6 +2,7 @@
 require 'csv'
 
 class BillingLog < ActiveRecord::Base
+  include ViewableModel
   belongs_to :paper, class_name: 'Paper', foreign_key: 'documentid'
   validates :paper, presence: true
 

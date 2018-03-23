@@ -1,10 +1,15 @@
 # Record of an admin editing someone else's content, e.g., reviewer reports
 class AdminEdit < ActiveRecord::Base
+  include ViewableModel
   belongs_to :reviewer_report
   belongs_to :user
 
   scope :active, -> { where(active: true) }
   scope :completed, -> { where(active: false) }
+
+  def user_can_view?(check_user)
+    check_user.can?(:edit_answers, reviewer_report.paper)
+  end
 
   def self.edit_for(report)
     first_active = report.admin_edits.active.first

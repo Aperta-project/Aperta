@@ -1,4 +1,4 @@
-class RepetitionSerializer < ActiveModel::Serializer
+class RepetitionSerializer < AuthzSerializer
   attributes :id,
     :card_content_id,
     :task_id,

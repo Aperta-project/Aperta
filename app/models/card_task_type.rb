@@ -3,6 +3,7 @@
 # Users can assign a CardType to a Card when creating a new Card in the
 # admin screen.
 class CardTaskType < ActiveRecord::Base
+  include ViewableModel
   validates :display_name, presence: true
   validates :task_class, presence: true
 
@@ -11,6 +12,10 @@ class CardTaskType < ActiveRecord::Base
     'CustomCardTask' => 'Custom Card',
     'TahiStandardTasks::UploadManuscriptTask' => 'Upload Manuscript'
   }.freeze
+
+  def user_can_view?(_check_user)
+    true
+  end
 
   def self.default_attributes(klass)
     { display_name: DEFAULT_NAMES.fetch(klass), task_class: klass }

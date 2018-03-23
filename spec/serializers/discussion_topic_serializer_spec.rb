@@ -4,15 +4,15 @@ describe DiscussionTopicSerializer, serializer_test: true do
   let(:discussion) do
     FactoryGirl.create(
       :discussion_topic,
-      participants: [user],
+      participants: [discussant],
       discussion_replies: [reply],
       discussion_participants: [discussion_participant]
     )
   end
-  let(:reply) { FactoryGirl.create(:discussion_reply, replier: user) }
-  let(:user) { FactoryGirl.create(:user) }
+  let(:reply) { FactoryGirl.create(:discussion_reply, replier: discussant) }
+  let(:discussant) { FactoryGirl.create(:user) }
   let(:object_for_serializer) { discussion }
-  let(:discussion_participant) { FactoryGirl.create(:discussion_participant, user: user) }
+  let(:discussion_participant) { FactoryGirl.create(:discussion_participant, user: discussant) }
 
   it 'serializes the topic' do
     expect(deserialized_content)
@@ -23,10 +23,10 @@ describe DiscussionTopicSerializer, serializer_test: true do
     expect(deserialized_content)
       .to match(hash_including(discussion_replies:
                                  include(hash_including(body: reply.body,
-                                                        replier_id: user.id))))
+                                                        replier_id: discussant.id))))
   end
 
-  context 'with a replying user who is not a participant' do
+  context 'with a replying discussant who is not a participant' do
     subject(:discussion) do
       FactoryGirl.create(
         :discussion_topic,
@@ -35,17 +35,13 @@ describe DiscussionTopicSerializer, serializer_test: true do
     end
 
     it 'serializes all repliers although they may not be participants' do
-      expect(deserialized_content).to match(hash_including(users: include(hash_including(id: user.id))))
+      expect(deserialized_content).to match(hash_including(users: include(hash_including(id: discussant.id))))
     end
   end
 
-  context 'with a replying user who also a participant' do
-    it 'serializes the user only once' do
-      expect(deserialized_content).to match(hash_including(users: contain_exactly(hash_including(id: user.id))))
+  context 'with a replying discussant who also a participant' do
+    it 'serializes the discussant only once' do
+      expect(deserialized_content).to match(hash_including(users: contain_exactly(hash_including(id: discussant.id))))
     end
-  end
-
-  it 'includes email addresses for a discussion participant who is also a paper participant' do
-    expect(deserialized_content).to match(hash_including(users: include(hash_including(email: user.email))))
   end
 end

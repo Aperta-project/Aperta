@@ -3,6 +3,7 @@
 # as a container for information we need to version that isn't
 # card content
 class CardVersion < ActiveRecord::Base
+  include ViewableModel
   belongs_to :card, inverse_of: :card_versions
   belongs_to :published_by, class_name: 'User'
   has_many :card_contents, -> { includes(:entity_attributes, :card_content_validations) }, inverse_of: :card_version, dependent: :destroy
@@ -19,6 +20,8 @@ class CardVersion < ActiveRecord::Base
 
   validates :version, uniqueness: { scope: :card_id, message: "Card version numbers are unique for a given card" }
   validates :history_entry, presence: true, if: -> { published? }
+
+  delegate_view_permission_to :card
 
   def published?
     published_at.present?

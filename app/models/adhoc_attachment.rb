@@ -5,4 +5,6 @@
 # with an ad-hoc card.
 class AdhocAttachment < Attachment
   self.public_resource = true
+
+  delegate_view_permission_to :task
 end

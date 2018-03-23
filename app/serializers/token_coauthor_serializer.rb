@@ -1,4 +1,4 @@
-class TokenCoauthorSerializer < ActiveModel::Serializer
+class TokenCoauthorSerializer < AuthzSerializer
   attributes :id, :created_at, :confirmation_state, :paper_title, :coauthors, :journal_logo_url
 
   def id

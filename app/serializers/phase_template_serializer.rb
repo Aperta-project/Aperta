@@ -1,4 +1,4 @@
-class PhaseTemplateSerializer < ActiveModel::Serializer
+class PhaseTemplateSerializer < AuthzSerializer
   attributes :id, :name, :position
 
   has_many :task_templates, embed: :ids, include: true

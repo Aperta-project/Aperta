@@ -9,6 +9,7 @@
 # of a task.
 #
 class Snapshot < ActiveRecord::Base
+  include ViewableModel
   belongs_to :source, polymorphic: true
   belongs_to :paper
 

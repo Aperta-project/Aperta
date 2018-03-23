@@ -1,5 +1,5 @@
-class AffiliationSerializer < ActiveModel::Serializer
-  has_one :user, include: true, embed: :id
+class AffiliationSerializer < AuthzSerializer
+  has_one :user, embed: :id
   attributes :id,
     :name,
     :start_date,

@@ -11,6 +11,8 @@ class Figure < Attachment
 
   delegate :insert_figures!, to: :paper
 
+  delegate_view_permission_to :paper
+
   def self.acceptable_content_type?(content_type)
     !!(content_type =~ /(^image\/(gif|jpe?g|png|tif?f)|application\/postscript)$/i)
   end

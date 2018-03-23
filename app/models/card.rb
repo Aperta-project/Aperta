@@ -1,5 +1,6 @@
 # Card is a container for CardContents
 class Card < ActiveRecord::Base
+  include ViewableModel
   include EventStream::Notifiable
   include CustomCardVisitors
   include XmlSerializable
@@ -37,6 +38,12 @@ class Card < ActiveRecord::Base
     [].tap do |cards|
       cards << 'Preprint Decision' unless FeatureFlag[:PREPRINT]
     end
+  end
+
+  def user_can_view?(_check_user)
+    # TODO: This should probably be part of the core permissions system.
+    # These are just forms, anyone can see them.
+    true
   end
 
   # A given card can have several states, but be mindful that the 'state' of a

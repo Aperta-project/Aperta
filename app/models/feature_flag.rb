@@ -14,9 +14,14 @@
 # with the site_admin role.
 #
 class FeatureFlag < ActiveRecord::Base
+  include ViewableModel
   # Fields:
   # name: string (acts as ID)
   # active: boolean (true if the incomplete feature should be visible)
+
+  def user_can_view?(_check_user)
+    true # everyone can view these
+  end
 
   def self.contain_exactly!(flags)
     transaction do

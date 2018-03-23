@@ -1,4 +1,5 @@
 class Repetition < ActiveRecord::Base
+  include ViewableModel
   acts_as_list scope: [:card_content_id, :task_id, :parent_id], top_of_list: 0
   has_closure_tree
 
@@ -9,4 +10,6 @@ class Repetition < ActiveRecord::Base
 
   validates :card_content, presence: true
   validates :task, presence: true
+
+  delegate_view_permission_to :task
 end

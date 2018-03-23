@@ -4,6 +4,7 @@
 # chasing events are accounted for. This would also serve as contents of a queue
 # on which "Eventamatron" would work off to maintain the states of chasing events
 class ScheduledEvent < ActiveRecord::Base
+  include ViewableModel
   belongs_to :due_datetime
 
   include AASM
@@ -20,6 +21,8 @@ class ScheduledEvent < ActiveRecord::Base
   before_save :reactivate, if: :should_reactivate?
 
   FINISHED_STATES = %w[completed inactive canceled errored deactivated].freeze
+
+  delegate_view_permission_to :due_datetime
 
   def should_disable?
     dispatch_at && dispatch_at < DateTime.now.in_time_zone && (active? || passive?)

@@ -1,6 +1,6 @@
 # Serializes properties for Ember
 # rubocop:disable Style/PredicateName
-class TaskSerializer < ActiveModel::Serializer
+class TaskSerializer < AuthzSerializer
   attributes :id,
              :assigned_to_me,
              :body,

@@ -1,4 +1,5 @@
 class Assignment < ActiveRecord::Base
+  include ViewableModel
   include EventStream::Notifiable
   belongs_to :user
   belongs_to :role

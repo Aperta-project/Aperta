@@ -1,4 +1,5 @@
 class Comment < ActiveRecord::Base
+  include ViewableModel
   include EventStream::Notifiable
   include CustomCastTypes
 

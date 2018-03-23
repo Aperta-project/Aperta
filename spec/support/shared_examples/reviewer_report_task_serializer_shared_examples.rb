@@ -17,8 +17,7 @@ RSpec.shared_examples_for :reviewer_report_task_serializer do
   end
   let(:object_for_serializer) { reviewer_report_task }
   let(:decision) { FactoryGirl.create(:decision, :pending, paper: paper) }
-  let(:user) { FactoryGirl.create(:user) }
-  let(:serializer) { described_class.new(reviewer_report_task, scope: user) }
+  let(:serializer) { described_class.new(reviewer_report_task) }
 
   before do
     allow(reviewer_report_task).to receive(:submitted?).and_return true

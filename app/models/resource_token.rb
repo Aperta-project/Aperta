@@ -2,6 +2,7 @@
 # used to when we want to hand out a permalink for an asset that is hosted on S3
 # that requires a temporary signed url.
 class ResourceToken < ActiveRecord::Base
+  include ViewableModel
   # writes to `token` attr on create
   # `regenerate_token` for new token
   has_secure_token

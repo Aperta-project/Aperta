@@ -31,9 +31,14 @@
 # relevant to display the original date in the UI.
 #
 class DueDatetime < ActiveRecord::Base
+  include ViewableModel
   belongs_to :due, polymorphic: true
 
   has_many :scheduled_events
+
+  def user_can_view?(check_user)
+    check_user.can?(:view, due.task)
+  end
 
   def self.set_for(object, length_of_time:)
     (object.due_datetime ||= DueDatetime.new).set(length_of_time: length_of_time)

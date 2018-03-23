@@ -6,6 +6,7 @@
 # For the time being any subclass of Attachment will use the AttachmentUploader
 # as well.
 class Attachment < ActiveRecord::Base
+  include ViewableModel
   include EventStream::Notifiable
   include ProxyableResource
   include Snapshottable
@@ -31,6 +32,8 @@ class Attachment < ActiveRecord::Base
   scope :error, -> { where(status: STATUS_ERROR) }
   scope :done, -> { where(status: STATUS_DONE) }
   scope :unknown, -> { where.not(status: STATUSES.values) }
+
+  delegate_view_permission_to :paper
 
   def public_resource
     value = @public_resource

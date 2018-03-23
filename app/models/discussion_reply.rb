@@ -1,4 +1,5 @@
 class DiscussionReply < ActiveRecord::Base
+  include ViewableModel
   include ActionView::Helpers::TextHelper
   include EventStream::Notifiable
   include CustomCastTypes
@@ -10,6 +11,8 @@ class DiscussionReply < ActiveRecord::Base
   has_many :notifications, as: :target
 
   before_create :process_at_mentions!
+
+  delegate_view_permission_to :discussion_topic
 
   def process_at_mentions!
     self.body = user_mentions.decorated_mentions

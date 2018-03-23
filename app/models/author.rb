@@ -1,5 +1,6 @@
 # Manuscript author model
 class Author < ActiveRecord::Base
+  include ViewableModel
   include Answerable
   include EventStream::Notifiable
   include Tokenable
@@ -53,6 +54,8 @@ class Author < ActiveRecord::Base
   before_create :set_default_co_author_state
 
   before_validation :strip_whitespace
+
+  delegate_view_permission_to :paper
 
   STRIPPED_ATTRS = [
     :first_name,

@@ -5,6 +5,8 @@ class SourcefileAttachment < Attachment
 
   self.public_resource = false
 
+  delegate_view_permission_to :paper
+
   def keep_file_when_replaced?
     true
   end

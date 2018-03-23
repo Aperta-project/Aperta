@@ -1,8 +1,10 @@
 class User < ActiveRecord::Base
+  include ViewableModel
   include Assignable::User
   include Authorizations::UserHelper
   include UserDevise
 
+  include ViewableModel
   include PgSearch
   pg_search_scope :fuzzy_search, (lambda do |query|
     if query =~ /\A([^@\s]+)@/

@@ -1,4 +1,4 @@
-class CardVersionSerializer < ActiveModel::Serializer
+class CardVersionSerializer < AuthzSerializer
   attributes :id, :version, :card_id,
              :history_entry, :published_by, :published_at
   has_one :content_root, embed: :id, include: true, root: :card_contents

@@ -1,5 +1,5 @@
 # Sends Answers to the frontend in the same shape as NestedQuestionAnswers
-class AnswerAsNestedQuestionAnswerSerializer < ActiveModel::Serializer
+class AnswerAsNestedQuestionAnswerSerializer < AuthzSerializer
   root :nested_question_answer
   attributes :id, :value_type, :value, :owner, :nested_question_id
   has_many :attachments, embed: :ids, include: true, root: :question_attachments

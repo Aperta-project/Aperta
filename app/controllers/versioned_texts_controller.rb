@@ -4,7 +4,7 @@ class VersionedTextsController < ApplicationController
   respond_to :json
 
   def show
-    requires_user_can(:view, versioned_text.paper)
+    requires_user_can_view(versioned_text)
     respond_with(versioned_text, location: versioned_text_url(versioned_text))
   end
 

@@ -3,6 +3,7 @@
 # CardContent.
 #
 class Answer < ActiveRecord::Base
+  include ViewableModel
   include Readyable
 
   belongs_to :card_content
@@ -26,6 +27,8 @@ class Answer < ActiveRecord::Base
   # the value validator.
   # See http://api.rubyonrails.org/classes/ActiveModel/Validator.html
   validates :value, value: true, on: :ready
+
+  delegate_view_permission_to :task
 
   def children
     Answer.where(owner: owner, card_content: card_content.children)

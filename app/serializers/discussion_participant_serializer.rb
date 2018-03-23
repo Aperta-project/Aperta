@@ -1,8 +1,5 @@
-class DiscussionParticipantSerializer < ActiveModel::Serializer
+class DiscussionParticipantSerializer < AuthzSerializer
   attributes :id, :discussion_topic_id
 
-  has_one :user,
-          embed: :id,
-          include: true,
-          serializer: SensitiveInformationUserSerializer
+  has_one :user, embed: :id, include: true, serializer: FilteredUserSerializer
 end

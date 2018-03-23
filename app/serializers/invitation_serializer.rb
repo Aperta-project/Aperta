@@ -1,4 +1,4 @@
-class InvitationSerializer < ActiveModel::Serializer
+class InvitationSerializer < AuthzSerializer
   attributes :id,
              :body,
              :created_at,
@@ -17,8 +17,8 @@ class InvitationSerializer < ActiveModel::Serializer
              :valid_new_positions_for_invitation,
              :due_in
 
-  has_one :invitee, serializer: UserSerializer, embed: :id, root: :users, include: true
-  has_one :actor, serializer: UserSerializer, embed: :id, root: :users, include: true
+  has_one :invitee, serializer: FilteredUserSerializer, embed: :id, root: :users, include: true
+  has_one :actor, serializer: FilteredUserSerializer, embed: :id, root: :users, include: true
   has_one :task, embed: :id, polymorphic: true
   has_many :attachments, embed: :id, polymorphic: true, include: true
   has_one :primary, embed: :id

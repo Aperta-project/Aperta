@@ -1,4 +1,4 @@
-class CardContentAsNestedQuestionSerializer < ActiveModel::Serializer
+class CardContentAsNestedQuestionSerializer < AuthzSerializer
   root :nested_question
   attributes :id, :parent_id, :text, :ident, :value_type, :owner, :position
 

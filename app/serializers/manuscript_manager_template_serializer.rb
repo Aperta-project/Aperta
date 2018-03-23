@@ -1,4 +1,4 @@
-class ManuscriptManagerTemplateSerializer < ActiveModel::Serializer
+class ManuscriptManagerTemplateSerializer < AuthzSerializer
   attributes :id,
     :paper_type,
     :uses_research_article_reviewer_report,

@@ -12,7 +12,7 @@ class RelatedArticlesController < ApplicationController
   respond_to :json
 
   def show
-    requires_user_can :edit_related_articles, related_article.paper
+    requires_user_can_view related_article
     render json: related_article
   end
 

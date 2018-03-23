@@ -8,4 +8,5 @@
 # come into play based on the kinds of assignments that will take part in.
 #
 class System < ActiveRecord::Base
+  include ViewableModel
 end

@@ -1,4 +1,4 @@
-class SupportingInformationFileSerializer < ActiveModel::Serializer
+class SupportingInformationFileSerializer < AuthzSerializer
   root :supporting_information_file
   attributes :id,
              :filename,

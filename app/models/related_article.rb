@@ -5,6 +5,7 @@
 # other. Other times, they are related, but not simultaneously
 # published. Those relationships are one-way.
 class RelatedArticle < ActiveRecord::Base
+  include ViewableModel
   include CustomCastTypes
 
   belongs_to :paper
@@ -25,4 +26,8 @@ class RelatedArticle < ActiveRecord::Base
   # send_link_to_apex: bool, true if the relationship should be sent
   # to Apex for publication
   #
+
+  def user_can_view?(check_user)
+    check_user.can? :edit_related_articles, paper
+  end
 end

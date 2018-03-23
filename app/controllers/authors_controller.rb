@@ -3,7 +3,7 @@ class AuthorsController < ApplicationController
   respond_to :json
 
   def show
-    requires_user_can :view, author.paper
+    requires_user_can_view author
     render json: author
   end
 

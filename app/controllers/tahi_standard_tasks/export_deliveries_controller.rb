@@ -24,7 +24,7 @@ module TahiStandardTasks
 
     def show
       export_delivery = ExportDelivery.includes(:user, :paper, :task).find(params[:id])
-      requires_user_can(:send_to_apex, export_delivery.paper)
+      requires_user_can_view(export_delivery)
       render json: export_delivery
     end
 

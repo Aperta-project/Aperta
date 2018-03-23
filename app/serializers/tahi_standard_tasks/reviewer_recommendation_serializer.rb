@@ -1,5 +1,5 @@
 module TahiStandardTasks
-  class ReviewerRecommendationSerializer < ActiveModel::Serializer
+  class ReviewerRecommendationSerializer < AuthzSerializer
     include CardContentShim
     attributes :id,
                :first_name,

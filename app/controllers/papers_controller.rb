@@ -29,7 +29,7 @@ class PapersController < ApplicationController
           'please accept the invitation below.'
     end
 
-    requires_user_can(:view, paper, not_found: true)
+    requires_user_can_view(paper, not_found: true)
     respond_with(paper)
   end
 

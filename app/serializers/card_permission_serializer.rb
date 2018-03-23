@@ -1,4 +1,4 @@
-class CardPermissionSerializer < ActiveModel::Serializer
+class CardPermissionSerializer < AuthzSerializer
   attributes :id, :filter_by_card_id, :permission_action
 
   has_many :admin_journal_roles, embed: :ids
@@ -10,5 +10,11 @@ class CardPermissionSerializer < ActiveModel::Serializer
 
   def admin_journal_roles
     object.roles
+  end
+
+  private
+
+  def can_view?
+    scope.can?(:administer, Card.find(object.filter_by_card_id).journal)
   end
 end

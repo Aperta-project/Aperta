@@ -4,8 +4,11 @@
 # text, or widgets (developer-created chunks of functionality with
 # user-configured behavior)
 class CardContent < ActiveRecord::Base
+  include ViewableModel
   include Attributable
   include XmlSerializable
+  include ViewableModel
+
   attr_writer :quick_children
 
   acts_as_nested_set
@@ -95,6 +98,8 @@ class CardContent < ActiveRecord::Base
       'date-picker': ['text'],
       'sendback-reason': ['boolean']
     }.freeze.with_indifferent_access
+
+  delegate_view_permission_to :card_version
 
   # Although we want to validate the various combinations of content types
   # and value types, many of the CardContent records that have been created

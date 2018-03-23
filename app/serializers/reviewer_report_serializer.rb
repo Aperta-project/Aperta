@@ -1,6 +1,6 @@
 # Serializes ReviewerReports.  Sends down its card content
 # as nested questions
-class ReviewerReportSerializer < ActiveModel::Serializer
+class ReviewerReportSerializer < AuthzSerializer
   include CardContentShim
 
   attributes :id,

@@ -99,11 +99,6 @@ By default, slanger will listen on port `4567` for API requests (requests
 coming from tahi rails server) and port `40604` for websocket requests (from
 tahi browser client).
 
-## Inserting test data
-
-Run `rake db:setup`. This will delete any data you already have in your
-database, and insert test users based on what you see in `db/seeds.rb`.
-
 ## Sending Emails
 
 In development we sent emails through a simple SMTP server which catches any
@@ -150,11 +145,6 @@ You can run the javascript specs via the command line with `rake ember:test`.
 You can also run the javascript specs from the browser. To do this run
 `ember test --serve` from `client/` to see the results in the
 browser.
-You can run a particular test with '--module'. For example, running:
-`ember test --serve --module="Integration:Discussions"
-will run the Ember test that starts with `module('Integration:Discussions', {`
-
-For help writing ember tests please see the [ember-cli testing section](http://www.ember-cli.com/#testing)
 
 ## Other Dependencies
 
@@ -212,12 +202,6 @@ Finally, the s3 bucket you use for the PDF uploads needs to be correctly configu
    <AllowedHeader>*</AllowedHeader>
  </CORSRule>
 ```
-
-# Deploying Aperta
-
-Please see the
-[Release Information page on confluence](https://developer.plos.org/confluence/display/TAHI/Release+Information)
-for information on how to deploy aperta
 
 # Documentation
 

@@ -51,7 +51,7 @@ class TahiEnv
   # App
   required :APP_NAME
   required :ADMIN_EMAIL
-  required :PASSWORD_AUTH_ENABLED, :boolean
+  optional :PASSWORD_AUTH_ENABLED, :boolean, default: true
   required :RAILS_ASSET_HOST, if: :staging_or_production?
   required :RAILS_ENV
   required :RAILS_SECRET_TOKEN
@@ -76,11 +76,11 @@ class TahiEnv
   required :BASIC_HTTP_PASSWORD, if: :basic_auth_required?
 
   # Apex FTP
-  required :APEX_FTP_ENABLED, :boolean
+  optional :APEX_FTP_ENABLED, :boolean, default: false
   required :APEX_FTP_URL, if: :apex_ftp_enabled?
 
   # Billing FTP
-  required :BILLING_FTP_ENABLED, :boolean
+  optional :BILLING_FTP_ENABLED, :boolean, default: false
   required :BILLING_FTP_URL, if: :billing_ftp_enabled?
 
   # Bugsnag
@@ -88,7 +88,7 @@ class TahiEnv
   optional :BUGSNAG_JAVASCRIPT_API_KEY
 
   # CAS
-  required :CAS_ENABLED, :boolean
+  optional :CAS_ENABLED, :boolean, default: false
   required :CAS_SIGNUP_URL, if: :cas_enabled?
   required :CAS_SSL_VERIFY, :boolean, if: :cas_enabled?
   required :CAS_HOST, if: :cas_enabled?
@@ -137,7 +137,7 @@ class TahiEnv
   required :NED_CAS_APP_ID
   required :NED_CAS_APP_PASSWORD
   optional :NED_SSL_VERIFY, :boolean, default: true
-  required :USE_NED_INSTITUTIONS, :boolean
+  optional :USE_NED_INSTITUTIONS, :boolean, default: false
 
   # Newrelic
   optional :NEWRELIC_KEY
@@ -160,8 +160,8 @@ class TahiEnv
 
   # Pusher / Slanger
   required :PUSHER_URL
-  required :PUSHER_SSL_VERIFY, :boolean
-  required :PUSHER_VERBOSE_LOGGING, :boolean
+  optional :PUSHER_SSL_VERIFY, :boolean, default: true
+  optional :PUSHER_VERBOSE_LOGGING, :boolean, default: false
 
   # Redis
   optional :REDIS_SENTINEL_ENABLED, :boolean, default: false
@@ -171,7 +171,7 @@ class TahiEnv
   optional :ROUTER_URL
 
   # Salesforce
-  optional :SALESFORCE_ENABLED, :boolean, default: true
+  optional :SALESFORCE_ENABLED, :boolean, default: false
   required :DATABASEDOTCOM_HOST, if: :salesforce_enabled?
   required :DATABASEDOTCOM_CLIENT_ID, if: :salesforce_enabled?
   required :DATABASEDOTCOM_CLIENT_SECRET, if: :salesforce_enabled?

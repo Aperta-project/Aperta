@@ -37,8 +37,9 @@ To set up a new test bucket for your own use, run:
 rake s3:create_bucket
 ```
 
-You will be prompted for an AWS key/secret key pair. You can ask a team member
-for these: they should only be used to bootstrap your new settings.
+You will be prompted for an AWS key/secret key pair. This should be a key pair
+attached to a user that can create a new S3 bucket and IAM user and set up
+access. The simplest thing would be to attach it to a root user.
 
 Your new settings will be printed to stdout, and you can copy these settings
 into your `.env.development` file.

@@ -137,8 +137,9 @@ This should update both the `client/package.json` and
 
 ### Running application specs
 
-In the project directory, running `rspec` will run all unit and integration
-specs for the application. Firefox will pop up to run integration tests.
+In the project directory, running `bundle exec rspec` will run all unit and
+integration specs for the application. Firefox will pop up to run integration
+tests.
 
 ## Running qunit tests from the command line
 

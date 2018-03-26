@@ -3,6 +3,7 @@ module SalesforceServices
     include ObjectTranslations
 
     def self.client
+      # ensure client has a session with SObjects materialized
       @@client ||= begin
         client = Databasedotcom::Client.new(
           host: Rails.configuration.salesforce_host,
@@ -21,7 +22,7 @@ module SalesforceServices
     end
 
     def self.create_manuscript(paper:)
-      return unless salesforce_active
+      client
 
       mt = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
       sf_paper = Manuscript__c.create(mt.paper_to_manuscript_hash)
@@ -32,7 +33,7 @@ module SalesforceServices
     end
 
     def self.update_manuscript(paper:)
-      return unless salesforce_active
+      client
 
       mt         = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
       sf_paper   = Manuscript__c.find(paper.salesforce_manuscript_id)
@@ -51,7 +52,7 @@ module SalesforceServices
     end
 
     def self.find_or_create_manuscript(paper:)
-      return unless salesforce_active
+      client
 
       if paper.salesforce_manuscript_id
         update_manuscript(paper: paper)
@@ -61,26 +62,14 @@ module SalesforceServices
     end
 
     def self.ensure_pfa_case(paper:)
-      return unless salesforce_active
+      client
+
       return if Case.find_by_Subject(paper.manuscript_id)
 
       bt       = BillingTranslator.new(paper: paper)
       kase     = Case.create(bt.paper_to_billing_hash)
       Rails.logger.info("Salesforce Case created: #{kase.Id}")
       kase
-    end
-
-    def self.salesforce_active
-      active = TahiEnv.salesforce_enabled?
-      if active
-        # ensure client has a session with SObjects materialized
-        client
-      else
-        Rails.logger.warn(<<-INFO.strip_heredoc.chomp)
-          Salesforce integration disabled due to ENV['SALESFORCE_ENABLED']
-        INFO
-      end
-      active
     end
   end
 end

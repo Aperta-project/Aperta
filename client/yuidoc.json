@@ -1,6 +1,6 @@
 {
     "name": "Tahi Client Documentation",
-    "url": "http://github.com/tahi-project/tahi/",
+    "url": "http://github.com/aperta-project/aperta/",
     "options": {
       "outdir": "../doc/client",
       "exclude": "tmp,bower_components"

@@ -37,7 +37,7 @@
       },
       "user_input": null,
       "confidence": "Medium",
-      "note": "https://github.com/Tahi-project/tahi/pull/2800/files#r94070916"
+      "note": "https://github.com/aperta-project/aperta/pull/2800/files#r94070916"
     },
     {
       "warning_type": "SQL Injection",

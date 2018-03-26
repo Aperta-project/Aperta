@@ -9,7 +9,6 @@
 1. Ensure you have the required ruby version installed (see `.ruby-version`). We
    recommend using rbenv or rvm to manage your ruby versions.
 2. Run the setup script (`bin/setup`)
-3. Setup S3.
 4. Run `foreman start`
 
 ## Automated Setup
@@ -29,21 +28,6 @@ Running this script will:
     - config/database.yml
 - Create a new database
 
-## Configuring S3 direct uploads
-
-To set up a new test bucket for your own use, run:
-
-```bash
-rake s3:create_bucket
-```
-
-You will be prompted for an AWS key/secret key pair. This should be a key pair
-attached to a user that can create a new S3 bucket and IAM user and set up
-access. The simplest thing would be to attach it to a root user.
-
-Your new settings will be printed to stdout, and you can copy these settings
-into your `.env.development` file.
-
 ## Run the server
 
 Run `foreman start` to start the web server, worker, and slanger.
@@ -59,6 +43,21 @@ Run `foreman start` to start the web server, worker, and slanger.
     - 5000 (Rails server)
 
 # Further information
+
+## Configuring S3 direct uploads
+
+To set up a new test bucket for your own use, run:
+
+```bash
+rake s3:create_bucket
+```
+
+You will be prompted for an AWS key/secret key pair. This should be a key pair
+attached to a user that can create a new S3 bucket and IAM user and set up
+access. The simplest thing would be to attach it to a root user.
+
+Your new settings will be printed to stdout, and you can copy these settings
+into your `.env.development` file.
 
 ## Environment Variables
 

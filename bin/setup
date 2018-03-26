@@ -90,7 +90,7 @@ Dir.chdir APP_ROOT do
   case $os
   when :darwin
     brew_install 'imagemagick', '--with-libtiff'
-    %w(redis wget postgresql qpdf sqlite3 zlib ghostscript).each do |package|
+    %w(redis wget postgresql@9.4 qpdf sqlite3 zlib ghostscript).each do |package|
       brew_install package
     end
   when :linux

@@ -178,7 +178,11 @@ Dir.chdir APP_ROOT do
   header 'downloading ember inspector'
   system 'cd tmp && rm -f addon-470970-latest.xpi && wget https://addons.mozilla.org/firefox/downloads/latest/ember-inspector/addon-470970-latest.xpi'
 
-  puts
+  if !system "dotenv env -f .env.development env | grep ^S3_BUCKET > /dev/null"
+    header 'setup s3'
+    system "bin/rake s3:create_bucket | grep = >> .env.development"
+  end
+
   puts 'Success!'
   puts "You will need to start a new terminal session to get NVM set up correctly" if nvm_installed
 end

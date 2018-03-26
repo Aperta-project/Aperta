@@ -151,13 +151,6 @@ will run the Ember test that starts with `module('Integration:Discussions', {`
 
 For help writing ember tests please see the [ember-cli testing section](http://www.ember-cli.com/#testing)
 
-## Other Dependencies
-
-Ghostscript is required to pass some of the tests.  Ghostscript can be installed
-by running:
-
-`brew install ghostscript`
-
 # Documentation
 
 Technical documentation lives in the `doc/`.  The git workflow and deploy

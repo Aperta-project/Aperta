@@ -2,7 +2,7 @@
   "name": "tahi",
   "description": "tahi-review-app",
   "success_url": "/",
-  "repository": "https://github.com/Tahi-Project/tahi",
+  "repository": "https://github.com/aperta-project/aperta",
   "env": {
     "ADMIN_EMAIL": {
       "required": true

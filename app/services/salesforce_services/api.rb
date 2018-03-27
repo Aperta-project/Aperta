@@ -6,13 +6,13 @@ module SalesforceServices
       # ensure client has a session with SObjects materialized
       @@client ||= begin
         client = Databasedotcom::Client.new(
-          host: Rails.configuration.salesforce_host,
-          client_id: Rails.configuration.salesforce_client_id,
-          client_secret: Rails.configuration.salesforce_client_secret
+          host: TahiEnv.databasedotcom_host,
+          client_id: TahiEnv.databasedotcom_client_id,
+          client_secret: TahiEnv.databasedotcom_client_secret
         )
 
-        client.authenticate username: Rails.configuration.salesforce_username,
-                            password: Rails.configuration.salesforce_password
+        client.authenticate username: TahiEnv.databasedotcom_username,
+                            password: TahiEnv.databasedotcom_password
         Rails.logger.info("established Salesforce client connection")
 
         client.materialize("Manuscript__c")

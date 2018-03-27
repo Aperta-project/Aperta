@@ -193,5 +193,10 @@ Dir.chdir APP_ROOT do
   end
 
   puts 'Success!'
-  puts "You will need to start a new terminal session to get NVM set up correctly" if nvm_installed
+  if nvm_installed
+    puts "You will need to start a new terminal session to get NVM set up correctly"
+    if $os == :darwin
+      puts "You will also need to ensure that your `~/.bash_profile` runs `source .bashrc`"
+    end
+  end
 end

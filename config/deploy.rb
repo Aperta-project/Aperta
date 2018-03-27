@@ -8,7 +8,7 @@ set :chruby_ruby, File.read(File.expand_path('../../.ruby-version', __FILE__)).s
 set :linked_dirs, ['log', 'tmp/pids', 'tmp/cache', 'tmp/sockets',
                    'vendor/bundle', 'public/uploads', 'public/system']
 set :linked_files, %w(env puma.rb)
-set :repo_url, 'git@github.com:Tahi-project/tahi.git'
+set :repo_url, 'git@github.com:aperta-project/aperta.git'
 set :web_service_name, 'tahi-web' # used by puma:{start,stop,restart}
 set :worker_service_name, 'tahi-worker' # used by sidekiq:{start,stop,restart}
 set :whenever_roles, %(cron)

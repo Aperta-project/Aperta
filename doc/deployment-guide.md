@@ -240,7 +240,7 @@ It may be helpful to create a "tracking issue" for the Release. This is just a
 normal Github Issue that has a checklist for all the Hotfixes that need to be
 applied before the final release to production. It just helps raise awareness to
 the team and prevents hotfixes from being forgotten. You can at a look at [Issue
-1844](https://github.com/Tahi-project/tahi/issues/1844) as an example.
+1844](https://github.com/aperta-project/aperta/issues/1844) as an example.
 
 You can find more explicit documentation of these options in the [Git
 Process Docs](./git-process.txt#L110), here's a quick summary. There are two
@@ -315,7 +315,7 @@ First you'll need to install the `heroku-repo` plugin:
 
 `heroku plugins:install https://github.com/heroku/heroku-repo.git`
 
-Then you can purge the cache with the command: 
+Then you can purge the cache with the command:
 
 `heroku repo:purge_cache -a app_name`
 

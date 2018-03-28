@@ -14,7 +14,6 @@
     - 4567 (Slanger API)
     - 40604 (Slanger websocket)
     - 5000 (Rails server)
-1. Setup S3
 1. Run `foreman start`
 
 ## Automated Setup
@@ -34,6 +33,16 @@ Running this script will:
     - config/database.yml
 - Create a new database
 
+## Run the server
+
+Run `foreman start` to start the web server, worker, and slanger.
+
+# Troubleshooting
+
+TODO
+
+# Further information
+
 ## Configuring S3 direct uploads
 
 To set up a new test bucket for your own use, run:
@@ -47,16 +56,6 @@ for these: they should only be used to bootstrap your new settings.
 
 Your new settings will be printed to stdout, and you can copy these settings
 into your `.env.development` file.
-
-## Run the server
-
-Run `foreman start` to start the web server, worker, and slanger.
-
-# Troubleshooting
-
-TODO
-
-# Further information
 
 ## Environment Variables
 
@@ -151,13 +150,6 @@ You can run a particular test with '--module'. For example, running:
 will run the Ember test that starts with `module('Integration:Discussions', {`
 
 For help writing ember tests please see the [ember-cli testing section](http://www.ember-cli.com/#testing)
-
-## Other Dependencies
-
-Ghostscript is required to pass some of the tests.  Ghostscript can be installed
-by running:
-
-`brew install ghostscript`
 
 # Documentation
 

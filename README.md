@@ -10,12 +10,14 @@ research outputs.
 ## Overview
 
 1. Ensure you have Ruby 2.3.6 installed. We recommend using
-   [rbenv](https://github.com/rbenv/rbenv) or [rvm](https://rvm.io/) to manage
-   your ruby versions. Aperta will probably work on other Ruby versions, but
-   only support 2.3.6.
-2. Run the setup script (`bin/setup`)
-3. Run `foreman start`
-4. Visit http://localhost:5000/ in your browser.
+   [rbenv](https://github.com/rbenv/rbenv) or [rvm](https://rvm.io/)
+   to manage your ruby versions. Aperta will probably work on other
+   Ruby versions, but we only provide support for 2.3.6.
+2. Have a keypair for AWS account with permissions to create new IAM
+   users and S3 buckets available.
+3. Run the setup script (`bin/setup`)
+4. Run `foreman start`
+5. Visit http://localhost:5000/ in your browser.
 
 ## Detailed steps
 
@@ -24,6 +26,15 @@ research outputs.
 We recommend using a ruby version manager, either rvm or rbenv. Both should meet
 your needs. Installing them is outside the scope of this README. Please refer to
 the installation instructions in those project.
+
+### Set up AWS
+
+The `bin/setup` script will prompt you for an AWS key/secret key pair.
+This should be a key pair attached to a user that can create a new S3
+bucket and IAM user and set up access. The simplest thing would be to
+attach it to a root user. The steps are beyond this README, but you
+can get started [here](
+https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html)
 
 ### Automated Setup
 
@@ -41,11 +52,7 @@ Running this script will:
     - Procfile.local
     - config/database.yml
 - Create a new database
-- Create a new AWS IAM user and S3 bucket and configure them. You will
-  be prompted for an AWS key/secret key pair. This should be a key
-  pair attached to a user that can create a new S3 bucket and IAM user
-  and set up access. The simplest thing would be to attach it to a
-  root user.
+- Create a new AWS IAM user and S3 bucket and configure them.
 
 ### Run the server
 

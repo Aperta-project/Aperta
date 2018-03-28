@@ -23,9 +23,10 @@ research outputs.
 
 ### Install ruby
 
-We recommend using a ruby version manager, either rvm or rbenv. Both should meet
-your needs. Installing them is outside the scope of this README. Please refer to
-the installation instructions in those project.
+We recommend using a ruby version manager, e.g. [rvm](https://rvm.io)
+or [rbenv](https://github.com/rbenv/rbenv). Either one should meet
+your needs. Installing them is outside the scope of this README.
+Please refer to the installation instructions in those project.
 
 ### Set up AWS
 

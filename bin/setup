@@ -3,6 +3,7 @@ require 'pathname'
 require 'securerandom'
 
 nvm_installed = false
+BREW_PG_VERSION = 'postgresql@9.4'
 
 def cmd_available? cmd
   `which #{cmd}` != ''
@@ -19,7 +20,7 @@ APP_ROOT = Pathname.new File.expand_path('../../',  __FILE__)
 def run_pg(cmd)
   out = case $os
   when :darwin
-    `#{cmd}`
+    `#{brew_pg_bin_path}/#{cmd}`
   when :linux
     cmd = cmd.gsub("\"", "\\\"") # escape quotes
     `sudo su postgres -c "#{cmd}"`
@@ -31,6 +32,10 @@ def run_pg(cmd)
   else
     out
   end
+end
+
+def brew_pg_bin_path
+  `brew --prefix #{BREW_PG_VERSION}`.chomp + '/bin'
 end
 
 def header message
@@ -90,11 +95,13 @@ Dir.chdir APP_ROOT do
   case $os
   when :darwin
     brew_install 'imagemagick', '--with-libtiff'
-    %w(redis wget postgresql qpdf sqlite3 zlib).each do |package|
+    brew_install BREW_PG_VERSION
+    `brew services start #{BREW_PG_VERSION}` # must be running for later db setup commands
+    %w(redis wget qpdf sqlite3 zlib ghostscript).each do |package|
       brew_install package
     end
   when :linux
-    system "sudo apt-get install -y imagemagick wget redis-server postgresql-9.4 qpdf libsqlite3-dev zlib1g-dev libpq-dev"
+    system "sudo apt-get install -y imagemagick wget redis-server postgresql-9.4 qpdf libsqlite3-dev zlib1g-dev libpq-dev ghostscript"
   end
 
   header 'Installing nvm'
@@ -112,6 +119,8 @@ Dir.chdir APP_ROOT do
 
   header 'Installing gems'
   system 'gem install bundler --conservative'
+  # bundler won't complete the install without this config, causing the subsequent bundle execs to fail
+  system "bundle config build.pg --with-pg-config=#{brew_pg_bin_path}/pg_config" if $os == :darwin
   system 'bundle install'
 
   # Adding slanger to the Gemfile is not recommended: https://github.com/stevegraham/slanger#slanger
@@ -184,5 +193,10 @@ Dir.chdir APP_ROOT do
   end
 
   puts 'Success!'
-  puts "You will need to start a new terminal session to get NVM set up correctly" if nvm_installed
+  if nvm_installed
+    puts "You will need to start a new terminal session to get NVM set up correctly"
+    if $os == :darwin
+      puts "You will also need to ensure that your `~/.bash_profile` runs `source .bashrc`"
+    end
+  end
 end

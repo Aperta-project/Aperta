@@ -15,9 +15,9 @@ class TahiEnv
   extend DslMethods
   include ActiveModel::Validations
 
-  class Error < ::StandardError ; end
-  class InvalidEnvironment < Error ; end
-  class MissingEnvVarRegistration < Error ; end
+  class Error < ::StandardError; end
+  class InvalidEnvironment < Error; end
+  class MissingEnvVarRegistration < Error; end
 
   def self.validate!
     instance.validate!
@@ -50,18 +50,20 @@ class TahiEnv
 
   # App
   required :APP_NAME
-  required :ADMIN_EMAIL
   required :PASSWORD_AUTH_ENABLED, :boolean
   required :RAILS_ASSET_HOST, if: :staging_or_production?
   required :RAILS_ENV
   required :RAILS_SECRET_TOKEN
-  required :DEFAULT_MAILER_URL
-  required :FROM_EMAIL
   optional :FORCE_SSL, :boolean, default: true
   optional :MAX_ABSTRACT_LENGTH
   optional :PING_URL
   optional :PUSHER_SOCKET_URL
+
+  # Email
+  required :ADMIN_EMAIL
+  required :FROM_EMAIL
   optional :REPORTING_EMAIL
+  required :DEFAULT_MAILER_URL
 
   # Amazon S3
   required :S3_URL
@@ -196,7 +198,7 @@ class TahiEnv
   private
 
   def staging_or_production?
-    %w(staging production).include? ENV['RAILS_ENV']
+    %w[staging production].include? ENV['RAILS_ENV']
   end
 
   def validate_at_least_one_form_of_auth

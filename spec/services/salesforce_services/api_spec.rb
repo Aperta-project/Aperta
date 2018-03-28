@@ -29,8 +29,7 @@ describe SalesforceServices::API do
     context "SALESFORCE_ENABLED is not set" do
       it "salesforce_active returns true" do
         ClimateControl.modify SALESFORCE_ENABLED: nil do
-          expect(SalesforceServices::API).to receive(:client)
-          expect(SalesforceServices::API.salesforce_active).to eq(true)
+          expect(SalesforceServices::API.salesforce_active).to eq(false)
         end
       end
     end

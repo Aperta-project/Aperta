@@ -111,6 +111,7 @@ class TahiEnv
 
   # iHat
   optional :IHAT_URL
+  optional :IHAT_CALLBACK_URL
 
   # iThenticate
   optional :ITHENTICATE_ENABLED, :boolean, default: false

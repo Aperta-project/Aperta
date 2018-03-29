@@ -114,6 +114,7 @@ describe TahiEnv do
 
   # iHat
   it_behaves_like 'optional env var', var: 'IHAT_URL'
+  it_behaves_like 'optional env var', var: 'IHAT_CALLBACK_URL'
 
   # Mailsafe
   it_behaves_like 'optional env var', var: 'MAILSAFE_REPLACEMENT_ADDRESS'

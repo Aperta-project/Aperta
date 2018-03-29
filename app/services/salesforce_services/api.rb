@@ -3,7 +3,7 @@ module SalesforceServices
     include ObjectTranslations
 
     def self.client
-      # ensure client has a session with SObjects materialized
+      # ensure client has an authenticated session and defines (materializes) constants
       @@client ||= begin
         client = Databasedotcom::Client.new(
           host: TahiEnv.databasedotcom_host,
@@ -22,8 +22,6 @@ module SalesforceServices
     end
 
     def self.create_manuscript(paper:)
-      client
-
       mt = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
       sf_paper = Manuscript__c.create(mt.paper_to_manuscript_hash)
       Rails.logger.info("Salesforce Manuscript created: #{sf_paper.Id}")
@@ -33,8 +31,6 @@ module SalesforceServices
     end
 
     def self.update_manuscript(paper:)
-      client
-
       mt         = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
       sf_paper   = Manuscript__c.find(paper.salesforce_manuscript_id)
       Rails.logger.info("Salesforce Manuscript updated: #{sf_paper.Id}")
@@ -52,8 +48,6 @@ module SalesforceServices
     end
 
     def self.find_or_create_manuscript(paper:)
-      client
-
       if paper.salesforce_manuscript_id
         update_manuscript(paper: paper)
       else
@@ -62,8 +56,6 @@ module SalesforceServices
     end
 
     def self.ensure_pfa_case(paper:)
-      client
-
       return if Case.find_by_Subject(paper.manuscript_id)
 
       bt       = BillingTranslator.new(paper: paper)

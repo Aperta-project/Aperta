@@ -43,7 +43,7 @@ feature 'Billing card', js: true do
       find('[name=plos_billing--last_name]').send_keys('last')
       find('[name=plos_billing--department]').send_keys('department')
       find('[name=plos_billing--phone_number]').send_keys('415-555-5555')
-      find('[name=plos_billing--email]').send_keys('author@plos.org')
+      find('[name=plos_billing--email]').send_keys('author@example.org')
       find('.plos_billing--affiliation1 input').send_keys('PLOS')
       find('.did-you-mean-item').click
       find('[name=plos_billing--address1]').send_keys('address1')

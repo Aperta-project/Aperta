@@ -58,7 +58,6 @@ class TahiEnv
   required :DEFAULT_MAILER_URL
   required :FROM_EMAIL
   optional :FORCE_SSL, :boolean, default: true
-  optional :MAX_ABSTRACT_LENGTH
   optional :PING_URL
   optional :PUSHER_SOCKET_URL
   optional :REPORTING_EMAIL

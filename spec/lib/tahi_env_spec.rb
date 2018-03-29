@@ -64,7 +64,6 @@ describe TahiEnv do
   it_behaves_like 'required env var', var: 'DEFAULT_MAILER_URL'
   it_behaves_like 'optional boolean env var', var: 'FORCE_SSL', default_value: true
   it_behaves_like 'required env var', var: 'FROM_EMAIL'
-  it_behaves_like 'optional env var', var: 'MAX_ABSTRACT_LENGTH'
   it_behaves_like 'optional env var', var: 'PING_URL'
   it_behaves_like 'optional env var', var: 'PUSHER_SOCKET_URL'
   it_behaves_like 'optional env var', var: 'REPORTING_EMAIL'

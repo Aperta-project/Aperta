@@ -7,14 +7,14 @@ class CreateBucketService
 
   def initialize(name: nil)
     @region = 'us-west-1' # northern california
-    STDOUT.write("Please enter an AWS access key of a user with permissions \
+    STDERR.write("Please enter an AWS access key of a user with permissions \
 to set up a new bucket: ")
     access_key_id = STDIN.gets.chomp
 
-    STDOUT.write("Please enter the SECRET key of the same access key: ")
+    STDERR.write("Please enter the SECRET key of the same access key: ")
     secret_access_key = STDIN.gets.chomp
 
-    STDOUT.write("Please enter the domain that will be accessing this bucket \
+    STDERR.write("Please enter the domain that will be accessing this bucket \
 (enter for wildcard *): ")
     @allowed_origins = STDIN.gets.chomp
     @allowed_origins = '*' if @allowed_origins.blank?
@@ -63,8 +63,8 @@ to set up a new bucket: ")
 
   def create_access_keys
     if @updating
-      STDOUT.write("Updating an existing bucket.\n")
-      STDOUT.write("Do you want to create a new access key? (y/n [default])? ")
+      STDERR.write("Updating an existing bucket.\n")
+      STDERR.write("Do you want to create a new access key? (y/n [default])? ")
       new_bucket = STDIN.gets.chomp
       return unless new_bucket.downcase[0] == 'y'
     end

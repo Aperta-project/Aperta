@@ -5,7 +5,7 @@ export default Ember.Component.extend({
     Ember.deprecate(
       'TAHI DEPRECATION: ShowIfParent is deprecated.',
       false,
-      { url: 'https://github.com/Tahi-project/tahi/wiki/Tahi-Ember-1.13-Transition-Guide#showifparent-component' }
+      { url: 'https://github.com/aperta-project/aperta/wiki/Tahi-Ember-1.13-Transition-Guide#showifparent-component' }
     );
   }),
 

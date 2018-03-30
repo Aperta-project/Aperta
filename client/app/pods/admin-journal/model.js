@@ -20,6 +20,7 @@ export default DS.Model.extend({
   paperTypes: DS.attr(),
   pdfCss: DS.attr('string'),
   pdfAllowed: DS.attr('boolean'),
+  mswordAllowed: DS.attr('boolean'),
   lastDoiIssued: DS.attr('string'),
   doiJournalPrefix: DS.attr('string'),
   doiPublisherPrefix: DS.attr('string'),

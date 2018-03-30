@@ -101,7 +101,12 @@ Dir.chdir APP_ROOT do
       brew_install package
     end
   when :linux
-    system "sudo apt-get install -y imagemagick wget redis-server postgresql-9.4 qpdf libsqlite3-dev zlib1g-dev libpq-dev ghostscript"
+    pg_versions = ["9.4", "9.5", "9.6"] # Prefer 9.4, our prod version.
+    pg_versions.each do |pg_version|
+      # Keep trying until a pg is installed
+      break if system "sudo apt-get install -y postgresql-#{pg_version}"
+    end
+    system "sudo apt-get install -y imagemagick wget redis-server qpdf libsqlite3-dev zlib1g-dev libpq-dev ghostscript"
   end
 
   header 'Installing nvm'

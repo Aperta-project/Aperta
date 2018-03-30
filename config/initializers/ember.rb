@@ -3,7 +3,7 @@ EmberCli.configure do |c|
     path: Rails.root.join('client'),
     # use locally installed bower bin
     bower_path: Rails.root.join('client', 'node_modules', '.bin', 'bower'),
-    build_timeout: 40,
+    build_timeout: (ENV['RACK_TIMEOUT'] || 30).to_i,
     yarn: true
   })
 end

@@ -59,11 +59,6 @@ describe TahiStandardTasks::ReviewerMailer do
       expect(email.to).to contain_exactly(invitation.email)
     end
 
-    it "does not bcc if the journal setting is nil" do
-      expect(invitation.paper.journal.reviewer_email_bcc).to be_nil
-      expect(email.bcc).to be_empty
-    end
-
     it "attaches attachments on the invitation" do
       invitation.attachments << FactoryGirl.build(
         :invitation_attachment,

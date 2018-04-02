@@ -2,6 +2,12 @@ require 'rails_helper'
 
 describe SalesforceServices do
   describe '.sync_paper!' do
+    around do |example|
+      ClimateControl.modify SALESFORCE_ENABLED: 'true' do
+        example.run
+      end
+    end
+
     subject(:sync_paper!) do
       SalesforceServices.sync_paper!(paper, logger: logger)
     end

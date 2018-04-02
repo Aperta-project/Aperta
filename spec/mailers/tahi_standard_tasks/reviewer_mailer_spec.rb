@@ -81,16 +81,6 @@ describe TahiStandardTasks::ReviewerMailer do
       )
     end
 
-    describe "when a bcc email address is provided" do
-      before do
-        invitation.paper.journal.update(reviewer_email_bcc: 'reviewer@example.com')
-      end
-
-      it "bcc's the journal setting to support chasing in Salesforce" do
-        expect(email.bcc).to contain_exactly('reviewer@example.com')
-      end
-    end
-
     describe "links" do
       it "has a link to Aperta's dashboard for accepting the invitation in the email body" do
         expect(email.body).to include client_dashboard_url

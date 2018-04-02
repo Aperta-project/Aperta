@@ -22,7 +22,6 @@ module TahiStandardTasks
       mail(
         to:      @invitation.email,
         subject: @subject,
-        bcc:     @paper.journal.reviewer_email_bcc
       )
     end
 

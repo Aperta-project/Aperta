@@ -25,33 +25,6 @@ describe SalesforceServices::API do
     end
   end
 
-  describe "salesforce_active" do
-    context "SALESFORCE_ENABLED is not set" do
-      it "salesforce_active returns true" do
-        ClimateControl.modify SALESFORCE_ENABLED: nil do
-          expect(SalesforceServices::API.salesforce_active).to eq(false)
-        end
-      end
-    end
-
-    context "SALESFORCE_ENABLED is set to 'true'" do
-      it "salesforce_active returns true" do
-        ClimateControl.modify SALESFORCE_ENABLED: 'true' do
-          expect(SalesforceServices::API).to receive(:client)
-          expect(SalesforceServices::API.salesforce_active).to eq(true)
-        end
-      end
-    end
-
-    context "SALESFORCE_ENABLED is set to 'false'" do
-      it "creates the salesforce client" do
-        ClimateControl.modify SALESFORCE_ENABLED: 'false' do
-          expect(SalesforceServices::API.salesforce_active).to eq(false)
-        end
-      end
-    end
-  end
-
   describe "#create_manuscript" do
     it "calls create on a Salesforce Manuscript__c object" do
       mock_manuscript = instance_double("Manuscript__c", Id: 'sfdc')

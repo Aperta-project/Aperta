@@ -46,6 +46,7 @@ export default Component.extend(ValidationErrorsMixin, {
 
   taskStateToggleable: alias('isEditableDueToPermissions'),
   pdfAllowed: Ember.computed.reads('task.paper.journal.pdfAllowed'),
+  mswordAllowed: Ember.computed.reads('task.paper.journal.mswordAllowed'),
   contentRoot: Ember.computed.reads('task.cardVersion.contentRoot'),
 
   saveTask: concurrencyTask(function * () {

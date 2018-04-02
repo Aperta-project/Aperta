@@ -34,8 +34,7 @@ The `bin/setup` script will prompt you for an AWS key/secret key pair.
 This should be a key pair attached to a user that can create a new S3
 bucket and IAM user and set up access. The simplest thing would be to
 attach it to a root user. The steps are beyond this README, but you
-can get started [here](
-https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html)
+can get started [here](https://github.com/aperta-project/aperta/wiki/AWS-Setup)
 
 ### Automated Setup
 
@@ -65,13 +64,17 @@ For more information for developers, please visit the [wiki](https://github.com/
 
 ### Troubleshooting
 
-1. Make sure the following servers are already running:
-    - PostgreSQL
-    - Redis
-2. Make sure the following ports are clear:
+1. Make sure the following servers are already running and listening
+   on the correct ports:
+    - PostgreSQL (5432)
+    - Redis (6379)
+2. Make sure the following ports are open:
     - 4567 (Slanger API)
     - 40604 (Slanger websocket)
     - 5000 (Rails server)
+
+Note that the `bin/setup` can be run as many times as you like as you
+correct issues that it runs into.
 
 ### Running the test suite
 

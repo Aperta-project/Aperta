@@ -1,6 +1,7 @@
 # Queues are used to hold groups of invitations that can either be
 # sent individually or at a later time.
 class InvitationQueue < ActiveRecord::Base
+  include ViewableModel
   belongs_to :task
   belongs_to :primary, class_name: 'Invitation'
   belongs_to :decision

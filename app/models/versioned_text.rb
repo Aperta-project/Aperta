@@ -6,6 +6,7 @@
 class VersionedText < ActiveRecord::Base
   include EventStream::Notifiable
   include Versioned
+  include ViewableModel
 
   # Base exception class for VersionedText
   class VersionedTextError < StandardError; end
@@ -27,6 +28,8 @@ class VersionedText < ActiveRecord::Base
 
   validates :paper, presence: true
   validate :only_version_once
+
+  delegate_view_permission_to :paper
 
   # Give the text a new MAJOR version.
   def be_major_version!

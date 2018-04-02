@@ -7,6 +7,13 @@ module SalesforceServices
   # once and only sends billing data to Salesforce if the author is requesting
   # publicationn fee assistance.
   def self.sync_paper!(paper, logger: Rails.logger)
+    unless TahiEnv.salesforce_enabled?
+      Rails.logger.warn(<<-INFO.strip_heredoc.chomp)
+        Salesforce integration disabled due to ENV['SALESFORCE_ENABLED']
+      INFO
+      return
+    end
+
     if paper.latest_submitted_version
       SalesforceServices::PaperSync.sync!(paper: paper)
       logger.info "Salesforce: Paper #{paper.id} sync'd successfully"

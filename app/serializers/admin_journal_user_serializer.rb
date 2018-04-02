@@ -1,4 +1,4 @@
-class AdminJournalUserSerializer < ActiveModel::Serializer
+class AdminJournalUserSerializer < AuthzSerializer
   attributes :id,
              :username,
              :first_name,
@@ -26,5 +26,12 @@ class AdminJournalUserSerializer < ActiveModel::Serializer
     else
       object.roles
     end
+  end
+
+  private
+
+  def can_view?
+    return false if @options[:journal].blank?
+    scope.can?(:administer, @options[:journal])
   end
 end

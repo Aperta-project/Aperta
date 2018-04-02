@@ -57,20 +57,19 @@ describe TahiEnv do
   # App
   it_behaves_like 'required env var', var: 'APP_NAME'
   it_behaves_like 'required env var', var: 'ADMIN_EMAIL'
-  it_behaves_like 'required boolean env var', var: 'PASSWORD_AUTH_ENABLED'
+  it_behaves_like 'optional boolean env var', var: 'PASSWORD_AUTH_ENABLED', default_value: true
   it_behaves_like 'required env var', var: 'RAILS_ENV'
   it_behaves_like 'dependent required env var', var: 'RAILS_ASSET_HOST', dependent_key: 'RAILS_ENV', dependent_values: %w(staging production)
   it_behaves_like 'required env var', var: 'RAILS_SECRET_TOKEN'
   it_behaves_like 'required env var', var: 'DEFAULT_MAILER_URL'
   it_behaves_like 'optional boolean env var', var: 'FORCE_SSL', default_value: true
   it_behaves_like 'required env var', var: 'FROM_EMAIL'
-  it_behaves_like 'optional env var', var: 'MAX_ABSTRACT_LENGTH'
   it_behaves_like 'optional env var', var: 'PING_URL'
   it_behaves_like 'optional env var', var: 'PUSHER_SOCKET_URL'
   it_behaves_like 'optional env var', var: 'REPORTING_EMAIL'
 
   # Apex FTP
-  include_examples 'required boolean env var', var: 'APEX_FTP_ENABLED'
+  it_behaves_like 'optional boolean env var', var: 'APEX_FTP_ENABLED', default_value: false
   include_examples 'dependent required env var', var: 'APEX_FTP_URL', dependent_key: 'APEX_FTP_ENABLED'
 
   # Amazon S3
@@ -86,7 +85,7 @@ describe TahiEnv do
   it_behaves_like 'dependent required env var', var: 'BASIC_HTTP_PASSWORD', dependent_key: 'BASIC_AUTH_REQUIRED'
 
   # Billing FTP
-  include_examples 'required boolean env var', var: 'BILLING_FTP_ENABLED'
+  it_behaves_like 'optional boolean env var', var: 'BILLING_FTP_ENABLED', default_value: false
   include_examples 'dependent required env var', var: 'BILLING_FTP_URL', dependent_key: 'BILLING_FTP_ENABLED'
 
   # Bugsnag
@@ -94,7 +93,7 @@ describe TahiEnv do
   it_behaves_like 'optional env var', var: 'BUGSNAG_JAVASCRIPT_API_KEY'
 
   # CAS
-  it_behaves_like 'required boolean env var', var: 'CAS_ENABLED'
+  it_behaves_like 'optional boolean env var', var: 'CAS_ENABLED', default_value: false
   it_behaves_like 'dependent required env var', var: 'CAS_SIGNUP_URL', dependent_key: 'CAS_ENABLED'
   it_behaves_like 'dependent required boolean env var', var: 'CAS_SSL_VERIFY', dependent_key: 'CAS_ENABLED'
   it_behaves_like 'dependent required env var', var: 'CAS_HOST', dependent_key: 'CAS_ENABLED'
@@ -126,7 +125,7 @@ describe TahiEnv do
   it_behaves_like 'required env var', var: 'NED_CAS_APP_ID'
   it_behaves_like 'required env var', var: 'NED_CAS_APP_PASSWORD'
   it_behaves_like 'optional boolean env var', var: 'NED_SSL_VERIFY', default_value: true
-  it_behaves_like 'required boolean env var', var: 'USE_NED_INSTITUTIONS'
+  it_behaves_like 'optional boolean env var', var: 'USE_NED_INSTITUTIONS', default_value: false
 
   # Newrelic
   it_behaves_like 'optional env var', var: 'NEWRELIC_KEY'
@@ -155,11 +154,11 @@ describe TahiEnv do
 
   # Pusher / Slanger
   it_behaves_like 'required env var', var: 'PUSHER_URL'
-  it_behaves_like 'required boolean env var', var: 'PUSHER_SSL_VERIFY'
-  it_behaves_like 'required boolean env var', var: 'PUSHER_VERBOSE_LOGGING'
+  it_behaves_like 'optional boolean env var', var: 'PUSHER_SSL_VERIFY', default_value: true
+  it_behaves_like 'optional boolean env var', var: 'PUSHER_VERBOSE_LOGGING', default_value: false
 
   # Salesforce
-  it_behaves_like 'optional boolean env var', var: 'SALESFORCE_ENABLED', default_value: true
+  it_behaves_like 'optional boolean env var', var: 'SALESFORCE_ENABLED', default_value: false
   it_behaves_like 'dependent required env var', var: 'DATABASEDOTCOM_HOST', dependent_key: 'SALESFORCE_ENABLED'
   it_behaves_like 'dependent required env var', var: 'DATABASEDOTCOM_CLIENT_ID', dependent_key: 'SALESFORCE_ENABLED'
   it_behaves_like 'dependent required env var', var: 'DATABASEDOTCOM_CLIENT_SECRET', dependent_key: 'SALESFORCE_ENABLED'
@@ -172,7 +171,7 @@ describe TahiEnv do
 
   describe 'when no authentication is enabled' do
     it 'is not valid' do
-      ClimateControl.modify CAS_ENABLED: nil, ORCID_LOGIN_ENABLED: nil, PASSWORD_AUTH_ENABLED: nil do
+      ClimateControl.modify CAS_ENABLED: "false", ORCID_LOGIN_ENABLED: "false", PASSWORD_AUTH_ENABLED: "false" do
         expect(env.errors.full_messages).to include \
           "Expected at least one form of authentication to be enabled, but none were. Possible forms: CAS, ORCID, PASSWORD_AUTH"
       end

@@ -1,6 +1,7 @@
 module TahiStandardTasks
   class ReviewerRecommendation < ActiveRecord::Base
     include Answerable
+    include ViewableModel
 
     belongs_to :reviewer_recommendations_task
 
@@ -9,6 +10,8 @@ module TahiStandardTasks
     validates :email, presence: true
 
     alias_method :task, :reviewer_recommendations_task
+
+    delegate_view_permission_to :task
 
     # NestedQuestionAnswersController will save the paper_id to newly created
     # answers if an answer's owner responds to :paper. This method is needed by

@@ -1,4 +1,4 @@
-class CommentLookSerializer < ActiveModel::Serializer
+class CommentLookSerializer < AuthzSerializer
   attributes :id
 
   has_one :comment, embed: :id

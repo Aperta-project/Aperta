@@ -1,6 +1,7 @@
 # TaskTemplate gets consumed by the PaperFactory to create a task
 # when a paper is first created
 class TaskTemplate < ActiveRecord::Base
+  include ViewableModel
   include Configurable
 
   belongs_to :phase_template, inverse_of: :task_templates
@@ -16,6 +17,10 @@ class TaskTemplate < ActiveRecord::Base
   delegate :required_for_submission, to: :latest, allow_nil: true
 
   acts_as_list scope: :phase_template
+
+  def user_can_view?(check_user)
+    check_user.can?(:administer, journal)
+  end
 
   # setting_template_key is defined in Configurable
   def setting_template_key

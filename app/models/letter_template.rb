@@ -2,6 +2,7 @@
 # and any other use cases where a letter template with variable replacement
 # would be useful.
 class LetterTemplate < ActiveRecord::Base
+  include ViewableModel
   belongs_to :journal
 
   validates :name, presence: { message: "This field is required" }, uniqueness: {
@@ -18,6 +19,10 @@ class LetterTemplate < ActiveRecord::Base
   validate :cc_ok?
   validate :bcc_ok?
   before_validation :canonicalize_email_addresses
+
+  def user_can_view?(check_user)
+    check_user.can?(:manage_users, Journal)
+  end
 
   def render(context, check_blanks: false)
     tap do |my|

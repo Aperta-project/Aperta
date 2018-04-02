@@ -1,7 +1,7 @@
 # ErrorSerializer is intended to be used for allowing controllers to not
 # only respond with an HTTP error status code, but to include a useful
 # body which contains information about the error.
-class ErrorSerializer < ActiveModel::Serializer
+class ErrorSerializer < AuthzSerializer
   # Provide a model for our error, but hide its details at this time since
   # it's not used anywhere outside of this serializer.
   #

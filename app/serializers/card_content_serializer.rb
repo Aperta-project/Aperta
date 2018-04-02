@@ -1,4 +1,4 @@
-class CardContentSerializer < ActiveModel::Serializer
+class CardContentSerializer < AuthzSerializer
   attributes :id,
              :content_type,
              :unsorted_child_ids,

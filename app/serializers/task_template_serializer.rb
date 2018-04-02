@@ -1,4 +1,4 @@
-class TaskTemplateSerializer < ActiveModel::Serializer
+class TaskTemplateSerializer < AuthzSerializer
   attributes :id, :template, :title, :position, :settings_enabled, :all_settings
 
   has_one :phase_template, embed: :id

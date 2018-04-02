@@ -23,13 +23,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Tahi-project/tahi.git"
+    "url": "https://github.com/aperta-project/aperta.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Tahi-project/tahi/issues"
+    "url": "https://github.com/aperta-project/aperta/issues"
   },
-  "homepage": "https://github.com/Tahi-project/tahi",
+  "homepage": "https://github.com/aperta-project/aperta",
   "private": true
 }

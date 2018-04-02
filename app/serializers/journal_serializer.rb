@@ -1,4 +1,4 @@
-class JournalSerializer < ActiveModel::Serializer
+class JournalSerializer < AuthzSerializer
   attributes :id,
              :name,
              :logo_url,

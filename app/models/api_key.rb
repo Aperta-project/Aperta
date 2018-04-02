@@ -1,4 +1,5 @@
 class ApiKey < ActiveRecord::Base
+  include ViewableModel
   def self.generate!
     api_key = self.create!
     api_key.access_token

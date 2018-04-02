@@ -12,10 +12,11 @@ class DecisionAttachment < Attachment
     owner
   end
 
+  delegate_view_permission_to :decision
+
   protected
 
   def build_title
     file.filename || title
   end
-
 end

@@ -1,6 +1,7 @@
 require 'csv'
 # If no date is provided it defaults to last run
 class BillingLogReport < ActiveRecord::Base
+  include ViewableModel
   ACTIVITY_MESSAGE = 'Billing uploaded to FTP Server'.freeze
 
   mount_uploader :csv_file, BillingLogUploader

@@ -1,5 +1,5 @@
 # Generic Attachment serializer.
-class AttachmentSerializer < ActiveModel::Serializer
+class AttachmentSerializer < AuthzSerializer
   attributes :id,
     :title,
     :caption,

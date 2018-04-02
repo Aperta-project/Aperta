@@ -1,4 +1,4 @@
-class CorrespondenceSerializer < ActiveModel::Serializer
+class CorrespondenceSerializer < AuthzSerializer
   require 'link_sanitizer'
   attributes :id, :date, :subject, :recipient, :sender, :body,
              :recipients, :sent_at, :external, :description, :status,

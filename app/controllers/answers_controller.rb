@@ -21,7 +21,7 @@ class AnswersController < ApplicationController
 
   def show
     answer = Answer.find(params[:id])
-    requires_user_can(:view, answer.owner)
+    requires_user_can_view(answer)
 
     render json: answer, serializer: LightAnswerSerializer, root: 'answer'
   end

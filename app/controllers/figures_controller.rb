@@ -20,7 +20,7 @@ class FiguresController < ApplicationController
   end
 
   def show
-    requires_user_can(:view, figure.paper)
+    requires_user_can_view(figure)
     respond_with figure
   end
 

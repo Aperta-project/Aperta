@@ -1,4 +1,5 @@
 class Journal < ActiveRecord::Base
+  include ViewableModel
   include EventStream::Notifiable
   include Configurable
 
@@ -79,6 +80,11 @@ class Journal < ActiveRecord::Base
   has_one :user_role, -> { where(name: Role::USER_ROLE, journal_id: nil) },
     class_name: 'Role'
   # rubocop:enable Metrics/LineLength
+
+  def user_can_view?(_check_user)
+    # Any user can view a journal.
+    true
+  end
 
   def setting_template_key
     'Journal'

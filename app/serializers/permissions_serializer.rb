@@ -1,5 +1,5 @@
 # Serializer for Roles and Permissions
-class PermissionsSerializer < ActiveModel::Serializer
+class PermissionsSerializer < AuthzSerializer
   def serializable_hash
     object.to_h.merge(id: id).as_json
   end

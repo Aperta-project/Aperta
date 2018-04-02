@@ -1,6 +1,7 @@
 # Authors that are not individual people; they are in the
 # same list as authors, but have different data.
 class GroupAuthor < ActiveRecord::Base
+  include ViewableModel
   include Answerable
   include EventStream::Notifiable
   include Tokenable
@@ -48,6 +49,8 @@ class GroupAuthor < ActiveRecord::Base
 
   alias_attribute :email, :contact_email
   alias_attribute :full_name, :name
+
+  delegate_view_permission_to :paper
 
   def paper_id
     ensured_author_list_item.paper_id

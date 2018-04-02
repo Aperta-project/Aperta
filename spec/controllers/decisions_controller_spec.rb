@@ -94,12 +94,9 @@ describe DecisionsController do
     context 'when the user is authorized' do
       before do
         stub_sign_in user
-        allow(user).to receive(:can?)
-          .with(:view_decisions, paper)
-          .and_return true
-        allow(user).to receive(:can?)
-          .with(:view, paper.revise_task)
-          .and_return true
+        allow(user).to receive(:can?).with(:view_decisions, paper).and_return true
+        allow(user).to receive(:can?).with(:view, paper).and_return true
+        allow(user).to receive(:can?).with(:view, paper.revise_task).and_return true
         do_request
       end
 
@@ -316,9 +313,8 @@ describe DecisionsController do
 
     context "when a user is logged in who may register decisions" do
       before do
-        allow(user).to receive(:can?)
-          .with(:register_decision, paper)
-          .and_return true
+        allow(user).to receive(:can?).with(:register_decision, paper).and_return true
+        allow(user).to receive(:can?).with(:view, paper).and_return true
 
         stub_sign_in(user)
 
@@ -409,9 +405,8 @@ describe DecisionsController do
 
     context "and the user is signed in" do
       before do
-        allow(user).to receive(:can?)
-          .with(:rescind_decision, paper)
-          .and_return true
+        allow(user).to receive(:can?).with(:rescind_decision, paper).and_return true
+        allow(user).to receive(:can?).with(:view, paper).and_return true
         stub_sign_in(user)
       end
 

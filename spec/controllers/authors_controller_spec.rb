@@ -40,6 +40,7 @@ describe AuthorsController do
 
   describe "when the current user can edit_authors on the paper" do
     before do
+      allow(user).to receive(:can?).with(:view, paper).and_return(true)
       allow(user).to receive(:can?).with(:edit_authors, paper).and_return(true)
       allow(user).to receive(:can?).with(:manage_paper_authors, paper).and_return(false)
     end
@@ -79,6 +80,7 @@ describe AuthorsController do
 
   describe "duplicate emails per paper are not allowed" do
     before do
+      allow(user).to receive(:can?).with(:view, paper).and_return(true)
       allow(user).to receive(:can?).with(:edit_authors, paper).and_return(true)
       allow(user).to receive(:can?).with(:manage_paper_authors, paper).and_return(false)
     end
@@ -145,6 +147,7 @@ describe AuthorsController do
 
     context 'paper-manager user' do
       it 'a PUT request from an paper-manager allows updating coauthor status' do
+        allow(user).to receive(:can?).with(:view, paper).and_return(true)
         allow(user).to receive(:can?).with(:edit_authors, paper).and_return(true)
         allow(user).to receive(:can?).with(:manage_paper_authors, paper).and_return(true)
 
@@ -161,6 +164,7 @@ describe AuthorsController do
       context 'non-paper-manager user with edit access'
 
       it 'a PUT request from an non-paper-managerskips updating coauthor status' do
+        allow(user).to receive(:can?).with(:view, paper).and_return(true)
         allow(user).to receive(:can?).with(:edit_authors, author.paper).and_return(true)
         allow(user).to receive(:can?).with(:manage_paper_authors, paper).and_return(false)
 

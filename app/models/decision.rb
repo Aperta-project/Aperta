@@ -1,4 +1,5 @@
 class Decision < ActiveRecord::Base
+  include ViewableModel
   include EventStream::Notifiable
   include Versioned
   include CustomCastTypes
@@ -95,6 +96,10 @@ class Decision < ActiveRecord::Base
 
   def latest_invitation(invitee_id:)
     invitations.where(invitee_id: invitee_id).order(:created_at).last
+  end
+
+  def user_can_view?(check_user)
+    check_user.can?(:view_decisions, paper)
   end
 
   private

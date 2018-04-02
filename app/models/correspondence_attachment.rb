@@ -4,4 +4,8 @@ class CorrespondenceAttachment < Attachment
   self.public_resource = true
   self.notifications_enabled = false
   self.snapshottable = false
+
+  def user_can_view?(check_user)
+    check_user.can?(:manage_workflow, paper)
+  end
 end

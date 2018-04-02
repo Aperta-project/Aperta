@@ -1,5 +1,6 @@
 # Single class to handle internal and external correspondence
 class Correspondence < ActiveRecord::Base
+  include ViewableModel
   include EventStream::Notifiable
   self.table_name = "email_logs"
 
@@ -23,6 +24,10 @@ class Correspondence < ActiveRecord::Base
 
   validates :reason, presence: true, if: :deleted?
   validate :external_if_deleted
+
+  def user_can_view?(check_user)
+    check_user.can? :manage_workflow, paper
+  end
 
   def activities
     Activity.feed_for('workflow', self).map do |f|

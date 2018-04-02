@@ -2,6 +2,7 @@
 # Activities are used to make up a feed for various users in the system. The
 # feed is determined by the feed name assigned to each activity.
 class Activity < ActiveRecord::Base
+  include ViewableModel
   extend ClientRouteHelper
   belongs_to :subject, polymorphic: true
   belongs_to :user
@@ -10,6 +11,11 @@ class Activity < ActiveRecord::Base
 
   scope :feed_for, -> (feed_names, subject) do
     where(feed_name: feed_names, subject: subject).order('created_at DESC')
+  end
+
+  def user_can_view?(check_user)
+    return true if check_user.can?(:manage_workflow, subject)
+    feed_name == 'manuscript' && check_user.can?(:view_recent_activity, subject)
   end
 
   def self.for_paper_workflow(subject)

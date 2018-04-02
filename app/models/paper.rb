@@ -5,6 +5,7 @@ require_dependency 'paper_task_finders'
 ##
 # This class represents the paper in the system.
 class Paper < ActiveRecord::Base
+  include ViewableModel
   include EventStream::Notifiable
   include PaperTaskFinders
   include AASM

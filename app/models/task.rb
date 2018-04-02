@@ -1,5 +1,6 @@
 # Base class for all types of Task
 class Task < ActiveRecord::Base
+  include ViewableModel
   include Answerable
   include EventStream::Notifiable
   include Commentable

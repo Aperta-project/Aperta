@@ -1,4 +1,4 @@
-class SimilarityCheckSerializer < ActiveModel::Serializer
+class SimilarityCheckSerializer < AuthzSerializer
   attributes :id,
     :dismissed,
     :error_message,

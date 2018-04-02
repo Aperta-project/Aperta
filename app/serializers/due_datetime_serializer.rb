@@ -1,4 +1,4 @@
-class DueDatetimeSerializer < ActiveModel::Serializer
+class DueDatetimeSerializer < AuthzSerializer
   attributes :id, :due_at, :reviewer_report_id
 
   has_many :scheduled_events, embed: :ids, include: true

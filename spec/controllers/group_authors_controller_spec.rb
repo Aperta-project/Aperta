@@ -36,6 +36,7 @@ describe GroupAuthorsController do
 
   describe "when the current user can edit_authors on the paper" do
     before do
+      allow(user).to receive(:can?).with(:view, paper).and_return(true)
       allow(user).to receive(:can?).with(:manage_paper_authors, group_author.paper).and_return(true)
       allow(user).to receive(:can?).with(:edit_authors, paper).and_return(true)
     end
@@ -124,6 +125,7 @@ describe GroupAuthorsController do
 
     context 'paper-manager user' do
       it 'a PUT request from an paper-manager allows updating coauthor status' do
+        allow(user).to receive(:can?).with(:view, paper).and_return(true)
         allow(user).to receive(:can?).with(:edit_authors, group_author.paper).and_return(true)
         allow(user).to receive(:can?).with(:manage_paper_authors, group_author.paper).and_return(true)
 
@@ -140,6 +142,7 @@ describe GroupAuthorsController do
       context 'non-paper-manager user with edit access'
 
       it 'a PUT request from an non-paper-manager skips updating coauthor status' do
+        allow(user).to receive(:can?).with(:view, paper).and_return(true)
         allow(user).to receive(:can?).with(:edit_authors, group_author.paper).and_return(true)
         allow(user).to receive(:can?).with(:manage_paper_authors, group_author.paper).and_return(false)
 

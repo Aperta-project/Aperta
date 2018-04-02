@@ -1,4 +1,4 @@
-class InvitationIndexSerializer < ActiveModel::Serializer
+class InvitationIndexSerializer < AuthzSerializer
   self.root = :invitation
 
   attributes :id,

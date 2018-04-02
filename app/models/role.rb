@@ -1,4 +1,5 @@
 class Role < ActiveRecord::Base
+  include ViewableModel
   belongs_to :journal
   has_and_belongs_to_many :permissions
   has_many :assignments, dependent: :destroy
@@ -52,6 +53,10 @@ class Role < ActiveRecord::Base
     STAFF_ADMIN_ROLE,
     JOURNAL_SETUP_ROLE
   ].freeze
+
+  def user_can_view?(_check_user)
+    true
+  end
 
   def self.user_role
     find_by(name: Role::USER_ROLE, journal: nil)

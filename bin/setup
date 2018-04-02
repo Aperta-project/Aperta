@@ -2,6 +2,9 @@
 require 'pathname'
 require 'securerandom'
 
+nvm_installed = false
+BREW_PG_VERSION = 'postgresql@9.4'
+
 def cmd_available? cmd
   `which #{cmd}` != ''
 end
@@ -17,7 +20,7 @@ APP_ROOT = Pathname.new File.expand_path('../../',  __FILE__)
 def run_pg(cmd)
   out = case $os
   when :darwin
-    `#{cmd}`
+    `#{brew_pg_bin_path}/#{cmd}`
   when :linux
     cmd = cmd.gsub("\"", "\\\"") # escape quotes
     `sudo su postgres -c "#{cmd}"`
@@ -29,6 +32,10 @@ def run_pg(cmd)
   else
     out
   end
+end
+
+def brew_pg_bin_path
+  `brew --prefix #{BREW_PG_VERSION}`.chomp + '/bin'
 end
 
 def header message
@@ -48,11 +55,15 @@ def brew_install package, options=nil
   end
 end
 
-def npm_global_install package, options=nil
-  if system("npm list -g #{package} &>/dev/null")
+def nvm_run(cmd)
+  system "~/.nvm/nvm-exec #{cmd}"
+end
+
+def npm_global_install(package)
+  if nvm_run "npm list -g #{package} > /dev/null 2>&1"
     puts "#{package} is already installed"
   else
-    system "npm install -g #{package} #{options}"
+    nvm_run "npm install -g #{package}"
   end
 end
 
@@ -84,17 +95,37 @@ Dir.chdir APP_ROOT do
   case $os
   when :darwin
     brew_install 'imagemagick', '--with-libtiff'
-    %w(node@6 redis wget postgresql qpdf).each do |package|
+    brew_install BREW_PG_VERSION
+    `brew services start #{BREW_PG_VERSION}` # must be running for later db setup commands
+    %w(redis wget qpdf sqlite3 zlib ghostscript).each do |package|
       brew_install package
     end
   when :linux
-    # Install node v 6.11.1
-    system "curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -"
-    system "sudo apt-get install -y imagemagick nodejs wget redis-server postgresql qpdf"
+    pg_versions = ["9.4", "9.5", "9.6"] # Prefer 9.4, our prod version.
+    pg_versions.each do |pg_version|
+      # Keep trying until a pg is installed
+      break if system "sudo apt-get install -y postgresql-#{pg_version}"
+    end
+    system "sudo apt-get install -y imagemagick wget redis-server qpdf libsqlite3-dev zlib1g-dev libpq-dev ghostscript"
   end
+
+  header 'Installing nvm'
+  unless Dir.exist? File.expand_path("~/.nvm/")
+    nvm_installed = true
+    system "curl -o- https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash"
+  end
+
+  header 'Installing node'
+  system "export NVM_DIR=\"$HOME/.nvm\" ; . \"$NVM_DIR/nvm.sh\" ; nvm install $(< client/.node-version)"
+
+
+  header 'Install yarn'
   npm_global_install 'yarn'
+
   header 'Installing gems'
   system 'gem install bundler --conservative'
+  # bundler won't complete the install without this config, causing the subsequent bundle execs to fail
+  system "bundle config build.pg --with-pg-config=#{brew_pg_bin_path}/pg_config" if $os == :darwin
   system 'bundle install'
 
   # Adding slanger to the Gemfile is not recommended: https://github.com/stevegraham/slanger#slanger
@@ -146,7 +177,7 @@ Dir.chdir APP_ROOT do
   system 'bin/rake db:setup RAILS_ENV=test >> setup.log'
 
   header 'Installing javascript dependencies'
-  system 'bundle exec rake ember:install'
+  nvm_run 'bundle exec rake ember:install'
 
   header 'Removing old logs and tempfiles'
   system 'rm -f log/**/*'
@@ -161,6 +192,16 @@ Dir.chdir APP_ROOT do
   header 'downloading ember inspector'
   system 'cd tmp && rm -f addon-470970-latest.xpi && wget https://addons.mozilla.org/firefox/downloads/latest/ember-inspector/addon-470970-latest.xpi'
 
-  puts
+  if !system "dotenv env -f .env.development env | grep ^S3_BUCKET > /dev/null"
+    header 'setup s3'
+    system "bin/rake s3:create_bucket | grep = >> .env.development"
+  end
+
   puts 'Success!'
+  if nvm_installed
+    puts "You will need to start a new terminal session to get NVM set up correctly"
+    if $os == :darwin
+      puts "You will also need to ensure that your `~/.bash_profile` runs `source .bashrc`"
+    end
+  end
 end

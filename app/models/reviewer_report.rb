@@ -1,5 +1,6 @@
 # This class represents the reviewer reports per decision round
 class ReviewerReport < ActiveRecord::Base
+  include ViewableModel
   include Answerable
   include AASM
 
@@ -144,6 +145,10 @@ class ReviewerReport < ActiveRecord::Base
 
   def cancel_reminders
     scheduled_events.cancelable.each(&:cancel!)
+  end
+
+  def user_can_view?(check_user)
+    check_user.can?(:edit, task)
   end
 
   private

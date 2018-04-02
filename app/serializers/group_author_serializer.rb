@@ -1,6 +1,6 @@
 # Serializer for authors that aren't individuals; they live in the
 # same list as normal authors
-class GroupAuthorSerializer < ActiveModel::Serializer
+class GroupAuthorSerializer < AuthzSerializer
   include CardContentShim
 
   attributes :initial,

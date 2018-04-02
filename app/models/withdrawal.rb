@@ -1,4 +1,5 @@
 class Withdrawal < ActiveRecord::Base
+  include ViewableModel
   belongs_to :paper
   belongs_to :withdrawn_by_user, class_name: 'User'
 

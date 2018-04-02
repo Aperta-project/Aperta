@@ -1,4 +1,4 @@
-class AdminEditSerializer < ActiveModel::Serializer
+class AdminEditSerializer < AuthzSerializer
   attributes :id,
     :notes,
     :active,

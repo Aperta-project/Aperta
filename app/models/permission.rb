@@ -1,4 +1,5 @@
 class Permission < ActiveRecord::Base
+  include ViewableModel
   # The WILDCARD permission represents permission to all things.
   WILDCARD = '*'.freeze
 

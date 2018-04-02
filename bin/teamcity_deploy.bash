@@ -1,6 +1,5 @@
 #!/bin/bash
 # TeamCity build script for prod, rc, stage and vagrant deploys
-# current_author = jgray@plos.org
 #   with fail_unless_env_var check function by zdennis@mutuallyhuman.com
 
 sudo -u aperta -i /bin/bash << "EOF"

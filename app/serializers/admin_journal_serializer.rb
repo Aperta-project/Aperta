@@ -1,4 +1,4 @@
-class AdminJournalSerializer < ActiveModel::Serializer
+class AdminJournalSerializer < AuthzSerializer
   attributes :id,
     :name,
     :logo_url,
@@ -47,5 +47,11 @@ class AdminJournalSerializer < ActiveModel::Serializer
 
   def letter_template_scenarios
     TemplateContext.scenarios.map { |name, klass| { name: name, merge_fields: klass.merge_fields } }
+  end
+
+  private
+
+  def can_view?
+    scope.can?(:administer, object)
   end
 end

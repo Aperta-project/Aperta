@@ -1,4 +1,5 @@
 class ManuscriptManagerTemplate < ActiveRecord::Base
+  include ViewableModel
   belongs_to :journal, inverse_of: :manuscript_manager_templates
   has_many :phase_templates, -> { order("position asc") },
                                 inverse_of: :manuscript_manager_template,
@@ -16,5 +17,9 @@ class ManuscriptManagerTemplate < ActiveRecord::Base
 
   def task_template_by_kind(kind)
     task_templates.joins(:journal_task_type).find_by(journal_task_types: { kind: kind })
+  end
+
+  def user_can_view?(check_user)
+    check_user.can?(:administer, journal)
   end
 end

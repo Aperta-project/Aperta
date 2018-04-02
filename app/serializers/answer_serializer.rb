@@ -1,4 +1,4 @@
-class AnswerSerializer < ActiveModel::Serializer
+class AnswerSerializer < AuthzSerializer
   include ReadySerializable
   attributes :id,
     :value,

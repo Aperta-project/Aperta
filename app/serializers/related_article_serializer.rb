@@ -1,6 +1,6 @@
 # Serializes related articles, which represent links between
 # this manuscript and others, published or not.
-class RelatedArticleSerializer < ActiveModel::Serializer
+class RelatedArticleSerializer < AuthzSerializer
   attributes :id,
              :paper_id,
              :linked_doi,

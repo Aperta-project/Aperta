@@ -2,12 +2,14 @@
 
 [![CircleCI](https://circleci.com/gh/Aperta-project/Aperta.svg?style=svg&circle-token=053baf28a00d1f8a35d40014fe8e3d840eadbd10)](https://circleci.com/gh/Aperta-project/Aperta)
 
-Aperta is a platform for building review workflow systems for scientific
-research outputs.
+Aperta is a platform for managing the submission and review of research outputs.
 
 # Initial Setup
 
 ## Overview
+
+Aperta is supported on Linux and Mac. Our `bin/setup` script should
+work on Macs, Debian and Ubuntu.
 
 1. Ensure you have Ruby 2.3.6 installed. We recommend using
    [rbenv](https://github.com/rbenv/rbenv) or [rvm](https://rvm.io/)
@@ -34,8 +36,7 @@ The `bin/setup` script will prompt you for an AWS key/secret key pair.
 This should be a key pair attached to a user that can create a new S3
 bucket and IAM user and set up access. The simplest thing would be to
 attach it to a root user. The steps are beyond this README, but you
-can get started [here](
-https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html)
+can get started [here](https://github.com/aperta-project/aperta/wiki/AWS-Setup)
 
 ### Automated Setup
 
@@ -65,13 +66,17 @@ For more information for developers, please visit the [wiki](https://github.com/
 
 ### Troubleshooting
 
-1. Make sure the following servers are already running:
-    - PostgreSQL
-    - Redis
-2. Make sure the following ports are clear:
+1. Make sure the following servers are already running and listening
+   on the correct ports:
+    - PostgreSQL (5432)
+    - Redis (6379)
+2. Make sure the following ports are open:
     - 4567 (Slanger API)
     - 40604 (Slanger websocket)
     - 5000 (Rails server)
+
+Note that the `bin/setup` can be run as many times as you like as you
+correct issues that it runs into.
 
 ### Running the test suite
 

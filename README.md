@@ -9,6 +9,9 @@ research outputs.
 
 ## Overview
 
+Aperta is supported on Linux and Mac. Our `bin/setup` script should
+work on Macs, Debian and Ubuntu.
+
 1. Ensure you have Ruby 2.3.6 installed. We recommend using
    [rbenv](https://github.com/rbenv/rbenv) or [rvm](https://rvm.io/)
    to manage your ruby versions. Aperta will probably work on other

@@ -15,7 +15,7 @@ class ProcessManuscriptWorker
     # have never seen this take more than 1.
     counter = 0
     while manuscript_attachment.file.file.nil? && counter < 5
-      logger.info 'Attachment not ready yet, retrying in 1 second'
+      # logger.info 'Attachment not ready yet, retrying in 1 second'
       counter += 1
       sleep 1
       manuscript_attachment = ManuscriptAttachment.find(manuscript_attachment_id)

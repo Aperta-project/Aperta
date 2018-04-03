@@ -44,7 +44,7 @@ describe DataMigration, rake: true do
 
       it 'should be called' do
         expect(underlying_code).to receive(:call)
-        klass.new.up
+        ActiveRecord::Migration.suppress_messages { klass.new.up }
       end
     end
   end
@@ -79,7 +79,7 @@ describe DataMigration, rake: true do
 
       it 'should be called' do
         expect(underlying_code).to receive(:call)
-        klass.new.down
+        ActiveRecord::Migration.suppress_messages { klass.new.down }
       end
     end
   end

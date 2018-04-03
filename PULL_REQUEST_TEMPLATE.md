@@ -46,7 +46,7 @@ If I modified any environment variables:
 - [ ] I double-checked the `app.json` file to make sure that the heroku review apps are still inheriting the correct environment variables from staging
 
 If I need to migrate existing data:
-- [ ] If a data-migration rake task is needed, the task is found in `lib/tasks/data-migrations` within the `data:migrate` namespace. Example task name: `aperta_9999_migration_description`
+- [ ] If a data-migration rake task is needed, the task is found in `lib/tasks/data_migrations` within the `data:migrate` namespace. Example task name: `aperta_9999_migration_description`
 - [ ] If there are steps to take outside of `rake db:migrate` for Heroku or other environments, I added copy-pastable instructions to [the confluence release page](https://developer.plos.org/confluence/display/TAHI/Deployment+information+for+Release)
 - [ ] I verified the data-migration's results with `rake db:test_migrations` (complicated migrations should also have real specs)
 - [ ] I've talked through the ramifications of the data-migration with Product Owners in regards to deployment timing

@@ -32,21 +32,25 @@ DESC
   end
 
   before(:each) do
-    ActiveRecord::Schema.define do
-      add_column(
-        :roles,
-        :participates_in_fake_papers,
-        :boolean,
-        null: false,
-        default: false
-      )
+    ActiveRecord::Migration.suppress_messages do
+      ActiveRecord::Schema.define do
+        add_column(
+          :roles,
+          :participates_in_fake_papers,
+          :boolean,
+          null: false,
+          default: false
+        )
+      end
     end
     Role.reset_column_information
   end
 
   after(:each) do
-    ActiveRecord::Schema.define do
-      remove_column :roles, :participates_in_fake_papers
+    ActiveRecord::Migration.suppress_messages do
+      ActiveRecord::Schema.define do
+        remove_column :roles, :participates_in_fake_papers
+      end
     end
     Role.reset_column_information
   end

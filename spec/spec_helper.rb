@@ -33,8 +33,6 @@ RSpec.configure do |config|
   end
 
   config.color = true
-  config.filter_run focus: true
   config.formatter = 'RSpec::Instafail'
   config.pattern = '**/spec/**/*_spec.rb'
-  config.run_all_when_everything_filtered = true
 end

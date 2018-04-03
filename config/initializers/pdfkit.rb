@@ -13,7 +13,7 @@ PDFKit.configure do |config|
     page_size: 'Letter',
     load_error_handling: 'ignore',
     load_media_error_handling: 'ignore',
-    encoding: 'utf8'
+    encoding: 'utf8',
+    quiet: true
   }
-  config.verbose = true
 end

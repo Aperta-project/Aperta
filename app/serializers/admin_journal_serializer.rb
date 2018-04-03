@@ -8,7 +8,6 @@ class AdminJournalSerializer < AuthzSerializer
     :description,
     :paper_count,
     :created_at,
-    :pdf_allowed,
     :msword_allowed,
     :doi_journal_prefix,
     :doi_publisher_prefix,

@@ -5,11 +5,8 @@ import checkType, { filetypeRegex } from 'tahi/lib/file-upload/check-filetypes';
 const { computed } = Ember;
 
 export default Ember.Component.extend(EscapeListenerMixin, {
-  fileTypes: computed('paper.journal.pdfAllowed', function() {
-    let allowedFileTypes = [];
-    if (this.get('paper.journal.pdfAllowed')) {
-      allowedFileTypes.push('.pdf');
-    }
+  fileTypes: computed('paper.journal.mswordAllowed', function() {
+    let allowedFileTypes = ['.pdf'];
     if (this.get('paper.journal.mswordAllowed')) {
       allowedFileTypes.push('.doc', '.docx');
     }

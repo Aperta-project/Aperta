@@ -19,7 +19,6 @@ export default DS.Model.extend({
   paperCount: DS.attr('number'),
   paperTypes: DS.attr(),
   pdfCss: DS.attr('string'),
-  pdfAllowed: DS.attr('boolean'),
   mswordAllowed: DS.attr('boolean'),
   lastDoiIssued: DS.attr('string'),
   doiJournalPrefix: DS.attr('string'),

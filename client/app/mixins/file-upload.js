@@ -8,13 +8,7 @@ export default Ember.Mixin.create({
 
   uploads: null,
   isUploading: Ember.computed.notEmpty('uploads'),
-
-  needsSourcefile: Ember.computed('task.paper.journal.pdfAllowed', 'task.paper.fileType',
-    function(){
-      return (this.get('task.paper.journal.pdfAllowed') &&
-             (this.get('task.paper.fileType') === 'pdf'));
-    }
-  ),
+  needsSourcefile: Ember.computed.equal('task.paper.fileType', 'pdf'),
 
   unloadUploads(data, filename) {
     let uploads = this.get('uploads');

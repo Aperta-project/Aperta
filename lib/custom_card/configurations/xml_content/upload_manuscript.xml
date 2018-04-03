@@ -8,15 +8,13 @@
             You can upload a replacement manuscript file at any time before you submit.
             </p></text>
         </Description>
-        <If condition="pdfAllowed">
-          <Description>
-            <text><p>
-              <b>PDF format:</b> For authors uploading a PDF manuscript file, figures and any SI information can be included in the manuscript and are not required separately for initial assessment.
-              If a revision is invited, separate figure and SI file upload will be required.
-              If preferred, you may upload those files separately before completing your submission.
-              </p></text>
-          </Description>
-        </If>
+        <Description>
+          <text><p>
+            <b>PDF format:</b> For authors uploading a PDF manuscript file, figures and any SI information can be included in the manuscript and are not required separately for initial assessment.
+            If a revision is invited, separate figure and SI file upload will be required.
+            If preferred, you may upload those files separately before completing your submission.
+            </p></text>
+        </Description>
         <If condition="mswordAllowed">
           <Description>
             <text><p>
@@ -25,19 +23,17 @@
               </p></text>
           </Description>
         </If>
-        <If condition="pdfAllowed">
-          <If condition="mswordAllowed">
-            <FileUploader value-type="manuscript" error-message="Please upload a Microsoft Word File (.docx or .doc) or PDF">
-              <label>Upload Manuscript</label>
-              <possible-value label="doc" value=".doc"/>
-              <possible-value label="docx" value=".docx"/>
-              <possible-value label="pdf" value=".pdf"/>
-            </FileUploader>
-            <FileUploader value-type="manuscript" error-message="Please upload a PDF file">
-              <label>Upload Manuscript</label>
-              <possible-value label="pdf" value=".pdf"/>
-            </FileUploader>
-          </If>
+        <If condition="mswordAllowed">
+          <FileUploader value-type="manuscript" error-message="Please upload a Microsoft Word File (.docx or .doc) or PDF">
+            <label>Upload Manuscript</label>
+            <possible-value label="doc" value=".doc"/>
+            <possible-value label="docx" value=".docx"/>
+            <possible-value label="pdf" value=".pdf"/>
+          </FileUploader>
+          <FileUploader value-type="manuscript" error-message="Please upload a PDF file">
+            <label>Upload Manuscript</label>
+            <possible-value label="pdf" value=".pdf"/>
+          </FileUploader>
         </If>
       </DisplayChildren>
       <Description>

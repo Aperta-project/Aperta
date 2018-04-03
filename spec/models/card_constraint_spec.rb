@@ -44,7 +44,7 @@ describe Card do
       <?xml version="1.0" encoding="UTF-8"?>
       <card required-for-submission="false" workflow-display-only="false">
         <DisplayChildren>
-          <If condition="pdfAllowed">
+          <If condition="mswordAllowed">
             <ParagraphInput ident="SomeStuff" value-type="html">
               <text>This is the THEN branch of an inner IF condition.</text>
             </ParagraphInput>

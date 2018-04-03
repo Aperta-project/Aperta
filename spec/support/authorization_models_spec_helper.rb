@@ -7,30 +7,32 @@ module AuthorizationModelsSpecHelper
   # Creates tables in the test database specificially for the model definitions
   # intended to test the authorization sub-system
   def self.create_db_tables
-    ActiveRecord::Schema.define do
-      create_table :fake_journals, force: true do |t|
-        t.string :name
-      end
+    ActiveRecord::Migration.suppress_messages do
+      ActiveRecord::Schema.define do
+        create_table :fake_journals, force: true do |t|
+          t.string :name
+        end
 
-      create_table :fake_papers, force: true do |t|
-        t.integer :fake_journal_id
-        t.string :name
-        t.string :publishing_state
-      end
+        create_table :fake_papers, force: true do |t|
+          t.integer :fake_journal_id
+          t.string :name
+          t.string :publishing_state
+        end
 
-      create_table :fake_tasks, force: true do |t|
-        t.string :name
-        t.integer :fake_paper_id
-        t.string :type, default: 'Authorizations::FakeTask'
-        t.integer :fake_card_version_id
-      end
+        create_table :fake_tasks, force: true do |t|
+          t.string :name
+          t.integer :fake_paper_id
+          t.string :type, default: 'Authorizations::FakeTask'
+          t.integer :fake_card_version_id
+        end
 
-      create_table :fake_task_things, force: true do |t|
-        t.integer :fake_task_id
-      end
+        create_table :fake_task_things, force: true do |t|
+          t.integer :fake_task_id
+        end
 
-      create_table :fake_card_versions, force: true do |t|
-        t.integer :fake_task_id
+        create_table :fake_card_versions, force: true do |t|
+          t.integer :fake_task_id
+        end
       end
     end
   end

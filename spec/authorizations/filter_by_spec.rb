@@ -13,8 +13,10 @@ DESC
 
   before(:all) do
     AuthorizationModelsSpecHelper.create_db_tables
-    ActiveRecord::Schema.define do
-      add_column :permissions, :filter_by_name, :text
+    ActiveRecord::Migration.suppress_messages do
+      ActiveRecord::Schema.define do
+        add_column :permissions, :filter_by_name, :text
+      end
     end
     Permission.reset_column_information
   end
@@ -31,8 +33,10 @@ DESC
   end
 
   after(:all) do
-    ActiveRecord::Schema.define do
-      remove_column :permissions, :filter_by_name
+    ActiveRecord::Migration.suppress_messages do
+      ActiveRecord::Schema.define do
+        remove_column :permissions, :filter_by_name
+      end
     end
     Permission.reset_column_information
   end

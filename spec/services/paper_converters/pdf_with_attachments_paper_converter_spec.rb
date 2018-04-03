@@ -78,16 +78,12 @@ describe PaperConverters::PdfWithAttachmentsPaperConverter do
 
     context "when PDF has object streams" do
       subject { converter.pdf_may_have_object_stream?(object_streams_pdf) }
-      it 'should be true' do
-        subject.should be(true)
-      end
+      it { is_expected.to be(true) }
     end
 
     context "when PDF has no object streams" do
       subject { converter.pdf_may_have_object_stream?(no_object_streams_pdf) }
-      it 'should be false' do
-        subject.should be(false)
-      end
+      it { is_expected.to be(false) }
     end
   end
 

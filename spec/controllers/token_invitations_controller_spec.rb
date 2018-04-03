@@ -60,7 +60,7 @@ describe TokenInvitationsController do
       let(:dummy_key) { OpenSSL::PKey::EC.new('prime256v1').generate_key }
       before do
         expect(controller).to receive(:invitation).at_least(:once).and_return(invitation_double)
-        invitation_double.stub_chain(:paper, :journal, :name).and_return('PLOS Alchemy')
+        expect(invitation_double).to receive_message_chain(:paper, :journal, :name).and_return('PLOS Alchemy')
         expect(OpenSSL::PKey::EC).to receive(:new).and_return(dummy_key)
       end
       it 'has four keys: destination, heading, subheading, email' do
@@ -82,7 +82,7 @@ describe TokenInvitationsController do
     context 'CAS phased signup is not setup' do
       let(:phased_disabled?) { true }
       it 'should return true' do
-        controller.send(:use_authentication?).should be true
+        expect(controller.send(:use_authentication?)).to be(true)
       end
     end
     context 'CAS phased signup is setup' do
@@ -93,13 +93,13 @@ describe TokenInvitationsController do
       context 'User can be verified in NED' do
         let(:ned_unverified?) { false }
         it 'should return false' do
-          controller.send(:use_authentication?).should be false
+          expect(controller.send(:use_authentication?)).to be(false)
         end
       end
       context 'User cannot be verified in NED' do
         let(:ned_unverified?) { true }
         it 'should return true' do
-          controller.send(:use_authentication?).should be true
+          expect(controller.send(:use_authentication?)).to be(true)
         end
       end
     end
@@ -112,7 +112,7 @@ describe TokenInvitationsController do
     context 'NED is not enabled' do
       let(:ned_enabled?) { false }
       it 'should return true' do
-        controller.send(:ned_unverified?).should be true
+        expect(controller.send(:ned_unverified?)).to be(true)
       end
     end
     context 'Ned is enabled' do
@@ -125,13 +125,13 @@ describe TokenInvitationsController do
       context 'User is in NED db' do
         let(:ned_user) { double('NedUser', email_has_account?: true) }
         it 'should return true' do
-          controller.send(:ned_unverified?).should be true
+          expect(controller.send(:ned_unverified?)).to be(true)
         end
       end
       context 'User is not in NED db' do
         let(:ned_user) { double('NedUser', email_has_account?: false) }
         it 'should return false' do
-          controller.send(:ned_unverified?).should be false
+          expect(controller.send(:ned_unverified?)).to be(false)
         end
       end
     end
@@ -146,7 +146,7 @@ describe TokenInvitationsController do
       let(:phased_env_var) { false }
 
       it 'should return false' do
-        controller.send(:cas_phased_signup_disabled?).should be true
+        expect(controller.send(:cas_phased_signup_disabled?)).to be(true)
       end
     end
 
@@ -154,7 +154,7 @@ describe TokenInvitationsController do
       let(:phased_env_var) { true }
       context 'with feature enabled' do
         it 'returns false' do
-          controller.send(:cas_phased_signup_disabled?).should be false
+          expect(controller.send(:cas_phased_signup_disabled?)).to be(false)
         end
       end
     end
@@ -246,7 +246,7 @@ describe TokenInvitationsController do
         let(:dummy_cas_url) { 'http://setphaserstostun.org' }
         let(:dummy_key) { OpenSSL::PKey::EC.new('prime256v1').generate_key }
         before do
-          invitation_double.stub_chain(:paper, :journal, :name).and_return('PLOS Alchemy')
+          expect(invitation_double).to receive_message_chain(:paper, :journal, :name).and_return('PLOS Alchemy')
           expect_any_instance_of(TahiEnv).to receive(:cas_phased_signup_url).and_return(dummy_cas_url)
           expect(OpenSSL::PKey::EC).to receive(:new).and_return(dummy_key)
         end

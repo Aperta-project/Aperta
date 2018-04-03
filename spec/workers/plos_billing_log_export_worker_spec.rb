@@ -28,8 +28,10 @@ describe PlosBillingLogExportWorker do
     FactoryGirl.create(:final_tech_check_task, paper: paper)
   end
 
+  let(:report) { FactoryGirl.create(:billing_log_report) }
+  let(:uploader) { double(BillingFTPUploader) }
+
   before do
-    FactoryGirl.create(:billing_log_report)
     CardLoader.load("PlosBilling::BillingTask")
     paper.phases.first.tasks.concat(
       [
@@ -40,10 +42,12 @@ describe PlosBillingLogExportWorker do
   end
 
   it "creates BillingLogReport, FTPs resulting csv and adds Activity log" do
-    BillingLogReport.any_instance.should_receive :save_and_send_to_s3!
-    BillingFTPUploader.any_instance.should_receive(:upload) { true }
-    Activity.should_receive(:create).with(hash_including(subject: paper))
-    worker = PlosBillingLogExportWorker.new
-    expect { worker.perform }.to change { BillingLogReport.count }.by(1)
+    expect(BillingLogReport).to receive(:create!).and_return(report)
+    expect(report).to receive(:save_and_send_to_s3!)
+    expect(report).to receive(:papers_to_process).and_return([paper])
+    expect(BillingFTPUploader).to receive(:new).with(report).and_return(uploader)
+    expect(uploader).to receive(:upload).and_return(true)
+    expect(Activity).to receive(:create).with(hash_including(subject: paper))
+    PlosBillingLogExportWorker.new.perform
   end
 end

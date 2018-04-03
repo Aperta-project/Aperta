@@ -48,7 +48,7 @@ describe DownloadAttachmentWorker, redis: true do
     end
 
     it "rescues ActiveRecord::RecordNotFound" do
-      expect { worker.perform(2, "fake url", 50) }.to_not raise_error(ActiveRecord::RecordNotFound)
+      expect { worker.perform(2, "fake url", 50) }.to_not raise_error
     end
 
     it "does not retry" do

@@ -20,6 +20,10 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
     expect(rake_object).to receive(:open).with('foo').and_return(csv_string)
   end
 
+  around do |example|
+    expect { example.run }.to output(/Successfully loaded roles/).to_stderr
+  end
+
   context 'with a basic CSV file ' do
     let(:csv) do
       [['Jane Doe', 'jane@example.edu', "#{Role::USER_ROLE}, #{Role::STAFF_ADMIN_ROLE}", nil, journal.name],

@@ -2,8 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/Aperta-project/Aperta.svg?style=svg&circle-token=053baf28a00d1f8a35d40014fe8e3d840eadbd10)](https://circleci.com/gh/Aperta-project/Aperta)
 
-Aperta is a platform for building review workflow systems for scientific
-research outputs.
+Aperta is a platform for managing the submission and review of research outputs.
 
 # Initial Setup
 

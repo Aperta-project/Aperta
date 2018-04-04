@@ -22,11 +22,11 @@ module TahiUtilities
 
       remaining_files = %x[#{shell_command}].split("\n")
       if remaining_files.count > save_file_count
-        STDERR.puts "Clean up of database dump files appears to have failed.  Please investigate manually."
+        $stderr.puts "Clean up of database dump files appears to have failed.  Please investigate manually."
       else
-        puts "The #{remaining_files.count} most recent log files have been left:\n"
-        puts remaining_files.map{|path| ' * ' + path}
-        puts "and #{dump_files.count} files have been removed."
+        $stderr.puts "The #{remaining_files.count} most recent log files have been left:\n"
+        $stderr.puts remaining_files.map { |path| ' * ' + path }
+        $stderr.puts "and #{dump_files.count} files have been removed."
       end
       { remaining_files: remaining_files, deleted_files: dump_files }
     end

@@ -53,6 +53,10 @@ describe TahiUtilities::Sweeper do
     `rm -f #{temporary_directory}/*`
   end
 
+  around do |example|
+    expect { example.run }.to output.to_stderr
+  end
+
   describe ".remove_old_files" do
 
     context "with a need to keep 2 files" do

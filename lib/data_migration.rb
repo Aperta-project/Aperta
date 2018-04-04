@@ -32,7 +32,7 @@ class DataMigration < ActiveRecord::Migration
 
     rake_task = self.class::RAKE_TASK_UP
     if Rake::Task.task_defined?(rake_task)
-      puts green("  Running rake task: #{rake_task}")
+      say("  Running rake task: #{rake_task}")
       Rake::Task[rake_task].invoke(*self.class.task_args)
     else
       Rails.logger.warn <<-EOS.strip_heredoc
@@ -46,7 +46,7 @@ class DataMigration < ActiveRecord::Migration
 
     rake_task = self.class::RAKE_TASK_DOWN
     if Rake::Task.task_defined?(rake_task)
-      puts green("  Running rake task: #{rake_task}")
+      say("  Running rake task: #{rake_task}")
       Rake::Task[rake_task].invoke(*self.class.task_args)
     else
       Rails.logger.warn <<-EOS.strip_heredoc

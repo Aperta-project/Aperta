@@ -174,12 +174,7 @@ FactoryGirl.define do
     trait(:with_tasks) do
       association :journal, factory: [:journal, :with_default_mmt]
       after(:create) do |paper|
-        unless Card.where(journal: nil).exists?
-          start = Time.now
-          CardLoader.load_standard
-          end_time = Time.now
-          puts "seeded cards in test in #{end_time - start} seconds"
-        end
+        CardLoader.load_standard unless Card.where(journal: nil).exists?
         PaperFactory.new(paper, paper.creator).add_phases_and_tasks
       end
     end

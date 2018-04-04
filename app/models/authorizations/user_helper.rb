@@ -33,9 +33,13 @@ module Authorizations
     end
 
     def can?(permission, target)
-      !filter_authorized(
-        permission, target, participations_only: false
-      ).objects.empty?
+      target_class = target.try(:id) ? target.class : target
+      key = ['user', id, 'can', permission, target_class.to_s.underscore, target.try(:id)].compact.join('_')
+      Rails.cache.fetch(key, expires_in: 24.hours) do
+        !filter_authorized(
+          permission, target, participations_only: false
+        ).objects.empty?
+      end
     end
 
     def unaccepted_and_invited_to?(paper:)

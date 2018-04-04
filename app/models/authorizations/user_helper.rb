@@ -24,24 +24,19 @@ module Authorizations
 
       def with_role(role, assigned_to: nil)
         with_role_query = joins(assignments: :role).where(roles: { id: role })
-        assigned_to ? with_role_query.where(assignments: { assigned_to: assigned_to }) : with_role_query
+        if assigned_to
+          with_role_query.where(assignments: { assigned_to: assigned_to })
+        else
+          with_role_query
+        end
       end
     end
 
     def can?(permission, target)
-      target_class = target.try(:id) ? target.class : target
-      key = [cache_key_prefix, permission, target_class.to_s.underscore, target.try(:id)].compact.join('_')
+      key = CanCache.cache_key(self, permission, target)
       Rails.cache.fetch(key) do
         !filter_authorized(permission, target, participations_only: false).objects.empty?
       end
-    end
-
-    def bust_can_cache(regex: /^#{cache_key_prefix}/)
-      Rails.cache.delete_matched(regex)
-    end
-
-    def cache_key_prefix
-      "user_#{id}_can"
     end
 
     def unaccepted_and_invited_to?(paper:)

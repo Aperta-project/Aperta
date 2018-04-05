@@ -169,6 +169,9 @@ describe TahiEnv do
   it_behaves_like 'required env var', var: 'SENDGRID_USERNAME'
   it_behaves_like 'required env var', var: 'SENDGRID_PASSWORD'
 
+  # GTM
+  it_behaves_like 'optional array env var', var: 'GTM_CONTAINER_IDS'
+
   describe 'when no authentication is enabled' do
     it 'is not valid' do
       ClimateControl.modify CAS_ENABLED: "false", ORCID_LOGIN_ENABLED: "false", PASSWORD_AUTH_ENABLED: "false" do

@@ -818,6 +818,6 @@ class Paper < ActiveRecord::Base
   end
 
   def bust_can_cache
-    CanCache.paper_state_cache_bust
+    CanCache.cache_bust unless unsubmitted?
   end
 end

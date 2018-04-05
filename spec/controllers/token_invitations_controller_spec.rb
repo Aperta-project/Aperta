@@ -310,7 +310,7 @@ describe TokenInvitationsController do
 
         context 'when invitation and current user emails are not the same' do
           let(:invitation_double) do
-            double('Invitation', invited?: true, declined?: false, rescinded?: false, email: 'phished@plos.org', accept!: true, paper: task.paper, invitee_role: 'Reviewer', invitee_id: 123)
+            double('Invitation', invited?: true, declined?: false, rescinded?: false, email: 'phished@example.org', accept!: true, paper: task.paper, invitee_role: 'Reviewer', invitee_id: 123)
           end
           it 'does not accept the user\'s invitation' do
             expect(invitation_double).not_to receive(:accept!)

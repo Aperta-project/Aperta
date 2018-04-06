@@ -11,7 +11,6 @@ set :linked_files, %w(env puma.rb)
 set :repo_url, 'git@github.com:aperta-project/aperta.git'
 set :web_service_name, 'tahi-web' # used by puma:{start,stop,restart}
 set :worker_service_name, 'tahi-worker' # used by sidekiq:{start,stop,restart}
-set :whenever_roles, %(cron)
 set :nginx_pidfile, '/run/nginx.pid'
 set :puma_pidfile, '/var/www/tahi/current/tmp/pids/puma.pid'
 set :sidekiq_pidfile, '/var/www/tahi/current/tmp/pids/sidekiq.pid'

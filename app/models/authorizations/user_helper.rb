@@ -33,8 +33,7 @@ module Authorizations
     end
 
     def can?(permission, target)
-      key = CanCache.cache_key(self, permission, target)
-      Rails.cache.fetch(key) do
+      CanCache.fetch(self, permission, target) do
         !filter_authorized(permission, target, participations_only: false).objects.empty?
       end
     end

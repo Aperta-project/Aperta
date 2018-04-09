@@ -749,8 +749,8 @@ DEPENDENCIES
   mini_magick
   newrelic_rpm
   nokogiri (>= 1.7.2)
-  omniauth (~> 1.3.2)
-  omniauth-cas (= 1.1.1)
+  omniauth
+  omniauth-cas
   omniauth-oauth2
   ordinalize
   origami

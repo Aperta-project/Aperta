@@ -181,6 +181,9 @@ class TahiEnv
   required :SENDGRID_USERNAME
   required :SENDGRID_PASSWORD
 
+  # GTM
+  optional :GTM_CONTAINER_IDS, :array
+
   def validate!
     unless valid?
       error_message = "Environment validation failed:\n\n"

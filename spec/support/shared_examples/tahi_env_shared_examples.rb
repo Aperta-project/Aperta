@@ -144,6 +144,29 @@ shared_examples_for 'required array env var' do |var:|
   end
 end
 
+shared_examples_for 'optional array env var' do |var:|
+  describe "Optional array env var: #{var}" do
+    it 'shows up in the list of known about env vars' do
+      expect(TahiEnv.registered_env_vars[var.to_s]).to eq(TahiEnv::OptionalEnvVar.new(var))
+    end
+
+    query_method_name = "#{var.downcase}?"
+    describe "TahiEnv.#{query_method_name}" do
+      it "returns an array when set to 'server1 server2'" do
+        ClimateControl.modify valid_env.merge("#{var}": 'server1 server2') do
+          expect(TahiEnv.send(var.downcase)).to be_a Array
+        end
+      end
+
+      it 'returns splits a space-separated string into an array' do
+        ClimateControl.modify valid_env.merge("#{var}": 'server1 server2 server3') do
+          expect(TahiEnv.send(var.downcase).count).to be 3
+        end
+      end
+    end
+  end
+end
+
 shared_examples_for 'dependent required boolean env var' do |var:, dependent_key:|
   describe "Dependent required boolean env var: #{var}" do
     it_behaves_like 'dependent required env var', var: var, dependent_key: dependent_key

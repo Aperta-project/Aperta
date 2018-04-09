@@ -121,9 +121,9 @@ describe TahiEnv do
   it_behaves_like 'optional env var', var: 'MAILSAFE_REPLACEMENT_ADDRESS'
 
   # NED
-  it_behaves_like 'dependent required env var', var: 'NED_API_URL', dependent_key: 'RAILS_ENV', dependent_values: %w(staging production)
-  it_behaves_like 'required env var', var: 'NED_CAS_APP_ID'
-  it_behaves_like 'required env var', var: 'NED_CAS_APP_PASSWORD'
+  it_behaves_like 'optional env var', var: 'NED_API_URL'
+  it_behaves_like 'dependent required env var', var: 'NED_CAS_APP_ID', dependent_key: 'NED_API_URL'
+  it_behaves_like 'dependent required env var', var: 'NED_CAS_APP_PASSWORD', dependent_key: 'NED_API_URL'
   it_behaves_like 'optional boolean env var', var: 'NED_SSL_VERIFY', default_value: true
   it_behaves_like 'optional boolean env var', var: 'USE_NED_INSTITUTIONS', default_value: false
 

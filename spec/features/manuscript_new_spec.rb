@@ -13,17 +13,17 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
   let!(:papers) { [] }
   let(:dashboard) { DashboardPage.new }
 
-  # scenario 'failure' do
-  #   with_aws_cassette('manuscript-new') do
-  #     login_as(user, scope: :user)
-  #     visit '/'
-  #     find('.button-primary', text: 'CREATE NEW SUBMISSION').click
+  xscenario 'failure' do
+    with_aws_cassette('manuscript-new') do
+      login_as(user, scope: :user)
+      visit '/'
+      find('.button-primary', text: 'CREATE NEW SUBMISSION').click
 
-  #     attach_file 'upload-files', Rails.root.join('spec', 'fixtures', 'about_equations.docx'), visible: false
+      attach_file 'upload-files', Rails.root.join('spec', 'fixtures', 'about_equations.docx'), visible: false
 
-  #     expect(page).to have_content('Paper type can\'t be blank')
-  #   end
-  # end
+      expect(page).to have_content('Paper type can\'t be blank')
+    end
+  end
 
   def paper_has_uploaded_manuscript
     paper = Paper.find_by(title: 'Paper Title')

@@ -4,7 +4,7 @@ class Institutions < NedConnection
   include Singleton
 
   def matching_institutions(query)
-    if NED_ENABLED
+    if TahiEnv.ned_enabled?
       search('institutionsearch', substring: query).body
     else
       search_predefined query

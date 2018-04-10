@@ -86,9 +86,9 @@
                        done=(action "uploadFinished")
                        error=(action "uploadFailed")}}
   </span>
-  <p>You can upload a replacement manuscript file at any time before you submit.</p>
+  <p>You may upload a manuscript in {{#if paper.journal.mswordAllowed}}either Microsoft Word (.docx or .doc) or {{/if}}PDF format. You can upload a replacement manuscript file at any time before you submit.</p>
   {{#if paper.journal.mswordAllowed}}
     <p><strong>Microsoft Word format (.docx or .doc):</strong> Manuscripts uploaded in this format can take advantage of automatic inline figure placement and visual version comparison features.</p>
+    <p><strong>PDF format:</strong> Manuscripts uploaded in this format are suitable for review only and if positively reviewed will need to be accompanied by the source file at the final revision. PDF format should be used for LaTeX submissions.</p>
   {{/if}}
-  <p><strong>PDF format:</strong> Manuscripts uploaded in this format are suitable for review only and if positively reviewed will need to be accompanied by the source file at the final revision. PDF format should be used for LaTeX submissions.</p>
 </div>

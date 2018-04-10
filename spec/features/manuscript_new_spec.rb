@@ -179,6 +179,6 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
     find('.button-primary', text: 'CREATE NEW SUBMISSION').click
     dashboard.fill_in_new_manuscript_fields('Paper Title', pdf_only_journal.name, pdf_only_journal.paper_types[0])
     expect(page).to_not have_content('Microsoft Word format (.docx or .doc):')
-    expect(page).to have_content('PDF format:')
+    expect(page).to have_content('PDF format')
   end
 end

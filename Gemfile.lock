@@ -676,8 +676,6 @@ GEM
     webmock (1.21.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
-    whenever (0.9.4)
-      chronic (>= 0.6.3)
     with_advisory_lock (3.2.0)
       activerecord (>= 3.2)
     xml-simple (1.1.5)
@@ -713,6 +711,7 @@ DEPENDENCIES
   capybara-screenshot
   capybara-select2
   carrierwave
+  chronic
   climate_control
   closure_tree
   codeclimate-test-reporter
@@ -809,7 +808,6 @@ DEPENDENCIES
   unf
   vcr
   webmock
-  whenever
   yaml_db
 
 RUBY VERSION

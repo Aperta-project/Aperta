@@ -143,6 +143,7 @@ class Paper < ActiveRecord::Base
 
     after_all_transitions :set_state_updated!
     after_all_transitions :trigger_event
+    after_all_transitions :bust_can_cache
 
     event(:initial_submit) do
       transitions from: :unsubmitted,
@@ -814,5 +815,9 @@ class Paper < ActiveRecord::Base
   def trigger_event(*args)
     user = args.find { |i| i.is_a? User } # Most events send user as the first arg, but withdraw has a reason first.
     StateChangeEvent.new(aasm: aasm, instance: self, paper: self, task: nil, user: user).trigger
+  end
+
+  def bust_can_cache
+    CanCache.cache_bust unless unsubmitted?
   end
 end

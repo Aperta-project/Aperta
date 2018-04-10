@@ -8,6 +8,8 @@ class Permission < ActiveRecord::Base
 
   validates(:filter_by_card_id, presence: true, if: -> { applies_to == CustomCardTask.to_s })
 
+  after_commit ->(model) { CanCache.cache_bust }
+
   def self.custom_card
     where.not(filter_by_card_id: nil)
   end

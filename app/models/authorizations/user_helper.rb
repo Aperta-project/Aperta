@@ -33,9 +33,9 @@ module Authorizations
     end
 
     def can?(permission, target)
-      !filter_authorized(
-        permission, target, participations_only: false
-      ).objects.empty?
+      CanCache.fetch(self, permission, target) do
+        !filter_authorized(permission, target, participations_only: false).objects.empty?
+      end
     end
 
     def unaccepted_and_invited_to?(paper:)

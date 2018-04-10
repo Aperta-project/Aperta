@@ -132,11 +132,11 @@ class TahiEnv
   optional :MAILSAFE_REPLACEMENT_ADDRESS
 
   # NED
-  optional :NED_API_URL
+  optional :NED_ENABLED, :boolean, default: false
+  required :NED_API_URL, if: :ned_enabled?
   required :NED_CAS_APP_ID, if: :ned_enabled?
   required :NED_CAS_APP_PASSWORD, if: :ned_enabled?
   optional :NED_SSL_VERIFY, :boolean, default: true
-  optional :USE_NED_INSTITUTIONS, :boolean, default: false
 
   # Newrelic
   optional :NEWRELIC_KEY
@@ -196,10 +196,6 @@ class TahiEnv
 
   def staging_or_production?
     %w(staging production).include? ENV['RAILS_ENV']
-  end
-
-  def ned_enabled?
-    ENV['NED_API_URL'].present?
   end
 
   def validate_at_least_one_form_of_auth

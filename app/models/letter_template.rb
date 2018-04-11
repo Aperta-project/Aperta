@@ -21,7 +21,7 @@ class LetterTemplate < ActiveRecord::Base
   before_validation :canonicalize_email_addresses
 
   def user_can_view?(check_user)
-    check_user.can?(:manage_users, Journal)
+    check_user.can?(:view, Paper)
   end
 
   def render(context, check_blanks: false)

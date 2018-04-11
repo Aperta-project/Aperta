@@ -132,11 +132,11 @@ class TahiEnv
   optional :MAILSAFE_REPLACEMENT_ADDRESS
 
   # NED
-  required :NED_API_URL, if: :staging_or_production?
-  required :NED_CAS_APP_ID
-  required :NED_CAS_APP_PASSWORD
+  optional :NED_ENABLED, :boolean, default: false
+  required :NED_API_URL, if: :ned_enabled?
+  required :NED_CAS_APP_ID, if: :ned_enabled?
+  required :NED_CAS_APP_PASSWORD, if: :ned_enabled?
   optional :NED_SSL_VERIFY, :boolean, default: true
-  optional :USE_NED_INSTITUTIONS, :boolean, default: false
 
   # Newrelic
   optional :NEWRELIC_KEY

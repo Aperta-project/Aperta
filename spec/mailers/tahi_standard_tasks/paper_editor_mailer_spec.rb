@@ -28,11 +28,6 @@ describe TahiStandardTasks::PaperEditorMailer do
       expect(email.body.raw_source).to match(%r{http://www.example.com/})
     end
 
-    it "does not bcc if the journal setting is nil" do
-      expect(invitation.paper.journal.reviewer_email_bcc).to be_nil
-      expect(email.bcc).to be_empty
-    end
-
     it "attaches attachments on the invitation" do
       invitation.attachments << FactoryGirl.build(
         :invitation_attachment,
@@ -48,16 +43,6 @@ describe TahiStandardTasks::PaperEditorMailer do
         "bill_ted1.jpg",
         "yeti.gif"
       )
-    end
-
-    describe "when a bcc email address is provided" do
-      before do
-        invitation.paper.journal.update(editor_email_bcc: 'editor@example.com')
-      end
-
-      it "bcc's the journal setting to support chasing in Salesforce" do
-        expect(email.bcc).to contain_exactly('editor@example.com')
-      end
     end
 
     describe "links" do

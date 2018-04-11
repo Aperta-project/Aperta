@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180305211925) do
+ActiveRecord::Schema.define(version: 20180402204306) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -533,8 +533,6 @@ ActiveRecord::Schema.define(version: 20180305211925) do
     t.string   "doi_journal_prefix",                   null: false
     t.string   "last_doi_issued",      default: "0",   null: false
     t.string   "staff_email"
-    t.string   "reviewer_email_bcc"
-    t.string   "editor_email_bcc"
     t.boolean  "pdf_allowed",          default: false
   end
 

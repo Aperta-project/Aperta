@@ -63,7 +63,7 @@ module PaperConverters
 
     def pdf_may_have_object_stream?(pdf_file_path)
       # PDF may have object streams if the version of the PDF is 1.5+
-      pdf_data = Origami::PDF.read(pdf_file_path)
+      pdf_data = Origami::PDF.read(pdf_file_path, verbosity: Origami::Parser::VERBOSE_QUIET)
       pdf_data_head = pdf_data.header
 
       "#{pdf_data_head.major_version}#{pdf_data_head.minor_version}".to_i >= 15

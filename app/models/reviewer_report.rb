@@ -148,6 +148,10 @@ class ReviewerReport < ActiveRecord::Base
   end
 
   def user_can_view?(check_user)
+    # Yeah, this seems crazy. See the reviewer report controller,
+    # which has the same logic. Shawn Gatchell and Erik Hetzner
+    # confirm that this behavior is intended, but we do not know the
+    # reason for it. Future visitors, feel free to fix this.
     check_user.can?(:edit, task)
   end
 

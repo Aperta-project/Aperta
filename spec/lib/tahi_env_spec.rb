@@ -25,9 +25,10 @@ describe TahiEnv do
       FTP_ENABLED: 'false',
       FTP_URL: 'ftp://the-oracle:tiny-green-characters@foo.bar:21/where/the/wild/things/are',
       IHAT_URL: 'http://ihat.tahi-project.com',
+      NED_ENABLED: 'false',
+      NED_API_URL: 'wat',
       NED_CAS_APP_ID: 'ned123',
       NED_CAS_APP_PASSWORD: 'password',
-      USE_NED_INSTITUTIONS: 'false',
       S3_URL: 'http://tahi-test.amazonaws.com',
       S3_BUCKET: 'tahi',
       AWS_ACCESS_KEY_ID: 'DNCDCC55F',
@@ -120,11 +121,11 @@ describe TahiEnv do
   it_behaves_like 'optional env var', var: 'MAILSAFE_REPLACEMENT_ADDRESS'
 
   # NED
-  it_behaves_like 'dependent required env var', var: 'NED_API_URL', dependent_key: 'RAILS_ENV', dependent_values: %w(staging production)
-  it_behaves_like 'required env var', var: 'NED_CAS_APP_ID'
-  it_behaves_like 'required env var', var: 'NED_CAS_APP_PASSWORD'
+  it_behaves_like 'optional boolean env var', var: 'NED_ENABLED', default_value: false
+  it_behaves_like 'dependent required env var', var: 'NED_API_URL', dependent_key: 'NED_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'NED_CAS_APP_ID', dependent_key: 'NED_ENABLED'
+  it_behaves_like 'dependent required env var', var: 'NED_CAS_APP_PASSWORD', dependent_key: 'NED_ENABLED'
   it_behaves_like 'optional boolean env var', var: 'NED_SSL_VERIFY', default_value: true
-  it_behaves_like 'optional boolean env var', var: 'USE_NED_INSTITUTIONS', default_value: false
 
   # Newrelic
   it_behaves_like 'optional env var', var: 'NEWRELIC_KEY'
@@ -167,6 +168,9 @@ describe TahiEnv do
   # Sendgrid
   it_behaves_like 'required env var', var: 'SENDGRID_USERNAME'
   it_behaves_like 'required env var', var: 'SENDGRID_PASSWORD'
+
+  # GTM
+  it_behaves_like 'optional array env var', var: 'GTM_CONTAINER_IDS'
 
   describe 'when no authentication is enabled' do
     it 'is not valid' do

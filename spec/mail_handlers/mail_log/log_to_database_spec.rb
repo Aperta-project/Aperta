@@ -7,7 +7,7 @@ module MailLog::LogToDatabase
     describe '.delivering_email' do
       let(:mail) do
         Mail::Message.new do
-          from 'apertian@plos.org'
+          from 'apertian@example.org'
           to ['curtis@example.com', 'zach@example.com']
           subject 'This is a test email'
           message_id 'abc123'
@@ -20,7 +20,7 @@ module MailLog::LogToDatabase
           interceptor.delivering_email(mail)
         end.to change { Correspondence.count }.by(+1)
         email_log = Correspondence.last
-        expect(email_log.sender).to eq 'apertian@plos.org'
+        expect(email_log.sender).to eq 'apertian@example.org'
         expect(email_log.recipients).to eq 'curtis@example.com, zach@example.com'
         expect(email_log.message_id).to eq 'abc123'
         expect(email_log.body).to eq 'This is a test email\'s body'

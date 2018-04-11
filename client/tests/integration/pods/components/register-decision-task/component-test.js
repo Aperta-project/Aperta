@@ -22,7 +22,7 @@ moduleForComponent(
       let paper = make('paper', {
         journal: {
           id: 1,
-          staffEmail: 'staffpeople@plos.org'
+          staffEmail: 'staffpeople@example.org'
         },
         publishingState: 'submitted',
         decisions: decisions,

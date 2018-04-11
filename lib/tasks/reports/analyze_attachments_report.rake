@@ -14,7 +14,7 @@ namespace :reports do
       Runs the AnalyzeAttachmentFailuresReport and emails the team
 
       Usage:
-        rake reports:analyze_attachments:send_email[apertadevteam@plos.org]
+        rake reports:analyze_attachments:send_email[me@example.org]
 
       Note: this can only send to one recipient at a time.
     DESCRIPTION

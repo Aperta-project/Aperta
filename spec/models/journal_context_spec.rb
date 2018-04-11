@@ -6,7 +6,7 @@ describe JournalContext do
   end
 
   let(:journal) do
-    FactoryGirl.build(:journal, staff_email: 'us@plos.org')
+    FactoryGirl.build(:journal, staff_email: 'us@example.org')
   end
 
   context 'rendering a journal' do

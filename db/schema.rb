@@ -533,8 +533,6 @@ ActiveRecord::Schema.define(version: 20180403210942) do
     t.string   "doi_journal_prefix",                   null: false
     t.string   "last_doi_issued",      default: "0",   null: false
     t.string   "staff_email"
-    t.string   "reviewer_email_bcc"
-    t.string   "editor_email_bcc"
     t.boolean  "msword_allowed",       default: false, null: false
   end
 

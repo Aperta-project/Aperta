@@ -7,7 +7,7 @@ module MailLog::LogToRails
     describe '.delivered_email' do
       let(:mail) do
         Mail::Message.new do
-          from 'apertian@plos.org'
+          from 'apertian@example.org'
           to ['curtis@example.com', 'zach@example.com']
           subject 'This is a test email'
         end

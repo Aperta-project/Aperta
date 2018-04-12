@@ -10,6 +10,19 @@
   </p>
 
   <ul>
+    {{#each previous_journals as |journal|}}
+      <li>
+        <i>{{journal.name}}</i>
+        ${{journal.price}} USD
+      </li>
+    {{/each}}
+  </ul>
+
+  <p>
+    On or After May 14, 2018 a.m. Pacific:
+  </p>
+
+  <ul>
     {{#each journals as |journal|}}
       <li>
         <i>{{journal.name}}</i>

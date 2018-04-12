@@ -237,6 +237,51 @@ export default {
   journals: [
     {
       name: 'PLOS Biology',
+      price: 3000,
+      collectionSurcharge: 1000,
+      totalPrice: 4000
+    },
+    {
+      name: 'PLOS Medicine',
+      price: 3000,
+      collectionSurcharge: 1000,
+      totalPrice: 4000
+    },
+    {
+      name: 'PLOS Computational Biology',
+      price: 2350,
+      collectionSurcharge: 750,
+      totalPrice: 3100
+    },
+    {
+      name: 'PLOS Genetics',
+      price: 2350,
+      collectionSurcharge: 750,
+      totalPrice: 3100
+    },
+    {
+      name: 'PLOS Neglected Tropical Diseases',
+      price: 2350,
+      collectionSurcharge: 750,
+      totalPrice: 3100
+    },
+    {
+      name: 'PLOS Pathogens',
+      price: 2350,
+      collectionSurcharge: 750,
+      totalPrice: 3100
+    },
+    {
+      name: 'PLOS ONE',
+      price: 1595,
+      collectionSurcharge: 500,
+      totalPrice: 2095
+    },
+  ],
+
+  previous_journals: [
+    {
+      name: 'PLOS Biology',
       price: 2900,
       collectionSurcharge: 1000,
       totalPrice: 3900

@@ -279,7 +279,7 @@ export default {
     },
   ],
 
-  previous_journals: [
+  previousJournals: [
     {
       name: 'PLOS Biology',
       price: 2900,

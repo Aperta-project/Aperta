@@ -45,7 +45,7 @@ describe DataMigrationGenerator, type: :generator do
   end
 
   it 'provides a default migration skeleton' do
-    expect(File.read(migration)).to eq <<-FILE.strip_heredoc
+    expect(File.read(migration)).to match <<-FILE.strip_heredoc
       class PaintTheSkyBlue < DataMigration
         RAKE_TASK_UP = place_rake_task_as_string_here
         # RAKE_TASK_DOWN = 'fill_me_in or delete me if unnecessary'

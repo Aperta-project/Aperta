@@ -37,7 +37,7 @@
 
   <div class="methods">
 
-    <% if Rails.configuration.password_auth_enabled %>
+    <% if TahiEnv.password_auth_enabled? %>
       <div class="auth-left auth-group">
         <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
           <div class="auth-field auth-field--text-input">

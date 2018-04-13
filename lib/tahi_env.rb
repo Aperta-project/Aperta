@@ -178,8 +178,8 @@ class TahiEnv
   required :DATABASEDOTCOM_PASSWORD, if: :salesforce_enabled?
 
   # Sendgrid
-  required :SENDGRID_USERNAME
-  required :SENDGRID_PASSWORD
+  required :SENDGRID_USERNAME, if: :staging_or_production?
+  required :SENDGRID_PASSWORD, if: :staging_or_production?
 
   # GTM
   optional :GTM_CONTAINER_IDS, :array

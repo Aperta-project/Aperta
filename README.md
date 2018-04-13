@@ -19,7 +19,8 @@ work on Macs, Debian and Ubuntu.
    users and S3 buckets available.
 3. Run the setup script (`bin/setup`)
 4. Run `foreman start`
-5. Visit http://localhost:5000/ in your browser.
+5. Visit http://localhost:5000/ in your browser and login using the
+   username `author` or `editor` and the password `password`.
 
 ## Detailed steps
 
@@ -59,6 +60,30 @@ Running this script will:
 ### Run the server
 
 Run `foreman start` to start the web server, worker, and slanger.
+
+### Login
+
+Aperta should be listening on http://localhost:5000 You can login
+using the password `password` as a number of pre-configured users with
+the following user names:
+
+- academic_editor
+- admin
+- author
+- billing
+- collaborator
+- cover_editor
+- discussion_participant
+- editor
+- freelancer
+- handling_editor
+- journal_setup_admin
+- participant
+- production_staff
+- publishing_services
+- reviewer
+- site_admin
+- staff_admin
 
 ### More information
 

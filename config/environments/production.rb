@@ -109,8 +109,8 @@ Tahi::Application.configure do
     authentication: :plain,
     # Assume that foo.bar is the domain of www.foo.bar
     domain: config.action_mailer.default_url_options[:host].split('.')[-2..-1].join('.'),
-    user_name: ENV.fetch('SENDGRID_USERNAME'),
-    password: ENV.fetch('SENDGRID_PASSWORD'),
+    user_name: TahiEnv.sendgrid_username,
+    password: TahiEnv.sendgrid_password,
     enable_starttls_auto: true
   }
 end

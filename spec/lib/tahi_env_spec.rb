@@ -167,8 +167,8 @@ describe TahiEnv do
   it_behaves_like 'dependent required env var', var: 'DATABASEDOTCOM_PASSWORD', dependent_key: 'SALESFORCE_ENABLED'
 
   # Sendgrid
-  it_behaves_like 'required env var', var: 'SENDGRID_USERNAME'
-  it_behaves_like 'required env var', var: 'SENDGRID_PASSWORD'
+  it_behaves_like 'dependent required env var', var: 'SENDGRID_USERNAME', dependent_key: 'RAILS_ENV', dependent_values: %w[staging production]
+  it_behaves_like 'dependent required env var', var: 'SENDGRID_PASSWORD', dependent_key: 'RAILS_ENV', dependent_values: %w[staging production]
 
   # GTM
   it_behaves_like 'optional array env var', var: 'GTM_CONTAINER_IDS'

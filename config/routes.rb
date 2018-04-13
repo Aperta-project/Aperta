@@ -15,7 +15,7 @@ Tahi::Application.routes.draw do
     registrations: 'tahi_devise/registrations'
   }
   devise_scope :user do
-    unless Rails.configuration.password_auth_enabled
+    unless TahiEnv.password_auth_enabled?
       # devise will not auto create this route if :database_authenticatable is not enabled
       get 'users/sign_in' => 'devise/sessions#new', as: :new_user_session
     end

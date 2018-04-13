@@ -174,7 +174,12 @@ describe User do
 
   context "password authentication" do
     let(:user) { User.new }
-    before { expect(Rails.configuration).to receive(:password_auth_enabled).and_return(enabled) }
+
+    around do |example|
+      ClimateControl.modify(PASSWORD_AUTH_ENABLED: enabled.to_s) do
+        example.run
+      end
+    end
 
     context "is enabled" do
       let(:enabled) { true }

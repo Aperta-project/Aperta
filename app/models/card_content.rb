@@ -7,7 +7,6 @@ class CardContent < ActiveRecord::Base
   include ViewableModel
   include Attributable
   include XmlSerializable
-  include ViewableModel
 
   attr_writer :quick_children
 

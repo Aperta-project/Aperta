@@ -71,7 +71,7 @@ class User < ActiveRecord::Base
 
   after_create :add_user_role!, :associate_invites, :ensure_orcid_acccount!
 
-  if Rails.configuration.password_auth_enabled
+  if TahiEnv.password_auth_enabled?
     devise(
       :trackable, :omniauthable, :database_authenticatable, :registerable,
       :recoverable, :rememberable, :validatable,
@@ -103,7 +103,7 @@ class User < ActiveRecord::Base
   end
 
   def password_required?
-    Rails.configuration.password_auth_enabled && super
+    TahiEnv.password_auth_enabled? && super
   end
 
   def full_name

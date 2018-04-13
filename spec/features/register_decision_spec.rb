@@ -51,6 +51,15 @@ feature "Register Decision", js: true, sidekiq: :inline! do
         expect(find("input[value='reject']")).to be_checked
       end
 
+      scenario "displays correct letter templates" do
+        overlay = Page.view_task_overlay(paper, task)
+        wait_for_ajax
+        overlay.register_decision = "Reject"
+        execute_script("$('.letter-select2 > .select2-container').select2('open');")
+        expect(overlay).to have_content(reject_template.name)
+        expect(overlay).not_to have_content(accept_template.name)
+      end
+
       context "With assigned and invited reviewers" do
         let(:reviewer_task) do
           FactoryGirl.create :paper_reviewer_task, :with_loaded_card, paper: paper

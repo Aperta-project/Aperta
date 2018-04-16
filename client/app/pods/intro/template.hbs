@@ -20,13 +20,26 @@
 
 <div>
   <p>
-    To provide Open Access, PLOS uses a business model to offset expenses -
-    including those of peer review management, journal production and online hosting and archiving -
-    by charging a publication fee to the authors, institutions or funders for each article published.
+    Publications fees (also referred to as “Article Processing Charges” or APCs) help PLOS recover 
+    the costs of publication — including peer review management, journal production and online hosting and archiving. 
+    All content published by PLOS is published Open Access and is freely available online for researchers &amp; readers 
+    to read, distribute and reuse. 
+  </p>
+  <p>Publication fees vary by journal and are payable for articles upon acceptance.
+    The effective publication fee charged is based on the manuscript submission date.
   </p>
 
+  <ul>
+    {{#each previousJournals as |journal|}}
+      <li>
+        <i>{{journal.name}}</i>
+        ${{journal.price}} USD
+      </li>
+    {{/each}}
+  </ul>
+
   <p>
-    Publication fees vary by journal and are payable for articles upon acceptance.
+    On or After May 14, 2018, 10 a.m. Pacific:
   </p>
 
   <ul>
@@ -37,8 +50,4 @@
       </li>
     {{/each}}
   </ul>
-
-  <p>
-    Since its inception, PLOS has administered and provided individual fee support.
-  </p>
 </div>

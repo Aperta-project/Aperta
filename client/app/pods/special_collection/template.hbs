@@ -29,14 +29,6 @@
     </h5>
 
     <p>
-      To provide Open Access, PLOS uses a business model to
-      offset expenses - including those of peer review management,
-      journal production and online hosting and archiving -
-      by charging a publication fee to the authors, institutions
-      or funders for each article published.
-    </p>
-
-    <p>
       Submissions to Special Collections are by invitation only
       and are subject to
       <a href="https://www.plos.org/publications/publication-fees/special-collection-fees/" target="_blank">specific terms and charges</a>.
@@ -80,6 +72,41 @@
           Total (USD)
         </th>
       </tr>
+      {{#each previousJournals as |journal|}}
+      <tr>
+        <td class="plos-billing-table-data-left">
+          {{journal.name}}
+        </td>
+        <td>
+          ${{journal.price}}
+        </td>
+        <td>
+          ${{journal.collectionSurcharge}}
+        </td>
+        <td>
+          ${{journal.totalPrice}}
+        </td>
+      </tr>
+      {{/each}}
+    </table>
+    
+    <br/>
+    <p>On or After May 14, 2018, 10 a.m. Pacific:</p>
+    <table class="plos-billing-table">
+      <tr>
+        <th class="plos-billing-table-data-left">
+          Journal
+        </th>
+        <th>
+          Article Processing Charge (USD)
+        </th>
+        <th>
+          Collection Surcharge (USD)
+        </th>
+        <th>
+          Total (USD)
+        </th>
+      </tr>
       {{#each journals as |journal|}}
       <tr>
         <td class="plos-billing-table-data-left">
@@ -98,7 +125,7 @@
       {{/each}}
 
     </table>
-
+    <br/>
     <p>
       You or the collection funder will receive an invoice
       detailing the charge and payment terms
@@ -119,7 +146,7 @@
             {{#if check.yieldingForText}}
               <p class="model-question">
                 I have read and agree to the
-                <a href="http://collections.plos.org/s/file?id=6e00/PLOS-Collections-Terms-2015.pdf" target="_blank">
+                <a href="https://www.plos.org/publications/publication-fees/special-collection-fees/" target="_blank">
                   Terms of Submission to PLOS Collections
                 </a>
               </p>

@@ -51,6 +51,7 @@ export default TaskComponent.extend({
   states:    DATA.states,
   pubFee:    DATA.pubFee,
   journals:  DATA.journals,
+  previousJournals:  DATA.previousJournals,
   responses: DATA.responses,
   groupOneAndTwoCountries: DATA.groupOneAndTwoCountries,
 

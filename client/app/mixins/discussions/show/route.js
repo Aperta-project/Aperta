@@ -1,3 +1,25 @@
+/**
+ * Copyright (c) 2018 Public Library of Science
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+*/
+
 import Ember from 'ember';
 import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 
@@ -57,7 +79,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
     /*
     *  discussionModel here is actually a paper. The 'atMentionableStaffUsers' function in the paper model returns a promise when called.
     * This mixin is used for both the discussion pane on the manuscript view and the one in the pop out.
-    * For the manuscript view, there is an intermediary route (client/app/mixins/discussions/route.js) 
+    * For the manuscript view, there is an intermediary route (client/app/mixins/discussions/route.js)
     * that resolves the promise returned when you call paper.atMentionableStaffUsers()
     * and passes the resolved promise to this mixin. This doesn't happen for the pop out view.
     * So when  discussionModel.atMentionableStaffUsers is called here it just returns the function declared in the paper model.
@@ -71,7 +93,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
     } else {
       controller.set('atMentionableStaffUsers', mentionableStaffUsers);
     }
-    
+
     controller.set('validationErrors', {});
     this._super(controller, model);
     this._setupInProgressComment(controller, model);

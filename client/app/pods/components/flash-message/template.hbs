@@ -18,7 +18,9 @@
 {{!-- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER --}}
 {{!-- DEALINGS IN THE SOFTWARE. --}}
 
-<div class="flash-message-content">
-  {{{unbound message.text}}}
+<div>
   <div class="flash-message-remove" {{action "remove"}}>&times;</div>
+  <div class="flash-message-content">
+    {{{unbound message.text}}}
+  </div>
 </div>

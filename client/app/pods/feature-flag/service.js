@@ -31,7 +31,7 @@ export default Ember.Service.extend({
 
   value(name) {
     const records = this.get('store').peekAll('feature-flag');
-    if(Ember.isEmpty(records)) { return false; }
-    return records.findBy('name', name).get('active');
+    let featureFlag = records.findBy('name', name);
+    return featureFlag ? featureFlag.get('active') : false;
   }
 });

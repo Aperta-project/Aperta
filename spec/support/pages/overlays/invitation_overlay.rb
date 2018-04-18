@@ -70,7 +70,7 @@ class InvitationOverlay < Page
   def expect_success_message
     expect(page).to have_css(
       '.flash-message-content',
-      text: 'Thank you for your feedback! ×'
+      text: 'Thank you for your feedback!'
     )
   end
 

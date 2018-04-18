@@ -20,6 +20,7 @@
 
 module TahiDevise
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
+    include DisableSubmissions
 
     def cas
       ned = auth[:extra]
@@ -40,7 +41,7 @@ module TahiDevise
       user.ned_id = ned[:nedId]
       user.auto_generate_password
       user.save!
-
+      flash[:alert] = sign_in_alert
       sign_in_and_redirect(user, event: :authentication)
     end
 

@@ -197,6 +197,12 @@ describe PapersController do
           expect(response.status).to eq(422)
         end
       end
+
+      it 'returns a forbidden status when DISABLE_SUBMISSIONS feature flag is active' do
+        expect(FeatureFlag).to receive(:[]).with('DISABLE_SUBMISSIONS').and_return(true)
+        do_request
+        expect(response.status).to eq(403)
+      end
     end
   end
 

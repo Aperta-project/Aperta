@@ -87,7 +87,7 @@
           {{/if}}
         </h2>
         {{#unless (feature-flag 'DISABLE_SUBMISSIONS')}}
-          <button class="button-primary button--green" {{action "showNewManuscriptOverlay"}}>Create New Submission</button>
+          <button class="button-primary button--green create-submission" {{action "showNewManuscriptOverlay"}}>Create New Submission</button>
         {{/unless}}
 
         {{#if hasPapers}}

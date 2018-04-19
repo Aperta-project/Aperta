@@ -27,22 +27,11 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
   let!(:user) { FactoryGirl.create :user, :site_admin }
   let(:inactive_paper_count) { 0 }
   let(:active_paper_count) { 0 }
-  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions, :with_default_mmt, pdf_allowed: true }
-  let!(:non_pdf_journal) { FactoryGirl.create :journal, :with_roles_and_permissions, :with_default_mmt, pdf_allowed: false }
+  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions, :with_default_mmt, msword_allowed: true }
+  let!(:pdf_only_journal) { FactoryGirl.create :journal, :with_roles_and_permissions, :with_default_mmt, msword_allowed: false }
+
   let!(:papers) { [] }
   let(:dashboard) { DashboardPage.new }
-
-  scenario 'failure' do
-    with_aws_cassette('manuscript-new') do
-      login_as(user, scope: :user)
-      visit '/'
-      find('.button-primary', text: 'CREATE NEW SUBMISSION').click
-
-      attach_file 'upload-files', Rails.root.join('spec', 'fixtures', 'about_equations.docx'), visible: false
-
-      expect(page).to have_content('Paper type can\'t be blank')
-    end
-  end
 
   def paper_has_uploaded_manuscript
     paper = Paper.find_by(title: 'Paper Title')
@@ -183,19 +172,21 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
     end
   end
 
-  scenario 'pdf allowed instructions' do
+  scenario 'pdf and msword allowed instructions' do
     login_as(user, scope: :user)
     visit '/'
     find('.button-primary', text: 'CREATE NEW SUBMISSION').click
     dashboard.fill_in_new_manuscript_fields('Paper Title', journal.name, journal.paper_types[0])
-    expect(page).to have_content('Manuscripts uploaded in this format are suitable for review only')
+    expect(page).to have_content('Microsoft Word format (.docx or .doc):')
+    expect(page).to have_content('PDF format:')
   end
 
-  scenario 'pdf not allowed instructions' do
+  scenario 'pdf allowed instructions' do
     login_as(user, scope: :user)
     visit '/'
     find('.button-primary', text: 'CREATE NEW SUBMISSION').click
-    dashboard.fill_in_new_manuscript_fields('Paper Title', non_pdf_journal.name, non_pdf_journal.paper_types[0])
-    expect(page).to have_content('Microsoft Word files only')
+    dashboard.fill_in_new_manuscript_fields('Paper Title', pdf_only_journal.name, pdf_only_journal.paper_types[0])
+    expect(page).to_not have_content('Microsoft Word format (.docx or .doc):')
+    expect(page).to have_content('PDF format')
   end
 end

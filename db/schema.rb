@@ -31,7 +31,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180402204306) do
+ActiveRecord::Schema.define(version: 20180412043643) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -553,7 +553,7 @@ ActiveRecord::Schema.define(version: 20180402204306) do
     t.string   "doi_journal_prefix",                   null: false
     t.string   "last_doi_issued",      default: "0",   null: false
     t.string   "staff_email"
-    t.boolean  "pdf_allowed",          default: false
+    t.boolean  "msword_allowed",       default: false, null: false
   end
 
   add_index "journals", ["doi_publisher_prefix", "doi_journal_prefix"], name: "unique_doi", unique: true, using: :btree

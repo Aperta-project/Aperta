@@ -949,15 +949,14 @@ class JournalFactory
       LetterTemplate.where(name: 'Preprint Accept', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
         lt.scenario = 'Preprint Decision'
-        lt.subject = 'Manuscript Accepted for ApertarXiv'
+        lt.subject = 'Manuscript Accepted for pre-print'
         lt.to = '{{manuscript.creator.email}}'
         lt.body = <<-TEXT.strip_heredoc
           <p>Dear Dr. {{manuscript.creator.last_name}},</p>
-          <p>Your {{journal.name}} manuscript, '{{manuscript.title}}', has been approved for pre-print publication. Because you have opted in to this opportunity, your manuscript has been forwarded to ApertarXiv for posting. You will receive another message with publication details when the article has posted.</p>
+          <p>Your {{journal.name}} manuscript, '{{manuscript.title}}', has been approved for pre-print publication. Because you have opted in to this opportunity, your manuscript has been forwarded for pre-print posting. You will receive another message with publication details when the article has posted.</p>
           <p>Please note this decision is not related to the decision to publish your manuscript in {{journal.name}}. As your manuscript is evaluated for publication you will receive additional communications.</p>
           <p>Kind regards,</p>
           <p>Publication Team</p>
-          <p>ApertarXiv</p>
         TEXT
 
         lt.save!
@@ -969,7 +968,7 @@ class JournalFactory
       LetterTemplate.where(name: 'Preprint Reject', journal: @journal).first_or_initialize.tap do |lt|
         lt.ident = ident
         lt.scenario = 'Preprint Decision'
-        lt.subject = 'Manuscript Declined for ApertarXiv'
+        lt.subject = 'Manuscript Declined for pre-print'
         lt.to = '{{manuscript.creator.email}}'
         lt.body = <<-TEXT.strip_heredoc
           <p>Dear Dr. {{manuscript.creator.last_name}},</p>
@@ -977,7 +976,6 @@ class JournalFactory
           <p>Please note this decision is not related to the decision to publish your manuscript in {{journal.name}}. As your manuscript is evaluated for publication you will receive additional communications.</p>
           <p>Kind regards,</p>
           <p>Publication Team</p>
-          <p>ApertarXiv</p>
         TEXT
 
         lt.save!

@@ -38836,14 +38836,13 @@ letter_templates:
     - Preprint Accept
     - 
     - "{{manuscript.creator.email}}"
-    - Manuscript Accepted for ApertarXiv
+    - Manuscript Accepted for pre-print
     - |
       <p>Dear Dr. {{manuscript.creator.last_name}},</p>
-      <p>Your {{journal.name}} manuscript, '{{manuscript.title}}', has been approved for pre-print publication. Because you have opted in to this opportunity, your manuscript has been forwarded to ApertarXiv for posting. You will receive another message with publication details when the article has posted.</p>
+      <p>Your {{journal.name}} manuscript, '{{manuscript.title}}', has been approved for pre-print publication. Because you have opted in to this opportunity, your manuscript has been forwardedfor pre-print posting. You will receive another message with publication details when the article has posted.</p>
       <p>Please note this decision is not related to the decision to publish your manuscript in {{journal.name}}. As your manuscript is evaluated for publication you will receive additional communications.</p>
       <p>Kind regards,</p>
       <p>Publication Team</p>
-      <p>ApertarXiv</p>
     - '1'
     - '2017-09-15 10:16:55.3951'
     - '2017-11-28 00:49:33.69588'
@@ -38855,14 +38854,13 @@ letter_templates:
     - Preprint Reject
     - 
     - "{{manuscript.creator.email}}"
-    - Manuscript Declined for ApertarXiv
+    - Manuscript Declined for pre-print
     - |
       <p>Dear Dr. {{manuscript.creator.last_name}},</p>
       <p>Your {{journal.name}} manuscript, '{{manuscript.title}}', has been declined for pre-print publication.</p>
       <p>Please note this decision is not related to the decision to publish your manuscript in {{journal.name}}. As your manuscript is evaluated for publication you will receive additional communications.</p>
       <p>Kind regards,</p>
       <p>Publication Team</p>
-      <p>ApertarXiv</p>
     - '1'
     - '2017-09-15 10:16:55.412748'
     - '2017-11-28 00:49:33.706781'

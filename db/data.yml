@@ -11859,7 +11859,7 @@ decisions:
       us by email if you do not wish to revise your manuscript for PLOS Yeti and instead
       wish to pursue publication elsewhere, so that we may end consideration of the
       manuscript at PLOS Yeti.\n\nIf you do still intend to submit a revised version
-      of your manuscript, please log in at http://www.aperta.tech.  On the ‘Your Manuscripts’
+      of your manuscript, please log in.  On the ‘Your Manuscripts’
       page, click the title of your manuscript to access and edit your submission.\n\nBefore
       you revise your manuscript, we ask that you please review the following PLOS
       policy and formatting requirements checklist PDF: https://drive.google.com/file/d/0B_7IflO1bmDTYlZBdmJCT1FUWG8/view?usp=sharing.
@@ -12079,7 +12079,7 @@ decisions:
       us by email if you do not wish to revise your manuscript for PLOS Yeti and instead
       wish to pursue publication elsewhere, so that we may end consideration of the
       manuscript at PLOS Yeti.\n\nIf you do still intend to submit a revised version
-      of your manuscript, please log in at http://www.aperta.tech.  On the ‘Your Manuscripts’
+      of your manuscript, please log in.  On the ‘Your Manuscripts’
       page, click the title of your manuscript to access and edit your submission.\n\nBefore
       you revise your manuscript, we ask that you please review the following PLOS
       policy and formatting requirements checklist PDF: https://drive.google.com/file/d/0B_7IflO1bmDTYlZBdmJCT1FUWG8/view?usp=sharing.
@@ -13095,7 +13095,7 @@ email_logs:
       to revise your manuscript=\r\n for PLOS Yeti and instead wish to pursue publication
       elsewhere, so that =\r\nwe may end consideration of the manuscript at PLOS Yeti.</p>\r\n\r\n<p>If
       you do still intend to submit a revised version of your manuscript,=\r\n please
-      log in at http://www.aperta.tech.  On the =E2=80=98Your Manuscrip=\r\nts=E2=80=99
+      log in.  On the =E2=80=98Your Manuscrip=\r\nts=E2=80=99
       page, click the title of your manuscript to access and edit y=\r\nour submission.</p>\r\n\r\n<p>Before
       you revise your manuscript, we ask that you please review the f=\r\nollowing
       PLOS policy and formatting requirements checklist PDF: https://d=\r\nrive.google.com/file/d/0B_7IflO1bmDTYlZBdmJCT1FUWG8/view?usp=3Dsharing.
@@ -38634,7 +38634,7 @@ letter_templates:
                 <p>We expect to receive your revised manuscript within two months. Please email us ({{ journal.staff_email }}) to discuss this if you have any questions or concerns, or would like to request an extension.</p>
                 <p>At this stage, your manuscript remains formally under active consideration at our journal. Please note that unless we receive the revised manuscript within this timeframe, your submission may be closed and the manuscript would no longer be ‘under consideration’ at {{ journal.name }}. We will of course be in touch before this action is taken. Please rest assured that this is merely an administrative step - you may still submit your revised submission after your file is closed, but will need to do so as a new submission, referencing the previous tracking number.</p>
                 <p>Please notify us by email if you do not wish to revise your manuscript for {{ journal.name }} and instead wish to pursue publication elsewhere, so that we may end consideration of the manuscript at {{ journal.name }}.</p>
-                <p>If you do still intend to submit a revised version of your manuscript, please log in at http://www.aperta.tech.  On the ‘Your Manuscripts’ page, click the title of your manuscript to access and edit your submission.</p>
+                <p>If you do still intend to submit a revised version of your manuscript, please log in.  On the ‘Your Manuscripts’ page, click the title of your manuscript to access and edit your submission.</p>
                 <p>Thank you again for your submission to our journal. We hope that our editorial process has been constructive thus far, and we welcome your feedback at any time. Please don't hesitate to contact us if you have any questions or comments.</p>
                 <p>Sincerely,<br/>
                   {% if manuscript.editor %}
@@ -38691,7 +38691,7 @@ letter_templates:
                 <p>***Insert Editorial Requirements and INCLUDE DATA REQUIREMENTS AS NECESSARY***</p>
                 <p>We expect to receive your revised manuscript within two weeks. Your revisions should address the specific points made by each reviewer. In addition to the remaining revisions and before we will be able to formally accept your manuscript and consider it "in press", we also need to ensure that your article conforms to our guidelines. A member of our team will be in touch shortly with a set of requests regarding the manuscript files. As we can&rsquo;t proceed until these requirements are met, your swift response will help prevent delays to publication.</p>
                 <p>OR [4]: <br />We&rsquo;re delighted to let you know that we're now editorially satisfied with your manuscript, however before we can formally accept your manuscript and consider it "in press", we also need to ensure that your article conforms to our guidelines. A member of our team will be in touch shortly with a set of requests regarding the manuscript files. As we can&rsquo;t proceed until these requirements are met, your swift response will help prevent delays to publication. <br />******* <br /><br />Upon acceptance of your article, your final files will be copyedited and typeset into the final PDF. While you will have an opportunity to review these files as proofs, the journal will only permit corrections to spelling or significant scientific errors. Therefore, please take this final revision time to assess and make any remaining major changes to your manuscript.</p
-                <p>To submit your revision, please log in at http://www.aperta.tech. Click the title of your manuscript from the Your Manuscripts page to access and edit your submission. Your revised submission must include a cover letter, and a Response to Reviewers that provides a detailed response to the reviewers' comments (if applicable) and indication of any changes that you have made to the manuscript.</p>
+                <p>To submit your revision, please log in. Click the title of your manuscript from the Your Manuscripts page to access and edit your submission. Your revised submission must include a cover letter, and a Response to Reviewers that provides a detailed response to the reviewers' comments (if applicable) and indication of any changes that you have made to the manuscript.</p>
                 <p>Please do not hesitate to contact me should you have any questions.</p>
                 <p>Sincerely,<br/>
                   {% if manuscript.editor %}
@@ -38836,14 +38836,13 @@ letter_templates:
     - Preprint Accept
     - 
     - "{{manuscript.creator.email}}"
-    - Manuscript Accepted for ApertarXiv
+    - Manuscript Accepted for pre-print
     - |
       <p>Dear Dr. {{manuscript.creator.last_name}},</p>
-      <p>Your {{journal.name}} manuscript, '{{manuscript.title}}', has been approved for pre-print publication. Because you have opted in to this opportunity, your manuscript has been forwarded to ApertarXiv for posting. You will receive another message with publication details when the article has posted.</p>
+      <p>Your {{journal.name}} manuscript, '{{manuscript.title}}', has been approved for pre-print publication. Because you have opted in to this opportunity, your manuscript has been forwardedfor pre-print posting. You will receive another message with publication details when the article has posted.</p>
       <p>Please note this decision is not related to the decision to publish your manuscript in {{journal.name}}. As your manuscript is evaluated for publication you will receive additional communications.</p>
       <p>Kind regards,</p>
       <p>Publication Team</p>
-      <p>ApertarXiv</p>
     - '1'
     - '2017-09-15 10:16:55.3951'
     - '2017-11-28 00:49:33.69588'
@@ -38855,14 +38854,13 @@ letter_templates:
     - Preprint Reject
     - 
     - "{{manuscript.creator.email}}"
-    - Manuscript Declined for ApertarXiv
+    - Manuscript Declined for pre-print
     - |
       <p>Dear Dr. {{manuscript.creator.last_name}},</p>
       <p>Your {{journal.name}} manuscript, '{{manuscript.title}}', has been declined for pre-print publication.</p>
       <p>Please note this decision is not related to the decision to publish your manuscript in {{journal.name}}. As your manuscript is evaluated for publication you will receive additional communications.</p>
       <p>Kind regards,</p>
       <p>Publication Team</p>
-      <p>ApertarXiv</p>
     - '1'
     - '2017-09-15 10:16:55.412748'
     - '2017-11-28 00:49:33.706781'

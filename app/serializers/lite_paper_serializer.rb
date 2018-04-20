@@ -63,6 +63,6 @@ class LitePaperSerializer < AuthzSerializer
   end
 
   def reviewer_report
-    @reviewer_report ||= scope.reviewer_reports.joins(:task, :paper).where(papers: {id: id}).first
+    @reviewer_report ||= scope.reviewer_reports.includes(:task).detect { |rr| rr.task.paper_id == id }
   end
 end

@@ -696,7 +696,8 @@ class Paper < ActiveRecord::Base
   end
 
   def preprint_posted?
-    export_deliveries.where(state: 'preprint_posted').any?
+    # Optimized for PapersController#index serializer which includes this assoc
+    export_deliveries.any?(&:preprint_posted?)
   end
 
   def front_matter?

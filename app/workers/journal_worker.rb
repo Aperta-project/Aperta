@@ -23,6 +23,6 @@ class JournalWorker
 
   def perform(journal_id)
     journal = Journal.find(journal_id)
-    CustomCard::FileLoader.load(journal)
+    JournalFactory.new(journal).create_related_models
   end
 end

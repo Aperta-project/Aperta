@@ -22,7 +22,6 @@ require 'rails_helper'
 RSpec.describe JournalWorker, type: :worker do
   describe JournalWorker do
     subject(:worker) { JournalWorker.new }
-    let(:loader) { CustomCard::FileLoader }
     let(:journal) do
       JournalFactory.create(
         name: 'Journal of the Stars',
@@ -35,8 +34,8 @@ RSpec.describe JournalWorker, type: :worker do
     let!(:user) { FactoryGirl.create(:user) }
     let(:orcid_account) { user.orcid_account }
 
-    it 'calls update profile' do
-      expect(loader).to receive(:load)
+    it 'creates the related models' do
+      expect_any_instance_of(JournalFactory).to receive(:create_related_models)
       expect(Journal).to receive(:find) { journal }
       worker.perform(journal.id)
     end

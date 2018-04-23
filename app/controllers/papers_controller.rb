@@ -29,7 +29,7 @@ class PapersController < ApplicationController
   def index
     papers = current_user.filter_authorized(
       :view,
-      Paper.all.includes(:roles, journal: :creator_role)
+      Paper.all.includes(:file, :export_deliveries, :roles, journal: :creator_role)
     ).objects
     active_papers, inactive_papers = papers.partition(&:active?)
     respond_with(papers, each_serializer: LitePaperSerializer,

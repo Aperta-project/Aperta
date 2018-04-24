@@ -41,12 +41,15 @@ describe CustomCard::FileLoader do
 
   context 'card loading' do
     let(:journal) do
-      JournalFactory.create(
+      # rubocop:disable Rails/SaveBang
+      j = JournalFactory.create(
         name: 'Genetics Journal',
         doi_journal_prefix: 'journal.genetics',
         doi_publisher_prefix: 'genetics',
         last_doi_issued: '100001'
       )
+      JournalFactory.new(j).seed_letter_templates
+      j
     end
 
     before { CustomCard::FileLoader.load(journal) }

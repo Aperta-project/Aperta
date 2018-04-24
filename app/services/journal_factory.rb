@@ -55,8 +55,12 @@ class JournalFactory
 
   def create
     @journal.save!
-    JournalWorker.perform_async(@journal.id)
+    create_related_models_async
     @journal
+  end
+
+  def create_related_models_async
+    JournalWorker.perform_async(@journal.id)
   end
 
   def create_related_models

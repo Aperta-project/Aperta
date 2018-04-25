@@ -19,16 +19,6 @@
 # DEALINGS IN THE SOFTWARE.
 
 ENV["RAILS_ENV"] ||= 'test'
-require 'bootsnap'
-
-Bootsnap.setup(
-  cache_dir:            'tmp/cache',
-  development_mode:     ENV["RAILS_ENV"] == 'development',
-  load_path_cache:      true,      # Optimize the LOAD_PATH with a cache
-  autoload_paths_cache: true,      # Optimize ActiveSupport autoloads with cache
-  disable_trace:        true,      # (Alpha) Set `RubyVM::InstructionSequence.compile_option ={trace_instruction: false }`
-  compile_cache_yaml:   true
-)
 
 require 'codeclimate-test-reporter'
 CodeClimate::TestReporter.start

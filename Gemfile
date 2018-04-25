@@ -112,7 +112,6 @@ end
 
 group :development, :test do
   gem 'awesome_print'
-  gem 'bootsnap'
   gem 'dotenv-rails', require: 'dotenv/rails-now'
   gem 'progressbar'
   gem 'pry-byebug'
@@ -125,6 +124,7 @@ end
 
 group :development do
   gem 'aws-sdk', '~> 2'
+  gem 'bootsnap'
   gem 'brakeman'
   gem 'bullet'
   gem 'capistrano-chruby'

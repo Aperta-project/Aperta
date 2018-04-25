@@ -42,6 +42,8 @@ class User < ActiveRecord::Base
   has_many :affiliations, inverse_of: :user
 
   has_many :reviewer_reports
+  has_many :reviewer_reports_with_tasks, -> { includes(:task) },
+           class_name: ReviewerReport
 
   has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
   has_many \

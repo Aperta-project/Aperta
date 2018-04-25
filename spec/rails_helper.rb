@@ -152,7 +152,7 @@ RSpec.configure do |config|
       client.read_timeout = 90
       client.open_timeout = 90
       options = Selenium::WebDriver::Firefox::Options.new
-      options.args << '--headless' if ENV['SHOW_BROWSER'].empty?
+      options.args << '--headless' if ENV.fetch('SHOW_BROWSER', nil).blank?
       options.profile = profile
       Capybara::Selenium::Driver.new(
         app,

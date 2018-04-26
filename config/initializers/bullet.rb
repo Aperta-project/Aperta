@@ -18,7 +18,13 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-if defined? Bullet
+if defined?(Bullet) && ENV.fetch('BULLET', false)
   Bullet.enable = true
   Bullet.bullet_logger = true
+  Bullet.console = true
+  Bullet.rails_logger = true
+  Bullet.add_footer = true
+  Bullet.stacktrace_includes = [
+    'tahi_standard_tasks'
+  ]
 end

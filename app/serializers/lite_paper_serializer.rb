@@ -63,6 +63,6 @@ class LitePaperSerializer < AuthzSerializer
   end
 
   def reviewer_report
-    @reviewer_report ||= scope.reviewer_reports.includes(:task).detect { |rr| rr.task.paper_id == id }
+    @reviewer_report ||= scope.reviewer_reports_with_tasks.detect { |rr| rr.task.paper_id == id }
   end
 end

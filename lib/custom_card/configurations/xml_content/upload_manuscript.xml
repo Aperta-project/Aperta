@@ -58,7 +58,7 @@ DEALINGS IN THE SOFTWARE.
         </If>
       </DisplayChildren>
       <Description>
-        <text>You are unable to upload a new manuscript while your submission is under review</text>
+        <text><span>You can upload a replacement manuscript file at any time before you submit.</span></text>
       </Description>
     </If>
     <If condition="needsSourcefile">

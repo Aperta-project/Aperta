@@ -27,19 +27,18 @@ import checkType, { filetypeRegex } from 'tahi/lib/file-upload/check-filetypes';
 const { computed } = Ember;
 
 export default Ember.Component.extend(EscapeListenerMixin, {
-  fileTypes: computed('pdfEnabled', function() {
-    if (this.get('pdfEnabled')) {
-      return '.doc,.docx,.pdf'
-    } else {
-      return '.doc,.docx'
+  fileTypes: computed('paper.journal.mswordAllowed', function() {
+    let allowedFileTypes = ['.pdf'];
+    if (this.get('paper.journal.mswordAllowed')) {
+      allowedFileTypes.push('.doc', '.docx');
     }
+    return allowedFileTypes.join(',');
   }),
   restless: Ember.inject.service(),
   flash: Ember.inject.service(),
   journals: null,
   paper: null,
   isSaving: false,
-  pdfEnabled: computed.reads('paper.journal.pdfAllowed'),
   journalEmpty: computed.empty('paper.journal.content'),
   hasTitle: computed.notEmpty('paper.title'),
 

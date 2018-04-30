@@ -54,6 +54,7 @@ class JournalPage < Page
     thumb = mmt_thumbnail(mmt)
     thumb.find(:xpath, '../div[@class="admin-workflow-thumbnail-icon"]').click
     find('.admin-workflow-thumbnail-overlay .admin-workflow-thumbnail-delete-button').click
+    wait_for_ajax
     has_no_css?(".admin-workflow-thumbnail-header", text: mmt.paper_type)
     self
   end

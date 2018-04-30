@@ -26,12 +26,19 @@ export default Ember.Route.extend({
   can: Ember.inject.service('can'),
 
   model(params) {
-    return this.store.findAll('admin-journal').then((journals) => {
+    if (this.store.peekAll('admin-journal').get('length')) {
       return {
-        journals: journals,
-        journal: journals.find(j => j.id === params.journal_id)
+        journals: this.store.peekAll('admin-journal'),
+        journal: this.store.peekRecord('admin-journal', params.journal_id)
       };
-    });
+    } else {
+      return this.store.findAll('admin-journal').then((journals) => {
+        return {
+          journals: journals,
+          journal: journals.find(j => j.id === params.journal_id)
+        };
+      });
+    }
   },
 
   afterModel(model, transition) {

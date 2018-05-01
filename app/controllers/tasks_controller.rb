@@ -27,7 +27,7 @@ class TasksController < ApplicationController
   ## /paper/tasks/
   def index
     requires_user_can :view, paper
-    tasks = paper.tasks.includes(:paper)
+    tasks = paper.tasks.includes(:paper, :participations, :assigned_user, :card, :journal)
 
     # use task serializer instead of custom task serializer becuase it is lighter weight
     respond_with tasks, each_serializer: TaskSerializer

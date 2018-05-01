@@ -31,6 +31,7 @@ Tahi::Application.routes.draw do
   # Authentication
   #
   devise_for :users, controllers: {
+    sessions: 'tahi_devise/sessions',
     omniauth_callbacks: 'tahi_devise/omniauth_callbacks',
     registrations: 'tahi_devise/registrations'
   }

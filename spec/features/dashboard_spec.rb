@@ -186,4 +186,19 @@ feature "Dashboard", js: true do
       expect(dashboard).to have_no_pending_invitations
     end
   end
+
+  feature 'disable submissions feature flag' do
+    scenario 'with feature flag enabled' do
+      FactoryGirl.create(:feature_flag, name: "DISABLE_SUBMISSIONS")
+      login_as(user, scope: :user)
+      visit "/"
+      expect(dashboard).not_to have_css('.create-submission')
+    end
+
+    scenario 'with feature flag disabled' do
+      login_as(user, scope: :user)
+      visit "/"
+      expect(page).to have_css('.create-submission')
+    end
+  end
 end

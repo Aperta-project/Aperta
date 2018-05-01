@@ -54,10 +54,16 @@
 .flash-message-content {
   position: relative;
   display: inline-block;
+  .disable-submissions-alert {
+    text-align: left;
+    * { margin: 0 0 0 0; }
+    .bold { font-weight: bold; }
+    & a { color: $aperta-green-light; }
+  }
 }
 
 .flash-message-remove {
-  @include position(absolute, -1.5rem -2.5rem auto auto);
+  @include position(absolute, -0.5rem 0 auto 98%);
   padding: 0 0.5rem;
   font-size: 24px;
   cursor: pointer;

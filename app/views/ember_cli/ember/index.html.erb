@@ -51,6 +51,9 @@
       window.RailsEnv.orcidConnectEnabled = <%= TahiEnv.orcid_connect_enabled? %>;
       window.RailsEnv.testing = <%= Rails.env.test? %>;
       window.flashMessages = [];
+      <% if flash[:alert] %>
+        window.flashMessages.push({type: 'success', text: "<%= flash[:alert].html_safe %>" });
+      <% end %>
       <% if flash[:notice] %>
         window.flashMessages.push({type: 'success', text: "<%= flash[:notice] %>" });
       <% end %>

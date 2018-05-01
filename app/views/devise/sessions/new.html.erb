@@ -26,14 +26,26 @@
   <p>Submit &amp; manage manuscripts.</p>
 
   <div class="available-journals-message">
-    <p>
-      All new manuscripts for consideration by <strong>PLOS Biology</strong> can be submitted via <strong>Aperta</strong>, in Word (.docx, .doc or via .pdf) and LaTeX (via .pdf) formats.
-      <br />
-      <a href="http://journals.plos.org/plosbiology/s/submit-now">Click here for more information</a> about submitting to PLOS Biology.
-    </p>
-    <p>
-      To submit to one of our other journals, start <a href="https://www.plos.org/which-journal-is-right-for-me">here</a>.
-    </p>
+    <% if FeatureFlag['DISABLE_SUBMISSIONS'] %>
+      <p>
+        <em>PLOS Biology</em> is no longer accepting new submissions in Aperta. Sign in to edit or revise an existing submission that is already under consideration with the journal.
+      </p>
+      <p>
+        Learn more about
+        <a href="http://journals.plos.org/plosbiology/s/submit-now">
+          submitting to <em>PLOS Biology</em>.
+        </a>
+      </p>
+    <% else %>
+      <p>
+        All new manuscripts for consideration by <strong>PLOS Biology</strong> can be submitted via <strong>Aperta</strong>, in Word (.docx, .doc or via .pdf) and LaTeX (via .pdf) formats.
+        <br />
+        <a href="http://journals.plos.org/plosbiology/s/submit-now">Click here for more information</a> about submitting to PLOS Biology.
+      </p>
+      <p>
+        To submit to one of our other journals, start <a href="https://www.plos.org/which-journal-is-right-for-me">here</a>.
+      </p>
+    <% end %>
   </div>
 
   <% if flash.present? %>

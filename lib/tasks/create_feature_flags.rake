@@ -32,6 +32,7 @@ task 'create_feature_flags': :environment do
     "CARD_CONFIGURATION",
     "KEEP_APEX_HTML",
     "PREPRINT",
-    "JIRA_INTEGRATION"
+    "JIRA_INTEGRATION",
+    "DISABLE_SUBMISSIONS"
   ]
 end

@@ -56,6 +56,7 @@ class PapersController < ApplicationController
   # The create action does not require a permission, it's available to any
   # signed in user.
   def create
+    raise AuthorizationError if FeatureFlag['DISABLE_SUBMISSIONS']
     paper = PaperFactory.create(paper_params, current_user)
     if paper.valid?
       Activity.paper_created!(paper, user: current_user) if paper.valid?

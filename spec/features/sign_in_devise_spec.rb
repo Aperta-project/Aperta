@@ -78,3 +78,13 @@ feature "Devise resetting password", js: true do
     expect(page).to have_content 'You will receive an email with instructions about how to reset your password in a few minutes.'
   end
 end
+
+feature "SUBMISSIONS_DISABLED flag", js: true do
+  let!(:user) { create :user }
+  scenario "User sees flag flash message" do
+    FactoryGirl.create(:feature_flag, name: "DISABLE_SUBMISSIONS")
+    sign_in_page = SignInPage.visit
+    dashboard_page = sign_in_page.sign_in user
+    expect(page).to have_css('.disable-submissions-alert')
+  end
+end

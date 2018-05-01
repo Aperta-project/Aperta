@@ -73,6 +73,9 @@ Layout/AlignParameters:
   # or to align subsequent lines with the first parameter
   Enabled: false
 
+Layout/ExtraSpacing:
+  Enabled:  false
+
 Style/StringLiterals:
   # English text needs double quotes, to avoid escaping the very
   # common apostrophe.

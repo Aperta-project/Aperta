@@ -19,14 +19,13 @@
 # DEALINGS IN THE SOFTWARE.
 
 class InvitationScenario < TemplateContext
-  # rubocop:disable Layout/ExtraSpacing
   subcontext :journal,                  source: [:object, :paper, :journal]
   subcontext :manuscript, type: :paper, source: [:object, :paper]
   subcontext :invitation,               source: :object
   subcontext :inviter,    type: :user
   subcontext :invitee,    type: :user
-  subcontext :author,     type: :user,  source: [:object, :paper, :corresponding_authors, :first]
-  # rubocop:enable Layout/ExtraSpacing
+  subcontext :author,                   source: [:object, :paper, :corresponding_authors, :first]
+
   def invitee_name_or_email
     @object.invitee.try(:full_name) || @object.email
   end

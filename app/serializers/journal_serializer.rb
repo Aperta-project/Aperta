@@ -25,7 +25,7 @@ class JournalSerializer < AuthzSerializer
              :paper_types,
              :manuscript_css,
              :staff_email,
-             :pdf_allowed,
+             :msword_allowed,
              :coauthor_confirmation_enabled
 
   has_many :manuscript_manager_templates,

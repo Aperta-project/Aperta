@@ -130,9 +130,8 @@ class TahiEnv
   optional :HEROKU_PARENT_APP_NAME
 
   # iHat
-  required :IHAT_URL
-  optional :IHAT_CALLBACK_HOST
-  optional :IHAT_CALLBACK_PORT
+  optional :IHAT_URL
+  optional :IHAT_CALLBACK_URL
 
   # iThenticate
   optional :ITHENTICATE_ENABLED, :boolean, default: false

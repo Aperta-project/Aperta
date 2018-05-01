@@ -29,7 +29,7 @@ export default DS.Model.extend({
   manuscriptCss: DS.attr('string'),
   name: DS.attr('string'),
   staffEmail: DS.attr('string'),
-  pdfAllowed: DS.attr('boolean'),
+  mswordAllowed: DS.attr('boolean'),
   manuscriptManagerTemplates: DS.attr(),
   coauthorConfirmationEnabled: DS.attr('boolean'),
 

@@ -66,10 +66,9 @@ export default Controller.extend(PaperBase, Discussions, {
     return this.get('firstView') === 'true';
   }),
 
-  showPdfManuscript: computed('paper.journal.pdfAllowed', 'paper.fileType', 'paper.file.status',
+  showPdfManuscript: computed('paper.fileType', 'paper.file.status',
     function(){
-      return (this.get('paper.journal.pdfAllowed') &&
-             (this.get('paper.fileType') === 'pdf')) &&
+      return (this.get('paper.fileType') === 'pdf') &&
              (this.get('paper.file.status') !== 'error');
     }
   ),

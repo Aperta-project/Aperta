@@ -372,7 +372,7 @@ describe XmlCardLoader do
         let(:text) { Faker::Lorem.sentence }
         let(:content1) do
           <<-XML
-            <If condition="pdfAllowed">
+            <If condition="mswordAllowed">
               <ParagraphInput value-type="html">
                 <text>This is the THEN branch of an IF condition.</text>
               </ParagraphInput>
@@ -391,7 +391,7 @@ describe XmlCardLoader do
         let(:text) { Faker::Lorem.sentence }
         let(:content1) do
           <<-XML
-            <If condition="pdfAllowed">
+            <If condition="mswordAllowed">
               <ParagraphInput value-type="html">
                 <text>This is the THEN branch of an IF condition.</text>
               </ParagraphInput>

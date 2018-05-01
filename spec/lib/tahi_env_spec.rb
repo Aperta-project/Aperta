@@ -134,9 +134,8 @@ describe TahiEnv do
   it_behaves_like 'optional env var', var: 'HEROKU_PARENT_APP_NAME'
 
   # iHat
-  it_behaves_like 'required env var', var: 'IHAT_URL'
-  it_behaves_like 'optional env var', var: 'IHAT_CALLBACK_HOST'
-  it_behaves_like 'optional env var', var: 'IHAT_CALLBACK_PORT'
+  it_behaves_like 'optional env var', var: 'IHAT_URL'
+  it_behaves_like 'optional env var', var: 'IHAT_CALLBACK_URL'
 
   # Mailsafe
   it_behaves_like 'optional env var', var: 'MAILSAFE_REPLACEMENT_ADDRESS'

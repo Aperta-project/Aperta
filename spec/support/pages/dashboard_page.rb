@@ -91,11 +91,11 @@ class DashboardPage < Page
   end
 
   def toggle_active_papers_heading
-    find('.active-papers').click
+    execute_script("$('.active-papers').click()")
   end
 
   def toggle_inactive_papers_heading
-    find('.inactive-papers').click
+    execute_script("$('.inactive-papers').click()")
   end
 
   def manuscript_list_visible?

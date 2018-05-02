@@ -25,11 +25,8 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   model() {
     var journal = this.modelFor('admin.journals').journal;
-    var journalID = (journal && journal.get('id'));
-    var cachedRecords = this.store.peekAll('manuscript-manager-template').filterBy('journal', journal);
-    var useCache = journalID && cachedRecords.length;
     return Ember.RSVP.hash({
-      workflows: useCache ? cachedRecords : this.store.query('manuscript-manager-template', {'journal_id': journalID}),
+      workflows: journal ? journal.get('manuscriptManagerTemplates') : this.store.findAll('manuscript-manager-template'),
       journal: journal
     });
   }

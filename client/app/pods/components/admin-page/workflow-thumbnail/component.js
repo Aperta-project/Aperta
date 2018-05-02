@@ -41,8 +41,7 @@ export default Ember.Component.extend({
     },
     destroyWorkflow() {
       if (this.get('canDestroy')) {
-        this.get('workflow').deleteRecord();
-        this.get('workflow').save();
+        return this.get('workflow').destroyRecord();
       }
     },
     doNothing(){

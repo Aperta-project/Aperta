@@ -24,6 +24,7 @@ class InvitationScenario < TemplateContext
   subcontext :invitation,               source: :object
   subcontext :inviter,    type: :user
   subcontext :invitee,    type: :user
+  subcontext :author,                   source: [:object, :paper, :corresponding_authors, :first]
 
   def invitee_name_or_email
     @object.invitee.try(:full_name) || @object.email

@@ -155,7 +155,7 @@ GEM
     cookiejar (0.3.2)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
-    crass (1.0.3)
+    crass (1.0.4)
     css_parser (1.4.5)
       addressable
     daemons (1.2.3)
@@ -380,7 +380,7 @@ GEM
       actionpack (>= 3)
       activesupport (>= 3)
       railties (>= 3)
-    loofah (2.2.1)
+    loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
@@ -505,8 +505,8 @@ GEM
       activesupport (>= 4.2.0.beta, < 5.0)
       nokogiri (~> 1.6)
       rails-deprecated_sanitizer (>= 1.0.1)
-    rails-html-sanitizer (1.0.3)
-      loofah (~> 2.0)
+    rails-html-sanitizer (1.0.4)
+      loofah (~> 2.2, >= 2.2.2)
     rails_12factor (0.0.3)
       rails_serve_static_assets
       rails_stdout_logging
@@ -771,6 +771,7 @@ DEPENDENCIES
   rack-protection (~> 1.5.5)
   rack-timeout
   rails (~> 4.2.10)
+  rails-html-sanitizer (~> 1.0.4)
   rails_12factor
   rbtrace
   render_anywhere

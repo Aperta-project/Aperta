@@ -31,8 +31,8 @@ machine:
   environment:
     RAILS_ENV: test
     DATABASE_URL: postgres://ubuntu:@127.0.0.1:5432/circle_test
-    FIREFOX_URL: https://ftp.mozilla.org/pub/firefox/releases/59.0.2/linux-x86_64/en-US/firefox-59.0.2.tar.bz2
-    FF_FILE: ff/firefox-59.0.2.tar.bz2
+    FIREFOX_URL: https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US
+    FIREFOX_FILE: ff/firefox.tar.bz2
     CARD_LOAD: true
     JOBS: 1
 
@@ -49,8 +49,9 @@ dependencies:
     - gem install bundler -v '1.15.4'
     - bundle config --global jobs 7
     - bundle config --global without staging:production
-    - "[ -f $FF_FILE ] || wget $FIREFOX_URL -qP ff"
-    - tar xvf $FF_FILE
+    - "curl -L -sH \"Accept-encoding: gzip\" -o ${FIREFOX_FILE} -z ${FIREFOX_FILE} \"${FIREFOX_URL}\""
+    - tar xvf ${FIREFOX_FILE}
+    - "echo Using $(${PWD}/firefox/firefox --version)"
 
   override:
     - bundle install: # note ':' here

@@ -32,9 +32,7 @@ class ManuscriptManagerTemplatesController < ApplicationController
 
     # if a specific journal id is sent with the request, use it to
     # filter down to manuscript manager templates for that journal
-    if params['journal_id']
-      journal_ids = journal_ids.select { |j| j == params['journal_id'].to_i }
-    end
+    journal_ids &= [params['journal_id'].to_i] if params['journal_id'].present?
 
     respond_with ManuscriptManagerTemplate.where(journal_id: journal_ids)
     .includes(:journal,

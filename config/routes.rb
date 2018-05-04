@@ -43,6 +43,9 @@ Tahi::Application.routes.draw do
     get 'users/sign_out' => 'devise/sessions#destroy'
   end
 
+  # No-op for the callback from CAS
+  post 'users/auth/cas/callback', to: proc { [200, {}, ['']] }
+
   authenticate :user, ->(u) { u.site_admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end

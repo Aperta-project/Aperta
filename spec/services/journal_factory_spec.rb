@@ -128,24 +128,29 @@ describe JournalFactory do
                                         doi_publisher_prefix: 'SHORTJPREFIX1',
                                         last_doi_issued: '1000001')
         expect(journal.name).to eq('Journal of the Stars')
+        JournalFactory.new(journal).create_related_models
       end.to change(Journal, :count).by(1)
     end
 
     it 'sets up default task types and default manuscript manager templates' do
       expect(JournalServices::CreateDefaultManuscriptManagerTemplates).to receive(:call)
       expect(JournalServices::CreateDefaultTaskTypes).to receive(:call)
-      JournalFactory.create(name: 'Journal of the Stars',
+      # rubocop:disable Rails/SaveBang
+      journal = JournalFactory.create(name: 'Journal of the Stars',
                             doi_journal_prefix: 'journal.SHORTJPREFIX1',
                             doi_publisher_prefix: 'SHORTJPREFIX1',
                             last_doi_issued: '1000001')
+      JournalFactory.new(journal).create_related_models
     end
 
     context 'role hints' do
       let!(:journal) do
-        JournalFactory.create(name: 'Journal of the Stars',
+        journal = JournalFactory.create(name: 'Journal of the Stars',
                               doi_journal_prefix: 'journal.SHORTJPREFIX1',
                               doi_publisher_prefix: 'SHORTJPREFIX1',
                               last_doi_issued: '1000001')
+        JournalFactory.new(journal).create_related_models
+        journal
       end
 
       it 'assigns hints to discussion topic roles' do
@@ -175,6 +180,7 @@ describe JournalFactory do
                                          doi_journal_prefix: 'journal.genetics',
                                          doi_publisher_prefix: 'genetics',
                                          last_doi_issued: '100001')
+        JournalFactory.new(@journal).create_related_models
       end
 
       after(:all) do

@@ -55,12 +55,20 @@ class JournalFactory
 
   def create
     @journal.save!
+    create_related_models_async
+    @journal
+  end
+
+  def create_related_models_async
+    JournalWorker.perform_async(@journal.id)
+  end
+
+  def create_related_models
     self.class.setup_default_mmt(@journal)
     ensure_default_roles_and_permissions_exist
     assign_hints
     seed_letter_templates
     assign_default_system_custom_cards
-    @journal
   end
 
   def assign_hint(names, hint)
@@ -76,7 +84,7 @@ class JournalFactory
   end
 
   def assign_default_system_custom_cards
-    JournalWorker.perform_async(@journal.id)
+    CustomCard::FileLoader.load(@journal)
   end
 
   # All standard tasks that users who see the workflow should see

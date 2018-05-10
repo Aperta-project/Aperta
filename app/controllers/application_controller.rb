@@ -96,6 +96,10 @@ class ApplicationController < ActionController::Base
     cas_logout_url || new_user_session_path
   end
 
+  def new_session_path(_scope)
+    new_user_session_path
+  end
+
   # to redirect a user to the requested page after login
   def store_location_for_login_redirect
     location = request.url.include?('/api') ? (request.referer || request.host) : request.url

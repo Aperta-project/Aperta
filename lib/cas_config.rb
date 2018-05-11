@@ -26,7 +26,7 @@ module CasConfig
       {
         'enabled' => true,
         'ssl' => TahiEnv.cas_ssl?,
-        'ssl_verify' => TahiEnv.cas_ssl_verify?,
+        'disable_ssl_verification' => !TahiEnv.cas_ssl_verify?,
         'host' => TahiEnv.cas_host,
         'port' => TahiEnv.cas_port,
         'service_validate_url' => TahiEnv.cas_service_validate_url,

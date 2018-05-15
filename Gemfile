@@ -150,7 +150,6 @@ group :test do
   gem 'fake_ftp'
   gem 'faker'
   gem 'fakeredis'
-  gem 'geckodriver-helper'
   gem 'generator_spec'
   gem 'pusher-fake'
   gem 'rspec-activemodel-mocks'

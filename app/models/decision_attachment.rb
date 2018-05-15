@@ -32,7 +32,7 @@ class DecisionAttachment < Attachment
     owner
   end
 
-  delegate_view_permission_to :decision
+  delegate_view_permission_to :revise_task
 
   protected
 

@@ -107,3 +107,8 @@ correct issues that it runs into.
 
 Aperta uses rspec for ruby testing and qunit for javascript testing. To run
 the rspec tests, use `bundle exec rspec`. To run the qunit test, use `bundle exec rake ember:test`.
+
+To run the capybara feature specs, you will need to have a recent
+version of [firefox](https://www.mozilla.org/en-US/firefox/) and
+[geckodriver](https://github.com/mozilla/geckodriver/releases) in your
+`$PATH`.

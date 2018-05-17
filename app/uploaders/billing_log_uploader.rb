@@ -21,7 +21,7 @@
 # encoding: utf-8
 
 class BillingLogUploader < CarrierWave::Uploader::Base
-  storage Rails.application.config.carrierwave_storage
+  storage :fog
 
   after :store, :log_file_location
 

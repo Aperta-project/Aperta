@@ -43,7 +43,6 @@ module Tahi
     config.eager_load_paths += %W[#{config.root}/lib/custom_card]
     config.eager_load_paths += %W[#{config.root}/lib/loofah]
 
-    config.carrierwave_storage = :fog
     config.from_email = ENV.fetch('FROM_EMAIL', 'no-reply@example.com')
 
     # Raise an error within after_rollback & after_commit

@@ -24,7 +24,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   include CarrierWave::MimeTypes
 
   # Choose what kind of storage to use for this uploader:
-  storage Rails.application.config.carrierwave_storage
+  storage :fog
 
   # image? is used both here and in Attachment
   def self.image?(file)

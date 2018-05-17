@@ -24,7 +24,7 @@ RSpec.shared_examples_for 'AttachmentUploader: standard attachment image transco
     # really wants this configured on the base uploader
     AttachmentUploader.storage :file
     example.run
-    AttachmentUploader.storage Rails.application.config.carrierwave_storage
+    AttachmentUploader.storage :fog
   end
 
   describe "image transcoding" do
@@ -114,7 +114,7 @@ RSpec.shared_examples_for 'AttachmentUploader: standard attachment image resizin
     # really wants this configured on the base uploader
     AttachmentUploader.storage :file
     example.run
-    AttachmentUploader.storage Rails.application.config.carrierwave_storage
+    AttachmentUploader.storage :fog
   end
 
   describe "image resizing" do

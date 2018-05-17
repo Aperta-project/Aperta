@@ -19,7 +19,7 @@
 # DEALINGS IN THE SOFTWARE.
 
 class EpubCoverUploader < CarrierWave::Uploader::Base
-  storage Rails.application.config.carrierwave_storage
+  storage :fog
 
   def store_dir
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"

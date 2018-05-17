@@ -34,7 +34,6 @@ module Tahi
   class Application < Rails::Application
     paths = %W[
       #{config.root}/lib
-      #{config.root}/lib/cli_utilities
       #{config.root}/lib/data_transformation
       #{config.root}/lib/custom_card
       #{config.root}/lib/loofah

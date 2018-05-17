@@ -22,11 +22,11 @@ if ENV.has_key? 'AWS_ACCESS_KEY_ID'
   CarrierWave.configure do |config|
     config.fog_credentials = {
       provider: 'AWS',
-      aws_access_key_id: ENV['AWS_ACCESS_KEY_ID'],
-      aws_secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
-      region: ENV['AWS_REGION']
+      aws_access_key_id: TahiEnv.aws_access_key_id,
+      aws_secret_access_key: TahiEnv.aws_secret_access_key,
+      region: TahiEnv.aws_region
     }
-    config.fog_directory  = Rails.application.config.s3_bucket
+    config.fog_directory  = TahiEnv.s3_bucket
     config.fog_public     = false
     config.fog_attributes = {'Cache-Control'=>'max-age=315576000'}
     config.fog_authenticated_url_expiration = 6.days

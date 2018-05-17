@@ -45,7 +45,6 @@ module Tahi
 
     config.s3_bucket = ENV.fetch('S3_BUCKET', :not_set)
     config.carrierwave_storage = :fog
-    config.x.admin_email = TahiEnv.admin_email
     config.from_email = ENV.fetch('FROM_EMAIL', 'no-reply@example.com')
 
     # Raise an error within after_rollback & after_commit

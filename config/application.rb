@@ -32,14 +32,6 @@ TahiEnv.validate!
 
 module Tahi
   class Application < Rails::Application
-    paths = %W[
-      #{config.root}/lib
-      #{config.root}/lib/data_transformation
-      #{config.root}/lib/custom_card
-    ]
-    config.eager_load_paths += paths
-    config.autoload_paths += paths
-
     config.s3_bucket = ENV.fetch('S3_BUCKET', :not_set)
     config.carrierwave_storage = :fog
     config.x.admin_email = TahiEnv.admin_email

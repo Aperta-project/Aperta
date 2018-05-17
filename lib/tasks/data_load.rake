@@ -18,8 +18,6 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-require 'heroku_exporter'
-
 namespace :data do
   namespace :load do
     task setup: :environment do
@@ -152,39 +150,6 @@ namespace :data do
     def random(klass)
       klass.order("RANDOM()").first
     end
-  end
-
-  namespace :heroku do
-    task setup: :environment do
-      database_name = ActiveRecord::Base.connection_config[:database]
-      dest_filename = "#{database_name}_load_dump.sql"
-      dest_file_path = Rails.root.join('tmp', dest_filename)
-
-      @heroku_exporter = HerokuExporter.new(database_name, dest_file_path)
-    end
-
-    desc "Dump postgres data"
-    task :snapshot_local do
-      @heroku_exporter.snapshot!
-    end
-
-    desc "Save file to S3"
-    task copy_snapshot_to_s3: [:environment, :setup] do
-      access_key_id = ENV['AWS_ACCESS_KEY_ID']
-      secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
-
-      puts "Copying to S3...."
-
-      @heroku_exporter.copy_to_s3(access_key_id, secret_access_key)
-    end
-
-    desc "Export snapshot to Heroku"
-    task export: [:setup] do
-      @heroku_exporter.export_to_heroku!
-    end
-
-    desc "Snapshot, copy, and import local database to Heroku"
-    task import_snapshot: [:setup, :snapshot_local, :copy_snapshot_to_s3, :export]
   end
 
   task validate: :environment do

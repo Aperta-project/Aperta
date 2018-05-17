@@ -55,8 +55,6 @@ module Tahi
       config.basic_auth_password = TahiEnv.basic_http_password
     end
 
-    config.x.pusher_verbose_logging = TahiEnv.pusher_verbose_logging?
-
     config.omniauth_providers = []
   end
 end

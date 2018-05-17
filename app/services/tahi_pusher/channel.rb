@@ -70,7 +70,7 @@ module TahiPusher
     end
 
     def with_logging(message)
-      if Rails.application.config.x.pusher_verbose_logging
+      if TahiEnv.pusher_verbose_logging?
         Pusher.logger.info("** [Pusher] #{message}")
       end
       yield

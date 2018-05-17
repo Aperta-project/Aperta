@@ -36,7 +36,6 @@ module Tahi
       #{config.root}/lib
       #{config.root}/lib/data_transformation
       #{config.root}/lib/custom_card
-      #{config.root}/lib/loofah
     ]
     config.eager_load_paths += paths
     config.autoload_paths += paths

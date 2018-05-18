@@ -100,10 +100,20 @@ class ApplicationController < ActionController::Base
     new_user_session_path
   end
 
+  # Store the page the user was on if they are making an API call. If
+  # the user loses their session we want to redirect them back where
+  # they were before.
+  def location_for_redirect
+    if request.url.include?('/api')
+      request.referer || request.host
+    else
+      request.url
+    end
+  end
+
   # to redirect a user to the requested page after login
   def store_location_for_login_redirect
-    location = request.url.include?('/api') ? (request.referer || request.host) : request.url
-    store_location_for(:user, location) if session["user_return_to"].blank?
+    store_location_for(:user, location_for_redirect) if session["user_return_to"].blank?
   end
 
   def cas_logout_url

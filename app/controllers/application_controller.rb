@@ -105,7 +105,7 @@ class ApplicationController < ActionController::Base
   # they were before.
   def location_for_redirect
     if request.url.include?('/api')
-      request.referer || request.host
+      request.referer
     else
       request.url
     end

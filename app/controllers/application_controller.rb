@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   before_action :set_pusher_socket
   before_action :set_current_user_id
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :store_location_for_login_redirect, unless: :devise_controller?
+  before_action :store_location_for_login_redirect, if: :should_store_redirect?
 
   rescue_from ActiveRecord::RecordInvalid, with: :render_errors
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
@@ -113,7 +113,11 @@ class ApplicationController < ActionController::Base
 
   # to redirect a user to the requested page after login
   def store_location_for_login_redirect
-    store_location_for(:user, location_for_redirect) if session["user_return_to"].blank?
+    store_location_for(:user, location_for_redirect)
+  end
+
+  def should_store_redirect?
+    !devise_controller? && !user_signed_in?
   end
 
   def cas_logout_url

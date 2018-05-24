@@ -108,7 +108,7 @@ describe ApplicationMailer do
     # A little meta-programming magic in this spec so we can define a set of
     # examples for each mailer file individually.
     #
-    mailer_paths = Dir[Rails.root.to_s + '/**/*_mailer.rb' ]
+    mailer_paths = Dir[Rails.root.to_s + 'app/**/*_mailer.rb']
     mailer_paths.each do |full_mailer_path|
       mailer_path = Pathname.new(full_mailer_path).relative_path_from(Rails.root)
       describe "#{mailer_path}" do

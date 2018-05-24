@@ -18,6 +18,8 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
+require 'tahi_reports/analyze_attachment_failures_report'
+
 namespace :reports do
   namespace :analyze_attachments do
     desc <<-DESCRIPTION.strip_heredoc

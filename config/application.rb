@@ -32,17 +32,6 @@ TahiEnv.validate!
 
 module Tahi
   class Application < Rails::Application
-    config.eager_load = true
-
-    config.autoload_paths += %W(#{config.root}/lib)
-    config.autoload_paths += %W(#{config.root}/lib/cli_utilities)
-    config.autoload_paths += %W(#{config.root}/lib/data_transformation)
-    config.autoload_paths += %W(#{config.root}/lib/tahi_reports)
-    config.autoload_paths += %W(#{config.root}/app/workers)
-    config.autoload_paths += %W(#{config.root}/app/subscribers)
-    config.eager_load_paths += %W[#{config.root}/lib/custom_card]
-    config.eager_load_paths += %W[#{config.root}/lib/loofah]
-
     config.from_email = ENV.fetch('FROM_EMAIL', 'no-reply@example.com')
 
     # Raise an error within after_rollback & after_commit

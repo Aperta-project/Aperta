@@ -34,7 +34,6 @@ SimpleCov.start do
 end
 
 require 'rspec/instafail'
-require 'rspec/retry'
 require 'aasm/rspec'
 
 RSpec.configure do |config|
@@ -43,13 +42,6 @@ RSpec.configure do |config|
     # a real object. This is generally recommended, and will default to
     # `true` in RSpec 4.
     mocks.verify_partial_doubles = true
-  end
-
-  config.verbose_retry = true
-  config.display_try_failure_messages = true
-
-  config.around :each, type: :feature do |ex|
-    ex.run_with_retry retry: 2
   end
 
   config.color = true

@@ -1,0 +1,3 @@
+#!/bin/sh
+docker build . -t plos/aperta-circleci
+docker push plos/aperta-circleci

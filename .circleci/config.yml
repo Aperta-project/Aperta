@@ -1,0 +1,183 @@
+# Copyright (c) 2018 Public Library of Science
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+version: 2
+jobs:
+  build:
+    parallelism: 6
+    docker:
+      - image: plos/aperta-circleci
+        environment:
+          JOBS: 1 # See https://github.com/emberjs/ember.js/issues/15641
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          PGHOST: 127.0.0.1
+          BUNDLE_PATH: vendor/bundle
+          PGUSER: aperta
+          RAILS_ENV: test
+          DATABASE_URL: "postgres://aperta@localhost:5432/aperta"
+          FIREFOX_CACHE_DIR: /home/circleci/ff
+          FIREFOX_URL: https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US
+          GECKODRIVER_URL: https://github.com/mozilla/geckodriver/releases/download/v0.20.1/geckodriver-v0.20.1-linux64.tar.gz
+          SELENIUM_FIREFOX_PATH: /home/circleci/firefox/firefox
+          CARD_LOAD: true
+      - image: circleci/postgres:9.6
+        environment:
+          POSTGRES_USER: aperta
+          POSTGRES_DB: aperta
+          POSTGRES_PASSWORD: ""
+
+    steps:
+      - restore_cache:
+          key: source-v6
+
+      - checkout
+
+      - save_cache:
+          key: source-v6
+          paths:
+            - ".git"
+
+      # Which version of bundler?
+      - run:
+          name: Which bundler?
+          command: bundle -v
+
+      # Restore bundle cache
+      - restore_cache:
+          keys:
+            - aperta-bundle-v6-{{ checksum "Gemfile.lock" }}
+
+      - run:
+          name: Bundle Install
+          command: bundle check || bundle install --with=test
+
+      # Store bundle cache
+      - save_cache:
+          key: aperta-bundle-v6-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+
+      - restore_cache:
+          keys:
+            - firefox-geckodriver
+
+      - run:
+          name: Download latest firefox
+          command: |
+            mkdir -p "${FIREFOX_CACHE_DIR}"
+            FIREFOX_FILE="${FIREFOX_CACHE_DIR}/firefox.tar.bz"
+            if [ -f "$FIREFOX_FILE" ] ; then
+              curl -L -sH "Accept-encoding: gzip" -o "${FIREFOX_FILE}" -z "${FIREFOX_FILE}" "${FIREFOX_URL}"
+            else
+              curl -L -sH "Accept-encoding: gzip" -o "${FIREFOX_FILE}" "${FIREFOX_URL}"
+            fi
+            rm -rf /home/circleci/firefox
+            cd /home/circleci && tar xf "${FIREFOX_FILE}"
+            echo Using $($SELENIUM_FIREFOX_PATH --version)
+
+      - run:
+          name: Download geckodriver
+          command: |
+            mkdir -p ${PWD}/bin/
+            GECKODRIVER_FILE="${FIREFOX_CACHE_DIR}/geckodriver.tar.gz"
+            if [ -f $GECKODRIVER_FILE ] ; then
+              curl -L -sH "Accept-encoding: gzip" -o "${GECKODRIVER_FILE}" -z "${GECKODRIVER_FILE}" "${GECKODRIVER_URL}"
+            else
+              curl -L -sH "Accept-encoding: gzip" -o "${GECKODRIVER_FILE}" "${GECKODRIVER_URL}"
+            fi
+            cd bin && tar xf "${GECKODRIVER_FILE}" && cd ..
+            echo Using $(bin/geckodriver --version | head -1)
+
+      - save_cache:
+          key: firefox-geckodriver
+          paths:
+            - ${FIREFOX_CACHE_DIR}
+
+      - restore_cache:
+          keys:
+            - aperta-yarn-v6-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Install Yarn
+          command: source /home/circleci/.nvm/nvm.sh && npm install -g yarn
+
+      - run:
+          name: ember:install
+          command: |
+            source /home/circleci/.nvm/nvm.sh
+            mkdir test_results
+            bundle exec rake ember:install
+
+      # Store yarn / webpacker cache
+      - save_cache:
+          key: aperta-yarn-v6-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+            - client/node_modules
+            - client/bower_components
+
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      - run:
+          name: Database setup
+          command: bundle exec rake db:schema:load --trace
+
+      - run:
+          name: run qunit tests
+          command: |
+            export PATH=$(dirname $SELENIUM_FIREFOX_PATH):$PATH
+            source /home/circleci/.nvm/nvm.sh
+            xvfb-run -a -s "-screen 0 1280x1024x24" bundle exec rake circleci:qunit
+
+      - run:
+          name: run unit rspecs
+          command: |
+            source /home/circleci/.nvm/nvm.sh
+            TESTS=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+            set -x # display the command line run for reproducing test failures locally
+            bundle exec rspec --format RspecJunitFormatter \
+                              --out test_results/rspec.xml \
+                              --format progress \
+                              -t ~js $TESTS
+
+      - run:
+          name: run feature rspecs
+          command: |
+            source /home/circleci/.nvm/nvm.sh
+            export PATH=${PWD}/bin:$PATH
+            TESTS=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+            set -x # display the command line run for reproducing test failures locally
+            bundle exec rspec --format RspecJunitFormatter \
+                              --out test_results/rspec_features.xml \
+                              --format progress \
+                              -t js $TESTS
+
+      # Save test results for timing analysis
+      - store_test_results:
+          path: test_results
+
+      - store_artifacts:
+          path: test_results
+
+      - store_artifacts:
+          path: tmp/capybara

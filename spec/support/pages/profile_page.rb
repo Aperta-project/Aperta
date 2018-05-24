@@ -50,7 +50,7 @@ class ProfilePage < Page
   end
 
   def remove_affiliate(name)
-    page.find(".profile-affiliation-name", text: name).parent.find('.affiliation-remove').click
+    page.find(".profile-affiliation-name", text: name).query_scope.find('.affiliation-remove').click
     page.driver.browser.switch_to.alert.accept
   end
 

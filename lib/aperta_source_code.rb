@@ -20,11 +20,6 @@
 
 require 'ripper'
 
-# require all ruby files under aperta_source_code_visitors/
-Dir[File.dirname(__FILE__) + '/aperta_source_code_visitors/**/*.rb'].each do |path|
-  require_dependency Pathname.new(path).relative_path_from(Rails.root.join('lib'))
-end
-
 # ApertaSourceCode is a wrapper the Ripper library from Ruby's standard library.
 # Ripper provides a way to get S-expressions about Ruby code. The ApertaSourceCode
 # class lets you give it a visitor so you can walk various bits of Ruby source

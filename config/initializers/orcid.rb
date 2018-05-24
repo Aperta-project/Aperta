@@ -18,6 +18,8 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
+require 'omni_auth/strategies/orcid'
+
 Tahi::Application.configure do
   if TahiEnv.orcid_login_enabled?
     # enable for devise

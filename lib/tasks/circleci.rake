@@ -25,7 +25,7 @@ namespace :circleci do
   task :qunit do
     node_index = ENV["CIRCLE_NODE_INDEX"]
     node_total = ENV["CIRCLE_NODE_TOTAL"]
-    reports_dir = ENV["CIRCLE_TEST_REPORTS"]
+    reports_dir = File.join(Dir.pwd, "test_results")
     Dir.chdir "client" do
       output = `./node_modules/.bin/ember test --query "workerIndex=#{node_index}&numWorkers=#{node_total}" --silent -r xunit`
       status = $CHILD_STATUS.exitstatus

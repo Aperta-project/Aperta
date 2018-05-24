@@ -18,6 +18,8 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
+require 'cas_config'
+
 Tahi::Application.configure do
   configuration = CasConfig.omniauth_configuration
   if configuration['enabled']

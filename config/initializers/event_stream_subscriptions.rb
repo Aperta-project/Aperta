@@ -21,6 +21,7 @@
 ##
 # To see *all* subscriptions, try `rake subscriptions`!
 #
+require 'subscriptions'
 
 stream_to_paper_channel = EventStream::StreamToPaperChannel
 stream_to_everyone = EventStream::StreamToEveryone

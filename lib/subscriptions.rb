@@ -30,6 +30,10 @@
 #
 # Use `rake subscriptions` to see a full list of events and their subscribers.
 #
+require 'subscriptions/console_formatter.rb'
+require 'subscriptions/registry.rb'
+require 'subscriptions/subscriber.rb'
+
 module Subscriptions
   DuplicateSubscribersRegistrationError = Class.new(StandardError)
   APPLICATION_EVENT_NAMESPACE = Rails.application.railtie_name

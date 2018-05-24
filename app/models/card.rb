@@ -19,6 +19,8 @@
 # DEALINGS IN THE SOFTWARE.
 
 # Card is a container for CardContents
+require 'custom_card_visitors'
+
 class Card < ActiveRecord::Base
   include ViewableModel
   include EventStream::Notifiable

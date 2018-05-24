@@ -19,16 +19,6 @@
 # DEALINGS IN THE SOFTWARE.
 
 ENV["RAILS_ENV"] ||= 'test'
-require 'bootsnap'
-
-Bootsnap.setup(
-  cache_dir:            'tmp/cache',
-  development_mode:     ENV["RAILS_ENV"] == 'development',
-  load_path_cache:      true,      # Optimize the LOAD_PATH with a cache
-  autoload_paths_cache: true,      # Optimize ActiveSupport autoloads with cache
-  disable_trace:        true,      # (Alpha) Set `RubyVM::InstructionSequence.compile_option ={trace_instruction: false }`
-  compile_cache_yaml:   true
-)
 
 require 'codeclimate-test-reporter'
 CodeClimate::TestReporter.start
@@ -132,11 +122,13 @@ RSpec.configure do |config|
     # rubocop:disable Style/GlobalVars
     next if $capybara_setup_done
     # Some info on env vars
-    puts "Here are some relevant env vars"
-    puts "Using ember build from #{ember_path}, should be the same as your dev build location"
-    puts "'BUILD_EMBER=true' forces ember to (re)build"
-    puts "'CARD_LOAD=true' runs 'rake cards:load' and removes exisiting cards in test db"
-    puts "'HEADLESS=true' runs test headlessly"
+    if STDOUT.isatty
+      puts "Here are some relevant env vars"
+      puts "Using ember build from #{ember_path}, should be the same as your dev build location"
+      puts "'BUILD_EMBER=true' forces ember to (re)build"
+      puts "'CARD_LOAD=true' runs 'rake cards:load' and removes exisiting cards in test db"
+      puts "'SHOW_BROWSER=true' do NOT run tests headless"
+    end
     Thread.new { EmberCLI.compile! } unless ENV["SKIP_EMBER"]
 
     Capybara.server_port = ENV['CAPYBARA_SERVER_PORT']
@@ -159,12 +151,15 @@ RSpec.configure do |config|
       client = Selenium::WebDriver::Remote::Http::Default.new
       client.read_timeout = 90
       client.open_timeout = 90
-      options_args = { args: [] }
-      options_args[:args] << '-headless' if ENV['HEADLESS']
-      options = Selenium::WebDriver::Firefox::Options.new(options_args)
+      options = Selenium::WebDriver::Firefox::Options.new
+      options.args << '--headless' if ENV.fetch('SHOW_BROWSER', nil).blank?
       options.profile = profile
-      Capybara::Selenium::Driver
-        .new(app, browser: :firefox, options: options, http_client: client)
+      Capybara::Selenium::Driver.new(
+        app,
+        browser: :firefox,
+        options: options,
+        http_client: client
+      )
     end
 
     Capybara.javascript_driver = :selenium

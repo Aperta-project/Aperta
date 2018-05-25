@@ -19,6 +19,7 @@
 # DEALINGS IN THE SOFTWARE.
 
 require_relative "./support/card_loader.rb"
+require 'custom_card/file_loader'
 
 namespace :cards do
   desc "Load default Card models into the system"

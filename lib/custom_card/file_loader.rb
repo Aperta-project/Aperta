@@ -18,6 +18,8 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
+require 'custom_card/default_card_permissions'
+
 module CustomCard
   class FileLoader
     def initialize(journal)

@@ -22,6 +22,9 @@
 # coding: utf-8
 # JournalFactory is for creating new journals in Aperta. It gets them all
 # set up: nice and right.
+
+require 'custom_card/file_loader'
+
 class JournalFactory
   def self.create(journal_params)
     journal = Journal.new(journal_params)

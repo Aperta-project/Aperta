@@ -48,7 +48,7 @@ describe 'CasConfig' do
       end
 
       it { expect(config['ssl']).to eq(false) }
-      it { expect(config['ssl_verify']).to eq(true) }
+      it { expect(config['disable_ssl_verification']).to eq(false) }
       it { expect(config['host']).to eq('sample.tahi-project.org') }
       it { expect(config['port']).to eq('443') }
       it { expect(config['service_validate_url']).to eq('/cas/p3/serviceValidate') }

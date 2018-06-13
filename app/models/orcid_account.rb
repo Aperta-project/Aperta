@@ -35,7 +35,7 @@ class OrcidAccount < ActiveRecord::Base
 
     api_profile_url = "https://#{TahiEnv.orcid_api_host}/" \
       + "v#{TahiEnv.orcid_api_version}/" \
-      + "#{identifier}/orcid-profile"
+      + "#{identifier}/personal-details"
 
     conn = Faraday.new(url: api_profile_url) do |faraday|
       faraday.response :json
@@ -51,7 +51,7 @@ class OrcidAccount < ActiveRecord::Base
       req.headers['Accept-Charset'] = "UTF-8"
     end
 
-    names = response.body.dig('orcid-profile', 'orcid-bio', 'personal-details')
+    names = response.body['name']
 
     name = [
       names.dig('given-names', 'value'),

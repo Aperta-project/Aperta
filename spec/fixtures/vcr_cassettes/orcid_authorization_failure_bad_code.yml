@@ -9,33 +9,52 @@ http_interactions:
     headers:
       User-Agent:
       - Faraday v0.9.1
+      Content-Type:
+      - application/x-www-form-urlencoded
       Accept:
       - application/json
       Accept-Charset:
       - UTF-8
-      Content-Type:
-      - application/x-www-form-urlencoded
       Accept-Encoding:
-      - gzip,deflate
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
     status:
       code: 400
       message: Bad Request
     headers:
-      Server:
-      - nginx/1.4.6 (Ubuntu)
       Date:
-      - Fri, 06 Jan 2017 15:50:40 GMT
+      - Thu, 14 Jun 2018 22:33:26 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
       - chunked
       Connection:
       - keep-alive
+      Set-Cookie:
+      - __cfduid=d1d70277e0e52a7523a397574fb143a8d1529015606; expires=Fri, 14-Jun-19
+        22:33:26 GMT; path=/; domain=.orcid.org; HttpOnly
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Pragma:
+      - no-cache
+      Expires:
+      - '0'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - DENY
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 42b042340c2d5122-SJC
     body:
       encoding: UTF-8
-      string: '{"error":"unauthorized_client","error_description":"Invalid authorization
+      string: '{"error":"invalid_grant","error_description":"Invalid authorization
         code: ZZZZZZ"}'
     http_version: 
-  recorded_at: Fri, 06 Jan 2017 15:50:40 GMT
+  recorded_at: Thu, 14 Jun 2018 22:33:26 GMT
 recorded_with: VCR 2.9.3

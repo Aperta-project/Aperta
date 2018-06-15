@@ -5,33 +5,34 @@ http_interactions:
     uri: https://sandbox.orcid.org/oauth/token
     body:
       encoding: UTF-8
-      string: client_id=Bogus-key&client_secret=056cab03-aebe-4cb2-86d1-0011184af5ee&code=C3b6Z2&grant_type=authorization_code
+      string: client_id=Bogus-key&client_secret=056cab03-aebe-4cb2-86d1-0011184af5ee&code=4LJmXp&grant_type=authorization_code
     headers:
       User-Agent:
       - Faraday v0.9.1
+      Content-Type:
+      - application/x-www-form-urlencoded
       Accept:
       - application/json
       Accept-Charset:
       - UTF-8
-      Content-Type:
-      - application/x-www-form-urlencoded
       Accept-Encoding:
-      - gzip,deflate
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
     status:
       code: 401
       message: Unauthorized
     headers:
-      Server:
-      - nginx/1.4.6 (Ubuntu)
       Date:
-      - Fri, 06 Jan 2017 15:50:40 GMT
+      - Thu, 14 Jun 2018 22:33:27 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
       - chunked
       Connection:
       - keep-alive
+      Set-Cookie:
+      - __cfduid=d1259f79ced7a731bb7ee7135c2b3beb71529015607; expires=Fri, 14-Jun-19
+        22:33:27 GMT; path=/; domain=.orcid.org; HttpOnly
       Cache-Control:
       - no-store
       Pragma:
@@ -39,9 +40,15 @@ http_interactions:
       Www-Authenticate:
       - 'Bearer realm="orcid", error="invalid_client", error_description="Client not
         found: Bogus-key"'
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 42b042391b5951a0-SJC
     body:
       encoding: UTF-8
       string: '{"error":"invalid_client","error_description":"Client not found: Bogus-key"}'
     http_version: 
-  recorded_at: Fri, 06 Jan 2017 15:50:40 GMT
+  recorded_at: Thu, 14 Jun 2018 22:33:27 GMT
 recorded_with: VCR 2.9.3

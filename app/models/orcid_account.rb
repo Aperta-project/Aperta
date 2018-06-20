@@ -33,36 +33,19 @@ class OrcidAccount < ActiveRecord::Base
       raise OrcidAccount::APIError, 'Need an Orcid ID and access token before fetching profile'
     end
 
-    api_profile_url = "https://#{TahiEnv.orcid_api_host}/" \
-      + "v#{TahiEnv.orcid_api_version}/" \
-      + "#{identifier}/orcid-profile"
+    client.site = 'https://' + TahiEnv.orcid_api_host # actually use api endpoint for getting user data
+    token = OAuth2::AccessToken.new(client, access_token)
 
-    conn = Faraday.new(url: api_profile_url) do |faraday|
-      faraday.response :json
-      faraday.request  :url_encoded
-      faraday.use :gzip
-      faraday.use Faraday::Response::RaiseError
-      faraday.adapter :net_http
-    end
-
-    response = conn.get do |req|
-      req.headers['Accept'] = "application/json"
-      req.headers['Authorization'] = "Bearer #{access_token}"
-      req.headers['Accept-Charset'] = "UTF-8"
-    end
-
-    names = response.body.dig('orcid-profile', 'orcid-bio', 'personal-details')
-
+    # TODO: Handle expired access token case
+    response_hash = token.get("/v2.0/#{identifier}/personal-details", headers: headers).parsed
     name = [
-      names.dig('given-names', 'value'),
-      names.dig('family-name', 'value')
+      response_hash.dig('name', 'given-names', 'value'),
+      response_hash.dig('name', 'family-name', 'value')
     ].compact.join(' ')
 
-    update_attributes(
-      name: name
-    )
+    update_attributes(name: name)
 
-  rescue Faraday::ClientError => ex
+  rescue OAuth2::Error => ex
     raise OrcidAccount::APIError, ex.to_s
   end
 
@@ -95,26 +78,23 @@ class OrcidAccount < ActiveRecord::Base
   end
 
   def exchange_code_for_token(authorization_code)
-    response_body = oauth_authorize(authorization_code)
+    oauth_response = client.auth_code.get_token(authorization_code, headers: headers)
+    raise OrcidAccount::APIError, 'Access token missing' unless oauth_response.token # not great if we dont get an access token back
     update_attributes(
-      access_token: response_body['access_token'],
-      refresh_token: response_body['access_token'],
-      identifier: response_body['orcid'],
-      expires_at: DateTime.now.utc + response_body['expires_in'].seconds,
-      name: response_body['name'],
-      scope: response_body['scope'],
+      access_token: oauth_response.token,
+      refresh_token: oauth_response.refresh_token,
+      identifier: oauth_response.params['orcid'],
+      expires_at: DateTime.now.utc + oauth_response.expires_in.seconds,
+      name: oauth_response.params['name'],
+      scope: oauth_response.params['scope']
     )
+  rescue OAuth2::Error => ex
+    logger.error "ORCID API failed OAuth authorize step with message #{ex.message}"
+    raise OrcidAccount::APIError, ex.to_s
   end
 
-  def oauth_authorize_url(
-    orcid_site_host: TahiEnv.orcid_site_host,
-    orcid_key: TahiEnv.orcid_key
-  )
-    "https://#{orcid_site_host}/oauth/authorize"\
-    + "?client_id=#{orcid_key}"\
-    + "&response_type=code"\
-    + "&scope=/read-limited"\
-    + "&redirect_uri=#{redirect_uri}"
+  def oauth_authorize_url
+    client.auth_code.authorize_url(redirect_uri: redirect_uri, scope: '/read-limited')
   end
 
   def redirect_uri
@@ -123,52 +103,11 @@ class OrcidAccount < ActiveRecord::Base
 
   private
 
-  def response_ensure_utf8(problem_string, headers)
-    string = problem_string.dup
-    return string if string.encoding == Encoding::UTF_8
-
-    if string.encoding == Encoding::ASCII_8BIT &&
-        headers[:content_type].try(:match, /UTF-8/)
-      logger.warn "ORCID responded with charset=UTF-8 but sent ASCII-8BIT. Assuming ISO-8859-1 and converting to UTF-8."
-      string.force_encoding("ISO-8859-1")
-    end
-    string.encode!(Encoding::UTF_8)
-  rescue Encoding => ex
-    logger.error "ORCID response failed to convert to UTF-8. Error: #{ex.message}"
-    raise OrcidAccount::APIError, ex.to_s
+  def client
+    @client ||= OAuth2::Client.new(TahiEnv.orcid_key, TahiEnv.orcid_secret, site: "https://#{TahiEnv.orcid_site_host}")
   end
 
-  def oauth_authorize(code)
-    conn = Faraday.new(url: "https://#{TahiEnv.orcid_site_host}") do |faraday|
-      faraday.request :url_encoded
-      faraday.use :gzip
-      faraday.use Faraday::Response::RaiseError
-      faraday.adapter :net_http
-    end
-    params = {
-      # client id and secret are Aperta's id and secret, NOT the end user's
-      'client_id' => TahiEnv.orcid_key,
-      'client_secret' => TahiEnv.orcid_secret,
-      'grant_type' => 'authorization_code',
-      'code' => code
-    }
-    response = conn.post("/oauth/token", params) do |request|
-      request.headers['Accept'] = 'application/json'
-      request.headers['Accept-Charset'] = "UTF-8"
-    end
-
-    response_body = JSON.parse response_ensure_utf8(response.body, response.headers)
-
-    logger.info "ORCID OAuth authorizing. Sent code:#{code} Response:#{response.body}"
-    # Inspecting body because ORCID sends HTTP 200 with errors as well.
-    if response_body["errorDesc"] &&
-        !response_body['errorDesc']['content'].empty?
-      raise OrcidAccount::APIError, response_body['errorDesc']['content']
-    end
-    response_body
-
-  rescue Faraday::ClientError => ex
-    logger.error "ORCID API failed OAuth authorize step with message #{ex.message}"
-    raise OrcidAccount::APIError, ex.to_s
+  def headers
+    { 'Accept': 'application/json', 'Accept-Charset': 'UTF-8' }
   end
 end

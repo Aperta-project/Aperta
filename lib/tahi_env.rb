@@ -168,7 +168,6 @@ class TahiEnv
   required :ORCID_SITE_HOST, if: :orcid_connect_enabled?
   required :ORCID_SECRET, if: :orcid_connect_enabled?
   required :ORCID_KEY, if: :orcid_connect_enabled?
-  required :ORCID_API_VERSION, if: :orcid_connect_enabled?
 
   # Puma
   optional :PUMA_WORKERS

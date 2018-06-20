@@ -190,9 +190,6 @@
     "ORCID_SECRET": {
       "required": true
     },
-    "ORCID_API_VERSION": {
-      "required": true
-    },
     "ORCID_SITE_HOST": {
       "required": true
     },

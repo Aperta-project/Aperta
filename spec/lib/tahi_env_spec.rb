@@ -62,7 +62,6 @@ describe TahiEnv do
       ORCID_SITE_HOST: 'sandbox.orcid.com',
       ORCID_SECRET: 'orcidsecret',
       ORCID_KEY: 'orcidkey',
-      ORCID_API_VERSION: '1.2',
       PASSWORD_AUTH_ENABLED: 'true',
       PUSHER_URL: 'http://pusher.tahi-project.org',
       PUSHER_VERBOSE_LOGGING: 'false',
@@ -155,7 +154,6 @@ describe TahiEnv do
   it_behaves_like 'optional boolean env var', var: 'ORCID_LOGIN_ENABLED', default_value: false
   it_behaves_like 'optional boolean env var', var: 'ORCID_CONNECT_ENABLED', default_value: false
   it_behaves_like 'dependent required env var', var: 'ORCID_API_HOST', dependent_key: 'ORCID_CONNECT_ENABLED'
-  it_behaves_like 'dependent required env var', var: 'ORCID_API_VERSION', dependent_key: 'ORCID_CONNECT_ENABLED'
   it_behaves_like 'dependent required env var', var: 'ORCID_SITE_HOST', dependent_key: 'ORCID_CONNECT_ENABLED'
   it_behaves_like 'dependent required env var', var: 'ORCID_SECRET', dependent_key: 'ORCID_CONNECT_ENABLED'
   it_behaves_like 'dependent required env var', var: 'ORCID_KEY', dependent_key: 'ORCID_CONNECT_ENABLED'

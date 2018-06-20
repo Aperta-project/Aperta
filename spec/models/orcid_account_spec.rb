@@ -36,8 +36,7 @@ describe OrcidAccount do
       ORCID_KEY: orcid_key,
       ORCID_SECRET: orcid_secret,
       ORCID_SITE_HOST: 'sandbox.orcid.org',
-      ORCID_API_HOST: 'api.sandbox.orcid.org',
-      ORCID_API_VERSION: '2.0'
+      ORCID_API_HOST: 'api.sandbox.orcid.org'
     }
     ClimateControl.modify(envs) do
       VCR.use_cassette(cassette, match_requests_on: [:uri, :method, :headers]) do

@@ -101,10 +101,9 @@ describe ApplicationController do
     end
 
     context 'when request url points to an api route and request referer is not set' do
-      it 'points to the dashboard' do
+      it 'sets redirect to nil' do
         expect(controller.request).to receive(:url).and_return('http://aperta.tech/api/auth')
-        expect(controller.request).to receive(:host).and_return('http://aperta.tech/')
-        expect(controller).to receive(:store_location_for).with(:user, 'http://aperta.tech/')
+        expect(controller).to receive(:store_location_for).with(:user, nil)
         controller.send(:store_location_for_login_redirect)
       end
     end

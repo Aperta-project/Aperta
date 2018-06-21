@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   before_action :set_pusher_socket
   before_action :set_current_user_id
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :store_location_for_login_redirect, unless: :devise_controller?
+  before_action :store_location_for_login_redirect, if: :should_store_redirect?
 
   rescue_from ActiveRecord::RecordInvalid, with: :render_errors
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
@@ -100,10 +100,24 @@ class ApplicationController < ActionController::Base
     new_user_session_path
   end
 
+  # Store the page the user was on if they are making an API call. If
+  # the user loses their session we want to redirect them back where
+  # they were before.
+  def location_for_redirect
+    if request.url.include?('/api')
+      request.referer
+    else
+      request.url
+    end
+  end
+
   # to redirect a user to the requested page after login
   def store_location_for_login_redirect
-    location = request.url.include?('/api') ? (request.referer || request.host) : request.url
-    store_location_for(:user, location) if session["user_return_to"].blank?
+    store_location_for(:user, location_for_redirect)
+  end
+
+  def should_store_redirect?
+    !devise_controller? && !user_signed_in?
   end
 
   def cas_logout_url

@@ -27,7 +27,7 @@ Tahi::Application.configure do
       :orcid,
       TahiEnv.orcid_key,
       TahiEnv.orcid_secret,
-      strategy: OmniAuth::Strategies::Orcid
+      strategy: OmniAuth::Strategies::Orcid, provider_ignores_state: Rails.env.development?
 
     # enable on the user model
     Rails.configuration.omniauth_providers << :orcid

@@ -97,13 +97,5 @@ module TahiDevise
     def auth
       @auth ||= request.env['omniauth.auth']
     end
-
-    def orcid_client
-      @client ||= OAuth2::Client.new(TahiEnv.orcid_key, TahiEnv.orcid_secret, site: "https://#{TahiEnv.orcid_site_host}")
-    end
-
-    def headers
-      { 'Accept': 'application/json', 'Accept-Charset': 'UTF-8' }
-    end
   end
 end

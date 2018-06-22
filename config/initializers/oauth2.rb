@@ -17,8 +17,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
-
-OAuth2::Response.register_parser(:text, 'text/plain') do |body|
-  token_key, token_value, expiration_key, expiration_value = body.split(/[=&]/)
-  {token_key => token_value, expiration_key => expiration_value}
-end
+#
+# OAuth2::Response.register_parser(:text, 'text/plain') do |body|
+#   token_key, token_value, expiration_key, expiration_value = body.split(/[=&]/)
+#   {token_key => token_value, expiration_key => expiration_value}
+# end

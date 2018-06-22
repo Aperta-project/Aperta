@@ -30,7 +30,7 @@ module OmniAuth
       def self.options
         {
           site:        "https://#{API_HOST}",
-          authorize_url: "http://#{SITE_HOST}/oauth/authorize",
+          authorize_url: "https://#{SITE_HOST}/oauth/authorize",
           token_url:     "https://#{API_HOST}/oauth/token",
           scope:         "/read-limited",
           response_type: "code",

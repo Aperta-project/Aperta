@@ -84,7 +84,8 @@ class User < ActiveRecord::Base
     length: { maximum: 255 }
   validates :email, format: Devise.email_regexp
   validates :first_name, presence: true, length: { maximum: 255 }
-  validates :last_name, presence: true, length: { maximum: 255 }
+  # disable for orcid
+  # validates :last_name, presence: true, length: { maximum: 255 }
 
   validates :ned_id, uniqueness: true, allow_nil: true
   validates_with NedValidator

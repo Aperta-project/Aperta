@@ -21,6 +21,7 @@
 module TahiDevise
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     include DisableSubmissions
+    class SSOAuthError < StandardError; end
 
     def cas
       ned = auth[:extra]
@@ -55,12 +56,38 @@ module TahiDevise
     # So, redirect to a page that prefills any orcid profile information and collects email.
     #
     def orcid
-      if credential.present?
-        sign_in_and_redirect(credential.user, event: :authentication)
-      else
-        session["devise.provider"] = { "orcid" => auth }
-        redirect_to new_user_registration_url
+      raise SSOAuthError, params[:error] if params[:error].present?
+      redirect_to orcid_client.auth_code.authorize_url(redirect_uri: omniauth_authorize_url('user', :orcid), scope: '/read-limited') && return
+      # add error handling
+
+      oauth_response = orcid_client.auth_code.get_token(params[:code], headers: headers)
+      orcid_account = OrcidAccount.find_or_initialize_by(identifier: oauth_response.params['orcid']) do |account|
+        account.access_token = oauth_response.token
+        account.refresh_token = oauth_response.refresh_token
+        account.expires_at = DateTime.now.utc + oauth_response.expires_in.seconds
+        account.name = oauth_response.params['name']
+        account.scope = oauth_response.params['scope']
       end
+
+      # if the account is new and doesnt have a user, fetch details and enforce email presence
+      user = orcid_account.user
+      if user.nil?
+        orcid_client.site = 'https://' + TahiEnv.orcid_api_host # actually use api endpoint for getting user data
+        person_object = oauth_response.get("/v2.0/#{identifier}", headers: headers).parsed['person']
+        email_objects = person_object.dig('emails', 'email')
+        raise SSOAuthError, 'Please allow your emails to be visible to trusted partners. (link to instructions)' if email_objects.empty?
+        email_object = email_objects.detect { |obj| obj['primary'] && obj['verified'] }
+        raise SSOAuthError, 'Please use a verified email address. (link to instructions)' if email_object.nil?
+        user = User.find_or_create_by!(email: email_object['email']) do |u|
+          u.first_name = person_object.dig('name', 'given-name', 'value')
+          u.last_name = person_object.dig('name', 'family-name', 'value') # optional in orcid
+          u.auto_generate_password
+          u.auto_generate_username
+        end
+        orcid_account.update!(user: user)
+      end
+
+      sign_in_and_redirect(orcid_account.user)
     end
 
     private
@@ -73,5 +100,12 @@ module TahiDevise
       @auth ||= request.env['omniauth.auth']
     end
 
+    def orcid_client
+      @client ||= OAuth2::Client.new(TahiEnv.orcid_key, TahiEnv.orcid_secret, site: "https://#{TahiEnv.orcid_site_host}")
+    end
+
+    def headers
+      { 'Accept': 'application/json', 'Accept-Charset': 'UTF-8' }
+    end
   end
 end

@@ -56,24 +56,21 @@ module TahiDevise
     # So, redirect to a page that prefills any orcid profile information and collects email.
     #
     def orcid
-      raise SSOAuthError, params[:error] if params[:error].present?
-      redirect_to orcid_client.auth_code.authorize_url(redirect_uri: omniauth_authorize_url('user', :orcid), scope: '/read-limited') && return
-      # add error handling
+      Rails.logger.info auth.inspect
 
-      oauth_response = orcid_client.auth_code.get_token(params[:code], headers: headers)
-      orcid_account = OrcidAccount.find_or_initialize_by(identifier: oauth_response.params['orcid']) do |account|
-        account.access_token = oauth_response.token
-        account.refresh_token = oauth_response.refresh_token
-        account.expires_at = DateTime.now.utc + oauth_response.expires_in.seconds
-        account.name = oauth_response.params['name']
-        account.scope = oauth_response.params['scope']
+      person_object = auth[:info]
+      oauth_object = auth[:extra]
+      oauth_params = oauth_object[:params]
+      orcid_account = OrcidAccount.find_or_initialize_by(identifier: auth[:uid]) do |account|
+        account.access_token = oauth_object[:access_token]
+        account.refresh_token = oauth_object[:refresh_token]
+        account.expires_at = DateTime.now.utc + oauth_object[:expires_in].seconds
+        account.name = oauth_params['name']
+        account.scope = oauth_params['scope']
       end
 
       # if the account is new and doesnt have a user, fetch details and enforce email presence
-      user = orcid_account.user
-      if user.nil?
-        orcid_client.site = 'https://' + TahiEnv.orcid_api_host # actually use api endpoint for getting user data
-        person_object = oauth_response.get("/v2.0/#{identifier}", headers: headers).parsed['person']
+      unless user = (credential.try(:user) || orcid_account.user)
         email_objects = person_object.dig('emails', 'email')
         raise SSOAuthError, 'Please allow your emails to be visible to trusted partners. (link to instructions)' if email_objects.empty?
         email_object = email_objects.detect { |obj| obj['primary'] && obj['verified'] }
@@ -83,6 +80,7 @@ module TahiDevise
           u.last_name = person_object.dig('name', 'family-name', 'value') # optional in orcid
           u.auto_generate_password
           u.auto_generate_username
+          u.credentials.build(uid: auth[:uid], provider: :orcid)
         end
         orcid_account.update!(user: user)
       end

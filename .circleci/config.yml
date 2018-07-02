@@ -20,7 +20,7 @@
 version: 2
 jobs:
   build:
-    parallelism: 6
+    parallelism: 4
     docker:
       - image: plos/aperta-circleci
         environment:
@@ -45,12 +45,12 @@ jobs:
 
     steps:
       - restore_cache:
-          key: source-v6
+          key: source-v7
 
       - checkout
 
       - save_cache:
-          key: source-v6
+          key: source-v7
           paths:
             - ".git"
 
@@ -62,7 +62,7 @@ jobs:
       # Restore bundle cache
       - restore_cache:
           keys:
-            - aperta-bundle-v6-{{ checksum "Gemfile.lock" }}
+            - aperta-bundle-v7-{{ checksum "Gemfile.lock" }}
 
       - run:
           name: Bundle Install
@@ -70,7 +70,7 @@ jobs:
 
       # Store bundle cache
       - save_cache:
-          key: aperta-bundle-v6-{{ checksum "Gemfile.lock" }}
+          key: aperta-bundle-v7-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
 
@@ -113,7 +113,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - aperta-yarn-v6-{{ checksum "yarn.lock" }}
+            - aperta-yarn-v7-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install Yarn
@@ -128,7 +128,7 @@ jobs:
 
       # Store yarn / webpacker cache
       - save_cache:
-          key: aperta-yarn-v6-{{ checksum "yarn.lock" }}
+          key: aperta-yarn-v7-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
             - client/node_modules

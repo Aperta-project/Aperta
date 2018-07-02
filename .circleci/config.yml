@@ -37,6 +37,7 @@ jobs:
           GECKODRIVER_URL: https://github.com/mozilla/geckodriver/releases/download/v0.20.1/geckodriver-v0.20.1-linux64.tar.gz
           SELENIUM_FIREFOX_PATH: /home/circleci/firefox/firefox
           CARD_LOAD: true
+          BUILD_EMBER: true
       - image: circleci/postgres:9.6
         environment:
           POSTGRES_USER: aperta

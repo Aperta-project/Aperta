@@ -136,7 +136,9 @@ class EditModal < PageFragment
 
   def cancel
     find('.cancel-link').click
-    AdminDashboardPage.new(context: context)
+    AdminDashboardPage.new(context: context).tap do |page|
+      expect(page).not_to have_css('.overlay-container')
+    end
   end
 end
 

@@ -242,7 +242,6 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     t.fill_in_report 'reviewer_report--competing_interests--detail' => 'I have no competing interests'
     t.submit_report
     t.confirm_submit_report
-    wait_for_ajax
 
     logout
     login_as(journal_admin, scope: :user)

@@ -79,6 +79,11 @@ module TahiHelperMethods
     end
   end
 
+  def insert_aws_cassette(name)
+    ignored_attributes = ["X-Amz-Algorithm", "X-Amz-Credential", "X-Amz-Date", "X-Amz-Expires", "X-Amz-Signature", "X-Amz-SignedHeaders"]
+    VCR.insert_cassette(name, match_requests_on: [:method, VCR.request_matchers.uri_without_params(*ignored_attributes)], record: :new_episodes)
+  end
+
   def with_valid_salesforce_credentials
     sf_credentials       = Dotenv.load('.env.development').select{|k,_v| k.include? 'DATABASEDOTCOM'}
     old_test_credentials = sf_credentials.inject({}){|hash, el| hash[el[0]] = ENV[el[0]]; hash }

@@ -37,6 +37,7 @@ feature 'Title And Abstract Task', js: true do
 
     scenario 'title prevents entering line breaks' do
       editor_name = 'article-title-input'
+      wait_for_editors
       set_rich_text(editor: editor_name, text: "ab")
 
       within_editor_iframe(editor_name) do
@@ -49,6 +50,7 @@ feature 'Title And Abstract Task', js: true do
 
     scenario 'abstract allows entering line breaks' do
       editor_name = 'article-abstract-input'
+      wait_for_editors
       set_rich_text(editor: editor_name, text: "ab")
 
       within_editor_iframe(editor_name) do

@@ -91,7 +91,7 @@ class DiscussionsPage < Page
   def add_reply
     find(new_comment_field).set('new reply')
     submit_comment
-    wait_for_ajax
+    find('.comment-body', text: 'new reply')
   end
 
   def submit_comment

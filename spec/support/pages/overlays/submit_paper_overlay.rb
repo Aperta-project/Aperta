@@ -28,7 +28,7 @@ class SubmitPaperOverlay < CardOverlay
 
   def submit
     click_on 'Yes, Submit My Manuscript'
-    wait_for_ajax
+    find('h5', text: "You've successfully submitted your paper!")
     DashboardPage.new
   end
 end

@@ -97,7 +97,6 @@ RSpec.configure do |config|
   config.include EmailSpec::Helpers
   config.include EmailSpec::Matchers
   config.include HTMLHelpers
-  config.include FeatureLogoutHelper, type: :feature
   config.include Warden::Test::Helpers, type: :feature
 
   config.before(:suite) do

@@ -66,9 +66,9 @@ feature "Register Decision", js: true, sidekiq: :inline! do
 
         overlay.register_decision = "Reject"
         overlay.radio_selected?
-
+        wait_for_ajax
         visit current_path # Revisit
-        expect(find("input[value='reject']")).to be_checked
+        expect(overlay).to have_css("input:checked[value='reject']")
       end
 
       scenario "displays correct letter templates" do

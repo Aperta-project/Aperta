@@ -21,6 +21,9 @@
 require 'rails_helper'
 require 'support/pages/dashboard_page'
 require 'support/pages/overlays/register_decision_overlay'
+require 'support/rich_text_editor_helpers'
+
+include RichTextEditorHelpers
 
 feature "Register Decision", js: true, sidekiq: :inline! do
   let(:user) { FactoryGirl.create(:user) }
@@ -103,6 +106,7 @@ feature "Register Decision", js: true, sidekiq: :inline! do
 
           overlay = Page.view_task_overlay(paper, task)
           overlay.register_decision = "Accept"
+          wait_for_editors
           overlay.decision_letter = "Accepting this because I can"
           sleep 1 # letter saves on a debounce
           overlay.click_send_email_button

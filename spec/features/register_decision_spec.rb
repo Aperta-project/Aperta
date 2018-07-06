@@ -56,6 +56,7 @@ feature "Register Decision", js: true, sidekiq: :inline! do
       scenario "Disable inputs upon card completion" do
         overlay = Page.view_task_overlay(paper, task)
         overlay.register_decision = "Accept"
+        wait_for_editors
         overlay.decision_letter = "Accepting this because I can"
         sleep 1 # letter saves on a debounce
         overlay.click_send_email_button

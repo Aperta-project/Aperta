@@ -33,6 +33,8 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
     before do
       login_as(admin, scope: :user)
       visit "/"
+      # Wait for pusher
+      sleep 2
     end
 
     context "on the workflow page" do
@@ -77,7 +79,6 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
           role: participant_paper.journal.task_participant_role
         )
         expect(page).to have_text(participant_paper.title)
-
         # removed as a task participant
         participant_paper.assignments.find_by!(
           user: admin,

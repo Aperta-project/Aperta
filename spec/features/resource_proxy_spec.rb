@@ -28,13 +28,6 @@ feature 'Resource Proxy', js: true, vcr: {cassette_name: "attachment", record: :
   end
 
   describe 'GET #url without version' do
-    let(:url) do
-      url_for(controller: :resource_proxy,
-              action: :url,
-              resource: 'supporting_info_file',
-              token: file.token)
-    end
-
     it 'redirects to S3 URL for supporting_information_files' do
       visit("/resource_proxy/supporting_information_files/#{file.token}")
       expect(current_url).to match(/

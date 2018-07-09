@@ -20,7 +20,7 @@
 version: 2
 jobs:
   build:
-    parallelism: 6
+    parallelism: 4
     docker:
       - image: plos/aperta-circleci
         environment:

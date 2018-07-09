@@ -261,8 +261,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
       wait_for_editors
       set_rich_text editor: 'reviewer_report--competing_interests--detail', text: 'save this'
       find('.required-standalone textarea').set 'Edit notes'
-      wait_for_ajax
-      expect(Answer.first.value).to eq '<p>I have no competing interests</p>'
+      expect { Answer.first.value }.to become('<p>I have no competing interests</p>')
       page.execute_script("$(\"button:contains('save')\").trigger('click')")
       wait_for_ajax
       expect(Answer.first.value).to eq '<p>save this</p>'

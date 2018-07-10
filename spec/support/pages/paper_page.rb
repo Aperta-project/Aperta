@@ -183,7 +183,6 @@ HERE
     SubmitPaperOverlay.new.tap do |overlay|
       if blk
         blk.call overlay
-        wait_for_ajax
       end
     end
   end

@@ -33,6 +33,8 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
     before do
       login_as(admin, scope: :user)
       visit "/"
+      # Wait for pusher
+      sleep 2
     end
 
     context "on the workflow page" do
@@ -65,13 +67,11 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
       scenario "access to papers" do
         # added as a collaborator
         collaborator_paper.add_collaboration(admin)
-        wait_for_ajax
         expect(page).to have_text(collaborator_paper.title)
 
         # removed as a collaborator
         collaborator_paper.remove_collaboration(admin)
-        wait_for_ajax
-        expect(page).to have_no_content(collaborator_paper.title)
+        expect(page).not_to have_content(collaborator_paper.title)
 
         # added as a task participant
         participant_paper.assignments.create!(
@@ -79,13 +79,11 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
           role: participant_paper.journal.task_participant_role
         )
         expect(page).to have_text(participant_paper.title)
-
         # removed as a task participant
         participant_paper.assignments.find_by!(
           user: admin,
           role: participant_paper.journal.task_participant_role
         ).destroy
-        wait_for_ajax
         expect(page).not_to have_text(participant_paper.title)
       end
     end

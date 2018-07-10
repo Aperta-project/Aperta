@@ -48,6 +48,6 @@ class AddCollaboratorsOverlay < CardOverlay
 
   def save
     find('.button-primary', text: 'SAVE').click
-    wait_for_ajax
+    expect(self).not_to have_css('.show-collaborators-overlay')
   end
 end

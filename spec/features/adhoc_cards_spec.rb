@@ -88,9 +88,8 @@ feature 'Adhoc cards', js: true do
       overlay.find('.email-send-participants').click
       overlay.find_all('.add-participant-button', text: '+').first.click
 
-      find(".ember-power-select-search-input").set('author')
-      wait_for_ajax
-      find(".ember-power-select-option").click
+      find(".ember-power-select-search-input").send_keys('author')
+      find(".ember-power-select-option", text: 'Author').click
       overlay.find('.send-email-action').click
 
       expect(overlay).to have_text('Your email has been sent.')

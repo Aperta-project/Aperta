@@ -54,7 +54,7 @@ feature "Upload Supporting Information", js: true do
     task.toggle_for_publication
 
     task.save_file_info
-    wait_for_ajax
+    task.find('.si-file-title', text: 'F4 Figure')
 
     paper.reload
     file = paper.supporting_information_files.last

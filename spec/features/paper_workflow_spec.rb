@@ -117,7 +117,6 @@ feature "Paper workflow", js: true, selenium: true do
     task_manager_page = TaskManagerPage.new
     phase = task_manager_page.phase 'Submission Data'
     phase.find('a', text: 'ADD NEW CARD').click
-    wait_for_ajax
     within '.overlay' do
       find('label', text: card.name).click
       find('button', text: 'ADD').click

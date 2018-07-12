@@ -129,13 +129,16 @@ class EditModal < PageFragment
 
   def save
     click_on "Save"
-    wait_for_ajax
-    AdminDashboardPage.new(context: context)
+    AdminDashboardPage.new(context: context).tap do |page|
+      expect(page).not_to have_css('.overlay-container')
+    end
   end
 
   def cancel
     find('.cancel-link').click
-    AdminDashboardPage.new(context: context)
+    AdminDashboardPage.new(context: context).tap do |page|
+      expect(page).not_to have_css('.overlay-container')
+    end
   end
 end
 

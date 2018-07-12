@@ -21,6 +21,9 @@
 require 'rails_helper'
 require 'support/pages/dashboard_page'
 require 'support/pages/overlays/register_decision_overlay'
+require 'support/rich_text_editor_helpers'
+
+include RichTextEditorHelpers
 
 feature "Register Decision", js: true, sidekiq: :inline! do
   let(:user) { FactoryGirl.create(:user) }
@@ -53,6 +56,7 @@ feature "Register Decision", js: true, sidekiq: :inline! do
       scenario "Disable inputs upon card completion" do
         overlay = Page.view_task_overlay(paper, task)
         overlay.register_decision = "Accept"
+        wait_for_editors
         overlay.decision_letter = "Accepting this because I can"
         sleep 1 # letter saves on a debounce
         overlay.click_send_email_button
@@ -66,9 +70,9 @@ feature "Register Decision", js: true, sidekiq: :inline! do
 
         overlay.register_decision = "Reject"
         overlay.radio_selected?
-
+        wait_for_ajax
         visit current_path # Revisit
-        expect(find("input[value='reject']")).to be_checked
+        expect(overlay).to have_css("input:checked[value='reject']")
       end
 
       scenario "displays correct letter templates" do
@@ -103,6 +107,7 @@ feature "Register Decision", js: true, sidekiq: :inline! do
 
           overlay = Page.view_task_overlay(paper, task)
           overlay.register_decision = "Accept"
+          wait_for_editors
           overlay.decision_letter = "Accepting this because I can"
           sleep 1 # letter saves on a debounce
           overlay.click_send_email_button

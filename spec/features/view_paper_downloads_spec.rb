@@ -50,7 +50,6 @@ feature 'Viewing Versions:', js: true do
     scenario 'the user views multiple versions of a paper', selenium: true do
       page = PaperPage.new
       page.downloads_link.click
-      wait_for_ajax
 
       expect(page.find('tbody .paper-downloads-row:nth-child(1) .paper-downloads-version')).to have_content 'Draft'
       expect(page.find('tbody .paper-downloads-row:nth-child(2) .paper-downloads-version')).to have_content 'v1.0'

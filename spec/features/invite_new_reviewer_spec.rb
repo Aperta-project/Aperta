@@ -81,7 +81,6 @@ feature "Inviting a new reviewer", js: true do
     set_rich_text(editor: 'declineReason', text: 'No thanks')
     set_rich_text(editor: 'reviewerSuggestions', text: 'bob@example.com')
     page.click_button "Send Feedback"
-    wait_for_ajax
     expect(page).to have_content("Thank You")
     expect(Invitation.last.decline_reason).to eq("<p>No thanks</p>")
     expect(Invitation.last.reviewer_suggestions).to eq("<p>bob@example.com</p>")

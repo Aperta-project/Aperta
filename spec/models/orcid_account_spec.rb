@@ -25,10 +25,10 @@ describe OrcidAccount do
     # account used:  "Aperta Test" apertatest@mailinator.com/password1
     FactoryGirl.create(:orcid_account,
       identifier: '0000-0001-7532-4518',
-      access_token: 'b5b6e490-5276-4a65-aadd-7dc9e0094787')
+      access_token: 'abc-123')
   end
-  let(:orcid_key) { 'APP-PLM33GS3DKZ60O79' }
-  let(:orcid_secret) { '056cab03-aebe-4cb2-86d1-0011184af5ee' }
+  let(:orcid_key) { 'APP-foo' }
+  let(:orcid_secret) { '0000-bar' }
   let(:cassette) { 'orcid_account' }
 
   around do |example|
@@ -36,8 +36,7 @@ describe OrcidAccount do
       ORCID_KEY: orcid_key,
       ORCID_SECRET: orcid_secret,
       ORCID_SITE_HOST: 'sandbox.orcid.org',
-      ORCID_API_HOST: 'api.sandbox.orcid.org',
-      ORCID_API_VERSION: '1.2'
+      ORCID_API_HOST: 'api.sandbox.orcid.org'
     }
     ClimateControl.modify(envs) do
       VCR.use_cassette(cassette, match_requests_on: [:uri, :method, :headers]) do
@@ -105,7 +104,7 @@ describe OrcidAccount do
       end
     end
 
-    context 'user has name with "low-ascii" characters"' do
+    context 'user has correct credentials' do
       it 'receives an access token' do
         orcid_account.exchange_code_for_token(authorization_code)
         orcid_account.update_orcid_profile!
@@ -116,37 +115,6 @@ describe OrcidAccount do
         orcid_account.exchange_code_for_token(authorization_code)
         orcid_account.update_orcid_profile!
         expect(orcid_account.identifier).to eq(orcid_identifier)
-      end
-    end
-
-    context 'user has name with "high-ascii" characters"' do
-      # Get this from after authorizing on orcid.org. Click on the oauth link,
-      # authorize aperta, and capture the authorization code from the callback.
-      # account used: andretest@mailinator.com/password1
-      let(:authorization_code) { 'Lt5QOw' }
-      let(:cassette) { 'orcid_authorization_high_ascii' }
-      it 'does not throw an exception while saving' do
-        expect do
-          orcid_account.exchange_code_for_token(authorization_code)
-          orcid_account.update_orcid_profile!
-        end.not_to raise_exception
-        expect(orcid_account.access_token).not_to be_empty
-      end
-    end
-
-    context 'user has name with unicode characters' do
-      # Get this from after authorizing on orcid.org. Click on the oauth link,
-      # authorize aperta, and capture the authorization code from the callback.
-      # account used: unicodetest@mailinator.com/password1
-      let(:authorization_code) { 'wNL7Gi' }
-      let(:cassette) { 'orcid_authorization_unicode' }
-
-      it 'does not throw an exception while saving' do
-        expect do
-          orcid_account.exchange_code_for_token(authorization_code)
-          orcid_account.update_orcid_profile!
-        end.not_to raise_exception
-        expect(orcid_account.access_token).not_to be_empty
       end
     end
   end
@@ -267,7 +235,7 @@ describe OrcidAccount do
       FactoryGirl.build_stubbed(:orcid_account)
     end
 
-    let(:redirect_uri) { 'http://test.host/api/orcid/oauth' }
+    let(:redirect_uri) { orcid_account.redirect_uri }
     let(:url) { orcid_account.oauth_authorize_url }
 
     it "hits the ORCID server" do
@@ -287,19 +255,18 @@ describe OrcidAccount do
     end
 
     it "requests a scope of '/read-limited'" do
-      expect(url).to match(%r{scope=/read-limited})
+      expect(URI.unescape(url)).to match(%r{scope=/read-limited})
     end
 
     it "requests only one scope" do
-      expect(url).not_to match(%r{scope=/[\w-]*%20/})
+      expect(URI.unescape(url)).not_to match(%r{scope=/[\w-]*%20/})
     end
 
     it "passes in a redirect uri" do
-      expect(url).to match(/redirect_uri=#{redirect_uri}/)
+      expect(URI.unescape(url)).to match(/redirect_uri=#{redirect_uri}/)
     end
 
     context 'respects the protocol set in default_url_options' do
-      let(:redirect_uri) { 'https://test.host/api/orcid/oauth' }
 
       around do |example|
         original_options = Rails.application.routes.default_url_options.dup
@@ -309,7 +276,7 @@ describe OrcidAccount do
       end
 
       it "passes in a redirect uri" do
-        expect(url).to match(/redirect_uri=#{redirect_uri}/)
+        expect(URI.unescape(url)).to match(/redirect_uri=#{redirect_uri}/)
       end
     end
   end

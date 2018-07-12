@@ -45,7 +45,7 @@ Tahi::Application.configure do
   config.use_ember_live_recompilation = false
 
   # Raise exceptions instead of rendering exception templates.
-  config.action_dispatch.show_exceptions = true
+  config.action_dispatch.show_exceptions = false
 
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = true

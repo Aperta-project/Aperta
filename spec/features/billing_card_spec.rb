@@ -21,6 +21,10 @@
 require 'rails_helper'
 
 feature 'Billing card', js: true do
+  let!(:account_list) do
+    ReferenceJson.find_or_create_by(name: "Institutional Account List")
+  end
+
   let(:author) { create :user, first_name: 'Author' }
   let!(:paper) do
     FactoryGirl.create(

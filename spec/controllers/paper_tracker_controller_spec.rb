@@ -23,7 +23,11 @@ require 'rails_helper'
 describe PaperTrackerController do
   let(:per_page) { Kaminari.config.default_per_page }
   let(:journal) do
-    FactoryGirl.create(:journal, :with_creator_role, :with_admin_roles)
+    FactoryGirl.create(
+      :journal, :with_creator_role, :with_admin_roles,
+      doi_publisher_prefix: "10.9999",
+      doi_journal_prefix: "journal."
+    )
   end
 
   before { sign_in user }

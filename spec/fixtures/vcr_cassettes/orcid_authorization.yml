@@ -5,42 +5,60 @@ http_interactions:
     uri: https://sandbox.orcid.org/oauth/token
     body:
       encoding: UTF-8
-      string: client_id=APP-PLM33GS3DKZ60O79&client_secret=056cab03-aebe-4cb2-86d1-0011184af5ee&code=4LJmXp&grant_type=authorization_code
+      string: client_id=APP-foo&client_secret=0000-bar&code=4LJmXp&grant_type=authorization_code
     headers:
       User-Agent:
       - Faraday v0.9.1
+      Content-Type:
+      - application/x-www-form-urlencoded
       Accept:
       - application/json
       Accept-Charset:
       - UTF-8
-      Content-Type:
-      - application/x-www-form-urlencoded
       Accept-Encoding:
-      - gzip,deflate
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
     status:
       code: 200
       message: OK
     headers:
-      Server:
-      - nginx/1.4.6 (Ubuntu)
       Date:
-      - Fri, 06 Jan 2017 16:08:29 GMT
+      - Thu, 14 Jun 2018 22:33:27 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
       - chunked
       Connection:
       - keep-alive
+      Set-Cookie:
+      - __cfduid=d0736be2291d0d97cc9ec3e9c81a3c6181529015607; expires=Fri, 14-Jun-19
+        22:33:27 GMT; path=/; domain=.orcid.org; HttpOnly
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Pragma:
+      - no-cache
+      Expires:
+      - '0'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - DENY
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 42b04237d9789294-SJC
     body:
       encoding: UTF-8
-      string: '{"access_token":"b5b6e490-5276-4a65-aadd-7dc9e0094787","token_type":"bearer","refresh_token":"f3c697e2-c37f-4195-b82f-8d9cbb0cdca4","expires_in":631138518,"scope":"/read-limited","name":"Aperta
-        Test","orcid":"0000-0001-7532-4518"}'
-    http_version: 
-  recorded_at: Fri, 06 Jan 2017 16:08:29 GMT
+      string: '{"access_token":"abc-123","refresh_token":"def-456", "orcid":"0000-0001-7532-4518", "expires_in":50000, "scope":"/read-public", "name":"Foo Bar"}'
+    http_version:
+  recorded_at: Thu, 14 Jun 2018 22:33:27 GMT
 - request:
     method: get
-    uri: https://api.sandbox.orcid.org/v1.2/0000-0001-7532-4518/orcid-profile
+    uri: https://api.sandbox.orcid.org/v2.0/0000-0001-7532-4518/personal-details
     body:
       encoding: US-ASCII
       string: ''
@@ -49,21 +67,21 @@ http_interactions:
       - Faraday v0.9.1
       Accept:
       - application/json
-      Authorization:
-      - Bearer b5b6e490-5276-4a65-aadd-7dc9e0094787
       Accept-Charset:
       - UTF-8
+      Authorization:
+      - Bearer abc-123
       Accept-Encoding:
-      - gzip,deflate
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
     status:
       code: 200
       message: OK
     headers:
       Server:
-      - nginx/1.4.6 (Ubuntu)
+      - nginx/1.10.0
       Date:
-      - Fri, 06 Jan 2017 16:08:29 GMT
+      - Thu, 14 Jun 2018 22:33:27 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -72,22 +90,32 @@ http_interactions:
       - keep-alive
       Access-Control-Allow-Origin:
       - "*"
-      Content-Encoding:
-      - gzip
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Pragma:
+      - no-cache
+      Expires:
+      - '0'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - DENY
+      X-Content-Type-Options:
+      - nosniff
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAAAAAAAAA3VTTW/bMAz9LzpPTZw2TZrbhnm37pBt50GRaZuYbBkUndUo
-        9t9H+TNIUgM2YPK9x0dSelcVhGAK0GeggL5WB5U8bNQn5cliphvyOTpQh/ch
-        oA5169yUvf2HmjFHoEg4G9fCBGgJRbpkbg6rVTB1dvJvDz1LvsVqLY+WN9G7
-        7eNGP22TvXhoDJfCup8sfWBJ3mipf5OdDBoCaxiubEo0B4LaQog+nbcmtqjS
-        7wu3xMCeupi3BIZlNLoCLr1oqdf09Ut6/H1Mv6XHY/pVzFhfNQ56VCYFp3qh
-        PVUYwhKep5I87R93yf55u9nvdlLVmcC68lmcXvYB+GX9sl4/C9g6g1XsakYw
-        tSCJ4Fuyc/UMjGU8mxtbsuuhDlQG3YVMblyIOjOgIawMdR8DMeAJHXI3aM/z
-        O6GP8EZOla+Nk12wKPTzLvAMta5NNYx/VFSfBctG3dXMTYWu6zmXlJ8gR+Au
-        QXaWIY+EcfdcAk1lR5i4LMg0ZTeBCAIYshHZkgtT2PqaZZZLF0P4D3R/PWXz
-        P7wxUOx2uQhhWYaDol/FfDisb+BqbP3CkBHC1c2qB+Upyl2kql8/0qMMoCDf
-        NnqIjYYdioOL0Fxh6E9Lo63jxTmRJ2kv2BH+HzWxOj8ZBAAA
-    http_version: 
-  recorded_at: Fri, 06 Jan 2017 16:08:29 GMT
+        eyJsYXN0LW1vZGlmaWVkLWRhdGUiOnsidmFsdWUiOjE1Mjg5NDU3MTY5NTR9
+        LCJuYW1lIjp7ImNyZWF0ZWQtZGF0ZSI6eyJ2YWx1ZSI6MTQ4MzcxODY1MzE4
+        M30sImxhc3QtbW9kaWZpZWQtZGF0ZSI6eyJ2YWx1ZSI6MTUyODk0NTcxNjk1
+        NH0sImdpdmVuLW5hbWVzIjp7InZhbHVlIjoiw4lyw6xrIn0sImZhbWlseS1u
+        YW1lIjp7InZhbHVlIjoiVGVzdCJ9LCJjcmVkaXQtbmFtZSI6bnVsbCwic291
+        cmNlIjpudWxsLCJ2aXNpYmlsaXR5IjoiUFVCTElDIiwicGF0aCI6IjAwMDAt
+        MDAwMS03NTMyLTQ1MTgifSwib3RoZXItbmFtZXMiOnsibGFzdC1tb2RpZmll
+        ZC1kYXRlIjpudWxsLCJvdGhlci1uYW1lIjpbXSwicGF0aCI6Ii8wMDAwLTAw
+        MDEtNzUzMi00NTE4L290aGVyLW5hbWVzIn0sImJpb2dyYXBoeSI6bnVsbCwi
+        cGF0aCI6Ii8wMDAwLTAwMDEtNzUzMi00NTE4L3BlcnNvbmFsLWRldGFpbHMi
+        fQ==
+    http_version:
+  recorded_at: Thu, 14 Jun 2018 22:33:28 GMT
 recorded_with: VCR 2.9.3

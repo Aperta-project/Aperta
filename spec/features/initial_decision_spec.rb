@@ -24,8 +24,8 @@ require 'support/rich_text_editor_helpers'
 include RichTextEditorHelpers
 
 feature 'Initial Decision', js: true, sidekiq: :inline! do
-  given(:admin) { FactoryGirl.create(:user, :site_admin) }
-  given(:paper) do
+  let(:admin) { FactoryGirl.create(:user, :site_admin) }
+  let(:paper) do
     FactoryGirl.create :paper_with_task,
       :with_integration_journal,
       :initially_submitted_lite,
@@ -35,13 +35,13 @@ feature 'Initial Decision', js: true, sidekiq: :inline! do
       }
   end
 
-  background do
+  before do
     login_as(admin, scope: :user)
     Page.view_task paper.tasks.first
   end
 
   context 'with a non-submitted Paper' do
-    given(:paper) do
+    let(:paper) do
       FactoryGirl.create :paper_with_task,
         :with_integration_journal,
         task_params: {

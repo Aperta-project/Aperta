@@ -83,6 +83,7 @@ class ReviewerReportTaskOverlay < PaperTaskOverlay
 
   def confirm_submit_report
     click_button "Yes, I’m sure"
+    find('.flash-message-content', text: 'Thank you for submitting your review')
   end
 
   def reload(reviewer_report_task = TahiStandardTasks::ReviewerReportTask.last)

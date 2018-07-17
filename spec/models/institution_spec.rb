@@ -21,12 +21,11 @@
 require 'rails_helper'
 
 describe Institutions do
-  let(:institutions) { Institutions.instance.matching_institutions "Health" }
+  let(:institutions) { Institutions.instance.matching_institutions "Clown" }
   let(:names) { institutions.map { |i| i['name'] } }
 
   it "returns the parsed hash" do
-    expect(names).to include "Adventist University of Health Sciences"
-    expect(names).to include "Pennsylvania College of Health Sciences"
-    expect(names).to include "Berkeley College School of Health Studies"
+    expect(names).to include "Clown College USA"
+    expect(names).to include "Hollywood Upstairs Clown College"
   end
 end

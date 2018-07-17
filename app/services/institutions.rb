@@ -23,6 +23,12 @@ require 'singleton'
 class Institutions < NedConnection
   include Singleton
 
+  PREDEFINED_INSTITUTIONS = [
+    { 'name' => 'Clown College USA' },
+    { 'name' => 'Hollywood Upstairs Medical School' },
+    { 'name' => 'Hollywood Upstairs Clown College' }
+  ].freeze
+
   def matching_institutions(query)
     if TahiEnv.ned_enabled?
       search('institutionsearch', substring: query).body
@@ -33,11 +39,7 @@ class Institutions < NedConnection
 
   private
 
-  def predefined_institutions
-    @institutions ||= YAML.load File.read Rails.root.join('config/institutions2.yml')
-  end
-
   def search_predefined(query)
-    predefined_institutions.select { |i| i['name'].downcase.match(query.downcase) }
+    PREDEFINED_INSTITUTIONS.select { |i| i['name'].downcase.match(query.downcase) }
   end
 end

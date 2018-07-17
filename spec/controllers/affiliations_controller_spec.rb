@@ -27,9 +27,9 @@ describe AffiliationsController do
 
   it "returns a list of the institution names" do
     stub_sign_in user
-    get :index, query: "Harvard"
+    get :index, query: "Medical"
     institution_names = res_body['institutions'].map { |i| i['name'] }
-    expect(institution_names).to include('Harvard University')
+    expect(institution_names).to include('Hollywood Upstairs Medical School')
   end
 
   describe '#create' do

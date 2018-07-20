@@ -51,6 +51,7 @@ class TechCheckScenario < TemplateContext
   private
 
   def task_sendback_reasons(task)
+    # TODO: The ordering here should be deterministic
     reasons = task.answers.includes(:card_content)
                 .where('card_contents.content_type' => 'paragraph-input')
                 .select do |answer|

@@ -100,46 +100,6 @@
       "note": "Only used in rake tasks"
     },
     {
-      "warning_type": "Command Injection",
-      "warning_code": 14,
-      "fingerprint": "5ec67fead2ae186da34d36b7c890f4ba05e548137305a649f0e02925a283de5c",
-      "check_name": "Execute",
-      "message": "Possible command injection",
-      "file": "lib/heroku_exporter.rb",
-      "line": 46,
-      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
-      "code": "system(\"heroku pgbackups:restore DATABASE_URL '#{s3_secure_url}' --app tahi-performance --confirm tahi-performance\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "HerokuExporter",
-        "method": "export_to_heroku!"
-      },
-      "user_input": "s3_secure_url",
-      "confidence": "Medium",
-      "note": "Only used in rake tasks"
-    },
-    {
-      "warning_type": "Command Injection",
-      "warning_code": 14,
-      "fingerprint": "9873214fc63149b11269f5c9b2214f562a81a12b1914c3d59976e9df5906e046",
-      "check_name": "Execute",
-      "message": "Possible command injection",
-      "file": "lib/heroku_exporter.rb",
-      "line": 15,
-      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
-      "code": "system(\"pg_dump -F c -v -U tahi -h localhost #{database_name} -f #{dest_file_path}\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "HerokuExporter",
-        "method": "snapshot!"
-      },
-      "user_input": "database_name",
-      "confidence": "Medium",
-      "note": "Only used in rake tasks"
-    },
-    {
       "warning_type": "SQL Injection",
       "warning_code": 0,
       "fingerprint": "d933463226a72e6fe08f59359b88cfd82218a39c7336180854de3f5cda83bbdb",

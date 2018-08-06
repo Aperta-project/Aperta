@@ -120,7 +120,6 @@ Tahi::Application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
-  config.carrierwave_storage = :fog
 
   # Sendgrid Configuration
   config.action_mailer.smtp_settings = {

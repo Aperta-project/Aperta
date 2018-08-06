@@ -32,9 +32,6 @@ TahiEnv.validate!
 
 module Tahi
   class Application < Rails::Application
-    config.s3_bucket = ENV.fetch('S3_BUCKET', :not_set)
-    config.carrierwave_storage = :fog
-    config.x.admin_email = TahiEnv.admin_email
     config.from_email = ENV.fetch('FROM_EMAIL', 'no-reply@example.com')
 
     # Raise an error within after_rollback & after_commit
@@ -46,8 +43,6 @@ module Tahi
       config.basic_auth_user = TahiEnv.basic_http_username
       config.basic_auth_password = TahiEnv.basic_http_password
     end
-
-    config.x.pusher_verbose_logging = TahiEnv.pusher_verbose_logging?
 
     config.omniauth_providers = []
   end

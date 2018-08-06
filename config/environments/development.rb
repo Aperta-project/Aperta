@@ -50,8 +50,6 @@ Tahi::Application.configure do
   # Mailcatcher configuration
   config.action_mailer.smtp_settings = { address: "localhost", port: 1025 }
 
-  # defaults to local storage
-  # config.carrierwave_storage = :fog
   config.session_store :cookie_store, key: '_tahi_session'
 
   # compress logging output
@@ -59,7 +57,6 @@ Tahi::Application.configure do
 
   config.log_level = :info
 
-  config.carrierwave_storage = :fog
 
   config.action_mailer.default_url_options = {host: "localhost", port: 5000, protocol: "http://"}
 

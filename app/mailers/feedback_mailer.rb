@@ -27,7 +27,7 @@ class FeedbackMailer < ApplicationMailer
 
     mail(
       from: user.email,
-      to: Rails.configuration.x.admin_email,
+      to: TahiEnv.admin_email,
       subject: prefixed("#{app_name} Feedback"))
   end
 end

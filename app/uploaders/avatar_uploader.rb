@@ -30,7 +30,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   DEFAULT_URL = "/images/profile-no-image.png"
 
   # Choose what kind of storage to use for this uploader:
-  storage Rails.application.config.carrierwave_storage
+  storage :fog
   # storage :fog
 
   # Override the directory where uploaded files will be stored.

@@ -182,3 +182,20 @@ jobs:
 
       - store_artifacts:
           path: tmp/capybara
+# implement a workflow so we can force a 1x/w build job (on Thursday at midnight) even if no changes
+workflows:
+  version: 2
+  build_includes_test:
+    jobs:
+      - build
+  weekly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * 4"
+          filters:
+            branches:
+              only:
+                - develop
+    jobs:
+      - build
+

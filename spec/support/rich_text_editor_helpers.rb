@@ -30,7 +30,7 @@ module RichTextEditorHelpers
     page.execute_script("#{instance}.target.triggerSave()")
   end
 
-  def wait_for_editors(timeout: Capybara.default_max_wait_time, count: 1)
+  def wait_for_editors(timeout: Capybara.default_max_wait_time + 5, count: 1)
     Timeout.timeout(timeout) do
       sleep 0.5
       loop until page.evaluate_script("$('iframe').length").to_i >= count

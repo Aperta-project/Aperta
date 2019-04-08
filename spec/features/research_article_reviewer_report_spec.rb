@@ -107,7 +107,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
       expect(report.scheduled_events.pluck(:state).uniq).to eq ['canceled']
     end
 
-    scenario 'A review can see their previous rounds of review' do
+    xscenario 'A review can see their previous rounds of review' do
       # seed the Upload Manuscript card so that it can be created after a decision has been registered
       ctt = CardTaskType.find_by(task_class: "TahiStandardTasks::UploadManuscriptTask")
       FactoryGirl.create(:card, :versioned, card_task_type: ctt)

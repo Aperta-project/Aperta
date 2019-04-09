@@ -154,7 +154,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
       end
     end
 
-    scenario 'A reviewer can see their previous rounds of review' do
+    xscenario 'A reviewer can see their previous rounds of review' do
       create_reviewer_invitation(paper)
       create_reviewer_report_task
 

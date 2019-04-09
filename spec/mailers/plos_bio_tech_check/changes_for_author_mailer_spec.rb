@@ -58,8 +58,8 @@ describe PlosBioTechCheck::ChangesForAuthorMailer do
       end
 
       it "replace line breaks with html breaks" do
-        expect(email.body).to_not include "with\nline\nbreaks"
-        expect(email.body).to include "<p>with\n<br />line\n<br />breaks</p>"
+        expect(email.body).to_not include "with\r\nline\r\nbreaks"
+        expect(email.body).to include "<p>with\r\n<br />line\r\n<br />breaks</p>"
       end
     end
   end

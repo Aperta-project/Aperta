@@ -78,7 +78,7 @@ feature 'Adhoc cards', js: true do
       Page.view_task paper.tasks.first
     end
 
-    scenario 'allows sending email from ad-hoc card' do
+    xscenario 'allows sending email from ad-hoc card' do
       overlay.find('.fa-plus').click
       overlay.find('.adhoc-toolbar-item--email').click
       overlay.fill_in('Enter a subject', with: 'subject')

@@ -52,7 +52,7 @@ module PaperConverters
       token = snapshot.get_property("url").split('/').last
       new(
         filename: snapshot.get_property("file"),
-        resource_token: ResourceToken.find_by!(token: token),
+        resource_token: ResourceToken.find_by(token: token),
         id: snapshot.source_id
       )
     end
@@ -117,7 +117,7 @@ module PaperConverters
                     only_path: params[:only_path] }
         url_for(:resource_proxy, options)
       else
-        @resource_token.url(params[:version] || :detail)
+        @resource_token.try(:url, params[:version] || :detail)
       end
     end
   end

@@ -46,24 +46,17 @@ module PaperConverters
 
     def self.from_snapshot(snapshot)
       token = snapshot.get_property("url").split('/').last
-      resource_token = ResourceToken.find_by(token: token)
+      resource_token = ResourceToken.find_by!(token: token)
       new(
         title: snapshot.get_property("title"),
-        href: resource_token.try(:url, :detail),
-        filename: snapshot.get_property("file")
+        href: resource_token.url(:detail)
       )
     end
 
-    def filename
-      return @figure.filename if @figure
-      @filename
-    end
-
-    def initialize(figure: nil, title: nil, href: nil, filename: nil)
+    def initialize(figure: nil, title: nil, href: nil)
       @figure = figure
       @title = title
       @href = href
-      @filename = filename
     end
 
     def title

@@ -186,6 +186,15 @@ namespace :export do
     export_paper(Paper.find_by(short_doi: args.fetch(:short_doi)))
   end
 
+  task manuscript_zips: :environment do
+    Paper.all.each do |paper|
+      prefix = paper.short_doi
+      zipfile_name = "export/#{prefix}.zip"
+      next if File.exist?(zipfile_name)
+      export_paper(paper)
+    end
+  end
+
   task random_manuscript_zips: :environment do
     FileUtils.mkdir_p("export")
     papers = []

@@ -66,8 +66,6 @@ def zip_add_url(zos, name, url)
   mk_zip_entry(zos, name, last_modified) do
     zos << resp.body
   end
-rescue Faraday::ConnectionFailed => ex
-  puts(ex)
 end
 
 def export_question(csv, node, level = nil)

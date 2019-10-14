@@ -78,6 +78,61 @@ def export_question(csv, node, level = nil)
   end
 end
 
+# Like Figure/SupportingInformationProxy, but more lightweight
+class ExportProxy
+  def self.figures_from_versioned_text(versioned_text)
+    from_versioned_text(versioned_text, :figures)
+  end
+
+  def self.si_from_versioned_text(versioned_text)
+    from_versioned_text(versioned_text, :supporting_information_files)
+  end
+
+  def self.from_versioned_text(versioned_text, what)
+    if versioned_text.latest_version?
+      versioned_text.paper.send(what).map do |model|
+        from_model(model)
+      end
+    else
+      major_version = versioned_text.major_version
+      minor_version = versioned_text.minor_version
+      snapshots = versioned_text.paper.snapshots.send(what)
+                    .where(major_version: major_version,
+                           minor_version: minor_version)
+      snapshots.map do |snapshot|
+        from_snapshot(snapshot)
+      end
+    end
+  end
+
+  def self.from_model(model)
+    new(model: model)
+  end
+
+  def self.from_snapshot(snapshot)
+    new(
+      filename: snapshot.get_property("file"),
+      s3_path: snapshot.key
+    )
+  end
+
+  def filename
+    return @model.filename if @model
+    @filename
+  end
+
+  def initialize(model: nil, filename: nil, s3_path: nil)
+    @model = model
+    @filename = filename
+    @s3_path = s3_path
+  end
+
+  def href
+    return @model.proxyable_url if @model
+    Attachment.authenticated_url_for_key(@s3_path)
+  end
+end
+
 def export_paper(paper)
   prefix = paper.short_doi
   zipfile_name = "export/#{prefix}.zip"
@@ -102,17 +157,17 @@ def export_paper(paper)
     paper.versioned_texts.each do |vt|
       version = "v" + (vt.major_version || "0").to_s + "." + (vt.minor_version || "0").to_s
       dir = "#{prefix}/#{version}"
-      zip_add_url(zos, "#{dir}/#{vt.manuscript_filename}", Attachment.authenticated_url_for_key(vt.s3_full_path)) if vt.manuscript_s3_path.present?
+      zip_add_url(zos, "#{dir}/#{vt.manuscript_filename}", Attachment.authenticated_url_for_key(vt.manuscript_s3_path + '/' + vt.manuscript_filename)) if vt.manuscript_s3_path.present?
       zip_add_url(zos, "#{dir}/#{vt.sourcefile_filename}", Attachment.authenticated_url_for_key(vt.s3_full_sourcefile_path)) if vt.sourcefile_s3_path.present?
       Correspondence.where(versioned_text: vt).each do |email|
         mk_zip_entry(zos, "#{dir}/email/#{email.message_id}.eml", email.sent_at) do
           zos << email.raw_source
         end
       end
-      PaperConverters::FigureProxy.from_versioned_text(vt).each do |figure|
+      ExportProxy.figures_from_versioned_text(vt).each do |figure|
         zip_add_url(zos, "#{dir}/figures/#{figure.filename}", figure.href)
       end
-      PaperConverters::SupportingInformationFileProxy.from_versioned_text(vt).each do |si|
+      ExportProxy.si_from_versioned_text(vt).each do |si|
         zip_add_url(zos, "#{dir}/si/#{si.filename}", si.href)
       end
       vt.paper.snapshots.where(major_version: vt.major_version, minor_version: vt.minor_version).each do |snapshot|

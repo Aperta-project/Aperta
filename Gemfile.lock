@@ -402,7 +402,7 @@ GEM
     net-ssh (3.0.2)
     netrc (0.10.3)
     newrelic_rpm (4.6.0.338)
-    nokogiri (1.8.2)
+    nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     oauth2 (1.4.0)
       faraday (>= 0.8, < 0.13)

@@ -158,7 +158,7 @@ def export_paper(paper)
         csv << ['timestamp', 'actor_full_name', 'message']
         activities.each do |a|
           actor_full_name = a.user.try(:full_name) || 'system'
-          csv << [a.created_at.to_formatted_s(:number), actor_full_name, a.message]
+          csv << [a.created_at.iso8601, actor_full_name, a.message]
         end
       end
     end

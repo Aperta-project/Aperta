@@ -22,6 +22,25 @@ require 'zip'
 require 'fileutils'
 require 'eml_to_pdf'
 
+# monkey patch em_to_pdf to use local bins
+module EmlToPdf
+  class Wkhtmltopdf
+    class ConversionError < StandardError; end
+
+    def self.convert(input, output_path)
+      IO.popen("#{PDFKit.configuration.wkhtmltopdf} --encoding utf-8 --footer-center [page] --footer-spacing 2.5 --quiet - #{output_path} 2>&1", "r+") do |pipe|
+        pipe.puts(input)
+        pipe.close_write
+        output = pipe.readlines.join
+        pipe.close
+        unless $?.success?
+          raise ConversionError, output
+        end
+      end
+    end
+  end
+end
+
 # This pollutes the global namespace
 def append_paper_metadata_header(csv)
   csv << ["doi", "title", "status", "authors", "academic_editors", "handling_editors", "cover_editors", "reviewers"]
@@ -78,30 +97,26 @@ def export_question(csv, node, level = nil)
 end
 
 def export_email(email, prefix, zos)
-  subject = (email.subject || 'no subject').gsub(' ', '_').gsub(/[^0-9a-z_]/i, '')
-  # some subjects have special cahrs in them, which messes with the wkhtmltopdf bash
-  # truncate at 200 char or filename migh tbe too long
-  filename = [email.sent_at.to_formatted_s(:number), subject].join('_')[0..200]
+  subject = (email.subject || 'no subject')[0..200]
+  # some subjects have special chars in them, which messes with the wkhtmltopdf bash
+  # truncate at 200 char or filename might be too long
+  filename = [email.sent_at.to_formatted_s(:number), subject].join('_').gsub(' ', '_').gsub(/[^0-9a-z_]/i, '')
   mk_zip_entry(zos, "#{prefix}/email/#{filename}.eml", email.sent_at) do
     zos << email.raw_source
   end
 
   # pdf creation
-  begin
-    temp_eml = Tempfile.new("#{filename}.eml")
-    sanitized_email_data = email.raw_source
-      .gsub(/<img.*?>/m, '') # generally the images link to expired s3 sources which fail the conversion
-      .gsub('=0D', '') # Odd artifacts, maybe from copying stuff from office?
-      .gsub('=3D', '=')
-    temp_eml.write(sanitized_email_data)
-    temp_eml.close
-    temp_pdf = Tempfile.new("#{filename}.pdf")
-    EmlToPdf.convert(temp_eml.path, temp_pdf.path)
-    mk_zip_entry(zos, "#{prefix}/email/#{filename}.pdf", email.sent_at) do
-      zos << temp_pdf.read
-    end
-  rescue EmlToPdf::Wkhtmltopdf::ConversionError
-    puts "Failed to convert Correspondence ID: #{email.id} to pdf, filename: #{filename}"
+  temp_eml = Tempfile.new("#{filename}.eml")
+  sanitized_email_data = email.raw_source
+    .gsub(/<img.*?>/m, '') # generally the images link to expired s3 sources which fail the conversion
+    .gsub('=0D', '') # Odd artifacts, maybe from copying stuff from office?
+    .gsub('=3D', '=')
+  temp_eml.write(sanitized_email_data)
+  temp_eml.close
+  temp_pdf = Tempfile.new("#{filename}.pdf")
+  EmlToPdf.convert(temp_eml.path, temp_pdf.path)
+  mk_zip_entry(zos, "#{prefix}/email/#{filename}.pdf", email.sent_at) do
+    zos << temp_pdf.read
   end
 end
 
@@ -233,10 +248,6 @@ namespace :export do
       paper2 = reviewer.reviewer_reports.first.try(:paper) unless reviewer.nil?
       papers.append(paper2) unless paper2.nil? || papers.include?(paper2)
     end
-
-    # papers.each do |paper|
-    #   export_paper(paper)
-    # end
 
     paper_queue = Queue.new
     papers.each { |paper| paper_queue << paper}

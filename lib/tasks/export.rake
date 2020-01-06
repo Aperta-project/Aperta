@@ -97,20 +97,20 @@ def export_question(csv, node, level = nil)
 end
 
 def export_email(email, prefix, zos)
-  subject = (email.subject || 'no subject')[0..200]
+  subject = (email.subject || 'no subject')[0..200].gsub(' ', '_').gsub(/[^0-9a-z_]/i, '')
   # some subjects have special chars in them, which messes with the wkhtmltopdf bash
   # truncate at 200 char or filename might be too long
-  filename = [email.sent_at.to_formatted_s(:number), subject].join('_').gsub(' ', '_').gsub(/[^0-9a-z_]/i, '')
+  filename = [email.sent_at.iso8601, subject].join('_')
   mk_zip_entry(zos, "#{prefix}/email/#{filename}.eml", email.sent_at) do
     zos << email.raw_source
   end
 
   # pdf creation
   temp_eml = Tempfile.new("#{filename}.eml")
-  sanitized_email_data = email.raw_source
-    .gsub(/<img.*?>/m, '') # generally the images link to expired s3 sources which fail the conversion
-    .gsub('=0D', '') # Odd artifacts, maybe from copying stuff from office?
-    .gsub('=3D', '=')
+
+  # generally the images link to expired s3 sources which fail the conversion
+  sanitized_email_data = email.raw_source.gsub(/<img.*?>/m, '')
+
   temp_eml.write(sanitized_email_data)
   temp_eml.close
   temp_pdf = Tempfile.new("#{filename}.pdf")

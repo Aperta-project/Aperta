@@ -194,6 +194,16 @@ def export_paper(paper)
     Correspondence.where(paper: paper, versioned_text: nil).each do |email|
       export_email(email, prefix, zos)
     end
+    Activity.where(subject: paper).includes(:user).order(:created_at).tap do |activities|
+      mk_zip_entry(zos, "#{prefix}/activities.csv") do
+        csv = CSV.new(zos)
+        csv << ['timestamp', 'actor_full_name', 'message']
+        activities.each do |a|
+          actor_full_name = a.user.try(:full_name) || 'system'
+          csv << [a.created_at.iso8601, actor_full_name, a.message]
+        end
+      end
+    end
     paper.versioned_texts.each do |vt|
       version = "v" + (vt.major_version || "0").to_s + "." + (vt.minor_version || "0").to_s
       dir = "#{prefix}/#{version}"

@@ -200,6 +200,10 @@ GEM
       html_page (~> 0.1.0)
       railties (>= 3.2)
     ember-cli-rails-assets (0.6.2)
+    eml_to_pdf (0.4.1)
+      filesize (~> 0.1.1)
+      mail (~> 2.5, >= 2.5.4)
+      nokogiri (~> 1.7)
     equivalent-xml (0.6.0)
       nokogiri (>= 1.4.3)
     erubis (2.7.0)
@@ -223,6 +227,7 @@ GEM
     faraday_middleware (0.10.1)
       faraday (>= 0.7.4, < 1.0)
     ffi (1.9.23)
+    filesize (0.1.1)
     fission (0.5.0)
       CFPropertyList (~> 2.2)
     fog (1.36.0)
@@ -717,6 +722,7 @@ DEPENDENCIES
   dotenv-rails
   email_spec
   ember-cli-rails
+  eml_to_pdf
   equivalent-xml
   factory_girl_rails
   fake_ftp
@@ -806,4 +812,4 @@ RUBY VERSION
    ruby 2.3.6p384
 
 BUNDLED WITH
-   1.16.2
+   1.17.3

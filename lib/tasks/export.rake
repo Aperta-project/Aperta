@@ -20,6 +20,26 @@
 
 require 'zip'
 require 'fileutils'
+require 'eml_to_pdf'
+
+# monkey patch em_to_pdf to use local bins
+module EmlToPdf
+  class Wkhtmltopdf
+    class ConversionError < StandardError; end
+
+    def self.convert(input, output_path)
+      IO.popen("#{PDFKit.configuration.wkhtmltopdf} --encoding utf-8 --footer-center [page] --footer-spacing 2.5 --quiet - #{output_path} 2>&1", "r+") do |pipe|
+        pipe.puts(input)
+        pipe.close_write
+        output = pipe.readlines.join
+        pipe.close
+        unless $?.success?
+          raise ConversionError, output
+        end
+      end
+    end
+  end
+end
 
 # This pollutes the global namespace
 def append_paper_metadata_header(csv)
@@ -73,6 +93,30 @@ def export_question(csv, node, level = nil)
   return unless node.key?('children')
   node['children'].each_with_index do |child, i|
     export_question(csv, child, [level, i + 1].compact.join("."))
+  end
+end
+
+def export_email(email, prefix, zos)
+  subject = (email.subject || 'no subject')[0..200].gsub(' ', '_').gsub(/[^0-9a-z_]/i, '')
+  # some subjects have special chars in them, which messes with the wkhtmltopdf bash
+  # truncate at 200 char or filename might be too long
+  filename = [email.sent_at.iso8601, subject].join('_')
+  mk_zip_entry(zos, "#{prefix}/email/#{filename}.eml", email.sent_at) do
+    zos << email.raw_source
+  end
+
+  # pdf creation
+  temp_eml = Tempfile.new("#{filename}.eml")
+
+  # generally the images link to expired s3 sources which fail the conversion
+  sanitized_email_data = email.raw_source.gsub(/<img.*?>/m, '')
+
+  temp_eml.write(sanitized_email_data)
+  temp_eml.close
+  temp_pdf = Tempfile.new("#{filename}.pdf")
+  EmlToPdf.convert(temp_eml.path, temp_pdf.path)
+  mk_zip_entry(zos, "#{prefix}/email/#{filename}.pdf", email.sent_at) do
+    zos << temp_pdf.read
   end
 end
 
@@ -148,9 +192,7 @@ def export_paper(paper)
       end
     end
     Correspondence.where(paper: paper, versioned_text: nil).each do |email|
-      mk_zip_entry(zos, "#{prefix}/email/#{email.message_id}.eml", email.sent_at) do
-        zos << email.raw_source
-      end
+      export_email(email, prefix, zos)
     end
     Activity.where(subject: paper).includes(:user).order(:created_at).tap do |activities|
       mk_zip_entry(zos, "#{prefix}/activities.csv") do
@@ -168,9 +210,7 @@ def export_paper(paper)
       zip_add_url(zos, "#{dir}/#{vt.manuscript_filename}", Attachment.authenticated_url_for_key(vt.manuscript_s3_path + '/' + vt.manuscript_filename)) if vt.manuscript_s3_path.present?
       zip_add_url(zos, "#{dir}/#{vt.sourcefile_filename}", Attachment.authenticated_url_for_key(vt.s3_full_sourcefile_path)) if vt.sourcefile_s3_path.present?
       Correspondence.where(versioned_text: vt).each do |email|
-        mk_zip_entry(zos, "#{dir}/email/#{email.message_id}.eml", email.sent_at) do
-          zos << email.raw_source
-        end
+        export_email(email, dir, zos)
       end
       ExportProxy.figures_from_versioned_text(vt).each do |figure|
         zip_add_url(zos, "#{dir}/figures/#{figure.filename}", figure.href)
@@ -216,11 +256,19 @@ namespace :export do
       papers.append(paper)
       reviewer = ReviewerReport.where(task_id: paper.tasks.pluck(:id)).map(&:user).uniq.compact.sample
       paper2 = reviewer.reviewer_reports.first.try(:paper) unless reviewer.nil?
-      papers.append(paper2) unless paper2.nil?
+      papers.append(paper2) unless paper2.nil? || papers.include?(paper2)
     end
-    papers.each do |paper|
-      export_paper(paper)
-    end
+
+    paper_queue = Queue.new
+    papers.each { |paper| paper_queue << paper}
+    (0...4).map do |i|
+      Thread.new do
+        loop do
+          paper = paper_queue.pop(true) rescue break
+          export_paper(paper)
+        end
+      end
+    end.map(&:join)
   end
 
   task manuscripts_csv: :environment do

@@ -94,6 +94,7 @@ gem 'tiny_tds'
 gem 'twitter-text'
 gem 'unf'
 gem 'yaml_db'
+gem 'eml_to_pdf', require: false
 
 # has_secure_token has been accepted into rails, but isn't yet in the most
 # recent release (4.2.5) Remove this gem when we upgrade to a rails version

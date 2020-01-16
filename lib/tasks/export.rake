@@ -21,6 +21,9 @@
 require 'zip'
 require 'fileutils'
 require 'eml_to_pdf'
+require 'openssl'
+
+# OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE # Temporary patch around OS X Mojave/Ruby 2.3 SSL issue
 
 # monkey patch em_to_pdf to use local bins
 module EmlToPdf

@@ -21,7 +21,6 @@
 require 'zip'
 require 'fileutils'
 require 'eml_to_pdf'
-require 'openssl'
 
 # monkey patch em_to_pdf to use local bins
 module EmlToPdf
@@ -247,7 +246,7 @@ def export_paper(paper)
 end
 
 namespace :export do
-  task :manuscript_zip, [:short_doi] => [:environment] do |_, args  |
+  task :manuscript_zip, [:short_doi] => [:environment] do |_, args|
     export_paper(Paper.find_by(short_doi: args.fetch(:short_doi)))
   end
 

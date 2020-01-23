@@ -88,12 +88,29 @@ def zip_add_url(zos, name, url)
   end
 end
 
-def export_question(csv, node, level = nil)
-  csv << [level, node.dig('value', 'title'), node.dig('value', 'answer')] if node['type'] == 'question'
+def context_list
+  %w(first_name last_name middle_initial position email
+    department title affiliation secondary_affiliation
+    ringgold_id secondary_ringgold_id)
+end
+
+def context_node?(node)
+  node['type'] == 'text' && context_list.include?(node['name'])
+end
+
+def export_question(data, node, level = nil)
+  data << [level, node.dig('value', 'title'), node.dig('value', 'answer')] if node['type'] == 'question'
+  data << [level, node['name'].humanize, node['value']] if context_node?(node)
   return unless node.key?('children')
   node['children'].each_with_index do |child, i|
-    export_question(csv, child, [level, i + 1].compact.join("."))
+    export_question(data, child, [level, i + 1].compact.join("."))
   end
+  export_as_generic_html(data)
+end
+
+def export_as_generic_html(data)
+  view = ActionView::Base.new(ActionController::Base.view_paths, data: data)
+  view.render(file: 'export/generic.html.erb')
 end
 
 def export_email(email, prefix, zos)
@@ -177,7 +194,7 @@ end
 
 def export_paper(paper)
   prefix = paper.short_doi
-  zipfile_name = "export/#{prefix}.zip"
+  zipfile_name = "exports/#{prefix}.zip"
   File.unlink(zipfile_name) if File.exist?(zipfile_name)
   Zip::OutputStream.open(zipfile_name) do |zos|
     mk_zip_entry(zos, "#{prefix}/metadata.csv") do
@@ -219,10 +236,9 @@ def export_paper(paper)
         zip_add_url(zos, "#{dir}/si/#{si.filename}", si.href)
       end
       vt.paper.snapshots.where(major_version: vt.major_version, minor_version: vt.minor_version).each do |snapshot|
-        mk_zip_entry(zos, "#{dir}/#{snapshot.contents['name']}.csv") do
-          csv = CSV.new(zos)
-          csv << ['id', 'question', 'answer']
-          export_question(csv, snapshot.contents)
+        mk_zip_entry(zos, "#{dir}/#{snapshot.contents['name']}.html") do
+          data = []
+          zos << export_question(data, snapshot.contents)
         end
       end
     end

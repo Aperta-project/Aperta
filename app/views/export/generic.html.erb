@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .divider:nth-child(odd) {
+      border-top: thick double;
+      border-bottom: thick double;
+      background-color: #e3e3e3;
+    }
+  </style>
+  <title><%= "test" %></title>
+</head>
+<body>
+<% id_count = nil %>
+<% @data.each do |data| %>
+  <% if id_count == nil %>
+    <% id_count = data[0].to_i.truncate %>
+    <div class="divider">
+  <% end %>
+  <% if id_count != data[0].to_i.truncate %>
+    </div><div class="divider">
+    <% id_count = data[0].to_i.truncate %>
+  <% end %>
+  <p><%= data[0] %> - <%= raw data[1] %>: <span style="color:#137300"><%= raw data[2] %></span></p>
+<% end %>
+</div>
+</body>
+</html>

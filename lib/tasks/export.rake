@@ -261,14 +261,14 @@ namespace :export do
   task manuscript_zips: :environment do
     Paper.all.each do |paper|
       prefix = paper.short_doi
-      zipfile_name = "export/#{prefix}.zip"
+      zipfile_name = "exports/#{prefix}.zip"
       next if File.exist?(zipfile_name)
       export_paper(paper)
     end
   end
 
   task random_manuscript_zips: :environment do
-    FileUtils.mkdir_p("export")
+    FileUtils.mkdir_p("exports")
     papers = []
     # Ensure we have one from each state
     Paper.all.pluck(:publishing_state).uniq.each do |state|
@@ -297,7 +297,7 @@ namespace :export do
 
   task manuscripts_csv: :environment do
     FileUtils.mkdir_p("export")
-    CSV.open("export/manuscripts.csv", "wb") do |csv|
+    CSV.open("exports/manuscripts.csv", "wb") do |csv|
       append_paper_metadata_header(csv)
       Paper.all.each { |paper| append_paper_metadata(csv, paper) }
     end

@@ -88,6 +88,13 @@ def zip_add_url(zos, name, url)
   end
 end
 
+def zip_add_rendered_html(zos, entry_name, time, template, context)
+  mk_zip_entry(zos, entry_name, time) do
+    view = ActionView::Base.new(ActionController::Base.view_paths, context)
+    zos << view.render(file: template)
+  end
+end
+
 def context_list
   %w(first_name last_name middle_initial position email
     department title affiliation secondary_affiliation
@@ -203,10 +210,11 @@ def export_paper(paper)
       append_paper_metadata(csv, paper)
     end
     DiscussionTopic.where(paper: paper).each do |topic|
-      mk_zip_entry(zos, "#{prefix}/discussions/#{topic.title}.html", topic.discussion_replies.pluck(:updated_at).sort.last) do
-        view = ActionView::Base.new(ActionController::Base.view_paths, topic: topic)
-        zos << view.render(file: 'export/discussion.html.erb')
-      end
+      zip_add_rendered_html(zos,
+                            "#{prefix}/discussions/#{topic.title}.html",
+                            topic.discussion_replies.pluck(:updated_at).sort.last,
+                            'export/discussion.html.erb',
+                            topic: topic)
     end
     Correspondence.where(paper: paper, versioned_text: nil).each do |email|
       export_email(email, prefix, zos)

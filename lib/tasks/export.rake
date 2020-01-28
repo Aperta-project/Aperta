@@ -199,6 +199,19 @@ class ExportProxy
   end
 end
 
+def export_decision(zos, prefix, decision)
+  version = "#{decision.major_version}.#{decision.minor_version}"
+  dir = "#{prefix}/v#{version}/decision"
+  zip_add_rendered_html(zos,
+                        "#{dir}/decision.html",
+                        nil,
+                        "export/decision.html.erb",
+                        decision: decision)
+  decision.attachments.each do |attachment|
+    zip_add_url(zos, "#{dir}/#{attachment.filename}", attachment.proxyable_url)
+  end
+end
+
 def export_paper(paper)
   prefix = paper.short_doi
   zipfile_name = "exports/#{prefix}.zip"
@@ -228,6 +241,9 @@ def export_paper(paper)
           csv << [a.created_at.iso8601, actor_full_name, a.message]
         end
       end
+    end
+    paper.decisions.each do |decision|
+      export_decision(zos, prefix, decision)
     end
     paper.versioned_texts.each do |vt|
       version = "v" + (vt.major_version || "0").to_s + "." + (vt.minor_version || "0").to_s

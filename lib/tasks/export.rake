@@ -105,19 +105,19 @@ def context_node?(node)
   node['type'] == 'text' && context_list.include?(node['name'])
 end
 
-def export_question(data, node, level = nil)
+def export_snapshot_question(data, node, level = nil)
   data << [level, node.dig('value', 'title'), node.dig('value', 'answer')] if node['type'] == 'question'
   data << [level, node['name'].humanize, node['value']] if context_node?(node)
   return unless node.key?('children')
   node['children'].each_with_index do |child, i|
-    export_question(data, child, [level, i + 1].compact.join("."))
+    export_snapshot_question(data, child, [level, i + 1].compact.join("."))
   end
-  export_as_generic_html(data)
+  export_as_generic_snapshot_html(data)
 end
 
-def export_as_generic_html(data)
+def export_as_generic_snapshot_html(data)
   view = ActionView::Base.new(ActionController::Base.view_paths, data: data)
-  view.render(file: 'export/generic.html.erb')
+  view.render(file: 'export/generic_snapshot.html.erb')
 end
 
 def export_email(email, prefix, zos)
@@ -262,7 +262,7 @@ def export_paper(paper)
       vt.paper.snapshots.where(major_version: vt.major_version, minor_version: vt.minor_version).each do |snapshot|
         mk_zip_entry(zos, "#{dir}/#{snapshot.contents['name']}.html") do
           data = []
-          zos << export_question(data, snapshot.contents)
+          zos << export_snapshot_question(data, snapshot.contents)
         end
       end
     end

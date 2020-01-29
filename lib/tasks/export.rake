@@ -206,6 +206,15 @@ def export_decision(zos, prefix, decision)
   decision.attachments.each do |attachment|
     zip_add_url(zos, "#{dir}/#{attachment.filename}", attachment.proxyable_url)
   end
+  decision.reviewer_reports.each do |reviewer_report|
+    next if reviewer_report.state == "invitation_not_accepted"
+    zip_add_rendered_html(zos,
+                          "#{dir}/#{reviewer_report.task.title.parameterize}.html",
+                          nil,
+                          'export/generic_answers.html.erb',
+                          content: reviewer_report.card_version.card_contents.root,
+                          owner: reviewer_report)
+  end
 end
 
 def export_paper(paper)
@@ -239,6 +248,7 @@ def export_paper(paper)
       end
     end
     paper.decisions.each do |decision|
+      next if decision.verdict.nil?
       export_decision(zos, prefix, decision)
     end
     paper.versioned_texts.each do |vt|
@@ -262,6 +272,18 @@ def export_paper(paper)
                               'export/generic_snapshot.html.erb',
                               data: make_snapshot_question_data(snapshot.contents))
       end
+    end
+    paper.tasks.each do |task|
+      # Skip any tasks that have been snapshotted, they should be in
+      # the version directories.
+      next if Snapshot.find_by(source: task).present?
+      next if task.answers.size == 0 && task.comments.size == 0
+      zip_add_rendered_html(zos,
+                            "#{prefix}/#{task.title.parameterize}-task.html",
+                            nil,
+                            'export/generic_answers.html.erb',
+                            content: task.card_version.card_contents.root,
+                            owner: task)
     end
   end
 end

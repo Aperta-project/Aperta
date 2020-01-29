@@ -1,0 +1,6 @@
+<div>
+  <h2><%= reply.replier.full_name %> @ <%= reply.created_at %></h2>
+  <div>
+    <%= reply.sanitized_body.html_safe %>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<% if content.present? %>
+  <% if content.content_type == 'display-children' %>
+    <div style="margin-left: 1em;">
+      <%= render partial: 'export/content', collection: content.children, locals: {owner: owner} %>
+    </div>
+  <% else %>
+    <p>
+      <%= (content.text || content.label).try(:html_safe) %>:
+      <span style="color:#137300">
+        <%= owner.answers.where(card_content: content).first.try(:value).try(:html_safe) %>
+      </span>
+    </p>
+  <% end %>
+<% end %>

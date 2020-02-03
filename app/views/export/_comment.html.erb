@@ -1,0 +1,6 @@
+<div>
+  <h2><%= comment.commenter.full_name %> @ <%= comment.created_at %></h2>
+  <div>
+    <%= comment.body.gsub("\n", "<br>").html_safe %>
+  </div>
+</div>

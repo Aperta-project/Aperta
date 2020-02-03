@@ -88,6 +88,13 @@ def zip_add_url(zos, name, url)
   end
 end
 
+def zip_add_rendered_html(zos, entry_name, time, template, context)
+  mk_zip_entry(zos, entry_name, time) do
+    view = ActionView::Base.new(ActionController::Base.view_paths, context)
+    zos << view.render(file: template)
+  end
+end
+
 def context_list
   %w(first_name last_name middle_initial position email
     department title affiliation secondary_affiliation
@@ -98,19 +105,15 @@ def context_node?(node)
   node['type'] == 'text' && context_list.include?(node['name'])
 end
 
-def export_question(data, node, level = nil)
+def make_snapshot_question_data(node, data = nil, level = nil)
+  data = [] if data.nil?
   data << [level, node.dig('value', 'title'), node.dig('value', 'answer')] if node['type'] == 'question'
   data << [level, node['name'].humanize, node['value']] if context_node?(node)
-  return unless node.key?('children')
+  return data unless node.key?('children')
   node['children'].each_with_index do |child, i|
-    export_question(data, child, [level, i + 1].compact.join("."))
+    make_snapshot_question_data(child, data, [level, i + 1].compact.join("."))
   end
-  export_as_generic_html(data)
-end
-
-def export_as_generic_html(data)
-  view = ActionView::Base.new(ActionController::Base.view_paths, data: data)
-  view.render(file: 'export/generic.html.erb')
+  data
 end
 
 def export_email(email, prefix, zos)
@@ -192,6 +195,28 @@ class ExportProxy
   end
 end
 
+def export_decision(zos, prefix, decision)
+  version = "#{decision.major_version}.#{decision.minor_version}"
+  dir = "#{prefix}/v#{version}/decision"
+  zip_add_rendered_html(zos,
+                        "#{dir}/decision.html",
+                        nil,
+                        "export/decision.html.erb",
+                        decision: decision)
+  decision.attachments.each do |attachment|
+    zip_add_url(zos, "#{dir}/#{attachment.filename}", attachment.proxyable_url)
+  end
+  decision.reviewer_reports.each do |reviewer_report|
+    next if reviewer_report.state == "invitation_not_accepted"
+    zip_add_rendered_html(zos,
+                          "#{dir}/#{reviewer_report.task.title.parameterize}.html",
+                          nil,
+                          'export/generic_answers.html.erb',
+                          content: reviewer_report.card_version.card_contents.root,
+                          owner: reviewer_report)
+  end
+end
+
 def export_paper(paper)
   prefix = paper.short_doi
   zipfile_name = "exports/#{prefix}.zip"
@@ -203,10 +228,11 @@ def export_paper(paper)
       append_paper_metadata(csv, paper)
     end
     DiscussionTopic.where(paper: paper).each do |topic|
-      mk_zip_entry(zos, "#{prefix}/discussions/#{topic.title}.html", topic.discussion_replies.pluck(:updated_at).sort.last) do
-        view = ActionView::Base.new(ActionController::Base.view_paths, topic: topic)
-        zos << view.render(file: 'export/discussion.html.erb')
-      end
+      zip_add_rendered_html(zos,
+                            "#{prefix}/discussions/#{topic.title}.html",
+                            topic.discussion_replies.pluck(:updated_at).sort.last,
+                            'export/discussion.html.erb',
+                            topic: topic)
     end
     Correspondence.where(paper: paper, versioned_text: nil).each do |email|
       export_email(email, prefix, zos)
@@ -220,6 +246,10 @@ def export_paper(paper)
           csv << [a.created_at.iso8601, actor_full_name, a.message]
         end
       end
+    end
+    paper.decisions.each do |decision|
+      next if decision.verdict.nil?
+      export_decision(zos, prefix, decision)
     end
     paper.versioned_texts.each do |vt|
       version = "v" + (vt.major_version || "0").to_s + "." + (vt.minor_version || "0").to_s
@@ -236,11 +266,24 @@ def export_paper(paper)
         zip_add_url(zos, "#{dir}/si/#{si.filename}", si.href)
       end
       vt.paper.snapshots.where(major_version: vt.major_version, minor_version: vt.minor_version).each do |snapshot|
-        mk_zip_entry(zos, "#{dir}/#{snapshot.contents['name']}.html") do
-          data = []
-          zos << export_question(data, snapshot.contents)
-        end
+        zip_add_rendered_html(zos,
+                              "#{dir}/#{snapshot.contents['name']}.html",
+                              nil,
+                              'export/generic_snapshot.html.erb',
+                              data: make_snapshot_question_data(snapshot.contents))
       end
+    end
+    paper.tasks.each do |task|
+      # Skip any tasks that have been snapshotted, they should be in
+      # the version directories.
+      next if Snapshot.find_by(source: task).present?
+      next if task.answers.size == 0 && task.comments.size == 0
+      zip_add_rendered_html(zos,
+                            "#{prefix}/#{task.title.parameterize}-task.html",
+                            nil,
+                            'export/generic_answers.html.erb',
+                            content: task.card_version.card_contents.root,
+                            owner: task)
     end
   end
 end
@@ -253,14 +296,14 @@ namespace :export do
   task manuscript_zips: :environment do
     Paper.all.each do |paper|
       prefix = paper.short_doi
-      zipfile_name = "export/#{prefix}.zip"
+      zipfile_name = "exports/#{prefix}.zip"
       next if File.exist?(zipfile_name)
       export_paper(paper)
     end
   end
 
   task random_manuscript_zips: :environment do
-    FileUtils.mkdir_p("export")
+    FileUtils.mkdir_p("exports")
     papers = []
     # Ensure we have one from each state
     Paper.all.pluck(:publishing_state).uniq.each do |state|
@@ -289,7 +332,7 @@ namespace :export do
 
   task manuscripts_csv: :environment do
     FileUtils.mkdir_p("export")
-    CSV.open("export/manuscripts.csv", "wb") do |csv|
+    CSV.open("exports/manuscripts.csv", "wb") do |csv|
       append_paper_metadata_header(csv)
       Paper.all.each { |paper| append_paper_metadata(csv, paper) }
     end

@@ -5,13 +5,6 @@
   </head>
   <body>
     <h1><%= @topic.title %></h1>
-    <% for reply in @topic.discussion_replies %>
-      <div>
-        <h2><%= reply.replier.full_name %> @ <%= reply.created_at %></h2>
-        <div>
-          <%= reply.sanitized_body.html_safe %>
-        </div>
-      </div>
-    <% end %>
+    <%= render partial: "export/reply", collection: @topic.discussion_replies %>
   </body>
 </html>

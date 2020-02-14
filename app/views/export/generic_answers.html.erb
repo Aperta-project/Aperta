@@ -7,8 +7,24 @@
        border-bottom: thick double;
        background-color: #e3e3e3;
      }
+     .answer {
+       color: green;
+     }
+     .depth-level-0 {
+       margin-left: 10px;
+     }
+     .depth-level-1 {
+       margin-left: 20px;
+     }
+     .depth-level-2 {
+       margin-left: 30px;
+     }
+     .depth-level-3 {
+       margin-left: 40px;
+     }
+
     </style>
-    <title><%= "test" %></title>
+    <title></title>
   </head>
   <body>
     <%= render partial: "export/content", object: @content, locals: {owner: @owner} %>

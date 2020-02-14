@@ -1,5 +1,5 @@
 <% if content.present? %>
-  <% if content.content_type == 'display-children' %>
+  <% if content.content_type == 'display-children'%>
     <div style="margin-left: 1em;">
       <%= render partial: 'export/content', collection: content.children, locals: {owner: owner} %>
     </div>

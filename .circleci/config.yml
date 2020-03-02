@@ -31,7 +31,7 @@ jobs:
           BUNDLE_PATH: vendor/bundle
           PGUSER: aperta
           RAILS_ENV: test
-          DATABASE_URL: "postgres://aperta@localhost:5432/aperta"
+          DATABASE_URL: "postgres://aperta:aperta@localhost:5432/aperta"
           FIREFOX_CACHE_DIR: /home/circleci/ff
           FIREFOX_URL: https://ftp.mozilla.org/pub/firefox/releases/61.0.2/linux-x86_64/en-US/firefox-61.0.2.tar.bz2
           GECKODRIVER_URL: https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz
@@ -42,8 +42,7 @@ jobs:
         environment:
           POSTGRES_USER: aperta
           POSTGRES_DB: aperta
-          POSTGRES_PASSWORD: ""
-
+          POSTGRES_PASSWORD: "aperta"
     steps:
       - restore_cache:
           key: source-v7

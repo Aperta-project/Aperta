@@ -7,12 +7,35 @@
       border-bottom: thick double;
       background-color: #e3e3e3;
     }
+    .comments {
+      border-top: thick double;
+      border-bottom: thick double;
+      background-color: #fbffcf;
+    }
+    .answer {
+      color: green;
+    }
+    .depth-level-0 {
+      margin-left: 10px;
+    }
+    .depth-level-1 {
+      margin-left: 20px;
+    }
+    .depth-level-2 {
+      margin-left: 30px;
+    }
+    .depth-level-3 {
+      margin-left: 40px;
+    }
   </style>
-  <title><%= "test" %></title>
 </head>
 <body>
-<% id_count = nil %>
+<%
+  id_count = nil
+  depth = 1
+%>
 <% @data.each do |data| %>
+  <% depth = data[0].scan('.').size %>
   <% if id_count == nil %>
     <% id_count = data[0].to_i.truncate %>
     <div class="divider">
@@ -21,8 +44,12 @@
     </div><div class="divider">
     <% id_count = data[0].to_i.truncate %>
   <% end %>
-  <p><%= data[0] %> - <%= raw data[1] %>: <span style="color:#137300"><%= raw data[2] %></span></p>
+  <p class="depth-level-<%= depth %>">
+    <span class="question"><%= raw data[1] %>:</span>
+    <span class="answer"><%= data[2] %></span>
+  </p>
 <% end %>
 </div>
 </body>
 </html>
+

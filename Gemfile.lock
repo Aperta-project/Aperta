@@ -469,7 +469,7 @@ GEM
       interception (>= 0.5)
       pry
     public_suffix (3.0.2)
-    puma (3.12.2)
+    puma (3.12.4)
     pusher (0.14.4)
       httpclient (~> 2.5)
       multi_json (~> 1.0)

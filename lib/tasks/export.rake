@@ -277,7 +277,7 @@ def export_paper(paper)
       # Skip any tasks that have been snapshotted, they should be in
       # the version directories.
       next if Snapshot.find_by(source: task).present?
-      next if task.answers.size == 0 && task.comments.size == 0
+      next if task.answers.empty? && task.comments.empty? && (task.try(:invitations).nil? || task.invitations.empty?)
       zip_add_rendered_html(zos,
                             "#{prefix}/#{task.title.parameterize}-task.html",
                             nil,

@@ -1,0 +1,6 @@
+<tr>
+<td><%= invitation.email %></td>
+<td><%= invitation.state %></td>
+<td>v<%= invitation.decision.major_version || 0 %>.<%= invitation.decision.minor_version || 0 %> - <%= invitation.decision.verdict %></td>
+<td><%= invitation.decline_reason %></td>
+</tr> 

@@ -34,5 +34,12 @@
         <%= render partial: "export/comment", collection: @owner.comments %>
       </div>
     <% end %>
+
+    <% if @owner.try(:invitations).try(:any?) %>
+        <h2>Invitations</h2>
+        <table>
+          <%= render partial: "export/invitation", collection: @owner.invitations %>
+        </table>
+    <% end %>
   </body>
 </html>

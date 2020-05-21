@@ -285,7 +285,7 @@ def export_paper(paper)
       zip_add_rendered_html(zos,
                             "#{prefix}/#{task.title.parameterize}-task.html",
                             nil,
-                            'export/generic_answers.html.erb',
+                            'export/task.html.erb',
                             content: task.card_version.card_contents.root,
                             owner: task)
     end

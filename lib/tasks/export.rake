@@ -274,10 +274,14 @@ def export_paper(paper)
       end
     end
     paper.tasks.each do |task|
+      next unless task.answers.any? ||
+          task.comments.any? ||
+          task.try(:invitations).try(:any?)
+
       # Skip any tasks that have been snapshotted, they should be in
       # the version directories.
       next if Snapshot.find_by(source: task).present?
-      next if task.answers.empty? && task.comments.empty? && (task.try(:invitations).nil? || task.invitations.empty?)
+
       zip_add_rendered_html(zos,
                             "#{prefix}/#{task.title.parameterize}-task.html",
                             nil,

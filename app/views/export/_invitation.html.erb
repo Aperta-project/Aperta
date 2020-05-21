@@ -1,6 +1,50 @@
 <tr>
-<td><%= invitation.email %></td>
-<td><%= invitation.state %></td>
-<td>v<%= invitation.decision.major_version || 0 %>.<%= invitation.decision.minor_version || 0 %> - <%= invitation.decision.verdict %></td>
-<td><%= invitation.decline_reason %></td>
+<td>
+  <%= invitation.invitee.try(:full_name) %> <%= invitation.email %>
+</td>
+<td>
+  <%if invitation.decision.major_version%>
+    v<%= invitation.decision.major_version %>.<%= invitation.decision.minor_version %>
+    <%= invitation.decision.verdict.try(:humanize) %>
+  <% end %>
+</td>
+<td>
+  <%if !invitation.pending? %>
+    <%if invitation.invited? %>
+      Invited <%= invitation.invited_at%>
+    <% else %>
+      <%if invitation.accepted? %>
+        <%if ReviewerReport.for_invitation(invitation) %>
+          <%if ReviewerReport.for_invitation(invitation).status == 'completed' %>
+            Completed <%= ReviewerReport.for_invitation(invitation).datetime %>
+          <% else %>
+            <%if ReviewerReport.for_invitation(invitation).due_datetime.due_at %>
+              Review due <%= ReviewerReport.for_invitation(invitation).due_datetime.due_at %>
+            <% else %>
+              Review pending
+            <% end %>
+            <%if invitation.actor && !invitation.is_accepted_by_invitee %>
+              Accepted by <%= invitation.actor.full_name %>
+            <% end %>
+          <% end %>
+        <% else %>
+          Accepted <%= invitation.accepted_at%>
+        <% end %>
+      <% else %>
+        <%if invitation.declined? %>
+          Declined <%= invitation.declined_at%>
+        <% else %>
+          <%if invitation.rescinded? %>
+            Rescinded <%= invitation.rescinded_at%><% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</td>
+<td>
+  <%if invitation.declined? %>
+    <p><%= invitation.decline_reason%></p>
+  <% end %>
+  <%= invitation.body %>
+</td>
 </tr> 

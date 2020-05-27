@@ -3,7 +3,7 @@
   <%= invitation.invitee.try(:full_name) %> <%= invitation.email %>
 </td>
 <td>
-  <%if invitation.decision.major_version%>
+  <%if invitation.decision.try(:major_version)%>
     v<%= invitation.decision.major_version %>.<%= invitation.decision.minor_version %>
     <%= invitation.decision.verdict.try(:humanize) %>
   <% end %>

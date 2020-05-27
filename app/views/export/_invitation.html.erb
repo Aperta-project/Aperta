@@ -18,7 +18,7 @@
           <%if ReviewerReport.for_invitation(invitation).status == 'completed' %>
             Completed <%= ReviewerReport.for_invitation(invitation).datetime %>
           <% else %>
-            <%if ReviewerReport.for_invitation(invitation).due_datetime.due_at %>
+            <%if ReviewerReport.for_invitation(invitation).try(:due_datetime).try(:due_at) %>
               Review due <%= ReviewerReport.for_invitation(invitation).due_datetime.due_at %>
             <% else %>
               Review pending

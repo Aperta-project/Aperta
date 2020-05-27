@@ -23,7 +23,7 @@
             <% else %>
               Review pending
             <% end %>
-            <%if invitation.actor && !invitation.is_accepted_by_invitee %>
+            <%if invitation.actor && invitation.actor.id != invitation.invitee.id %>
               Accepted by <%= invitation.actor.full_name %>
             <% end %>
           <% end %>

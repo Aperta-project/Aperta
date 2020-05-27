@@ -302,7 +302,12 @@ namespace :export do
       prefix = paper.short_doi
       zipfile_name = "exports/#{prefix}.zip"
       next if File.exist?(zipfile_name)
-      export_paper(paper)
+      begin
+        export_paper(paper)
+      rescue Exception => e
+        puts("error exporting #{paper.short_doi}: #{e.message}")
+        raise
+      end
     end
   end
 
@@ -322,13 +327,19 @@ namespace :export do
       papers.append(paper2) unless paper2.nil? || papers.include?(paper2)
     end
 
+    puts "exporting #{papers.size} papers: #{papers.map(&:short_doi)}"
     paper_queue = Queue.new
     papers.each { |paper| paper_queue << paper}
     (0...4).map do |i|
       Thread.new do
         loop do
           paper = paper_queue.pop(true) rescue break
-          export_paper(paper)
+          begin
+            export_paper(paper)
+          rescue Exception => e
+            puts("Exception exporting #{paper.short_doi}: #{e.message}")
+            raise
+          end
         end
       end
     end.map(&:join)

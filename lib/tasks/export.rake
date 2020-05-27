@@ -120,7 +120,8 @@ def export_email(email, prefix, zos)
   subject = (email.subject || 'no subject')[0..200].gsub(' ', '_').gsub(/[^0-9a-z_]/i, '')
   # some subjects have special chars in them, which messes with the wkhtmltopdf bash
   # truncate at 200 char or filename might be too long
-  filename = [email.sent_at.iso8601, subject].join('_')
+  filename_sent_at = email.sent_at.try(&:iso8601) || "unsent#{SecureRandom.hex(3)}"
+  filename = [filename_sent_at, subject].join('_')
   mk_zip_entry(zos, "#{prefix}/email/#{filename}.eml", email.sent_at) do
     zos << email.raw_source
   end

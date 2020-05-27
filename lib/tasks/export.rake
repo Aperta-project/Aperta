@@ -130,7 +130,7 @@ def export_email(email, prefix, zos)
   temp_eml = Tempfile.new("#{filename}.eml")
 
   # generally the images link to expired s3 sources which fail the conversion
-  sanitized_email_data = email.raw_source.gsub(/<img.*?>/m, '')
+  sanitized_email_data = email.try(:raw_source) ? email.raw_source.gsub(/<img.*?>/m, '') : ''
 
   temp_eml.write(sanitized_email_data)
   temp_eml.close

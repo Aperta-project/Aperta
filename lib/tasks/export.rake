@@ -120,7 +120,8 @@ def export_email(email, prefix, zos)
   subject = (email.subject || 'no subject')[0..200].gsub(' ', '_').gsub(/[^0-9a-z_]/i, '')
   # some subjects have special chars in them, which messes with the wkhtmltopdf bash
   # truncate at 200 char or filename might be too long
-  filename = [email.sent_at.iso8601, subject].join('_')
+  filename_sent_at = email.sent_at.try(&:iso8601) || "unsent#{SecureRandom.hex(3)}"
+  filename = [filename_sent_at, subject].join('_')
   mk_zip_entry(zos, "#{prefix}/email/#{filename}.eml", email.sent_at) do
     zos << email.raw_source
   end
@@ -129,7 +130,7 @@ def export_email(email, prefix, zos)
   temp_eml = Tempfile.new("#{filename}.eml")
 
   # generally the images link to expired s3 sources which fail the conversion
-  sanitized_email_data = email.raw_source.gsub(/<img.*?>/m, '')
+  sanitized_email_data = email.try(:raw_source) ? email.raw_source.gsub(/<img.*?>/m, '') : ''
 
   temp_eml.write(sanitized_email_data)
   temp_eml.close
@@ -274,14 +275,18 @@ def export_paper(paper)
       end
     end
     paper.tasks.each do |task|
+      next unless task.answers.any? ||
+          task.comments.any? ||
+          task.try(:invitations).try(:any?)
+
       # Skip any tasks that have been snapshotted, they should be in
       # the version directories.
       next if Snapshot.find_by(source: task).present?
-      next if task.answers.size == 0 && task.comments.size == 0
+
       zip_add_rendered_html(zos,
                             "#{prefix}/#{task.title.parameterize}-task.html",
                             nil,
-                            'export/generic_answers.html.erb',
+                            'export/task.html.erb',
                             content: task.card_version.card_contents.root,
                             owner: task)
     end
@@ -298,7 +303,12 @@ namespace :export do
       prefix = paper.short_doi
       zipfile_name = "exports/#{prefix}.zip"
       next if File.exist?(zipfile_name)
-      export_paper(paper)
+      begin
+        export_paper(paper)
+      rescue Exception => e
+        puts("error exporting #{paper.short_doi}: #{e.message}")
+        raise
+      end
     end
   end
 
@@ -318,13 +328,19 @@ namespace :export do
       papers.append(paper2) unless paper2.nil? || papers.include?(paper2)
     end
 
+    puts "exporting #{papers.size} papers: #{papers.map(&:short_doi)}"
     paper_queue = Queue.new
     papers.each { |paper| paper_queue << paper}
     (0...4).map do |i|
       Thread.new do
         loop do
           paper = paper_queue.pop(true) rescue break
-          export_paper(paper)
+          begin
+            export_paper(paper)
+          rescue Exception => e
+            puts("Exception exporting #{paper.short_doi}: #{e.message}")
+            raise
+          end
         end
       end
     end.map(&:join)

@@ -5,10 +5,10 @@
   </head>
   <body>
     <h1>Version <%= @decision.major_version %>.<%= @decision.minor_version %> decision</h1>
-    <h2>Verdict: <%= @decision.verdict.humanize %></h2
+    <h2>Verdict: <%= @decision.verdict.try(:humanize) %></h2
     <h2>Letter</h2>
     <div>
-      <%= @decision.letter.html_safe %>
+      <%= @decision.letter.try(:html_safe) %>
     </div>
   </body>
 </html>

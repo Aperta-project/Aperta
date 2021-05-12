@@ -91,7 +91,7 @@ end
 def zip_add_rendered_html(zos, entry_name, time, template, context)
   mk_zip_entry(zos, entry_name, time) do
     view = ActionView::Base.new(ActionController::Base.view_paths, context)
-    zos << view.render(file: template)
+    zos << view.render(file: template, layout: 'export/task_layout.html.erb')
   end
 end
 
@@ -277,18 +277,27 @@ def export_paper(paper)
     paper.tasks.each do |task|
       next unless task.answers.any? ||
           task.comments.any? ||
-          task.try(:invitations).try(:any?)
+          task.try(:invitations).try(:any?) ||
+          task.is_a?(AdHocTask)
 
       # Skip any tasks that have been snapshotted, they should be in
       # the version directories.
       next if Snapshot.find_by(source: task).present?
-
-      zip_add_rendered_html(zos,
-                            "#{prefix}/#{task.title.parameterize}-task.html",
-                            nil,
-                            'export/task.html.erb',
-                            content: task.card_version.card_contents.root,
-                            owner: task)
+      task_title = task.title.parameterize
+      if task.is_a? AdHocTask
+        zip_add_rendered_html(zos,
+                              "#{prefix}/#{task_title}-task.html",
+                              nil,
+                              'export/ad_hoc_task.html.erb',
+                              task: task)
+      else
+        zip_add_rendered_html(zos,
+                              "#{prefix}/#{task_title}-task.html",
+                              nil,
+                              'export/normal_task.html.erb',
+                              content: task.card_version.card_contents.root,
+                              owner: task)
+      end
     end
   end
 end

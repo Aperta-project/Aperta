@@ -27,7 +27,7 @@
     <title></title>
   </head>
   <body>
-    <%= render partial: "export/content", object: @content, locals: {owner: @owner} %>
+    <%= yield %>
     <% if @owner.try(:comments).try(:any?) %>
       <h2>Discussions</h2>
       <div>
@@ -36,10 +36,10 @@
     <% end %>
 
     <% if @owner.try(:invitations).try(:any?) %>
-        <h2>Invitations</h2>
-        <table>
-          <%= render partial: "export/invitation", collection: @owner.invitations %>
-        </table>
+      <h2>Invitations</h2>
+      <table>
+        <%= render partial: "export/invitation", collection: @owner.invitations %>
+      </table>
     <% end %>
   </body>
 </html>

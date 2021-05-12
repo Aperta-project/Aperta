@@ -1,0 +1,24 @@
+<% if ad_hoc_element.is_a? Array %>
+  <div>
+    <%= render partial: "export/ad_hoc_element", collection: ad_hoc_element %>
+  </div>
+<% elsif ad_hoc_element.is_a? Hash %>
+  <% if ad_hoc_element["type"] == "email" %>
+    <h2>Email: <%= ad_hoc_element["subject"] %></h2>
+    <%= ad_hoc_element["value"].try(:html_safe) %>
+  <% elsif ad_hoc_element["type"] == "adhoc-label" %>
+    <b><%= ad_hoc_element["value"].try(:html_safe) %></b>
+  <% elsif ad_hoc_element["type"] == "text" %>
+    <h2>Text</h2>
+    <%= ad_hoc_element["value"].try(:html_safe) %>
+  <% elsif ad_hoc_element["type"] == "attachments" %>
+    <h2>todo</h2>
+  <% elsif ad_hoc_element["type"] == "checkbox" %>
+    <% checked_str = ad_hoc_element["answer"] ? "checked" : "" %>
+    <p><input disabled type="checkbox" <%= checked_str %>> <%= ad_hoc_element["value"].try(:html_safe) %></p>
+  <% else %>
+    <% raise Exception.new("strange ad-hoc content: #{ad_hoc_element}") %>
+  <% end %>
+<% else %>
+  <% raise Exception.new("strange ad-hoc card") %>
+<% end %>

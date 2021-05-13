@@ -12,7 +12,7 @@
     <h2>Text</h2>
     <%= ad_hoc_element["value"].try(:html_safe) %>
   <% elsif ad_hoc_element["type"] == "attachments" %>
-    <h2>todo</h2>
+    <%# attachments are exported elsewhere %>
   <% elsif ad_hoc_element["type"] == "checkbox" %>
     <% checked_str = ad_hoc_element["answer"] ? "checked" : "" %>
     <p><input disabled type="checkbox" <%= checked_str %>> <%= ad_hoc_element["value"].try(:html_safe) %></p>

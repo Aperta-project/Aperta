@@ -284,19 +284,22 @@ def export_paper(paper)
       # the version directories.
       next if Snapshot.find_by(source: task).present?
       task_title = task.title.parameterize
-      if task.is_a? AdHocTask
-        zip_add_rendered_html(zos,
-                              "#{prefix}/#{task_title}-task.html",
-                              nil,
-                              'export/ad_hoc_task.html.erb',
-                              task: task)
-      else
-        zip_add_rendered_html(zos,
-                              "#{prefix}/#{task_title}-task.html",
-                              nil,
-                              'export/normal_task.html.erb',
-                              content: task.card_version.card_contents.root,
-                              owner: task)
+
+      view = if task.is_a? AdHocTask
+               'export/ad_hoc_task.html.erb'
+             else
+               'export/normal_task.html.erb'
+             end
+      attachment_dir = "#{prefix}/#{task_title}-task-attachments"
+      zip_add_rendered_html(zos,
+                            "#{prefix}/#{task_title}-task.html",
+                            nil,
+                            view,
+                            content: task.card_version.card_contents.root,
+                            owner: task,
+                            attachment_dir: attachment_dir)
+      task.attachments.each do |attachment|
+        zip_add_url(zos, "#{attachment_dir}/#{attachment.filename}", attachment.proxyable_url)
       end
     end
   end

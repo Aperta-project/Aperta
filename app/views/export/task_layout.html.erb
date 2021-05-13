@@ -28,6 +28,14 @@
   </head>
   <body>
     <%= yield %>
+    <% if @owner.try(:attachments).try(:any?) %>
+      <h2>Attachments</h2>
+      <div>
+        <ul>
+          <%= render partial: "export/attachment", collection: @owner.attachments %>
+        </ul>
+      </div>
+    <% end %>
     <% if @owner.try(:comments).try(:any?) %>
       <h2>Discussions</h2>
       <div>

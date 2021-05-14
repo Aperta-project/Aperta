@@ -197,7 +197,7 @@ class ExportProxy
 end
 
 def get_task_title_filename(task)
-  return "#{task.phase.name.parameterize}--#{task.title.parameterize}.html"
+  return "#{task.phase.name.parameterize}--#{task.title.parameterize}-task"
 end
 
 def export_decision(zos, prefix, decision)
@@ -214,7 +214,7 @@ def export_decision(zos, prefix, decision)
   decision.reviewer_reports.each do |reviewer_report|
     next if reviewer_report.state == "invitation_not_accepted"
     zip_add_rendered_html(zos,
-                          "#{dir}/#{get_task_title_filename(reviewer_report.task)}",
+                          "#{dir}/#{get_task_title_filename(reviewer_report.task)}.html",
                           nil,
                           'export/generic_answers.html.erb',
                           content: reviewer_report.card_version.card_contents.root,
@@ -294,9 +294,9 @@ def export_paper(paper)
              else
                'export/normal_task.html.erb'
              end
-      attachment_dir = "#{prefix}/#{task_title}-task-attachments"
+      attachment_dir = "#{prefix}/#{task_title}-attachments"
       zip_add_rendered_html(zos,
-                            "#{prefix}/#{task_title}-task.html",
+                            "#{prefix}/#{task_title}.html",
                             nil,
                             view,
                             content: task.card_version.card_contents.root,

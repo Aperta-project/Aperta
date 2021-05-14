@@ -9,7 +9,6 @@
   <% elsif ad_hoc_element["type"] == "adhoc-label" %>
     <b><%= ad_hoc_element["value"].try(:html_safe) %></b>
   <% elsif ad_hoc_element["type"] == "text" %>
-    <h2>Text</h2>
     <%= ad_hoc_element["value"].try(:html_safe) %>
   <% elsif ad_hoc_element["type"] == "attachments" %>
     <%# attachments are exported elsewhere %>

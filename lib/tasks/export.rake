@@ -196,6 +196,10 @@ class ExportProxy
   end
 end
 
+def get_task_title_filename(task)
+  return "#{task.phase.name.parameterize}--#{task.title.parameterize}.html"
+end
+
 def export_decision(zos, prefix, decision)
   version = "#{decision.major_version}.#{decision.minor_version}"
   dir = "#{prefix}/v#{version}/decision"
@@ -210,7 +214,7 @@ def export_decision(zos, prefix, decision)
   decision.reviewer_reports.each do |reviewer_report|
     next if reviewer_report.state == "invitation_not_accepted"
     zip_add_rendered_html(zos,
-                          "#{dir}/#{reviewer_report.task.title.parameterize}.html",
+                          "#{dir}/#{get_task_title_filename(reviewer_report.task)}",
                           nil,
                           'export/generic_answers.html.erb',
                           content: reviewer_report.card_version.card_contents.root,
@@ -283,7 +287,7 @@ def export_paper(paper)
       # Skip any tasks that have been snapshotted, they should be in
       # the version directories.
       next if Snapshot.find_by(source: task).present?
-      task_title = task.title.parameterize
+      task_title = get_task_title_filename(task)
 
       view = if task.is_a? AdHocTask
                'export/ad_hoc_task.html.erb'

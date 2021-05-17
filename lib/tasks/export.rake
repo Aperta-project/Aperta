@@ -216,7 +216,7 @@ def export_decision(zos, prefix, decision)
     zip_add_rendered_html(zos,
                           "#{dir}/#{get_task_title_filename(reviewer_report.task)}.html",
                           nil,
-                          'export/generic_answers.html.erb',
+                          'export/review.html.erb',
                           content: reviewer_report.card_version.card_contents.root,
                           owner: reviewer_report)
   end

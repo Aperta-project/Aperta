@@ -24,10 +24,10 @@
      }
 
     </style>
-    <title><%= @owner.try(:phase).try(:name) %> - <%= @owner.try(:title) %></title>
+    <title><%= yield :title %></title>
   </head>
   <body>
-    <h1><%= @owner.try(:phase).try(:name) %> - <%= @owner.try(:title) %></h1>
+    <h1><%= yield :title %></h1>
     <%= yield %>
     <% if @owner.try(:attachments).try(:any?) %>
       <h2>Attachments</h2>

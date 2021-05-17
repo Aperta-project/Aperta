@@ -22,7 +22,7 @@ source 'https://rubygems.org'
 
 # Remember to also change circle.yml and .ruby-version when the
 # ruby version changes
-ruby '2.3.6'
+ruby '2.4.10'
 
 # Gems
 gem 'aasm', '~> 4.9.0'
@@ -93,6 +93,7 @@ gem 'timeliness'
 gem 'tiny_tds'
 gem 'twitter-text'
 gem 'unf'
+gem 'xmlrpc'
 gem 'yaml_db'
 gem 'eml_to_pdf', require: false
 

@@ -91,7 +91,7 @@ end
 def zip_add_rendered_html(zos, entry_name, time, template, context)
   mk_zip_entry(zos, entry_name, time) do
     view = ActionView::Base.new(ActionController::Base.view_paths, context)
-    zos << view.render(file: template)
+    zos << view.render(file: template, layout: 'export/task_layout.html.erb')
   end
 end
 
@@ -196,6 +196,10 @@ class ExportProxy
   end
 end
 
+def get_task_title_filename(task)
+  return "#{task.phase.name.parameterize}--#{task.title.parameterize}-task"
+end
+
 def export_decision(zos, prefix, decision)
   version = "#{decision.major_version}.#{decision.minor_version}"
   dir = "#{prefix}/v#{version}/decision"
@@ -210,7 +214,7 @@ def export_decision(zos, prefix, decision)
   decision.reviewer_reports.each do |reviewer_report|
     next if reviewer_report.state == "invitation_not_accepted"
     zip_add_rendered_html(zos,
-                          "#{dir}/#{reviewer_report.task.title.parameterize}.html",
+                          "#{dir}/#{get_task_title_filename(reviewer_report.task)}.html",
                           nil,
                           'export/generic_answers.html.erb',
                           content: reviewer_report.card_version.card_contents.root,
@@ -277,18 +281,30 @@ def export_paper(paper)
     paper.tasks.each do |task|
       next unless task.answers.any? ||
           task.comments.any? ||
-          task.try(:invitations).try(:any?)
+          task.try(:invitations).try(:any?) ||
+          task.is_a?(AdHocTask)
 
       # Skip any tasks that have been snapshotted, they should be in
       # the version directories.
       next if Snapshot.find_by(source: task).present?
+      task_title = get_task_title_filename(task)
 
+      view = if task.is_a? AdHocTask
+               'export/ad_hoc_task.html.erb'
+             else
+               'export/normal_task.html.erb'
+             end
+      attachment_dir = "#{prefix}/#{task_title}-attachments"
       zip_add_rendered_html(zos,
-                            "#{prefix}/#{task.title.parameterize}-task.html",
+                            "#{prefix}/#{task_title}.html",
                             nil,
-                            'export/task.html.erb',
+                            view,
                             content: task.card_version.card_contents.root,
-                            owner: task)
+                            owner: task,
+                            attachment_dir: attachment_dir)
+      task.attachments.each do |attachment|
+        zip_add_url(zos, "#{attachment_dir}/#{attachment.filename}", attachment.proxyable_url)
+      end
     end
   end
 end

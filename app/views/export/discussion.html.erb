@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= @topic.title %></title>
-  </head>
-  <body>
-    <h1><%= @topic.title %></h1>
-    <%= render partial: "export/reply", collection: @topic.discussion_replies %>
-  </body>
-</html>
+<% content_for :title do %>
+  <%= @topic.title %>
+<% end %>
+<%= render partial: "export/reply", collection: @topic.discussion_replies %>

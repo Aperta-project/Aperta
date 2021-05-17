@@ -1,3 +1,6 @@
+<% content_for :title do %>
+  <%= @owner.try(:phase).try(:name) %> - <%= @owner.try(:title) %>
+<% end %>
 <%
   id_count = nil
   depth = 1

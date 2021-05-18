@@ -9,6 +9,7 @@
      }
      .answer {
        color: green;
+       margin-left: 1em;
      }
      .depth-level-0 {
        margin-left: 10px;
@@ -22,12 +23,16 @@
      .depth-level-3 {
        margin-left: 40px;
      }
-
+     .comments {
+       border-top: thick double;
+       border-bottom: thick double;
+       background-color: #fbffcf;
+     }
     </style>
-    <title><%= @owner.try(:phase).try(:name) %> - <%= @owner.try(:title) %></title>
+    <title><%= yield :title %></title>
   </head>
   <body>
-    <h1><%= @owner.try(:phase).try(:name) %> - <%= @owner.try(:title) %></h1>
+    <h1><%= yield :title %></h1>
     <%= yield %>
     <% if @owner.try(:attachments).try(:any?) %>
       <h2>Attachments</h2>

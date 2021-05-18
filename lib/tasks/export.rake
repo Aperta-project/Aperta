@@ -275,6 +275,7 @@ def export_paper(paper)
                               "#{dir}/#{snapshot.contents['name']}.html",
                               nil,
                               'export/generic_snapshot.html.erb',
+                              owner: snapshot.source,
                               data: make_snapshot_question_data(snapshot.contents))
       end
     end

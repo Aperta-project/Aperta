@@ -406,6 +406,7 @@ GEM
     net-ssh (3.0.2)
     netrc (0.10.3)
     newrelic_rpm (4.6.0.338)
+    nio4r (2.5.7)
     nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     oauth2 (1.4.0)
@@ -469,7 +470,8 @@ GEM
       interception (>= 0.5)
       pry
     public_suffix (3.0.2)
-    puma (3.12.2)
+    puma (4.3.8)
+      nio4r (~> 2.0)
     pusher (0.14.4)
       httpclient (~> 2.5)
       multi_json (~> 1.0)

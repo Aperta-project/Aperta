@@ -1,4 +1,4 @@
 <% content_for :title do %>
-  <%= @topic.title %>
+  Discusson: <%= @topic.title %>
 <% end %>
 <%= render partial: "export/reply", collection: @topic.discussion_replies %>

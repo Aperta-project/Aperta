@@ -2,7 +2,7 @@
   <div>
     <p> <%= (content.text || content.label).try(:html_safe) %></p>
     <div class="answer">
-      <%= owner.answers.where(card_content: content).first.try(:value).try(:html_safe) || "[No response]" %>
+      <%= owner.answers.where(card_content: content).first.try(:value).try(:to_s).try(:html_safe) || "[No response]" %>
     </div>
     <% if content.children.present? %>
       <div style="margin-left: 1em;">

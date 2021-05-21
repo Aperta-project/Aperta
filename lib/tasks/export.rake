@@ -285,9 +285,6 @@ def export_paper(paper)
           task.try(:invitations).try(:any?) ||
           task.is_a?(AdHocTask)
 
-      # Skip any tasks that have been snapshotted, they should be in
-      # the version directories.
-      next if Snapshot.find_by(source: task).present?
       task_title = get_task_title_filename(task)
 
       view = if task.is_a? AdHocTask

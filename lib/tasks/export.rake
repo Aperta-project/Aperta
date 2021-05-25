@@ -280,7 +280,7 @@ def export_paper(paper)
       end
     end
     paper.tasks.each do |task|
-      next unless task.answers.any? ||
+      next unless task.card_version.try(:card_contents).try(:root) ||
           task.comments.any? ||
           task.try(:invitations).try(:any?) ||
           task.is_a?(AdHocTask)

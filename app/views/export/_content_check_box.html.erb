@@ -1,0 +1,8 @@
+<div class="card-checkbox">
+  <%= render partial: 'export/checkbox', locals: { checked: answer.try(:value), text: content_check_box.label } %>
+</div>
+<% if content_check_box.children.present? %>
+  <div style="margin-left: 1em;">
+    <%= render partial: 'export/content', collection: content_check_box.children %>
+  </div>
+<% end %>

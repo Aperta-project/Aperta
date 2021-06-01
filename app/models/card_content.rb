@@ -310,6 +310,10 @@ class CardContent < ActiveRecord::Base
     super
   end
 
+  def answer_for_owner(owner)
+    owner.answers.where(card_content: self).first
+  end
+
   private
 
   def create_card_config_validation(ccv, xml)

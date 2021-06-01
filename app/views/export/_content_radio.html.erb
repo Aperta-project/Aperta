@@ -1,0 +1,8 @@
+<div class="card-radio">
+  <p>
+    <% if content_radio.label %>
+      <%= content_radio.label %>:
+    <% end %>
+   <%= render partial: "export/answer", object: content_radio.answer_for_owner(@owner) %>
+  </p>
+</div>

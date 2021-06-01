@@ -45,6 +45,6 @@
   <%if invitation.declined? %>
     <p><%= invitation.decline_reason%></p>
   <% end %>
-  <%= invitation.body %>
+  <%= invitation.body.html_safe %>
 </td>
-</tr> 
+</tr>

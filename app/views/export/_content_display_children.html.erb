@@ -1,0 +1,5 @@
+<% if content_display_children.children.present? %>
+  <div style="margin-left: 1em;">
+    <%= render partial: 'export/content', collection: content_display_children.children %>
+  </div>
+<% end %>

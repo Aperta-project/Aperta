@@ -280,14 +280,11 @@ def export_paper(paper)
       end
     end
     paper.tasks.each do |task|
-      next unless task.answers.any? ||
+      next unless task.card_version.try(:card_contents).try(:root) ||
           task.comments.any? ||
           task.try(:invitations).try(:any?) ||
           task.is_a?(AdHocTask)
 
-      # Skip any tasks that have been snapshotted, they should be in
-      # the version directories.
-      next if Snapshot.find_by(source: task).present?
       task_title = get_task_title_filename(task)
 
       view = if task.is_a? AdHocTask

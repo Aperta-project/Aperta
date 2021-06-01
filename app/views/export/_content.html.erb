@@ -1,13 +1,13 @@
 <% if content.present? %>
-  <div>
-    <p> <%= (content.text || content.label).try(:html_safe) %></p>
-    <div class="answer">
-      <%= owner.answers.where(card_content: content).first.try(:value).try(:html_safe) || "[No response]" %>
-    </div>
-    <% if content.children.present? %>
-      <div style="margin-left: 1em;">
-        <%= render partial: 'export/content', collection: content.children, locals: {owner: owner} %>
-      </div>
-    <% end %>
+  <div class="card-form-text">
+    <%= content.text.try(:html_safe) %>
   </div>
+
+  <% if content.content_type %>
+    <%= render partial: "export/content_" + content.content_type.underscore, object: content,
+               locals: { answer: content.answer_for_owner(@owner) }
+    %>
+  <% else %>
+    <%= render partial: "export/answer", object: content.answer_for_owner(@owner) %>
+  <% end %>
 <% end %>

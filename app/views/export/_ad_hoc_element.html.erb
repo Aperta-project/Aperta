@@ -13,8 +13,7 @@
   <% elsif ad_hoc_element["type"] == "attachments" %>
     <%# attachments are exported elsewhere %>
   <% elsif ad_hoc_element["type"] == "checkbox" %>
-    <% checked_str = ad_hoc_element["answer"] ? "checked" : "" %>
-    <p><input disabled type="checkbox" <%= checked_str %>> <%= ad_hoc_element["value"].try(:html_safe) %></p>
+    <%= render partial: 'export/checkbox', locals: {checked: ad_hoc_element["answer"], text: ad_hoc_element["value"] } %>
   <% else %>
     <% raise Exception.new("strange ad-hoc content: #{ad_hoc_element}") %>
   <% end %>

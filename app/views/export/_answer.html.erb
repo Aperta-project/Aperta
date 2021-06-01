@@ -1,0 +1,3 @@
+<div class="answer">
+  <%= answer.try(:value).try(:to_s).try(:html_safe) || "[No response]" %>
+</div>

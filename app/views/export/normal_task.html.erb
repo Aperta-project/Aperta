@@ -1,4 +1,4 @@
 <% content_for :title do%>
   <%= @owner.try(:phase).try(:name) %> - <%= @owner.try(:title) %>
 <% end %>
-<%= render partial: "export/content", object: @content, locals: {owner: @owner} %>
+<%= render partial: "export/content", object: @content %>

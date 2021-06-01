@@ -1,0 +1,4 @@
+<% parent_answer = content_display_with_value.parent.answer_for_owner(@owner) %>
+<% if parent_answer && parent_answer.value.to_s == content_display_with_value.visible_with_parent_answer %>
+  <%= render partial: 'export/content_display_children', object: content_display_with_value %>
+<% end %>

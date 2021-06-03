@@ -4,7 +4,7 @@
 <% content_for :title do %>
   Version <%= @decision.major_version %>.<%= @decision.minor_version %> decision
 <% end %>
-<h2>Verdict: <%= @decision.verdict.try(:humanize) %></h2
+<h2>Verdict: <%= @decision.verdict.try(:humanize) %></h2>
 <h2>Letter</h2>
 <div>
   <%= @decision.letter.try(:html_safe) %>

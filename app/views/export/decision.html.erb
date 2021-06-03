@@ -9,3 +9,7 @@
 <div>
   <%= @decision.letter.try(:html_safe) %>
 </div>
+<% if @decision.author_response %>
+  <h2>Author response</h2>
+  <%= @decision.author_response.html_safe %>
+<% end %>

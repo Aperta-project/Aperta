@@ -1,8 +1,15 @@
+<div>Please note that a response to reviewers will be found in the
+  decision that it is in response to, which is probably the <b>previous</b>
+  decision to what you expect!</div>
 <% content_for :title do %>
   Version <%= @decision.major_version %>.<%= @decision.minor_version %> decision
 <% end %>
-<h2>Verdict: <%= @decision.verdict.try(:humanize) %></h2
+<h2>Verdict: <%= @decision.verdict.try(:humanize) %></h2>
 <h2>Letter</h2>
 <div>
   <%= @decision.letter.try(:html_safe) %>
 </div>
+<% if @decision.author_response %>
+  <h2>Author response</h2>
+  <%= @decision.author_response.html_safe %>
+<% end %>

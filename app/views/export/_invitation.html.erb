@@ -43,8 +43,10 @@
 </td>
 <td>
   <%if invitation.declined? %>
-    <p><%= invitation.decline_reason%></p>
+    <h3>Decline reason</h3>
+    <div><%= invitation.decline_reason.html_safe %></div>
   <% end %>
-  <%= invitation.body.html_safe %>
+  <h3>Invitation letter</h3>
+  <div><%= invitation.body.html_safe %></div>
 </td>
 </tr>

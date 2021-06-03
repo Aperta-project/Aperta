@@ -207,7 +207,9 @@ def export_decision(zos, prefix, decision)
                         "#{dir}/decision.html",
                         nil,
                         "export/decision.html.erb",
-                        decision: decision)
+                        decision: decision,
+                        owner: decision,
+                        attachment_dir: "./")
   decision.attachments.each do |attachment|
     zip_add_url(zos, "#{dir}/#{attachment.filename}", attachment.proxyable_url)
   end
@@ -299,7 +301,7 @@ def export_paper(paper)
                             view,
                             content: task.card_version.card_contents.root,
                             owner: task,
-                            attachment_dir: attachment_dir)
+                            attachment_dir: "../#{attachment_dir}")
       task.attachments.each do |attachment|
         zip_add_url(zos, "#{attachment_dir}/#{attachment.filename}", attachment.proxyable_url)
       end

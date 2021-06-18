@@ -1,0 +1,20 @@
+version: '3'
+services:
+  export:
+    build: .
+    ports:
+      - "3000:3000"
+    expose:
+      - 3000
+    volumes:
+      - bundle_cache:/bundle
+      - ./exports:/code/exports
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://tahi:secret@db/postgres
+    env_file:
+      - .env.docker
+    command: ["bundle", "exec", "rake", "export:manuscripts_csv", "export:manuscript_zips"]
+volumes:
+  bundle_cache:

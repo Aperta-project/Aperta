@@ -1,0 +1,13 @@
+version: '3'
+services:
+  dbrestore:
+    image: postgres:9
+    environment:
+      POSTGRES_USER: tahi
+      POSTGRES_PASSWORD: secret
+    volumes:
+    - ./db.dump:/db.dump
+    - ./docker/bin/restore_db:/bin/restore_db
+    depends_on:
+      - db
+    command: ["/bin/restore_db"]

@@ -1,0 +1,4 @@
+#!/bin/sh
+echo Sleeping 10 seconds to allow database to come up...
+sleep 10
+PGPASSWORD="$POSTGRES_PASSWORD" pg_restore -U "$POSTGRES_USER" -d postgres -h db /db.dump

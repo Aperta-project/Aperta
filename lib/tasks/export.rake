@@ -203,13 +203,20 @@ end
 def export_decision(zos, prefix, decision)
   version = "#{decision.major_version}.#{decision.minor_version}"
   dir = "#{prefix}/v#{version}/decision"
+  decisions_with_attachments = decision.paper.decisions.reject do |d|
+    d.attachments.empty?
+  end.map do |d|
+    "#{d.major_version}.#{d.minor_version}"
+  end
+
   zip_add_rendered_html(zos,
                         "#{dir}/decision.html",
                         nil,
                         "export/decision.html.erb",
                         decision: decision,
                         owner: decision,
-                        attachment_dir: "./")
+                        attachment_dir: "./",
+                        decisions_with_attachments: decisions_with_attachments)
   decision.attachments.each do |attachment|
     zip_add_url(zos, "#{dir}/#{attachment.filename}", attachment.proxyable_url)
   end

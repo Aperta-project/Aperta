@@ -1,5 +1,10 @@
 <div>Please note that the response to reviewers file for this decision
-  is in the same folder as the decision itself (not in the next manuscript version!)</div>
+  may be found in the same folder as the decision itself or sometimes
+  in the final decision.
+  <% if @decisions_with_attachments.present? %>
+    This manuscript contains attachments to the decision in versions <%= @decisions_with_attachments.to_sentence %>.
+  <% end %>
+</div>
 <% content_for :title do %>
   Version <%= @decision.major_version %>.<%= @decision.minor_version %> decision
 <% end %>

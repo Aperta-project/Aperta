@@ -1,4 +1,4 @@
 <% content_for :title do %>
   Discusson: <%= @topic.title %>
 <% end %>
-<%= render partial: "export/reply", collection: @topic.discussion_replies %>
+<%= render partial: "export/reply", collection: @topic.discussion_replies.order(:created_at) %>

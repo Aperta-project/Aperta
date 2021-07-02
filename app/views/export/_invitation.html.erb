@@ -44,9 +44,9 @@
 <td>
   <%if invitation.declined? %>
     <h3>Decline reason</h3>
-    <div><%= invitation.decline_reason.html_safe %></div>
+    <div><%= invitation.decline_reason.try(:html_safe) %></div>
   <% end %>
   <h3>Invitation letter</h3>
-  <div><%= invitation.body.html_safe %></div>
+  <div><%= invitation.body.try(:html_safe) %></div>
 </td>
 </tr>

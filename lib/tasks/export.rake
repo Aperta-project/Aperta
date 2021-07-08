@@ -235,6 +235,7 @@ def export_paper(paper)
   prefix = paper.short_doi
   zipfile_name = "exports/#{prefix}.zip"
   return if File.exist?(zipfile_name)
+  Zip.write_zip64_support = true
   Zip::OutputStream.open(zipfile_name) do |zos|
     mk_zip_entry(zos, "#{prefix}/metadata.csv") do
       csv = CSV.new(zos)

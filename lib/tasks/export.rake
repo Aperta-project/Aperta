@@ -270,7 +270,8 @@ def export_paper(paper)
       version = "v" + (vt.major_version || "0").to_s + "." + (vt.minor_version || "0").to_s
       dir = "#{prefix}/#{version}"
       zip_add_url(zos, "#{dir}/#{vt.manuscript_filename}", Attachment.authenticated_url_for_key(vt.manuscript_s3_path + '/' + vt.manuscript_filename)) if vt.manuscript_s3_path.present?
-      zip_add_url(zos, "#{dir}/#{vt.sourcefile_filename}", Attachment.authenticated_url_for_key(vt.s3_full_sourcefile_path)) if vt.sourcefile_s3_path.present?
+
+      zip_add_url(zos, "#{dir}/#{vt.sourcefile_filename}", Attachment.authenticated_url_for_key(vt.s3_full_sourcefile_path)) if vt.s3_full_sourcefile_path.present?
       Correspondence.where(versioned_text: vt).each do |email|
         export_email(email, dir, zos)
       end

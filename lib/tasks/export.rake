@@ -234,7 +234,8 @@ end
 def export_paper(paper)
   prefix = paper.short_doi
   zipfile_name = "exports/#{prefix}.zip"
-  File.unlink(zipfile_name) if File.exist?(zipfile_name)
+  return if File.exist?(zipfile_name)
+  Zip.write_zip64_support = true
   Zip::OutputStream.open(zipfile_name) do |zos|
     mk_zip_entry(zos, "#{prefix}/metadata.csv") do
       csv = CSV.new(zos)
@@ -269,7 +270,8 @@ def export_paper(paper)
       version = "v" + (vt.major_version || "0").to_s + "." + (vt.minor_version || "0").to_s
       dir = "#{prefix}/#{version}"
       zip_add_url(zos, "#{dir}/#{vt.manuscript_filename}", Attachment.authenticated_url_for_key(vt.manuscript_s3_path + '/' + vt.manuscript_filename)) if vt.manuscript_s3_path.present?
-      zip_add_url(zos, "#{dir}/#{vt.sourcefile_filename}", Attachment.authenticated_url_for_key(vt.s3_full_sourcefile_path)) if vt.sourcefile_s3_path.present?
+
+      zip_add_url(zos, "#{dir}/#{vt.sourcefile_filename}", Attachment.authenticated_url_for_key(vt.s3_full_sourcefile_path)) if vt.s3_full_sourcefile_path.present?
       Correspondence.where(versioned_text: vt).each do |email|
         export_email(email, dir, zos)
       end
@@ -314,6 +316,9 @@ def export_paper(paper)
       end
     end
   end
+rescue
+  # Clean up after exception
+  File.unlink(zipfile_name) if zipfile_name
 end
 
 namespace :export do

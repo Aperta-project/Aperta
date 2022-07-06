@@ -72,7 +72,7 @@ gem 'pusher'
 gem 'rack-protection', '~> 1.5.5'
 gem 'rack-timeout'
 gem 'rails', '~>4.2.10'
-gem 'rails-html-sanitizer', '~> 1.0.4'
+gem 'rails-html-sanitizer', '~> 1.4.3'
 gem 'rbtrace'
 gem 'render_anywhere', require: nil
 gem 'request_store'
